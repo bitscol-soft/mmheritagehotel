@@ -108,6 +108,7 @@ class RoomsController extends Controller
             $room = Rooms::create([
                 'name'          => $room_name->name,
                 'room_category' => $request->name,
+                'lot'           => $request->lot ?? null,
                 'room_number'   => $request->room_number,
                 'f_r_id_card'   => $request->f_r_id_card,
                 'status'        => $request->status,
@@ -117,6 +118,10 @@ class RoomsController extends Controller
                 'rent'          => $request->rent ?? null,
                 'beds'          => $request->beds ?? null,
                 'max_guests'    => $request->max_guests ?? null,
+                'is_breakfast'  => $request->is_breakfast ?? null,
+                'room_size'     => $request->room_size ?? null,
+                'room_price'    => $request->room_price ?? null,
+                'bed_per_room'  => $request->bed_per_room ?? null,
             ]);
         } catch (\Throwable $e) {
 
@@ -162,6 +167,7 @@ class RoomsController extends Controller
                 $data->update([
                     'name'          => $room_name->name,
                     'room_category' => $request->name,
+                    'lot'           => $request->lot ?? null,
                     'room_number'   => $request->room_number,
                     'f_r_id_card'   => $request->f_r_id_card,
                     'status'        => $request->status,
@@ -171,6 +177,10 @@ class RoomsController extends Controller
                     'rent'          => $request->rent ?? null,
                     'beds'          => $request->beds ?? null,
                     'max_guests'    => $request->max_guests ?? null,
+                    'is_breakfast'  => $request->is_breakfast ?? null,
+                    'room_size'     => $request->room_size ?? null,
+                    'room_price'    => $request->room_price ?? null,
+                    'bed_per_room'  => $request->bed_per_room ?? null,
                 ]);
                 $status = $request->status == 0 ? 'Dirty' : ($request->status == 2 ? 'Maintenence' : 'Ready');
                 $note = '';
