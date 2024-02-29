@@ -203,7 +203,7 @@
                                             <div class="form-group aside_system">
                                                 <label class="col-md-4 control-label">Sub Total:</label>
                                                 <div class="input-group col-md-8">
-                                                    <div class="input-group-addon currency">৳</div>
+                                                    <div class="input-group-addon currency">RM</div>
                                                     <input value="{{ $hospitalServiceSale->subtotal }}" type="number"
                                                         min="0" step="any" class="form-control" name="subtotal"
                                                         id="subTotal" placeholder="Subtotal" tabindex="-1" readonly>
@@ -212,7 +212,7 @@
                                             <div class="form-group aside_system">
                                                 <label class="col-md-4 control-label">Discount:</label>
                                                 <div class="input-group col-md-8">
-                                                    <div class="input-group-addon currency">৳</div>
+                                                    <div class="input-group-addon currency">RM</div>
                                                     <input onkeyup="discountAmount()"
                                                         value="{{ $hospitalServiceSale->discount }}" type="number"
                                                         min="0" step="any" class="form-control" name="discount"
@@ -223,7 +223,7 @@
                                             <div class="form-group aside_system">
                                                 <label class="col-md-4 control-label">Total Amount:</label>
                                                 <div class="input-group col-md-8">
-                                                    <div class="input-group-addon currency">৳</div>
+                                                    <div class="input-group-addon currency">RM</div>
                                                     <input
                                                         value="{{ $hospitalServiceSale->subtotal - $hospitalServiceSale->discount }}"
                                                         type="number" min="0" step="any" class="form-control"
@@ -234,7 +234,7 @@
                                             <div class="form-group aside_system">
                                                 <label class="col-md-4 control-label">Advance Paid :</label>
                                                 <div class="input-group col-md-8">
-                                                    <div class="input-group-addon currency">৳</div>
+                                                    <div class="input-group-addon currency">RM</div>
                                                     <input type="number" value="{{ $hospitalServiceSale->paid }}" min="0"
                                                         step="any" class="form-control" id="paid_amount"
                                                         placeholder="Paid Amount" ondrop="return false;"
@@ -244,7 +244,7 @@
                                             <div class="form-group aside_system">
                                                 <label class="col-md-4 control-label">Amount Due :</label>
                                                 <div class="input-group col-md-8">
-                                                    <div class="input-group-addon currency">৳</div>
+                                                    <div class="input-group-addon currency">RM</div>
                                                     <input value="{{ $hospitalServiceSale->due }}" type="number" min="0"
                                                         step="any" class="form-control amountDue" name="due_amount"
                                                         id="due_amount" placeholder="Amount Due" tabindex="-1"

@@ -67,7 +67,7 @@ if (Cookie::get('booking_cart')) {
                             <div class="sub-total">
                                 <div class="row">
                                     <div class="col-md-6"><p class="cart-footer-title">Subtotal :</p></div>
-                                    <div class="col-md-6"><p class="cart-total-amount text-right">{{ number_format($sub_total, 2) }} &#x09F3;</p></div>
+                                    <div class="col-md-6"><p class="cart-total-amount text-right">RM {{ number_format($sub_total, 2) }}</p></div>
                                 </div>
                             </div>
                         </li>

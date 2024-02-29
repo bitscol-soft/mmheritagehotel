@@ -121,7 +121,7 @@
                                         <input type="hidden" name="total_amount" value="">
                                         <label class="control-label col-md-4 text-right">Paid Amount :</label>
                                         <div class="input-group col-md-8">
-                                            <div class="input-group-addon currency">৳</div>
+                                            <div class="input-group-addon currency">RM</div>
                                             <input class="form-control" style="text-align:right"
                                                 value="{{                                                 value="$invoice->paid }}"
                                                 name="totalPayable" id="totalPayable" placeholder="Total
@@ -132,7 +132,7 @@
                                         <input type="hidden" name="total_amount" value="">
                                         <label class="control-label col-md-4 text-right">Due Amount :</label>
                                         <div class="input-group col-md-8">
-                                            <div class="input-group-addon currency">৳</div>
+                                            <div class="input-group-addon currency">RM</div>
                                             <input class="form-control" style="text-align:right"
                                                 value="{{ $invoice->due }}" name="totalPayable" id="totalPayable"
                                                 placeholder="Total Payable" readonly>
@@ -141,7 +141,7 @@
                                     <div class="form-group aside_system">
                                         <label class="control-label col-md-4 text-right">Pay Amount :</label>
                                         <div class="input-group col-md-8">
-                                            <div class="input-group-addon currency">৳</div>
+                                            <div class="input-group-addon currency">RM</div>
                                             <input @if (request('amount')) value="{{ request('amount') }}" readonly @endif style="text-align:right" type="number" min="0"
                                                 step="any" class="form-control" name="totalPaid" id="totalPaid"
                                                 placeholder="Paid Amount" onpaste="return false;">

@@ -131,7 +131,7 @@
                                         <div class="form-group aside_system">
                                             <label class="col-md-5 control-label">Sub Total</label>
                                             <div class="input-group col-md-7">
-                                                <div class="input-group-addon currency">৳</div>
+                                                <div class="input-group-addon currency">RM</div>
                                                 <input tabindex="-1" value="0" type="number" min="0" step="any"
                                                     class="form-control" name="subtotal" id="subTotal" placeholder="Sub
                                                                                             Total" readonly>
@@ -140,7 +140,7 @@
                                         <div class="form-group aside_system">
                                             <label class="col-md-5">Discount</label>
                                             <div class="input-group col-md-7">
-                                                <div class="input-group-addon currency">৳</div>
+                                                <div class="input-group-addon currency">RM</div>
                                                 <input tabindex="-1" value="0" type="number" min="0" step="any"
                                                     class="form-control" name="discount" id="discount"
                                                     placeholder="Discount">
@@ -149,7 +149,7 @@
                                         <div class="form-group aside_system">
                                             <label class="col-md-5">Total VAT</label>
                                             <div class="input-group col-md-7">
-                                                <div class="input-group-addon currency">৳</div>
+                                                <div class="input-group-addon currency">RM</div>
                                                 <input type="number" min="0" class="form-control"
                                                     onkeyup="totalCalculation()" name="total_vat" id="vat">
                                             </div>
@@ -157,7 +157,7 @@
                                         <div class="form-group aside_system">
                                             <label class="col-md-5">Grand Total</label>
                                             <div class="input-group col-md-7">
-                                                <div class="input-group-addon currency">৳</div>
+                                                <div class="input-group-addon currency">RM</div>
                                                 <input tabindex="-1" value="" type="number" min="0" step="any"
                                                     class="form-control" name="grand_total" id="grandTotal"
                                                     placeholder="Grand Total" readonly>
@@ -166,7 +166,7 @@
                                         <div class="form-group aside_system">
                                             <label class="col-md-5 control-label">Total Paid</label>
                                             <div class="input-group col-md-7">
-                                                <div class="input-group-addon currency">৳</div>
+                                                <div class="input-group-addon currency">RM</div>
                                                 <input value="0" type="number" min="0" step="any" class="form-control"
                                                     name="paid_amount" onkeyup="totalCalculation()" id="totalPaid"
                                                     placeholder="Total Paid">
@@ -175,7 +175,7 @@
                                         <div class="form-group aside_system">
                                             <label class="col-md-5">Total Due</label>
                                             <div class="input-group col-md-7">
-                                                <div class="input-group-addon currency">৳</div>
+                                                <div class="input-group-addon currency">RM</div>
                                                 <input tabindex="-1" value="" type="number" min="0" step="any"
                                                     class="form-control" name="due_amount" id="totalDue"
                                                     placeholder="Total Due" readonly>

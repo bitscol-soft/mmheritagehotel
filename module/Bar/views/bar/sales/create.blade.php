@@ -203,7 +203,7 @@
                                     <div class="form-group">
                                         <label class="col-md-4 control-label">Sub Total :</label>
                                         <div class="input-group col-md-8">
-                                            <div class="input-group-addon currency">৳</div>
+                                            <div class="input-group-addon currency">RM</div>
                                             <input value="0" type="number" name="subtotal" class="form-control"
                                                 id="subTotal" ondrop="return false;" onpaste="return false;"
                                                 readonly="">
@@ -216,7 +216,7 @@
                                     <div class="form-group">
                                         <label class="col-md-4 control-label">Discount :</label>
                                         <div class="input-group col-md-8">
-                                            <div class="input-group-addon currency">৳</div>
+                                            <div class="input-group-addon currency">RM</div>
                                             <input value="0" type="number" min="0" step="any"
                                                 class="form-control changesNo discount" name="discount" id="discount"
                                                 placeholder="Discount" ondrop="return false;" tabindex="-1">
@@ -228,7 +228,7 @@
                                     <div class="form-group">
                                         <label class="col-md-4 control-label">Vat :</label>
                                         <div class="input-group col-md-8">
-                                            <div class="input-group-addon currency">৳</div>
+                                            <div class="input-group-addon currency">RM</div>
                                             <input value="0" type="number" class="form-control vat" name="vat"
                                                 id="vat" ondrop="return false;" readonly>
                                         </div>
@@ -240,7 +240,7 @@
                                     <div class="form-group">
                                         <label class="col-md-4 control-label">Service Charge:</label>
                                         <div class="input-group col-md-8">
-                                            <div class="input-group-addon currency">৳</div>
+                                            <div class="input-group-addon currency">RM</div>
                                             <input value="0" type="number" class="form-control service_charge"
                                                 name="service_charge" id="service_charge" placeholder="Service Charge"
                                                 ondrop="return false;">
@@ -254,7 +254,7 @@
                                         <label class="col-md-4 control-label" style="padding-left: 0">Payable
                                             Amount:</label>
                                         <div class="input-group col-md-8">
-                                            <div class="input-group-addon currency">৳</div>
+                                            <div class="input-group-addon currency">RM</div>
                                             <input value="0" type="number"
                                                 name="payable_amount"class="form-control" id="grandTotal"
                                                 ondrop="return false;" onpaste="return false;" readonly>
@@ -269,7 +269,7 @@
                                         <div class="form-group aside_system">
                                             <label class="col-md-4 control-label">Paid Amount :</label>
                                             <div class="input-group col-md-8">
-                                                <div class="input-group-addon currency">৳</div>
+                                                <div class="input-group-addon currency">RM</div>
                                                 <input value="0" type="number" name="paid_amount"
                                                     class="form-control" id="paid_amount" ondrop="return false;"
                                                     onpaste="return false;">
@@ -281,7 +281,7 @@
                                         <div class="form-group aside_system">
                                             <label class="col-md-4 control-label">Change :</label>
                                             <div class="input-group col-md-8">
-                                                <div class="input-group-addon currency">৳</div>
+                                                <div class="input-group-addon currency">RM</div>
                                                 <input tabindex="-1" type="number" min="0" step="any"
                                                     class="form-control change" name="change_amount" id="change"
                                                     value="0" ondrop="return false;" onpaste="return false;"
@@ -299,7 +299,7 @@
                                         <div class="form-group aside_system">
                                             <label class="col-md-4 control-label">Amount Due :</label>
                                             <div class="input-group col-md-8">
-                                                <div class="input-group-addon currency">৳</div>
+                                                <div class="input-group-addon currency">RM</div>
                                                 <input tabindex="-1" type="number" min="0" step="any"
                                                     class="form-control amountDue only-number" name="due_amount"
                                                     value="0" id="amountDue" ondrop="return false;"

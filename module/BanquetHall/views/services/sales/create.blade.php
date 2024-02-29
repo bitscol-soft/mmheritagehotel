@@ -157,7 +157,7 @@
                                                                         Sub Totals:
                                                                     </label>
                                                                     <div class="input-group col-md-8">
-                                                                        <div class="input-group-addon currency">৳</div>
+                                                                        <div class="input-group-addon currency">RM</div>
                                                                         <input value="" type="number" min="0" step="any"
                                                                             class="form-control" name="subtotal"
                                                                             id="subTotal" placeholder="Subtotal"
@@ -173,7 +173,7 @@
                                                                     </label>
                                                                     <input type="hidden" id="service-discount-val">
                                                                     <div class="input-group col-md-8">
-                                                                        <div class="input-group-addon currency">৳</div>
+                                                                        <div class="input-group-addon currency">RM</div>
                                                                         <input value="0" type="number" min="0" step="any"
                                                                             class="form-control" name="discount"
                                                                             id="discount" placeholder="Discount">
@@ -184,7 +184,7 @@
                                                                         Total Amount:
                                                                     </label>
                                                                     <div class="input-group col-md-8">
-                                                                        <div class="input-group-addon currency">৳</div>
+                                                                        <div class="input-group-addon currency">RM</div>
                                                                         <input value="" type="number" min="0" step="any"
                                                                             class="form-control" name="payable_amount"
                                                                             id="payable_amount" placeholder="Payable Amount"
@@ -198,7 +198,7 @@
                                                                         Paid Amount:
                                                                     </label>
                                                                     <div class="input-group col-md-8">
-                                                                        <div class="input-group-addon currency">৳</div>
+                                                                        <div class="input-group-addon currency">RM</div>
                                                                         <input value="0" type="number" min="0" step="any"
                                                                             class="form-control" autocomplete="off"
                                                                             name="paid_amount" id="amountPaid"
@@ -211,7 +211,7 @@
                                                                     <label class="col-md-4 control-label">Amount Due
                                                                         :</label>
                                                                     <div class="input-group col-md-8">
-                                                                        <div class="input-group-addon currency">৳</div>
+                                                                        <div class="input-group-addon currency">RM</div>
                                                                         <input value="" class="form-control"
                                                                             name="due_amount" id="amountDue"
                                                                             placeholder="Amount Due" readonly>

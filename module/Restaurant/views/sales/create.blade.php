@@ -184,7 +184,7 @@
                                     <div class="form-group">
                                         <label class="col-md-4 control-label">Sub Total :</label>
                                         <div class="input-group col-md-8">
-                                            <div class="input-group-addon currency">৳</div>
+                                            <div class="input-group-addon currency">RM</div>
                                             <input tabindex="-1" value="0" type="number" min="0"
                                                 name="subtotal" step="any" class="form-control" id="subTotal"
                                                 placeholder="Sub Total" ondrop="return false;" onpaste="return false;"
@@ -198,7 +198,7 @@
                                     <div class="form-group">
                                         <label class="col-md-4 control-label">Discount :</label>
                                         <div class="input-group col-md-8">
-                                            <div class="input-group-addon currency">৳</div>
+                                            <div class="input-group-addon currency">RM</div>
                                             <input value="0" type="number" min="0" step="any"
                                                 class="form-control changesNo discount" name="discount" id="discount"
                                                 placeholder="Discount" ondrop="return false;" tabindex="-1">
@@ -212,7 +212,7 @@
                                     <div class="form-group">
                                         <label class="col-md-4 control-label"><b>Total :</b></label>
                                         <div class="input-group col-md-8">
-                                            <div class="input-group-addon currency">৳</div>
+                                            <div class="input-group-addon currency">RM</div>
                                             <input tabindex="-1" value="0" type="number" min="0"
                                                 step="any" class="form-control" name="total_amount" id="total"
                                                 placeholder="Total Amount" ondrop="return false;" onpaste="return false;"
@@ -227,7 +227,7 @@
                                     <div class="form-group">
                                         <label class="col-md-4 control-label"><b>Vat :</b></label>
                                         <div class="input-group col-md-8">
-                                            <div class="input-group-addon currency">৳</div>
+                                            <div class="input-group-addon currency">RM</div>
                                             <input tabindex="-1" value="0" type="number" min="0"
                                                 step="any" class="form-control" name="vat_amount" id="vat"
                                                 onkeyup="vatUpdate()" placeholder="Vat Amount" />
@@ -240,7 +240,7 @@
                                     <div class="form-group">
                                         <label class="col-md-4 control-label"><b>Service Charge:</b></label>
                                         <div class="input-group col-md-8">
-                                            <div class="input-group-addon currency">৳</div>
+                                            <div class="input-group-addon currency">RM</div>
                                             <input tabindex="-1" value="0" type="number" min="0"
                                                 step="any" class="form-control" name="service_amount"
                                                 id="service_charge" placeholder="Service Charge" ondrop="return false;"
@@ -254,7 +254,7 @@
                                     <div class="form-group">
                                         <label class="col-md-4 control-label"><b> Grand Total: </b></label>
                                         <div class="input-group col-md-8">
-                                            <div class="input-group-addon currency">৳</div>
+                                            <div class="input-group-addon currency">RM</div>
                                             <input tabindex="-1" value="" type="number" min="0"
                                                 step="any" class="form-control" name="grand_total" id="grandTotal"
                                                 placeholder="Total Amount" ondrop="return false;" onpaste="return false;"
@@ -270,7 +270,7 @@
                                         <div class="form-group aside_system">
                                             <label class="col-md-4 control-label">Paid Amount :</label>
                                             <div class="input-group col-md-8">
-                                                <div class="input-group-addon currency">৳</div>
+                                                <div class="input-group-addon currency">RM</div>
                                                 <input value="0" type="number" min="0" step="any"
                                                     class="form-control" name="paid_amount" id="amountPaid"
                                                     placeholder="Paid Amount" ondrop="return false;"
@@ -283,7 +283,7 @@
                                         <div class="form-group aside_system">
                                             <label class="col-md-4 control-label">Change :</label>
                                             <div class="input-group col-md-8">
-                                                <div class="input-group-addon currency">৳</div>
+                                                <div class="input-group-addon currency">RM</div>
                                                 <input tabindex="-1" type="number" min="0" step="any"
                                                     class="form-control change" name="change_amount" id="change"
                                                     placeholder="Change Amount" ondrop="return false;"
@@ -301,7 +301,7 @@
                                         <div class="form-group aside_system">
                                             <label class="col-md-4 control-label">Amount Due :</label>
                                             <div class="input-group col-md-8">
-                                                <div class="input-group-addon currency">৳</div>
+                                                <div class="input-group-addon currency">RM</div>
                                                 <input tabindex="-1" type="number" min="0" step="any"
                                                     class="form-control amountDue only-number" name="due_amount"
                                                     id="amountDue" placeholder="Amount Due" ondrop="return false;"

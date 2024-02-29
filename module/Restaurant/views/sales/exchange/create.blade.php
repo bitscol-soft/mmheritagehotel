@@ -156,7 +156,7 @@
                                     <div class="form-group">
                                         <label class="col-md-4 control-label">Sub Total :</label>
                                         <div class="input-group col-md-8">
-                                            <div class="input-group-addon currency">৳</div>
+                                            <div class="input-group-addon currency">RM</div>
                                             <input tabindex="-1" value="0" type="number" min="0" name="subtotal" step="any"
                                                 class="form-control" id="subTotal" placeholder="Sub Total"
                                                 ondrop="return false;" onpaste="return false;" readonly>
@@ -171,7 +171,7 @@
                                     <div class="form-group">
                                         <label class="col-md-4 control-label">Discount :</label>
                                         <div class="input-group col-md-8">
-                                            <div class="input-group-addon currency">৳</div>
+                                            <div class="input-group-addon currency">RM</div>
                                             <input value="0" type="number" min="0" step="any"
                                                 class="form-control changesNo discount" name="discount" id="discount"
                                                 placeholder="Discount" ondrop="return false;" tabindex="-1">
@@ -186,7 +186,7 @@
                                     <div class="form-group">
                                         <label class="col-md-4 control-label">Total Amount :</label>
                                         <div class="input-group col-md-8">
-                                            <div class="input-group-addon currency">৳</div>
+                                            <div class="input-group-addon currency">RM</div>
                                             <input tabindex="-1" value="0" type="number" min="0" name="subtotal" step="any"
                                                 class="form-control" id="total_amount" placeholder="Total Amount"
                                                 ondrop="return false;" onpaste="return false;" readonly>
@@ -201,7 +201,7 @@
                                     <div class="form-group">
                                         <label class="col-md-4 control-label"><b> Grand Total: </b></label>
                                         <div class="input-group col-md-8">
-                                            <div class="input-group-addon currency">৳</div>
+                                            <div class="input-group-addon currency">RM</div>
                                             <input tabindex="-1" value="" type="number" min="0" step="any"
                                                 class="form-control" name="payable_amount" id="grandTotal"
                                                 placeholder="Total Amount" readonly>
@@ -219,7 +219,7 @@
                                         <div class="form-group aside_system">
                                             <label class="col-md-4 control-label">Ex. Amount :</label>
                                             <div class="input-group col-md-8">
-                                                <div class="input-group-addon currency">৳</div>
+                                                <div class="input-group-addon currency">RM</div>
                                                 <input value="0" type="number" min="0" step="any" class="form-control"
                                                     name="exchange_amount" id="exchangeAmount" placeholder="Exchange Amount"
                                                     ondrop="return false;" onpaste="return false;">
@@ -233,7 +233,7 @@
                                         <div class="form-group aside_system">
                                             <label class="col-md-4 control-label">Change :</label>
                                             <div class="input-group col-md-8">
-                                                <div class="input-group-addon currency">৳</div>
+                                                <div class="input-group-addon currency">RM</div>
                                                 <input tabindex="-1" value="" type="number" min="0" step="any"
                                                     class="form-control change" name="change_amount" id="change"
                                                     placeholder="Change Amount" ondrop="return false;"
@@ -259,7 +259,7 @@
                                         <div class="form-group aside_system">
                                             <label class="col-md-4 control-label">Amount Due :</label>
                                             <div class="input-group col-md-8">
-                                                <div class="input-group-addon currency">৳</div>
+                                                <div class="input-group-addon currency">RM</div>
                                                 <input tabindex="-1" value="" type="number" min="0" step="any"
                                                     class="form-control amountDue only-number" name="due_amount"
                                                     id="amountDue" placeholder="Amount Due" ondrop="return false;"
@@ -481,7 +481,7 @@
                         </td>
                         <td>
                             <input type="text" value="${item.quantity}" min="1" max="${item.quantity}" name="return_quantity[]" class="form-control only-number return-qty"autocomplete="off">
-                            
+
                         </td>
                         <td>
                             <input type="number" min="1"  name="product_cost[]" value="${item.sale_price}" step="any" id="sales_qty" class="form-control product_cost" autocomplete="off" onkeyup="" onpaste="return false;" placeholder="Quantity">
@@ -489,7 +489,7 @@
                         <td>
                             <input type="number" min="1" name="total_amount[]" value="${Number(item.sale_price) * Number(item.quantity)}" class="form-control total_cost" autocomplete="off" onkeyup="" onpaste="return false;" placeholder="Quantity">
                         </td>
-                        
+
                         <td>
                             <button class="btn btn-xs btn-danger delete" tabindex="-1" type="button"><i class="fa fa-trash-o"></i></button>
                         </td>

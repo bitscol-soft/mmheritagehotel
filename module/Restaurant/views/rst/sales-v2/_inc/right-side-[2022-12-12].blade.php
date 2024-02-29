@@ -139,7 +139,7 @@
                     <div class="form-group">
                         <label class="col-md-4 control-label"><b>Vat</b>:</label>
                         <div class="input-group col-md-8">
-                            <span class="input-group-addon currency">৳</span>
+                            <span class="input-group-addon currency">RM</span>
                             <input value="0" type="number" class="form-control vat" name="vat"
                                 id="vat" ondrop="return false;">
 
@@ -151,7 +151,7 @@
                     <div class="form-group">
                         <label class="col-md-4 control-label"><b>Sub Total</b>:</label>
                         <div class="input-group col-md-8">
-                            <div class="input-group-addon currency">৳</div>
+                            <div class="input-group-addon currency">RM</div>
                             <input value="0" type="number" name="subtotal" class="form-control"
                                 id="subTotal" ondrop="return false;" onpaste="return false;" readonly="">
                         </div>
@@ -165,7 +165,7 @@
                     <div class="form-group">
                         <label class="col-md-4 control-label"><b>Discount</b>:</label>
                         <div class="input-group col-md-8">
-                            <div class="input-group-addon currency">৳</div>
+                            <div class="input-group-addon currency">RM</div>
                             <input value="0" type="number" min="0" step="any"
                                 class="form-control changesNo discount" name="discount" id="discount"
                                 placeholder="Discount" ondrop="return false;" tabindex="-1">
@@ -177,7 +177,7 @@
                     <div class="form-group">
                         <label class="col-md-4 control-label"><b>Payable Amount</b>:</label>
                         <div class="input-group col-md-8">
-                            <div class="input-group-addon currency">৳</div>
+                            <div class="input-group-addon currency">RM</div>
                             <input value="0" type="number" name="payable_amount"class="form-control"
                                 id="grandTotal" ondrop="return false;" onpaste="return false;" readonly>
                         </div>
@@ -191,7 +191,7 @@
                     <div class="form-group">
                         <label class="col-md-4 control-label"><b>Service Charge</b>:</label>
                         <div class="input-group col-md-8">
-                            <div class="input-group-addon currency">৳</div>
+                            <div class="input-group-addon currency">RM</div>
                             <input value="0" type="number" class="form-control service_charge"
                                 name="service_charge" id="service_charge" placeholder="Service Charge"
                                 ondrop="return false;">
@@ -203,7 +203,7 @@
                     <div class="form-group">
                         <label class="col-md-4 control-label"><b>Paid Amount</b>:</label>
                         <div class="input-group col-md-8">
-                            <div class="input-group-addon currency">৳</div>
+                            <div class="input-group-addon currency">RM</div>
                             <input value="0" type="number" name="paid_amount" class="form-control"
                                 id="paid_amount" ondrop="return false;" onpaste="return false;" readonly>
                         </div>

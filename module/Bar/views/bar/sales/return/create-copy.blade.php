@@ -176,7 +176,7 @@
                                     <div class="form-group">
                                         <label class="col-md-4 control-label">Total Amount :</label>
                                         <div class="input-group col-md-8">
-                                            <div class="input-group-addon currency">৳</div>
+                                            <div class="input-group-addon currency">RM</div>
                                             <input tabindex="-1" value="0" type="number" min="0"
                                                 name="subtotal" step="any" class="form-control" id="total_amount"
                                                 placeholder="Total Amount" ondrop="return false;" onpaste="return false;"
@@ -191,7 +191,7 @@
                                     <div class="form-group">
                                         <label class="col-md-4 control-label"><b>Previous Due :</b></label>
                                         <div class="input-group col-md-8">
-                                            <div class="input-group-addon currency">৳</div>
+                                            <div class="input-group-addon currency">RM</div>
                                             <input tabindex="-1" value="0" type="number" min="0"
                                                 step="any" class="form-control" name="previous_due" id="total"
                                                 placeholder="Previous Due" ondrop="return false;" onpaste="return false;"
@@ -205,7 +205,7 @@
                                     <div class="form-group">
                                         <label class="col-md-4 control-label"><b> Grand Total: </b></label>
                                         <div class="input-group col-md-8">
-                                            <div class="input-group-addon currency">৳</div>
+                                            <div class="input-group-addon currency">RM</div>
                                             <input tabindex="-1" value="" type="number" min="0"
                                                 step="any" class="form-control" name="payable_amount" id="grandTotal"
                                                 placeholder="Total Amount" readonly>
@@ -223,7 +223,7 @@
                                         <div class="form-group aside_system">
                                             <label class="col-md-4 control-label">Return Amount :</label>
                                             <div class="input-group col-md-8">
-                                                <div class="input-group-addon currency">৳</div>
+                                                <div class="input-group-addon currency">RM</div>
                                                 <input value="0" type="number" min="0" step="any"
                                                     class="form-control" name="return_amount" id="returnAmount"
                                                     placeholder="Return Amount" ondrop="return false;"
@@ -246,7 +246,7 @@
                                         <div class="form-group aside_system">
                                             <label class="col-md-4 control-label">Amount Due :</label>
                                             <div class="input-group col-md-8">
-                                                <div class="input-group-addon currency">৳</div>
+                                                <div class="input-group-addon currency">RM</div>
                                                 <input tabindex="-1" value="" type="number" min="0"
                                                     step="any" class="form-control amountDue only-number"
                                                     name="due_amount" id="amountDue" placeholder="Amount Due"

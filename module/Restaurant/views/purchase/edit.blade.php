@@ -169,7 +169,7 @@
                                             <div class="form-group aside_system">
                                                 <label class="col-md-3">Sub Total :</label>
                                                 <div class="input-group col-md-9">
-                                                    <div class="input-group-addon currency">৳</div>
+                                                    <div class="input-group-addon currency">RM</div>
                                                     <input tabindex="-1" value="{{round($total) }}" type="number" min="0" step="any"
                                                            class="form-control" name="subtotal" id="subTotal" placeholder="Sub
                                                Total"readonly>
@@ -178,7 +178,7 @@
                                             <div class="form-group aside_system">
                                                 <label class="col-md-3">Discount:</label>
                                                 <div class="input-group col-md-9">
-                                                    <div class="input-group-addon currency">৳</div>
+                                                    <div class="input-group-addon currency">RM</div>
                                                     <input tabindex="-1"
                                                            value="{{$discount = $inventoryProductPurchase->discount}}"
                                                            type="number" min="0" step="any"
@@ -188,7 +188,7 @@
                                             <div class="form-group aside_system">
                                                 <label class="col-md-3">Grand Total :</label>
                                                 <div class="input-group col-md-9">
-                                                    <div class="input-group-addon currency">৳</div>
+                                                    <div class="input-group-addon currency">RM</div>
                                                     <input tabindex="-1" value="{{$inventoryProductPurchase->totalAmount}}"
                                                            type="number" min="0" step="any"
                                                            class="form-control"  name="grand_total" id="grandTotal"
@@ -198,7 +198,7 @@
                                             <div class="form-group aside_system">
                                                 <label class="col-md-3">Total Paid :</label>
                                                 <div class="input-group col-md-9">
-                                                    <div class="input-group-addon currency">৳</div>
+                                                    <div class="input-group-addon currency">RM</div>
                                                     <input value="{{$inventoryProductPurchase->paid_amount}}" type="number"
                                                            min="0" step="any" class="form-control" name="paid_amount"
                                                            id="totalPaid" placeholder="Total Paid">
@@ -207,7 +207,7 @@
                                             <div class="form-group aside_system">
                                                 <label class="col-md-3">Total Due:</label>
                                                 <div class="input-group col-md-9">
-                                                    <div class="input-group-addon currency">৳</div>
+                                                    <div class="input-group-addon currency">RM</div>
                                                     <input tabindex="-1" value="{{$inventoryProductPurchase->totalAmount - $inventoryProductPurchase->paid_amount}}"
                                                            type="number" min="0" step="any"
                                                            class="form-control" name="due_amount" id="totalDue"
