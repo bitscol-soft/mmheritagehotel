@@ -1,0 +1,451 @@
+.mt-50{margin-top: 50px;}
+.img-fluid{
+    max-width: 100%;
+    height: auto;
+}
+.category-body{
+    background-color: #fff;
+    padding: 20px;
+    margin-bottom: 50px;
+    margin-top: 50px;
+}
+.category-detail .cat-title {
+color: #000000;
+font-size: 55px;
+font-weight: 700;
+text-transform: uppercase;
+line-height: 1.1em;
+word-spacing: 10px;
+}
+.cat-desc p {
+padding-top: 1em;
+padding-bottom: 1em;
+font-size: 20px;
+}
+.btn-booking{
+font-family: "Space Grotesk", Sans-serif;
+font-size: 14px;
+font-weight: 600;
+text-transform: uppercase;
+fill: #FFFFFF;
+color: #FFFFFF;
+background-color: #000000;
+border-style: solid;
+border-width: 1px 1px 1px 1px;
+border-color: #000000;
+border-radius: 0px 0px 0px 0px;
+padding: 20px 40px 20px 40px;
+}
+.btn-cart {
+    font-family: "Space Grotesk", Sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    fill: #ffff;
+    color: #fff;
+    background-color: #ffce14;
+    border-style: solid;
+    border-width: 1px 1px 1px 1px;
+    border-color: #ffce14;
+    border-radius: 0px 0px 0px 0px;
+    padding: 20px 40px 20px 40px;
+}
+.btn-booking:hover{
+transform: translateY(-8px);
+color: #fff
+}
+.btn-animate{
+transition-duration: .3s;
+transition-property: transform;
+transition-timing-function: ease-out;
+}
+
+.btn-checkout {
+    background-color: #c9a96a;
+    border: 0;
+    border-radius: 5rem;
+    box-shadow: 0px 16px 48px rgb(201 169 106 / 16%);
+    color: #fff;
+    cursor: pointer;
+    font-weight: 600;
+    display: inline-flex;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    justify-content: center;
+    line-height: 0;
+    height: 3rem;
+    white-space: nowrap;
+    overflow: hidden;
+    padding: 0 2rem;
+    position: relative;
+    text-align: center;
+    z-index: 1;
+    transition: box-shadow .4s ease-in-out;
+    text-decoration: none !important;
+    font-size: 16px;
+}
+
+.btn-checkout::before{
+
+    content: '';
+    background: rgba(255,255,255,.1);
+    display: block;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 1;
+    transform: translateX(-100%) skewX(-15deg);
+    transition: transform .4s ease-in-out;
+}
+
+.btn-checkout:hover{
+    color: #fff;
+    box-shadow: 0px 0px 0px rgb(201 169 106 / 16%);
+}
+.owl-prev{
+    position: absolute;
+    top: 50%;
+    background-color: #fff;
+    border-radius: 100%;
+    padding: 9px 15px;
+    left: 10px;
+    opacity: .75;
+}
+.owl-next{
+    position: absolute;
+    top: 50%;
+    background-color: #fff;
+    border-radius: 100%;
+    padding: 9px 15px;
+    right: 10px;
+    opacity: .75;
+    transition: all .3s cubic-bezier(.645,.045,.355,1) 0s;
+    -webkit-transition: all .3s cubic-bezier(.645,.045,.355,1) 0s;
+}
+.owl-next:hover{opacity: 1;}
+.owl-prev:hover{opacity: 1;}
+.aminity-list {
+    list-style: none;
+    display: flex;
+    margin-top: 50px;
+}
+.aminity-list li {
+    padding: 10px;
+    margin-right: 15px;
+}
+.aminity-img img {
+    height: 40px;
+    display: block;
+    margin: auto;
+}
+.aminity-list li p {
+    text-align: center;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-top: 10px;
+}
+
+
+/* Booking Homepage Cart */
+
+.cart-body .booking-img img {
+    width: 100%;
+    height: 100px;
+}
+
+.booking-cart-body .cart-list .cart-body {
+    background-color: #fff;
+    display: flex !important;
+    padding: 10px !important;
+    margin-bottom: 10px;
+    position: relative;
+    border-bottom: 1px solid #ccc;
+}
+.booking-info h1 {
+    font-size: 25px;
+    margin-bottom: 10px;
+}
+.booking-info {
+    margin-left: 10px;
+}
+.booking-date span {
+    margin-left: 5px;
+    font-weight: 600;
+    /* border: 1px solid #000000; */
+    text-align: center;
+}
+.booking-info .booking-date {
+    font-weight: 800;
+}
+.booking-price {
+    /* margin: auto; */
+    position: absolute;
+    right: 0px;
+    bottom: 15px;
+    background-color: #ffce14;
+    color: #000000;
+    padding: 4px 20px;
+}
+.booking-close {
+    position: absolute;
+    right: 0;
+    cursor: pointer;
+}
+.sub-total {
+    font-size: 18px;
+    font-weight: 600;
+    width: 100%;
+}
+.booking-cart-body .checkout a{
+    color: #fff;
+    font-size: 13px;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 8px 25px;
+    background: #0f2453;
+    margin-top: 2em;
+
+}
+
+/* Booking Cart */
+
+.booking-cart{
+    margin-top: 100px;
+    margin-bottom: 100px;
+}
+.cart-table {
+    margin-top: 50px;
+    border: 1px solid #ddd;
+}
+.cart-table thead {
+    background-color: rgba(114,128,157,.1);
+    color: #72809d;
+    border: none;
+}
+.cart-table th {
+    font-weight: 400;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 13px;
+}
+.cart-table td {
+    text-align: center;
+    color: #72809d;
+    padding: 15px;
+}
+.cart-table tbody td {
+    padding-top: 20px !important;
+    padding-bottom: 20px !important;
+}
+.guest-registration{
+    padding: 50px 0;
+}
+.guest-registration .registration-row{
+    display: flex;
+    justify-content:center;
+}
+.guest-registration .submit-registration-btn{
+    font-size: 13px;
+    color: #fff;
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 8px 25px;
+    position: relative;
+    display: inline-block;
+    background: #0f2453;
+    margin-top: 1em;
+    z-index: 9999;
+    border: 2px solid #fff;
+    float: right;
+}
+.guest-registration .submit-registration-btn:active{
+    box-shadow: none;
+}
+.guest-registration .submit-registration-btn:focus{
+    outline: none;
+}
+.guest-registration .submit-registration-btn:hover{
+    color: #ffce14;
+    border: 2px solid #ffce14;
+    background: #fff;
+}
+.placeholder-color::placeholder{
+    color: #b4b0b0 !important;
+}
+.guest-registration .reg-title{
+    font-size: 28px;
+    text-align: center;
+}
+.guest-registration .reg-note{
+    text-align: center;
+}
+.wrapper {
+    flex: 1;
+}
+.wrapper > div {
+    background: #0f2453;
+    color: #fff;
+    text-align: center;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+}
+.wrapper > div h3 {
+    letter-spacing: 1px;
+    padding: 30px;
+}
+.wrapper .login-form {
+    background: #ecedf7;
+    padding: 30px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+.wrapper .login-form h5 {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+.wrapper .login-form h5 a {
+    color: #0f2453;
+    font-size: 1em;
+    line-height: 1.5;
+    font-weight: 400;
+    text-decoration: none;
+    outline: none;
+}
+.wrapper .login-form h5 a span {
+    font-style: italic;
+    text-decoration: underline;
+    color: #0f2453;
+}
+.wrapper .login-form .btn-submit {
+    display: block;
+    cursor: pointer;
+    outline: none;
+    width: 100%;
+    border: 1px solid #0f2453;
+    border-radius: 5px;
+    margin-top: 50px;
+    font-size: 1.5em;
+    line-height: 2;
+    color: #fff;
+    background: #0f2453;
+    transition: 0.3s;
+}
+.wrapper .login-form .btn-submit:hover {
+    box-shadow: 0 6px 12px -3px rgba(9, 30, 66, 0.4);
+    transform: translate(0, -3px);
+    background: #303972;
+}
+
+.guest-registration .input-field {
+    position: relative;
+    margin: 25px 0 25px -8px;
+    padding-left: 30px;
+    color: #0f2453;
+    margin-bottom: 30px;
+}
+.guest-registration .input-field input {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    border-radius: 0;
+    width: 100%;
+    height: 35px;
+    border-bottom: 1px solid #0f2453;
+    color: #000000;
+    transition: 0.2s ease;
+}
+.guest-registration .input-field input::-moz-placeholder {
+    color: transparent;
+}
+.guest-registration .input-field input:-ms-input-placeholder {
+    color: transparent;
+}
+.guest-registration .input-field input::placeholder {
+    color: transparent;
+}
+.guest-registration .input-field input:not(:-moz-placeholder-shown) {
+    border-bottom: 1px solid #0f2453;
+    box-shadow: 0 1px 0 0 #0f2453;
+}
+.guest-registration .input-field input:not(:-ms-input-placeholder) {
+    border-bottom: 1px solid #0f2453;
+    box-shadow: 0 1px 0 0 #0f2453;
+}
+.guest-registration .input-field input:focus, .guest-registration .input-field input:not(:placeholder-shown) {
+    border-bottom: 1px solid #0f2453;
+    box-shadow: 0 1px 0 0 #0f2453;
+}
+.guest-registration .input-field input:not(:-moz-placeholder-shown) + label {
+    transform: translateY(-10px) scale(0.85);
+    color: #0f2453;
+}
+.guest-registration .input-field input:not(:-ms-input-placeholder) + label {
+    transform: translateY(-10px) scale(0.85);
+    color: #0f2453;
+}
+.guest-registration .input-field input:focus + label, .guest-registration .input-field input:not(:placeholder-shown) + label {
+    transform: translateY(-10px) scale(0.85);
+    color: #0f2453;
+}
+.guest-registration .input-field label {
+    color: #0f2453;
+    position: absolute;
+    top: -8px;
+    left: 30px;
+    font-size: 1em;
+    cursor: text;
+    transform-origin: 0% 100%;
+    transform: translateY(14px);
+    transition: 0.2s ease-out;
+}
+.guest-registration .input-field i {
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 1.2em;
+    width: 30px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #0f2453;
+}
+.address-textarea{
+    border: 1px solid #0f2453;
+}
+.address-textarea:focus{
+    border-color: #ffce14;
+    box-shadow: none;
+}
+.all-category{
+    margin-bottom: 40px;
+}
+.all-category .category-img{
+    height: 400px;
+}
+.all-category .category-detail .cat-title {
+    font-size: 28px;
+}
+.all-category .cat-room-price{
+    font-size: 20px;
+}
+.all-category .cat-desc p {
+    padding-top: 5px;
+    padding-bottom: 1em;
+    font-size: 18px;
+}
+.all-category .aminity-list {
+    margin-top: 15px;
+}
+.all-category .cat-desc{
+    max-height: 140px;
+    overflow: hidden;
+}

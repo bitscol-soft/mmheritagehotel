@@ -1,0 +1,17 @@
+
+*   /api/login
+*   /api/hrm/employee-attendance-reports
+*   /api/hrm/check-today-attendance
+*   /api/hrm/get-company-location
+*   /api/hrm/notice-list
+*   /api/hrm/holidays
+*   /api/hrm/leave/types
+*   /api/hrm/leave/apply
+*   /api/hrm/employee-notice/show
+*   /api/hrm/employee-notices
+*   /api/hrm/out-work/apply
+*   /api/hrm/out-work/list
+*   /api/hrm/set-employees-current-location
+*   /api/hrm/short-leave/types
+*   /api/hrm/short-leave/apply
+*   /api/all-users

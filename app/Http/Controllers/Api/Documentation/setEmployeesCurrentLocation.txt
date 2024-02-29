@@ -1,0 +1,14 @@
+
+##############         Api information       ################
+
+Url / Route   : /api/hrm/set-employees-current-location
+Request Method: post
+
+Data:
+    token    : (Login Token)
+    latitude : (point 1 or point of x) string (required)
+    longitude: (point 2 or point of y) string (required)
+
+Response:
+    errors: "The latitude/longitude field is required."
+    message: "Current location added successfully" or "Attendance not found"

@@ -1,0 +1,40 @@
+
+
+##############         Api information       ################
+
+Url / Route   : /api/hrm/leave/types
+Request Method: post
+
+Data:
+    token    : (Login Token)
+
+Response:
+    message: leave type data as a json
+
+
+
+
+
+
+
+
+
+Url / Route   : /api/hrm/leave/apply
+Request Method: post
+
+Data:
+    token           : (Login Token)
+    from_date       : required, date_format:yyyy-mm-dd, before_or_equal:to_date
+    to_date         : required, date_format:yyyy-mm-dd, after_or_equal:from_date
+    leave_type      : required, leave type id (from get /api/hrm/leave/types respose data)
+
+    contact_details : optioal, can be write anyting
+    emergency_phone : optioal, can be write anyting
+    reason          : optioal, can be write anyting
+    attachment      : nulloptioal, jpeg,pdf,doc,docx formated file and max file size 2 Mb'
+
+
+
+Response:
+    message: Application complete. Please wait for recommendation and approval. (with inserted data)  or can be provide error
+

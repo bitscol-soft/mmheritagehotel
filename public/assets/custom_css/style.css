@@ -1,0 +1,437 @@
+.small_input_box {
+    height: 25px !important;
+    padding: 1.5px !important;
+}
+
+.small_input_button {
+    height: 20px !important;
+    padding: 1.5px !important;
+}
+
+.with-border {
+    border-bottom: 1px dotted gray !important;
+}
+/* Manage Room Status Designed CSS */
+.category-header {
+
+    /* padding: 10px; */
+    padding-bottom: 14px;
+    font-size: 20PX;
+    /* background-color: #eaf4fa; */
+}
+
+.room-info {
+    border: 1px solid #606d99;
+    text-align: center;
+    height: 70px;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+.booked-room-info {
+    border: 1px solid #606d99;
+    text-align: center;
+    height: 70px;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+.room-info.active {
+    background-color: #82af6f;
+    border-color: #82af6f;
+    color: #fff;
+}
+
+
+.booked {
+    background-color: #D15B47;
+    color: #fff;
+    pointer-events: none;
+}
+
+.check_in {
+    background-color: #F89406;
+    color: #fff;
+    pointer-events: none;
+}
+
+.success {
+    background-color: #82AF6F;
+    color: #fff;
+    pointer-events: none;
+}
+
+.orange {
+    background-color: #9585BF;
+    color: #fff;
+    /* pointer-events: none; */
+}
+
+.reserve {
+    background-color: #F89406;
+    color: #fff;
+    pointer-events: none;
+}
+
+.inverse {
+    background-color: #090613;
+    color: #fff;
+    /* pointer-events: none; */
+}
+
+.orange>p {
+    color: white;
+}
+
+
+.store {
+    background-color: rgb(37, 70, 131);
+    color: #fff;
+    pointer-events: none;
+}
+
+
+.reservation {
+    background-color: #9abc32 !important;
+    /* background: linear-gradient(rgb(168, 6, 6), #40ab6d); */
+    color: #fff;
+}
+
+.reservation.arrowed-right:after {
+    border-left-color: #9abc32 !important;
+}
+
+.reservation.arrowed-right:before {
+    border-right-color: #9abc32 !important;
+}
+
+
+.booked {
+    background-color: #d278de !important;
+    /* background: linear-gradient(rgb(168, 6, 6), #40ab6d); */
+    color: #fff;
+}
+
+.booked.arrowed-right:after {
+    border-left-color: #d278de !important;
+}
+
+.booked.arrowed-right:before {
+    border-right-color: #d278de !important;
+}
+
+.today-checkout {
+    background-color: #1e6b99 !important;
+    /* background: linear-gradient(rgb(168, 6, 6), #40ab6d); */
+    color: #fff;
+}
+
+.today-checkout.arrowed-right:after {
+    border-left-color: #1e6b99 !important;
+}
+
+.today-checkout.arrowed-right:before {
+    border-right-color: #1e6b99 !important;
+}
+
+.room-info p {
+    padding-top: 18px;
+    font-size: 24px;
+    text-transform: uppercase;
+}
+
+
+
+.booked-room-info span {
+    padding-top: 18px;
+    font-size: 24px;
+    text-transform: uppercase;
+}
+
+
+
+
+.search-available .btn {
+    padding: 2px 15px;
+    border-radius: 3px;
+}
+
+
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.1);
+    background-color: whitesmoke;
+}
+
+
+
+::-webkit-scrollbar {
+    height: 4px;
+    width: 6px;
+    border: 1px solid #f1f1f1;
+}
+
+
+
+::-webkit-scrollbar-thumb {
+    background-color: rgb(146, 146, 230);
+}
+
+
+
+.tableContainer::-webkit-scrollbar {
+    display: none;
+}
+
+/* / scrollbar css end / */
+
+
+
+
+
+
+/* Custom Loader CSS */
+.loader {
+    display: block;
+    position: relative;
+    height: 32px !important;
+    width: 200px;
+    background: #060606;
+    border: 2px solid #fff;
+    color: red;
+    overflow: hidden;
+}
+
+.loader::before {
+    content: '';
+    background: red;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 0;
+    height: 100%;
+    animation: loading 10s linear infinite;
+}
+
+.loader:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    font-size: 24px;
+    line-height: 32px;
+    color: rgb(0, 255, 255);
+    mix-blend-mode: difference;
+    animation: percentage 10s linear infinite;
+}
+
+@keyframes loading {
+    0% {
+        width: 0
+    }
+
+    100% {
+        width: 100%
+    }
+}
+
+@keyframes percentage {
+    0% {
+        content: "0%"
+    }
+
+    5% {
+        content: "5%"
+    }
+
+    10% {
+        content: "10%"
+    }
+
+    20% {
+        content: "20%"
+    }
+
+    30% {
+        content: "30%"
+    }
+
+    40% {
+        content: "40%"
+    }
+
+    50% {
+        content: "50%"
+    }
+
+    60% {
+        content: "60%"
+    }
+
+    70% {
+        content: "70%"
+    }
+
+    80% {
+        content: "80%"
+    }
+
+    90% {
+        content: "90%"
+    }
+
+    95% {
+        content: "95%"
+    }
+
+    96% {
+        content: "96%"
+    }
+
+    97% {
+        content: "97%"
+    }
+
+    98% {
+        content: "98%"
+    }
+
+    99% {
+        content: "99%"
+    }
+
+    100% {
+        content: "100%"
+    }
+}
+
+/* END LOADING CSS */
+
+/* OVERLAY LOADING CSS */
+.overlay {
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    background: #222;
+    opacity: 0.9;
+}
+
+.overlay__inner {
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+}
+
+.overlay__content {
+    left: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.tool-pen {
+    margin: 0 !important;
+}
+
+
+
+.room-heading-right {
+    float: right;
+    right: 0;
+    top: 0;
+    padding: 0 7px;
+    margin-right: 8px;
+    width: 10%;
+    position: relative;
+    cursor: all-scroll;
+}
+
+
+
+
+.user-avatar {
+    /* position: absolute; */
+    left: 55px;
+    margin-right: 10px
+}
+
+.user-name {
+    display: block;
+    font-weight: 600
+}
+
+.position {
+    display: block;
+    font-weight: 600
+        /* margin-top:-3px; */
+}
+
+.rounded {
+    border-radius: 50%;
+}
+
+.medium {
+    font-weight: 400;
+}
+
+.bold {
+    font-weight: 700;
+}
+
+.font-16 {
+    font-size: 15px;
+}
+
+.font-18 {
+    font-size: 15px;
+}
+
+.table-borderless>tbody>tr>th {
+    border: none !important;
+    border-top: none !important
+}
+
+.table-borderless>thead,
+.table-borderless>tbody,
+.table-borderless>tbody>tr>td,
+.table-borderless>thead>tr>th {
+    border: .4px solid #f0d9d9
+}
+
+.borderless {
+    border: none !important;
+    border-top: none !important;
+    border-bottom: none !important;
+    border-left: none !important;
+    border-right: none !important;
+}
+
+@media print {
+    .borderless {
+        border: none !important;
+        border-top: none !important;
+        border-bottom: none !important;
+        border-left: none !important;
+        border-right: none !important;
+    }
+}
+
+.date-picker,
+.month-picker,
+.year-picker {
+    cursor: pointer;
+}
+.choose-currency{
+    cursor: pointer;
+}
+
+
+.sidebar.sidebar-fixed {
+    overflow-y: hidden !important;
+}

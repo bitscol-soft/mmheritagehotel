@@ -1,0 +1,17 @@
+
+##############         Api information       ################
+
+Url / Route   : /api/hrm/employee-attendance-reports
+Request Method: post
+
+Data:
+    token    : (Login Token)
+    id       : (Employee id)
+    atnd_mode: ("in" for check in, "out" for checkout)
+
+    location : (location big string) text
+    latitude : (point 1 or point of x) string
+    longitude: (point 2 or point of y) string
+
+Response:
+    message: "Check in Successful" or "You are already checked in" or "Check out Successful" or "You are not checked in"

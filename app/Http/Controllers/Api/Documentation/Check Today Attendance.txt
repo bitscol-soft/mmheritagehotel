@@ -1,0 +1,19 @@
+
+##############         Api information       ################
+
+Url / Route   : /api/hrm/check-today-attendance
+Request Method: get
+
+Data:
+    token    : (Login Token)
+    atnd_mode: ("in" for check in, "out" for checkout)
+
+Response  :
+    status: ("Leave" or "Given") or ("Holiday" or "Not Given")
+
+##############################################################################
+Note:
+    Leave   : Employee has leave today
+    Holiday : Today is company official holiday
+    Given   : Employee already give attendance
+    Not Give: Employee can be give attendance, basically if response is "Not Given" then employee can give attendance

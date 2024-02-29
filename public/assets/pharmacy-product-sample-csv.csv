@@ -1,0 +1,15 @@
+name,batch_number,category,generic,medicine_type,supplier,pack_size,small_unit,big_unit,purchase_price,retail_purchase_price,sale_price,retail_sale_price,stock_limitation,small_quantity,big_quantity
+Test-product,12345,Category-1,Gen-1,tablet,,90,10,40,900,9,1020,10.2,10,100,1000
+Test-product,12346,Category-2,Gen-2,tablet,,91,11,41,901,10,1021,11.2,11,101,1001
+Test-product,12347,Category-3,Gen-3,tablet,,92,12,42,902,11,1022,12.2,12,102,1002
+Test-product,12348,Category-4,Gen-4,tablet,,93,13,43,903,12,1023,13.2,13,103,1003
+Test-product,12349,Category-5,Gen-5,tablet,,94,14,44,904,13,1024,14.2,14,104,1004
+Test-product,12350,Category-6,Gen-6,tablet,,95,15,45,905,14,1025,15.2,15,105,1005
+Test-product,12351,Category-7,Gen-7,tablet,,96,16,46,906,15,1026,16.2,16,106,1006
+Test-product,12352,Category-8,Gen-8,tablet,,97,17,47,907,16,1027,17.2,17,107,1007
+Test-product,12353,Category-9,Gen-9,tablet,,98,18,48,908,17,1028,18.2,18,108,1008
+Test-product,12354,Category-10,Gen-10,tablet,,99,19,49,909,18,1029,19.2,19,109,1009
+Test-product,12355,Category-11,Gen-11,tablet,,100,20,50,910,19,1030,20.2,20,110,1010
+Test-product,12356,Category-12,Gen-12,tablet,,101,21,51,911,20,1031,21.2,21,111,1011
+Test-product,12357,Category-13,Gen-13,tablet,,102,22,52,912,21,1032,22.2,22,112,1012
+Test-product,12358,Category-14,Gen-14,tablet,,103,23,53,913,22,1033,23.2,23,113,1013

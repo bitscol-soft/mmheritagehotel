@@ -1,0 +1,39 @@
+
+##############         Api information       ################
+
+// api 1
+Url / Route     : /api/hrm/short-leave/types
+Request Method  : post
+for             : getting short leave type
+
+Data:
+    token       : (Login Token)                 : required
+
+Response  :
+    status: ("true" or "false")
+    message: ['early', 'delay']
+
+
+// api 2
+Url / Route     : /api/hrm/short-leave/apply
+Request Method  : post
+for             : store data
+
+Data:
+    Name                 Value                          Type
+    ======================================================================
+    token               : (Login Token)                 : REQUIRED
+    leave_day           : ("Y-m-d" format)              : REQUIRED
+    leave_type          : text/string                   : REQUIRED
+    reason              : text                          : REQUIRED
+    emergency_phone     : mobile number                 : NULL
+    contact_details     : description                   : REQUIRED
+    attachment          : file input                    : NULL
+    from                : 12:00 AM                      : REQUIRED
+    to                  : 4:00 PM                       : REQUIRED
+    in_time             : 12:00 AM                      : REQUIRED
+    not_return          : 1 or 0 or empty               : NULL
+
+Response  :
+    status: ("true" or "false")
+    message: `ERROR MESSAGE` OR `Short Leave Application Complete`

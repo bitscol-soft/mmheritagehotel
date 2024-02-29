@@ -1,0 +1,293 @@
+@extends('layouts.master')
+@section('title', 'Hotel Sale Invoice')
+
+@section('page-header')
+    <i class="fa fa-gear"></i> Hotel Sale Invoice
+@stop
+
+@section('css')
+    <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
+    <style>
+        #print_body {
+            background-color: #fff;
+            padding: 10px 20px;
+            overflow: hidden;
+        }
+
+        .company-info {
+            color: #000;
+        }
+
+        .company-info h3 {
+            font-weight: bold;
+            margin-bottom: 0;
+        }
+
+        .company-info p {
+            margin-bottom: 2px;
+        }
+
+        .table {
+            box-shadow: none !important;
+        }
+
+        .table-bordered>thead>tr>th,
+        .table-bordered>tbody>tr>th,
+        .table-bordered>tfoot>tr>th,
+        .table-bordered>thead>tr>td,
+        .table-bordered>tbody>tr>td,
+        .table-bordered>tfoot>tr>td {
+            border: .4px solid #fff;
+            padding: 4.5px;
+        }
+
+        th {
+            background: #efefef;
+            box-shadow: none;
+        }
+
+        .patient {
+            margin: 3px;
+        }
+
+        @media print {
+            .company-info h4 {
+                font-weight: bold;
+                margin-bottom: 0;
+            }
+
+            .company-info p {
+                margin-bottom: 2px;
+            }
+
+        }
+
+    </style>
+@stop
+
+{{-- @dd($invoice) --}}
+@section('content')
+
+    @php
+
+    @endphp
+
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="widget-box">
+                <div class="widget-header hidden-print">
+                    <h4 class="widget-title"> @yield('page-header')</h4>
+                    @if (hasPermission('service.view', $slugs))
+                        <span class="widget-toolbar">
+                            {{-- <a href="{{ route('hotelservice.service-sales.create') }}">
+                                <i class="fa fa-plus"></i>
+                                Create New
+                            </a>
+                            <a href="{{ route('hotelservice.service-sales.index') }}">
+                                <i class="fa fa-list"></i>
+                                All Sales
+                            </a> --}}
+                            <a href="#" onclick="printPage('print_body')">
+                                <i class="fa fa-print"></i>
+                                Print
+                            </a>
+                        </span>
+                    @endif
+
+                </div>
+                <div class="widget-body">
+                    <div class="widget-main">
+
+                        <div class="row">
+                            <div id="print_body">
+                                <div id="customer_info" style="padding: 0 10px;">
+                                    <div class="row">
+
+                                        <div class="company-info text-center">
+                                            <h4>{{ optional($sale->company)->name }}</h4>
+                                            <p>{{ optional($sale->company)->head_office }}</p>
+                                            <p>{{ optional($sale->company)->phone_number }},
+                                                {{ optional($sale->company)->email }}</p>
+                                        </div>
+                                        <hr>
+                                        <div class="customerInfo" style="width: 60%;float: left; ">
+
+                                            {{-- <h5><b><u>Guest's Information : </u></b></h5> --}}
+
+                                            <p class="patient"><b>Invoice No : </b>{{ $sale->invoice_no }}</p>
+                                            <p><b>Name :</b>&nbsp;{{ $sale->guest_name ?? '' }}</p>
+                                            <p><b>Mobile :</b>&nbsp;{{ optional($sale->guestInfo)->phone_no ?? '' }}</p>
+                                            <p class="patient">
+                                                <b>Sales By : </b>
+                                                {{ optional($sale->user)->name }}
+                                            </p>
+                                        </div>
+                                        <div class="invoiceInfo" style="width: 40%;float: left;margin-top: 5px;">
+                                            <table class="table table-bordered" style="border: none !important;">
+                                                <tr>
+                                                    <th width="50%" style="border: none !important;"> Invoice No : </th>
+                                                    <th style="border: none !important;">INV-{{ $sale->invoice_no }}</th>
+                                                </tr>
+                                                <tr>
+                                                    <td style="border: none !important;"> Invoice Date : </td>
+                                                    <td style="border: none !important;">
+                                                        {{ $sale->date->format('d-m-Y') }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="border: none !important;"> Vat Number : </td>
+                                                    <td style="border: none !important;">
+                                                        {{ $vat_number }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="border: none !important;"> Vat Amount : </td>
+                                                    <td style="border: none !important;">
+                                                        {{ $sale->vat_amount }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="border: none !important;"> Service Amount : </td>
+                                                    <td style="border: none !important;">
+                                                        {{ $sale->service_amount }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="border: none !important;"> Payment Way : </td>
+                                                    <td style="border: none !important;">
+                                                        {{ $sale->payment_way }}</td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="invoice-content">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered" style="border: none !important;">
+                                            <thead>
+                                                <tr>
+                                                    <th width="5%">SL</th>
+                                                    <th>Product Name</th>
+                                                    <th>Price</th>
+                                                    <th>QTY</th>
+                                                    <th style="text-align: right">Total (&#x09F3;)</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @php
+                                                    $total_amount = 0;
+                                                @endphp
+                                                @foreach ($sale->items as $key => $item)
+                                                    @php
+                                                        $total_amount = +$item->sales_price;
+                                                    @endphp
+                                                    <tr>
+                                                        <td>{{ ++$loop->index }}</td>
+                                                        <td>{{ optional($item->product)->name }}</td>
+                                                        {{-- &#x09F3; for taka symbol --}}
+                                                        <td>{{ number_format($item->sales_price, 2) }}</td>
+                                                        <td class="text-right">{{ $item->quantity }}</td>
+                                                        <td class="text-right">
+                                                            {{ number_format($item->item_price, 2) }} &#x09F3;
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+
+
+                                                <tr>
+                                                    <td colspan="4" style="text-align: right; border: none !important;">
+                                                        Discount : </td>
+                                                    <th style="text-align: right; border: none !important;">
+                                                        {{ $sale->discount }} &#x09F3;</th>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="4" style="text-align: right; border: none !important;">
+                                                        Total :</td>
+                                                    <th style="text-align: right; border: none !important;">
+                                                        {{ number_format($total_amount, 2) }}
+                                                        &#x09F3;</th>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="4" style="text-align: right; border: none !important;">
+                                                        Paid : </td>
+                                                    <th style="text-align: right; border: none !important;">
+                                                        {{ number_format($sale->paid_amount, 2) }}
+                                                        &#x09F3;</th>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="4" style="text-align: right; border: none !important;">
+                                                        Due : </td>
+                                                    <th style="text-align: right; border: none !important;">
+                                                        {{ number_format($sale->due_amount, 2) }}
+                                                        &#x09F3;</th>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+
+                                            <h5 style="font-weight: 700;">Amount Paid :
+                                                {{ number_format($sale->paid_amount, 2 ?? 0) }}
+                                                &#x09F3;
+                                            </h5>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="print-footer"
+                                    style="margin-top: 40px;overflow: hidden;width: 100%;padding: 0 10px;">
+                                    <div class="sign" style="width: 100%; overflow: hidden;">
+                                        <div class="company_sign" style="width: 33%; float: left;">
+                                            <h5 style="width:50%; margin: 0 auto; padding: 10px 0;text-align: center;">
+                                                &nbsp;</h5>
+                                            <h5
+                                                style="width:50%;margin: 0 auto;border-top: 1px solid #000;padding: 10px 0;text-align: center;">
+                                                Received By</h5>
+                                        </div>
+                                        <div class="company_sign" style="width: 33%; float: left;">
+                                            <h5 style="width:50%; margin: 0 auto; padding: 10px 0;text-align: center;">
+                                                &nbsp;</h5>
+                                            <h5
+                                                style="width:50%;margin: 0 auto;border-top: 1px solid #000;padding: 10px 0;text-align: center;">
+                                                Authorized By</h5>
+                                        </div>
+                                        <div class="company_sign" style="width: 33%; float: left;">
+                                            <h5 style="width:50%; margin: 0 auto; padding: 10px 0;text-align: center;">
+                                                &nbsp;</h5>
+                                            <h5
+                                                style="width:50%;margin: 0 auto;border-top: 1px solid #000;padding: 10px 0;text-align: center;">
+                                                Prepared By <br>{{ optional($sale->user)->name }}</h5>
+                                        </div>
+                                    </div>
+                                    <div class="copyright-section">
+
+                                        <p class="text-center mt-30"><i>Treatment to the highest accuracy & excellence in
+                                                education is
+                                                our motto</i></p>
+                                    </div>
+                                    <br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+@endsection
+
+@section('js')
+    <script src="{{ asset('assets/custom_js/printThis.js') }}"></script>
+    <script type="text/javascript">
+        function printPage(id) {
+            $('#' + id).printThis({
+                importStyle: true
+            });
+        };
+        window.onreadystatechange = $('#print_body').printThis({
+            importStyle: true
+        });
+    </script>
+@stop

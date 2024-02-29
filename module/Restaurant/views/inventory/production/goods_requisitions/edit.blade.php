@@ -1,0 +1,572 @@
+@extends('layouts.master')
+@section('title','Edit Goods Requisition')
+@section('page-header')
+    <i class="fa fa-gear"></i> Edit Goods Requisition
+@stop
+@section('css')
+    <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
+    <style>
+
+        .file {
+            visibility: hidden;
+            position: absolute;
+        }
+
+    </style>
+@stop
+
+@section('content')
+
+    <div class="row">
+
+        <div class="col-sm-12">
+            <div class="widget-box">
+                <div class="widget-header">
+                    <h4 class="widget-title"> @yield('page-header')</h4>
+
+                    <span class="widget-toolbar">
+                    <a href="{{ route('goods-requisitions.index') }}">
+                        <i class="ace-icon fa fa-list-alt"></i> Requisition List
+                    </a>
+                </span>
+
+                </div>
+
+                <div class="widget-body">
+                    <div class="widget-main">
+                        <form class="form-horizontal" action="{{ route('goods-requisitions.update', $goodsRequisition->id) }}" method="post" enctype="multipart/form-data">
+                            @csrf @method('PUT')
+
+
+                            @if ($errors->any())
+                                <div class="alert alert-danger error">
+                                    <button type="button" class="close" data-dismiss="alert">
+                                        <i class="ace-icon fa fa-times"></i>
+                                    </button>
+
+                                    <ul>
+                                        @foreach ($errors->all() as $error)
+                                            @if ($error != "The company id field is required." )
+                                                <li>Fillup all items and required quantity</li>
+                                                @php
+                                                    break;
+                                                @endphp
+                                            @endif
+
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @elseif (session()->get('message'))
+                                @include('partials._alert_message')
+                            @endif
+
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="form-field-1-1"> Company </label>
+                                <div class="col-xs-12 col-sm-8 @error('company_id') has-error @enderror">
+                                    <select name="company_id" class="form-control company_id" id="company_id" onchange="load_items(this)">
+                                        <option value="" selected>select</option>
+                                        @foreach($companies as $id => $company)
+                                            <option value="{{ $id }}" {{ old('company_id') == $id || $goodsRequisition->company_id == $id ? 'selected' : '' }}>{{ $company }}</option>
+                                        @endforeach
+                                    </select>
+
+                                    @error('company_id')
+                                    <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+
+                                </div>
+                            </div>
+
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="form-field-1-1"> Department </label>
+                                <div class="col-xs-12 col-sm-8 @error('department_id') has-error @enderror">
+
+                                    <select name="department_id" class="form-control chosen-select" onchange="load_items(this)">
+                                        <option value="0">select</option>
+                                        @foreach($departments as $id => $department)
+                                            <option value="{{ $id }}" {{ $goodsRequisition->department_id == $id ? 'selected' : '' }}>{{ $department }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('department_id')
+                                    <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
+
+
+
+                            <div class="form-group col-">
+                                <label for="inputError" class="col-xs-12 col-sm-3 col-md-3 control-label"> Date </label>
+                                <div  class="col-xs-12 col-sm-8 @error('goods_requisition_date') has-error @enderror">
+                                    <div class="input-group">
+                                        <input class="form-control date-picker" name="goods_requisition_date" id="id-date-picker-1" value="{{ old('goods_requisition_date') ?? $goodsRequisition->goods_requisition_date }}" type="text" data-date-format="yyyy-mm-dd"/>
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-calendar bigger-110"></i>
+                                        </span>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="form-field-1-1"> {{ $systemSetting->value != null ? $systemSetting->value : "Reference" }} </label>
+                                <div class="col-xs-12 col-sm-8 @error('goods_requisition_reference') has-error @enderror">
+                                    <input type="number" step="0.01" class="form-control" name="goods_requisition_reference" value="{{ old('goods_requisition_reference') ?? $goodsRequisition->goods_requisition_reference }}" placeholder="{{ $systemSetting->value != null ? $systemSetting->value : "Reference" }}">
+                                    @error('goods_requisition_reference')
+                                    <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
+
+
+                            <div class="row">
+                                <div class="col-sm-10 col-sm-offset-1">
+                                    <h3 class="header smaller lighter blue">Goods Requisition</h3>
+
+                                    <table id="goods_requisition_table" class="table table-bordered edu1 container">
+                                        <thead>
+                                            <tr>
+                                                <td rowspan="2">Item</td>
+                                                <td rowspan="2">Unit</td>
+                                                <td rowspan="2">Stock</td>
+                                                <td rowspan="2">Quantity</td>
+                                                <td rowspan="2">Remarks</td>
+                                                <td colspan="4" class="text-center">History</td>
+                                                <td rowspan="2" colspan="2">Action</td>
+                                            </tr>
+                                            <tr>
+                                                <td width="5%">GIN</td>
+                                                <td width="5%">Source</td>
+                                                <td width="5%">Rate</td>
+                                                <td width="5%">Qty</td>
+                                            </tr>
+                                        </thead>
+
+
+                                        <tbody class="">
+
+                                            @if (old('item_id'))
+                                                @foreach(old('item_id') as $key => $value)
+                                                    <tr >
+                                                        <td>
+                                                            <select name="item_id[]" class="form-control item item'+ item_row + ' chosen-select" onchange="load_item_stock(this)">
+                                                                <option value="">select</option>
+                                                                @foreach($items as $i => $item)
+                                                                    @if($item->company_id == old('company_id'))
+                                                                        <option value="{{ $item->id }}" {{ old('item_id')[$key] == $item->id ? 'selected' : '' }}>{{ $item->name }}</option>')
+                                                                    @endif
+                                                                @endforeach
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" value="{{ old('item_unit_id')[$key] }}" name="item_unit_id[]" class="form-control item_unit" readonly="readonly" />
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" value="{{ old('current_stock')[$key] }}" name="current_stock[]" class="form-control current_stock" readonly="readonly" />
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" value="{{ old('quantity')[$key] }}" name="quantity[]" onkeyup="checkQtyLimit(this)"onkeypress='return event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' class="form-control quantity" />
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" class="form-control" name="remarks[]" value="{{ old('remarks')[$key] }}">
+                                                        </td>
+
+                                                        <td><span class="issue_number">{!! old('issue_number')[$key] !!}</span></td>
+                                                        <td><span class="source">{!! old('source_input')[$key] !!}</span></td>
+                                                        <td><span class="issue_rate">{!! old('issue_rate_input')[$key] !!}</span></td>
+                                                        <td><span class="issue_quantity">{!! old('issue_quantity_input')[$key] !!}</span></td>
+
+                                                        <td><button type="button" class="ibtnDel btn btn-sm btn-danger delete_row" onclick="removeRow(this)"><i class="fa fa-times-circle"></i></button></td>
+
+                                                        <input type="hidden" name="issue_number[]" class="issue_number_input" value="{{ old('issue_number')[$key] }}">
+                                                        <input type="hidden" name="source[]" class="source_input" value="{{ old('source_input')[$key] }}">
+                                                        <input type="hidden" name="issue_rates[]" class="issue_rate_input" value="{{ old('issue_rate_input')[$key] }}">
+                                                        <input type="hidden" name="issue_quantities[]" class="issue_quantity_input" value="{{ old('issue_quantity_input')[$key] }}">
+                                                    </tr>
+                                                @endforeach
+                                            @else
+                                                @php $i = 0; @endphp
+                                                
+                                                @foreach($goodsRequisition->goods_requisition_details as $ik => $detail)
+
+                                                    <tr>
+                                                        <td>
+                                                            <select name="item_id[]" class="form-control item chosen-select" onchange="load_item_stock(this)" id="select20">
+                                                                <option value="" disabled selected>select</option>
+                                                                @foreach($items as $key => $item)
+                                                                    @if($item->company_id == $goodsRequisition->company_id)
+                                                                        <option value="{{ $item->id }}" {{ $item->id == $detail->item_id ? 'selected' : '' }}>{{ $item->name }}</option>
+                                                                    @endif
+                                                                @endforeach
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" value="{{ $detail->item->item_unit->name }}" name="item_unit_id[]" class="form-control item_unit" readonly="readonly" />
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" value="{{ round($detail->item->current_stock, 2) }}" name="current_stock[]" id="current_stock0" class="form-control current_stock" readonly="readonly" />
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" id="q0" value="{{ $detail->quantity }}" onkeyup="checkQtyLimit(this)" onkeypress='return event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' name="quantity[]" class="form-control quantity" />
+                                                        </td>
+                                                        <td>
+                                                            <input type="text" class="form-control" name="remarks[]" value="{{ $detail->remarks }}">
+                                                        </td>
+                                                        <td><span class="issue_number">{!! old('issue_number_input')[$i] ?? '<a target="_blank" href="/gs/gin-list/' . optional($requisition_number[$i])->id . '">'. optional($requisition_number[$i])->issue_number . '</a>'  !!}</span></td>
+                                                        <td>
+                                                            @if ($requisition_from_item[$i])
+                                                                <a target="_blank" href="{{ route('items.show', optional($requisition_from_item[$i])['id']) }}" >Opening, </a>
+                                                            @endif
+                                                            @foreach($receive_items[$i] as $j => $receive_item)
+                                                                <a target="_blank" href="{{ route('grn.list.show', $receive_item->id) }}" >{{ $receive_item->form_number }},</a>
+                                                            @endforeach
+                                                        </td>
+                                                        <td>
+                                                            @if ($requisition_from_item[$i])
+                                                                {{ $requisition_from_item[$i]['issue_quantity'] }},
+                                                            @endif
+                                                            @foreach($receive_items[$i] as $j => $receive_item)
+                                                                {{ $receive_item->purchase_receive_details->first()->rate }},
+                                                            @endforeach
+
+                                                        </td>
+                                                        <td>
+                                                            @if ($requisition_from_item[$i])
+                                                                {{ $requisition_from_item[$i]['issue_quantity'] }},
+                                                            @endif
+                                                            @foreach($receive_items[$i] as $j => $receive_item)
+                                                                {{ $receive_items_quantity[$i][$j] }},
+                                                            @endforeach
+
+                                                        </td>
+
+                                                        <td><button type="button" class="ibtnDel btn btn-sm btn-danger delete_row" onclick="removeRow(this)"><i class="fa fa-times-circle"></i></button></td>
+
+                                                        <input type="hidden" name="issue_number[]" class="issue_number_input" value="{{ old('issue_number_input')[$key] ?? '<a target="_blank" href="/gs/gin-list/' . optional($requisition_number[$i])->id . '">'. optional($requisition_number[$i])->issue_number . '</a>'  }}">
+                                                        <input type="hidden" name="source[]" class="source_input" value="{{ old('source_input')[$key] }}">
+                                                        <input type="hidden" name="issue_rates[]" class="issue_rate_input" value="{{ old('issue_rate_input')[$key] }}">
+                                                        <input type="hidden" name="issue_quantities[]" class="issue_quantity_input" value="{{ old('issue_quantity_input')[$key] }}">
+                                                    </tr>
+                                                    @php $i++; @endphp
+                                                @endforeach
+                                            @endif
+
+                                            <tr id="addr1"></tr>
+                                            <tr>
+                                                <td colspan="11" style="text-align: right;">
+                                                    <button type="button" onclick="insert_Row(this)" class="btn btn-xs btn-inverse add_row r-btnAdd">
+                                                        + Add New
+                                                    </button>
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+
+                            <input type="hidden" id="total" value="0" name="total">
+
+                            <div class="container">
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="pull-right" style="padding-right: 80px !important;">
+                                            @if(hasPermission('create.requisitions.edit', $slugs))
+                                                <button class="btn btn-success btn-sm"> <i class="fa fa-save"></i> Update </button>
+                                            @endif
+                                            <button class="btn btn-gray btn-sm" type="Reset"> <i class="fa fa-refresh"></i> Reset </button>
+                                            @if(hasPermission('create.requisitions.view', $slugs))
+                                                <a href="{{ route('goods-requisitions.index') }}" class="btn btn-info btn-sm"> <i class="fa fa-list"></i> List </a>
+                                            @endif
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+
+@endsection
+
+@section('js')
+
+    <script src="{{ asset('assets/js/jquery.maskedinput.min.js') }}"></script>
+    
+    <script src="{{ asset('assets/js/chosen.jquery.min.js') }}"></script>
+    <script src="{{ asset('assets/custom_js/jq_repeater.js') }}"></script>
+
+
+    <script src="{{ asset('assets/js/bootstrap-datepicker.min.js') }}"></script>
+    <script src="{{ asset('assets/js/bootstrap-timepicker.min.js') }}"></script>
+
+    
+
+    <!--datepicker plugin-->
+    <script type="text/javascript">
+        jQuery(function($) {
+
+            $('.date-picker').datepicker({
+                autoclose: true,
+                format:'yyyy-mm-dd',
+            })
+                //show datepicker when clicking on the icon
+                .next().on(ace.click_event, function(){
+                $(this).prev().focus();
+            });
+
+        })
+    </script>
+    <script>
+        var item_row = 0;
+        var items = [];
+
+
+        function load_item_stock(element) {
+            var id = $(element).val();
+            var row = $(element).closest('tr');
+
+            $.ajax({
+                url: '{{ url("ajax/item/get-item-details") }}',
+                type: 'GET',
+                data: 'id=' + id,
+                success: function(res) {
+                    row.find('.item_unit').val(res['item_unit']);
+                    row.find('.current_stock').val(res['current_stock']);
+
+
+                    // tracking info
+                    if (res['receive_items'] != null) {
+                        // gin number
+                        if (res['requisition_number'] != null) {
+                            var gin_url = '/gs/gin-list/' + res['requisition_number'].id;
+
+                            // manage item
+                            var rates = "";
+                            var source = "";
+                            var opening_url = ""
+                            var grn_numbers = "";
+                            var issue_quantities = "";
+
+                            if (res['requisition_from_item'].length != 0) {
+                                rates += res['requisition_from_item'].rate + ", ";
+                                issue_quantities += res['requisition_from_item'].issue_quantity + ", ";
+                                opening_url = "/gs/items/" + id;
+                                source += '<a target="_blank" href="'+opening_url+'"> Opening </a>, ' ;
+                            }
+
+                            if (res['receive_items'].length != 0) {
+                                $.each(res['receive_items'], function( key, value ) {
+                                    var grn_url = "/gs/grn-list/" + value.id;
+                                    source += '<a target="_blank" href="'+grn_url+'">' +  value.form_number + '</a>, ';
+                                    issue_quantities += res['receive_items_quantity'][key] + ", ";
+                                    rates += value.purchase_receive_details[0].rate + ", ";
+                                });
+                            }
+                            row.find('.issue_number').html('<a target="_blank" href="' + gin_url + '">'+ res['requisition_number'].issue_number +'</a>');
+                            row.find('.issue_rate').text(rates);
+                            row.find('.issue_quantity').text(issue_quantities);
+                            row.find('.source').html(source);
+
+                            row.find('.issue_number_input').val('<a target="_blank" href="' + gin_url + '">'+ res['requisition_number'].issue_number +'</a>');
+                            row.find('.issue_rate_input').val(rates);
+                            row.find('.issue_quantity_input').val(issue_quantities);
+                            row.find('.source_input').val(source);
+                        } else {
+                            row.find('.issue_number').text('');
+                            row.find('.issue_rate').text('');
+                            row.find('.issue_quantity').text('');
+                            row.find('.source').html('');
+
+                            row.find('.issue_number_input').val('');
+                            row.find('.issue_rate_input').val('');
+                            row.find('.issue_quantity_input').val('');
+                            row.find('.source_input').val('');
+                        }
+
+                    } else {
+                        row.find('.issue_number').text('');
+                        row.find('.issue_rate').text('');
+                        row.find('.issue_quantity').text('');
+                        row.find('.source').html('');
+
+                        row.find('.issue_number_input').val('');
+                        row.find('.issue_rate_input').val('');
+                        row.find('.issue_quantity_input').val('');
+                        row.find('.source_input').val('');
+                    }
+                }
+            });
+        }
+
+
+        function insert_Row(el) {
+            // alert($(".company_id option:selected").val())
+            var item_row = $('.item').length + 1;
+            // first delete add item
+            $(el).parents("tr").remove();
+
+
+            // add new item row
+            var r = document.getElementById('goods_requisition_table').insertRow();
+
+            var c1 = r.insertCell(0);
+            var c2 = r.insertCell(1);
+            var c3 = r.insertCell(2);
+            var c4 = r.insertCell(3);
+            var c5 = r.insertCell(4);
+            var c6 = r.insertCell(5);
+            var c7 = r.insertCell(6);
+            var c8 = r.insertCell(7);
+            var c9 = r.insertCell(8);
+            var c10 = r.insertCell(9);
+
+            // populate product
+
+            var inputs = '<input type="hidden" name="issue_number[]" class="issue_number_input"><input type="hidden" name="source[]" class="source_input"><input type="hidden" name="issue_rates[]" class="issue_rate_input"><input type="hidden" name="issue_quantities[]" class="issue_quantity_input">';
+
+            c1.innerHTML = '<select name="item_id[]" class="form-control item item'+ item_row + ' chosen-select" onchange="load_item_stock(this)"></select>';
+
+
+            c2.innerHTML = '<input type="text" name="item_unit_id[]" class="form-control item_unit" readonly="readonly" />';
+
+            c3.innerHTML = '<input type="text" id="current_stockq"' + item_row + ' name="current_stock[]" class="form-control current_stock" readonly="readonly" />';
+
+            c4.innerHTML = '<input onkeyup="checkQtyLimit(this)" onkeypress="return event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57" type="text" id="q"' + item_row + ' name="quantity[]" class="form-control quantity" />';
+
+            c5.innerHTML = '<input type="text" class="form-control" name="remarks[]" value="">';
+
+
+
+            c6.innerHTML = '<td><span class="issue_number"></span></td>';
+            c7.innerHTML = '<td><span class="source"></span></td>' + inputs;
+            c8.innerHTML = '<td><span class="issue_rate"></span></td>';
+            c9.innerHTML = '<td><span class="issue_quantity"></span></td>';
+            c10.innerHTML = '<button type="button" class="ibtnDel btn btn-sm btn-danger delete_row" onclick="removeRow(this)"><i class="fa fa-times-circle"></i></button>';
+
+            // again add "+ Add New" Button
+            var markup = '<tr><td colspan="11" style="text-align: right;"><button type="button" onclick="insert_Row(this)" class="btn btn-xs btn-inverse add_row r-btnAdd"> + Add New </button></td></tr>';
+            $("table tbody").append(markup);
+
+
+            var company_id = $(".company_id option:selected").val();
+            load_items(null, company_id, item_row);
+            chosenTrigger()
+        }
+
+        // delete specifiv row
+        function removeRow(el) {
+            var item_row = $('#goods_requisition_table tr').length;
+            if (item_row>4) {
+                $(el).parents("tr").remove();
+            }
+
+        }
+
+
+        function load_items(element = null, company_id = null, item_row = null) {
+            var id = company_id == null ? $(element).val() : company_id;
+            var row = $(element).closest('tr');
+
+            $.ajax({
+                url: '{{ url("generalstore/ajax/items/get-item-list") }}',
+                type: 'GET',
+                data: 'id=' + id,
+                success: function(res) {
+                    if (item_row != null) {
+                        $('.item'+item_row).append('<option value="">select</option>');
+                        $.each(res['items'], function(id, name) {
+                            $('.item'+item_row).append('<option value="' + id + '">' + name + '</option>').trigger('chosen:updated');
+                        });
+                    } else {
+                        $('.item').empty()
+                        $('.item').append('<option value="">select</option>');
+                        $.each(res['items'], function(id, name) {
+                            $('.item').append('<option value="' + id + '">' + name + '</option>').trigger('chosen:updated');
+                        });
+                    }
+                    items = res['items'];
+                }
+            });
+        }
+    </script>
+
+
+    <script type="text/javascript">
+        $(() => chosenTrigger() )
+
+        function chosenTrigger() {
+            jQuery(function($){
+
+                if(!ace.vars['touch']) {
+                    $('#company_id').chosen({allow_single_deselect:true});
+                    //resize the chosen on window resize
+
+                    $(window)
+                        .off('resize.chosen')
+                        .on('resize.chosen', function() {
+                            $('#company_id').each(function() {
+                                var $this = $(this);
+                                $this.next().css({'width': $this.parent().width()});
+                            })
+                        }).trigger('resize.chosen');
+                    //resize chosen on sidebar collapse/expand
+                    $(document).on('settings.ace.chosen', function(e, event_name, event_val) {
+                        if(event_name != 'sidebar_collapsed') return;
+                        $('#company_id').each(function() {
+                            var $this = $(this);
+                            $this.next().css({'width': $this.parent().width()});
+                        })
+                    });
+                }
+
+
+                if(!ace.vars['touch']) {
+                    $('.chosen-select').chosen({allow_single_deselect:true});
+                    //resize the chosen on window resize
+
+                    $(window)
+                        .off('resize.chosen')
+                        .on('resize.chosen', function() {
+                            $('.chosen-select').each(function() {
+                                var $this = $(this);
+                                $this.next().css({'width': $this.parent().width()});
+                            })
+                        }).trigger('resize.chosen');
+                    //resize chosen on sidebar collapse/expand
+                    $(document).on('settings.ace.chosen', function(e, event_name, event_val) {
+                        if(event_name != 'sidebar_collapsed') return;
+                        $('.chosen-select').each(function() {
+                            var $this = $(this);
+                            $this.next().css({'width': $this.parent().width()});
+                        })
+                    });
+                }
+
+            })
+        }
+
+
+        function checkQtyLimit(object)
+        {
+            let current_stock = Number($(object).closest('tr').find('.current_stock').val() | 0)
+            let qty = Number($(object).val() | 0)
+
+            if (qty > current_stock) {
+                showAlertMessage('Limit Up!', 2000)
+                $(object).val(0)
+            }
+        }
+    </script>
+
+@stop

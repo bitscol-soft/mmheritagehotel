@@ -1,0 +1,15 @@
+
+##############         Api information       ################
+
+// api 1
+Url / Route     : /api/hrm/get-company-location
+Request Method  : post
+for             : data get
+
+Data:
+    token       : (Login Token)                 : required
+
+Response  :
+    status: ("true" or "false")
+    response data: company info
+

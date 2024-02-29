@@ -1,0 +1,33 @@
+
+##############         Api information       ################
+
+// api 1
+Url / Route     : /api/hrm/out-work/apply
+Request Method  : post
+for             : data store
+
+Data:
+    token       : (Login Token)                 : required
+    date        : ("Y-m-d" format)              : required
+    return_time : ("H:i:s" format)              : optional
+    not_return  : 1 or 0                        : optional  
+    note        : (what ever you want to say)   : required
+
+Response  :
+    status: ("true" or "false")
+    message: "Out Work Successfully Created" or error message related to this api
+
+
+// api 2
+Url / Route     : /api/hrm/out-work/list
+Request Method  : post
+for             : data get
+
+Data:
+    token     : (Login Token)                 : required
+    from_date : ("Y-m-d" format)              : optional
+    to_date   : ("Y-m-d" format)              : optional
+
+Response  :
+    status: ("true" or "false")
+    message: list of out work data as json format

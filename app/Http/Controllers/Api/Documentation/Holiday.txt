@@ -1,0 +1,13 @@
+
+##############         Api information       ################
+
+Url / Route   : /api/hrm/holidays
+Request Method: post
+
+Data:
+    token      : (Login Token)
+    company_id : optional
+    year       : optional
+
+Response:
+    message: list of holidays as json

@@ -1,0 +1,41 @@
+{
+    "name": "skycoder/query-shorter",
+    "description": "Laravel query shorter & generator package",
+    "homepage": "https://github.com/skycoder026/query-shorter",
+    "license": "MIT",
+    "keywords": [
+        "qyery-shorter",
+        "qyery-maker",
+        "qyery-generator",
+        "asmakash",
+        "akashcsem",
+        "skycoder"
+    ],
+    "authors": [
+        {
+            "name": "Skycoder",
+            "email": "akashcseuu026@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Skycoder\\QueryShorter\\": "src/"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.1 -dev"
+        },
+        "laravel": {
+            "providers": [
+                "Skycoder\\QueryShorter\\QueryShorterServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "stable",
+    "readme": "./readme.md",
+    "time": "2021-12-10",
+    "require": {
+        "php": "^7.2.5"
+    }
+}

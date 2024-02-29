@@ -1,0 +1,13 @@
+
+##############         Api information       ################
+
+Url / Route   : /api/hrm/notice-list
+Request Method: post
+
+Data:
+    token    : (Login Token)
+    user_id  : logged user id
+
+Response:
+    errors: ""
+    message: notice list as json

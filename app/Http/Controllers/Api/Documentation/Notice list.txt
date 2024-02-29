@@ -1,0 +1,11 @@
+
+##############         Api information       ################
+
+Url / Route   : /api/hrm/employee-notices
+Request Method: get
+
+Data:
+    token    : (Login Token)
+
+Response  :
+    data: list of notice list as json, with company and created by user
