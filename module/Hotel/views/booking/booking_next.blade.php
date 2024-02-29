@@ -363,9 +363,9 @@
                                                                 SR (৳)
                                                             </label>
                                                         @elseif (setting('root_currency') == 96)
-                                                            <label class="choose-currency" id="bdtCurrency"
+                                                            <label class="choose-currency" id="myrCurrency"
                                                                 style="margin: 0 8px 0 6px;">
-                                                                <input type="radio" name="currency_type" value="12"
+                                                                <input type="radio" name="currency_type" value="96"
                                                                     {{ setting('root_currency') == 96 ? 'checked' : '' }}>
                                                                 RM
                                                             </label>
@@ -381,7 +381,7 @@
                                                             <input type="radio" name="currency_type" value="141"
                                                                 {{ setting('root_currency') == 141 ? 'checked' : '' }}>
                                                             USD ($)
-                                                        </label> 
+                                                        </label>
 
                                                         <div class="show-currency-rate"
                                                             style="display: none; color:rgb(230, 92, 115); text-align:center">

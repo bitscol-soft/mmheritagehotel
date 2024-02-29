@@ -419,12 +419,18 @@
         let currenty_rate_text = ''
         let _this = $(document).find('input[name=currency_type]:checked');
         let bdt_rate = `{{ getCurrentCurrencyRate('bdt') }}`
+        let myr_rate = `{{ getCurrentCurrencyRate('myr') }}`
         let usd_rate = `{{ getCurrentCurrencyRate('usd') }}`
 
         if (_this.val() == 141) {
             dueAmountForCurrency = Number(usd_rate) * (Number($('.grandtotal').val()))
 
             currenty_rate_text = 'USD Amount ' + dueAmountForCurrency.toFixed(2);
+
+        } else if (_this.val() == 96) {
+            dueAmountForCurrency = Number(myr_rate) * Number($('.grandtotal').val())
+            console.log('currencyConversion = ', dueAmountForCurrency)
+            currenty_rate_text = 'RM Amount ' + dueAmountForCurrency.toFixed(2);
         } else if (_this.val() == 12) {
 
             dueAmountForCurrency = Number(bdt_rate) * (Number($('.grandtotal').val()))
@@ -485,6 +491,7 @@
         $("#line_total, .subtotal-amount").val(subtotal.toFixed(2));
         $(".vat-amount").val(calculate_vat.toFixed(2));
         $(".service_amount").val(service_amount.toFixed(2));
+        console.log(due_amount);
         $(".due-amount").val(due_amount.toFixed(2));
     }
 

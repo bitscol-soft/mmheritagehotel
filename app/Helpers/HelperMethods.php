@@ -106,6 +106,12 @@ function getCurrentCurrencyRate($default = 'bdt')
         }
         return $selectedCurrency->rate;
     }
+    if ($default == 'myr') {
+        if (setting('root_currency') == 96) {
+            return 1;
+        }
+        return $selectedCurrency->rate;
+    }
     if ($default == 'usd') {
         if (setting('root_currency') == 141) {
             return 1;
@@ -159,6 +165,9 @@ function calculateCurrencyAmount($amount, $ignore = 0)
     $selectedCurrency = CurrencyConversion::where('currency_id', 141)->where('effected_date', '<=' ,date('Y-m-d'))->orderBy('effected_date','DESC')->first();
 
     if (setting('root_currency') == 141) {
+        $amount = 1 / $selectedCurrency->rate * $amount;
+    }
+    if (setting('root_currency') == 96) {
         $amount = 1 / $selectedCurrency->rate * $amount;
     }
     // if (setting('root_currency') == 116) {
@@ -273,7 +282,7 @@ function currencySign(){
         case '116':
             return 'SR';
             break;
-        
+
         case '96':
             return 'RM';
             break;

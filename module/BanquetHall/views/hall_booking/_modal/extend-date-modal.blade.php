@@ -180,10 +180,10 @@
                                 </div>
 
                                 <div>
-                                    <label class="choose-currency" id="bdtCurrency" style="margin: 0 8px 0 6px;">
-                                        <input type="radio" name="currency_type" value="12"
-                                            {{ setting('root_currency') == 12 ? 'checked' : '' }} >
-                                            BDT (৳)
+                                    <label class="choose-currency" id="myrCurrency" style="margin: 0 8px 0 6px;">
+                                        <input type="radio" name="currency_type" value="96"
+                                            {{ setting('root_currency') == 96 ? 'checked' : '' }} >
+                                            RM
                                     </label>
 
                                     <label class="choose-currency" id="usdCurrency">

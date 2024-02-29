@@ -160,10 +160,13 @@
 
         let _this = `{{ setting('root_currency') }}`;
         let bdt_rate = `{{ getCurrentCurrencyRate('bdt') }}`
+        let myr_rate = `{{ getCurrentCurrencyRate('myr') }}`
         let usd_rate = `{{ getCurrentCurrencyRate('usd') }}`
 
         if (_this == 141) {
             dueAmountForCurrency            = Number(usd_rate) * Number($('.grandtotal'+id).val())
+        } else if (_this == 96) {
+            dueAmountForCurrency            = Number(myr_rate) * Number($('.grandtotal'+id).val())
         }else if (_this == 12){
             dueAmountForCurrency            = Number(bdt_rate) * Number($('.grandtotal'+id).val())
         }
