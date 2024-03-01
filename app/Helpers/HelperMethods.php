@@ -164,12 +164,12 @@ function calculateCurrencyAmount($amount, $ignore = 0)
 {
     $selectedCurrency = CurrencyConversion::where('currency_id', 141)->where('effected_date', '<=' ,date('Y-m-d'))->orderBy('effected_date','DESC')->first();
 
-    if (setting('root_currency') == 141) {
-        $amount = 1 / $selectedCurrency->rate * $amount;
-    }
-    if (setting('root_currency') == 96) {
-        $amount = 1 / $selectedCurrency->rate * $amount;
-    }
+    // if (setting('root_currency') == 141) {
+    //     $amount = 1 / $selectedCurrency->rate * $amount;
+    // }
+    // if (setting('root_currency') == 96) {
+    //     $amount = 1 / $selectedCurrency->rate * $amount;
+    // }
     // if (setting('root_currency') == 116) {
     //     $amount = 1 / $selectedCurrency->rate * $amount;
     // }

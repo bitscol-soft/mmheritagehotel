@@ -113,16 +113,16 @@
                             style="font-size: 15px"><span
                                 class="currency-sign"></span> {{ calculateCurrencyAmount($paid_amount = optional($data->transection)->collection) }}</span>
                     </p>
-                    <p><b>Due:</b> <span class="red" style="font-size: 15px"><span class="currency-sign"></span></span> 
+                    <p><b>Due:</b> <span class="red" style="font-size: 15px"><span class="currency-sign"></span></span>
                             {{ calculateCurrencyAmount($sub_total - $paid_amount - optional($data->transection)->discount) > 0 ? calculateCurrencyAmount($sub_total - $paid_amount) : '0' }}
-                            
+
                     </p>
                     @if ($data->bookingExtraCharge->count() > 0)
                         <p>
                             <b>Extra Charge:</b>
                             <span class="green"
                                 style="font-size: 15px"><span class="currency-sign"></span> {{ calculateCurrencyAmount(optional($data->bookingExtraCharge)->sum('extra_amount')) }}
-                                
+
                             </span>
                         </p>
                     @endif
@@ -133,7 +133,7 @@
                             <b>Bar Due:</b>
                             <span class="green"
                                 style="font-size: 15px"><span class="currency-sign"></span> {{ calculateCurrencyAmount($data->bar_pay_booking->sum('subtotal') - $data->bar_pay_booking->sum('paid_amount'), 1) }}
-                                
+
                             </span>
                         </p>
                     @endif

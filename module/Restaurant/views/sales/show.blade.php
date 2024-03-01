@@ -294,7 +294,7 @@
                                         <div class="col-md-12">
                                             <p class="amount-in-words" style="padding: inherit">Amount In Words :
                                                 <b>{{ convert_number(calculateCurrencyAmount($sale->payable_amount, 1)) }}
-                                                    Taka Only</b>
+                                                Ringgit Only</b>
                                             </p>
                                             {{-- <h5 style="font-weight: 700;">Amount Paid :
                                                 {{ number_format($sale->paid_amount, 2 ?? 0) }}

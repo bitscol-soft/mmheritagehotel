@@ -704,7 +704,7 @@
                     <div class="col-sm-4 col-lg-4 col-md-4 order-note amount-paid" style="width: 50%;">
                         <p class="amount-in-words">Amount In Words :
                             <b>{{ convert_number(calculateCurrencyAmount($transactions->sum('total_amount'), 1)) }}
-                                Taka Only</b>
+                            Ringgit Only</b>
                         </p>
 
                         @if ($booking->check_in_note)
