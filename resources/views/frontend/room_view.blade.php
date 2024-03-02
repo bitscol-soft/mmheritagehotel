@@ -71,6 +71,98 @@
         margin-top: 10px
     }
 </style>
+
+<style>
+    .room-info{
+        display: flex;
+        align-items: flex-start;
+        gap: 15px;
+        margin-top: 15px;
+    }
+    .room-info p{
+        font-size: 18px;
+        font-weight: 600;
+    }
+    .checkbox-wrapper {
+        --size: 1.2rem;
+        --background: #fff;
+        font-size: var(--size);
+    }
+  
+    .checkbox-wrapper *,
+    .checkbox-wrapper *::after,
+    .checkbox-wrapper *::before {
+      box-sizing: border-box;
+    }
+  
+    .checkbox-wrapper input[type="checkbox"] {
+      visibility: hidden;
+      display: none;
+    }
+  
+    .checkbox-wrapper .checkbox__label {
+      width: var(--size);
+    }
+  
+    .checkbox-wrapper .checkbox__label:before {
+      content: ' ';
+      display: block;
+      height: var(--size);
+      width: var(--size);
+      position: absolute;
+      top: calc(var(--size) * 0.125);
+      left: 0;
+      background: var(--background);  
+    }
+  
+    .checkbox-wrapper .checkbox__label:after {
+      content: ' ';
+      display: block;
+      height: var(--size);
+      width: var(--size);
+      border: calc(var(--size) * .14) solid #000;
+      transition: 200ms;
+      position: absolute;
+      top: calc(var(--size) * 0.125);
+      left: 0;
+      background: var(--background);  
+    }
+  
+    .checkbox-wrapper .checkbox__label:after {
+      transition: 100ms ease-in-out;
+    }
+  
+    .checkbox-wrapper .checkbox__input:checked ~ .checkbox__label:after {
+      border-top-style: none; 
+      border-right-style: none;
+      -ms-transform: rotate(-45deg); /* IE9 */
+      transform: rotate(-45deg);
+      height: calc(var(--size) * .5);
+      border-color: green;
+    }
+  
+    .checkbox-wrapper .checkbox {
+      position: relative;
+      display: flex;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 18px;
+      margin-top: 0;
+      margin-bottom: 0;
+      /* Mobile Safari: */
+      -webkit-tap-highlight-color: rgba(0,0,0,0);   
+    }
+  
+    .checkbox-wrapper .checkbox__label:after:hover,
+    .checkbox-wrapper .checkbox__label:after:active {
+       border-color: green; 
+    }
+  
+    .checkbox-wrapper .checkbox__label {
+      margin-right: calc(var(--size) * 0.45);
+    }
+  </style>
+
 @endpush
 
 
@@ -103,24 +195,81 @@
                 <div class="cat-price" style="margin-top: 10px">
                     <h3><span>Room Price: {{ setting('root_currency') == 96 ? 'RM' : '৳' }}</span> {{ calculateCurrencyAmount($room->price) }}</h3>
                 </div>
+
+                
                 <div class="cat-desc" style="{{ $room->description == null ? 'display:none' : '' }}">
                     <p>{{ $room->description }}</p>
                 </div>
 
-                <div class="category-aminities">
-                    <ul class="aminity-list">
-                        @foreach ($aminities as $key => $item)
-                            <li>
-                                @if ($item->aminities_icon != null)
-                                    <div class="aminity-img">
-                                        <img class="img-fluid" src="{{ asset($item->aminities_icon) }}" alt="">
-                                    </div>
-                                @endif
-                                <p>{{ $item->name }}</p>
-                            </li>
-                        @endforeach
-                    </ul>
+                <div class="room-info" style="margin-top: 0;">
+                    <p>BreakFast :</p>
+                    <div>
+                        <div class="checkbox-wrapper">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox__input" name="is_breakfast" onclick="return false;"/>  
+                                <span class="checkbox__label"></span>
+                                Yes
+                            </label>
+                        </div>
+                    </div>
                 </div>
+
+
+
+                <div class="room-info">
+                    <p>Room Size :</p>
+                    <div>
+                        @foreach ($room_sizes as $room_size)
+                            <div class="checkbox-wrapper">
+                                <label class="checkbox">
+                                    <input type="checkbox" class="checkbox__input" name="room_size" value="{{ $room_size->room_size }}" onclick="return false;  "/> 
+                                    <span class="checkbox__label"></span>
+                                    {{ $room_size->room_size }} SQFT
+                                </label>
+                            </div>
+                        @endforeach
+
+                    </div>
+                </div>
+                
+
+
+                {{-- check those facilities which are for thode room --}}
+                <div class="room-info" style="flex-direction: column;">
+                    <p>Room Facilities :</p>
+                    <div>
+                        <ul style="column-count: 2">
+                            @foreach ($all_animity as $item)
+                                <div class="checkbox-wrapper">
+                                    <label class="checkbox">
+                                        @php
+                                            $checkedAminity = [];
+                                            foreach ($aminities as $aminity) {
+                                                $checkedAminity[] = $aminity->id;
+                                            }
+                                        @endphp
+                                        <input
+                                            type="checkbox"
+                                            class="checkbox__input"
+                                            name="room_animity"
+                                            value="{{ $item->id }}"
+                                            onclick="return false;"
+                                            {{ in_array($item->id, $checkedAminity) ? 'checked' : '' }}
+                                        />
+                                        <span class="checkbox__label"></span>
+                                        {{ $item->name }}
+                                    </label>
+                                </div>
+                            @endforeach
+
+
+                        </ul>
+                    </div>
+                </div>
+
+
+
+
 
 
                 <div class="cat-booking mt-50">

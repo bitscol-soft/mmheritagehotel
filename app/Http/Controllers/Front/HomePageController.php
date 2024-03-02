@@ -122,13 +122,18 @@ class HomePageController extends Controller
     public function viewRoom($url_slug)
     {
         $room = RoomCategory::where('url_slug', $url_slug)->first();
+        // get all distinct room_size except null from room table which is under room_category
+        $room_sizes = Rooms::where('room_category', $room->id)->whereNotNull('room_size')->distinct()->get(['room_size']);
 
+        // dd($room_size);
+
+        $all_animity = Aminities::all();
         $aminities_list = collect(explode(',', $room->room_aminities))->toArray();
 
         $aminities = Aminities::whereIn('id', $aminities_list)->get();
 
 
-        return view('frontend.room_view',compact('room','aminities'));
+        return view('frontend.room_view',compact('room','aminities','room_sizes','all_animity'));
     }
 
 

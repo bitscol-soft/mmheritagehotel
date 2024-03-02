@@ -86,9 +86,8 @@
                                     if ($room->today_checkout >= 1) {
                                         $status = 'today-checkout';
                                     }
-
                                 @endphp
-                                <div class="col-md-1 col-sm-4" style="border-radius: 15px">
+                                <div class="col-lg-2 col-md-3 col-sm-4" style="border-radius: 15px">
                                     <x-room-status :status="$status" :room="$room" :statusvalue="$status_val"
                                         :category="$category" />
                                 </div>
