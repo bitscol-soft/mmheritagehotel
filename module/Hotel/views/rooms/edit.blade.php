@@ -73,6 +73,18 @@
 
                                     <div class="col-sm-12">
                                         <div class="form-group">
+                                            <label class="col-sm-3 control-label" for="form-field-1-1"> LOT </label>
+                                            <div class="col-xs-12 col-sm-8 @error('lot') has-error @enderror">
+                                                <input type="text" class="form-control input-sm" name="lot" id="lot" value="{{ $room->lot }}">
+                                                @error('lot')
+                                                    <span class="text-danger"> {{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
                                             <label class="col-sm-3 control-label" for="form-field-1-1"> Room Number <span
                                                     style="color: deeppink">*</span></label>
 
@@ -154,6 +166,40 @@
                                         </div>
                                     @endif
 
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label" for="form-field-1-1"> Room Size </label>
+                                            <div class="col-xs-12 col-sm-8 @error('room_size') has-error @enderror">
+                                                <input type="text" class="form-control input-sm" name="room_size" id="room_size" value="{{ $room->room_size }}">
+                                                @error('room_size')
+                                                    <span class="text-danger"> {{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label" for="form-field-1-1"> Room Price </label>
+                                            <div class="col-xs-12 col-sm-8 @error('room_price') has-error @enderror">
+                                                <input type="text" class="form-control input-sm" name="room_price" id="room_price" value="{{ $room->room_price }}">
+                                                @error('room_price')
+                                                    <span class="text-danger"> {{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label" for="form-field-1-1">Bed per Room </label>
+                                            <div class="col-xs-12 col-sm-8 @error('bed_per_room') has-error @enderror">
+                                                <input type="text" class="form-control input-sm" name="bed_per_room" id="bed_per_room" value="{{ $room->bed_per_room }}">
+                                                @error('bed_per_room')
+                                                    <span class="text-danger"> {{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+
 
                                     <div class="col-sm-12">
                                         <div class="form-group">
@@ -194,6 +240,21 @@
                                                         {{ $room->smoking_status == 'Yes' ? 'selected' : '' }}>Yes</option>
                                                 </select>
                                                 @error('status')
+                                                    <span class="text-danger"> {{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label" for="form-field-1-1">Is Breakfast</label>
+                                            <div class="col-xs-12 col-sm-8 @error('is_breakfast') has-error @enderror">
+                                                <select name="is_breakfast" class="form-control chosen-select">
+                                                    <option value="0" {{ $room->is_breakfast == '0' ? 'selected' : '' }}>No</option>
+                                                    <option value="1" {{ $room->is_breakfast == '1' ? 'selected' : '' }}>Yes</option>
+                                                </select>
+                                                @error('is_breakfast')
                                                     <span class="text-danger"> {{ $message }}</span>
                                                 @enderror
                                             </div>
