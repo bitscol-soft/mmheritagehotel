@@ -71,7 +71,7 @@
     @endif
 
     <tr>
-        <td class="text-right borderless" colspan="{{ $colspan ?? 11 }}">Advanced Amount RM</td>
+        <td class="text-right borderless" colspan="{{ $colspan ?? 11 }}">Advanced Amount </td>
         <td class="borderless">
             {{-- @if (setting('root_currency') == 116)
                 <label class="choose-currency" id="bdtCurrency" style="margin: 0 8px 0 6px;">

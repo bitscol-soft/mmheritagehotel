@@ -101,7 +101,7 @@
                 </td>
 
                 <td class="text-right transactions">
-                    <p><b>Subtotal:</b> <span
+                    <p><b>Total:</b> <span
                             style="font-size: 15px"><span
                                 class="currency-sign"></span> {{ calculateCurrencyAmount($sub_total = optional($data->transection)->total_amount) }}</span>
                     </p>
