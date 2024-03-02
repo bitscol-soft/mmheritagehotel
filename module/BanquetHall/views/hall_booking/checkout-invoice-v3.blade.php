@@ -587,7 +587,7 @@
                                         <th class="text-right">Price</th>
                                         <th class="text-right">Qty</th>
                                         <th class="text-right discount">Discount</th>
-                                        <th class="text-right">Service Charge</th>
+                                        <!-- <th class="text-right">Service Charge</th> -->
                                         <th class="text-right">Subtotal</th>
                                     </tr>
                                 </thead>
@@ -644,8 +644,8 @@
                                                 @endif
                                             </td>
 
-                                            <td class="text-right">
-                                                {{ calculateCurrencyAmount($bookingDetail->service_charge) }}</td>
+                                            {{-- <td class="text-right">
+                                                {{ calculateCurrencyAmount($bookingDetail->service_charge) }}</td> --}}
                                             <td class="text-right">
                                                 {{ calculateCurrencyAmount($bookingDetail->total_amount + $bookingDetail->service_charge) }}
                                             </td>
@@ -696,8 +696,8 @@
                                                     {{ calculateCurrencyAmount($bookingDetail->room_discount) }}
                                                 @endif
                                             </td>
-                                            <td class="text-right">
-                                                {{ calculateCurrencyAmount($Item->service_charge) }}</td>
+                                            {{-- <td class="text-right">
+                                                {{ calculateCurrencyAmount($Item->service_charge) }}</td> --}}
                                             <td class="text-right">
                                                 {{ calculateCurrencyAmount($Item->total_amount + $Item->service_charge) }}
                                             </td>

@@ -279,14 +279,14 @@
                                                         @endif
                                                         &#x09F3;</th>
                                                 </tr>
-                                                <tr>
+                                                {{-- <tr>
                                                     <td colspan="4" style="text-align: right; border: none !important;">
                                                         <strong>Change</strong> : </td>
                                                     <th style="text-align: right; border: none !important;">
                                                         {{ number_format($sale->change_amount, 2) }}
                                                         &#x09F3;
                                                     </th>
-                                                </tr>
+                                                </tr> --}}
                                             </tbody>
                                         </table>
                                     </div>

@@ -602,7 +602,7 @@
                                         {{-- @endif
                                         @endforeach --}}
                                         <th class="text-right">Night</th>
-                                        <th class="text-right">Charge</th>
+                                        <!-- <th class="text-right">Charge</th> -->
                                         <th class="text-right">Subtotal</th>
                                     </tr>
                                 </thead>
@@ -661,13 +661,13 @@
                                             <td class="text-right">
                                                 {{ $bookingDetail->night_count != null ? $bookingDetail->night_count : 'N\A' }}
                                             </td>
-                                            <td class="text-right">
+                                            {{-- <td class="text-right">
                                                 @if (setting('use_vat_included') == 1)
                                                     {{ 0 }}
                                                 @else
                                                     {{ calculateCurrencyAmount($bookingDetail->service_charge) }}
                                                 @endif
-                                            </td>
+                                            </td> --}}
                                             <td class="text-right">
                                                 {{-- {{ calculateCurrencyAmount($bookingDetail->total_amount + $bookingDetail->service_charge) }} --}}
                                                 {{ calculateCurrencyAmount($bookingDetail->total_amount) }}
