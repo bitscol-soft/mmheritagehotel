@@ -37,9 +37,9 @@
         .submenu_item .menu__link:hover{color: #ffce14}
     </style>
 
-    <script type="text/javascript" src='ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js'></script>
+    <script type="text/javascript" src="https://www.ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 
-    <script type="text/javascript" src="m.servedby-buysellads.com/monetization.js" ></script>
+    <script type="text/javascript" src="https://www.m.servedby-buysellads.com/monetization.js" ></script>
 
     <script>
         (function(){

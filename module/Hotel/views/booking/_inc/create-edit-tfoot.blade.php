@@ -71,38 +71,38 @@
     @endif
 
     <tr>
-        <td class="text-right borderless" colspan="{{ $colspan ?? 11 }}">Advanced Amount </td>
-        <td class="borderless">
-            {{-- @if (setting('root_currency') == 116)
-                <label class="choose-currency" id="bdtCurrency" style="margin: 0 8px 0 6px;">
-                    <input type="radio" name="currency_type" value="116"
-                        {{ setting('root_currency') == 116 ? 'checked' : '' }}>
-                    SR (৳)
-                </label>
+        <td class="text-right borderless" colspan="{{ $colspan ?? 11 }}">Advanced Amount RM</td>
+        <td class="borderless" style="display: none;">
+            @if (setting('root_currency') == 116)
+            <label class="choose-currency" id="bdtCurrency" style="margin: 0 8px 0 6px;">
+                <input type="radio" name="currency_type" value="116"
+                {{ setting('root_currency') == 116 ? 'checked' : '' }}>
+                SR (৳)
+            </label>
             @elseif (setting('root_currency') == 12)
-                <label class="choose-currency" id="bdtCurrency" style="margin: 0 8px 0 6px;">
-                    <input type="radio" name="currency_type" value="12"
-                        {{ setting('root_currency') == 12 ? 'checked' : '' }}>
-                    BDT (৳)
-                </label>
+            <label class="choose-currency" id="bdtCurrency" style="margin: 0 8px 0 6px;">
+                <input type="radio" name="currency_type" value="12"
+                {{ setting('root_currency') == 12 ? 'checked' : '' }}>
+                BDT (৳)
+            </label>
             @elseif (setting('root_currency') == 96)
-                <label class="choose-currency" id="bdtCurrency" style="margin: 0 8px 0 6px;">
-                    <input type="radio" name="currency_type" value="12"
-                        {{ setting('root_currency') == 96 ? 'checked' : '' }}>
-                    RM
-                </label>
+            <label class="choose-currency" id="myrCurrency" style="margin: 0 8px 0 6px;">
+                <input type="radio" name="currency_type" value="96"
+                {{ setting('root_currency') == 96 ? 'checked' : '' }}>
+                RM
+            </label>
             @endif
             <label class="choose-currency" id="usdCurrency">
                 <input type="radio" name="currency_type" value="141"
-                    {{ setting('root_currency') == 141 ? 'checked' : '' }}>
+                {{ setting('root_currency') == 141 ? 'checked' : '' }}>
                 USD ($)
             </label>
-
-
-            <div class="show-currency-rate" style="display: none; color:rgb(230, 92, 115); text-align:center"></div> --}}
+            <div class="show-currency-rate" style="display: none; color:rgb(230, 92, 115); text-align:center"></div>
+        </td>
+        <td class="borderless">
             <input type="number" name="advanced_amount"
-                value="{{ calculateCurrencyAmount($transaction->collection ?? 0, 1) }}"
-                class="form-control adv-amount text-right">
+            value="{{ calculateCurrencyAmount($transaction->collection ?? 0, 1) }}"
+            class="form-control adv-amount text-right">
         </td>
     </tr>
 
