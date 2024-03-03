@@ -462,7 +462,7 @@
                             <div class="booking-invoice" style="display:flex; justify-content:center; width: 100%">
                                 <!------- BARCODE INFO ------->
                                 <div class="text-center">
-                                    <p style="font-size: 16px;">Booking Invoice </p>
+                                    <p style="font-size: 16px;">Booking Invoice get get get</p>
                                     @php
                                         $explode = explode('-', $booking->booking_number);
                                         $barcode = $explode[0] . $explode[1] . $explode[2];
@@ -597,7 +597,7 @@
                                     @endif
                                 </th>
                                 <th class="text-right">Night</th>
-                                <th class="text-right">Service Charge</th>
+                                <!-- <th class="text-right">Service Charge</th> -->
                                 <th class="text-right">Subtotal</th>
                             </tr>
                         </thead>
@@ -673,12 +673,13 @@
                                                 {{ $bookingDetail->night_count != null ? $bookingDetail->night_count : 'N\A' }}
                                             @endif
                                             </td>
-                                            <td class="text-right">
+                                            {{-- <td class="text-right">
                                             @if ($transaction->extra_charge > 0)
                                             <span>{{ calculateCurrencyAmount(0) }}</span>
                                             @else
                                                 {{ calculateCurrencyAmount($bookingDetail->service_charge) }}</td>
                                             @endif
+                                            --}}
                                             <td class="text-right">
                                             @if ($transaction->extra_charge > 0)
                                             <span>{{ calculateCurrencyAmount($transaction->extra_charge) }}</span>
