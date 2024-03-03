@@ -107,7 +107,7 @@
                 <div class="room-details">
                     <p>Price : {{ $room->room_price }}</p>
                     <p>Size : {{ $room->room_size }}</p>
-                    <p>Breakfast : <input type="checkbox" value="1" onclick="return false;"> <label>Yes</label> <input type="checkbox" value="0" onclick="return false;"> <label>No</label></p>
+                    <p>Breakfast : @if($room->is_breakfast == 1) <label>Yes</label>@else <label>No</label>@endif</p>
                 </div>
                 <div class="guest-info">
                     <p>Guest-info</p>
@@ -146,9 +146,15 @@
             <input type="hidden" id="room_id" value="{{ $room->id }}">
             <p class="pt-0 mb-0">{{ $room->room_number }}</p>
             <div>
-                @for( $i = 0; $i < $room->bed_per_room; $i++)
-                    <img src="{{asset('assets/images/bed.png')}}" alt="" height="33" width="25">
-                @endfor
+                @if($status == 'inverse')
+                    @for( $i = 0; $i < $room->bed_per_room; $i++)
+                        <img src="{{asset('assets/images/bed.png')}}" style="filter: brightness(0) invert(1);" alt="" height="33" width="25">
+                    @endfor
+                @else
+                    @for( $i = 0; $i < $room->bed_per_room; $i++)
+                        <img src="{{asset('assets/images/bed.png')}}" alt="" height="33" width="25">
+                    @endfor
+                @endif
             </div>
             <div class="room-details">
                 @if($room->room_price)

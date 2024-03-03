@@ -204,11 +204,16 @@
                 <div class="room-info" style="margin-top: 0;">
                     <p>BreakFast :</p>
                     <div>
-                        <div class="checkbox-wrapper">
+                        <div class="checkbox-wrapper" style="display: flex; gap: 15px">
                             <label class="checkbox">
-                                <input type="checkbox" class="checkbox__input" name="is_breakfast" onclick="return false;"/>  
+                                <input type="checkbox" class="checkbox__input" name="is_breakfast" {{$room->is_breakfast == 1 ? 'checked' : ''}} onclick="return false;"/>  
                                 <span class="checkbox__label"></span>
                                 Yes
+                            </label>
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox__input" name="is_breakfast" {{$room->is_breakfast == 0 ? 'checked' : ''}} onclick="return false;"/>  
+                                <span class="checkbox__label"></span>
+                                No
                             </label>
                         </div>
                     </div>
