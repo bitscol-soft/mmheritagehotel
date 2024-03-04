@@ -69,7 +69,20 @@
                 data-content="<p class='tool-pen'>Room Is Booked</p> 
                 ">
 
-                {{ $room->room_number }}
+                <p class="pt-0 mb-0">{{ $room->room_number }}</p>
+                <div>
+                    @for( $i = 0; $i < $room->bed_per_room; $i++)
+                        <img src="{{asset('assets/images/bed.png')}}" alt="" height="33" width="25">
+                    @endfor
+                </div>
+                <div class="room-details">
+                    <p>Price : {{ $room->room_price }}</p>
+                    <p>Size : {{ $room->room_size }}</p>
+                    <p>Breakfast : @if($room->is_breakfast == 1) <label>Yes</label>@else <label>No</label>@endif</p>
+                </div>
+                <div class="guest-info-details">
+                    <p>Guest-info</p>
+                </div>
 
 
             </span>
@@ -78,7 +91,18 @@
     @else
         <div class="booked-room-info" style="padding-top: 18px; background: {{ $bgcolor }}; color: white;">
             <span class="popover-success">
-                {{ $room->room_number }}
+                <p class="pt-0 mb-0">{{ $room->room_number }}</p>
+                <div>
+                    @for( $i = 0; $i < $room->bed_per_room; $i++)
+                        <img src="{{asset('assets/images/bed.png')}}" alt="" height="33" width="25">
+                    @endfor
+                </div>
+                <div class="room-details">
+                    <p>Price : {{ $room->room_price }}</p>
+                    <p>Size : {{ $room->room_size }}</p>
+
+                    <p>Breakfast : @if($room->is_breakfast == 1) <label>Yes</label>@else <label>No</label>@endif</p>
+                </div>
             </span>
         </div>
     @endif
@@ -88,12 +112,37 @@
             onclick="updateKeepingStatus(`{{ $room->id }}`,`{{ $status_val }}`, this)">
             <i class="fal fa-arrows-alt"></i>
         </span>
-        <div class="room-info {{ $status }}">
+        {{-- <div class="room-info {{ $status }}">
             <input type="hidden" id="category_id" value="{{ $category->id }}">
             <input type="hidden" id="room_id" value="{{ $room->id }}">
             <p>
                 {{ $room->room_number }}
             </p>
+        </div> --}}
+        <div class="room-info {{ $status }} room-price">
+            <input type="hidden" id="category_id" value="{{ $category->id }}">
+            <input type="hidden" id="room_id" value="{{ $room->id }}">
+            <p class="pt-0 mb-0">{{ $room->room_number }}</p>
+            <div>
+                @if($status == 'inverse')
+                    @for( $i = 0; $i < $room->bed_per_room; $i++)
+                        <img src="{{asset('assets/images/bed.png')}}" style="filter: brightness(0) invert(1);" alt="" height="33" width="25">
+                    @endfor
+                @else
+                    @for( $i = 0; $i < $room->bed_per_room; $i++)
+                        <img src="{{asset('assets/images/bed.png')}}" alt="" height="33" width="25">
+                    @endfor
+                @endif
+            </div>
+            <div class="room-details">
+                @if($room->room_price)
+                    <p>Price : {{ $room->room_price }}</p>
+                @endif
+                @if ($room->room_size)
+                    <p>Size : {{ $room->room_size }}</p>
+                @endif
+                <p>Breakfast : @if($room->is_breakfast == 1) <label>Yes</label>@else <label>No</label>@endif</p>
+            </div>
         </div>
     </div>
 @endif

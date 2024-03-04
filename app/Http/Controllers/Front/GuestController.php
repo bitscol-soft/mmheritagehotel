@@ -7,14 +7,14 @@ use Module\Hotel\Models\Guest;
 use App\Traits\SendNotification;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
 use App\Mail\ContactMail;
-use App\Mail\ReplyContactMail as MailReplyContactMail;
+use App\Mail\ReplyContactMail;
 use App\Models\Company;
 use App\Models\Country;
 use Illuminate\Support\Facades\DB;
 use Module\Hotel\Models\AccountType;
 use Module\Hotel\Models\Booking;
-use Illuminate\Support\Facades\Mail;
 use Module\Hotel\Models\HotelTransection;
 use Module\Hotel\Models\RoomCategory;
 use Module\Hotel\Services\FrontendBookingService;
@@ -135,7 +135,6 @@ class GuestController extends Controller
 
                 //---------- SAVE BOOKING DETAILS ----------//
                 $this->service->saveBookingDetails($request, $this->service->booking->id, $nighCount, $vat_amount, $service_amount, $roomPrice);
-            // dd($request->all(), $guest);
 
 
 
@@ -177,6 +176,7 @@ class GuestController extends Controller
                                     $q->with('roomNumber')->with('roomCategory');
                                 }])->with('getVat', 'bookingExtraCharge','payBy')->with('paymentType')->find($booking_id);
 
+            $data['company'] = Company::first();
             $mailData = [
                 'company_name' => $data['company']->name,
                 'company_headoffice' => $data['company']->head_office,
@@ -211,11 +211,9 @@ class GuestController extends Controller
                 'content' => 'Thank you for choosing  our Hotel for your upcoming visit. Our team is dedicated to ensuring your stay is both comfortable and memorable. For any queries or special requests, please do not hesitate to contact us directly.'
             ];
             Mail::to(env('MAIL_FROM_ADDRESS'))->send(new ContactMail($mailData));
-            Mail::to($guest->email)->send(new MailReplyContactMail($replymailData));
+            Mail::to($guest->email)->send(new ReplyContactMail($replymailData));
 
-            $data['company'] = Company::first();
             return view('frontend.booking-success', ['guest' => $guest, 'data' => $data])->with('bookingSuccessMessage', 'Your booking have been successfully Reserved!');
-            // return redirect()->route('home.page')->with('bookingSuccessMessage', 'Your booking have been successfully Reserved!');
 
         // } catch (\Throwable $e) {
         //     return redirect()->back()->with('error', $e->getMessage());

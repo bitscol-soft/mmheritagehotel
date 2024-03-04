@@ -109,7 +109,7 @@
                     <p>Size : {{ $room->room_size }}</p>
                     <p>Breakfast : @if($room->is_breakfast == 1) <label>Yes</label>@else <label>No</label>@endif</p>
                 </div>
-                <div class="guest-info">
+                <div class="guest-info-details">
                     <p>Guest-info</p>
                 </div>
 
@@ -120,7 +120,6 @@
     @else
         <div class="booked-room-info" style="padding-top: 0; background: {{ $bgcolor }}; color: white;">
             <span class="popover-success">
-                {{-- {{ $room->room_number }} --}}
                 <p class="pt-0 mb-0">{{ $room->room_number }}</p>
                 <div>
                     @for( $i = 0; $i < $room->bed_per_room; $i++)
