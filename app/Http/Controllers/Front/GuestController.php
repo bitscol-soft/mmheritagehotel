@@ -7,11 +7,14 @@ use Module\Hotel\Models\Guest;
 use App\Traits\SendNotification;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use App\Mail\ContactMail;
+use App\Mail\ReplyContactMail as MailReplyContactMail;
 use App\Models\Company;
 use App\Models\Country;
 use Illuminate\Support\Facades\DB;
 use Module\Hotel\Models\AccountType;
 use Module\Hotel\Models\Booking;
+use Illuminate\Support\Facades\Mail;
 use Module\Hotel\Models\HotelTransection;
 use Module\Hotel\Models\RoomCategory;
 use Module\Hotel\Services\FrontendBookingService;
@@ -174,7 +177,41 @@ class GuestController extends Controller
                                     $q->with('roomNumber')->with('roomCategory');
                                 }])->with('getVat', 'bookingExtraCharge','payBy')->with('paymentType')->find($booking_id);
 
-
+            $mailData = [
+                'company_name' => $data['company']->name,
+                'company_headoffice' => $data['company']->head_office,
+                'company_mobile' => $data['company']->phone_number,
+                'company_email' => $data['company']->email,
+                'name' => $guest->name,
+                'mobile' => $guest->phone_no,
+                'email' => $guest->email,
+                'address' => $guest->address,
+                'room_name' => $data['booking']->bookingDetail->roomCategory->name,
+                'room_no' => $data['booking']->bookingDetail->roomNumber->room_number,
+                'booking_no' => $data['booking']->booking_number,
+                'booking_date' => $data['booking']->booking_date,
+                'check_in_date' => $data['booking']->check_in_date,
+                'check_out_date' => $data['booking']->check_out_date,
+            ];
+            $replymailData = [
+                'company_name' => $data['company']->name,
+                'company_headoffice' => $data['company']->head_office,
+                'company_mobile' => $data['company']->phone_number,
+                'company_email' => $data['company']->email,
+                'name' => $guest->name,
+                'mobile' => $guest->phone_no,
+                'email' => $guest->email,
+                'address' => $guest->address,
+                'room_name' => $data['booking']->bookingDetail->roomCategory->name,
+                'room_no' => $data['booking']->bookingDetail->roomNumber->room_number,
+                'booking_no' => $data['booking']->booking_number,
+                'booking_date' => $data['booking']->booking_date,
+                'check_in_date' => $data['booking']->check_in_date,
+                'check_out_date' => $data['booking']->check_out_date,
+                'content' => 'Thank you for choosing  our Hotel for your upcoming visit. Our team is dedicated to ensuring your stay is both comfortable and memorable. For any queries or special requests, please do not hesitate to contact us directly.'
+            ];
+            Mail::to(env('MAIL_FROM_ADDRESS'))->send(new ContactMail($mailData));
+            Mail::to($guest->email)->send(new MailReplyContactMail($replymailData));
 
             $data['company'] = Company::first();
             return view('frontend.booking-success', ['guest' => $guest, 'data' => $data])->with('bookingSuccessMessage', 'Your booking have been successfully Reserved!');
