@@ -84,7 +84,7 @@
         font-weight: 600;
     }
     .checkbox-wrapper {
-        --size: 1.2rem;
+        --size: 1rem;
         --background: #fff;
         font-size: var(--size);
     }
@@ -145,8 +145,8 @@
       position: relative;
       display: flex;
       cursor: pointer;
-      font-weight: 600;
-      font-size: 18px;
+      font-weight: 500;
+      font-size: 16px;
       margin-top: 0;
       margin-bottom: 0;
       /* Mobile Safari: */
@@ -240,7 +240,7 @@
 
 
                 {{-- check those facilities which are for thode room --}}
-                <div class="room-info" style="flex-direction: column;">
+                <div class="room-info" style="flex-direction: column; gap: 5px">
                     <p>Room Facilities :</p>
                     <div>
                         <ul style="column-count: 2">
