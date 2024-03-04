@@ -23,17 +23,28 @@
 .room-info {
     border: 1px solid #606d99;
     text-align: center;
-    height: 70px;
+    height: 152px;
     margin-bottom: 20px;
     cursor: pointer;
 }
-
+.room-details {
+    padding-top: 10px;
+    text-align: left;
+    padding-left: 8px;
+}
 .booked-room-info {
     border: 1px solid #606d99;
     text-align: center;
-    height: 70px;
+    height: 152px;
     margin-bottom: 20px;
     cursor: pointer;
+}
+.guest-info {
+    line-height: 0px;
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .room-info.active {
@@ -139,10 +150,34 @@
     font-size: 24px;
     text-transform: uppercase;
 }
+.room-details p {
+    padding-top: 0;
+    font-size: 14px;
+    margin-bottom: 0;
+    text-transform: capitalize;
+    line-height: 1.2;
+}
+.guest-info p{
+    padding-top: 0;
+    margin-bottom: 0;
+    font-size: 12px;
+    text-transform: capitalize;
+    line-height: 1;
+    display: inline-block;
+    border: 1px solid #606d99;
+    background-color: #606d99;
+    color: #fff;
+    padding: 3px 8px;
+}
 
 
 
 .booked-room-info span {
+    padding-top: 18px;
+    font-size: 24px;
+    text-transform: uppercase;
+}
+.booked-room-info>p {
     padding-top: 18px;
     font-size: 24px;
     text-transform: uppercase;
@@ -342,13 +377,13 @@
 
 
 .room-heading-right {
+    position: absolute;
     float: right;
-    right: 0;
+    right: 7px;
     top: 0;
     padding: 0 7px;
     margin-right: 8px;
     width: 10%;
-    position: relative;
     cursor: all-scroll;
 }
 

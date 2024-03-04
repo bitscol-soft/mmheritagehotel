@@ -7,8 +7,12 @@ use Module\Hotel\Models\Guest;
 use App\Traits\SendNotification;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use App\Models\Company;
 use App\Models\Country;
 use Illuminate\Support\Facades\DB;
+use Module\Hotel\Models\AccountType;
+use Module\Hotel\Models\Booking;
+use Module\Hotel\Models\HotelTransection;
 use Module\Hotel\Models\RoomCategory;
 use Module\Hotel\Services\FrontendBookingService;
 
@@ -160,7 +164,21 @@ class GuestController extends Controller
 
             });
 
-            return redirect()->route('home.page')->with('bookingSuccessMessage', 'Your booking have been successfully Reserved!');
+            // get  the last inserted booking id
+            $booking_id = $this->service->booking->id;
+            
+            $data['transactions'] = HotelTransection::with('source','transaction_ledgers')->where('source_type', 'Booking')
+                                ->where('booking_id', $booking_id)->get();
+
+            $data['booking']      = Booking::with(['bookingDetails' => function($q){
+                                    $q->with('roomNumber')->with('roomCategory');
+                                }])->with('getVat', 'bookingExtraCharge','payBy')->with('paymentType')->find($booking_id);
+
+
+
+            $data['company'] = Company::first();
+            return view('frontend.booking-success', ['guest' => $guest, 'data' => $data])->with('bookingSuccessMessage', 'Your booking have been successfully Reserved!');
+            // return redirect()->route('home.page')->with('bookingSuccessMessage', 'Your booking have been successfully Reserved!');
 
         // } catch (\Throwable $e) {
         //     return redirect()->back()->with('error', $e->getMessage());

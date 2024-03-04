@@ -79,7 +79,8 @@
             // }
         @endphp
 
-        <div class="booked-room-info" style="padding-top: 18px; background: {{ $bgcolor }}; color: white;">
+        <div class="booked-room-info" style="padding-top: 0; background: {{ $bgcolor }}; color: white;">
+            
             <span class="popover-success" data-rel="popover" data-placement="top" data-trigger="click"
                 data-original-title="<i class='fa fa-info-circle green'></i> Guest Information"
                 data-content="<p class='tool-pen'>Name: {{ $guestInfo->name }}.</p> <p class='tool-pen'> Phone No : {{ $guestInfo->phone_no }}</p>
@@ -97,17 +98,41 @@
                     </a>
                 </div>
                 @endif">
-
-                {{ $room->room_number }}
+                <p class="pt-0 mb-0">{{ $room->room_number }}</p>
+                <div>
+                    @for( $i = 0; $i < $room->bed_per_room; $i++)
+                        <img src="{{asset('assets/images/bed.png')}}" alt="" height="33" width="25">
+                    @endfor
+                </div>
+                <div class="room-details">
+                    <p>Price : {{ $room->room_price }}</p>
+                    <p>Size : {{ $room->room_size }}</p>
+                    <p>Breakfast : @if($room->is_breakfast == 1) <label>Yes</label>@else <label>No</label>@endif</p>
+                </div>
+                <div class="guest-info">
+                    <p>Guest-info</p>
+                </div>
 
 
             </span>
 
         </div>
     @else
-        <div class="booked-room-info" style="padding-top: 18px; background: {{ $bgcolor }}; color: white;">
+        <div class="booked-room-info" style="padding-top: 0; background: {{ $bgcolor }}; color: white;">
             <span class="popover-success">
-                {{ $room->room_number }}
+                {{-- {{ $room->room_number }} --}}
+                <p class="pt-0 mb-0">{{ $room->room_number }}</p>
+                <div>
+                    @for( $i = 0; $i < $room->bed_per_room; $i++)
+                        <img src="{{asset('assets/images/bed.png')}}" alt="" height="33" width="25">
+                    @endfor
+                </div>
+                <div class="room-details">
+                    <p>Price : {{ $room->room_price }}</p>
+                    <p>Size : {{ $room->room_size }}</p>
+
+                    <p>Breakfast : @if($room->is_breakfast == 1) <label>Yes</label>@else <label>No</label>@endif</p>
+                </div>
             </span>
         </div>
     @endif
@@ -119,7 +144,28 @@
         <div class="room-info {{ $status }} room-price">
             <input type="hidden" id="category_id" value="{{ $category->id }}">
             <input type="hidden" id="room_id" value="{{ $room->id }}">
-            <p>
+            <p class="pt-0 mb-0">{{ $room->room_number }}</p>
+            <div>
+                @if($status == 'inverse')
+                    @for( $i = 0; $i < $room->bed_per_room; $i++)
+                        <img src="{{asset('assets/images/bed.png')}}" style="filter: brightness(0) invert(1);" alt="" height="33" width="25">
+                    @endfor
+                @else
+                    @for( $i = 0; $i < $room->bed_per_room; $i++)
+                        <img src="{{asset('assets/images/bed.png')}}" alt="" height="33" width="25">
+                    @endfor
+                @endif
+            </div>
+            <div class="room-details">
+                @if($room->room_price)
+                    <p>Price : {{ $room->room_price }}</p>
+                @endif
+                @if ($room->room_size)
+                    <p>Size : {{ $room->room_size }}</p>
+                @endif
+                <p>Breakfast : @if($room->is_breakfast == 1) <label>Yes</label>@else <label>No</label>@endif</p>
+            </div>
+            {{-- <p>
                 {{ $room->room_number }}
                 <span class="badge badge-info px-1">
                     <i style="color: rgb(236, 214, 14)" class="fa fa-bed fa-0">
@@ -135,7 +181,7 @@
 
                     </span>
                 @endif
-            </p>
+            </p> --}}
         </div>
     </div>
 @endif
