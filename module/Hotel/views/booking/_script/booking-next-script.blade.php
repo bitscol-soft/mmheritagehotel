@@ -161,39 +161,28 @@
 
     });
 
-
-
-
-
     //------------------------------------------//
     //        ON-KEYUP - ADVANCE AMOUNT         //
     //------------------------------------------//
     $(document).on('keyup', '.adv-amount', calculateAmount)
 
-
-
-
-
     //------------------------------------------//
     //          ON-KEYUP - VAT AMOUNT           //
     //------------------------------------------//
     $(document).on('keyup', '.vat-amount', function() {
-
         let total = 0;
         $('.net-amount').each(function() {
             total += Number($(this).val());
         })
-
-
         let vat_amount = $(this).val();
-
         total = Number(vat_amount) + Number(total);
-
         $('input[name=sub_total]').val(total);
+    });
 
-    })
-
-
+    //------------------------------------------//
+    //          ON-KEYUP - Deposits Money       //
+    //------------------------------------------//
+    $(document).on('keyup', '.deposits-money', calculateAmount)
 
 
 
@@ -371,12 +360,13 @@
 
         let currentCurrency = `{{ setting('root_currency') }}`;
         let advAmount = Number($('.adv-amount').val());
-
-
+        let depositsMoney = Number($('.deposits-money').val());
 
         $(".grandtotal").val(grandtotal.toFixed(2));
 
-        let due_amount = currencyConversion() - advAmount;
+        let due_amount = currencyConversion() + depositsMoney - advAmount;
+        console.log('due_amount');
+        console.log(due_amount);
 
         $("#line_total, .subtotal-amount").val(subtotal.toFixed(2));
         $(".vat-amount").val(calculate_vat.toFixed(2));
@@ -601,19 +591,13 @@
         return dueAmountForCurrency;
     }
 
-
-
-
-
-
-
-
     //---------------------------------------------------------------//
     //                      SUBMIT BOOKING FORM                      //
     //---------------------------------------------------------------//
     function submitBookingForm() {
 
         let haveAdvanceAmount = $('.adv-amount').val();
+        let depositsMoney = $('.deposits-money').val();
         let isPaymentMethodSelected = $('.payment-type').val();
 
         if ($('.booking-date-picker').val() == '') {
