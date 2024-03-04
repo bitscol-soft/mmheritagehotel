@@ -78,6 +78,9 @@ class HotelTransactionService
             if ($currency_type == 141) {
                 $collection = convertToBDTCurrency($collection, 141);
             }
+            if ($currency_type == 96) {
+                $collection = convertToBDTCurrency($collection, 96);
+            }
 
 
             $hotel_transaction = HotelTransection::create([

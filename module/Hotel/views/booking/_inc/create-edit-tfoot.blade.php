@@ -19,7 +19,7 @@
     </tr>
 
     <tr>
-        <td class="text-right borderless" colspan="{{ $colspan ?? 11 }}">Service Charge <span
+        <td class="text-right borderless" colspan="{{ $colspan ?? 11 }}">Service Charge ({{ vatSetting()->resturent_vat ?? 0 }}%) <span
                 class="currency-sign"></span></td>
         <td class="borderless">
             <input name="service_amount" value="{{ calculateCurrencyAmount($transaction->service_charge ?? 0, 1) }}"
@@ -30,7 +30,7 @@
         <td class="text-right borderless" colspan="{{ $colspan ?? 11 }}">
             <input type="hidden" name="vat" id="vat" value="{{ vatSetting()->hotel_vat ?? 0 }}">
 
-            Vat({{ vatSetting()->hotel_vat }}%) <span class="currency-sign"></span>
+            Vat ({{ vatSetting()->hotel_vat }}%) <span class="currency-sign"></span>
         </td>
         <td class="borderless">
             <input type="text" name="vat_amount"
@@ -47,6 +47,16 @@
                 class="form-control extra-charge text-right input-sm" value="0">
         </td>
     </tr> --}}
+
+    <tr>
+        <td class="text-right borderless" colspan="{{ $colspan ?? 11 }}">
+            Deposits Money <span class="currency-sign"></span>
+        </td>
+        <td class="borderless">
+            <input type="number" name="deposits_money" style="font-size: 14px"
+                class="form-control deposits-money text-right input-sm" value="0">
+        </td>
+    </tr>
 
     <tr>
         <td class="text-right borderless" colspan="{{ $colspan ?? 11 }}">Grand Total <span class="currency-sign"></span>

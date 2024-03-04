@@ -1040,7 +1040,7 @@
     }
 
 
-    $(document).on('keyup', '.adv-amount, .extra-charge, .discount, .discount_type', calculateAmount)
+    $(document).on('keyup', '.adv-amount, .deposits-money, .extra-charge, .discount, .discount_type', calculateAmount)
 
 
 
@@ -1110,17 +1110,19 @@
 
         let currentCurrency = `{{ setting('root_currency') }}`;
         let advAmount = Number($('.adv-amount').val());
+        let depositsMoney = Number($('.deposits-money').val());
 
 
 
         $(".grandtotal").val(grandtotal.toFixed(2));
 
-        let due_amount = currencyConversion() - advAmount;
+        let due_amount = currencyConversion() + depositsMoney - advAmount;
 
         $("#line_total, .subtotal-amount").val(subtotal.toFixed(2));
         $(".vat-amount").val(calculate_vat.toFixed(2));
         $(".service_amount").val(service_amount.toFixed(2));
-        console.log(due_amount);
+        // console.log('due_amount = ');
+        // console.log(due_amount);
         $(".due-amount").val(due_amount.toFixed(2));
     }
 
