@@ -174,10 +174,10 @@
                                                             <input type="text" class="form-control" name="remarks[]" value="{{ old('remarks')[$key] }}">
                                                         </td>
 
-                                                        <td><span class="issue_number">{!! old('issue_number')[$key] !!}</span></td>
-                                                        <td><span class="source">{!! old('source_input')[$key] !!}</span></td>
-                                                        <td><span class="issue_rate">{!! old('issue_rate_input')[$key] !!}</span></td>
-                                                        <td><span class="issue_quantity">{!! old('issue_quantity_input')[$key] !!}</span></td>
+                                                        <td><span class="issue_number">{{ old('issue_number')[$key] ?? '' }}</span></td>
+                                                        <td><span class="source">{{ old('source_input')[$key] ?? '' }}</span></td>
+                                                        <td><span class="issue_rate">{{ old('issue_rate_input')[$key] ?? '' }}</span></td>
+                                                        <td><span class="issue_quantity">{{ old('issue_quantity_input')[$key] ?? '' }}</span></td>
 
                                                         <td><button type="button" class="ibtnDel btn btn-sm btn-danger delete_row" onclick="removeRow(this)"><i class="fa fa-times-circle"></i></button></td>
 
@@ -215,7 +215,7 @@
                                                         <td>
                                                             <input type="text" class="form-control" name="remarks[]" value="{{ $detail->remarks }}">
                                                         </td>
-                                                        <td><span class="issue_number">{!! old('issue_number_input')[$i] ?? '<a target="_blank" href="/gs/gin-list/' . optional($requisition_number[$i])->id . '">'. optional($requisition_number[$i])->issue_number . '</a>'  !!}</span></td>
+                                                        <td><span class="issue_number">@if (!empty(old('issue_number_input')[$i])){{ old('issue_number_input')[$i] }}@else<a target="_blank" href="/gs/gin-list/{{ optional($requisition_number[$i])->id }}">{{ optional($requisition_number[$i])->issue_number }}</a>@endif</span></td>
                                                         <td>
                                                             @if ($requisition_from_item[$i])
                                                                 <a target="_blank" href="{{ route('items.show', optional($requisition_from_item[$i])['id']) }}" >Opening, </a>

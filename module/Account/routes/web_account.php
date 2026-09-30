@@ -35,9 +35,9 @@ Route::group(['prefix' => 'setup'], function () {
     Route::get('account-groups',                        [AccountGroupController::class, 'index'])->name('account-groups.index');
 
 
-    Route::resource('accounts',                         AccountController::class);
-    Route::resource('account-controls',                 AccountControlController::class);
-    Route::resource('account-subsidiaries',             AccountSubsidiaryController::class);
+    Route::resource('accounts', AccountController::class)->except(['show']); // round 3: show not implemented (docs/BUGS.md)
+    Route::resource('account-controls', AccountControlController::class)->except(['show']); // round 3: show not implemented (docs/BUGS.md)
+    Route::resource('account-subsidiaries', AccountSubsidiaryController::class)->except(['show']); // round 3: show not implemented (docs/BUGS.md)
     Route::resource('account-opening-balances',         AccountOpeningBalanceController::class)->only(['create', 'store']);
 
 
@@ -52,7 +52,7 @@ Route::group(['prefix' => 'setup'], function () {
 
 
 
-Route::resource('fund-transfers',                       FundTransferController::class);
+Route::resource('fund-transfers', FundTransferController::class)->except(['show']); // round 3: show not implemented (docs/BUGS.md)
 
 Route::post('fund-transfers/{fundTransfer}/approve',    [FundTransferController::class, 'approveFundTransfer'])->name('fund-transfers.approve.update');
 
@@ -128,10 +128,10 @@ Route::group(['prefix' => 'reports'], function () {
 // Product
 Route::group(['prefix' => 'product'], function () {
 
-    Route::resource('units',                            UnitController::class);
-    Route::resource('categories',                       CategoryController::class);
-    Route::resource('products',                         ProductController::class);
-    Route::resource('damages',                          DamageController::class);
+    Route::resource('units', UnitController::class)->except(['show']); // round 3: show not implemented (docs/BUGS.md)
+    Route::resource('categories', CategoryController::class)->except(['show']); // round 3: show not implemented (docs/BUGS.md)
+    Route::resource('products', ProductController::class)->except(['show']); // round 3: show not implemented (docs/BUGS.md)
+    Route::resource('damages', DamageController::class)->except(['edit', 'update']); // round 3: edit/update not implemented (docs/BUGS.md)
 
 });
 
@@ -140,8 +140,8 @@ Route::group(['prefix' => 'product'], function () {
 // Party
 Route::group(['prefix' => 'party'], function () {
 
-    Route::resource('acc-customers',                    CustomerController::class);
-    Route::resource('acc-suppliers',                    SupplierController::class);
+    Route::resource('acc-customers', CustomerController::class)->except(['show']); // round 3: show not implemented (docs/BUGS.md)
+    Route::resource('acc-suppliers', SupplierController::class)->except(['show']); // round 3: show not implemented (docs/BUGS.md)
 
 });
 
@@ -150,9 +150,9 @@ Route::group(['prefix' => 'party'], function () {
 // Purchase
 Route::group(['prefix' => 'purchase'], function () {
 
-    Route::resource('acc-payments',                 PaymentController::class);
+    Route::resource('acc-payments', PaymentController::class)->except(['show']); // round 3: show not implemented (docs/BUGS.md)
     Route::resource('acc-purchases',                PurchaseController::class);
-    Route::resource('acc-purchase-returns',         PurchaseReturnController::class);
+    Route::resource('acc-purchase-returns', PurchaseReturnController::class)->except(['edit', 'update']); // round 3: edit/update not implemented (docs/BUGS.md)
 
     Route::get('acc-returnable-purchase-invoices',  [PurchaseReturnController::class, 'getReturnablePurchaseInvoices'])->name('acc-returnable-purchase-invoices');
     Route::get('acc-returnable-purchase-items',     [PurchaseReturnController::class, 'getReturnablePurchaseItems'])->name('acc-returnable-purchase-items');
@@ -165,9 +165,9 @@ Route::group(['prefix' => 'purchase'], function () {
 // Sale
 Route::group(['prefix' => 'sale'], function () {
 
-    Route::resource('acc_collections',          CollectionController::class);
+    Route::resource('acc_collections', CollectionController::class)->except(['show']); // round 3: show not implemented (docs/BUGS.md)
     Route::resource('acc-sales',                SaleController::class);
-    Route::resource('acc-sale-returns',         SaleReturnController::class);
+    Route::resource('acc-sale-returns', SaleReturnController::class)->except(['edit', 'update']); // round 3: edit/update not implemented (docs/BUGS.md)
 
     Route::get('acc-returnable-sale-invoices',  [SaleReturnController::class, 'getReturnableSaleInvoices'])->name('acc-returnable-sale-invoices');
     Route::get('acc-returnable-sale-items',     [SaleReturnController::class, 'getReturnableSaleItems'])->name('acc-returnable-sale-items');
@@ -184,22 +184,22 @@ Route::group(['prefix' => 'voucher', 'as' => 'voucher-'], function () {
 
     // Receive
     Route::post('receives/{receive}/approve',   [ReceiveVoucherController::class, 'approveReceiveVoucher'])->name('receives.approve');
-    Route::resource('receives',                 ReceiveVoucherController::class);
+    Route::resource('receives', ReceiveVoucherController::class)->except(['edit', 'update']); // round 3: edit/update not implemented (docs/BUGS.md)
 
 
     // Payment
     Route::post('payments/{payment}/approve',   [PaymentVoucherController::class, 'approvePaymentVoucher'])->name('payments.approve');
-    Route::resource('payments',                 PaymentVoucherController::class);
+    Route::resource('payments', PaymentVoucherController::class)->except(['edit', 'update']); // round 3: edit/update not implemented (docs/BUGS.md)
 
 
     // Contra
     Route::post('contras/{contra}/approve',     [ContraVoucherController::class, 'approveContraVoucher'])->name('contras.approve');
-    Route::resource('contras',                  ContraVoucherController::class);
+    Route::resource('contras', ContraVoucherController::class)->except(['edit', 'update']); // round 3: edit/update not implemented (docs/BUGS.md)
 
 
     // Journal
     Route::post('journals/{journal}/approve',   [JournalVoucherController::class, 'approveJournalVoucher'])->name('journals.approve');
-    Route::resource('journals',                 JournalVoucherController::class);
+    Route::resource('journals', JournalVoucherController::class)->except(['update']); // round 3: update not implemented (docs/BUGS.md)
 });
 
 

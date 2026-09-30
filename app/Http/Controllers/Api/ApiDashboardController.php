@@ -18,6 +18,11 @@ class ApiDashboardController extends Controller
             
             $employee = auth()->user()->employee;
 
+            if (!$employee) {
+                return response()->json(['status' => false, 'message' => 'Employee profile not found for this account (HRM module is not enabled).'], 400);
+            }
+
+
             $attendance = $employee->attendances->where('date', date('Y-m-d'))->first();
 
             $shift = optional($employee->schedule

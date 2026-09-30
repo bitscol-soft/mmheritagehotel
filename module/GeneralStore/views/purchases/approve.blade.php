@@ -146,7 +146,7 @@
                                                         <input type="text" onkeypress="return event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57" value="{{ old('quantity')[$key] }}" name="quantity[]" class="form-control quantity" />
                                                     </td>
                                                     <td>
-                                                        <span class="last_purchase">{!! old('last_purchases')[$key] !!}</span>
+                                                        <span class="last_purchase">{{ old('last_purchases')[$key] ?? '' }}</span>
                                                     </td>
 
                                                     <td><button type="button" class="ibtnDel btn btn-sm btn-danger delete_row" onclick="removeRow(this)"><i class="fa fa-times-circle"></i></button></td>

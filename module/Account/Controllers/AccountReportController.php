@@ -751,6 +751,9 @@ class AccountReportController extends Controller
             $data['transaction_items'] = $data['transaction_items']->paginate(30);
         }
 
+        // round 3 (docs/BUGS.md #42): the view date-groups + paginates $transactions
+        $data['transactions'] = $data['transaction_items'];
+
         return view('reports.expense-analysis.' . ($request->print ? 'print' : 'index'), $data);
     }
 

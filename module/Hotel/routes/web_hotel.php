@@ -27,10 +27,13 @@ Route::group(['prefix' => 'hotel'], function () {
 
     Route::group(['prefix' => 'room-management'], function () {
         Route::resources([
-            'hotel-categories'  => RoomCategoryController::class,
-            'aminities'         => AminitiesController::class,
-            'rooms'             => RoomsController::class,
         ]);
+                // round 3 (docs/BUGS.md): RoomCategoryController does not implement show; the routes would 500
+                Route::resource('hotel-categories', RoomCategoryController::class)->except(['show']);
+                // round 3 (docs/BUGS.md): AminitiesController does not implement show; the routes would 500
+                Route::resource('aminities', AminitiesController::class)->except(['show']);
+                // round 3 (docs/BUGS.md): RoomsController does not implement show; the routes would 500
+                Route::resource('rooms', RoomsController::class)->except(['show']);
         // vatController only implements index/update (inline form on the index page)
         Route::resource('vat', vatController::class)->only(['index', 'update']);
         // AccountTypeController has no create/show views
@@ -68,16 +71,22 @@ Route::group(['prefix' => 'hotel'], function () {
 
     //--------------------- RESOURCES ---------------------//
     Route::resources([
-        'guests'                    => GuestController::class,
         'guest-uploads'             => GuestUploadController::class,
         'booking'                   => BookingController::class,
-        'booking-purpose'           => BookingPurposeController::class,
-        'booking-note'              => BookingNoteController::class,
-        'guest-registration-terms'  => GuestRegistrationTermsController::class,
-        'night-audits'              => NightAuditSummaryController::class,
-        'currency-conversions'      => CurrencyConversionController::class,
 
     ]);
+            // round 3 (docs/BUGS.md): GuestController does not implement show; the routes would 500
+            Route::resource('guests', GuestController::class)->except(['show']);
+            // round 3 (docs/BUGS.md): BookingPurposeController does not implement show; the routes would 500
+            Route::resource('booking-purpose', BookingPurposeController::class)->except(['show']);
+            // round 3 (docs/BUGS.md): BookingNoteController does not implement show; the routes would 500
+            Route::resource('booking-note', BookingNoteController::class)->except(['show']);
+            // round 3 (docs/BUGS.md): GuestRegistrationTermsController does not implement show; the routes would 500
+            Route::resource('guest-registration-terms', GuestRegistrationTermsController::class)->except(['show']);
+            // round 3 (docs/BUGS.md): NightAuditSummaryController does not implement edit/update; the routes would 500
+            Route::resource('night-audits', NightAuditSummaryController::class)->except(['edit', 'update']);
+            // round 3 (docs/BUGS.md): CurrencyConversionController does not implement show; the routes would 500
+            Route::resource('currency-conversions', CurrencyConversionController::class)->except(['show']);
 
     //--------------- CUSTOM ROUTE FOR REFERRED BOOKING ---------------//
     Route::get('referred-booking',                  [BookingController::class, 'index'])->name('booking.referred-booking');

@@ -8,9 +8,9 @@ use App\Http\Controllers\ActivityLogController;
 
 
         Route::resource('modules',                      'ModuleController');
-        Route::resource('parent-permissions',           'ParentPermissionController');
-        Route::resource('submodules',                   'SubmoduleController');
-        Route::resource('permissions',                  'PermissionController');
+        Route::resource('parent-permissions', 'ParentPermissionController')->except(['show']); // round 3: show not implemented (docs/BUGS.md)
+        Route::resource('submodules', 'SubmoduleController')->except(['show']); // round 3: show not implemented (docs/BUGS.md)
+        Route::resource('permissions', 'PermissionController')->except(['show']); // round 3: show not implemented (docs/BUGS.md)
         Route::resource('permission-access',            'UserPermissionController')->except(['index', 'show', 'destroy']);
         // plain /setting/permission-access now opens the permitted-users grid instead of 500
         Route::get('permission-access', function () {

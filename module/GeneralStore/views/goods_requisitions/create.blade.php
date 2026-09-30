@@ -175,10 +175,10 @@
                                                         <td><input type="text" class="form-control" name="remarks[]"
                                                                 value="{{ old('remarks')[$key] ?? null }}"></td>
 
-                                                        <td><span class="issue_number">{!! old('issue_number_input')[$key] ?? null !!}</span></td>
-                                                        <td><span class="source">{!! old('source_input')[$key] ?? null !!}</span></td>
-                                                        <td><span class="issue_rate">{!! old('issue_rate_input')[$key] ?? null !!}</span></td>
-                                                        <td><span class="issue_quantity">{!! old('issue_quantity_input')[$key] ?? null !!}</span></td>
+                                                        <td><span class="issue_number">{{ old('issue_number_input')[$key] ?? '' }}</span></td>
+                                                        <td><span class="source">{{ old('source_input')[$key] ?? '' }}</span></td>
+                                                        <td><span class="issue_rate">{{ old('issue_rate_input')[$key] ?? '' }}</span></td>
+                                                        <td><span class="issue_quantity">{{ old('issue_quantity_input')[$key] ?? '' }}</span></td>
 
                                                         <td><button type="button"
                                                                 class="ibtnDel btn btn-sm btn-danger delete_row"

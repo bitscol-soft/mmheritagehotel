@@ -1309,12 +1309,15 @@ class BookingController extends Controller
     {
 
         $req_date       = $request->booking_availabe;
-        $date_split     = explode('-', $req_date);
-        $check_in       = date('Y-m-d', strtotime($date_split[0]));
-        $check_out      = date('Y-m-d', strtotime($date_split[1]));
+        $date_split     = explode('-', (string) $req_date);
+        // round 3 (docs/BUGS.md #44): deep-link without the range param used to fatal
+        $check_in       = date('Y-m-d', strtotime($date_split[0] ?? 'today'));
+        $check_out      = date('Y-m-d', strtotime($date_split[1] ?? 'tomorrow'));
 
+        // round 3 (docs/BUGS.md #44): booking_ui passes $booking_date to <x-room-manage>
+        $booking_date = $req_date ?: date('d-m-Y') . ' - ' . date('d-m-Y', strtotime('+1 day'));
         $categories = (new RoomStatusService())->availableRoom($check_in, $check_out);
-        return view('booking.booking_ui', compact('categories'));
+        return view('booking.booking_ui', compact('categories', 'booking_date'));
     }
 
 

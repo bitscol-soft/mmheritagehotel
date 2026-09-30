@@ -85,7 +85,9 @@ class ModuleController extends Controller
     public function edit(Module $module)
     {
         $modules = Module::orderBy('name')->paginate(30);
-        return view('setting.module', compact('modules', 'module'));
+        // round 3 (docs/BUGS.md #43): view() lives at module/Permission/views/module.blade.php
+        // and is itself the isset($module) edit form; 'setting.module' never existed
+        return view('module', compact('modules', 'module'));
     }
 
     /**

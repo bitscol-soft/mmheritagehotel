@@ -111,7 +111,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('db-backup-to-drive',        [DatabaseBackupController::class,'databaseBackupToDrive'])->middleware('super-admin')->name('db-backup-to-drive');
 
 
-    Route::resource('group',                GroupController::class);
+    Route::resource('group', GroupController::class)->except(['show']); // round 3: show not implemented (docs/BUGS.md)
     Route::get('/print-groups',             [GroupController::class,'printGroups'])->name('print.groups');
 
     Route::resource('company',              CompanyController::class);
@@ -120,12 +120,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::resource('id-card-settings',     IdCardSettingController::class);
 
 
-    Route::resource('system-setting',       SystemSettingController::class);
+    Route::resource('system-setting', SystemSettingController::class)->except(['create', 'destroy', 'edit', 'show', 'update']); // round 3: create/destroy/edit/show/update not implemented (docs/BUGS.md)
 
 
     Route::group(['prefix' => 'global-setting'], function () {
 
-        Route::resource('suppliers',        SupplierController::class);
+        Route::resource('suppliers', SupplierController::class)->except(['show']); // round 3: show not implemented (docs/BUGS.md)
         Route::resource('supplier-types',   SupplierTypeController::class);
     });
 
@@ -154,7 +154,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::group(['middleware' => 'super-admin'], function () {
 
         Route::get('smart-soft-payments/alert', [SmartSoftPaymentScheduleController::class,'ajaxAlert'])->name('smart-soft-payments.alert');
-        Route::resource('smart-soft-payments',  SmartSoftPaymentScheduleController::class);
+        Route::resource('smart-soft-payments', SmartSoftPaymentScheduleController::class)->except(['create', 'edit', 'show']); // round 3: create/edit/show not implemented (docs/BUGS.md)
     });
 
     Route::post('payment/feedback',             [SmartSoftPaymentScheduleController::class,'feedback'])->name('smart-soft-payments.feedback');

@@ -136,8 +136,8 @@ class BookingController extends Controller
     public function removeToCart(Request $request)
     {
         $prod_id            = $request->booking_id;
-        $cookie_data        = stripslashes(Cookie::get('booking_cart'));
-        $cart_data          = json_decode($cookie_data, true);
+        $cookie_data        = Cookie::get('booking_cart') ? stripslashes(Cookie::get('booking_cart')) : null;
+        $cart_data          = json_decode((string) $cookie_data, true) ?: []; // round 3 (docs/BUGS.md #44): empty cart
         $item_id_list       = array_column($cart_data, 'item_id');
         $prod_id_is_there   = $prod_id;
 

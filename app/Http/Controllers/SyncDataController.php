@@ -82,6 +82,10 @@ class SyncDataController extends Controller
     //--------------------------------------------------------------------------
     public function syncAttendaceFallback(Request $request)
     {
+        // round 3 (docs/BUGS.md #43): same HRM-absent guard as /sync-data (#21)
+        if (!class_exists(\Module\HRM\Services\AttendanceService::class)) {
+            abort(404, 'HRM module is not installed.');
+        }
 
         ini_set('max_execution_time', '0');
 
@@ -105,6 +109,10 @@ class SyncDataController extends Controller
     //--------------------------------------------------------------------------
     public function syncMonthlySummery(Request $request)
     {
+        // round 3 (docs/BUGS.md #43): same HRM-absent guard as /sync-data (#21)
+        if (!class_exists(\Module\HRM\Services\AttendanceService::class)) {
+            abort(404, 'HRM module is not installed.');
+        }
 
         (new AttendanceService)->syncMonthlySummeryData();
 

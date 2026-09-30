@@ -174,7 +174,8 @@ class HomePageController extends Controller
     //--------------------------------------------------------------------------//
     public function singlePage($slug)
     {
-        $data['page'] = Page::where('slug', $slug)->first();
+        // round 3 (docs/BUGS.md #44): unknown slug used to fatal on null -> $page->title in the view
+        $data['page'] = Page::where('slug', $slug)->firstOrFail();
 
         return view('frontend.single-page-view', $data);
     }
@@ -190,8 +191,9 @@ class HomePageController extends Controller
     {
         // return $request->all();
 
-        $check_in    = $request->check_in;
-        $check_out   = $request->check_out;
+        // round 3 (docs/BUGS.md #44): AJAX endpoint deep-linked without dates
+        $check_in    = $request->check_in ?? now()->format('Y-m-d');
+        $check_out   = $request->check_out ?? now()->addDay()->format('Y-m-d');
 
         $room        =  Rooms::where('room_category', $request->category_id);
 

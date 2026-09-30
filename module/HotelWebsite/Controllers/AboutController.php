@@ -72,7 +72,7 @@ class AboutController extends Controller
 
         try {
 
-            $about    = AboutSection::first();
+            $about    = AboutSection::firstOrNew(['id' => optional(AboutSection::first())->id]);
 
             $about->update([
                 'about_heading'         => $request->heading_title,

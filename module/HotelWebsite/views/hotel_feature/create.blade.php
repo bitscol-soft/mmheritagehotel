@@ -25,9 +25,11 @@
                             @include('partials._alert_message')
                         </div>
 
-                        <form class="form-horizontal" id="companyForm" action="{{ route('website-core.feature.update',$feature->id) }}" method="post">
+                        <form class="form-horizontal" id="companyForm" action="{{ $feature->exists ? route('website-core.feature.update', $feature->id) : route('website-core.feature.store') }}" method="post">
                             @csrf
+                            @if($feature->exists)
                             @method('PUT')
+                            @endif
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="form-group">
