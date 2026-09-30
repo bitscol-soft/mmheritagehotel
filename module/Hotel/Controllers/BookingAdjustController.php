@@ -46,7 +46,8 @@ class BookingAdjustController extends Controller
     */
     public function index()
     {
-        # code...
+        // adjustments always need a booking context; the UI links here without one
+        return redirect()->route('booking.index')->with('info', 'Open a booking to adjust it.');
     }
 
 
@@ -71,6 +72,10 @@ class BookingAdjustController extends Controller
         $data['booking']        = Booking::with('bookingDetails.roomNumber', 'bookingAdjusts')->with('hotel_transaction', function($q){
                                                 $q->where('source_type', 'Booking');
                                             })->find($request->booking_id);
+
+        if ($data['booking'] === null) {
+            return redirect()->route('booking.index')->with('error', 'Select a booking first to make adjustments.');
+        }
 
         $data['account_types']  = AccountType::where('status', 1)->pluck('name', 'id');
 

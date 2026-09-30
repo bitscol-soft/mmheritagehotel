@@ -52,6 +52,20 @@ Route::group(['prefix' => 'hotel'], function () {
 
 
 
+    // static booking/* routes must be registered BEFORE the booking resource,
+    // otherwise booking/{booking} (show) swallows e.g. /booking/booking-adjusts -> find('booking-adjusts') -> 500
+    Route::group(['prefix' => 'booking'], function () {
+
+
+        Route::resource('booking-adjusts',     BookingAdjustController::class);
+
+        Route::get('invoice/{id}',             [BookingController::class, 'getInvoice'])->name('generate.invoice');
+        Route::get('invoice-v2/{id}',          [BookingController::class, 'getInvoiceV2'])->name('generate.invoice-v2');
+        Route::get('reservation-invoice/{id}', [BookingController::class, 'reservationInvoice'])->name('generate.reservation-invoice');
+        Route::get('rest-sale-invoice/{id}',   [BookingController::class, 'restSaleInvoice'])->name('generate.rest-sale-invoice');
+    });
+
+
     //--------------------- RESOURCES ---------------------//
     Route::resources([
         'guests'                    => GuestController::class,
@@ -75,16 +89,7 @@ Route::group(['prefix' => 'hotel'], function () {
     Route::post('guest-image-update',            [GuestController::class, 'guestImageUpdate'])->name('guest-image-update');
 
 
-    Route::group(['prefix' => 'booking'], function () {
 
-
-        Route::resource('booking-adjusts',     BookingAdjustController::class);
-
-        Route::get('invoice/{id}',             [BookingController::class, 'getInvoice'])->name('generate.invoice');
-        Route::get('invoice-v2/{id}',          [BookingController::class, 'getInvoiceV2'])->name('generate.invoice-v2');
-        Route::get('reservation-invoice/{id}', [BookingController::class, 'reservationInvoice'])->name('generate.reservation-invoice');
-        Route::get('rest-sale-invoice/{id}',   [BookingController::class, 'restSaleInvoice'])->name('generate.rest-sale-invoice');
-    });
 
 
 

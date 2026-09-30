@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Collection extends Model
 {
+    protected $table = 'acc_collections';
+
     use AutoCreatedUpdatedWithCompany;
 
 

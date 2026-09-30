@@ -24,7 +24,7 @@ class PaymentController extends Controller
         $this->hasAccess("acc_payments.create");
 
         // TODO: dedicated payment form (module is a stub in this repo)
-        return redirect()->route('acc_payments.index')
+        return redirect()->route('acc-payments.index')
             ->with('info', 'Payment entry form is not available yet; payments are recorded through the voucher module.');
     }
 
@@ -40,7 +40,7 @@ class PaymentController extends Controller
         $this->hasAccess("acc_payments.edit");
 
         // TODO: dedicated payment form (module is a stub in this repo)
-        return redirect()->route('acc_payments.index')
+        return redirect()->route('acc-payments.index')
             ->with('info', 'Payment edit form is not available yet.');
     }
 

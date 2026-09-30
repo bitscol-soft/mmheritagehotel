@@ -33,7 +33,7 @@ class GuestRegistrationTermsController extends Controller
 
         $this->hasAccess("guests.create");
         $countries = Country::pluck('name', 'id');
-        return view('guests.create', compact('countries'));
+        return view('guest-registration-terms.create', compact('countries'));
     }
 
 

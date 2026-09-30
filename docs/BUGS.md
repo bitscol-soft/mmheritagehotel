@@ -34,6 +34,20 @@ Legend — Severity: 🔴 breaks a core flow · 🟠 breaks a secondary page/act
 | 21 | 🟠 | `/sync-data`, `/sync-data-v2`, `/sync-data-process` (global settings) | 500 `Class Module\HRM\… not found` (HRM module absent) | unconditional HRM imports at call sites | clean `abort(404,'HRM module is not installed.')` guard |
 | 22 | 🟡 | repo hygiene | no `.gitignore` (vendor, `.env`, backups, node_modules all at risk) | — | added standard Laravel `.gitignore` (tracked files untouched) |
 
+## A2. Found & fixed during local runtime verification (round 2)
+
+These only surfaced by actually booting the app (PHP-WASM + SQLite copy of the committed
+dump, request-level harness). Same environment, same 31-URL suite, all green.
+
+| # | Sev | Route / Screen | Symptom (runtime-discovered) | Root cause | Fix |
+|---|-----|----------------|------------------------------|------------|-----|
+| 33 | 🔴 | `/hotel/booking/booking-adjusts` (and any `booking/<word>` GET) | 500 `Attempt to read property "check_out_date" on null` at `BookingController.php:321` | `booking/{booking}` (resource `show`) was registered **before** the static `booking/booking-adjusts` routes, so the word "booking-adjusts" was bound as a booking **id** → `find()` null → fatal | Moved the static `booking` prefix group ahead of `Route::resources([...])`; `BookingAdjustController::index()` (empty `# code...` stub returning null) now redirects to the bookings list with an info flash |
+| 34 | 🟠 | `/hotel/guest-registration-terms/create`, `/hotel/booking-note/create` | 500 `Undefined variable $companies` | both `create()` methods rendered `guests.create` (copy-paste) which needs `$companies`; their own views exist and only need `$countries` | Return the correct views (`booking-note.create`, `guest-registration-terms.create`) |
+| 35 | 🟠 | `/setting/select/employee/list`, `/setting/permitted/employee/list` | 500 `Class Module\HRM\...Employee not found` even with guard attempts | pre-existing ternaries call HRM in **both** branches; `Schema::hasTable('employees')` can be true while the module is absent | Replaced with `class_exists(\Module\HRM\Models\Employee\Employee::class) && Schema::hasTable('employees')` short-circuits returning `null`/`[]` JSON |
+| 36 | 🟡 | Permission-access create page + permitted-users grid | Same HRM fatal risk when `employees` table exists but module doesn't | two more `Schema::hasTable('employees') ? HRM : []` ternaries | Same class_exists conjunct added |
+| 37 | 🟠 | `/purchase/acc-payments/create|edit` | Fix #9 redirect threw `Route [acc_payments.index] not defined` | payments resource is named `acc-payments`, not `acc_payments` | Corrected route names in the redirect |
+| 38 | 🟠 | new `/reports/received-payment-statement` | 500 `no such table: collections` | `Module\Account\Models\Collection` had no `$table`, defaulting to `collections` | Pinned `protected $table = 'acc_collections'` (the real table in the schema) |
+
 ## B. Open — needs deploy / decision / feature work
 
 | # | Sev | Item | Notes & recommendation |
@@ -61,3 +75,11 @@ Legend — Severity: 🔴 breaks a core flow · 🟠 breaks a secondary page/act
 3. **Logs:** while clicking the fixed screens, watch `storage/logs/laravel.log` — it should stay
    silent. After deploy run `php artisan optimize:clear` once (config/route caches are the #1 cause of
    "the fix is not working" reports).
+4. **DONE — sandbox runtime run (this branch, `c5e5604b`+round-2):** booted the actual app on PHP 8.1.34
+   with the committed DB dump translated to SQLite, logged in as the admin user and executed the 31-check
+   suite request-by-request through the full Laravel kernel (middleware, views, DB, permissions):
+   **30 PASS / 1 artifact** (the artifact is the harness executing `/db-backup` while authenticated —
+   `mysqldump` doesn't exist in the sandbox; the real unauthenticated check passed over HTTP:
+   `/optimize-clear`, `/update-debug`, `/db-backup` all `302 → /login`). Round-2 fixes (#33–#38) were
+   found by exactly this run. Booking create/next-step/guests, all four new reports, CSV export,
+   permission pages and every intentionally-narrowed route (now 404/405, never 500) render clean.

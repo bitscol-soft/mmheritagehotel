@@ -34,7 +34,7 @@ class BookingNoteController extends Controller
 
         $this->hasAccess("guests.create");
         $countries = Country::pluck('name', 'id');
-        return view('guests.create', compact('countries'));
+        return view('booking-note.create', compact('countries'));
     }
 
 
