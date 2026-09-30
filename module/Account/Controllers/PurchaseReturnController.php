@@ -290,6 +290,10 @@ class PurchaseReturnController extends Controller
     {
         $purchase = Purchase::where('id', $request->purchase_id)->with('details.product.unit')->first();
 
+        if ($purchase === null || $purchase->details === null) {
+            return response('');
+        }
+
         return view('purchase/purchase-returns/includes/returnable-items', compact('purchase'))->render();
     }
 }

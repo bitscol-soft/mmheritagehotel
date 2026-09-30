@@ -15,7 +15,7 @@ Route::get('room_by_search_category/{id}',      [BookingController::class, 'room
 
 Route::post('add_booking',                      [BookingController::class, 'addBooking']);
 Route::post('remove_booking',                   [BookingController::class, 'removeBooking']);
-Route::get('remove_booking_next',               [BookingController::class, 'removeNextBk']);
+Route::match(['get', 'post'], 'remove_booking_next', [BookingController::class, 'removeNextBk']);
 
 Route::get('get-sms-balance',                   [GuestController::class, 'getSMSBalance']);
 

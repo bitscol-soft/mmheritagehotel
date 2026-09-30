@@ -19,6 +19,15 @@ class ParentPermissionController extends Controller
     }
 
 
+    public function create()
+    {
+        $submodules        = Submodule::query()->orderByDesc('id')->pluck('name', 'id');
+        $parentPermissions = ParentPermission::with('submodule')->orderByDesc('id')->paginate(30000);
+
+        return view('parent_permission', compact('submodules', 'parentPermissions'));
+    }
+
+
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -41,7 +50,7 @@ class ParentPermissionController extends Controller
     {
         $submodules        = Submodule::orderBy('name')->pluck('name', 'id');
         $parentPermissions = ParentPermission::with('submodule')->orderBy('name')->paginate(30);
-        return view('setting.parent_permission', compact('submodules', 'parentPermissions', 'parentPermission'));
+        return view('parent_permission', compact('submodules', 'parentPermissions', 'parentPermission'));
     }
 
 

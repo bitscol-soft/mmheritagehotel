@@ -674,6 +674,45 @@ class UserPermissionController extends Controller
      | EMPLOYEE PROFILE PERMISSION ACCESS STORE
      |--------------------------------------------------------------------------
     */
+    /*
+     |--------------------------------------------------------------------------
+     | EMPLOYEE SELECT2 SOURCES (used by the "Employee Permission" tab)
+     |--------------------------------------------------------------------------
+    */
+    public function getEmployeeList(Request $request)
+    {
+        $employees = collect();
+
+        if (class_exists(\Module\HRM\Models\Employee::class)) {
+            $employees = call_user_func([\Module\HRM\Models\Employee::class, 'query'])
+                ->when($request->q, function ($q) use ($request) {
+                    $q->where('employee_name', 'like', '%' . $request->q . '%');
+                })
+                ->select('id', 'employee_name as name')
+                ->limit(50)
+                ->get();
+        }
+
+        return response()->json([
+            'data' => $employees->map(function ($employee) {
+                return ['id' => $employee->id, 'text' => $employee->name];
+            })->values(),
+        ]);
+    }
+
+
+    public function getPermittedEmployeeList(Request $request)
+    {
+        $employeeIds = [];
+
+        if (class_exists(\Module\HRM\Models\Employee::class) && Schema::hasTable('employee_permissions')) {
+            $employeeIds = EmployeePermission::query()->pluck('employee_id')->unique()->values()->all();
+        }
+
+        return response()->json(['data' => $employeeIds]);
+    }
+
+
     public function employeePermissionStore(Request $request)
     {
         $this->hasAccess("permission.accesses.create");     // check permission

@@ -38,7 +38,7 @@ Route::group(['prefix' => 'setup'], function () {
     Route::resource('accounts',                         AccountController::class);
     Route::resource('account-controls',                 AccountControlController::class);
     Route::resource('account-subsidiaries',             AccountSubsidiaryController::class);
-    Route::resource('account-opening-balances',         AccountOpeningBalanceController::class);
+    Route::resource('account-opening-balances',         AccountOpeningBalanceController::class)->only(['create', 'store']);
 
 
     // AJAX

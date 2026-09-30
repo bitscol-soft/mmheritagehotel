@@ -55,7 +55,8 @@ class HomePageController extends Controller
 
 
         $data['category']   = RoomCategory::find($request->room_category);
-        $get_aminity        = $data['category']->room_aminities;
+        abort_if($data['category'] === null, 404);
+        $get_aminity        = $data['category']->room_aminities ?? '';
         $aminities_list     = explode(',', $get_aminity);
 
         $data['aminities']  = [];
@@ -65,10 +66,10 @@ class HomePageController extends Controller
 
         foreach ($aminities_list as $key => $value) {
 
-            $name = Aminities::where('id',$value)->first();
+            $name = Aminities::where('id', $value)->first();
 
-            if ($name != null || $name != '') {
-                array_push($data['aminities'],$name[0]);
+            if ($name !== null) {
+                array_push($data['aminities'], $name);
             }
 
         }
@@ -122,8 +123,9 @@ class HomePageController extends Controller
     public function viewRoom($url_slug)
     {
         $room = RoomCategory::where('url_slug', $url_slug)->first();
+        abort_if($room === null, 404);
 
-        $aminities_list = collect(explode(',', $room->room_aminities))->toArray();
+        $aminities_list = collect(explode(',', $room->room_aminities ?? ''))->toArray();
 
         $aminities = Aminities::whereIn('id', $aminities_list)->get();
 

@@ -30,9 +30,11 @@ Route::group(['prefix' => 'hotel'], function () {
             'hotel-categories'  => RoomCategoryController::class,
             'aminities'         => AminitiesController::class,
             'rooms'             => RoomsController::class,
-            'vat'               => vatController::class,
-            'account-type'      => AccountTypeController::class,
         ]);
+        // vatController only implements index/update (inline form on the index page)
+        Route::resource('vat', vatController::class)->only(['index', 'update']);
+        // AccountTypeController has no create/show views
+        Route::resource('account-type', AccountTypeController::class)->except(['create', 'show']);
     });
 
 
@@ -100,7 +102,7 @@ Route::group(['prefix' => 'hotel'], function () {
     Route::get('booking-collection',                [BookingController::class, 'BookingCollection'])->name('booking-collection');
     Route::post('store-collection',                 [BookingController::class, 'StoreCollect'])->name('store-payment-collection');
     Route::post('booking-extra-charge',             [BookingController::class, 'extraCharge'])->name('booking.extra-charge');
-    Route::get('delete-all-booking-by-query',       [BookingController::class, 'deleteAllBooking'])->name('delete-all-booking-by-query');
+    Route::get('delete-all-booking-by-query',       [BookingController::class, 'deleteAllBooking'])->middleware('super-admin')->name('delete-all-booking-by-query');
     Route::get('check-room-availability',           [BookingController::class, 'checkRoomAvailability'])->name('check-room-availability');
     Route::post('extend-checkout-date/{id}',        [BookingController::class, 'extendCheckoutDate'])->name('booking.extend-checkout-date');
 

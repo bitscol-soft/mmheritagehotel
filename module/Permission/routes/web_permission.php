@@ -11,7 +11,11 @@ use App\Http\Controllers\ActivityLogController;
         Route::resource('parent-permissions',           'ParentPermissionController');
         Route::resource('submodules',                   'SubmoduleController');
         Route::resource('permissions',                  'PermissionController');
-        Route::resource('permission-access',            'UserPermissionController');
+        Route::resource('permission-access',            'UserPermissionController')->except(['index', 'show', 'destroy']);
+        // plain /setting/permission-access now opens the permitted-users grid instead of 500
+        Route::get('permission-access', function () {
+            return redirect()->route('permitted.users');
+        })->name('permission-access.index');
 
 
         Route::get('active-deactive-module/{module}',   'ModuleController@activeDeactive')->name('active.deactive.module');

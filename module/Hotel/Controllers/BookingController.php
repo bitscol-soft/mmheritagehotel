@@ -836,7 +836,9 @@ class BookingController extends Controller
 
 
 
-        return view('booking.index', compact('booking', 'category', 'guest'));
+        return view('booking.index', compact('booking', 'category', 'guest') + [
+            'account_types' => AccountType::where('status', 1)->get(),
+        ]);
     }
 
 

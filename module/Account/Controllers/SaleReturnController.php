@@ -292,6 +292,10 @@ class SaleReturnController extends Controller
     {
         $sale = Sale::where('id', $request->sale_id)->with('details.product.unit')->first();
 
+        if ($sale === null || $sale->details === null) {
+            return response('');
+        }
+
         return view('sale/sale-returns/includes/returnable-items', compact('sale'))->render();
     }
 }

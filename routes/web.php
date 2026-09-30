@@ -107,8 +107,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/dashboard',                [HomeController::class,'dashboard'])->name('dashboard');
 
     // database backup
-    Route::get('db-backup',                 [DatabaseBackupController::class,'db_backup'])->name('db-backup');
-    Route::get('db-backup-to-drive',        [DatabaseBackupController::class,'databaseBackupToDrive'])->name('db-backup-to-drive');
+    Route::get('db-backup',                 [DatabaseBackupController::class,'db_backup'])->middleware('super-admin')->name('db-backup');
+    Route::get('db-backup-to-drive',        [DatabaseBackupController::class,'databaseBackupToDrive'])->middleware('super-admin')->name('db-backup-to-drive');
 
 
     Route::resource('group',                GroupController::class);
@@ -171,7 +171,7 @@ Route::group(['middleware' => 'auth'], function () {
         Artisan::call('optimize:clear');
 
         return redirect()->back();
-    })->name('optimize-clear');
+    })->middleware(['auth', 'super-admin'])->name('optimize-clear');
 
 
     // debug on:
@@ -186,5 +186,5 @@ Route::group(['middleware' => 'auth'], function () {
         Artisan::call('optimize:clear');
 
         return redirect()->back()->with('message', 'DebugBar updated successfully');
-    })->middleware('super-admin');
+    })->middleware(['auth', 'super-admin']);
 
