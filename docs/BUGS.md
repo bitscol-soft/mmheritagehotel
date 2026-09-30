@@ -48,6 +48,8 @@ dump, request-level harness). Same environment, same 31-URL suite, all green.
 | 37 | 🟠 | `/purchase/acc-payments/create|edit` | Fix #9 redirect threw `Route [acc_payments.index] not defined` | payments resource is named `acc-payments`, not `acc_payments` | Corrected route names in the redirect |
 | 38 | 🟠 | new `/reports/received-payment-statement` | 500 `no such table: collections` | `Module\Account\Models\Collection` had no `$table`, defaulting to `collections` | Pinned `protected $table = 'acc_collections'` (the real table in the schema) |
 
+| 39 | 🟡 | Public `/` (and `/terms-&-condition`, `/privacy-&-policy`) | 500 `Attempt to read property "about_heading" on null` whenever the website-settings tables (`about_sections`, `hotel_features`, `our_services`, `privacy_policies`) are empty — e.g. a fresh install before the admin fills them in | `HomePageController` passed `Model::first()` straight into the view, which dereferences it unconditionally | `?? new Model()` fallbacks for all five lookups — the sections render blank until configured, the page never 500s. Verified 200 in the sandbox runtime |
+
 ## B. Open — needs deploy / decision / feature work
 
 | # | Sev | Item | Notes & recommendation |

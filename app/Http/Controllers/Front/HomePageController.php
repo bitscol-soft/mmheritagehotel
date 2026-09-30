@@ -24,10 +24,11 @@ class HomePageController extends Controller
     //--------------------------------------------------------------------------//
     public function homePage()
     {
-        $data['feature_head']  = HotelFeature::first();
+        // settings tables may legitimately be empty on a fresh install — render blanks, never 500
+        $data['feature_head']  = HotelFeature::first() ?? new HotelFeature();
         $data['feature_list']  = HotelFeatureList::where('status',1)->get();
-        $data['about']         = AboutSection::first();
-        $data['service']       = OurService::first();
+        $data['about']         = AboutSection::first() ?? new AboutSection();
+        $data['service']       = OurService::first() ?? new OurService();
         $data['service_list']  = OurServiceList::where('status',1)->take(2)->get();
         $data['room_category'] = RoomCategory::where('status',1)->get();
         $data['gallery']       = HotelGallery::where('status',1)->get();
@@ -144,7 +145,7 @@ class HomePageController extends Controller
     //--------------------------------------------------------------------------//
     public function termsCondition()
     {
-        $data = PrivacyPolicy::first();
+        $data = PrivacyPolicy::first() ?? new PrivacyPolicy();
 
         return view('frontend.terms',compact('data'));
     }
@@ -161,7 +162,7 @@ class HomePageController extends Controller
     //--------------------------------------------------------------------------//
     public function privacyPolicy()
     {
-        $data = PrivacyPolicy::first();
+        $data = PrivacyPolicy::first() ?? new PrivacyPolicy();
 
         return view('frontend.privacy_policy',compact('data'));
     }
