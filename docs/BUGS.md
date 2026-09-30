@@ -50,8 +50,14 @@ Legend — Severity: 🔴 breaks a core flow · 🟠 breaks a secondary page/act
 
 ## C. Verification
 
-- Every changed PHP file passes a real PHP-7 grammar parse (`php-parser` AST); only pre-existing
-  unparseable constructs (unrelated to these fixes) remain.
+1. **Static:** every changed PHP file passes a real PHP-7 grammar parse (`php-parser` AST); only pre-existing
+   unparseable constructs (unrelated to these fixes) remain.
 - All route/controller pairs in section A were traced from the live 500 page titles to code in this repo.
-- Runtime smoke-test of the fixed screens requires a fresh staging deploy (item #23); the sandbox
-  preview environment is disposable.
+2. **Runtime:** deploy this branch to staging, then run `tools/verify_fixes.sh`
+   (`BASE=… EMAIL=… PASS=… ./tools/verify_fixes.sh`). It logs in, re-checks all 30 previously-broken
+   URLs, asserts the intentionally-removed routes now 404 (not 500), and verifies the unauthenticated
+   security routes are locked. Exit code 0 = all good; it refuses to run against the live production
+   host unless `ALLOW_LIVE=1`.
+3. **Logs:** while clicking the fixed screens, watch `storage/logs/laravel.log` — it should stay
+   silent. After deploy run `php artisan optimize:clear` once (config/route caches are the #1 cause of
+   "the fix is not working" reports).
