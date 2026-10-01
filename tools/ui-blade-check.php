@@ -624,3 +624,78 @@ foreach ($rpCases as $rpName => [$rpUrl, $rpData, $rpMarkers, $rpAbsent]) {
     if (file_get_contents($rpFile) !== $rpHtml) throw new RuntimeException($rpFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
 }
 echo "PASS hotel report screens render: filter bar, results panel, export partial, escaped data\n";
+
+// Render the remaining Hotel screens: guest SMS, night audit detail, monthly room calendar (two views), booking migration, and the two printable documents.
+$hmSub = function ($file) use ($root) {
+    $source = file_get_contents($root . '/module/Hotel/views/' . $file . '.blade.php');
+    $source = str_replace(["@extends('layouts.master')", '<x-alert-message />', "@include('partials._alert_message')", 'calculateCurrencyAmount(', 'fdate(', 'today_from_system()', 'getCurrentCurrencyRate('],
+        ["@extends('mm-checkout-layout')", '', '', 'mm_cur(', 'mm_fdate(', "'2026-10-01'", 'mm_rate('], $source);
+    $source = preg_replace(['/vatSetting\(\)->(\w+)/', "/(?<![\\w>])setting\\('[^']*'\\)/", '/hasPermission\\([^)]*\\)/', '/@extends\\(\'layouts\\.master\'\\)/'], ["'10'", "'1'", 'true', "@extends('mm-checkout-layout')"], $source);
+    if (preg_match('/vatSetting\(|calculateCurrencyAmount|x-alert-message|hasPermission\(|[^_\w]setting\(/', $source)) throw new RuntimeException('Unsubstituted helper in ' . $file);
+    return $source;
+};
+if (!function_exists('mm_rate')) { function mm_rate($c) { return 1; } }
+if (!function_exists('mm_fdate')) { function mm_fdate($date, $format = 'Y-m-d') { return date($format, strtotime($date)); } }
+if (!function_exists('mm_days')) { function mm_days($m) { return 31; } }
+$hmViews = $coViews;
+foreach (['guests/sms/index', 'guests/include/script', 'night-audits/show', 'hotel/reports/monthly/index', 'hotel/reports/monthly/booking-ui', 'hotel/reports/monthly/inc/date-wise-room-status', 'booking/adjust/create', 'booking/adjust/_inc/_script', 'booking/adjust/_inc/show-room', 'booking/_inc/_booking-context', 'booking/_inc/create-edit-tfoot', 'booking/_inc/_check-sms-and-email', 'guests/invoice', 'hotel/reports/night-closing/invoice'] as $hmView) {
+    @mkdir(dirname($hmViews . '/' . $hmView), 0777, true);
+    $hmSource = $hmSub($hmView);
+    if ($hmView === 'hotel/reports/monthly/index' || $hmView === 'hotel/reports/monthly/booking-ui') $hmSource = str_replace('totalDaysInMonth(', 'mm_days(', $hmSource);
+    file_put_contents($hmViews . '/' . $hmView . '.blade.php', $hmSource);
+}
+$hmRoutes = new Illuminate\Routing\RouteCollection();
+foreach (['guests.index' => 'GET hotel/guests', 'guests.create' => 'GET hotel/guests/create', 'guests.submit-sms' => 'POST hotel/guests/submit-sms', 'night-audits.index' => 'GET hotel/night-audits', 'booking.index' => 'GET hotel/booking', 'booking-adjusts.store' => 'POST hotel/booking-adjusts', 'booking-adjusts.create' => 'GET hotel/booking-adjusts/create', 'report.night-audit' => 'GET hotel/reports/night-audits'] as $hmName => $hmDef) {
+    [$hmMethod, $hmUri] = explode(' ', $hmDef);
+    $hmRoutes->add((new Illuminate\Routing\Route($hmMethod, $hmUri, function () {}))->name($hmName));
+}
+$hmTx = function ($type, $invoice, $total, $paid, $rooms = ['101']) { return (object) ['transaction' => (object) ['source_type' => $type, 'invoice_no' => $invoice, 'total_amount' => $total, 'collection' => $paid], 'source' => (object) ['bookingDetails' => collect(array_map(function ($n) { return (object) ['roomNumber' => (object) ['room_number' => $n]]; }, $rooms))], 'account' => (object) ['name' => 'Cash']]; };
+$hmGuest = (object) ['name' => 'Rahim <b>Uddin</b>', 'address' => 'Dhaka', 'phone_no' => '01700000000', 'country' => (object) ['name' => 'Bangladesh']];
+$hmRoom = function ($id, $no, $cat, $price) { return (object) ['id' => $id, 'room_number' => $no, 'roomCategory' => (object) ['name' => $cat, 'price' => $price]]; };
+$hmBooking = (object) ['id' => 5, 'booking_number' => 'B-0007', 'booking_date' => '2026-09-28', 'check_in_date' => '2026-10-01', 'check_out_date' => '2026-10-03', 'status' => 1, 'guestInfo' => $hmGuest,
+    'transection' => (object) ['collection' => 1000, 'total_amount' => 9000],
+    'hotel_transaction' => collect([(object) ['due_amount' => 8000, 'collection' => 1000]]),
+    'bookingAdjusts' => collect(),
+    'bookingDetails' => collect([(object) ['room_id' => 1, 'roomNumber' => $hmRoom(1, '101', 'Deluxe King', 4000), 'guest_count' => 2, 'infant_count' => 0, 'night_count' => 2, 'check_out_date' => '2026-10-03', 'allow_breakfast' => 1], (object) ['room_id' => 2, 'roomNumber' => $hmRoom(2, '102', 'Standard Twin', 3000), 'guest_count' => 1, 'infant_count' => 0, 'night_count' => 2, 'check_out_date' => '2026-10-03', 'allow_breakfast' => 0]])];
+$hmMonthBooking = (object) ['status' => 1, 'check_in_time' => '14:00:00', 'check_out_time' => '11:00:00', 'check_in_note' => 'Late arrival', 'booking_number' => 'B-0007', 'check_in_date' => '2026-10-01', 'check_out_date' => '2026-10-03', 'guestInfo' => $hmGuest, 'customer' => (object) ['name' => 'Rahim']];
+$hmMonthRooms = collect([(object) ['room_number' => '101', 'roomCategory' => (object) ['name' => 'Deluxe King'], 'booking_dates' => collect([(object) ['date' => '2026-10-01', 'booking' => $hmMonthBooking], (object) ['date' => '2026-10-02', 'booking' => (object) ['status' => 0, 'check_in_time' => null, 'check_out_time' => null, 'check_in_note' => null, 'guestInfo' => $hmGuest]], (object) ['date' => '2026-10-04', 'booking' => (object) ['status' => 3, 'check_in_time' => null, 'check_out_time' => null, 'check_in_note' => null, 'guestInfo' => $hmGuest]]])], (object) ['room_number' => '102', 'roomCategory' => (object) ['name' => 'Standard Twin'], 'booking_dates' => collect()]]);
+$hmCases = [
+    'sms' => ['guests.sms.index', '/hotel/guests/sms', ['phones' => '01700000000, 01800000000', 'smsbal' => 120],
+        ['mm-hotel-sms', 'id="companyForm"', 'name="phone_no"', 'name="message"', 'id="form-field-tags"', 'multiple-phone-input', 'message-area', 'total-character-count', 'part-count', 'name="isFromGuestList"', '01700000000, 01800000000', '>120<'], ['widget-box ', 'widget-main', 'widget-header']],
+    'night-audit-show' => ['night-audits.show', '/hotel/night-audits/7?date=2026-09-30', ['audit' => (object) ['date' => '2026-09-30', 'total_check_in' => 3, 'total_reservation' => 2, 'total_check_out' => 1, 'total_cancel' => 0, 'total_room' => 32, 'total_dirty_room' => 4, 'details' => collect([(object) ['transaction' => $hmTx('Booking', '0007', 7300, 5300, ['101', '102'])], (object) ['transaction' => $hmTx('Booking', '0008', 2000, 2000)]])]],
+        ['mm-audit-show', 'mm-audit-summary', 'Generate Date', 'INV-0007', 'INV-0008', 'Total Collection', 'class="item-total"', 'onclick="print()"', '@page'], ['widget-box', 'widget-main', 'widget-header', 'class="no-print']],
+    'monthly' => ['hotel.reports.monthly.index', '/hotel/reports/monthly-summaries?month=2026-10', ['room_categories' => collect([(object) ['id' => 1, 'name' => 'Deluxe King']]), 'room_datas' => collect([(object) ['id' => 1, 'name' => 'Room 101']]), 'guests' => collect([(object) ['id' => 1, 'name' => 'Rahim', 'phone_no' => '017']]), 'categories' => collect(), 'rooms' => $hmMonthRooms],
+        ['mm-report-monthly', 'name="month"', 'name="room_category"', 'name="guest_id"', 'mm-report-legend', 'bg-dark', 'id="schedule_table"', 'date-1 bg-0', 'date-2 bg-1', 'date-4 bg-2', 'guest-popup', 'popover-success', 'Late arrival'], ['widget-box', 'widget-main', 'widget-header', 'col-sm-12']],
+    'monthly-booking' => ['hotel.reports.monthly.booking-ui', '/hotel/reports/monthly-booking-summaries?month=2026-10', ['room_categories' => collect([(object) ['id' => 1, 'name' => 'Deluxe King']]), 'room_datas' => collect([(object) ['id' => 1, 'name' => 'Room 101']]), 'guests' => collect([(object) ['id' => 1, 'name' => 'Rahim', 'phone_no' => '017']]), 'categories' => collect(), 'rooms' => $hmMonthRooms],
+        ['mm-report-monthly', 'name="month"', 'name="room_category"', 'name="guest_id"', 'mm-report-legend'], ['widget-box', 'widget-main', 'widget-header', 'col-sm-12']],
+    'booking-adjust' => ['booking.adjust.create', '/hotel/booking-adjusts/create?booking_id=5&type=migrate', ['booking' => $hmBooking, 'account_types' => collect([1 => 'Cash']), 'roomCategories' => collect([(object) ['id' => 1, 'name' => 'Deluxe King', 'price' => 4000, 'rooms' => collect([(object) ['id' => 11, 'room_number' => '111'], (object) ['id' => 12, 'room_number' => '112']])]])],
+        ['mm-booking-adjust', 'id="store-form"', 'name="booking_id" value="5"', 'name="type" value="migrate"', 'name="from_booking_migration"', 'name="migrate_date"', 'name="check_out_date"', 'id="checkRoomStatus"', 'class="check-in-date"', 'class="tr-checkout-date"', 'id="previousDue"', 'id="previousAdvance"', 'id="previous_check_out_date"', 'id="selectedRoom"', 'name="room_ids"', 'room-select', 'data-room-category="Deluxe King"', 'class="available-rooms"', 'id="available-room"', 'room-list', 'roomTbody', 'submit-form-btn', 'pickRoom(this, '], ['widget-box', 'widget-main', 'widget-header', 'Half Day']],
+];
+@mkdir(__DIR__ . '/fixtures/hotel-more', 0777, true);
+foreach ($hmCases as $hmName => [$hmViewName, $hmUrl, $hmData, $hmMarkers, $hmAbsent]) {
+    $hmRequest = Illuminate\Http\Request::create($hmUrl);
+    $hmRequest->setLaravelSession(new Illuminate\Session\Store('mm', new Illuminate\Session\ArraySessionHandler(10)));
+    $hmRequest->setRouteResolver(function () use ($hmRoutes, $hmName, $hmRequest) { $hmRoute = $hmRoutes->getByName($hmName === 'booking-adjust' ? 'booking-adjusts.create' : 'guests.index'); $hmRoute->bind($hmRequest); return $hmRoute; });
+    $app->instance('request', $hmRequest);
+    $app->instance('url', new Illuminate\Routing\UrlGenerator($hmRoutes, $hmRequest));
+    if ($hmName === 'night-audit-show') $hmViewName = 'night-audits.show';
+    $hmHtml = $app->make('view')->make($hmViewName, array_merge(['errors' => new Illuminate\Support\ViewErrorBag()], $hmData))->render();
+    $hmHtml = preg_replace('/(name="_token" value=")[A-Za-z0-9]+"/', '$1fixture-csrf-token"', str_replace('http://localhost/assets', '/assets', $hmHtml));
+    foreach (array_merge(['mm-panel', 'mm-page-title'], $hmMarkers) as $hmMarker) {
+        if (strpos($hmHtml, $hmMarker) === false) throw new RuntimeException('Hotel screen ' . $hmName . ' missing ' . $hmMarker);
+    }
+    foreach ($hmAbsent as $hmMarker) {
+        if (strpos($hmHtml, $hmMarker) !== false) throw new RuntimeException('Hotel screen ' . $hmName . ' still contains ' . $hmMarker);
+    }
+    if (strpos($hmHtml, '<b>Warning</b>') !== false || strpos($hmHtml, '<b>Notice</b>') !== false) throw new RuntimeException('Hotel screen ' . $hmName . ' sample data is incomplete (PHP warning in output)');
+    $hmFile = __DIR__ . '/fixtures/hotel-more/' . $hmName . '.html';
+    if (getenv('MM_WRITE_FIXTURE')) { file_put_contents($hmFile, $hmHtml); file_put_contents($previewDir . '/hotel-' . $hmName . '.html', $hmHtml); }
+    if (file_get_contents($hmFile) !== $hmHtml) throw new RuntimeException($hmFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
+}
+// The two printable documents only gained a screen-only bar: compile both to PHP and parse the result (the guard in ui-check.cjs compares the printed markup).
+foreach (['guests/invoice', 'hotel/reports/night-closing/invoice'] as $hmDoc) {
+    $hmCompiled = $app->make('blade.compiler')->compileString(file_get_contents($root . '/module/Hotel/views/' . $hmDoc . '.blade.php'));
+    token_get_all($hmCompiled, TOKEN_PARSE);
+    if (strpos($hmCompiled, 'inv-screen-bar') === false || strpos($hmCompiled, 'window.print()') === false) throw new RuntimeException($hmDoc . ' lost its screen-only bar');
+}
+echo "PASS remaining hotel screens render: SMS, night audit detail, monthly calendar, booking migration\n";

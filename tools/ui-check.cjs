@@ -493,3 +493,40 @@ console.log('PASS: note list/edit expressions, forms and status scripts; legacy 
  assert.deepEqual(changed,[],'report export partials must stay unchanged');
  console.log('PASS: hotel report screens keep fields, expressions, directives, components, tables and scripts; export partials untouched');
 }
+
+{
+ // Remaining Hotel screens (guest SMS, night audit detail, monthly calendar x2, booking migration): fields, Blade expressions and scripts stay as they were; only the legacy widget frame changed.
+ const base='22774024';
+ const nc=s=>s.replace(/\{\{--[\s\S]*?--\}\}/g,'');
+ const ex=s=>(nc(s).match(/\{\{[\s\S]*?\}\}|\{!![\s\S]*?!!\}/g)||[]).map(x=>x.replace(/\s+/g,' '));
+ const ctl=s=>(nc(s).replace(/\{\{[\s\S]*?\}\}/g,'{{}}').match(/<(input|select|textarea|button)\b[^>]*>/g)||[]).map(x=>x.replace(/\s+/g,' ').replace(/ class="[^"]*"/,''));
+ const forms=s=>(nc(s).match(/<form[^>]*>/g)||[]).map(x=>x.replace(/\s+/g,' ').replace(/ class="[^"]*"/,''));
+ const only=(l,m)=>{const c={};l.forEach(x=>c[x]=(c[x]||0)+1);m.forEach(x=>c[x]=(c[x]||0)-1);return Object.entries(c).filter(([,n])=>n).map(([k,n])=>`${n>0?'-':'+'}${Math.abs(n)} ${k}`).sort();};
+ const tables=s=>(nc(s).match(/<table[\s\S]*?<\/table>/g)||[]).filter(t=>t.includes('<thead>')).map(t=>t.replace(/\s+/g,' ').replace(/ class="(btn|mm-button)[^"]*"/g,'').replace(' style="border: none"','')).join('|');
+ const tail=s=>{const i=s.search(/@section\('(?:js|script)'\)/);return i<0?'':s.slice(i);};
+ const scripts=s=>(nc(s).match(/<script[\s\S]*?<\/script>/g)||[]).map(t=>t.replace(/\s+/g,' ')).join('|');
+ const expected={
+  'hotel/reports/monthly/index':{ex:['-1 {{ __(5) }}']},
+  'hotel/reports/monthly/booking-ui':{ex:['-1 {{ __(5) }}']},
+ };
+ for(const f of ['guests/sms/index','night-audits/show','hotel/reports/monthly/index','hotel/reports/monthly/booking-ui','booking/adjust/create']){
+  const p=`module/Hotel/views/${f}.blade.php`,after=fs.readFileSync(p,'utf8'),before=execFileSync('git',['show',`${base}:${p}`],{encoding:'utf8'}),e=expected[f]||{};
+  assert.deepEqual(only(ex(before),ex(after)),(e.ex||[]).sort(),`${f}: Blade expressions changed`);
+  assert.deepEqual(only(ctl(before),ctl(after)),[],`${f}: form controls changed`);
+  assert.deepEqual(only(forms(before),forms(after)),[],`${f}: form tags changed`);
+  assert.equal(tables(after),tables(before),`${f}: tables changed`);
+  assert.equal(tail(after),tail(before),`${f}: page script changed`);
+  assert.equal(scripts(after),scripts(before),`${f}: scripts changed`);
+  assert(after.includes('<x-mm.page'),`${f}: shared layout expected`);
+  assert(!after.includes('widget-box ')&&!after.includes('widget-main')&&!after.includes('widget-header'),`${f}: legacy widget frame should be gone`);
+ }
+ // the two printable documents only gain the screen-only bar; everything that prints is unchanged
+ for(const f of ['guests/invoice','hotel/reports/night-closing/invoice']){
+  const p=`module/Hotel/views/${f}.blade.php`,after=fs.readFileSync(p,'utf8'),before=execFileSync('git',['show',`${base}:${p}`],{encoding:'utf8'});
+  const stripped=after.replace(/\n        \/\* Screen-only action bar[\s\S]*?(?=    <\/style>)/,'\n    ').replace(/\n    <nav class="inv-screen-bar"[\s\S]*?<\/nav>\n/,'');
+  const norm=s=>s.replace(/\s+/g,' ');
+  assert.equal(norm(stripped),norm(before),`${f}: the printed document changed`);
+  assert(after.includes('inv-screen-bar')&&after.includes('@media print')&&/\.inv-screen-bar\s*\{\s*display: none !important/.test(after),`${f}: screen bar must be hidden when printing`);
+ }
+ console.log('PASS: remaining hotel screens keep fields, expressions, tables and scripts; printable documents only gain a screen-only bar');
+}

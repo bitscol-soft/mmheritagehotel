@@ -582,3 +582,67 @@
 .mm-ui.mm-report .pagination { margin: 10px 0 0; }
 @media (max-width: 575px) { .mm-ui.mm-report .mm-report-form .mm-report-field, .mm-ui.mm-report .mm-report-form > .input-group { flex-basis: 100%; max-width: none; } .mm-ui.mm-report .mm-report-form .btn-group .mm-button { flex: 1 1 auto; } }
 @media print { .mm-ui.mm-report .mm-panel { border: 0; box-shadow: none; padding: 0; } }
+
+/* Guest SMS (guests/sms/index): number tags, message box and balance panel */
+.mm-ui.mm-hotel-sms .mm-sms-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 5fr) minmax(220px, 2fr); gap: 16px; align-items: start; }
+.mm-ui.mm-hotel-sms .mm-sms-title { margin: 0 0 12px; font-size: 14px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--mm-muted); }
+.mm-ui.mm-hotel-sms .textarea { width: 100%; min-height: 260px; padding: 10px 12px; border: 1px solid var(--mm-line); border-radius: 6px; background: var(--mm-surface); color: var(--mm-ink); font: inherit; resize: vertical; }
+.mm-ui.mm-hotel-sms .textarea:focus { outline: 3px solid var(--mm-brand); outline-offset: 1px; }
+.mm-ui.mm-hotel-sms .inline, .mm-ui.mm-hotel-sms .inline .tags { width: 100% !important; display: block; }
+.mm-ui.mm-hotel-sms .inline .tags { min-height: 260px; max-height: 40vh; overflow-y: auto; padding: 6px; border: 1px solid var(--mm-line); border-radius: 6px; background: var(--mm-surface); }
+.mm-ui.mm-hotel-sms .inline .tags .tag { margin: 2px; background: var(--mm-bg); color: var(--mm-ink); padding: 4px 18px 5px 6px !important; }
+.mm-ui.mm-hotel-sms .inline .tags .tag .close { color: #c0392b; }
+.mm-ui.mm-hotel-sms .inline .tags .tag .close:hover { color: #fff; background: #c0392b; }
+.mm-ui.mm-hotel-sms .tags input { color: var(--mm-ink); background: transparent; }
+.mm-ui.mm-hotel-sms .mm-sms-stats { display: grid; grid-template-columns: auto 1fr; gap: 8px 16px; margin: 0; }
+.mm-ui.mm-hotel-sms .mm-sms-stats dt { font-weight: 600; color: var(--mm-muted); }
+.mm-ui.mm-hotel-sms .mm-sms-stats dd { margin: 0; font-weight: 700; text-align: right; }
+.mm-ui.mm-hotel-sms .mm-sms-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; margin-top: 16px; }
+@media (max-width: 991px) { .mm-ui.mm-hotel-sms .mm-sms-grid { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 575px) { .mm-ui.mm-hotel-sms .mm-sms-actions .mm-button { flex: 1 1 100%; } }
+
+/* Night audit detail (night-audits/show): summary grid, table and print */
+.mm-ui.mm-audit-show .mm-audit-date { margin: 0 0 16px; font-size: 18px; text-align: center; }
+.mm-ui.mm-audit-show .mm-audit-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin: 0 0 20px; }
+.mm-ui.mm-audit-show .mm-audit-summary > div { padding: 10px 14px; border: 1px solid var(--mm-line); border-radius: 8px; background: var(--mm-bg); }
+.mm-ui.mm-audit-show .mm-audit-summary dt { font-size: 12px; font-weight: 600; color: var(--mm-muted); }
+.mm-ui.mm-audit-show .mm-audit-summary dd { margin: 2px 0 0; font-size: 20px; font-weight: 700; }
+.mm-ui.mm-audit-show table { margin: 0; }
+.mm-ui.mm-audit-show thead th { background: var(--mm-bg); color: var(--mm-ink); white-space: nowrap; }
+@media print {
+    .mm-ui.mm-audit-show .mm-panel { border: 0; box-shadow: none; padding: 0; }
+    .mm-ui.mm-audit-show .th-txt-size, .mm-ui.mm-audit-show .td-font-size { font-size: 10px !important; }
+}
+
+/* Booking migration (booking/adjust/create): info grid, room picks, date row, available rooms and the room table */
+.mm-ui.mm-booking-adjust form { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
+.mm-ui.mm-booking-adjust .mm-adjust-title { margin: 0 0 12px; font-size: 14px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--mm-muted); }
+.mm-ui.mm-booking-adjust .mm-adjust-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; }
+.mm-ui.mm-booking-adjust .mm-adjust-info p { margin: 0 0 6px; }
+.mm-ui.mm-booking-adjust .mm-adjust-info p b { display: inline-block; min-width: 90px; }
+.mm-ui.mm-booking-adjust .mm-adjust-booking { margin: 0; }
+.mm-ui.mm-booking-adjust .mm-adjust-booking th, .mm-ui.mm-booking-adjust .mm-adjust-booking td { padding: 6px 8px; border: 0; }
+.mm-ui.mm-booking-adjust .mm-adjust-room-picks { display: flex; flex-wrap: wrap; gap: 8px 24px; margin-bottom: 16px; }
+.mm-ui.mm-booking-adjust .mm-adjust-dates { max-width: 720px; margin-bottom: 16px; }
+.mm-ui.mm-booking-adjust .mm-adjust-dates .input-group { display: flex; flex-wrap: wrap; width: 100%; }
+.mm-ui.mm-booking-adjust .mm-adjust-dates .input-group > * { float: none; width: auto; }
+.mm-ui.mm-booking-adjust .mm-adjust-dates .input-group .form-control { flex: 1 1 140px; min-width: 0; min-height: 40px; }
+.mm-ui.mm-booking-adjust .mm-adjust-dates .input-group-addon { display: flex; align-items: center; white-space: nowrap; }
+.mm-ui.mm-booking-adjust .mm-adjust-dates .input-group-btn { display: flex; padding-left: 8px; font-size: 14px; }
+.mm-ui.mm-booking-adjust .available-rooms .main-row { display: flex; flex-wrap: wrap; gap: 10px; padding: 0; margin: 0 0 20px; }
+.mm-ui.mm-booking-adjust .available-rooms .main-row .category-item { flex: 0 0 100%; margin: 0 0 12px; }
+.mm-ui.mm-booking-adjust .available-rooms .main-row > [class*="col-"] { width: 108px; float: none; padding: 0; }
+.mm-ui.mm-booking-adjust .available-rooms .main-row > .col-md-12 { width: 100%; }
+.mm-ui.mm-booking-adjust .room-item { border-color: var(--mm-brand); background: var(--mm-surface); color: var(--mm-ink); }
+.mm-ui.mm-booking-adjust .room-item.active { background-color: var(--mm-brand) !important; color: #fff; }
+.mm-ui.mm-booking-adjust .room-list { margin: 0; }
+.mm-ui.mm-booking-adjust .room-list thead th { background: var(--mm-bg); color: var(--mm-ink); }
+.mm-ui.mm-booking-adjust .mm-adjust-actions { display: flex; justify-content: flex-end; margin-top: 16px; }
+@media (max-width: 575px) { .mm-ui.mm-booking-adjust .mm-adjust-actions .mm-button { width: 100%; } .mm-ui.mm-booking-adjust .mm-adjust-dates .input-group-btn { width: 100%; padding: 8px 0 0; } .mm-ui.mm-booking-adjust .mm-adjust-dates .input-group-btn .mm-button { width: 100%; } }
+
+/* Monthly room calendar (hotel/reports/monthly/*) */
+.mm-ui.mm-report-monthly .mm-report-legend { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 14px; }
+.mm-ui.mm-report-monthly table .bg-dark { background-color: var(--mm-bg); color: var(--mm-ink); vertical-align: middle; }
+.mm-ui.mm-report-monthly table .bg-0 { background: #D15B47; }
+.mm-ui.mm-report-monthly table .bg-2 { background: #ff8000; }
+.mm-ui.mm-report-monthly select.required:invalid { height: 0; opacity: 0; position: absolute; display: flex; }
