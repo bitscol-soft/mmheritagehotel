@@ -37,6 +37,15 @@ acceptance. UI implementation alone is not production completion.
 | Night audit list, details modal, printable audit | Migrated | Staging pending |
 | `sales/edit`, `due-receive/*`, `export/pdf`, old sidebar partial | Unreachable; not migrated | n/a |
 
+## Permission status
+
+| Area | UI implementation | Acceptance |
+|---|---|---|
+| Modules, sub modules, parent permissions, permissions (list/create/edit) | Migrated | Staging pending |
+| Permitted users list, new user, change password (own and by admin) | Migrated | Staging pending |
+| User role/permission matrix (create, edit) and employee permissions | Migrated; checkbox/accordion scripts unchanged | Staging pending |
+| `EmployeePasswordChangeController` view | Dead; not migrated | n/a |
+
 ## Latest group: Booking Purpose & Platform
 
 - Shared page/panel layouts, responsive table overflow and labelled name fields.

@@ -9,94 +9,74 @@
 
 
 @section('content')
+<x-mm.styles />
+<x-mm.page class="mm-hotel-setup mm-perm" title="Sub modules" description="Group permissions under a module.">
+    <div class="mm-setup-stack">
+        <x-mm.panel>
+            <h2 class="mm-setup-title">Manage Sub Module</h2>
+            <form class="form-horizontal" action="{{ isset($submodule) ? route('submodules.update', $submodule->id) : route('submodules.store') }}" method="post">
+            @csrf
+                @if (isset($submodule))
+                    @method('PUT')
+                @endif
+                @include('partials._alert_message')
 
-    <div class="page-header">
 
-         <div class="row">
 
-            <div class="col-sm-10 col-sm-offset-1">
-                <div class="widget-box">
-                    <div class="widget-header">
-                        <h5 style="font-weight: 600"><i class="fa fa-gear"></i> Manage Sub Module </h5>
+                <div class="row">
+
+                    <div class="form-group col-sm-12">
+                        <label class="col-sm-3 control-label" for="form-field-1-1"> Module </label>
+                        <div class="col-xs-12 col-sm-8 @error('module_id') has-error @enderror">
+                            <select name="module_id" id="form-field-select-3" data-placeholder="Select" class="form-control chosen-select">
+                                @if (isset($submodule))
+                                    @foreach($modules as $id => $module)
+                                    <option value="{{ $id }}" {{ $id == $submodule->module_id ? 'selected' : '' }}>{{ $module }}</option>
+                                    @endforeach
+                                @else 
+                                        <option value="">Select</option>
+                                    @foreach($modules as $id => $module)
+                                        <option value="{{ $id }}" {{ $id == old('module_id') ? 'selected' : '' }}>{{ $module }}</option>
+                                    @endforeach
+                                @endif
+                            </select>
+
+                            @error('module_id')
+                            <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
                     </div>
 
-                   
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="form-field-1-1"> Sub Module Name </label>
+                        <div class="col-xs-12 col-sm-8 @error('name') has-error @enderror">
+                            <input type="text" class="form-control" name="name"
+                                value="{{ isset($submodule) ? $submodule->name : old('name')  }}" placeholder="Sub Module Name">
 
-                    <div class="widget-body">
-                        <div class="widget-main">
-                            <form class="form-horizontal" action="{{ isset($submodule) ? route('submodules.update', $submodule->id) : route('submodules.store') }}" method="post">
-                            @csrf
-                                @if (isset($submodule))
-                                    @method('PUT')
-                                @endif
-                                @include('partials._alert_message')
-
-                                
-
-                                <div class="row">
-
-                                    <div class="form-group col-sm-12">
-                                        <label class="col-sm-3 control-label" for="form-field-1-1"> Module </label>
-                                        <div class="col-xs-12 col-sm-8 @error('module_id') has-error @enderror">
-                                            <select name="module_id" id="form-field-select-3" data-placeholder="Select" class="form-control chosen-select">
-                                                @if (isset($submodule))
-                                                    @foreach($modules as $id => $module)
-                                                    <option value="{{ $id }}" {{ $id == $submodule->module_id ? 'selected' : '' }}>{{ $module }}</option>
-                                                    @endforeach
-                                                @else 
-                                                        <option value="">Select</option>
-                                                    @foreach($modules as $id => $module)
-                                                        <option value="{{ $id }}" {{ $id == old('module_id') ? 'selected' : '' }}>{{ $module }}</option>
-                                                    @endforeach
-                                                @endif
-                                            </select>
-
-                                            @error('module_id')
-                                            <span class="text-danger">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label" for="form-field-1-1"> Sub Module Name </label>
-                                        <div class="col-xs-12 col-sm-8 @error('name') has-error @enderror">
-                                            <input type="text" class="form-control" name="name"
-                                                value="{{ isset($submodule) ? $submodule->name : old('name')  }}" placeholder="Sub Module Name">
-
-                                            @error('name')
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
+                            @error('name')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
 
 
 
 
 
-                                    <div class="form-group">
-                                        <label for="inputError" class="col-xs-12 col-sm-3 col-md-3 control-label"></label>
-                                        <div class="col-xs-12 col-sm-6">
-                                            <button type="submit" class="btn btn-success btn-sm"> <i class="fa fa-save"></i> {{ isset($submodule) ? 'Update' : 'Save'}}</button>
-                                            <button class="btn btn-gray btn-sm" type="Reset"> <i class="fa fa-refresh"></i> Reset </button>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </form>
+                    <div class="form-group">
+                        <label for="inputError" class="col-xs-12 col-sm-3 col-md-3 control-label"></label>
+                        <div class="col-xs-12 col-sm-6">
+                            <button type="submit" class="btn btn-success btn-sm"> <i class="fa fa-save"></i> {{ isset($submodule) ? 'Update' : 'Save'}}</button>
+                            <button class="btn btn-gray btn-sm" type="Reset"> <i class="fa fa-refresh"></i> Reset </button>
                         </div>
                     </div>
                 </div>
 
+            </form>
+        </x-mm.panel>
 
-            </div>
-        </div>
-    </div>
-
-
-    <div class="row">
-        <div class="col-sm-10 col-sm-offset-1">
-
-            <div style="border: 1px #cdd9e8 solid;">
+        <x-mm.panel>
+            <x-mm.table-scroll label="Sub modules">
                 <table id="dynamic-table" class="table table-striped table-bordered table-hover" >
                     <thead>
                         <tr>
@@ -115,7 +95,7 @@
                                 <td>{{ $setting->module->name }}</td>
                                 <td>{{ $setting->name }}</td>
                                 <td>{{ $setting->slug }}</td>
-                                
+
                                 <td class="text-center">
                                     <div class="btn-group btn-corner">
                                         <a href="{{ route('submodules.edit',$setting->id) }}" class="btn btn-xs btn-success" title="Edit">
@@ -131,18 +111,16 @@
                                         @method("DELETE")
                                     </form>
                                 </td>
-                                
+
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
-                
-                @include('partials._paginate', ['data' => $submodules])
-            </div>
-
-        </div>
+            </x-mm.table-scroll>
+            @include('partials._paginate', ['data' => $submodules])
+        </x-mm.panel>
     </div>
-
+</x-mm.page>
 
 @endsection
 

@@ -669,3 +669,52 @@
 .mm-ui.mm-hotel-service .mm-hs-totals .input-group-addon { display: flex; align-items: center; width: auto; min-width: 44px; justify-content: center; }
 .mm-ui.mm-hotel-service .mm-hs-confirm { width: 100%; }
 @media (max-width: 767px) { .mm-ui.mm-hotel-service .mm-hs-totals .form-inlines { max-width: none; margin-left: 0; } }
+
+/* Permission screens: module/sub module/parent permission lists, permissions, users, passwords and the access matrices. */
+.mm-ui.mm-perm .mm-setup-title { margin: 0 0 16px; font-size: 18px; font-weight: 700; color: var(--mm-ink); }
+.mm-ui.mm-perm.mm-perm-narrow { max-width: 760px; width: 100%; margin-inline: auto; }
+.mm-ui.mm-perm table { margin: 0; }
+.mm-ui.mm-perm th, .mm-ui.mm-perm td { padding: 12px; vertical-align: middle; }
+.mm-ui.mm-perm .btn-group form { display: inline; }
+.mm-ui.mm-perm .form-horizontal .form-group > .col-sm-6 { width: 100%; float: none; }
+.mm-ui.mm-perm .form-horizontal .form-group.col-sm-12 { width: 100%; }
+.mm-ui.mm-perm .form-horizontal label.control-label:empty { display: none; }
+.mm-ui.mm-perm .form-horizontal .form-group > .col-sm-6 .btn { margin: 0 6px 6px 0; }
+.mm-ui.mm-perm .form-horizontal .form-group > .col-sm-8 label { margin: 0 14px 6px 0; }
+.mm-ui.mm-perm .form-horizontal .chosen-container { width: 100% !important; }
+/* New user form: label and field on one row from tablet width, stacked below. */
+.mm-ui.mm-perm-user .row, .mm-ui.mm-perm-user [class*="col-"] { float: none; width: auto; margin-left: 0; margin-right: 0; padding-left: 0; padding-right: 0; }
+.mm-ui.mm-perm-user .form-group.row { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 6px 16px; align-items: center; margin: 0 0 16px; }
+.mm-ui.mm-perm-user .control-label { text-align: left; padding-top: 0; font-weight: 600; color: var(--mm-ink); }
+.mm-ui.mm-perm-user .form-control { width: 100%; min-height: 40px; border: 1px solid var(--mm-line); border-radius: 6px; color: var(--mm-ink); }
+.mm-ui.mm-perm-user .text-right > .btn-group { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
+.mm-ui.mm-perm-user .text-right { grid-column: 1 / -1; }
+@media (max-width: 767px) { .mm-ui.mm-perm-user .form-group.row { grid-template-columns: minmax(0, 1fr); } }
+/* Password forms keep their lock-labelled input groups and fit narrow screens. */
+.mm-ui.mm-perm-password form { max-width: 640px; margin-inline: auto; }
+.mm-ui.mm-perm-password .row, .mm-ui.mm-perm-password [class*="col-xs-"] { float: none; width: auto; margin-left: 0; margin-right: 0; padding-left: 0; padding-right: 0; }
+.mm-ui.mm-perm-password .input-group { display: flex; width: 100% !important; margin-bottom: 4px; }
+.mm-ui.mm-perm-password .input-group-btn { display: block; width: auto !important; flex: 0 0 auto; font-size: 14px; }
+.mm-ui.mm-perm-password .input-group-btn .btn { font-size: 14px; min-height: 40px; }
+.mm-ui.mm-perm-password .input-group .form-control { flex: 1 1 auto; min-width: 0; width: 100%; float: none; min-height: 40px; border-radius: 0 6px 6px 0; color: var(--mm-ink); }
+.mm-ui.mm-perm-password .hr { margin: 12px 0; }
+@media (max-width: 575px) {
+    .mm-ui.mm-perm-password .input-group { flex-direction: column; }
+    .mm-ui.mm-perm-password .input-group-btn, .mm-ui.mm-perm-password .input-group-btn .btn { width: 100% !important; }
+    .mm-ui.mm-perm-password .input-group .form-control { border-radius: 0 0 6px 6px; }
+}
+/* Access matrices: the employee block, module list and accordions keep their markup; wide checkbox tables scroll inside their panel. */
+.mm-ui.mm-perm-access form { min-width: 0; }
+.mm-ui.mm-perm-access .row::after { content: ""; display: table; clear: both; }
+.mm-ui.mm-perm-access .input-group { display: flex; }
+.mm-ui.mm-perm-access .input-group .form-control, .mm-ui.mm-perm-access .input-group .chosen-container { flex: 1 1 auto; min-width: 0; float: none; }
+.mm-ui.mm-perm-access .input-group-addon { display: flex; align-items: center; max-width: 45%; white-space: normal; }
+.mm-ui.mm-perm-access .panel-body { overflow-x: auto; }
+.mm-ui.mm-perm-access .list-group-item { background: transparent; border-color: var(--mm-line); }
+.mm-ui.mm-perm-access .panel-default > .panel-heading { background: var(--mm-bg); color: var(--mm-ink); }
+.mm-ui.mm-perm-access table td label { white-space: nowrap; }
+@media (max-width: 991px) { .mm-ui.mm-perm-access [class*="col-md-4"] { margin-bottom: 8px; } }
+.mm-ui.mm-perm .mm-panel { display: flow-root; }
+.mm-ui.mm-perm-user .form-group.row::before, .mm-ui.mm-perm-user .form-group.row::after { display: none; content: none; }
+.mm-ui.mm-perm-access .input-group-btn { display: block; width: auto; flex: 0 0 auto; font-size: 14px; }
+@media (max-width: 991px) { .mm-ui.mm-perm-access .row > [class*="col-md-4"] { float: none !important; width: 100%; } }

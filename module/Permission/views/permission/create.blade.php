@@ -11,22 +11,12 @@
 
 @section('content')
 
-    <div class="row">
-
-        <div class="col-sm-8 col-sm-offset-2">
-            <div class="widget-box">
-                <div class="widget-header">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
-
-                    <span class="widget-toolbar">
-                        <a href="{{ route('permissions.index') }}">
-                            <i class="ace-icon fa fa-list-alt"></i> Permission List
-                        </a>
-                    </span>
-                </div>
-
-                <div class="widget-body">
-                    <div class="widget-main">
+    <x-mm.styles />
+<x-mm.page class="mm-hotel-setup mm-perm mm-perm-narrow" title="Create permission" description="Add a permission under a parent permission, with the actions it supports.">
+    <x-slot name="actions">
+        <a class="mm-button mm-button-secondary" href="{{ route('permissions.index') }}"> <i class="fa fa-list-alt"></i> Permission List </a>
+    </x-slot>
+    <x-mm.panel>
                         <form class="form-horizontal" action="{{ route('permissions.store') }}" method="post" enctype="multipart/form-data">
                         @csrf
 
@@ -125,13 +115,9 @@
                             </div>
 
                         </form>
-                    </div>
-                </div>
-            </div>
-
-
-        </div>
-    </div>
+                    
+    </x-mm.panel>
+</x-mm.page>
 
 
 

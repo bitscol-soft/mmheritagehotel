@@ -778,3 +778,91 @@ foreach ($hsvCases as $hsvName => [$hsvViewName, $hsvUrl, $hsvData, $hsvMarkers,
     if (file_get_contents($hsvFile) !== $hsvHtml) throw new RuntimeException($hsvFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
 }
 echo "PASS hotel service screens render: services, sales list and due modal, new sale, invoice, night audit list and printable audit\n";
+
+// Render the Permission screens: module/sub module/parent permission lists, permissions, users, password forms and the access matrices.
+// Layout, permission and paginator helpers are substituted; the real views render with sample modules, employees and users.
+if (!class_exists('MmPermEmployee')) {
+    class MmPermEmployee {
+        public function __construct($fields) { foreach ($fields as $k => $v) $this->$k = $v; }
+        public function getDepartmentName() { return $this->department->name; }
+        public function getDesignationName() { return $this->designation->name; }
+    }
+}
+$prSubst = function ($file) use ($root, $rpPaginate) {
+    $source = file_get_contents($root . '/module/Permission/views/' . $file . '.blade.php');
+    $source = str_replace(["@extends('layouts.master')", "@include('partials._alert_message')", "\\Route::has('selected_employee')"], ["@extends('mm-checkout-layout')", '', 'true'], $source);
+    $source = preg_replace(["/@include\\('partials\\._paginate', \\['data' => [^\\]]*\\]\\)/", '/hasPermission\\([^)]*\\)/'], [str_replace('$', '\\$', $rpPaginate), 'true'], $source);
+    if (preg_match('/hasPermission\\(|partials\\._paginate|Route::has/', $source)) throw new RuntimeException('Unsubstituted helper in Permission view ' . $file);
+    return $source;
+};
+$prNames = ['module', 'submodule', 'parent_permission', 'permission/index', 'permission/create', 'permission/edit', 'users/index', 'users/create', 'users/change_password', 'users/change_password_by_admin', 'access/create', 'access/edit', 'access/employee-permission'];
+foreach ($prNames as $prView) {
+    @mkdir(dirname($coViews . '/perm/' . $prView), 0777, true);
+    file_put_contents($coViews . '/perm/' . $prView . '.blade.php', $prSubst($prView));
+}
+$prRoutes = new Illuminate\Routing\RouteCollection();
+foreach (['active.deactive.module' => 'GET setting/modules/{id}/status', 'admin.edit.password' => 'GET setting/users/{id}/password', 'admin.update.password' => 'POST setting/users/password', 'edit.permitted.users' => 'GET setting/permitted-users/{id}/edit', 'employee_list' => 'POST setting/employee-list', 'modules.destroy' => 'DELETE setting/modules/{id}', 'modules.edit' => 'GET setting/modules/{id}/edit', 'modules.store' => 'POST setting/modules', 'modules.update' => 'PUT setting/modules/{id}', 'parent-permissions.destroy' => 'DELETE setting/parent-permissions/{id}', 'parent-permissions.edit' => 'GET setting/parent-permissions/{id}/edit', 'parent-permissions.store' => 'POST setting/parent-permissions', 'parent-permissions.update' => 'PUT setting/parent-permissions/{id}', 'permission-access.create' => 'GET setting/permission-access/create', 'permission-access.employee.store' => 'POST setting/permission-access/employee', 'permission-access.store' => 'POST setting/permission-access', 'permissions.create' => 'GET setting/permissions/create', 'permissions.destroy' => 'DELETE setting/permissions/{id}', 'permissions.edit' => 'GET setting/permissions/{id}/edit', 'permissions.index' => 'GET setting/permissions', 'permissions.store' => 'POST setting/permissions', 'permissions.update' => 'PUT setting/permissions/{id}', 'permitted.user.delete' => 'DELETE setting/permitted-users/{id}', 'permitted.users' => 'GET setting/permitted-users', 'selected_employee' => 'POST setting/selected-employee', 'settings.create-user' => 'GET setting/create-user', 'settings.store-user' => 'POST setting/store-user', 'submodules.destroy' => 'DELETE setting/submodules/{id}', 'submodules.edit' => 'GET setting/submodules/{id}/edit', 'submodules.store' => 'POST setting/submodules', 'submodules.update' => 'PUT setting/submodules/{id}', 'update.permission.access' => 'PUT setting/permission-access/{id}', 'user.active.deactive' => 'GET setting/users/{id}/{status}', 'user.password.update' => 'POST user/password'] as $prName => $prDef) {
+    [$prMethod, $prUri] = explode(' ', $prDef);
+    $prRoutes->add((new Illuminate\Routing\Route($prMethod, $prUri, function () {}))->name($prName));
+}
+$prMods = collect([(object) ['id' => 1, 'name' => 'Hotel <b>Core</b>', 'status' => 1], (object) ['id' => 2, 'name' => 'Restaurant', 'status' => 2]]);
+$prSub = (object) ['id' => 4, 'name' => 'Rooms', 'slug' => 'rooms', 'module_id' => 1, 'module' => $prMods[0]];
+$prParent = (object) ['id' => 7, 'name' => 'Room list', 'submodule_id' => 4, 'submodule' => $prSub];
+$prPerm = function ($id, $name, $slug) { return (object) ['id' => $id, 'name' => $name, 'slug' => $slug]; };
+$prRow = function (array $perms) { return (object) ['permissions' => collect($perms)]; };
+$prAccessModules = collect([(object) ['id' => 1, 'name' => 'Hotel', 'submodules' => collect([(object) ['id' => 4, 'name' => 'Rooms', 'parent_permissions' => collect([$prRow([$prPerm(11, 'View', 'rooms.view'), $prPerm(12, 'Create', 'rooms.create'), $prPerm(13, 'Edit', 'rooms.edit')]), $prRow([$prPerm(14, 'Delete', 'rooms.delete')])])]])]]);
+$prEmployee = function ($id, $name) { return new MmPermEmployee(['id' => $id, 'name' => $name, 'email' => 'e' . $id . '@example.com', 'employee_full_id' => 'EMP-00' . $id, 'company_id' => 1, 'department' => (object) ['name' => 'Front desk'], 'designation' => (object) ['name' => 'Manager']]); };
+$prAccessData = ['existing_employee' => collect([$prEmployee(1, 'Rahim <b>Uddin</b>'), $prEmployee(2, 'Karim')]), 'employee_ids' => collect([$prEmployee(1, 'Rahim <b>Uddin</b>'), $prEmployee(2, 'Karim')]), 'hasFeatures' => ['Company', 'Department', 'Designation'], 'orderTypes' => collect([]), 'companies' => collect([1 => 'MM Heritage', 2 => 'MM Resort']), 'buyers' => collect([]), 'departments' => collect([1 => 'Front desk', 2 => 'Kitchen']), 'designations' => collect([1 => 'Manager', 2 => 'Chef']), 'modules' => $prAccessModules];
+$prAccessUser = (object) ['id' => 5, 'name' => 'Rahim <b>Uddin</b>', 'email' => 'rahim@example.com', 'employee_id' => 1, 'employee' => $prEmployee(1, 'Rahim'), 'department_id' => 1, 'department' => (object) ['name' => 'Front desk'], 'designation_id' => 1, 'designation' => (object) ['name' => 'Manager']];
+$prUsers = collect([(object) ['id' => 5, 'name' => 'Rahim <b>Uddin</b>', 'email' => 'rahim@example.com', 'status' => 1, 'employee' => $prEmployee(1, 'Rahim'), 'company' => (object) ['name' => 'MM Heritage'], 'credential' => (object) ['secrete' => 'pw-1234']], (object) ['id' => 6, 'name' => 'Front desk', 'email' => 'desk@example.com', 'status' => 2, 'employee' => null, 'company' => (object) ['name' => 'MM Heritage'], 'credential' => null]]);
+$prCases = [
+    'module' => ['perm.module', '/setting/modules', ['modules' => new MmHsPage($prMods->all())],
+        ['mm-hotel-setup', 'mm-perm', 'action="http://localhost/setting/modules"', 'name="name"', 'id="dynamic-table"', 'Hotel &lt;b&gt;Core&lt;/b&gt;', 'delete_check(', 'class="pagination"', 'setting/modules/1/edit', 'setting/modules/2/status'], ['widget-box', 'widget-main', 'widget-header', 'Hotel <b>Core</b>']],
+    'submodule' => ['perm.submodule', '/setting/submodules', ['modules' => collect([1 => 'Hotel']), 'submodules' => new MmHsPage([$prSub])],
+        ['mm-perm', 'action="http://localhost/setting/submodules"', 'name="name"', 'name="module_id"', 'id="dynamic-table"', 'rooms', 'class="pagination"', 'setting/submodules/4/edit'], ['widget-box', 'widget-main', 'widget-header']],
+    'parent-permission' => ['perm.parent_permission', '/setting/parent-permissions', ['submodules' => collect([4 => 'Rooms']), 'parentPermissions' => new MmHsPage([$prParent])],
+        ['mm-perm', 'action="http://localhost/setting/parent-permissions"', 'name="name"', 'name="submodule_id"', 'id="dynamic-table"', 'Room list', 'class="pagination"', 'setting/parent-permissions/7/edit'], ['widget-box', 'widget-main', 'widget-header']],
+    'permission-index' => ['perm.permission.index', '/setting/permissions', ['permissions' => new MmHsPage([(object) ['id' => 11, 'name' => 'View rooms', 'slug' => 'rooms.view', 'parent_permission' => (object) ['name' => 'Room list', 'submodule' => (object) ['name' => 'Rooms', 'module' => (object) ['name' => 'Hotel']]]]])],
+        ['mm-perm-list', 'id="dynamic-table"', 'rooms.view', 'Room list', 'href="http://localhost/setting/permissions/create"', 'setting/permissions/11/edit', 'class="pagination"'], ['widget-box', 'widget-main', 'widget-header', 'class="page-header']],
+    'permission-create' => ['perm.permission.create', '/setting/permissions/create', ['parentPermissions' => collect([7 => 'Room list'])],
+        ['mm-perm-narrow', 'action="http://localhost/setting/permissions"', 'name="parent_permission_id"', 'name="name"', 'name="actions[]"', 'value="Super Approve"', 'name="description"'], ['widget-box', 'widget-main', 'widget-header']],
+    'permission-edit' => ['perm.permission.edit', '/setting/permissions/11/edit', ['parentPermissions' => collect([7 => 'Room list']), 'permission' => (object) ['id' => 11, 'name' => 'View rooms', 'slug' => 'rooms.view', 'description' => 'See rooms', 'parent_permission_id' => 7]],
+        ['mm-perm-narrow', 'action="http://localhost/setting/permissions/11"', 'name="_method" value="PUT"', 'name="parent_permission_id"', 'value="rooms.view"', 'See rooms'], ['widget-box', 'widget-main', 'widget-header']],
+    'users-index' => ['perm.users.index', '/setting/permitted-users', ['users' => $prUsers, 'slugs' => []],
+        ['mm-perm-list', 'id="data-table"', 'Rahim &lt;b&gt;Uddin&lt;/b&gt;', 'Not an Employee', 'delete_check(5)', 'id="deleteCheck_5"', 'name="_method" value="DELETE"', 'setting/users/5/2', 'setting/users/6/1', 'data-rel="popover"', 'setting/create-user', 'setting/users/5/password'], ['widget-box', 'widget-main', 'widget-header', 'color: white', 'Rahim <b>Uddin</b>']],
+    'users-create' => ['perm.users.create', '/setting/create-user', [],
+        ['mm-perm-user', 'action="http://localhost/setting/store-user"', 'name="name"', 'name="email"', 'name="mobile_number"', 'name="password"', 'name="confirm_password"', 'href="http://localhost/setting/permitted-users"'], ['widget-box', 'widget-main', 'widget-header', 'acrion=']],
+    'change-password' => ['perm.users.change_password', '/user/password', [],
+        ['mm-perm-password', 'action="http://localhost/user/password"', 'name="current_password"', 'name="new_password"', 'name="new_confirm_password"'], ['widget-box', 'widget-main', 'widget-header']],
+    'change-password-admin' => ['perm.users.change_password_by_admin', '/setting/users/5/password', ['user' => $prAccessUser],
+        ['mm-perm-password', 'action="http://localhost/setting/users/password"', 'name="id" value="5"', 'name="new_password"', 'name="confirm_password"', 'Set new password for', 'href="http://localhost/setting/permitted-users"'], ['widget-box', 'widget-main', 'widget-header']],
+    'access-create' => ['perm.access.create', '/setting/permission-access/create', $prAccessData,
+        ['mm-perm-access', 'action="http://localhost/setting/permission-access"', 'name="existing_employee"', 'class="btn btn-default btn-sm load-employee"', 'id="select-new-employee-id"', 'onchange="loadEmployeeInfo(this)"', 'name="employee_id"', 'name="employee_name"', 'name="password"', 'name="companies[]"', 'name="departments[]"', 'name="designations[]"', 'name="permissions[]"', 'value="14"', 'class="ace module-checkbox-control"', 'class="ace parentCheckBox"', 'access-control', 'id="csrf"', 'Rahim &lt;b&gt;Uddin&lt;/b&gt;'], ['widget-box', 'widget-main', 'widget-header', 'Rahim <b>Uddin</b>']],
+    'access-edit' => ['perm.access.edit', '/setting/permission-access/5/edit', array_merge($prAccessData, ['user' => $prAccessUser, 'isPermitted' => ['rooms.view'], 'hasCompanies' => ['MM Heritage'], 'hasDepartments' => ['Kitchen'], 'hasDesignations' => ['Chef']]),
+        ['mm-perm-access', 'action="http://localhost/setting/permission-access/5"', 'name="_method" value="put"', 'name="permissions[]"', 'value="11"', 'checked', 'name="companies[]"', 'class="ace module-checkbox-control"', 'class="ace parentCheckBox"', 'id="csrf"', 'Update'], ['widget-box', 'widget-main', 'widget-header']],
+    'employee-permission' => ['perm.access.employee-permission', '/setting/permission-access/employee', ['modules' => $prAccessModules->map(function ($m) { $c = clone $m; $c->name = 'Employee Permission'; return $c; }), 'isEmployeePermitted' => ['rooms.view']],
+        ['mm-perm-access', 'action="http://localhost/setting/permission-access/employee"', 'name="employee_permissions[]"', 'checked', 'class="ace module-checkbox-control"', 'class="ace parentCheckBox"', 'id="csrf"', 'Employee permissions'], ['widget-box', 'widget-main', 'widget-header']],
+];
+@mkdir(__DIR__ . '/fixtures/permission', 0777, true);
+foreach ($prCases as $prName => [$prViewName, $prUrl, $prData, $prMarkers, $prAbsent]) {
+    $prRequest = Illuminate\Http\Request::create($prUrl);
+    $prRequest->setLaravelSession(new Illuminate\Session\Store('mm', new Illuminate\Session\ArraySessionHandler(10)));
+    $app->instance('request', $prRequest);
+    $app->instance('url', new Illuminate\Routing\UrlGenerator($prRoutes, $prRequest));
+    $prHtml = $app->make('view')->make($prViewName, array_merge(['errors' => new Illuminate\Support\ViewErrorBag(), 'slugs' => []], $prData))->render();
+    $prHtml = preg_replace('/(name="_token" value=")[A-Za-z0-9]+"/', '$1fixture-csrf-token"', str_replace('http://localhost/assets', '/assets', $prHtml));
+    $prHtml = preg_replace('/(id="csrf" value=")[A-Za-z0-9]*"/', '$1fixture-csrf-token"', $prHtml);
+    $prMissing = [];
+    foreach (array_merge(['mm-panel', 'mm-page-title'], $prMarkers) as $prMarker) {
+        if (strpos($prHtml, $prMarker) === false) $prMissing[] = $prMarker;
+    }
+    if ($prMissing) throw new RuntimeException('Permission screen ' . $prName . ' missing ' . implode(' | ', $prMissing));
+    foreach ($prAbsent as $prMarker) {
+        if (strpos($prHtml, $prMarker) !== false) throw new RuntimeException('Permission screen ' . $prName . ' still contains ' . $prMarker);
+    }
+    if (strpos($prHtml, '<b>Warning</b>') !== false || strpos($prHtml, '<b>Notice</b>') !== false) throw new RuntimeException('Permission screen ' . $prName . ' sample data is incomplete (PHP warning in output)');
+    $prFile = __DIR__ . '/fixtures/permission/' . $prName . '.html';
+    if (getenv('MM_WRITE_FIXTURE')) { file_put_contents($prFile, $prHtml); file_put_contents($previewDir . '/perm-' . $prName . '.html', $prHtml); }
+    if (file_get_contents($prFile) !== $prHtml) throw new RuntimeException($prFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
+}
+echo "PASS permission screens render: module lists, permissions, users, password forms and access matrices\n";

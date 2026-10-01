@@ -573,3 +573,43 @@ console.log('PASS: note list/edit expressions, forms and status scripts; legacy 
  }
  console.log('PASS: hotel service screens keep fields, expressions, directives, tables and scripts; modals and export partials untouched; printable audit only gains a screen-only bar');
 }
+
+{
+ // Permission screens (module, sub module, parent permission, permissions, users, password forms, access matrices): fields, Blade expressions, tables and scripts stay as they were; only the legacy widget frame changed.
+ const base='b5e7ea03';
+ const nc=s=>s.replace(/\{\{--[\s\S]*?--\}\}/g,'');
+ const ex=s=>(nc(s).match(/\{\{[\s\S]*?\}\}|\{!![\s\S]*?!!\}/g)||[]).map(x=>x.replace(/\s+/g,' '));
+ const added=/ (?:aria-label="[^"]*"|style="[^"]*"|class="[^"]*")/g;
+ const ctl=s=>(nc(s).replace(/\{\{[\s\S]*?\}\}/g,'{{}}').match(/<(input|select|textarea|button)\b[^>]*>/g)||[]).map(x=>x.replace(/\s+/g,' ').replace(added,''));
+ const forms=s=>(nc(s).match(/<form[^>]*>/g)||[]).map(x=>x.replace(/\s+/g,' ').replace(/ class="[^"]*"/,''));
+ const directives=s=>(nc(s).match(/@(?:if|elseif|else|endif|foreach|endforeach|forelse|empty|endforelse|php|endphp|include|isset|endisset|can|endcan|error|enderror|csrf|method)\b/g)||[]);
+ const only=(l,m)=>{const c={};l.forEach(x=>c[x]=(c[x]||0)+1);m.forEach(x=>c[x]=(c[x]||0)-1);return Object.entries(c).filter(([,n])=>n).map(([k,n])=>`${n>0?'-':'+'}${Math.abs(n)} ${k}`).sort();};
+ const tables=s=>(nc(s).match(/<table[\s\S]*?<\/table>/g)||[]).filter(t=>t.includes('<thead>')).map(t=>t.replace(/\s+/g,' ').replace(/ class="(btn|mm-button)[^"]*"/g,'').replace(/ aria-label="[^"]*"/g,'').replace(/<th([^>]*?) style="[^"]*"/g,'<th$1')).join('|');
+ const scripts=s=>(nc(s).match(/<script[\s\S]*?<\/script>/g)||[]).map(t=>t.replace(/\s+/g,' ')).join('|');
+ const dir='module/Permission/views/';
+ const files=['module','submodule','parent_permission','permission/index','permission/create','permission/edit','users/index','users/create','users/change_password','users/change_password_by_admin','access/create','access/edit','access/employee-permission'];
+ for(const f of files){
+  const p=`${dir}${f}.blade.php`,after=fs.readFileSync(p,'utf8'),before=execFileSync('git',['show',`${base}:${p}`],{encoding:'utf8'});
+  assert.deepEqual(only(ex(before),ex(after)),[],`${f}: Blade expressions changed`);
+  assert.deepEqual(only(ctl(before),ctl(after)),[],`${f}: form controls changed`);
+  assert.deepEqual(only(forms(before),forms(after)),[],`${f}: form tags changed`);
+  assert.deepEqual(only(directives(before),directives(after)),[],`${f}: Blade directives changed`);
+  assert.equal(tables(after),tables(before),`${f}: tables changed`);
+  assert.equal(scripts(after),scripts(before),`${f}: scripts changed`);
+  assert(after.includes('<x-mm.page'),`${f}: shared layout expected`);
+  assert(!after.includes('widget-box')&&!after.includes('widget-main')&&!after.includes('widget-header'),`${f}: legacy widget frame should be gone`);
+ }
+ // the access matrices keep the hooks their scripts rely on
+ for(const f of ['access/create','access/edit','access/employee-permission']){
+  const src=fs.readFileSync(`${dir}${f}.blade.php`,'utf8');
+  for(const hook of ['module-checkbox-control','parentCheckBox','childCheckBox','id="csrf"']) assert(src.includes(hook),`${f}: lost ${hook}`);
+ }
+ for(const [f,hooks] of [['access/create',['load-employee','name="permissions[]"']],['access/edit',['name="permissions[]"']]]){
+  const src=fs.readFileSync(`${dir}${f}.blade.php`,'utf8');
+  for(const hook of hooks) assert(src.includes(hook),`${f}: lost ${hook}`);
+ }
+ // the dead password controller view and shared partials stay untouched
+ const untouched=execFileSync('git',['diff','--name-only',base,'--','module/Permission/Controllers','module/Permission/routes','app/Http/Controllers/UserController.php'],{encoding:'utf8'}).trim();
+ assert.equal(untouched,'','Permission controllers and routes must stay unchanged');
+ console.log('PASS: permission screens keep fields, expressions, directives, tables and scripts; controllers and routes untouched');
+}

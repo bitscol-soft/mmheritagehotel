@@ -616,3 +616,19 @@ Every live Hotel Service screen under `module/HotelService/views/` now uses `x-m
 Legacy behaviour kept and worth knowing: the night audit list and `index` page error when there are no audits at all (`$nightaudits[0]` on an empty set, the same as the booking night audit); the new-sale form adds its first row on load; the invoice prints on open; `submitForm()` checks a `.today` element that does not exist (the date check never fires).
 
 Checks: `tools/ui-blade-check.php` renders the six screens with sample data (`tools/fixtures/hotel-service/*.html`; preview pages `/preview/hservice-*`); `tools/browser/hotel-service.spec.cjs` (27 tests: frame, no sideways scroll at 360/768, modals, due-payment maths, sale calculation and POST body, print-only bar); `tools/ui-check.cjs` guards fields, expressions, directives, tables, scripts and that modals, export partials and unreachable views are untouched.
+
+## Twenty-ninth increment: Permission module
+
+All 13 views under `module/Permission/views/` now use `x-mm.page` / `x-mm.panel` / `x-mm.table-scroll`; no `widget-box` markup is left.
+
+- **Lists with a form** (`module`, `submodule`, `parent_permission`, `.mm-hotel-setup .mm-perm`): the add/edit form and the table sit in two panels; the paginator stays below the table.
+- **Permissions** (`permission/index`, `.mm-perm-list`; `create` and `edit`, `.mm-perm-narrow`): "Create Permission" is a page action; the list table sits in a scroll region.
+- **Permitted users** (`users/index`): "Create New" is a page action. The old white header-cell colour is gone (the guard ignores `style` on `th`). The password popover, row actions and delete form are unchanged.
+- **New user** (`users/create`, `.mm-perm-user`): label beside field from 768px, stacked below. The source had an unclosed `<div class="row">`, now removed, and the Close link had `acrion=` instead of `href=` (fixed, one attribute).
+- **Password forms** (`users/change_password*`, `.mm-perm-password`): input groups stack on phones. The inline `width:170px/190px !important` on the lock buttons stays, because inline `!important` cannot be overridden from CSS; it fits at 360px.
+- **Access matrices** (`access/create`, `edit`, `employee-permission`, `.mm-perm-access`): the employee block, feature accordions and Module > Sub module checkbox matrix keep their ids, classes and script hooks (`.module-checkbox-control`, `.parentCheckBox`, `.childCheckBox`, `permissions[]`, `.load-employee`, `#csrf`). Wide checkbox tables scroll inside their accordion body.
+
+Legacy behaviour kept and worth knowing: `users/index` prints stored plaintext passwords in the popover (`credential->secrete`); the accordions reuse `id="accordion"`; `access/create` hides the Order Type and Buyer blocks with `&& false`; `permission/create` has the Update action commented out.
+
+Checks: `tools/ui-blade-check.php` renders the 13 screens with sample data (`tools/fixtures/permission/*.html`; preview pages `/preview/perm-*`); `tools/browser/permission.spec.cjs` (48 tests: frame, no sideways scroll at 360/768, users table, new-user layout, password forms, matrix select-all, employee picker, edit checked state); `tools/ui-check.cjs` compares fields, expressions, directives, tables and scripts with `b5e7ea03` and requires controllers and routes unchanged. Not verified: real Laravel with a database, role matrix saves, staging.
+
