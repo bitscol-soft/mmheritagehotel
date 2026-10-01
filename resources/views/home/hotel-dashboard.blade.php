@@ -111,6 +111,7 @@
 
 
     @include('home._inc.script')
+    <script src="{{ asset('assets/custom_js/room-board.js') }}"></script>
 
     <script type="text/javascript">
         $(document).ready(function() {

@@ -2,6 +2,6 @@
 
     <x-alert-message />
 
-    <x-room-manage :categories="$categories" :mixdate="$mix_date" />
+    @include('home._inc.room-board', ['categories' => $categories, 'mix_date' => $mix_date])
 
 </div>

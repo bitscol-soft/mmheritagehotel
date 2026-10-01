@@ -68,3 +68,11 @@ lifecycle/detail/edit, payments/checkout/invoices/print, night audit.
 Header context/shortcuts, board panel and two board visual defects (phantom grid
 cells, invisible dirty/maintenance/cart tiles) fixed. HRM/garments dashboards are
 separate screens and remain in HRM/other module phases. Staging data acceptance pending.
+
+## Dashboard room board redesign
+
+Collapsible category groups, room cards, bed-type icons and a booking/detail drawer
+replace the tile grid on the hotel dashboard only (Hotel and Banquet booking pages
+keep the shared component). Legacy booking form, AJAX endpoints and housekeeping
+handlers are reused. Verified with a rendered-Blade sample and browser tests;
+staging with real data, date search and permissions is still pending.

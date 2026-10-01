@@ -117,7 +117,9 @@ const dashAfter = fs.readFileSync(dashPath,'utf8');
 const dashSummary = fs.readFileSync('resources/views/home/_inc/dashboard-summary.blade.php','utf8');
 const uncomment = s => s.replace(/{{--[\s\S]*?--}}/g, '');
 for (const expression of uncomment(dashBefore).match(/{{[\s\S]*?}}/g) || []) assert((dashAfter + dashSummary).includes(expression), `Dashboard expression changed: ${expression}`);
-assert.equal(dashAfter.split("@section('js')")[1], dashBefore.split("@section('js')")[1]);
+const roomBoardTag = "    <script src=\"{{ asset('assets/custom_js/room-board.js') }}\"></script>\n";
+assert(dashAfter.includes(roomBoardTag), 'Dashboard must load room-board.js');
+assert.equal(dashAfter.replace(roomBoardTag, '').split("@section('js')")[1], dashBefore.split("@section('js')")[1]);
 for (const condition of dashBefore.match(/@if\([^\n]+|@if \([^\n]+/g) || []) assert(dashAfter.includes(condition));
 for (const path of ['resources/views/home/_inc/script.blade.php']) assert.equal(fs.readFileSync(path,'utf8'), execFileSync('git',['show',`d96fc4cf:${path}`],{encoding:'utf8'}));
 assert(!dashAfter.includes('<style>'));
@@ -188,11 +190,17 @@ console.log('PASS: note list/edit expressions, forms and status scripts; legacy 
 
 {
  const dash=fs.readFileSync('resources/views/home/hotel-dashboard.blade.php','utf8'), baseDash=execFileSync('git',['show','3b824a86:resources/views/home/hotel-dashboard.blade.php'],{encoding:'utf8'});
- assert.equal(dash.split("@section('js')")[1],baseDash.split("@section('js')")[1],'Dashboard scripts changed');
+ assert.equal(dash.replace(roomBoardTag,'').split("@section('js')")[1],baseDash.split("@section('js')")[1],'Dashboard scripts changed');
  for(const permission of ['bookings.index','hotel.expected-arrival.index','hotel.expected-departure.index','hotel.in-house-guest.index']) assert(dash.includes(`hasPermission('${permission}', $slugs)`),`Dashboard link lost permission ${permission}`);
  for(const route of ['booking.index','report.expected-arrival','report.expected-departure','report.in-house-guest']) assert(dash.includes(`route('${route}')`),`Dashboard link route missing ${route}`);
  const board=fs.readFileSync('resources/views/home/_inc/booking_ui.blade.php','utf8');
- assert(board.includes('<x-alert-message />') && board.includes('<x-room-manage :categories="$categories" :mixdate="$mix_date" />'),'Dashboard board component contract changed');
+ assert(board.includes('<x-alert-message />') && board.includes("@include('home._inc.room-board', ['categories' => $categories, 'mix_date' => $mix_date])"),'Dashboard board include contract changed');
+ const roomBoard=fs.readFileSync('resources/views/home/_inc/room-board.blade.php','utf8');
+ for(const hook of ['id="booking-form"','id="searchForm"','mmb-proxy','updateStatus(','name="booking_availabe"','name="submit" value="book"','name="submit" value="reserve"','data-add-url="/hotel/add_booking"','data-remove-url="/hotel/remove_booking_next"']) assert((roomBoard+fs.readFileSync('resources/views/home/_inc/room-card.blade.php','utf8')).includes(hook),`Room board lost legacy hook ${hook}`);
+ const boardJs=fs.readFileSync('public/assets/custom_js/room-board.js','utf8');
+ assert(!/outerHTML|insertAdjacentHTML|\.html\(/.test(boardJs),'room-board.js must not use HTML injection APIs');
+ for(const line of boardJs.split('\n').filter(l=>l.includes('innerHTML'))) assert(/innerHTML = ('<i class="fa [a-z-]+" aria-hidden="true"><\/i> [A-Za-z ]+'|card\.querySelector\('\.mmb-bed'\)\.innerHTML);/.test(line),`room-board.js innerHTML must be static or copied server markup: ${line.trim()}`);
+ for(const hook of ['mm-board-collapsed','aria-expanded','inert','Escape']) assert(boardJs.includes(hook),`room-board.js missing ${hook}`);
  const legacy=fs.readFileSync('public/assets/custom_css/style.css','utf8');
  for(const needle of ['.room-booking-board .room-list .row::before','.room-booking-board .room-info.inverse { background:','.room-booking-board .room-info.orange { background:']) assert(legacy.includes(needle),`Board visual fix missing: ${needle}`);
  for(const path of ['resources/views/components/room-manage.blade.php','resources/views/components/room-status.blade.php','resources/views/home/_inc/script.blade.php','resources/views/home/_inc/style.blade.php']) assert.equal(fs.readFileSync(path,'utf8'),execFileSync('git',['show',`3b824a86:${path}`],{encoding:'utf8'}),`Shared board source changed: ${path}`);

@@ -359,3 +359,43 @@ and no horizontal overflow; all 15 browser tests pass. Still needs staging with
 real availability data, date-picker/AJAX selection, popovers, permissions and
 non-default tile counts. Fixture markup is hand-built from the Blade components,
 not rendered from the database.
+
+## Fifteenth increment — dashboard room booking board redesign (2026-10-01)
+
+The dashboard board (`home/_inc/booking_ui` → `room-board`, `room-card`, `bed-icon`)
+replaces the dotted tile grid with collapsible category groups, room cards, a
+per-type bed icon and a slide-in drawer for room details and booking. The shared
+`x-room-manage` / `x-room-status` components still drive the Hotel and Banquet
+booking pages and are unchanged.
+
+- **Groups**: one section per category with free/total counts; the open/closed
+  state persists in `localStorage` (`mm-board-collapsed`); Expand/Collapse all.
+- **Cards**: room number, bed icon and label, rate and a state chip. States are
+  derived from the same fields as before: available, in-house, booked, reserved,
+  due today, plus Dirty/Maintenance. Cards are real buttons (no `.room-info`), so
+  the legacy keyboard and click handlers cannot double-fire.
+- **Bed icons**: single, double, twin, triple and multi, chosen from the category
+  `bed_details` plus the room `beds` text, falling back to the bed count.
+- **Drawer**: category facts, bed, capacity, size, smoking, rate and description;
+  guest details for occupied rooms (written with `textContent` only); add/remove
+  selection (same `add_booking` / `remove_booking_next` AJAX), check-in/open/migrate
+  and housekeeping actions through the legacy `checkOut()` and `updateStatus()`.
+  Focus trap, Esc, backdrop, `inert` background, focus returns to the card.
+  Booking still submits the legacy `#booking-form` (`book` / `reserve`).
+- Legacy hooks kept: `#booking-form`, `#searchForm`, `booking_availabe`, and a
+  hidden `.room-info.mmb-proxy` per room so `updateStatus()` can toggle classes;
+  a MutationObserver mirrors them to the card.
+
+Verification: `tools/ui-blade-check.php` renders the real partials from sample
+data (`tools/room-board-sample.php`, six categories, 23 rooms) and asserts groups,
+cards, bed labels, states, escaping and hooks. Only `hasPermission`, `setting` and
+`fdate` calls are substituted in a temp copy, because those helpers need an
+authenticated user and database. `tools/fixtures/room-board.html` is generated from
+that render (`MM_WRITE_FIXTURE=1`) and checked for drift. Browser tests at
+360/768/1440 cover layout, bed icons, collapse persistence, drawer focus handling,
+selection and submit, escaping, housekeeping mirroring, and 44px touch targets.
+Drawer buttons were 40–42px and were raised to 44px.
+
+Not verified: rendering through a real Laravel app with a database, real
+availability data, date search, the guest popover replacement and
+staging acceptance.

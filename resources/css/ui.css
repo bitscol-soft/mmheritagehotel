@@ -339,3 +339,106 @@
     .mm-ui.mm-dashboard header .mm-button { flex: 1 1 calc(50% - 8px); justify-content: center; text-align: center; }
     .mm-ui.mm-dashboard .mm-dashboard-board-panel { padding: 12px; }
 }
+
+/* ---------- Dashboard room board: groups, cards, drawer ---------- */
+.mm-ui.mm-dashboard .mmb { --mmb-available: #4f8a3c; --mmb-reserved: #7c9a1d; --mmb-booked: #b04fc0; --mmb-inhouse: #c94b36; --mmb-due: #1e6b99; --mmb-dirty: #1f1b2d; --mmb-maintenance: #7b68ae; --mmb-cart: #254683; --mmb-selected: #2f63a8; }
+.mm-ui.mm-dashboard .mmb-sr { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+.mm-ui.mm-dashboard .mmb-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.mm-ui.mm-dashboard .mmb-date { position: relative; flex: 1 1 280px; min-width: 240px; max-width: 420px; }
+.mm-ui.mm-dashboard .mmb-date .form-control { padding-left: 38px; min-height: 36px; border-radius: 6px; }
+.mm-ui.mm-dashboard .mmb-date-icon { position: absolute; left: 12px; top: 0; bottom: 0; z-index: 2; display: flex; align-items: center; color: var(--mm-muted); }
+.mm-ui.mm-dashboard .mmb-quick { display: flex; flex-wrap: wrap; gap: 6px; }
+.mm-ui.mm-dashboard .mmb-pill { min-height: 32px; padding: 0 12px; border: 1px solid var(--mm-line); border-radius: 999px; background: var(--mm-surface); color: var(--mm-ink); font-size: 12px; cursor: pointer; }
+.mm-ui.mm-dashboard .mmb-pill:hover { border-color: var(--mm-brand); color: var(--mm-brand); }
+.mm-ui.mm-dashboard .mmb-legend { display: flex; flex-wrap: wrap; gap: 6px 8px; margin: 14px 0 6px; padding-bottom: 12px; border-bottom: 1px dashed var(--mm-line); }
+.mm-ui.mm-dashboard .mmb-chip { display: inline-flex; align-items: center; gap: 6px; max-width: 100%; padding: 2px 9px 2px 7px; border-radius: 999px; background: #f1f5f9; color: #334155; font-size: 11.5px; font-weight: 600; line-height: 18px; white-space: nowrap; }
+.mm-ui.mm-dashboard .mmb-chip-dot { width: 8px; height: 8px; flex: 0 0 8px; border-radius: 50%; background: var(--mmb-dot, #94a3b8); }
+.mm-ui.mm-dashboard [data-state="available"] { --mmb-dot: var(--mmb-available); }
+.mm-ui.mm-dashboard [data-state="reserved"] { --mmb-dot: var(--mmb-reserved); }
+.mm-ui.mm-dashboard [data-state="booked"] { --mmb-dot: var(--mmb-booked); }
+.mm-ui.mm-dashboard [data-state="inhouse"] { --mmb-dot: var(--mmb-inhouse); }
+.mm-ui.mm-dashboard [data-state="due"] { --mmb-dot: var(--mmb-due); }
+.mm-ui.mm-dashboard [data-state="dirty"] { --mmb-dot: var(--mmb-dirty); }
+.mm-ui.mm-dashboard [data-state="maintenance"] { --mmb-dot: var(--mmb-maintenance); }
+.mm-ui.mm-dashboard [data-state="cart"] { --mmb-dot: var(--mmb-cart); }
+.mm-ui.mm-dashboard [data-state="selected"] { --mmb-dot: var(--mmb-selected); }
+.mm-ui.mm-dashboard .mmb-group-tools { display: flex; justify-content: flex-end; gap: 14px; margin: 4px 0 8px; }
+.mm-ui.mm-dashboard .mmb-link { border: 0; background: transparent; color: var(--mm-brand); font-size: 12.5px; font-weight: 600; padding: 4px 0; cursor: pointer; }
+.mm-ui.mm-dashboard .mmb-group { margin: 0 0 12px; border: 1px solid var(--mm-line); border-radius: 10px; background: var(--mm-surface); overflow: hidden; }
+.mm-ui.mm-dashboard .mmb-group-heading { margin: 0; font-size: inherit; }
+.mm-ui.mm-dashboard .mmb-group-toggle { display: flex; width: 100%; align-items: center; flex-wrap: wrap; gap: 8px 12px; padding: 12px 16px; border: 0; background: #f7fafc; color: var(--mm-ink); text-align: left; cursor: pointer; }
+.mm-ui.mm-dashboard .mmb-group-toggle:hover { background: #eef4fa; }
+.mm-ui.mm-dashboard .mmb-group-toggle:focus-visible, .mm-ui.mm-dashboard .mmb-card:focus-visible, .mm-ui.mm-dashboard .mmb-btn:focus-visible, .mm-ui.mm-dashboard .mmb-drawer-close:focus-visible { outline: 3px solid var(--mm-brand); outline-offset: 2px; }
+.mm-ui.mm-dashboard .mmb-chevron { width: 14px; color: var(--mm-muted); transition: transform .15s ease; }
+.mm-ui.mm-dashboard .is-collapsed .mmb-chevron { transform: rotate(-90deg); }
+.mm-ui.mm-dashboard .mmb-group-name { font-size: 16px; font-weight: 700; }
+.mm-ui.mm-dashboard .mmb-group-price { padding: 1px 8px; border-radius: 999px; background: #e8eef5; color: #4b5d70; font-size: 12px; }
+.mm-ui.mm-dashboard .mmb-group-counts { display: flex; flex-wrap: wrap; gap: 6px; margin-left: auto; }
+.mm-ui.mm-dashboard .mmb-count { padding: 2px 9px; border-radius: 999px; background: #e8eef5; color: #4b5d70; font-size: 11.5px; font-weight: 600; }
+.mm-ui.mm-dashboard .mmb-count-free { background: #e3f0dc; color: #3b6c2b; }
+.mm-ui.mm-dashboard .mmb-count-occ { background: #fdf0dc; color: #8a5a14; }
+.mm-ui.mm-dashboard .mmb-group-body { padding: 14px 16px 6px; }
+.mm-ui.mm-dashboard .mmb-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); gap: 12px; }
+.mm-ui.mm-dashboard .mmb-tile { min-width: 0; }
+.mm-ui.mm-dashboard .mmb-card { position: relative; display: flex; width: 100%; min-height: 128px; flex-direction: column; align-items: flex-start; gap: 6px; padding: 12px 12px 10px; border: 1px solid var(--mm-line); border-top: 4px solid var(--mmb-dot, #94a3b8); border-radius: 10px; background: var(--mm-surface); color: var(--mm-ink); text-align: left; cursor: pointer; transition: box-shadow .12s ease, border-color .12s ease; }
+.mm-ui.mm-dashboard .mmb-card:hover { box-shadow: 0 6px 16px rgba(47, 99, 168, .15); border-color: #b9d2e8; border-top-color: var(--mmb-dot, #94a3b8); }
+.mm-ui.mm-dashboard .mmb-card.is-selected { background: #eef5fd; border-color: var(--mmb-selected); border-top-color: var(--mmb-selected); box-shadow: 0 0 0 2px var(--mmb-selected) inset; }
+.mm-ui.mm-dashboard .mmb-card[data-state="dirty"], .mm-ui.mm-dashboard .mmb-card[data-state="maintenance"] { background-image: repeating-linear-gradient(135deg, rgba(0, 0, 0, .035) 0 8px, transparent 8px 16px); }
+.mm-ui.mm-dashboard .mmb-card-top { display: flex; width: 100%; align-items: center; justify-content: space-between; }
+.mm-ui.mm-dashboard .mmb-number { font-size: 22px; font-weight: 700; line-height: 1.1; }
+.mm-ui.mm-dashboard .mmb-tick { display: none; width: 22px; height: 22px; align-items: center; justify-content: center; border-radius: 50%; background: var(--mmb-selected); color: #fff; font-size: 12px; }
+.mm-ui.mm-dashboard .is-selected .mmb-tick { display: inline-flex; }
+.mm-ui.mm-dashboard .mmb-bed { display: flex; min-height: 22px; align-items: center; gap: 4px; color: #526578; }
+.mm-ui.mm-dashboard .mmb-bed-icon { height: 20px; width: auto; max-width: 100%; }
+.mm-ui.mm-dashboard .mmb-bed-icon-generic { font-size: 18px; }
+.mm-ui.mm-dashboard .mmb-bed-count { font-size: 12px; font-weight: 700; }
+.mm-ui.mm-dashboard .mmb-bed-label { font-size: 12px; color: var(--mm-muted); line-height: 1.2; }
+.mm-ui.mm-dashboard .mmb-rate { margin-top: auto; font-size: 13px; font-weight: 700; color: #3b6c2b; }
+.mm-ui.mm-dashboard .mmb-proxy, .mm-ui.mm-dashboard .mmb-proxy-trigger { display: none !important; }
+.mm-ui.mm-dashboard .mmb-empty { padding: 20px; color: var(--mm-muted); text-align: center; }
+.mm-ui.mm-dashboard .mmb-footer { position: sticky; bottom: 0; z-index: 10; display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 10px; padding: 10px 4px 2px; border-top: 1px solid var(--mm-line); background: var(--mm-surface); }
+.mm-ui.mm-dashboard .mmb-hint { margin-right: auto; color: var(--mm-muted); font-size: 12px; }
+.mm-ui.mm-dashboard .mmb-selection { margin-right: auto; font-size: 13px; color: #37536a; }
+.mm-ui.mm-dashboard .mmb-selection[hidden], .mm-ui.mm-dashboard .mmb-sel-total-wrap[hidden] { display: none; }
+.mm-ui.mm-dashboard .mmb-footer-buttons { display: flex; flex-wrap: wrap; gap: 6px; }
+/* Drawer */
+.mm-ui.mm-dashboard .mmb-backdrop { position: fixed; inset: 0; z-index: 1045; background: rgba(15, 23, 42, .45); }
+.mm-ui.mm-dashboard .mmb-backdrop[hidden] { display: none; }
+.mm-ui.mm-dashboard .mmb-drawer { position: fixed; top: 0; right: 0; bottom: 0; z-index: 1050; display: flex; width: min(420px, 100vw); flex-direction: column; background: var(--mm-surface); box-shadow: -12px 0 32px rgba(15, 23, 42, .2); transform: translateX(100%); visibility: hidden; transition: transform .2s ease, visibility 0s linear .2s; outline: 0; }
+.mm-ui.mm-dashboard .mmb-drawer.is-open { transform: none; visibility: visible; transition: transform .2s ease; }
+.mm-ui.mm-dashboard .mmb-drawer.is-busy { cursor: progress; }
+.mm-ui.mm-dashboard .mmb-drawer.is-busy .mmb-drawer-actions { opacity: .6; pointer-events: none; }
+.mm-ui.mm-dashboard .mmb-drawer-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 18px 20px 14px; border-bottom: 1px solid var(--mm-line); }
+.mm-ui.mm-dashboard .mmb-drawer-eyebrow { margin: 0 0 2px; color: var(--mm-muted); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
+.mm-ui.mm-dashboard .mmb-drawer-title { margin: 0; font-size: 24px; font-weight: 700; }
+.mm-ui.mm-dashboard .mmb-drawer-close { width: 44px; height: 44px; border: 1px solid var(--mm-line); border-radius: 8px; background: var(--mm-surface); color: var(--mm-ink); cursor: pointer; }
+.mm-ui.mm-dashboard .mmb-drawer-body { flex: 1; overflow-y: auto; padding: 16px 20px; }
+.mm-ui.mm-dashboard .mmb-drawer-state { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 0 0 14px; }
+.mm-ui.mm-dashboard .mmb-drawer-hk { font-size: 12px; color: var(--mm-muted); }
+.mm-ui.mm-dashboard .mmb-drawer-bed { display: flex; align-items: center; gap: 12px; padding: 12px 14px; margin-bottom: 14px; border: 1px solid var(--mm-line); border-radius: 10px; background: #f7fafc; color: #37536a; }
+.mm-ui.mm-dashboard .mmb-drawer-bed .mmb-bed-icon { height: 26px; }
+.mm-ui.mm-dashboard .mmb-drawer-list { display: grid; grid-template-columns: minmax(110px, 38%) 1fr; gap: 8px 12px; margin: 0 0 14px; }
+.mm-ui.mm-dashboard .mmb-drawer-list dt { color: var(--mm-muted); font-size: 12.5px; font-weight: 500; }
+.mm-ui.mm-dashboard .mmb-drawer-list dd { margin: 0; overflow-wrap: anywhere; font-weight: 600; }
+.mm-ui.mm-dashboard .mmb-drawer-list dd.mmb-muted { grid-column: 1 / -1; }
+.mm-ui.mm-dashboard .mmb-drawer-description { margin: 0 0 14px; color: #475569; line-height: 1.5; }
+.mm-ui.mm-dashboard .mmb-drawer-guest { padding-top: 12px; border-top: 1px solid var(--mm-line); }
+.mm-ui.mm-dashboard .mmb-drawer-guest h4 { margin: 0 0 10px; font-size: 14px; font-weight: 700; }
+.mm-ui.mm-dashboard .mmb-drawer-stay, .mm-ui.mm-dashboard .mmb-muted { color: var(--mm-muted); font-size: 13px; }
+.mm-ui.mm-dashboard .mmb-drawer-actions { display: flex; flex-direction: column; gap: 8px; padding: 14px 20px 18px; border-top: 1px solid var(--mm-line); background: #f7fafc; }
+.mm-ui.mm-dashboard .mmb-btn { display: inline-flex; min-height: 44px; min-width: 44px; align-items: center; justify-content: center; gap: 6px; padding: 0 14px; border: 1px solid var(--mm-line); border-radius: 8px; background: var(--mm-surface); color: var(--mm-ink); font-size: 14px; font-weight: 600; text-decoration: none; cursor: pointer; }
+.mm-ui.mm-dashboard .mmb-btn:hover { border-color: var(--mm-brand); color: var(--mm-brand); text-decoration: none; }
+.mm-ui.mm-dashboard .mmb-btn-primary { border-color: var(--mm-brand); background: var(--mm-brand); color: #fff; }
+.mm-ui.mm-dashboard .mmb-btn-primary:hover { color: #fff; filter: brightness(1.08); }
+.mm-ui.mm-dashboard .mmb-btn-quiet { border-color: transparent; background: transparent; color: var(--mm-muted); }
+@media (max-width: 575px) {
+    .mm-ui.mm-dashboard .mmb-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .mm-ui.mm-dashboard .mmb-group-body { padding: 12px 10px 4px; }
+    .mm-ui.mm-dashboard .mmb-group-counts { margin-left: 0; }
+    .mm-ui.mm-dashboard .mmb-drawer { width: 100vw; }
+    .mm-ui.mm-dashboard .mmb-footer-buttons, .mm-ui.mm-dashboard .mmb-footer-buttons .btn { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .mm-ui.mm-dashboard .mmb-drawer, .mm-ui.mm-dashboard .mmb-chevron { transition: none; }
+}
+@media print { .mm-ui.mm-dashboard .mmb-drawer, .mm-ui.mm-dashboard .mmb-backdrop { display: none !important; } }

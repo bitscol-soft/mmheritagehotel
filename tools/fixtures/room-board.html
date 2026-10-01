@@ -1,0 +1,591 @@
+<div class="mmb" id="mmb" data-add-url="/hotel/add_booking" data-remove-url="/hotel/remove_booking_next">
+    <form class="mmb-search" id="searchForm" method="get">
+        <div class="mmb-toolbar">
+            <div class="mmb-date">
+                <label for="available_date" class="mmb-sr">Stay date range</label>
+                <span class="mmb-date-icon" aria-hidden="true"><i class="fa fa-calendar"></i></span>
+                <input class="form-control" type="text" name="booking_date" id="available_date" value="10/01/2026 - 10/02/2026" autocomplete="off" placeholder="Check-in - check-out date range">
+            </div>
+            <div class="mmb-quick" role="group" aria-label="Quick date ranges">
+                <button type="button" class="mmb-pill" data-mode="tonight">Tonight</button>
+                <button type="button" class="mmb-pill" data-mode="week">Next 7 days</button>
+                <button type="button" class="mmb-pill" data-mode="weekend">Weekend</button>
+            </div>
+            <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i> Check Availability</button>
+            <a href="http://localhost/report/monthly-booking" target="_blank" class="btn btn-sm btn-info" title="Monthly booking report"><i class="fa fa-search-plus"></i> <span class="hidden-xs">Monthly Report</span></a>
+        </div>
+    </form>
+
+    <div class="mmb-legend" aria-label="Room status legend">
+        <span class="mmb-chip" data-state="available"><span class="mmb-chip-dot"></span>Available</span>
+        <span class="mmb-chip" data-state="reserved"><span class="mmb-chip-dot"></span>Reserved</span>
+        <span class="mmb-chip" data-state="booked"><span class="mmb-chip-dot"></span>Booked</span>
+        <span class="mmb-chip" data-state="inhouse"><span class="mmb-chip-dot"></span>In-house</span>
+        <span class="mmb-chip" data-state="due"><span class="mmb-chip-dot"></span>Due today</span>
+        <span class="mmb-chip" data-state="dirty"><span class="mmb-chip-dot"></span>Dirty</span>
+        <span class="mmb-chip" data-state="maintenance"><span class="mmb-chip-dot"></span>Maintenance</span>
+        <span class="mmb-chip" data-state="selected"><span class="mmb-chip-dot"></span>Selected</span>
+    </div>
+
+    <div class="mmb-group-tools">
+        <button type="button" class="mmb-link" data-mmb-expand-all><i class="fa fa-plus-square-o" aria-hidden="true"></i> Expand all</button>
+        <button type="button" class="mmb-link" data-mmb-collapse-all><i class="fa fa-minus-square-o" aria-hidden="true"></i> Collapse all</button>
+    </div>
+
+    <form action="http://localhost/hotel/next-step" method="get" id="booking-form">
+        <input type="hidden" name="booking_availabe" value="10/01/2026 - 10/02/2026">
+
+        
+                                <section class="mmb-group" data-category="1">
+                <h3 class="mmb-group-heading">
+                    <button type="button" class="mmb-group-toggle" id="mmb-toggle-1" aria-expanded="true" aria-controls="mmb-body-1">
+                        <i class="fa fa-chevron-down mmb-chevron" aria-hidden="true"></i>
+                        <span class="mmb-group-name">Deluxe King</span>
+                                                <span class="mmb-group-counts">
+                            <span class="mmb-count mmb-count-free">4 free</span>
+                            <span class="mmb-count">7 rooms</span>
+                            <span class="mmb-count mmb-count-occ" title="3 of 7 occupied">43% occupied</span>
+                        </span>
+                    </button>
+                </h3>
+                <div class="mmb-group-body" id="mmb-body-1" role="region" aria-labelledby="mmb-toggle-1">
+                    <div class="mmb-grid">
+                                                                                <div class="mmb-tile room-status-ui" data-state="available">
+            
+        <span class="room-heading-right mmb-proxy-trigger" hidden onclick="updateStatus(`1`,`1`, this)"></span>
+        <span class="room-info mmb-proxy " hidden aria-hidden="true"></span>
+        <button type="button" class="mmb-card" data-room="{&quot;room_id&quot;:1,&quot;category_id&quot;:1,&quot;number&quot;:&quot;101&quot;,&quot;category&quot;:&quot;Deluxe King&quot;,&quot;bed_label&quot;:&quot;Double bed&quot;,&quot;bed_detail&quot;:&quot;King Bed&quot;,&quot;beds&quot;:&quot;1&quot;,&quot;max_guests&quot;:&quot;2&quot;,&quot;capacity&quot;:&quot;2&quot;,&quot;can_sleep&quot;:&quot;2&quot;,&quot;size&quot;:&quot;320&quot;,&quot;smoking&quot;:&quot;Non-smoking&quot;,&quot;rate&quot;:&quot;4,500&quot;,&quot;description&quot;:&quot;Quiet room with city view.&quot;,&quot;occupied&quot;:false,&quot;status_val&quot;:1,&quot;state&quot;:&quot;available&quot;,&quot;state_label&quot;:&quot;Available&quot;}" data-rate="4500" data-state="available"
+        aria-label="Room 101, Double bed, Available. Open details.">
+        <span class="mmb-card-top">
+            <span class="mmb-number">101</span>
+            <span class="mmb-tick" aria-hidden="true"><i class="fa fa-check"></i></span>
+        </span>
+        <span class="mmb-bed" title="Double bed"><svg class="mmb-bed-icon" viewBox="0 0 40 20" width="40" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="10" width="33" height="4" rx="1"/><rect x="6" y="6.6" width="13" height="3.4" rx="1.6"/><rect x="22" y="6.6" width="13" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h35v3.5"/></svg>
+</span>
+        <span class="mmb-bed-label">Double bed</span>
+        <span class="mmb-chip" data-state="available"><span class="mmb-chip-dot" aria-hidden="true"></span><span class="mmb-chip-text">Available</span></span>
+                    <span class="mmb-rate">4,500</span>
+            </button>
+</div>
+                                                                                <div class="mmb-tile room-status-ui" data-state="available">
+            
+        <span class="room-heading-right mmb-proxy-trigger" hidden onclick="updateStatus(`2`,`1`, this)"></span>
+        <span class="room-info mmb-proxy " hidden aria-hidden="true"></span>
+        <button type="button" class="mmb-card" data-room="{&quot;room_id&quot;:2,&quot;category_id&quot;:1,&quot;number&quot;:&quot;102&quot;,&quot;category&quot;:&quot;Deluxe King&quot;,&quot;bed_label&quot;:&quot;Double bed&quot;,&quot;bed_detail&quot;:&quot;King Bed&quot;,&quot;beds&quot;:&quot;1&quot;,&quot;max_guests&quot;:&quot;2&quot;,&quot;capacity&quot;:&quot;2&quot;,&quot;can_sleep&quot;:&quot;2&quot;,&quot;size&quot;:&quot;320&quot;,&quot;smoking&quot;:&quot;Non-smoking&quot;,&quot;rate&quot;:&quot;4,500&quot;,&quot;description&quot;:&quot;Quiet room with city view.&quot;,&quot;occupied&quot;:false,&quot;status_val&quot;:1,&quot;state&quot;:&quot;available&quot;,&quot;state_label&quot;:&quot;Available&quot;}" data-rate="4500" data-state="available"
+        aria-label="Room 102, Double bed, Available. Open details.">
+        <span class="mmb-card-top">
+            <span class="mmb-number">102</span>
+            <span class="mmb-tick" aria-hidden="true"><i class="fa fa-check"></i></span>
+        </span>
+        <span class="mmb-bed" title="Double bed"><svg class="mmb-bed-icon" viewBox="0 0 40 20" width="40" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="10" width="33" height="4" rx="1"/><rect x="6" y="6.6" width="13" height="3.4" rx="1.6"/><rect x="22" y="6.6" width="13" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h35v3.5"/></svg>
+</span>
+        <span class="mmb-bed-label">Double bed</span>
+        <span class="mmb-chip" data-state="available"><span class="mmb-chip-dot" aria-hidden="true"></span><span class="mmb-chip-text">Available</span></span>
+                    <span class="mmb-rate">4,500</span>
+            </button>
+</div>
+                                                                                <div class="mmb-tile room-status-ui" data-state="booked">
+        <button type="button" class="mmb-card" data-room="{&quot;room_id&quot;:3,&quot;category_id&quot;:1,&quot;number&quot;:&quot;103&quot;,&quot;category&quot;:&quot;Deluxe King&quot;,&quot;bed_label&quot;:&quot;Double bed&quot;,&quot;bed_detail&quot;:&quot;King Bed&quot;,&quot;beds&quot;:&quot;1&quot;,&quot;max_guests&quot;:&quot;2&quot;,&quot;capacity&quot;:&quot;2&quot;,&quot;can_sleep&quot;:&quot;2&quot;,&quot;size&quot;:&quot;320&quot;,&quot;smoking&quot;:&quot;Non-smoking&quot;,&quot;rate&quot;:&quot;4,500&quot;,&quot;description&quot;:&quot;Quiet room with city view.&quot;,&quot;occupied&quot;:true,&quot;housekeeping&quot;:&quot;&quot;,&quot;guest&quot;:{&quot;name&quot;:&quot;Aisha O&#039;Neil &lt;script&gt;alert(1)&lt;\/script&gt;&quot;,&quot;phone&quot;:&quot;01700000000&quot;,&quot;passport&quot;:&quot;P1234567&quot;,&quot;check_in&quot;:&quot;14:00&quot;,&quot;check_out&quot;:&quot;&quot;,&quot;note&quot;:&quot;Late arrival &lt;b&gt;note&lt;\/b&gt;&quot;,&quot;booking_id&quot;:900,&quot;check_label&quot;:&quot;Check In Now&quot;,&quot;check_url&quot;:&quot;http:\/\/localhost\/hotel\/check-in\/900&quot;,&quot;migrate_url&quot;:&quot;http:\/\/localhost\/hotel\/adjusts\/create?booking_id=900&amp;room_id=3&amp;type=migrate&quot;,&quot;booking_url&quot;:&quot;http:\/\/localhost\/hotel\/booking\/900&quot;},&quot;state&quot;:&quot;booked&quot;,&quot;state_label&quot;:&quot;Booked&quot;}" data-rate="4500" data-state="booked"
+        aria-label="Room 103, Double bed, Booked. Open details.">
+        <span class="mmb-card-top">
+            <span class="mmb-number">103</span>
+            <span class="mmb-tick" aria-hidden="true"><i class="fa fa-check"></i></span>
+        </span>
+        <span class="mmb-bed" title="Double bed"><svg class="mmb-bed-icon" viewBox="0 0 40 20" width="40" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="10" width="33" height="4" rx="1"/><rect x="6" y="6.6" width="13" height="3.4" rx="1.6"/><rect x="22" y="6.6" width="13" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h35v3.5"/></svg>
+</span>
+        <span class="mmb-bed-label">Double bed</span>
+        <span class="mmb-chip" data-state="booked"><span class="mmb-chip-dot" aria-hidden="true"></span><span class="mmb-chip-text">Booked</span></span>
+                    <span class="mmb-rate">4,500</span>
+            </button>
+</div>
+                                                                                <div class="mmb-tile room-status-ui" data-state="reserved">
+        <button type="button" class="mmb-card" data-room="{&quot;room_id&quot;:4,&quot;category_id&quot;:1,&quot;number&quot;:&quot;104&quot;,&quot;category&quot;:&quot;Deluxe King&quot;,&quot;bed_label&quot;:&quot;Double bed&quot;,&quot;bed_detail&quot;:&quot;King Bed&quot;,&quot;beds&quot;:&quot;1&quot;,&quot;max_guests&quot;:&quot;2&quot;,&quot;capacity&quot;:&quot;2&quot;,&quot;can_sleep&quot;:&quot;2&quot;,&quot;size&quot;:&quot;320&quot;,&quot;smoking&quot;:&quot;Non-smoking&quot;,&quot;rate&quot;:&quot;4,500&quot;,&quot;description&quot;:&quot;Quiet room with city view.&quot;,&quot;occupied&quot;:true,&quot;housekeeping&quot;:&quot;&quot;,&quot;guest&quot;:{&quot;name&quot;:&quot;Aisha O&#039;Neil &lt;script&gt;alert(1)&lt;\/script&gt;&quot;,&quot;phone&quot;:&quot;01700000000&quot;,&quot;passport&quot;:&quot;P1234567&quot;,&quot;check_in&quot;:&quot;14:00&quot;,&quot;check_out&quot;:&quot;&quot;,&quot;note&quot;:&quot;Late arrival &lt;b&gt;note&lt;\/b&gt;&quot;,&quot;booking_id&quot;:902,&quot;check_label&quot;:&quot;Check In Now&quot;,&quot;check_url&quot;:&quot;http:\/\/localhost\/hotel\/check-in\/902&quot;,&quot;migrate_url&quot;:&quot;http:\/\/localhost\/hotel\/adjusts\/create?booking_id=902&amp;room_id=4&amp;type=migrate&quot;,&quot;booking_url&quot;:&quot;http:\/\/localhost\/hotel\/booking\/902&quot;},&quot;state&quot;:&quot;reserved&quot;,&quot;state_label&quot;:&quot;Reserved&quot;}" data-rate="4500" data-state="reserved"
+        aria-label="Room 104, Double bed, Reserved. Open details.">
+        <span class="mmb-card-top">
+            <span class="mmb-number">104</span>
+            <span class="mmb-tick" aria-hidden="true"><i class="fa fa-check"></i></span>
+        </span>
+        <span class="mmb-bed" title="Double bed"><svg class="mmb-bed-icon" viewBox="0 0 40 20" width="40" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="10" width="33" height="4" rx="1"/><rect x="6" y="6.6" width="13" height="3.4" rx="1.6"/><rect x="22" y="6.6" width="13" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h35v3.5"/></svg>
+</span>
+        <span class="mmb-bed-label">Double bed</span>
+        <span class="mmb-chip" data-state="reserved"><span class="mmb-chip-dot" aria-hidden="true"></span><span class="mmb-chip-text">Reserved</span></span>
+                    <span class="mmb-rate">4,500</span>
+            </button>
+</div>
+                                                                                <div class="mmb-tile room-status-ui" data-state="dirty">
+            
+        <span class="room-heading-right mmb-proxy-trigger" hidden onclick="updateStatus(`5`,`0`, this)"></span>
+        <span class="room-info mmb-proxy inverse" hidden aria-hidden="true"></span>
+        <button type="button" class="mmb-card" data-room="{&quot;room_id&quot;:5,&quot;category_id&quot;:1,&quot;number&quot;:&quot;105&quot;,&quot;category&quot;:&quot;Deluxe King&quot;,&quot;bed_label&quot;:&quot;Double bed&quot;,&quot;bed_detail&quot;:&quot;King Bed&quot;,&quot;beds&quot;:&quot;1&quot;,&quot;max_guests&quot;:&quot;2&quot;,&quot;capacity&quot;:&quot;2&quot;,&quot;can_sleep&quot;:&quot;2&quot;,&quot;size&quot;:&quot;320&quot;,&quot;smoking&quot;:&quot;Non-smoking&quot;,&quot;rate&quot;:&quot;4,500&quot;,&quot;description&quot;:&quot;Quiet room with city view.&quot;,&quot;occupied&quot;:false,&quot;status_val&quot;:0,&quot;state&quot;:&quot;dirty&quot;,&quot;state_label&quot;:&quot;Dirty&quot;}" data-rate="4500" data-state="dirty"
+        aria-label="Room 105, Double bed, Dirty. Open details.">
+        <span class="mmb-card-top">
+            <span class="mmb-number">105</span>
+            <span class="mmb-tick" aria-hidden="true"><i class="fa fa-check"></i></span>
+        </span>
+        <span class="mmb-bed" title="Double bed"><svg class="mmb-bed-icon" viewBox="0 0 40 20" width="40" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="10" width="33" height="4" rx="1"/><rect x="6" y="6.6" width="13" height="3.4" rx="1.6"/><rect x="22" y="6.6" width="13" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h35v3.5"/></svg>
+</span>
+        <span class="mmb-bed-label">Double bed</span>
+        <span class="mmb-chip" data-state="dirty"><span class="mmb-chip-dot" aria-hidden="true"></span><span class="mmb-chip-text">Dirty</span></span>
+                    <span class="mmb-rate">4,500</span>
+            </button>
+</div>
+                                                                                <div class="mmb-tile room-status-ui" data-state="maintenance">
+            
+        <span class="room-heading-right mmb-proxy-trigger" hidden onclick="updateStatus(`6`,`2`, this)"></span>
+        <span class="room-info mmb-proxy orange" hidden aria-hidden="true"></span>
+        <button type="button" class="mmb-card" data-room="{&quot;room_id&quot;:6,&quot;category_id&quot;:1,&quot;number&quot;:&quot;106&quot;,&quot;category&quot;:&quot;Deluxe King&quot;,&quot;bed_label&quot;:&quot;Double bed&quot;,&quot;bed_detail&quot;:&quot;King Bed&quot;,&quot;beds&quot;:&quot;1&quot;,&quot;max_guests&quot;:&quot;2&quot;,&quot;capacity&quot;:&quot;2&quot;,&quot;can_sleep&quot;:&quot;2&quot;,&quot;size&quot;:&quot;320&quot;,&quot;smoking&quot;:&quot;Non-smoking&quot;,&quot;rate&quot;:&quot;4,500&quot;,&quot;description&quot;:&quot;Quiet room with city view.&quot;,&quot;occupied&quot;:false,&quot;status_val&quot;:2,&quot;state&quot;:&quot;maintenance&quot;,&quot;state_label&quot;:&quot;Maintenance&quot;}" data-rate="4500" data-state="maintenance"
+        aria-label="Room 106, Double bed, Maintenance. Open details.">
+        <span class="mmb-card-top">
+            <span class="mmb-number">106</span>
+            <span class="mmb-tick" aria-hidden="true"><i class="fa fa-check"></i></span>
+        </span>
+        <span class="mmb-bed" title="Double bed"><svg class="mmb-bed-icon" viewBox="0 0 40 20" width="40" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="10" width="33" height="4" rx="1"/><rect x="6" y="6.6" width="13" height="3.4" rx="1.6"/><rect x="22" y="6.6" width="13" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h35v3.5"/></svg>
+</span>
+        <span class="mmb-bed-label">Double bed</span>
+        <span class="mmb-chip" data-state="maintenance"><span class="mmb-chip-dot" aria-hidden="true"></span><span class="mmb-chip-text">Maintenance</span></span>
+                    <span class="mmb-rate">4,500</span>
+            </button>
+</div>
+                                                                                <div class="mmb-tile room-status-ui" data-state="due">
+        <button type="button" class="mmb-card" data-room="{&quot;room_id&quot;:7,&quot;category_id&quot;:1,&quot;number&quot;:&quot;107&quot;,&quot;category&quot;:&quot;Deluxe King&quot;,&quot;bed_label&quot;:&quot;Double bed&quot;,&quot;bed_detail&quot;:&quot;King Bed&quot;,&quot;beds&quot;:&quot;1&quot;,&quot;max_guests&quot;:&quot;2&quot;,&quot;capacity&quot;:&quot;2&quot;,&quot;can_sleep&quot;:&quot;2&quot;,&quot;size&quot;:&quot;320&quot;,&quot;smoking&quot;:&quot;Non-smoking&quot;,&quot;rate&quot;:&quot;4,500&quot;,&quot;description&quot;:&quot;Quiet room with city view.&quot;,&quot;occupied&quot;:true,&quot;housekeeping&quot;:&quot;&quot;,&quot;guest&quot;:{&quot;name&quot;:&quot;Aisha O&#039;Neil &lt;script&gt;alert(1)&lt;\/script&gt;&quot;,&quot;phone&quot;:&quot;01700000000&quot;,&quot;passport&quot;:&quot;P1234567&quot;,&quot;check_in&quot;:&quot;14:00&quot;,&quot;check_out&quot;:&quot;&quot;,&quot;note&quot;:&quot;Late arrival &lt;b&gt;note&lt;\/b&gt;&quot;,&quot;booking_id&quot;:901,&quot;check_label&quot;:&quot;Checkout Now&quot;,&quot;check_url&quot;:&quot;http:\/\/localhost\/hotel\/checkout\/901?room_id=7&quot;,&quot;migrate_url&quot;:&quot;http:\/\/localhost\/hotel\/adjusts\/create?booking_id=901&amp;room_id=7&amp;type=migrate&quot;,&quot;booking_url&quot;:&quot;http:\/\/localhost\/hotel\/booking\/901&quot;},&quot;state&quot;:&quot;due&quot;,&quot;state_label&quot;:&quot;Due today&quot;}" data-rate="4500" data-state="due"
+        aria-label="Room 107, Double bed, Due today. Open details.">
+        <span class="mmb-card-top">
+            <span class="mmb-number">107</span>
+            <span class="mmb-tick" aria-hidden="true"><i class="fa fa-check"></i></span>
+        </span>
+        <span class="mmb-bed" title="Double bed"><svg class="mmb-bed-icon" viewBox="0 0 40 20" width="40" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="10" width="33" height="4" rx="1"/><rect x="6" y="6.6" width="13" height="3.4" rx="1.6"/><rect x="22" y="6.6" width="13" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h35v3.5"/></svg>
+</span>
+        <span class="mmb-bed-label">Double bed</span>
+        <span class="mmb-chip" data-state="due"><span class="mmb-chip-dot" aria-hidden="true"></span><span class="mmb-chip-text">Due today</span></span>
+                    <span class="mmb-rate">4,500</span>
+            </button>
+</div>
+                                            </div>
+                </div>
+            </section>
+                                <section class="mmb-group" data-category="2">
+                <h3 class="mmb-group-heading">
+                    <button type="button" class="mmb-group-toggle" id="mmb-toggle-2" aria-expanded="true" aria-controls="mmb-body-2">
+                        <i class="fa fa-chevron-down mmb-chevron" aria-hidden="true"></i>
+                        <span class="mmb-group-name">Superior Twin</span>
+                                                <span class="mmb-group-counts">
+                            <span class="mmb-count mmb-count-free">8 free</span>
+                            <span class="mmb-count">8 rooms</span>
+                            <span class="mmb-count mmb-count-occ" title="0 of 8 occupied">0% occupied</span>
+                        </span>
+                    </button>
+                </h3>
+                <div class="mmb-group-body" id="mmb-body-2" role="region" aria-labelledby="mmb-toggle-2">
+                    <div class="mmb-grid">
+                                                                                <div class="mmb-tile room-status-ui" data-state="available">
+            
+        <span class="room-heading-right mmb-proxy-trigger" hidden onclick="updateStatus(`21`,`1`, this)"></span>
+        <span class="room-info mmb-proxy " hidden aria-hidden="true"></span>
+        <button type="button" class="mmb-card" data-room="{&quot;room_id&quot;:21,&quot;category_id&quot;:2,&quot;number&quot;:&quot;201&quot;,&quot;category&quot;:&quot;Superior Twin&quot;,&quot;bed_label&quot;:&quot;Twin beds&quot;,&quot;bed_detail&quot;:&quot;Twin Beds&quot;,&quot;beds&quot;:&quot;2&quot;,&quot;max_guests&quot;:&quot;2&quot;,&quot;capacity&quot;:&quot;2&quot;,&quot;can_sleep&quot;:&quot;2&quot;,&quot;size&quot;:&quot;320&quot;,&quot;smoking&quot;:&quot;Non-smoking&quot;,&quot;rate&quot;:&quot;4,500&quot;,&quot;description&quot;:&quot;Quiet room with city view.&quot;,&quot;occupied&quot;:false,&quot;status_val&quot;:1,&quot;state&quot;:&quot;available&quot;,&quot;state_label&quot;:&quot;Available&quot;}" data-rate="4500" data-state="available"
+        aria-label="Room 201, Twin beds, Available. Open details.">
+        <span class="mmb-card-top">
+            <span class="mmb-number">201</span>
+            <span class="mmb-tick" aria-hidden="true"><i class="fa fa-check"></i></span>
+        </span>
+        <span class="mmb-bed" title="Twin beds"><svg class="mmb-bed-icon" viewBox="0 0 59 20" width="59" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><g><rect x="4" y="10" width="21.5" height="4" rx="1"/><rect x="6" y="6.6" width="9" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h23v3.5"/></g><g transform="translate(31 0)"><rect x="4" y="10" width="21.5" height="4" rx="1"/><rect x="6" y="6.6" width="9" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h23v3.5"/></g></svg>
+</span>
+        <span class="mmb-bed-label">Twin beds</span>
+        <span class="mmb-chip" data-state="available"><span class="mmb-chip-dot" aria-hidden="true"></span><span class="mmb-chip-text">Available</span></span>
+                    <span class="mmb-rate">4,500</span>
+            </button>
+</div>
+                                                                                <div class="mmb-tile room-status-ui" data-state="available">
+            
+        <span class="room-heading-right mmb-proxy-trigger" hidden onclick="updateStatus(`22`,`1`, this)"></span>
+        <span class="room-info mmb-proxy " hidden aria-hidden="true"></span>
+        <button type="button" class="mmb-card" data-room="{&quot;room_id&quot;:22,&quot;category_id&quot;:2,&quot;number&quot;:&quot;202&quot;,&quot;category&quot;:&quot;Superior Twin&quot;,&quot;bed_label&quot;:&quot;Twin beds&quot;,&quot;bed_detail&quot;:&quot;Twin Beds&quot;,&quot;beds&quot;:&quot;2&quot;,&quot;max_guests&quot;:&quot;2&quot;,&quot;capacity&quot;:&quot;2&quot;,&quot;can_sleep&quot;:&quot;2&quot;,&quot;size&quot;:&quot;320&quot;,&quot;smoking&quot;:&quot;Non-smoking&quot;,&quot;rate&quot;:&quot;4,500&quot;,&quot;description&quot;:&quot;Quiet room with city view.&quot;,&quot;occupied&quot;:false,&quot;status_val&quot;:1,&quot;state&quot;:&quot;available&quot;,&quot;state_label&quot;:&quot;Available&quot;}" data-rate="4500" data-state="available"
+        aria-label="Room 202, Twin beds, Available. Open details.">
+        <span class="mmb-card-top">
+            <span class="mmb-number">202</span>
+            <span class="mmb-tick" aria-hidden="true"><i class="fa fa-check"></i></span>
+        </span>
+        <span class="mmb-bed" title="Twin beds"><svg class="mmb-bed-icon" viewBox="0 0 59 20" width="59" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><g><rect x="4" y="10" width="21.5" height="4" rx="1"/><rect x="6" y="6.6" width="9" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h23v3.5"/></g><g transform="translate(31 0)"><rect x="4" y="10" width="21.5" height="4" rx="1"/><rect x="6" y="6.6" width="9" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h23v3.5"/></g></svg>
+</span>
+        <span class="mmb-bed-label">Twin beds</span>
+        <span class="mmb-chip" data-state="available"><span class="mmb-chip-dot" aria-hidden="true"></span><span class="mmb-chip-text">Available</span></span>
+                    <span class="mmb-rate">4,500</span>
+            </button>
+</div>
+                                                                                <div class="mmb-tile room-status-ui" data-state="available">
+            
+        <span class="room-heading-right mmb-proxy-trigger" hidden onclick="updateStatus(`23`,`1`, this)"></span>
+        <span class="room-info mmb-proxy " hidden aria-hidden="true"></span>
+        <button type="button" class="mmb-card" data-room="{&quot;room_id&quot;:23,&quot;category_id&quot;:2,&quot;number&quot;:&quot;203&quot;,&quot;category&quot;:&quot;Superior Twin&quot;,&quot;bed_label&quot;:&quot;Twin beds&quot;,&quot;bed_detail&quot;:&quot;Twin Beds&quot;,&quot;beds&quot;:&quot;2&quot;,&quot;max_guests&quot;:&quot;2&quot;,&quot;capacity&quot;:&quot;2&quot;,&quot;can_sleep&quot;:&quot;2&quot;,&quot;size&quot;:&quot;320&quot;,&quot;smoking&quot;:&quot;Non-smoking&quot;,&quot;rate&quot;:&quot;4,500&quot;,&quot;description&quot;:&quot;Quiet room with city view.&quot;,&quot;occupied&quot;:false,&quot;status_val&quot;:1,&quot;state&quot;:&quot;available&quot;,&quot;state_label&quot;:&quot;Available&quot;}" data-rate="4500" data-state="available"
+        aria-label="Room 203, Twin beds, Available. Open details.">
+        <span class="mmb-card-top">
+            <span class="mmb-number">203</span>
+            <span class="mmb-tick" aria-hidden="true"><i class="fa fa-check"></i></span>
+        </span>
+        <span class="mmb-bed" title="Twin beds"><svg class="mmb-bed-icon" viewBox="0 0 59 20" width="59" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><g><rect x="4" y="10" width="21.5" height="4" rx="1"/><rect x="6" y="6.6" width="9" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h23v3.5"/></g><g transform="translate(31 0)"><rect x="4" y="10" width="21.5" height="4" rx="1"/><rect x="6" y="6.6" width="9" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h23v3.5"/></g></svg>
+</span>
+        <span class="mmb-bed-label">Twin beds</span>
+        <span class="mmb-chip" data-state="available"><span class="mmb-chip-dot" aria-hidden="true"></span><span class="mmb-chip-text">Available</span></span>
+                    <span class="mmb-rate">4,500</span>
+            </button>
+</div>
+                                                                                <div class="mmb-tile room-status-ui" data-state="available">
+            
+        <span class="room-heading-right mmb-proxy-trigger" hidden onclick="updateStatus(`24`,`1`, this)"></span>
+        <span class="room-info mmb-proxy " hidden aria-hidden="true"></span>
+        <button type="button" class="mmb-card" data-room="{&quot;room_id&quot;:24,&quot;category_id&quot;:2,&quot;number&quot;:&quot;204&quot;,&quot;category&quot;:&quot;Superior Twin&quot;,&quot;bed_label&quot;:&quot;Twin beds&quot;,&quot;bed_detail&quot;:&quot;Twin Beds&quot;,&quot;beds&quot;:&quot;2&quot;,&quot;max_guests&quot;:&quot;2&quot;,&quot;capacity&quot;:&quot;2&quot;,&quot;can_sleep&quot;:&quot;2&quot;,&quot;size&quot;:&quot;320&quot;,&quot;smoking&quot;:&quot;Non-smoking&quot;,&quot;rate&quot;:&quot;4,500&quot;,&quot;description&quot;:&quot;Quiet room with city view.&quot;,&quot;occupied&quot;:false,&quot;status_val&quot;:1,&quot;state&quot;:&quot;available&quot;,&quot;state_label&quot;:&quot;Available&quot;}" data-rate="4500" data-state="available"
+        aria-label="Room 204, Twin beds, Available. Open details.">
+        <span class="mmb-card-top">
+            <span class="mmb-number">204</span>
+            <span class="mmb-tick" aria-hidden="true"><i class="fa fa-check"></i></span>
+        </span>
+        <span class="mmb-bed" title="Twin beds"><svg class="mmb-bed-icon" viewBox="0 0 59 20" width="59" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><g><rect x="4" y="10" width="21.5" height="4" rx="1"/><rect x="6" y="6.6" width="9" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h23v3.5"/></g><g transform="translate(31 0)"><rect x="4" y="10" width="21.5" height="4" rx="1"/><rect x="6" y="6.6" width="9" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h23v3.5"/></g></svg>
+</span>
+        <span class="mmb-bed-label">Twin beds</span>
+        <span class="mmb-chip" data-state="available"><span class="mmb-chip-dot" aria-hidden="true"></span><span class="mmb-chip-text">Available</span></span>
+                    <span class="mmb-rate">4,500</span>
+            </button>
+</div>
+                                                                                <div class="mmb-tile room-status-ui" data-state="available">
+            
+        <span class="room-heading-right mmb-proxy-trigger" hidden onclick="updateStatus(`25`,`1`, this)"></span>
+        <span class="room-info mmb-proxy " hidden aria-hidden="true"></span>
+        <button type="button" class="mmb-card" data-room="{&quot;room_id&quot;:25,&quot;category_id&quot;:2,&quot;number&quot;:&quot;205&quot;,&quot;category&quot;:&quot;Superior Twin&quot;,&quot;bed_label&quot;:&quot;Twin beds&quot;,&quot;bed_detail&quot;:&quot;Twin Beds&quot;,&quot;beds&quot;:&quot;2&quot;,&quot;max_guests&quot;:&quot;2&quot;,&quot;capacity&quot;:&quot;2&quot;,&quot;can_sleep&quot;:&quot;2&quot;,&quot;size&quot;:&quot;320&quot;,&quot;smoking&quot;:&quot;Non-smoking&quot;,&quot;rate&quot;:&quot;4,500&quot;,&quot;description&quot;:&quot;Quiet room with city view.&quot;,&quot;occupied&quot;:false,&quot;status_val&quot;:1,&quot;state&quot;:&quot;available&quot;,&quot;state_label&quot;:&quot;Available&quot;}" data-rate="4500" data-state="available"
+        aria-label="Room 205, Twin beds, Available. Open details.">
+        <span class="mmb-card-top">
+            <span class="mmb-number">205</span>
+            <span class="mmb-tick" aria-hidden="true"><i class="fa fa-check"></i></span>
+        </span>
+        <span class="mmb-bed" title="Twin beds"><svg class="mmb-bed-icon" viewBox="0 0 59 20" width="59" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><g><rect x="4" y="10" width="21.5" height="4" rx="1"/><rect x="6" y="6.6" width="9" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h23v3.5"/></g><g transform="translate(31 0)"><rect x="4" y="10" width="21.5" height="4" rx="1"/><rect x="6" y="6.6" width="9" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h23v3.5"/></g></svg>
+</span>
+        <span class="mmb-bed-label">Twin beds</span>
+        <span class="mmb-chip" data-state="available"><span class="mmb-chip-dot" aria-hidden="true"></span><span class="mmb-chip-text">Available</span></span>
+                    <span class="mmb-rate">4,500</span>
+            </button>
+</div>
+                                                                                <div class="mmb-tile room-status-ui" data-state="available">
+            
+        <span class="room-heading-right mmb-proxy-trigger" hidden onclick="updateStatus(`26`,`1`, this)"></span>
+        <span class="room-info mmb-proxy " hidden aria-hidden="true"></span>
+        <button type="button" class="mmb-card" data-room="{&quot;room_id&quot;:26,&quot;category_id&quot;:2,&quot;number&quot;:&quot;206&quot;,&quot;category&quot;:&quot;Superior Twin&quot;,&quot;bed_label&quot;:&quot;Twin beds&quot;,&quot;bed_detail&quot;:&quot;Twin Beds&quot;,&quot;beds&quot;:&quot;2&quot;,&quot;max_guests&quot;:&quot;2&quot;,&quot;capacity&quot;:&quot;2&quot;,&quot;can_sleep&quot;:&quot;2&quot;,&quot;size&quot;:&quot;320&quot;,&quot;smoking&quot;:&quot;Non-smoking&quot;,&quot;rate&quot;:&quot;4,500&quot;,&quot;description&quot;:&quot;Quiet room with city view.&quot;,&quot;occupied&quot;:false,&quot;status_val&quot;:1,&quot;state&quot;:&quot;available&quot;,&quot;state_label&quot;:&quot;Available&quot;}" data-rate="4500" data-state="available"
+        aria-label="Room 206, Twin beds, Available. Open details.">
+        <span class="mmb-card-top">
+            <span class="mmb-number">206</span>
+            <span class="mmb-tick" aria-hidden="true"><i class="fa fa-check"></i></span>
+        </span>
+        <span class="mmb-bed" title="Twin beds"><svg class="mmb-bed-icon" viewBox="0 0 59 20" width="59" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><g><rect x="4" y="10" width="21.5" height="4" rx="1"/><rect x="6" y="6.6" width="9" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h23v3.5"/></g><g transform="translate(31 0)"><rect x="4" y="10" width="21.5" height="4" rx="1"/><rect x="6" y="6.6" width="9" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h23v3.5"/></g></svg>
+</span>
+        <span class="mmb-bed-label">Twin beds</span>
+        <span class="mmb-chip" data-state="available"><span class="mmb-chip-dot" aria-hidden="true"></span><span class="mmb-chip-text">Available</span></span>
+                    <span class="mmb-rate">4,500</span>
+            </button>
+</div>
+                                                                                <div class="mmb-tile room-status-ui" data-state="available">
+            
+        <span class="room-heading-right mmb-proxy-trigger" hidden onclick="updateStatus(`27`,`1`, this)"></span>
+        <span class="room-info mmb-proxy " hidden aria-hidden="true"></span>
+        <button type="button" class="mmb-card" data-room="{&quot;room_id&quot;:27,&quot;category_id&quot;:2,&quot;number&quot;:&quot;207&quot;,&quot;category&quot;:&quot;Superior Twin&quot;,&quot;bed_label&quot;:&quot;Twin beds&quot;,&quot;bed_detail&quot;:&quot;Twin Beds&quot;,&quot;beds&quot;:&quot;2&quot;,&quot;max_guests&quot;:&quot;2&quot;,&quot;capacity&quot;:&quot;2&quot;,&quot;can_sleep&quot;:&quot;2&quot;,&quot;size&quot;:&quot;320&quot;,&quot;smoking&quot;:&quot;Non-smoking&quot;,&quot;rate&quot;:&quot;4,500&quot;,&quot;description&quot;:&quot;Quiet room with city view.&quot;,&quot;occupied&quot;:false,&quot;status_val&quot;:1,&quot;state&quot;:&quot;available&quot;,&quot;state_label&quot;:&quot;Available&quot;}" data-rate="4500" data-state="available"
+        aria-label="Room 207, Twin beds, Available. Open details.">
+        <span class="mmb-card-top">
+            <span class="mmb-number">207</span>
+            <span class="mmb-tick" aria-hidden="true"><i class="fa fa-check"></i></span>
+        </span>
+        <span class="mmb-bed" title="Twin beds"><svg class="mmb-bed-icon" viewBox="0 0 59 20" width="59" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><g><rect x="4" y="10" width="21.5" height="4" rx="1"/><rect x="6" y="6.6" width="9" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h23v3.5"/></g><g transform="translate(31 0)"><rect x="4" y="10" width="21.5" height="4" rx="1"/><rect x="6" y="6.6" width="9" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h23v3.5"/></g></svg>
+</span>
+        <span class="mmb-bed-label">Twin beds</span>
+        <span class="mmb-chip" data-state="available"><span class="mmb-chip-dot" aria-hidden="true"></span><span class="mmb-chip-text">Available</span></span>
+                    <span class="mmb-rate">4,500</span>
+            </button>
+</div>
+                                                                                <div class="mmb-tile room-status-ui" data-state="available">
+            
+        <span class="room-heading-right mmb-proxy-trigger" hidden onclick="updateStatus(`28`,`1`, this)"></span>
+        <span class="room-info mmb-proxy " hidden aria-hidden="true"></span>
+        <button type="button" class="mmb-card" data-room="{&quot;room_id&quot;:28,&quot;category_id&quot;:2,&quot;number&quot;:&quot;208&quot;,&quot;category&quot;:&quot;Superior Twin&quot;,&quot;bed_label&quot;:&quot;Twin beds&quot;,&quot;bed_detail&quot;:&quot;Twin Beds&quot;,&quot;beds&quot;:&quot;2&quot;,&quot;max_guests&quot;:&quot;2&quot;,&quot;capacity&quot;:&quot;2&quot;,&quot;can_sleep&quot;:&quot;2&quot;,&quot;size&quot;:&quot;320&quot;,&quot;smoking&quot;:&quot;Non-smoking&quot;,&quot;rate&quot;:&quot;4,500&quot;,&quot;description&quot;:&quot;Quiet room with city view.&quot;,&quot;occupied&quot;:false,&quot;status_val&quot;:1,&quot;state&quot;:&quot;available&quot;,&quot;state_label&quot;:&quot;Available&quot;}" data-rate="4500" data-state="available"
+        aria-label="Room 208, Twin beds, Available. Open details.">
+        <span class="mmb-card-top">
+            <span class="mmb-number">208</span>
+            <span class="mmb-tick" aria-hidden="true"><i class="fa fa-check"></i></span>
+        </span>
+        <span class="mmb-bed" title="Twin beds"><svg class="mmb-bed-icon" viewBox="0 0 59 20" width="59" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><g><rect x="4" y="10" width="21.5" height="4" rx="1"/><rect x="6" y="6.6" width="9" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h23v3.5"/></g><g transform="translate(31 0)"><rect x="4" y="10" width="21.5" height="4" rx="1"/><rect x="6" y="6.6" width="9" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h23v3.5"/></g></svg>
+</span>
+        <span class="mmb-bed-label">Twin beds</span>
+        <span class="mmb-chip" data-state="available"><span class="mmb-chip-dot" aria-hidden="true"></span><span class="mmb-chip-text">Available</span></span>
+                    <span class="mmb-rate">4,500</span>
+            </button>
+</div>
+                                            </div>
+                </div>
+            </section>
+                                <section class="mmb-group" data-category="3">
+                <h3 class="mmb-group-heading">
+                    <button type="button" class="mmb-group-toggle" id="mmb-toggle-3" aria-expanded="true" aria-controls="mmb-body-3">
+                        <i class="fa fa-chevron-down mmb-chevron" aria-hidden="true"></i>
+                        <span class="mmb-group-name">Standard Single</span>
+                                                <span class="mmb-group-counts">
+                            <span class="mmb-count mmb-count-free">4 free</span>
+                            <span class="mmb-count">4 rooms</span>
+                            <span class="mmb-count mmb-count-occ" title="0 of 4 occupied">0% occupied</span>
+                        </span>
+                    </button>
+                </h3>
+                <div class="mmb-group-body" id="mmb-body-3" role="region" aria-labelledby="mmb-toggle-3">
+                    <div class="mmb-grid">
+                                                                                <div class="mmb-tile room-status-ui" data-state="available">
+            
+        <span class="room-heading-right mmb-proxy-trigger" hidden onclick="updateStatus(`31`,`1`, this)"></span>
+        <span class="room-info mmb-proxy " hidden aria-hidden="true"></span>
+        <button type="button" class="mmb-card" data-room="{&quot;room_id&quot;:31,&quot;category_id&quot;:3,&quot;number&quot;:&quot;301&quot;,&quot;category&quot;:&quot;Standard Single&quot;,&quot;bed_label&quot;:&quot;Single bed&quot;,&quot;bed_detail&quot;:&quot;Single bed&quot;,&quot;beds&quot;:&quot;1&quot;,&quot;max_guests&quot;:&quot;2&quot;,&quot;capacity&quot;:&quot;2&quot;,&quot;can_sleep&quot;:&quot;2&quot;,&quot;size&quot;:&quot;320&quot;,&quot;smoking&quot;:&quot;Non-smoking&quot;,&quot;rate&quot;:&quot;2,500&quot;,&quot;description&quot;:&quot;Quiet room with city view.&quot;,&quot;occupied&quot;:false,&quot;status_val&quot;:1,&quot;state&quot;:&quot;available&quot;,&quot;state_label&quot;:&quot;Available&quot;}" data-rate="2500" data-state="available"
+        aria-label="Room 301, Single bed, Available. Open details.">
+        <span class="mmb-card-top">
+            <span class="mmb-number">301</span>
+            <span class="mmb-tick" aria-hidden="true"><i class="fa fa-check"></i></span>
+        </span>
+        <span class="mmb-bed" title="Single bed"><svg class="mmb-bed-icon" viewBox="0 0 28 20" width="28" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="10" width="21.5" height="4" rx="1"/><rect x="6" y="6.6" width="9" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h23v3.5"/></svg>
+</span>
+        <span class="mmb-bed-label">Single bed</span>
+        <span class="mmb-chip" data-state="available"><span class="mmb-chip-dot" aria-hidden="true"></span><span class="mmb-chip-text">Available</span></span>
+                    <span class="mmb-rate">2,500</span>
+            </button>
+</div>
+                                                                                <div class="mmb-tile room-status-ui" data-state="available">
+            
+        <span class="room-heading-right mmb-proxy-trigger" hidden onclick="updateStatus(`32`,`1`, this)"></span>
+        <span class="room-info mmb-proxy " hidden aria-hidden="true"></span>
+        <button type="button" class="mmb-card" data-room="{&quot;room_id&quot;:32,&quot;category_id&quot;:3,&quot;number&quot;:&quot;302&quot;,&quot;category&quot;:&quot;Standard Single&quot;,&quot;bed_label&quot;:&quot;Single bed&quot;,&quot;bed_detail&quot;:&quot;Single bed&quot;,&quot;beds&quot;:&quot;1&quot;,&quot;max_guests&quot;:&quot;2&quot;,&quot;capacity&quot;:&quot;2&quot;,&quot;can_sleep&quot;:&quot;2&quot;,&quot;size&quot;:&quot;320&quot;,&quot;smoking&quot;:&quot;Non-smoking&quot;,&quot;rate&quot;:&quot;2,500&quot;,&quot;description&quot;:&quot;Quiet room with city view.&quot;,&quot;occupied&quot;:false,&quot;status_val&quot;:1,&quot;state&quot;:&quot;available&quot;,&quot;state_label&quot;:&quot;Available&quot;}" data-rate="2500" data-state="available"
+        aria-label="Room 302, Single bed, Available. Open details.">
+        <span class="mmb-card-top">
+            <span class="mmb-number">302</span>
+            <span class="mmb-tick" aria-hidden="true"><i class="fa fa-check"></i></span>
+        </span>
+        <span class="mmb-bed" title="Single bed"><svg class="mmb-bed-icon" viewBox="0 0 28 20" width="28" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="10" width="21.5" height="4" rx="1"/><rect x="6" y="6.6" width="9" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h23v3.5"/></svg>
+</span>
+        <span class="mmb-bed-label">Single bed</span>
+        <span class="mmb-chip" data-state="available"><span class="mmb-chip-dot" aria-hidden="true"></span><span class="mmb-chip-text">Available</span></span>
+                    <span class="mmb-rate">2,500</span>
+            </button>
+</div>
+                                                                                <div class="mmb-tile room-status-ui" data-state="available">
+            
+        <span class="room-heading-right mmb-proxy-trigger" hidden onclick="updateStatus(`33`,`1`, this)"></span>
+        <span class="room-info mmb-proxy " hidden aria-hidden="true"></span>
+        <button type="button" class="mmb-card" data-room="{&quot;room_id&quot;:33,&quot;category_id&quot;:3,&quot;number&quot;:&quot;303&quot;,&quot;category&quot;:&quot;Standard Single&quot;,&quot;bed_label&quot;:&quot;Single bed&quot;,&quot;bed_detail&quot;:&quot;Single bed&quot;,&quot;beds&quot;:&quot;1&quot;,&quot;max_guests&quot;:&quot;2&quot;,&quot;capacity&quot;:&quot;2&quot;,&quot;can_sleep&quot;:&quot;2&quot;,&quot;size&quot;:&quot;320&quot;,&quot;smoking&quot;:&quot;Non-smoking&quot;,&quot;rate&quot;:&quot;2,500&quot;,&quot;description&quot;:&quot;Quiet room with city view.&quot;,&quot;occupied&quot;:false,&quot;status_val&quot;:1,&quot;state&quot;:&quot;available&quot;,&quot;state_label&quot;:&quot;Available&quot;}" data-rate="2500" data-state="available"
+        aria-label="Room 303, Single bed, Available. Open details.">
+        <span class="mmb-card-top">
+            <span class="mmb-number">303</span>
+            <span class="mmb-tick" aria-hidden="true"><i class="fa fa-check"></i></span>
+        </span>
+        <span class="mmb-bed" title="Single bed"><svg class="mmb-bed-icon" viewBox="0 0 28 20" width="28" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="10" width="21.5" height="4" rx="1"/><rect x="6" y="6.6" width="9" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h23v3.5"/></svg>
+</span>
+        <span class="mmb-bed-label">Single bed</span>
+        <span class="mmb-chip" data-state="available"><span class="mmb-chip-dot" aria-hidden="true"></span><span class="mmb-chip-text">Available</span></span>
+                    <span class="mmb-rate">2,500</span>
+            </button>
+</div>
+                                                                                <div class="mmb-tile room-status-ui" data-state="available">
+            
+        <span class="room-heading-right mmb-proxy-trigger" hidden onclick="updateStatus(`34`,`1`, this)"></span>
+        <span class="room-info mmb-proxy " hidden aria-hidden="true"></span>
+        <button type="button" class="mmb-card" data-room="{&quot;room_id&quot;:34,&quot;category_id&quot;:3,&quot;number&quot;:&quot;304&quot;,&quot;category&quot;:&quot;Standard Single&quot;,&quot;bed_label&quot;:&quot;Single bed&quot;,&quot;bed_detail&quot;:&quot;Single bed&quot;,&quot;beds&quot;:&quot;1&quot;,&quot;max_guests&quot;:&quot;2&quot;,&quot;capacity&quot;:&quot;2&quot;,&quot;can_sleep&quot;:&quot;2&quot;,&quot;size&quot;:&quot;320&quot;,&quot;smoking&quot;:&quot;Non-smoking&quot;,&quot;rate&quot;:&quot;2,500&quot;,&quot;description&quot;:&quot;Quiet room with city view.&quot;,&quot;occupied&quot;:false,&quot;status_val&quot;:1,&quot;state&quot;:&quot;available&quot;,&quot;state_label&quot;:&quot;Available&quot;}" data-rate="2500" data-state="available"
+        aria-label="Room 304, Single bed, Available. Open details.">
+        <span class="mmb-card-top">
+            <span class="mmb-number">304</span>
+            <span class="mmb-tick" aria-hidden="true"><i class="fa fa-check"></i></span>
+        </span>
+        <span class="mmb-bed" title="Single bed"><svg class="mmb-bed-icon" viewBox="0 0 28 20" width="28" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="10" width="21.5" height="4" rx="1"/><rect x="6" y="6.6" width="9" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h23v3.5"/></svg>
+</span>
+        <span class="mmb-bed-label">Single bed</span>
+        <span class="mmb-chip" data-state="available"><span class="mmb-chip-dot" aria-hidden="true"></span><span class="mmb-chip-text">Available</span></span>
+                    <span class="mmb-rate">2,500</span>
+            </button>
+</div>
+                                            </div>
+                </div>
+            </section>
+                                <section class="mmb-group" data-category="4">
+                <h3 class="mmb-group-heading">
+                    <button type="button" class="mmb-group-toggle" id="mmb-toggle-4" aria-expanded="true" aria-controls="mmb-body-4">
+                        <i class="fa fa-chevron-down mmb-chevron" aria-hidden="true"></i>
+                        <span class="mmb-group-name">Family Suite</span>
+                                                <span class="mmb-group-counts">
+                            <span class="mmb-count mmb-count-free">2 free</span>
+                            <span class="mmb-count">2 rooms</span>
+                            <span class="mmb-count mmb-count-occ" title="0 of 2 occupied">0% occupied</span>
+                        </span>
+                    </button>
+                </h3>
+                <div class="mmb-group-body" id="mmb-body-4" role="region" aria-labelledby="mmb-toggle-4">
+                    <div class="mmb-grid">
+                                                                                <div class="mmb-tile room-status-ui" data-state="available">
+            
+        <span class="room-heading-right mmb-proxy-trigger" hidden onclick="updateStatus(`41`,`1`, this)"></span>
+        <span class="room-info mmb-proxy " hidden aria-hidden="true"></span>
+        <button type="button" class="mmb-card" data-room="{&quot;room_id&quot;:41,&quot;category_id&quot;:4,&quot;number&quot;:&quot;401&quot;,&quot;category&quot;:&quot;Family Suite&quot;,&quot;bed_label&quot;:&quot;Triple beds&quot;,&quot;bed_detail&quot;:&quot;Triple&quot;,&quot;beds&quot;:&quot;3&quot;,&quot;max_guests&quot;:&quot;2&quot;,&quot;capacity&quot;:&quot;2&quot;,&quot;can_sleep&quot;:&quot;2&quot;,&quot;size&quot;:&quot;320&quot;,&quot;smoking&quot;:&quot;Non-smoking&quot;,&quot;rate&quot;:&quot;4,500&quot;,&quot;description&quot;:&quot;Quiet room with city view.&quot;,&quot;occupied&quot;:false,&quot;status_val&quot;:1,&quot;state&quot;:&quot;available&quot;,&quot;state_label&quot;:&quot;Available&quot;}" data-rate="4500" data-state="available"
+        aria-label="Room 401, Triple beds, Available. Open details.">
+        <span class="mmb-card-top">
+            <span class="mmb-number">401</span>
+            <span class="mmb-tick" aria-hidden="true"><i class="fa fa-check"></i></span>
+        </span>
+        <span class="mmb-bed" title="Triple beds"><svg class="mmb-bed-icon" viewBox="0 0 90 20" width="90" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><g><rect x="4" y="10" width="21.5" height="4" rx="1"/><rect x="6" y="6.6" width="9" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h23v3.5"/></g><g transform="translate(31 0)"><rect x="4" y="10" width="21.5" height="4" rx="1"/><rect x="6" y="6.6" width="9" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h23v3.5"/></g><g transform="translate(62 0)"><rect x="4" y="10" width="21.5" height="4" rx="1"/><rect x="6" y="6.6" width="9" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h23v3.5"/></g></svg>
+</span>
+        <span class="mmb-bed-label">Triple beds</span>
+        <span class="mmb-chip" data-state="available"><span class="mmb-chip-dot" aria-hidden="true"></span><span class="mmb-chip-text">Available</span></span>
+                    <span class="mmb-rate">4,500</span>
+            </button>
+</div>
+                                                                                <div class="mmb-tile room-status-ui" data-state="available">
+            
+        <span class="room-heading-right mmb-proxy-trigger" hidden onclick="updateStatus(`42`,`1`, this)"></span>
+        <span class="room-info mmb-proxy " hidden aria-hidden="true"></span>
+        <button type="button" class="mmb-card" data-room="{&quot;room_id&quot;:42,&quot;category_id&quot;:4,&quot;number&quot;:&quot;402&quot;,&quot;category&quot;:&quot;Family Suite&quot;,&quot;bed_label&quot;:&quot;Triple beds&quot;,&quot;bed_detail&quot;:&quot;Triple&quot;,&quot;beds&quot;:&quot;4&quot;,&quot;max_guests&quot;:&quot;2&quot;,&quot;capacity&quot;:&quot;2&quot;,&quot;can_sleep&quot;:&quot;2&quot;,&quot;size&quot;:&quot;320&quot;,&quot;smoking&quot;:&quot;Non-smoking&quot;,&quot;rate&quot;:&quot;4,500&quot;,&quot;description&quot;:&quot;Quiet room with city view.&quot;,&quot;occupied&quot;:false,&quot;status_val&quot;:1,&quot;state&quot;:&quot;available&quot;,&quot;state_label&quot;:&quot;Available&quot;}" data-rate="4500" data-state="available"
+        aria-label="Room 402, Triple beds, Available. Open details.">
+        <span class="mmb-card-top">
+            <span class="mmb-number">402</span>
+            <span class="mmb-tick" aria-hidden="true"><i class="fa fa-check"></i></span>
+        </span>
+        <span class="mmb-bed" title="Triple beds"><svg class="mmb-bed-icon" viewBox="0 0 90 20" width="90" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><g><rect x="4" y="10" width="21.5" height="4" rx="1"/><rect x="6" y="6.6" width="9" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h23v3.5"/></g><g transform="translate(31 0)"><rect x="4" y="10" width="21.5" height="4" rx="1"/><rect x="6" y="6.6" width="9" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h23v3.5"/></g><g transform="translate(62 0)"><rect x="4" y="10" width="21.5" height="4" rx="1"/><rect x="6" y="6.6" width="9" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h23v3.5"/></g></svg>
+</span>
+        <span class="mmb-bed-label">Triple beds</span>
+        <span class="mmb-chip" data-state="available"><span class="mmb-chip-dot" aria-hidden="true"></span><span class="mmb-chip-text">Available</span></span>
+                    <span class="mmb-rate">4,500</span>
+            </button>
+</div>
+                                            </div>
+                </div>
+            </section>
+                                <section class="mmb-group" data-category="5">
+                <h3 class="mmb-group-heading">
+                    <button type="button" class="mmb-group-toggle" id="mmb-toggle-5" aria-expanded="true" aria-controls="mmb-body-5">
+                        <i class="fa fa-chevron-down mmb-chevron" aria-hidden="true"></i>
+                        <span class="mmb-group-name">Double Room</span>
+                                                <span class="mmb-group-counts">
+                            <span class="mmb-count mmb-count-free">1 free</span>
+                            <span class="mmb-count">1 rooms</span>
+                            <span class="mmb-count mmb-count-occ" title="0 of 1 occupied">0% occupied</span>
+                        </span>
+                    </button>
+                </h3>
+                <div class="mmb-group-body" id="mmb-body-5" role="region" aria-labelledby="mmb-toggle-5">
+                    <div class="mmb-grid">
+                                                                                <div class="mmb-tile room-status-ui" data-state="available">
+            
+        <span class="room-heading-right mmb-proxy-trigger" hidden onclick="updateStatus(`51`,`1`, this)"></span>
+        <span class="room-info mmb-proxy " hidden aria-hidden="true"></span>
+        <button type="button" class="mmb-card" data-room="{&quot;room_id&quot;:51,&quot;category_id&quot;:5,&quot;number&quot;:&quot;501&quot;,&quot;category&quot;:&quot;Double Room&quot;,&quot;bed_label&quot;:&quot;Double bed&quot;,&quot;bed_detail&quot;:&quot;Double Bed&quot;,&quot;beds&quot;:&quot;1&quot;,&quot;max_guests&quot;:&quot;2&quot;,&quot;capacity&quot;:&quot;2&quot;,&quot;can_sleep&quot;:&quot;2&quot;,&quot;size&quot;:&quot;320&quot;,&quot;smoking&quot;:&quot;Non-smoking&quot;,&quot;rate&quot;:&quot;4,500&quot;,&quot;description&quot;:&quot;Quiet room with city view.&quot;,&quot;occupied&quot;:false,&quot;status_val&quot;:1,&quot;state&quot;:&quot;available&quot;,&quot;state_label&quot;:&quot;Available&quot;}" data-rate="4500" data-state="available"
+        aria-label="Room 501, Double bed, Available. Open details.">
+        <span class="mmb-card-top">
+            <span class="mmb-number">501</span>
+            <span class="mmb-tick" aria-hidden="true"><i class="fa fa-check"></i></span>
+        </span>
+        <span class="mmb-bed" title="Double bed"><svg class="mmb-bed-icon" viewBox="0 0 40 20" width="40" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="10" width="33" height="4" rx="1"/><rect x="6" y="6.6" width="13" height="3.4" rx="1.6"/><rect x="22" y="6.6" width="13" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h35v3.5"/></svg>
+</span>
+        <span class="mmb-bed-label">Double bed</span>
+        <span class="mmb-chip" data-state="available"><span class="mmb-chip-dot" aria-hidden="true"></span><span class="mmb-chip-text">Available</span></span>
+                    <span class="mmb-rate">4,500</span>
+            </button>
+</div>
+                                            </div>
+                </div>
+            </section>
+                                <section class="mmb-group" data-category="6">
+                <h3 class="mmb-group-heading">
+                    <button type="button" class="mmb-group-toggle" id="mmb-toggle-6" aria-expanded="true" aria-controls="mmb-body-6">
+                        <i class="fa fa-chevron-down mmb-chevron" aria-hidden="true"></i>
+                        <span class="mmb-group-name">Large Suite</span>
+                                                <span class="mmb-group-counts">
+                            <span class="mmb-count mmb-count-free">1 free</span>
+                            <span class="mmb-count">1 rooms</span>
+                            <span class="mmb-count mmb-count-occ" title="0 of 1 occupied">0% occupied</span>
+                        </span>
+                    </button>
+                </h3>
+                <div class="mmb-group-body" id="mmb-body-6" role="region" aria-labelledby="mmb-toggle-6">
+                    <div class="mmb-grid">
+                                                                                <div class="mmb-tile room-status-ui" data-state="available">
+            
+        <span class="room-heading-right mmb-proxy-trigger" hidden onclick="updateStatus(`61`,`1`, this)"></span>
+        <span class="room-info mmb-proxy " hidden aria-hidden="true"></span>
+        <button type="button" class="mmb-card" data-room="{&quot;room_id&quot;:61,&quot;category_id&quot;:6,&quot;number&quot;:&quot;601&quot;,&quot;category&quot;:&quot;Large Suite&quot;,&quot;bed_label&quot;:&quot;5 beds&quot;,&quot;bed_detail&quot;:&quot;&quot;,&quot;beds&quot;:&quot;5&quot;,&quot;max_guests&quot;:&quot;2&quot;,&quot;capacity&quot;:&quot;2&quot;,&quot;can_sleep&quot;:&quot;2&quot;,&quot;size&quot;:&quot;320&quot;,&quot;smoking&quot;:&quot;Non-smoking&quot;,&quot;rate&quot;:&quot;4,500&quot;,&quot;description&quot;:&quot;Quiet room with city view.&quot;,&quot;occupied&quot;:false,&quot;status_val&quot;:1,&quot;state&quot;:&quot;available&quot;,&quot;state_label&quot;:&quot;Available&quot;}" data-rate="4500" data-state="available"
+        aria-label="Room 601, 5 beds, Available. Open details.">
+        <span class="mmb-card-top">
+            <span class="mmb-number">601</span>
+            <span class="mmb-tick" aria-hidden="true"><i class="fa fa-check"></i></span>
+        </span>
+        <span class="mmb-bed" title="5 beds"><svg class="mmb-bed-icon" viewBox="0 0 28 20" width="28" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="10" width="21.5" height="4" rx="1"/><rect x="6" y="6.6" width="9" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h23v3.5"/></svg><span class="mmb-bed-count">&times;5</span>
+</span>
+        <span class="mmb-bed-label">5 beds</span>
+        <span class="mmb-chip" data-state="available"><span class="mmb-chip-dot" aria-hidden="true"></span><span class="mmb-chip-text">Available</span></span>
+                    <span class="mmb-rate">4,500</span>
+            </button>
+</div>
+                                            </div>
+                </div>
+            </section>
+        
+        <div class="mmb-footer">
+            <span class="mmb-hint hidden-xs"><i class="fa fa-hand-o-up" aria-hidden="true"></i> Select a room to see details and book.</span>
+            <span class="mmb-selection" hidden aria-live="polite">
+                <i class="fa fa-check-square-o" aria-hidden="true"></i>
+                <strong><span class="mmb-sel-count">0</span> room(s)</strong> selected <span class="mmb-sel-total-wrap">&middot; est. <span class="mmb-sel-total">0</span></span>
+            </span>
+            <span class="mmb-footer-buttons">
+                <button type="submit" name="submit" value="reserve" class="btn btn-sm btn-white next-step-btn"><i class="fa fa-bookmark"></i> Reserve</button>
+                <button type="submit" name="submit" value="book" class="btn btn-sm btn-primary next-step-btn"><i class="fa fa-send"></i> Book Now</button>
+            </span>
+        </div>
+    </form>
+
+    <div class="mmb-backdrop" hidden></div>
+    <aside class="mmb-drawer" id="mmb-drawer" role="dialog" aria-modal="true" aria-labelledby="mmb-drawer-title" tabindex="-1" aria-hidden="true">
+        <header class="mmb-drawer-head">
+            <div>
+                <p class="mmb-drawer-eyebrow" id="mmb-drawer-category"></p>
+                <h3 class="mmb-drawer-title" id="mmb-drawer-title">Room</h3>
+            </div>
+            <button type="button" class="mmb-drawer-close" data-mmb-close aria-label="Close room details"><i class="fa fa-times" aria-hidden="true"></i></button>
+        </header>
+        <div class="mmb-drawer-body">
+            <p class="mmb-drawer-state"><span class="mmb-chip" id="mmb-drawer-chip"><span class="mmb-chip-dot"></span><span class="mmb-chip-text"></span></span> <span class="mmb-drawer-hk" id="mmb-drawer-hk" hidden></span></p>
+            <div class="mmb-drawer-bed"><span id="mmb-drawer-bed-icon"></span><strong id="mmb-drawer-bed-label"></strong></div>
+            <dl class="mmb-drawer-list" id="mmb-drawer-list"></dl>
+            <p class="mmb-drawer-description" id="mmb-drawer-description" hidden></p>
+            <section class="mmb-drawer-guest" id="mmb-drawer-guest" hidden aria-labelledby="mmb-guest-title">
+                <h4 id="mmb-guest-title">Guest &amp; stay</h4>
+                <dl class="mmb-drawer-list" id="mmb-drawer-guest-list"></dl>
+            </section>
+            <p class="mmb-drawer-stay" id="mmb-drawer-stay"></p>
+        </div>
+        <footer class="mmb-drawer-actions" id="mmb-drawer-actions"></footer>
+    </aside>
+</div>
+
+<script>
+    // Quick date chips reuse the daterangepicker apply flow (sets the input and submits #searchForm).
+    (function () {
+        if (typeof jQuery === 'undefined' || typeof moment === 'undefined') return;
+        $('#mmb').on('click', '.mmb-quick .mmb-pill', function () {
+            var mode = $(this).data('mode');
+            try {
+                var s = moment().startOf('day');
+                var e = moment().startOf('day').add(1, 'days');
+                if (mode === 'week') {
+                    e = s.clone().add(6, 'days');
+                } else if (mode === 'weekend') {
+                    s = moment().isoWeekday ? moment().isoWeekday(6) : moment().day(6);
+                    if (s.isBefore(moment().startOf('day'))) s.add(7, 'days');
+                    e = s.clone().add(2, 'days');
+                }
+                var $inp = $('input[name="booking_date"]').first();
+                if (!$inp.length) return;
+                var dp = $inp.data('daterangepicker');
+                if (dp) {
+                    dp.setStartDate(s);
+                    dp.setEndDate(e);
+                    dp.apply();
+                } else {
+                    $inp.val(s.format('MM/DD/YYYY') + ' - ' + e.format('MM/DD/YYYY'));
+                    $inp.closest('form').trigger('submit');
+                }
+            } catch (err) { /* fall back to the manual picker */ }
+        });
+    })();
+</script>
