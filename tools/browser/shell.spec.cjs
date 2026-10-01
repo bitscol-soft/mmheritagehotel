@@ -93,6 +93,9 @@ test('drawer closes on backdrop and breakpoint; focus and Ace state remain sound
     await expect(page.locator('#hotel-menu .submenu')).toBeHidden();
     await page.locator('#hotel-menu > a').click();
     await expect(page.locator('#hotel-menu .submenu')).toBeVisible();
+    // Put focus in the sidebar explicitly: whether a mouse click focuses an anchor differs between Chromium builds.
+    await page.locator('#hotel-menu > a').focus();
+    await expect(page.locator('#hotel-menu > a')).toBeFocused();
     await page.setViewportSize({ width: 360, height: 900 });
     await expect(toggle).toHaveAttribute('aria-expanded', 'false');
     await expect(toggle).toBeFocused();
