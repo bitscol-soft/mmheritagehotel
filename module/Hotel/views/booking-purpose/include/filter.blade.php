@@ -1,24 +1,8 @@
-<div class="row">
-    <form action="">
-        <table class="table table-striped table-bordered table-hover">
-            <tr>
-                <td>
-                    <div class="input-group">
-                        <span class="input-group-addon">Name</span>
-                        <input type="text" name="name" class="form-control" value="{{ request('name') }}">
-                    </div>
-                </td>
-                <td>
-                    <div class="btn-group btn-corner">
-                        <button type="submit" class="btn btn-sm btn-success">
-                            <i class="fa fa-search"></i> Search
-                        </button>
-                        <a href="{{ request()->url() }}" class="btn btn-sm btn-default">
-                            <i class="fa fa-refresh"></i>
-                        </a>
-                    </div>
-                </td>
-            </tr>
-        </table>
-    </form>
-</div>
+<x-mm.panel class="tw-p-4 tw-mb-4">
+<form action="" method="get" class="mm-setup-filter">
+    <input type="hidden" name="type" value="{{ request('type') }}">
+    <x-mm.field label="Name" id="booking-setup-filter" name="name" :value="request('name')" />
+    <button type="submit" class="mm-button mm-button-primary">Search</button>
+    <a href="{{ request()->url() }}?type={{ request('type') }}" class="mm-button mm-button-secondary">Reset</a>
+</form>
+</x-mm.panel>

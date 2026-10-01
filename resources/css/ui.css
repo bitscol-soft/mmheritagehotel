@@ -303,3 +303,12 @@
     .mm-ui .mm-housekeeping-board { padding: 12px; }
     .mm-ui.mm-housekeeping .room-list > .row > .col-md-1 { flex-basis: calc(50% - 6px); width: calc(50% - 6px); }
 }
+
+.mm-ui .mm-setup-filter { display: flex; flex-wrap: wrap; align-items: end; gap: 12px; }
+.mm-ui.mm-booking-setup .form-horizontal .form-group { margin: 0 0 20px; }
+.mm-ui.mm-booking-setup .form-horizontal .control-label { text-align: left; margin-bottom: 8px; }
+.mm-ui.mm-booking-setup .form-horizontal input[type=text] { min-height: 40px; border: 1px solid var(--mm-line); border-radius: 6px; }
+.mm-ui.mm-booking-setup .form-actions { margin: 16px 0 0; padding: 16px; background: var(--mm-bg); }
+.mm-ui.mm-booking-setup table { margin: 0; }
+.mm-ui.mm-booking-setup th, .mm-ui.mm-booking-setup td { padding: 12px; }
+@media (max-width: 575px) { .mm-ui .mm-setup-filter > :first-of-type { flex-basis: 100%; } }

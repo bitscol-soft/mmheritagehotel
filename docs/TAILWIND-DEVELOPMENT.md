@@ -272,3 +272,13 @@ shell globally in the first increment.
   claim to fix its optimistic updates or backend error handling.
 - No deployment or hotel data writes performed. Temporary preview remains the
   sample dashboard until an actual housekeeping fixture or staging is available.
+
+## Tenth increment — booking purpose/platform CRUD group (2026-10-01)
+
+List/filter/create/edit migrated together. Added field labels/error text, shared
+panels and table overflow. Two deliberate navigation fixes: filter/reset retain
+`type`; create Back List now returns to booking setup instead of companies.
+Routes for writes, hidden rule values, validation requirements, CSRF/PUT and JS
+remain unchanged. Build/contracts pass; 33 templates compile. Authenticated CRUD,
+delete confirmation and both type-mode tests remain pending. Module-level status
+and next groups are now tracked in `docs/MODULE-COMPLETION.md`.

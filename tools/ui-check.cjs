@@ -132,3 +132,12 @@ assert(keepingAfter.includes('<x-room-keeping :categories="$categories" :mixdate
 for (const path of ['resources/views/components/room-keeping.blade.php','resources/views/components/room-status-keeping.blade.php','module/Hotel/views/house-keeping/_script/script.blade.php']) assert.equal(fs.readFileSync(path,'utf8'), execFileSync('git',['show',`d96fc4cf:${path}`],{encoding:'utf8'}), `Housekeeping behavior changed: ${path}`);
 assert(!keepingAfter.includes('<style>'));
 console.log('PASS: housekeeping PHP, room components, permission gate and status-update scripts preserved');
+
+for (const mode of ['index','create','edit']) {
+ const path=`module/Hotel/views/booking-purpose/${mode}.blade.php`;
+ const before=execFileSync('git',['show',`8955dbdc:${path}`],{encoding:'utf8'}), after=fs.readFileSync(path,'utf8');
+ assert.equal(after.split("@section('js')")[1],before.split("@section('js')")[1]);
+ for(const re of [/\b(?:name|id|method|action|enctype)="[^"]+"/g, /@csrf|@method\('[^']+'\)/g]) for(const value of before.match(re)||[]) assert(after.includes(value),`Setup contract removed: ${value}`);
+ if(mode==='index') assert.deepEqual(after.match(/<tbody>[\s\S]*?<\/tbody>/g).map(s=>s.replace('aria-label="Edit booking label" ','')),before.match(/<tbody>[\s\S]*?<\/tbody>/g));
+}
+console.log('PASS: booking setup forms, table data and scripts preserved');
