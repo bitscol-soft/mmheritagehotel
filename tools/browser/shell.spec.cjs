@@ -134,6 +134,18 @@ for (const width of [360, 768, 1440]) {
         await expect(page.locator('.mm-dashboard-stat')).toHaveCount(4);
         await expect(page.getByRole('heading', {name:'Hotel dashboard', exact:true})).toBeVisible();
         await expect(page.getByText('not a housekeeping readiness check', {exact:false})).toBeVisible();
+        await expect(page.getByRole('link', {name:'Booking list'})).toBeVisible();
+        await expect(page.locator('.mm-dashboard-date')).toContainText('01 Oct 2026');
+        await expect(page.locator('#dashboard-board-title')).toBeVisible();
+        // Bootstrap row clearfix pseudo-elements must not become empty tile-grid cells.
+        const pseudo = await page.evaluate(() => { const row = document.querySelector('.room-list .row'); return [getComputedStyle(row, '::before').display, getComputedStyle(row, '::after').display]; });
+        expect(pseudo).toEqual(['none', 'none']);
+        const gap = await page.evaluate(() => { const row = document.querySelector('.room-list .row'); const tile = row.querySelector('.room-tile-col'); return Math.round(tile.getBoundingClientRect().left - row.getBoundingClientRect().left); });
+        expect(gap).toBeLessThanOrEqual(8);
+        const states = await page.evaluate(() => ['inverse', 'orange'].map(name => { const style = getComputedStyle(document.querySelector('.room-info.' + name)); return [style.backgroundColor, style.color]; }));
+        expect(states).toEqual([['rgb(9, 6, 19)', 'rgb(255, 255, 255)'], ['rgb(149, 133, 191)', 'rgb(255, 255, 255)']]);
+        const smallTiles = await page.evaluate(() => Array.from(document.querySelectorAll('.room-info, .booked-room-info')).filter(el => el.getBoundingClientRect().height < 44).length);
+        expect(smallTiles).toBe(0);
         expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBeTruthy();
     });
 }

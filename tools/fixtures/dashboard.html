@@ -35,7 +35,121 @@
 </ul></div>
 <div id="mm-main-content" class="main-content" tabindex="-1"><div class="main-content-inner"><div class="page-content">
 <div class="mm-ui mm-shell-toolbar"><span>Hotel workspace</span><button id="mm-density-toggle" class="mm-button mm-button-secondary" aria-pressed="false">Compact spacing</button></div>
-<div class="mm-ui"><section class="mm-panel"><h1>Hotel dashboard</h1><p>Daily activity at a glance · Sample data only</p><div class="mm-dashboard-grid">
+<style>
+    .table {
+        margin-bottom: 0 !important;
+    }
+
+    body {
+        counter-reset: section;
+        /* Set a counter named 'section', and its initial value is 0. */
+    }
+
+    .count:before {
+        counter-increment: section;
+        content: counter(section);
+    }
+
+    select:invalid {
+        height: 0px !important;
+        opacity: 0 !important;
+        position: absolute !important;
+        display: flex !important;
+    }
+
+    select:invalid[multiple] {
+        margin-top: 15px !important;
+    }
+
+
+    .category-header {
+
+        /* padding: 10px; */
+        padding-bottom: 14px;
+        font-size: 20PX;
+        /* background-color: #eaf4fa; */
+    }
+
+    .room-info {
+        border: 1px solid #606d99;
+        text-align: center;
+        height: 70px;
+        margin-bottom: 20px;
+        cursor: pointer;
+    }
+    .booked-room-info {
+        border: 1px solid #606d99;
+        text-align: center;
+        height: 70px;
+        margin-bottom: 20px;
+        cursor: pointer;
+    }
+
+    .room-info.active {
+        background-color: #82af6f;
+        border-color: #82af6f;
+        color: #fff;
+    }
+
+    .booked-room-info span {
+            padding-top: 18px;
+            font-size: 24px;
+            text-transform: uppercase;
+        }
+
+    .booked {
+        background-color: red;
+        color: #fff;
+        pointer-events: none;
+    }
+
+    .orange {
+        background-color: #9585BF;
+        color: #fff;
+        /* pointer-events: none; */
+    }
+
+    .reservation,
+    .label-yellow {
+        background-color: #ffae00 !important;
+        color: #fff;
+        pointer-events: none;
+    }
+
+    .store {
+        background-color: rgb(37, 70, 131);
+        color: #fff;
+        pointer-events: none;
+    }
+
+    .room-info p {
+        padding-top: 18px;
+        font-size: 24px;
+        text-transform: uppercase;
+    }
+
+    .booked-room-info span {
+            padding-top: 18px;
+            font-size: 24px;
+            text-transform: uppercase;
+    }
+
+    .search-available .btn {
+        padding: 2px 15px;
+        border-radius: 3px;
+    }
+    .room-heading-right{
+            float: right;
+            right: 0;
+            top: 0;
+            padding: 0 7px;
+            margin-right: 8px;
+            width: 10%;
+            position: relative;
+            cursor: all-scroll;
+        }
+</style>
+<section class="mm-ui mm-dashboard"><div class="tw-space-y-6 tw-py-4"><header class="tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-4"><div><p class="tw-m-0 tw-mb-1 tw-text-xs tw-font-semibold tw-uppercase tw-tracking-wide tw-text-muted">MM Heritage Hotel</p><h1 class="tw-m-0 tw-text-2xl tw-font-semibold tw-text-ink">Hotel dashboard</h1><p class="tw-m-0 tw-mt-2 tw-text-sm tw-text-muted">Daily activity and room availability at a glance.</p></div><div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><span class="mm-dashboard-date"><i class="fa fa-calendar" aria-hidden="true"></i> 01 Oct 2026</span><a class="mm-button mm-button-secondary" href="/hotel/booking">Booking list</a><a class="mm-button mm-button-secondary" href="/report/expected-arrival">Expected arrivals</a><a class="mm-button mm-button-secondary" href="/report/expected-departure">Expected departures</a><a class="mm-button mm-button-secondary" href="/report/in-house-guest">In-house guests</a></div></header><div class="mm-dashboard-grid">
 <article class="mm-dashboard-stat">
     <h2>Bookings</h2>
     <p class="mm-dashboard-value">8 <span>today</span></p>
@@ -58,7 +172,7 @@
 </article>
 </div>
 <p class="tw-m-0 tw-mt-2 tw-text-xs tw-text-muted">*Ready room is the existing total-minus-booked figure, not a housekeeping readiness check.</p>
-<h2>Sample guest record</h2><label>Guest name <input class="mm-input" value="Sample guest"></label><div class="mm-table-scroll"><table style="width:100%"><tr><th>Name</th><th>Room</th></tr><tr><td>Sample guest</td><td>101</td></tr></table></div></section></div>
+<section class="mm-dashboard-board" aria-labelledby="dashboard-board-title"><header class="tw-mb-4"><h2 id="dashboard-board-title" class="tw-m-0 tw-text-xl tw-font-semibold">Room booking board</h2><p class="tw-m-0 tw-mt-2 tw-text-sm tw-text-muted">Review dates and room status using the existing booking controls.</p></header><div class="row clearfix"><div class="mm-panel tw-p-4 mm-dashboard-board-panel"><div class="room-booking-board"><form class="form-horizontal" id="searchForm" method="get"><div class="row board-toolbar"><div class="board-date-wrap"><div class="input-group board-date-group"><span class="input-group-addon board-date-icon"><i class="fa fa-calendar bigger-110"></i></span><input class="form-control" type="text" name="booking_date" id="available_date" value="10/01/2026 - 10/02/2026" aria-label="Stay date range"></div></div><div class="board-quick-dates" role="group" aria-label="Quick date ranges"><button type="button" class="btn btn-xs">Tonight</button><button type="button" class="btn btn-xs">Next 7 days</button><button type="button" class="btn btn-xs">Weekend</button></div><div class="board-actions"><button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i> Check Availability</button></div><div class="board-report"><a href="#" class="btn btn-sm btn-info"><i class="fa fa-search-plus"></i> <span class="hidden-xs">Monthly Report</span></a></div></div></form><div class="board-legend"><span class="label label-xs board-free arrowed arrowed-right">Free</span> <span class="label label-xs reservation arrowed arrowed-right">Reservation</span> <span class="label label-xs booked arrowed arrowed-right">Booked</span> <span class="label label-xs label-danger arrowed arrowed-right">Check In</span> <span class="label label-xs label-inverse arrowed arrowed-right">Dirty</span> <span class="label label-xs label-purple arrowed arrowed-right">Maintenance</span> <span class="label label-xs today-checkout arrowed arrowed-right">Today Checkout</span> <span class="label label-xs board-selected arrowed arrowed-right">Selected</span></div><div class="search-results"><form id="booking-form"><div class="room-search-list panel panel-default"><div class="panel-heading clearfix"><span class="category-name">Deluxe King</span><span class="category-price">৳4500</span><span class="category-count"><span class="badge badge-success">4 free</span><span class="badge">8 rooms</span><span class="badge badge-occ">50% occupied</span></span></div><div class="panel-body room-list"><div class="row"><div class="col-md-1 col-sm-4 col-xs-6 room-tile-col"><div class="room-status-ui"><span class="room-heading-right" title="Change housekeeping status"><i class="fa fa-exchange"></i></span><div class="room-info  room-price" role="button" tabindex="0" data-rate="3500"><p>101<span class="tile-tick" aria-hidden="true"><i class="fa fa-check"></i></span></p><span class="room-meta"><i class="fa fa-bed"></i>&nbsp;2</span></div></div></div><div class="col-md-1 col-sm-4 col-xs-6 room-tile-col"><div class="room-status-ui"><span class="room-heading-right" title="Change housekeeping status"><i class="fa fa-exchange"></i></span><div class="room-info  room-price" role="button" tabindex="0" data-rate="3500"><p>102<span class="tile-tick" aria-hidden="true"><i class="fa fa-check"></i></span></p><span class="room-meta"><i class="fa fa-bed"></i>&nbsp;2</span></div></div></div><div class="col-md-1 col-sm-4 col-xs-6 room-tile-col"><div class="booked-room-info board-booked-tile" style="padding-top:18px;background:#D278DE;color:white"><span class="popover-success">103</span><span class="board-booked-tag">Booked</span></div></div><div class="col-md-1 col-sm-4 col-xs-6 room-tile-col"><div class="booked-room-info board-booked-tile" style="padding-top:18px;background:#9ABC32;color:white"><span class="popover-success">104</span><span class="board-booked-tag">Reserved</span></div></div><div class="col-md-1 col-sm-4 col-xs-6 room-tile-col"><div class="room-status-ui"><span class="room-heading-right" title="Change housekeeping status"><i class="fa fa-exchange"></i></span><div class="room-info inverse room-price" role="button" tabindex="0" data-rate="3500"><p>105<span class="tile-tick" aria-hidden="true"><i class="fa fa-check"></i></span></p><span class="room-meta"><i class="fa fa-bed"></i>&nbsp;2</span></div></div></div><div class="col-md-1 col-sm-4 col-xs-6 room-tile-col"><div class="room-status-ui"><span class="room-heading-right" title="Change housekeeping status"><i class="fa fa-exchange"></i></span><div class="room-info orange room-price" role="button" tabindex="0" data-rate="3500"><p>106<span class="tile-tick" aria-hidden="true"><i class="fa fa-check"></i></span></p><span class="room-meta"><i class="fa fa-bed"></i>&nbsp;2</span></div></div></div><div class="col-md-1 col-sm-4 col-xs-6 room-tile-col"><div class="booked-room-info board-booked-tile" style="padding-top:18px;background:#1e6b99;color:white"><span class="popover-success">107</span><span class="board-booked-tag">Due today</span></div></div><div class="col-md-1 col-sm-4 col-xs-6 room-tile-col"><div class="room-status-ui"><span class="room-heading-right" title="Change housekeeping status"><i class="fa fa-exchange"></i></span><div class="room-info active room-price" role="button" tabindex="0" data-rate="3500"><p>108<span class="tile-tick" aria-hidden="true"><i class="fa fa-check"></i></span></p><span class="room-meta"><i class="fa fa-bed"></i>&nbsp;2</span></div></div></div></div></div></div><div class="room-search-list panel panel-default"><div class="panel-heading clearfix"><span class="category-name">Superior Twin</span><span class="category-price">৳3200</span><span class="category-count"><span class="badge badge-success">12 free</span><span class="badge">13 rooms</span><span class="badge badge-occ">8% occupied</span></span></div><div class="panel-body room-list"><div class="row"><div class="col-md-1 col-sm-4 col-xs-6 room-tile-col"><div class="room-status-ui"><span class="room-heading-right" title="Change housekeeping status"><i class="fa fa-exchange"></i></span><div class="room-info  room-price" role="button" tabindex="0" data-rate="3500"><p>201<span class="tile-tick" aria-hidden="true"><i class="fa fa-check"></i></span></p><span class="room-meta"><i class="fa fa-bed"></i>&nbsp;2</span></div></div></div><div class="col-md-1 col-sm-4 col-xs-6 room-tile-col"><div class="room-status-ui"><span class="room-heading-right" title="Change housekeeping status"><i class="fa fa-exchange"></i></span><div class="room-info  room-price" role="button" tabindex="0" data-rate="3500"><p>202<span class="tile-tick" aria-hidden="true"><i class="fa fa-check"></i></span></p><span class="room-meta"><i class="fa fa-bed"></i>&nbsp;2</span></div></div></div><div class="col-md-1 col-sm-4 col-xs-6 room-tile-col"><div class="room-status-ui"><span class="room-heading-right" title="Change housekeeping status"><i class="fa fa-exchange"></i></span><div class="room-info  room-price" role="button" tabindex="0" data-rate="3500"><p>203<span class="tile-tick" aria-hidden="true"><i class="fa fa-check"></i></span></p><span class="room-meta"><i class="fa fa-bed"></i>&nbsp;2</span></div></div></div><div class="col-md-1 col-sm-4 col-xs-6 room-tile-col"><div class="booked-room-info board-booked-tile" style="padding-top:18px;background:#d15b47;color:white"><span class="popover-success">204</span><span class="board-booked-tag">In-house</span></div></div><div class="col-md-1 col-sm-4 col-xs-6 room-tile-col"><div class="room-status-ui"><span class="room-heading-right" title="Change housekeeping status"><i class="fa fa-exchange"></i></span><div class="room-info  room-price" role="button" tabindex="0" data-rate="3500"><p>205<span class="tile-tick" aria-hidden="true"><i class="fa fa-check"></i></span></p><span class="room-meta"><i class="fa fa-bed"></i>&nbsp;2</span></div></div></div><div class="col-md-1 col-sm-4 col-xs-6 room-tile-col"><div class="room-status-ui"><span class="room-heading-right" title="Change housekeeping status"><i class="fa fa-exchange"></i></span><div class="room-info  room-price" role="button" tabindex="0" data-rate="3500"><p>206<span class="tile-tick" aria-hidden="true"><i class="fa fa-check"></i></span></p><span class="room-meta"><i class="fa fa-bed"></i>&nbsp;2</span></div></div></div><div class="col-md-1 col-sm-4 col-xs-6 room-tile-col"><div class="room-status-ui"><span class="room-heading-right" title="Change housekeeping status"><i class="fa fa-exchange"></i></span><div class="room-info  room-price" role="button" tabindex="0" data-rate="3500"><p>207<span class="tile-tick" aria-hidden="true"><i class="fa fa-check"></i></span></p><span class="room-meta"><i class="fa fa-bed"></i>&nbsp;2</span></div></div></div><div class="col-md-1 col-sm-4 col-xs-6 room-tile-col"><div class="room-status-ui"><span class="room-heading-right" title="Change housekeeping status"><i class="fa fa-exchange"></i></span><div class="room-info  room-price" role="button" tabindex="0" data-rate="3500"><p>208<span class="tile-tick" aria-hidden="true"><i class="fa fa-check"></i></span></p><span class="room-meta"><i class="fa fa-bed"></i>&nbsp;2</span></div></div></div><div class="col-md-1 col-sm-4 col-xs-6 room-tile-col"><div class="room-status-ui"><span class="room-heading-right" title="Change housekeeping status"><i class="fa fa-exchange"></i></span><div class="room-info  room-price" role="button" tabindex="0" data-rate="3500"><p>209<span class="tile-tick" aria-hidden="true"><i class="fa fa-check"></i></span></p><span class="room-meta"><i class="fa fa-bed"></i>&nbsp;2</span></div></div></div><div class="col-md-1 col-sm-4 col-xs-6 room-tile-col"><div class="room-status-ui"><span class="room-heading-right" title="Change housekeeping status"><i class="fa fa-exchange"></i></span><div class="room-info  room-price" role="button" tabindex="0" data-rate="3500"><p>210<span class="tile-tick" aria-hidden="true"><i class="fa fa-check"></i></span></p><span class="room-meta"><i class="fa fa-bed"></i>&nbsp;2</span></div></div></div><div class="col-md-1 col-sm-4 col-xs-6 room-tile-col"><div class="room-status-ui"><span class="room-heading-right" title="Change housekeeping status"><i class="fa fa-exchange"></i></span><div class="room-info  room-price" role="button" tabindex="0" data-rate="3500"><p>211<span class="tile-tick" aria-hidden="true"><i class="fa fa-check"></i></span></p><span class="room-meta"><i class="fa fa-bed"></i>&nbsp;2</span></div></div></div><div class="col-md-1 col-sm-4 col-xs-6 room-tile-col"><div class="room-status-ui"><span class="room-heading-right" title="Change housekeeping status"><i class="fa fa-exchange"></i></span><div class="room-info  room-price" role="button" tabindex="0" data-rate="3500"><p>212<span class="tile-tick" aria-hidden="true"><i class="fa fa-check"></i></span></p><span class="room-meta"><i class="fa fa-bed"></i>&nbsp;2</span></div></div></div><div class="col-md-1 col-sm-4 col-xs-6 room-tile-col"><div class="room-status-ui"><span class="room-heading-right" title="Change housekeeping status"><i class="fa fa-exchange"></i></span><div class="room-info  room-price" role="button" tabindex="0" data-rate="3500"><p>213<span class="tile-tick" aria-hidden="true"><i class="fa fa-check"></i></span></p><span class="room-meta"><i class="fa fa-bed"></i>&nbsp;2</span></div></div></div></div></div></div><div class="info-submit board-footer"><span class="board-hint hidden-xs"><i class="fa fa-hand-o-up"></i> Tap a room tile to add it to the selection</span><span class="footer-buttons"><button type="button" class="btn btn-sm btn-white next-step-btn"><i class="fa fa-bookmark"></i> Reserve</button><button type="button" class="btn btn-sm btn-primary next-step-btn"><i class="fa fa-send"></i> Book Now</button></span></div></form></div></div></div></div></section></div></section>
 </div></div></div><div class="footer"><div class="footer-inner"><div class="footer-content">MM Heritage Hotel</div></div></div></div>
 <script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script><script src="/assets/custom_js/shell.js"></script>
 </body></html>

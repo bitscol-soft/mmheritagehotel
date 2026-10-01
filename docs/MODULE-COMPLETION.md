@@ -62,3 +62,9 @@ Create/edit migrated together with preserved pricing/photo behavior and the
 documented permission/error-key/id fixes. Existing-photo remove icon is inert
 legacy UI (no handler). Staging acceptance pending. Hotel remaining: booking
 lifecycle/detail/edit, payments/checkout/invoices/print, night audit.
+
+## Dashboard completion
+
+Header context/shortcuts, board panel and two board visual defects (phantom grid
+cells, invisible dirty/maintenance/cart tiles) fixed. HRM/garments dashboards are
+separate screens and remain in HRM/other module phases. Staging data acceptance pending.

@@ -22,6 +22,21 @@
 
     <x-mm.styles />
     <x-mm.page title="Hotel dashboard" description="Daily activity and room availability at a glance." class="mm-dashboard">
+        <x-slot name="actions">
+            <span class="mm-dashboard-date" title="Hotel business date"><i class="fa fa-calendar" aria-hidden="true"></i> {{ fdate(today_from_system(), 'd M Y') }}</span>
+            @if (hasPermission('bookings.index', $slugs))
+                <a class="mm-button mm-button-secondary" href="{{ route('booking.index') }}">Booking list</a>
+            @endif
+            @if (hasPermission('hotel.expected-arrival.index', $slugs))
+                <a class="mm-button mm-button-secondary" href="{{ route('report.expected-arrival') }}">Expected arrivals</a>
+            @endif
+            @if (hasPermission('hotel.expected-departure.index', $slugs))
+                <a class="mm-button mm-button-secondary" href="{{ route('report.expected-departure') }}">Expected departures</a>
+            @endif
+            @if (hasPermission('hotel.in-house-guest.index', $slugs))
+                <a class="mm-button mm-button-secondary" href="{{ route('report.in-house-guest') }}">In-house guests</a>
+            @endif
+        </x-slot>
         @include('home._inc.dashboard-summary')
 
     <!-- Attendance -->

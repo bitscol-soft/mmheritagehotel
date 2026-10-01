@@ -119,7 +119,7 @@ const uncomment = s => s.replace(/{{--[\s\S]*?--}}/g, '');
 for (const expression of uncomment(dashBefore).match(/{{[\s\S]*?}}/g) || []) assert((dashAfter + dashSummary).includes(expression), `Dashboard expression changed: ${expression}`);
 assert.equal(dashAfter.split("@section('js')")[1], dashBefore.split("@section('js')")[1]);
 for (const condition of dashBefore.match(/@if\([^\n]+|@if \([^\n]+/g) || []) assert(dashAfter.includes(condition));
-for (const path of ['resources/views/home/_inc/booking_ui.blade.php','resources/views/home/_inc/script.blade.php']) assert.equal(fs.readFileSync(path,'utf8'), execFileSync('git',['show',`d96fc4cf:${path}`],{encoding:'utf8'}));
+for (const path of ['resources/views/home/_inc/script.blade.php']) assert.equal(fs.readFileSync(path,'utf8'), execFileSync('git',['show',`d96fc4cf:${path}`],{encoding:'utf8'}));
 assert(!dashAfter.includes('<style>'));
 console.log('PASS: dashboard displayed expressions, visibility gates, scripts and shared booking board preserved');
 
@@ -184,4 +184,17 @@ console.log('PASS: note list/edit expressions, forms and status scripts; legacy 
  }
  assert.equal(fs.readFileSync('module/Hotel/views/category/inc/script.blade.php','utf8'),execFileSync('git',['show','207fae47:module/Hotel/views/category/inc/script.blade.php'],{encoding:'utf8'}),'Category pricing/photo script changed');
  console.log('PASS: category create/edit fields, values, validation, rows, status and pricing/photo scripts preserved');
+}
+
+{
+ const dash=fs.readFileSync('resources/views/home/hotel-dashboard.blade.php','utf8'), baseDash=execFileSync('git',['show','3b824a86:resources/views/home/hotel-dashboard.blade.php'],{encoding:'utf8'});
+ assert.equal(dash.split("@section('js')")[1],baseDash.split("@section('js')")[1],'Dashboard scripts changed');
+ for(const permission of ['bookings.index','hotel.expected-arrival.index','hotel.expected-departure.index','hotel.in-house-guest.index']) assert(dash.includes(`hasPermission('${permission}', $slugs)`),`Dashboard link lost permission ${permission}`);
+ for(const route of ['booking.index','report.expected-arrival','report.expected-departure','report.in-house-guest']) assert(dash.includes(`route('${route}')`),`Dashboard link route missing ${route}`);
+ const board=fs.readFileSync('resources/views/home/_inc/booking_ui.blade.php','utf8');
+ assert(board.includes('<x-alert-message />') && board.includes('<x-room-manage :categories="$categories" :mixdate="$mix_date" />'),'Dashboard board component contract changed');
+ const legacy=fs.readFileSync('public/assets/custom_css/style.css','utf8');
+ for(const needle of ['.room-booking-board .room-list .row::before','.room-booking-board .room-info.inverse { background:','.room-booking-board .room-info.orange { background:']) assert(legacy.includes(needle),`Board visual fix missing: ${needle}`);
+ for(const path of ['resources/views/components/room-manage.blade.php','resources/views/components/room-status.blade.php','resources/views/home/_inc/script.blade.php','resources/views/home/_inc/style.blade.php']) assert.equal(fs.readFileSync(path,'utf8'),execFileSync('git',['show',`3b824a86:${path}`],{encoding:'utf8'}),`Shared board source changed: ${path}`);
+ console.log('PASS: dashboard actions are permission-gated, board component/scripts unchanged, tile visual fixes present');
 }

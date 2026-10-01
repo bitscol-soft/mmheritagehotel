@@ -337,3 +337,25 @@ can sleep/bed details/room size are unique, while Guest Capacity keeps
 Found, not changed: edit hover "remove" icon on current photos has no click
 handler, so removal is not implemented in the UI. Staging create/edit/upload,
 guest-wise-price toggling and validation acceptance remain pending; no live writes.
+
+## Fourteenth increment — dashboard completion (2026-10-01)
+
+Dashboard header now shows the hotel business date and permission-gated shortcuts
+(Booking list, Expected arrivals, Expected departures, In-house guests), reusing
+the sidebar's route names and permission keys. The booking board sits in a shared
+panel instead of the old dotted widget box. Counter expressions, board component,
+room tile markup and dashboard JavaScript are unchanged and guarded.
+
+Visual defects found with a new board fixture and fixed in `style.css`:
+1. Bootstrap `.row::before/::after` became empty cells in the CSS-grid room list,
+   shifting tiles right and leaving a blank first cell (dashboard and booking board).
+2. The white `.room-booking-board .room-info` rule overrode dirty, maintenance,
+   cart and booked tile colours, leaving white room numbers on white tiles.
+
+Browser fixture now includes the board (toolbar, legend, categories, free, booked,
+reserved, dirty, maintenance, due-today and selected tiles). Tests at 360/768/1440
+cover no phantom grid cells, first-tile alignment, tile touch height, state colours
+and no horizontal overflow; all 15 browser tests pass. Still needs staging with
+real availability data, date-picker/AJAX selection, popovers, permissions and
+non-default tile counts. Fixture markup is hand-built from the Blade components,
+not rendered from the database.

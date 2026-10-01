@@ -330,3 +330,12 @@
     .mm-ui.mm-category-form .price-entry > [class*="col-sm-"] { width: 100%; padding-right: 0; }
     .mm-ui.mm-category-form .category-form-actions .mm-button { width: 100%; }
 }
+
+.mm-ui .mm-dashboard-date { display: inline-flex; align-items: center; gap: 8px; min-height: 36px; padding: 0 12px; border: 1px solid var(--mm-line); border-radius: 999px; background: var(--mm-surface); color: var(--mm-ink); font-size: 13px; font-weight: 600; }
+.mm-ui.mm-dashboard .mm-dashboard-board-panel { overflow: hidden; }
+.mm-ui.mm-dashboard .room-booking-board .board-toolbar > .board-actions .btn,
+.mm-ui.mm-dashboard .room-booking-board .board-toolbar > .board-report .btn { min-height: 36px; }
+@media (max-width: 575px) {
+    .mm-ui.mm-dashboard header .mm-button { flex: 1 1 calc(50% - 8px); justify-content: center; text-align: center; }
+    .mm-ui.mm-dashboard .mm-dashboard-board-panel { padding: 12px; }
+}

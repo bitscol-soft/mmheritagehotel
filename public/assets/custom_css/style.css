@@ -924,3 +924,20 @@
         margin-left: 8px;
     }
 }
+
+/* Bootstrap clearfix pseudo-elements become empty grid items inside the room tile grid. */
+.room-booking-board .room-list .row::before,
+.room-booking-board .room-list .row::after {
+    display: none;
+    content: none;
+}
+
+/* Dirty, maintenance, cart and booked tiles lost their colours to the white tile rule above. */
+.room-booking-board .room-info.inverse { background: #090613; color: #fff; }
+.room-booking-board .room-info.orange { background: #9585BF; color: #fff !important; }
+.room-booking-board .room-info.store { background: rgb(37, 70, 131); color: #fff; }
+.room-booking-board .room-info.booked { background: #d15b47; color: #fff; }
+.room-booking-board .room-info.inverse .room-meta,
+.room-booking-board .room-info.orange .room-meta,
+.room-booking-board .room-info.store .room-meta,
+.room-booking-board .room-info.booked .room-meta { color: rgba(255, 255, 255, .85); }
