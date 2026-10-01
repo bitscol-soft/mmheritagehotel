@@ -76,6 +76,7 @@
     <script src="{{ asset('assets/js/daterangepicker.min.js') }}"></script>
     <script src="{{ asset('assets/custom_js/date-picker.js') }}"></script>
 
+    <script src="{{ asset('assets/custom_js/stay-range.js') }}"></script>
     @include('home._inc.script')
 
 

@@ -1,5 +1,27 @@
 const fs = require('fs');
 const assert = require('assert');
+
+// Shared board sources are byte-guarded against earlier commits, except for the documented stay date-range change:
+// room-manage lost its inline chip script (moved to custom_js/stay-range.js) and gained data-business-date, and
+// home/_inc/script.blade.php only changed inside the booking_date picker initialisation.
+function assertSharedBoardSource(path, commit) {
+    const base = execFileSync('git', ['show', `${commit}:${path}`], {encoding: 'utf8'});
+    const current = fs.readFileSync(path, 'utf8');
+    const collapse = text => text.replace(/\s+/g, ' ').trim();
+    if (path.endsWith('components/room-manage.blade.php')) {
+        assert.equal((base.match(/<script>/g) || []).length, 1, 'room-manage baseline should hold only the chip script');
+        const expected = base.replace(/<script>[\s\S]*?<\/script>/, '').replace('autocomplete="off"', 'autocomplete="off" data-business-date="{{ today_from_system() }}"');
+        assert.equal(collapse(current), collapse(expected), `Shared board behavior changed: ${path}`);
+    } else if (path.endsWith('home/_inc/script.blade.php')) {
+        const start = "$('input[name=\"booking_date\"]').daterangepicker({", end = 'function updateStatus(id, status, e)';
+        assert.equal(current.slice(0, current.indexOf('var $stayRange')).trimEnd(), base.slice(0, base.indexOf(start)).trimEnd(), `Shared board script prefix changed: ${path}`);
+        assert.equal(current.slice(current.indexOf(end)), base.slice(base.indexOf(end)), `Shared board script suffix changed: ${path}`);
+        assert(current.includes('MMStayRange.init(this)') && current.includes('$stayRange.daterangepicker({'), 'script.blade must init the stay range with a legacy fallback');
+    } else {
+        assert.equal(current, base, `Shared board source changed: ${path}`);
+    }
+}
+
 const postcss = require('postcss');
 const { execFileSync } = require('child_process');
 const config = require('../tailwind.config');
@@ -46,13 +68,13 @@ const boardPath = 'module/Hotel/views/booking/booking_ui.blade.php';
 const boardBefore = execFileSync('git', ['show', `2227b07a:${boardPath}`], {encoding: 'utf8'});
 const boardAfter = fs.readFileSync(boardPath, 'utf8');
 assert.deepEqual(boardAfter.match(/@php[\s\S]*?@endphp/g), boardBefore.match(/@php[\s\S]*?@endphp/g), 'Board date/occupancy math changed');
-assert.deepEqual(boardAfter.match(/{{[\s\S]*?}}/g)?.sort(), boardBefore.match(/{{[\s\S]*?}}/g)?.sort(), 'Board expressions changed');
-assert.equal(boardAfter.split("@section('script')")[1], boardBefore.split("@section('script')")[1], 'Board scripts changed');
+const stayRangeTag = "{{ asset('assets/custom_js/stay-range.js') }}";
+assert(boardAfter.includes(stayRangeTag), 'Booking board must load stay-range.js');
+assert.deepEqual(boardAfter.match(/{{[\s\S]*?}}/g)?.filter(e => e !== stayRangeTag).sort(), boardBefore.match(/{{[\s\S]*?}}/g)?.sort(), 'Board expressions changed');
+assert.equal(boardAfter.split("@section('script')")[1].replace("    <script src=\""+stayRangeTag+"\"></script>\n", ''), boardBefore.split("@section('script')")[1], 'Board scripts changed');
 assert(boardAfter.includes('<x-room-manage :categories="$categories" :mixdate="$availablity_check" />'));
 assert(!boardAfter.includes('<style'));
-for (const path of ['resources/views/components/room-manage.blade.php', 'resources/views/components/room-status.blade.php', 'resources/views/home/_inc/script.blade.php']) {
-    assert.equal(fs.readFileSync(path, 'utf8'), execFileSync('git', ['show', `2227b07a:${path}`], {encoding: 'utf8'}), `Shared board behavior changed: ${path}`);
-}
+for (const path of ['resources/views/components/room-manage.blade.php', 'resources/views/components/room-status.blade.php', 'resources/views/home/_inc/script.blade.php']) assertSharedBoardSource(path, '2227b07a');
 console.log('PASS: board calculations, expressions, shared tile components and scripts unchanged');
 
 for (const path of ['module/Hotel/views/rooms/index.blade.php', 'module/Hotel/views/category/index.blade.php']) {
@@ -119,9 +141,9 @@ const uncomment = s => s.replace(/{{--[\s\S]*?--}}/g, '');
 for (const expression of uncomment(dashBefore).match(/{{[\s\S]*?}}/g) || []) assert((dashAfter + dashSummary).includes(expression), `Dashboard expression changed: ${expression}`);
 const roomBoardTag = "    <script src=\"{{ asset('assets/custom_js/room-board.js') }}\"></script>\n";
 assert(dashAfter.includes(roomBoardTag), 'Dashboard must load room-board.js');
-assert.equal(dashAfter.replace(roomBoardTag, '').split("@section('js')")[1], dashBefore.split("@section('js')")[1]);
+assert.equal(dashAfter.replace(roomBoardTag, '').replace("    <script src=\"{{ asset('assets/custom_js/stay-range.js') }}\"></script>\n", '').split("@section('js')")[1], dashBefore.split("@section('js')")[1]);
 for (const condition of dashBefore.match(/@if\([^\n]+|@if \([^\n]+/g) || []) assert(dashAfter.includes(condition));
-for (const path of ['resources/views/home/_inc/script.blade.php']) assert.equal(fs.readFileSync(path,'utf8'), execFileSync('git',['show',`d96fc4cf:${path}`],{encoding:'utf8'}));
+assertSharedBoardSource('resources/views/home/_inc/script.blade.php', 'd96fc4cf');
 assert(!dashAfter.includes('<style>'));
 console.log('PASS: dashboard displayed expressions, visibility gates, scripts and shared booking board preserved');
 
@@ -190,7 +212,7 @@ console.log('PASS: note list/edit expressions, forms and status scripts; legacy 
 
 {
  const dash=fs.readFileSync('resources/views/home/hotel-dashboard.blade.php','utf8'), baseDash=execFileSync('git',['show','3b824a86:resources/views/home/hotel-dashboard.blade.php'],{encoding:'utf8'});
- assert.equal(dash.replace(roomBoardTag,'').split("@section('js')")[1],baseDash.split("@section('js')")[1],'Dashboard scripts changed');
+ assert.equal(dash.replace(roomBoardTag,'').replace("    <script src=\"{{ asset('assets/custom_js/stay-range.js') }}\"></script>\n",'').split("@section('js')")[1],baseDash.split("@section('js')")[1],'Dashboard scripts changed');
  for(const permission of ['bookings.index','hotel.expected-arrival.index','hotel.expected-departure.index','hotel.in-house-guest.index']) assert(dash.includes(`hasPermission('${permission}', $slugs)`),`Dashboard link lost permission ${permission}`);
  for(const route of ['booking.index','report.expected-arrival','report.expected-departure','report.in-house-guest']) assert(dash.includes(`route('${route}')`),`Dashboard link route missing ${route}`);
  const board=fs.readFileSync('resources/views/home/_inc/booking_ui.blade.php','utf8');
@@ -203,7 +225,7 @@ console.log('PASS: note list/edit expressions, forms and status scripts; legacy 
  for(const hook of ['mm-board-collapsed','aria-expanded','inert','Escape']) assert(boardJs.includes(hook),`room-board.js missing ${hook}`);
  const legacy=fs.readFileSync('public/assets/custom_css/style.css','utf8');
  for(const needle of ['.room-booking-board .room-list .row::before','.room-booking-board .room-info.inverse { background:','.room-booking-board .room-info.orange { background:']) assert(legacy.includes(needle),`Board visual fix missing: ${needle}`);
- for(const path of ['resources/views/components/room-manage.blade.php','resources/views/components/room-status.blade.php','resources/views/home/_inc/script.blade.php','resources/views/home/_inc/style.blade.php']) assert.equal(fs.readFileSync(path,'utf8'),execFileSync('git',['show',`3b824a86:${path}`],{encoding:'utf8'}),`Shared board source changed: ${path}`);
+ for(const path of ['resources/views/components/room-manage.blade.php','resources/views/components/room-status.blade.php','resources/views/home/_inc/script.blade.php','resources/views/home/_inc/style.blade.php']) assertSharedBoardSource(path,'3b824a86');
  console.log('PASS: dashboard actions are permission-gated, board component/scripts unchanged, tile visual fixes present');
 }
 
@@ -245,4 +267,21 @@ console.log('PASS: note list/edit expressions, forms and status scripts; legacy 
  const steps=fs.readFileSync('module/Hotel/views/booking/_inc/_booking-next-steps.blade.php','utf8');
  assert(steps.includes('aria-current="step"')&&!/<(input|form|button|script)/.test(steps)&&!steps.includes('{!!'),'Step summary must be display-only with escaped output');
  console.log('PASS: new-booking form fields, totals expressions, scripts and controller preserved; progress/summary display-only');
+}
+
+{
+ // Stay date range: past dates blocked, one-night minimum, typed text validated, chips bound independent of load order.
+ const js=fs.readFileSync('public/assets/custom_js/stay-range.js','utf8');
+ assert(!/innerHTML|outerHTML|insertAdjacentHTML|document\.write|eval\(|\.html\(/.test(js),'stay-range.js must not inject HTML');
+ for(const needle of ['data-business-date','data-allow-past','minDate','add(1, \'days\')','role','aria-invalid','$(document).on(\'click\'','autoApply']) assert(js.includes(needle),`stay-range.js missing ${needle}`);
+ for(const path of ['resources/views/home/hotel-dashboard.blade.php','module/Hotel/views/booking/booking_ui.blade.php']) {
+  const view=fs.readFileSync(path,'utf8');
+  assert(view.indexOf("custom_js/stay-range.js")>0 && view.indexOf("custom_js/stay-range.js")<view.indexOf("@include('home._inc.script')"),`${path} must load stay-range.js before the board script`);
+ }
+ for(const path of ['resources/views/home/_inc/room-board.blade.php','resources/views/components/room-manage.blade.php']) {
+  const view=fs.readFileSync(path,'utf8');
+  assert(view.includes('data-business-date="{{ today_from_system() }}"')&&view.includes('name="booking_date"'),`${path} must render the business date on the range input`);
+  assert(!/<script>/.test(view),`${path} must not bind chips inline (moment loads after the content)`);
+ }
+ console.log('PASS: stay date range blocks past check-in, keeps one night minimum, validates typed text and binds chips after scripts load');
 }

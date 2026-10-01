@@ -24,7 +24,7 @@
             <div class="mmb-date">
                 <label for="available_date" class="mmb-sr">Stay date range</label>
                 <span class="mmb-date-icon" aria-hidden="true"><i class="fa fa-calendar"></i></span>
-                <input class="form-control" type="text" name="booking_date" id="available_date" value="{{ $boardDate }}" autocomplete="off" placeholder="Check-in - check-out date range">
+                <input class="form-control" type="text" name="booking_date" id="available_date" value="{{ $boardDate }}" data-business-date="{{ today_from_system() }}" autocomplete="off" placeholder="Check-in - check-out date range">
             </div>
             <div class="mmb-quick" role="group" aria-label="Quick date ranges">
                 <button type="button" class="mmb-pill" data-mode="tonight">Tonight</button>
@@ -156,35 +156,5 @@
     </aside>
 </div>
 
-<script>
-    // Quick date chips reuse the daterangepicker apply flow (sets the input and submits #searchForm).
-    (function () {
-        if (typeof jQuery === 'undefined' || typeof moment === 'undefined') return;
-        $('#mmb').on('click', '.mmb-quick .mmb-pill', function () {
-            var mode = $(this).data('mode');
-            try {
-                var s = moment().startOf('day');
-                var e = moment().startOf('day').add(1, 'days');
-                if (mode === 'week') {
-                    e = s.clone().add(6, 'days');
-                } else if (mode === 'weekend') {
-                    s = moment().isoWeekday ? moment().isoWeekday(6) : moment().day(6);
-                    if (s.isBefore(moment().startOf('day'))) s.add(7, 'days');
-                    e = s.clone().add(2, 'days');
-                }
-                var $inp = $('input[name="booking_date"]').first();
-                if (!$inp.length) return;
-                var dp = $inp.data('daterangepicker');
-                if (dp) {
-                    dp.setStartDate(s);
-                    dp.setEndDate(e);
-                    dp.apply();
-                } else {
-                    $inp.val(s.format('MM/DD/YYYY') + ' - ' + e.format('MM/DD/YYYY'));
-                    $inp.closest('form').trigger('submit');
-                }
-            } catch (err) { /* fall back to the manual picker */ }
-        });
-    })();
-</script>
+
 @endif

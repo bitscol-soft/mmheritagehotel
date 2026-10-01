@@ -137,7 +137,7 @@ $boardViews = '/tmp/mm-board-views';
 @mkdir($boardViews . '/home/_inc', 0777, true);
 foreach (['room-board', 'room-card', 'bed-icon'] as $partial) {
     $source = file_get_contents($root . '/resources/views/home/_inc/' . $partial . '.blade.php');
-    $source = str_replace(["hasPermission('bookings.create', p_slugs())", "setting('room_wise_pricing_booking')", "fdate(\$date[0], 'Y-m-d')"], ['true', '1', "date('Y-m-d', strtotime(\$date[0]))"], $source);
+    $source = str_replace(["hasPermission('bookings.create', p_slugs())", "setting('room_wise_pricing_booking')", "fdate(\$date[0], 'Y-m-d')", 'today_from_system()'], ['true', '1', "date('Y-m-d', strtotime(\$date[0]))", "'2026-10-01'"], $source);
     if (strpos($source, 'hasPermission(') !== false || strpos($source, 'setting(') !== false) throw new RuntimeException('Unsubstituted helper in ' . $partial);
     file_put_contents($boardViews . '/home/_inc/' . $partial . '.blade.php', $source);
 }

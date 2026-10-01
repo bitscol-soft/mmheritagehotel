@@ -9,6 +9,7 @@
                         </span>
                         <input class="form-control" type="text" name="booking_date" id="available_date"
                             value="{{ request('booking_date', $mix_date) }}" autocomplete="off"
+                            data-business-date="{{ today_from_system() }}"
                             placeholder="Check-in - check-out date range" aria-label="Stay date range" />
                     </div>
                 </div>
@@ -138,37 +139,5 @@
                 </div>
             </form>
         </div>
-
-        <script>
-            // round-9: quick date chips -> reuse the daterangepicker apply flow (sets input + submits #searchForm)
-            (function () {
-                if (typeof jQuery === 'undefined' || typeof moment === 'undefined') return;
-                $('.room-booking-board').on('click', '.board-quick-dates .btn', function () {
-                    var mode = $(this).data('mode');
-                    try {
-                        var s = moment().startOf('day');
-                        var e = moment().startOf('day').add(1, 'days');
-                        if (mode === 'week') {
-                            e = s.clone().add(6, 'days');
-                        } else if (mode === 'weekend') {
-                            s = moment().isoWeekday ? moment().isoWeekday(6) : moment().day(6);
-                            if (s.isBefore(moment().startOf('day'))) s.add(7, 'days');
-                            e = s.clone().add(2, 'days');
-                        }
-                        var $inp = $('input[name="booking_date"]').first();
-                        if (!$inp.length) return;
-                        var dp = $inp.data('daterangepicker');
-                        if (dp) {
-                            dp.setStartDate(s);
-                            dp.setEndDate(e);
-                            dp.apply();
-                        } else {
-                            $inp.val(s.format('MM/DD/YYYY') + ' - ' + e.format('MM/DD/YYYY'));
-                            $inp.closest('form').trigger('submit');
-                        }
-                    } catch (err) { /* fall back to the manual picker */ }
-                });
-            })();
-        </script>
     </div>
 @endif

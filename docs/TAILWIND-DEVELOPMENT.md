@@ -457,3 +457,14 @@ the real notification dropdown with data, and staging.
 `BookingController` are guarded as unchanged by `npm run ui:check`. The room table is intentionally not wrapped in a scroll
 container because Chosen dropdowns would be clipped. Plan and risks: `docs/BOOKING-LIFECYCLE-PLAN.md`.
 Tests: `tools/browser/booking-next.spec.cjs` (fixture rendered from the real partial; the full form is not rendered).
+
+## Eighteenth increment: stay date range picker
+
+`public/assets/custom_js/stay-range.js` now drives the board's `booking_date` range picker (dashboard and booking board):
+- Past check-in dates are disabled, measured from the business date (`today_from_system()`, rendered as `data-business-date`),
+  not the browser clock. `data-allow-past="1"` on the input opts out.
+- A same-day pick becomes a one-night stay; typed text is validated (format, past dates) before the board form submits.
+- Quick chips (Tonight, Next 7 days, Weekend) are bound by a delegated handler in this file. The earlier inline chip scripts
+  checked for `moment` while the page was still rendering, but `moment` loads later in `@yield('script')`, so they never ran.
+- Picker styling (touch-size cells, disabled days, 360px fit, dark theme) is in `resources/css/shell.css`.
+Tests: `tools/browser/stay-range.spec.cjs`. Single-date `.date-picker` fields (bootstrap-datepicker) are unchanged.

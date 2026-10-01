@@ -291,3 +291,29 @@
 .mm-shell.mm-dark .mm-ui.mm-dashboard .mmb-btn-primary { background: #3f77c4; border-color: #3f77c4; color: #fff; }
 @media (min-width: 992px) { .mm-shell .mm-shell-footer { padding-right: 64px; } }
 .mm-shell.mm-dark .mm-ui .mm-steps li.is-current .mm-step-mark { color: #0f1720; }
+
+/* Date range picker (daterangepicker is appended to <body>): readable targets, brand colours, past days, mobile fit, dark theme */
+.mm-shell .daterangepicker { border: 1px solid #dbe5f1; border-radius: 10px; box-shadow: 0 12px 32px rgba(15,23,42,.18); font-family: inherit; z-index: 1200; }
+.mm-shell .daterangepicker td, .mm-shell .daterangepicker th { min-width: 36px; height: 36px; font-size: 13px; border-radius: 6px; }
+.mm-shell .daterangepicker td.available:hover, .mm-shell .daterangepicker th.available:hover { background: #eaf1fa; }
+.mm-shell .daterangepicker td.in-range { background: #e4eefb; color: #1f2a33; }
+.mm-shell .daterangepicker td.active, .mm-shell .daterangepicker td.active:hover { background: #2f63a8; color: #fff; }
+.mm-shell .daterangepicker td.off, .mm-shell .daterangepicker td.off.in-range, .mm-shell .daterangepicker td.off.start-date, .mm-shell .daterangepicker td.off.end-date { color: #8a99a9; background: transparent; }
+.mm-shell .daterangepicker td.disabled { color: #a7b4c2; text-decoration: line-through; cursor: not-allowed; }
+.mm-shell .daterangepicker select.monthselect, .mm-shell .daterangepicker select.yearselect { min-height: 30px; font-size: 13px; }
+.mm-shell .mm-range-error { margin: 4px 0 0; color: #b42318; font-size: 13px; font-weight: 600; }
+@media (max-width: 575px) {
+    .mm-shell .daterangepicker { left: 8px !important; right: 8px !important; width: auto; max-width: calc(100vw - 16px); }
+    .mm-shell .daterangepicker .calendar { float: none; max-width: none; width: 100%; }
+}
+.mm-shell.mm-dark .daterangepicker { background: #18232f; border-color: #2b3a4a; color: #e4ecf5; }
+.mm-shell.mm-dark .daterangepicker .calendar-table { background: #18232f; border-color: #18232f; }
+.mm-shell.mm-dark .daterangepicker td, .mm-shell.mm-dark .daterangepicker th { background: transparent; color: #e4ecf5; }
+.mm-shell.mm-dark .daterangepicker td.available:hover, .mm-shell.mm-dark .daterangepicker th.available:hover { background: #24364a; }
+.mm-shell.mm-dark .daterangepicker td.in-range { background: #223b57; color: #e4ecf5; }
+.mm-shell.mm-dark .daterangepicker td.active, .mm-shell.mm-dark .daterangepicker td.active:hover { background: #6ea8f0; color: #0f1720; }
+.mm-shell.mm-dark .daterangepicker td.off, .mm-shell.mm-dark .daterangepicker td.off.in-range { color: #7f93a8; }
+.mm-shell.mm-dark .daterangepicker td.disabled { color: #5d7084; }
+.mm-shell.mm-dark .daterangepicker select { background: #131d28; color: #e4ecf5; border-color: #2f4256; }
+.mm-shell.mm-dark .daterangepicker .calendar-table .next span, .mm-shell.mm-dark .daterangepicker .calendar-table .prev span { border-color: #e4ecf5; }
+.mm-shell.mm-dark .mm-range-error { color: #ff9b91; }

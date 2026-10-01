@@ -1,8 +1,9 @@
 <?php
+const MM_SAMPLE_NOW = 1790847000; // 2026-10-01 09:30 UTC: keeps committed fixtures independent of the run date
 // Shared sample data/renderer for the dashboard room board. No database or application boot.
 function mm_board_sample_categories()
 {
-    $today = date('Y-m-d');
+    $today = date('Y-m-d', MM_SAMPLE_NOW);
     $room = function (array $overrides) {
         return (object) array_merge(['id' => 0, 'room_number' => '', 'status' => 1, 'is_booked' => 0, 'is_reservation' => 0, 'is_checkin' => 0,
             'booking_cart_count' => 0, 'today_checkout' => 0, 'rent' => 4500, 'beds' => '1', 'max_guests' => 2, 'smoking_status' => 0,
@@ -20,8 +21,8 @@ function mm_board_sample_categories()
     return collect([
         $category(1, 'Deluxe King', 'King Bed', [
             $room(['id' => 1, 'room_number' => '101']), $room(['id' => 2, 'room_number' => '102']),
-            $room(['id' => 3, 'room_number' => '103', 'is_booked' => 1, 'booking_dates' => $stay(0, date('Y-m-d', strtotime('+2 day')))]),
-            $room(['id' => 4, 'room_number' => '104', 'is_reservation' => 1, 'booking_dates' => $stay(2, date('Y-m-d', strtotime('+2 day')))]),
+            $room(['id' => 3, 'room_number' => '103', 'is_booked' => 1, 'booking_dates' => $stay(0, date('Y-m-d', strtotime('+2 day', MM_SAMPLE_NOW)))]),
+            $room(['id' => 4, 'room_number' => '104', 'is_reservation' => 1, 'booking_dates' => $stay(2, date('Y-m-d', strtotime('+2 day', MM_SAMPLE_NOW)))]),
             $room(['id' => 5, 'room_number' => '105', 'status' => 0]), $room(['id' => 6, 'room_number' => '106', 'status' => 2]),
             $room(['id' => 7, 'room_number' => '107', 'is_checkin' => 1, 'booking_dates' => $stay(1, $today)]),
         ], '4,500'),
@@ -35,5 +36,5 @@ function mm_board_sample_categories()
 
 function mm_board_render($app, $categories)
 {
-    return $app->make('view')->make('home._inc.room-board', ['categories' => $categories, 'mix_date' => date('m/d/Y') . ' - ' . date('m/d/Y', strtotime('+1 day'))])->render();
+    return $app->make('view')->make('home._inc.room-board', ['categories' => $categories, 'mix_date' => date('m/d/Y', MM_SAMPLE_NOW) . ' - ' . date('m/d/Y', strtotime('+1 day', MM_SAMPLE_NOW))])->render();
 }

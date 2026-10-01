@@ -115,17 +115,24 @@
 
     $(function() {
 
-        $('input[name="booking_date"]').daterangepicker({
+        var $stayRange = $('input[name="booking_date"]');
+        if (window.MMStayRange) {
+            // custom_js/stay-range.js: blocks past check-in, enforces one night, validates typed text
+            $stayRange.each(function() { MMStayRange.init(this); });
+            return;
+        }
+
+        $stayRange.daterangepicker({
             autoUpdateInput: true,
         });
 
-        $('input[name="booking_date"]').on('apply.daterangepicker', function(ev, picker) {
+        $stayRange.on('apply.daterangepicker', function(ev, picker) {
             $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format(
                 'MM/DD/YYYY'));
             $('form#searchForm').submit();
         });
 
-        $('input[name="booking_date"]').on('cancel.daterangepicker', function(ev, picker) {
+        $stayRange.on('cancel.daterangepicker', function(ev, picker) {
             $(this).val('');
         });
 
