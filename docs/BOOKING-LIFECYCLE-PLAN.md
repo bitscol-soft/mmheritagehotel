@@ -10,8 +10,8 @@ preservation guards in `tools/ui-check.cjs` before any markup moves. Financial s
 | Room board | `booking.ui`, dashboard | `booking_ui`, `home/_inc/room-board` | migrated |
 | Booking list | `booking.index` | `index` | migrated |
 | **New booking (step 2)** | `booking.next.step` -> `nextStep()` | `booking_next` | **frame, progress, summary, sticky actions migrated** |
-| Create (direct form) | `booking.create` | `create` (195 lines) | pending |
-| Edit | `booking.edit` | `edit` (312) | pending |
+| Create (direct form) | `booking.create` | `create` | **frame, sticky actions and single-date fix migrated** |
+| Edit | `booking.edit` | `edit` | **frame, sticky actions and single-date fix migrated** |
 | Booking detail / checkout | `booking.show`, posts `booking.checkout` | `view` (704) | pending, financial |
 | Room assignment | `booking.assign` | `assaign` | pending |
 | Invoices / print | `getInvoice`, `getInvoiceV2`, `reservationInvoice`, `checkoutInvoice` | `checkout_invoice`, `checkout-invoice-v2/v3/v4`, `get_invoice`, `reservation-invoice` | pending, print |
@@ -31,7 +31,14 @@ preservation guards in `tools/ui-check.cjs` before any markup moves. Financial s
 
 ## Order
 
-1. `booking_next` (done in this increment) then `create` and `edit`: guest and room forms, lower financial risk.
+1. `booking_next`, `create` and `edit` (done): guest and room forms, lower financial risk.
 2. `view` (checkout) with a form-field guard and a fixture exercising totals.
 3. Invoices and print styles.
 4. Payment collection, then night audit.
+
+## Findings on edit (backend, not changed)
+
+- The edit form posts `check_in_date` and `check_out`, but `BookingService::update()` reads `$request->check_in` and
+  `$request->check_out`. `check_in` is not a field on that form (only the extend-date modal and `booking_next` have it), so the
+  stored check-in may be overwritten with an empty value. Confirm on staging before relying on edit for date changes.
+- The Reset buttons on create and edit sit outside the `<form>`, so they never reset it.

@@ -85,5 +85,5 @@ environment) are in the shared admin shell. Language switching is not available 
 only). Staging acceptance pending.
 
 ### Booking lifecycle (in progress)
-New-booking form (`booking_next`) frame, progress, stay summary and sticky actions done; create, edit, checkout, invoices,
+New-booking form (`booking_next`), `create` and `edit` frames, sticky actions and single-date rules done; checkout, invoices,
 payment collection and night audit pending. See `docs/BOOKING-LIFECYCLE-PLAN.md`.

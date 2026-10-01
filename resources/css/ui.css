@@ -463,3 +463,4 @@
 .mm-ui.mm-booking-next .mm-form-actions { position: sticky; bottom: 0; z-index: 5; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; margin-top: 16px; padding: 12px 16px; border: 1px solid var(--mm-line); border-radius: 10px; background: var(--mm-surface); box-shadow: 0 -4px 12px rgba(31, 42, 51, .08); }
 .mm-ui.mm-booking-next .col-lg-5 { margin-left: 0 !important; }
 .mm-ui.mm-booking-next h3.header { margin: 24px 0 12px; padding-bottom: 8px; border-bottom: 1px solid var(--mm-line); color: var(--mm-ink); font-size: 18px; font-weight: 600; }
+.mm-ui .mm-date-error { display: block; margin: 4px 0 0; font-size: 13px; font-weight: 600; }

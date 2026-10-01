@@ -7,7 +7,7 @@
             <span class="border-none input-group-addon width-27" style="text-align: left"> Booking Date <span
                     style="color: red">*</span></span>
             <input type="text" class="form-control date-picker booking-date-picker" name="booking_date"
-                value="{{ old('booking_date', today_from_system()) }}">
+                value="2026-10-01">
             <span class="input-group-addon"><i class="fa fa-calendar bigger-110"></i></span>
         </div>
 
@@ -48,10 +48,7 @@
             <select class="form-control bg-transparent chosen-select-100-percent" data-placeholder="--Choose Company--"
                 name="company_id" id="company_id">
                 <option value=""></option>
-                @foreach ($crmCompanies as $data)
-                    <option value="{{ $data->id }}">{{ $data->org_name }}</option>
-                @endforeach
-            </select>
+                            </select>
         </div>
     </div>
 
@@ -65,10 +62,7 @@
             <select class="form-control chosen-select-100-percent bg-transparent" name="purpose_id" id="purpose"
                 data-placeholder="--Choose Purpose--" style="width: 100%">
                 <option></option>
-                @foreach ($booking_purpose->where('rule', 1) as $item)
-                    <option value="{{ $item->id }}">{{ $item->name }}</option>
-                @endforeach
-            </select>
+                            </select>
         </div>
     </div>
 
@@ -80,8 +74,8 @@
         <div class="input-group width-100">
             <span class="border-none input-group-addon width-27" style="text-align: left"> Check In Date <span
                     style="color: red">*</span></span>
-            <input class="form-control date-picker check-in-date" value="{{ old('check_in_date', today_from_system()) }}"
-                data-business-date="{{ today_from_system() }}" autocomplete="off"
+            <input class="form-control date-picker check-in-date" value="2026-10-01"
+                data-business-date="2026-10-01" autocomplete="off"
                 name="check_in_date" type="text" required>
             <span class="input-group-addon">
                 <i class="fa fa-calendar bigger-110"></i>
@@ -99,9 +93,9 @@
             <span class="border-none input-group-addon width-27" style="text-align: left"> Check Out Date <span
                     style="color: red">*</span></span>
             <input class="form-control date-picker check_out check-out-date-picker"
-                value="{{ old('check_out_date', $tomorrow) }}" name="check_out_date" type="text" autocomplete="off"
+                value="2026-10-02" name="check_out_date" type="text" autocomplete="off"
                 required>
-            {{-- <input class="form-control date-picker check_out" value="{{ old('check_out_date') }}" name="check_out_date" type="text" required autocomplete="off"> --}}
+            
             <span class="input-group-addon">
                 <i class="fa fa-calendar bigger-110"></i>
             </span>
@@ -114,7 +108,7 @@
         <div class="input-group width-100">
             <span class="border-none input-group-addon width-27" style="text-align: left">Emrg.Cont Name</span>
             <input type="text" class="form-control" name="emergency_cont_name"
-                value="{{ old('emergency_cont_name') }}" placeholder="Emergency Contact Name">
+                value="" placeholder="Emergency Contact Name">
         </div>
     </div>
 
@@ -122,7 +116,7 @@
     <div class="form-group mb-1">
         <div class="input-group width-100">
             <span class="border-none input-group-addon width-27" style="text-align: left">Booking Pax </span>
-            <input type="text" class="form-control" name="booking_pax" value="{{ old('booking_pax') }}"
+            <input type="text" class="form-control" name="booking_pax" value=""
                 placeholder="PAX">
         </div>
     </div>
@@ -131,7 +125,7 @@
     <div class="form-group mb-1">
         <div class="input-group width-100">
             <span class="border-none input-group-addon width-27" style="text-align: left">Child In Pax </span>
-            <input type="text" class="form-control" name="child_pax" value="{{ old('child_pax') }}"
+            <input type="text" class="form-control" name="child_pax" value=""
                 placeholder="CHILD_PAX">
         </div>
     </div>
@@ -153,17 +147,7 @@
                 top: 6px !important;
             }
         </style>
-        @if (setting('bulk_booking'))
-            <div class="d-flex" style="display: flex">
-                <span class="border-none input-group-addon"
-                    style="text-align: left; margin-right: 5px; margin-top: 6px;"> Bulk Booking </span>
-                <label>
-                    <input name="bulk_booking" value="1" type="checkbox" class="ace input-lg bulk-booking">
-                    <span class="lbl"> </span>
-                </label>
             </div>
-        @endif
-    </div>
 
 </div>
 
@@ -179,7 +163,7 @@
     <div class="form-group mb-1">
         <div class="input-group width-100">
             <span class="border-none input-group-addon width-27" style="text-align: left"> Pickup </span>
-            <input type="text" class="form-control" name="pickup" value="{{ old('pickup') }}"
+            <input type="text" class="form-control" name="pickup" value=""
                 placeholder="Pickup Address">
         </div>
     </div>
@@ -189,7 +173,7 @@
     <div class="form-group mb-1">
         <div class="input-group width-100">
             <span class="border-none input-group-addon width-27" style="text-align: left"> Drop </span>
-            <input type="text" class="form-control" name="drop" value="{{ old('drop') }}"
+            <input type="text" class="form-control" name="drop" value=""
                 placeholder="Drop Address">
         </div>
     </div>
@@ -199,7 +183,7 @@
     <div class="form-group mb-1">
         <div class="input-group width-100">
             <span class="border-none input-group-addon width-27" style="text-align: left"> Pickup Flight No </span>
-            <input type="text" class="form-control" name="pickup_flight" value="{{ old('pickup_flight') }}"
+            <input type="text" class="form-control" name="pickup_flight" value=""
                 placeholder="Pickup Flight No">
         </div>
     </div>
@@ -211,7 +195,7 @@
     <div class="form-group mb-1">
         <div class="input-group width-100">
             <span class="border-none input-group-addon width-27" style="text-align: left"> Drop Flight No </span>
-            <input type="text" class="form-control" name="drop_flight" value="{{ old('drop_flight') }}"
+            <input type="text" class="form-control" name="drop_flight" value=""
                 placeholder="Drop Flight No">
         </div>
     </div>
@@ -223,7 +207,7 @@
         <div class="input-group width-100">
             <span class="border-none input-group-addon width-27" style="text-align: left"> Reference Name </span>
             <input type="text" class="form-control" id="referenceName" name="reference"
-                value="{{ old('reference') }}" placeholder="Reference Name">
+                value="" placeholder="Reference Name">
         </div>
     </div>
 
@@ -235,10 +219,7 @@
             <select class="form-control chosen-select-100-percent bg-transparent" name="platform_id"
                 data-placeholder="--Choose Booking Platform--" style="width: 100%">
                 <option></option>
-                @foreach ($booking_purpose->where('rule', 2) as $item)
-                    <option value="{{ $item->id }}">{{ $item->name }}</option>
-                @endforeach
-            </select>
+                            </select>
         </div>
     </div>
 
@@ -249,7 +230,7 @@
         <div class="input-group width-100">
             <span class="border-none input-group-addon width-27" style="text-align: left">Emrg.Cont Phone</span>
             <input type="text" class="form-control" id="emergency_cont_phone" name="emergency_cont_phone"
-                value="{{ old('emergency_cont_phone') }}" placeholder="Emergency Contact Phone">
+                value="" placeholder="Emergency Contact Phone">
         </div>
     </div>
 
@@ -258,7 +239,7 @@
     <div class="form-group mb-1">
         <div class="input-group width-100">
             <span class="border-none input-group-addon width-27" style="text-align: left">Adult In Pax </span>
-            <input type="text" class="form-control" name="adult_pax" value="{{ old('adult_pax') }}"
+            <input type="text" class="form-control" name="adult_pax" value=""
                 placeholder="ADULT_PAX">
         </div>
     </div>
@@ -279,16 +260,6 @@
 
 
 
-    {{-- <div class="form-group mb-1">
-        <div class="input-group width-100">
-            @if (setting('bulk_booking'))
-                <span class="border-none input-group-addon width-27" style="text-align: left; margin-right: 5px;"> Bulk Booking </span>
-                <label>
-                    <input name="bulk_booking" value="1" type="checkbox" class="ace input-lg bulk-booking">
-                    <span class="lbl">  </span>
-                </label>
-            @endif
-        </div>
-    </div> --}}
+    
 
 </div>

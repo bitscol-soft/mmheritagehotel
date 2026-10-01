@@ -17,7 +17,7 @@ $files=array_merge($files, [$root . '/resources/views/home/hotel-dashboard.blade
 $files=array_merge($files, [$root . '/module/Hotel/views/house-keeping/index.blade.php'], glob($root . '/resources/views/layouts/shell/*.blade.php'), [$root . '/resources/views/partials/_header.blade.php']);
 $files=array_merge($files, glob($root . '/module/Hotel/views/booking-purpose/*.blade.php'), [$root . '/module/Hotel/views/booking-purpose/include/filter.blade.php']);
 $files=array_merge($files, [$root . '/module/Hotel/views/booking-note/index.blade.php', $root . '/module/Hotel/views/booking-note/edit.blade.php', $root . '/module/Hotel/views/booking-note/include/filter.blade.php']);
-$files=array_merge($files, [$root . '/module/Hotel/views/booking/booking_next.blade.php', $root . '/module/Hotel/views/booking/_inc/_booking-next-steps.blade.php']);
+$files=array_merge($files, [$root . '/module/Hotel/views/booking/booking_next.blade.php', $root . '/module/Hotel/views/booking/_inc/_booking-next-steps.blade.php', $root . '/module/Hotel/views/booking/create.blade.php', $root . '/module/Hotel/views/booking/edit.blade.php', $root . '/module/Hotel/views/booking/_inc/_add-guest-input-info.blade.php', $root . '/module/Hotel/views/booking/_inc/_edit-guest-input-info.blade.php']);
 foreach($files as $f){ $compiled=$compiler->compileString(file_get_contents($f)); token_get_all($compiled,TOKEN_PARSE); echo "PASS compile ".basename($f)."\n"; }
 $html = $app->make('view')->make('components.mm.field', ['label'=>'Guest','id'=>'test','name'=>'name','value'=>'<script>','error'=>null,'attributes'=>new Illuminate\View\ComponentAttributeBag])->render();
 
@@ -235,3 +235,37 @@ $stepsFile = __DIR__ . '/fixtures/booking-next-steps.html';
 if (getenv('MM_WRITE_FIXTURE')) file_put_contents($stepsFile, $stepsHtml);
 if (file_get_contents($stepsFile) !== $stepsHtml) throw new RuntimeException($stepsFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
 echo "PASS new-booking progress and stay summary render, empty state and escaping\n";
+
+// Render the real booking guest/stay partials (create and edit) with sample data. Only app helpers are substituted:
+// today_from_system() -> the frozen business date and setting() -> off.
+$stayViews = '/tmp/mm-stay-views';
+@mkdir($stayViews . '/booking/_inc', 0777, true);
+foreach (['_add-guest-input-info', '_edit-guest-input-info'] as $partial) {
+    $source = file_get_contents($root . '/module/Hotel/views/booking/_inc/' . $partial . '.blade.php');
+    $source = str_replace(['today_from_system()', "setting('bulk_booking')"], ["'2026-10-01'", '0'], $source);
+    if (strpos($source, 'today_from_system') !== false || strpos($source, 'setting(') !== false) throw new RuntimeException('Unsubstituted helper in ' . $partial);
+    file_put_contents($stayViews . '/booking/_inc/' . $partial . '.blade.php', $source);
+}
+$app['view']->getFinder()->prependLocation($stayViews);
+$stayRequest = Illuminate\Http\Request::create('/hotel/booking/create');
+$stayRequest->setLaravelSession(new Illuminate\Session\Store('mm', new Illuminate\Session\ArraySessionHandler(10)));
+$app->instance('request', $stayRequest);
+$app->instance('url', new Illuminate\Routing\UrlGenerator(new Illuminate\Routing\RouteCollection(), $stayRequest));
+$stayBooking = (object) ['booking_date' => '2026-09-28', 'check_in_date' => '2026-09-29', 'check_out_date' => '2026-10-03', 'booking_pax' => 2, 'customer_id' => 1, 'purpose' => '', 'reference' => '', 'pickup' => '', 'drop' => '', 'pickup_flight' => '', 'drop_flight' => '', 'emergency_cont_name' => '', 'emergency_cont_phone' => '', 'purpose_id' => null, 'platform_id' => null, 'book_type' => 0, 'company_id' => null, 'status' => 0];
+$stayCommon = ['booking_purpose' => collect([]), 'crmCompanies' => collect([]), 'guest' => collect([]), 'guests' => collect([]), 'tomorrow' => '2026-10-02', 'platforms' => collect([]), 'errors' => new Illuminate\Support\ViewErrorBag()];
+$stayFixtures = [
+    'booking-add-dates' => $app->make('view')->make('booking._inc._add-guest-input-info', $stayCommon)->render(),
+    'booking-edit-dates' => $app->make('view')->make('booking._inc._edit-guest-input-info', $stayCommon + ['booking' => $stayBooking])->render(),
+];
+foreach ([
+    'booking-add-dates' => ['name="check_in_date"', 'value="2026-10-01"', 'data-business-date="2026-10-01"', 'value="2026-10-02" name="check_out_date"', 'check-out-date-picker'],
+    'booking-edit-dates' => ['value="2026-09-29"', 'data-allow-past="1"', 'value="2026-10-03"', 'name="check_out"', 'data-date-format="yyyy-mm-dd"', 'value="2026-10-04"'],
+] as $fixtureName => $markers) {
+    foreach ($markers as $marker) {
+        if (strpos($stayFixtures[$fixtureName], $marker) === false) throw new RuntimeException($fixtureName . ' missing ' . $marker);
+    }
+    $file = __DIR__ . '/fixtures/' . $fixtureName . '.html';
+    if (getenv('MM_WRITE_FIXTURE')) file_put_contents($file, $stayFixtures[$fixtureName]);
+    if (file_get_contents($file) !== $stayFixtures[$fixtureName]) throw new RuntimeException($file . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
+}
+echo "PASS booking create/edit guest and stay partials render with the business date, existing check-in and unified date formats\n";

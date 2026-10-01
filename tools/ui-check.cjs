@@ -285,3 +285,34 @@ console.log('PASS: note list/edit expressions, forms and status scripts; legacy 
  }
  console.log('PASS: stay date range blocks past check-in, keeps one night minimum, validates typed text and binds chips after scripts load');
 }
+
+{
+ // Booking lifecycle: create/edit frames, action bars and single-date fields. Fields, totals and scripts stay as they were.
+ const collapse=s=>s.replace(/\s+/g,' ').trim();
+ const base=path=>execFileSync('git',['show',`2227b07a:${path}`],{encoding:'utf8'});
+ const formOf=s=>s.slice(s.indexOf('<form class="form-horizontal"'),s.indexOf('</form>')+7);
+ for(const name of ['create','edit']) {
+  const path=`module/Hotel/views/booking/${name}.blade.php`, after=fs.readFileSync(path,'utf8');
+  assert.equal(collapse(formOf(after)),collapse(formOf(base(path))),`${name}: form fields, expressions and includes must be unchanged`);
+  assert(after.includes('<x-mm.page class="mm-booking-next"')&&!after.includes('widget-box'),`${name}: should use the shared page frame`);
+  assert(after.includes("{{ asset('assets/custom_js/stay-dates.js') }}")&&after.indexOf('stay-dates.js')>after.indexOf("@include('booking._script.script')"),`${name}: stay-dates.js must load after the legacy booking script`);
+  const actions=after.slice(after.indexOf('<div class="mm-form-actions">'),after.indexOf('</x-mm.panel>'));
+  assert((actions.match(/onclick="submitBookingForm\(\)"/g)||[]).length===(name==='create'?2:1),`${name}: submit buttons must keep onclick="submitBookingForm()"`);
+  assert(actions.includes('updateBookingBtn')&&actions.includes('type="Reset"'),`${name}: action classes/reset changed`);
+  if(name==='create') assert(actions.includes('value="reserve"')&&actions.includes('value="book"')&&actions.includes('next-step-btn'),'create: reserve/book buttons changed');
+  if(name==='edit') assert(after.includes("@include('booking._inc._booking-context', ['booking' => $booking])")&&after.includes("action=\"{{ route('booking.update', $booking->id) }}\""),'edit: context strip or update route changed');
+ }
+ const createAfter=fs.readFileSync('module/Hotel/views/booking/create.blade.php','utf8');
+ assert.equal(collapse(createAfter.replace("$date = today_from_system();","$date = date('Y-m-d');").split('@endsection')[0].split("@section('content')")[1].split('<x-mm.styles />')[0]),collapse(base('module/Hotel/views/booking/create.blade.php').split("@section('content')")[1].split('<div class="row">')[0]),'create: date defaults changed beyond using the business date');
+ // Guest-field partials: only the documented date attributes changed.
+ const addPath='module/Hotel/views/booking/_inc/_add-guest-input-info.blade.php', editPath='module/Hotel/views/booking/_inc/_edit-guest-input-info.blade.php';
+ const addExpected=base(addPath).replace(`value="{{ old('check_in_date', date('Y-m-d')) }}"`,`value="{{ old('check_in_date', today_from_system()) }}" data-business-date="{{ today_from_system() }}" autocomplete="off"`);
+ assert.equal(collapse(fs.readFileSync(addPath,'utf8')),collapse(addExpected),'add guest partial changed beyond the check-in date attributes');
+ const editExpected=base(editPath).replace(`value="{{ old('check_in_date', date('Y-m-d')) }}"`,`value="{{ old('check_in_date', $booking->check_in_date) }}" data-business-date="{{ today_from_system() }}" data-allow-past="1" autocomplete="off"`).replace('data-date-format="dd-mm-yyyy">','data-date-format="yyyy-mm-dd" autocomplete="off">');
+ assert.equal(collapse(fs.readFileSync(editPath,'utf8')),collapse(editExpected),'edit guest partial changed beyond the date attributes');
+ for(const path of ['module/Hotel/views/booking/_script/script.blade.php','module/Hotel/views/booking/_script/update-customer-script.blade.php','module/Hotel/views/booking/_inc/create-edit-tfoot.blade.php','module/Hotel/Controllers/BookingController.php','module/Hotel/Services/BookingService.php']) assert.equal(fs.readFileSync(path,'utf8'),base(path),`${path} must be unchanged`);
+ const js=fs.readFileSync('public/assets/custom_js/stay-dates.js','utf8');
+ assert(!/innerHTML|outerHTML|insertAdjacentHTML|document\.write|eval\(|\.html\(/.test(js),'stay-dates.js must not inject HTML');
+ for(const needle of ['data-business-date','data-allow-past','setStartDate','mmStayGuarded','submitBookingForm','role','aria-invalid',"trigger('change')"]) assert(js.includes(needle),`stay-dates.js missing ${needle}`);
+ console.log('PASS: booking create/edit fields, totals scripts, controller preserved; single-date fields enforce business date and check-out after check-in');
+}

@@ -468,3 +468,16 @@ Tests: `tools/browser/booking-next.spec.cjs` (fixture rendered from the real par
   checked for `moment` while the page was still rendering, but `moment` loads later in `@yield('script')`, so they never ran.
 - Picker styling (touch-size cells, disabled days, 360px fit, dark theme) is in `resources/css/shell.css`.
 Tests: `tools/browser/stay-range.spec.cjs`. Single-date `.date-picker` fields (bootstrap-datepicker) are unchanged.
+
+## Nineteenth increment: booking create/edit and single-date fields
+
+`booking/create` and `booking/edit` use the shared page frame, a sticky action bar (same `submitBookingForm()` buttons and classes)
+and byte-guarded form regions, scripts, tfoot and controller/service. The date fields now share one rule set in
+`public/assets/custom_js/stay-dates.js`:
+- create: check-in cannot be before the business date (`data-business-date`, from `today_from_system()`); defaults use it too;
+- edit: check-in is pre-filled with the booking's real check-in (it was pre-filled with today's date) and may be in the past
+  (`data-allow-past="1"`); the existing "extend only" limit on check-out is kept;
+- check-out is always after check-in: invalid values move to check-in + 1 night and fire `change`, so the legacy night and amount code
+  sees only valid values; changing check-in recalculates nights the same way;
+- `submitBookingForm()` is wrapped so an invalid stay is stopped with a message; date format attributes are unified to `yyyy-mm-dd`.
+Tests: `tools/browser/booking-dates.spec.cjs` (real rendered partials; legacy night calculation and submit are stubbed).

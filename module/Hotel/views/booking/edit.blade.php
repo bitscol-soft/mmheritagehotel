@@ -68,23 +68,15 @@
 
 @section('content')
 
-    <div class="row">
-
-        <div class="col-sm-12">
-            <div class="widget-box">
-                <div class="widget-header">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
-
-                    <span class="widget-toolbar">
-                        <a href="{{ route('booking.index') }}">
-                            <i class="ace-icon fa fa-list-alt"></i> Booking List
-                        </a>
-                    </span>
-
-                </div>
-
-                <div class="widget-body">
-                    <div class="widget-main" style="padding-bottom: 44px;">
+    <x-mm.styles />
+    <x-mm.page class="mm-booking-next" title="Edit booking" description="Update guest, stay dates, rooms and payment details for this booking.">
+        <x-slot name="actions">
+            <a class="mm-button mm-button-secondary" href="{{ route('booking.index') }}">
+                <i class="ace-icon fa fa-list-alt" aria-hidden="true"></i> Booking List
+            </a>
+        </x-slot>
+        <x-mm.panel>
+                    <div>
 
                         <!-- Include Alert Message -->
                         <x-alert-message />
@@ -273,25 +265,20 @@
                         </form>
 
                         <!-- SUBMIT/ACTION BUTTON -->
-                        <div class="col-xs-12 col-sm-12 text-right" style="margin-top: 5px; padding-right: 50px;">
-                            <button class="btn-sm btn-outline-success updateBookingBtn" onclick="submitBookingForm()"
+                        <div class="mm-form-actions">
+                            <button class="updateBookingBtn mm-button" onclick="submitBookingForm()"
                                 type="button">
-                                <i class="fa fa-save"></i>
+                                <i class="fa fa-save" aria-hidden="true"></i>
                                 Save
                             </button>
-                            <button class="btn-sm btn-outline-danger" type="Reset">
-                                <i class="fa fa-refresh"></i>
+                            <button class="mm-button mm-button-secondary" type="Reset">
+                                <i class="fa fa-refresh" aria-hidden="true"></i>
                                 Reset
                             </button>
                         </div>
-
                     </div>
-                </div>
-            </div>
-
-
-        </div>
-    </div>
+        </x-mm.panel>
+    </x-mm.page>
     @include('partials/modal/edit_guest_modal')
 
 @endsection
@@ -300,6 +287,7 @@
 
     @include('booking._script.update-customer-script')
     @include('booking._script.script')
+    <script src="{{ asset('assets/custom_js/stay-dates.js') }}"></script>
 
     <script>
         $('.photo-remove').click(function() {
