@@ -399,3 +399,13 @@ Drawer buttons were 40–42px and were raised to 44px.
 Not verified: rendering through a real Laravel app with a database, real
 availability data, date search, the guest popover replacement and
 staging acceptance.
+
+Follow-up (same day): the board's action bar (selection count and total, Reserve,
+Book Now) is now sticky at the bottom of the viewport while the board is on screen,
+and on 768px and wider the date search toolbar (dates, quick ranges, Check
+Availability, Monthly Report, Expand/Collapse all) sticks under the header. Two
+causes had defeated the first sticky attempt: the board panel had `overflow:
+hidden`, and the bar sat inside `#booking-form`, which bounded how far it could
+stick. The bar now sits after the form and its buttons submit it through the
+`form="booking-form"` attribute. Buttons are 44px tall; on phones Reserve and Book
+Now share one row. Not yet checked with a real browser session against staging.

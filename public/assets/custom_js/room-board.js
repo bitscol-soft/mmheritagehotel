@@ -137,7 +137,7 @@
         task().then(function () { busy = false; drawer.classList.remove('is-busy'); }, function () { busy = false; drawer.classList.remove('is-busy'); });
     }
     function submitBooking(value) {
-        var button = form.querySelector('button[name="submit"][value="' + value + '"]');
+        var button = board.querySelector('button[name="submit"][form="booking-form"][value="' + value + '"]');
         if (form.requestSubmit) form.requestSubmit(button); else button.click();
     }
 

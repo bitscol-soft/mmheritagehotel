@@ -13,8 +13,13 @@
             </div>
             <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i> Check Availability</button>
             <a href="http://localhost/report/monthly-booking" target="_blank" class="btn btn-sm btn-info" title="Monthly booking report"><i class="fa fa-search-plus"></i> <span class="hidden-xs">Monthly Report</span></a>
+            <div class="mmb-group-tools">
+                <button type="button" class="mmb-link" data-mmb-expand-all><i class="fa fa-plus-square-o" aria-hidden="true"></i> Expand all</button>
+                <button type="button" class="mmb-link" data-mmb-collapse-all><i class="fa fa-minus-square-o" aria-hidden="true"></i> Collapse all</button>
+            </div>
         </div>
     </form>
+
 
     <div class="mmb-legend" aria-label="Room status legend">
         <span class="mmb-chip" data-state="available"><span class="mmb-chip-dot"></span>Available</span>
@@ -25,11 +30,6 @@
         <span class="mmb-chip" data-state="dirty"><span class="mmb-chip-dot"></span>Dirty</span>
         <span class="mmb-chip" data-state="maintenance"><span class="mmb-chip-dot"></span>Maintenance</span>
         <span class="mmb-chip" data-state="selected"><span class="mmb-chip-dot"></span>Selected</span>
-    </div>
-
-    <div class="mmb-group-tools">
-        <button type="button" class="mmb-link" data-mmb-expand-all><i class="fa fa-plus-square-o" aria-hidden="true"></i> Expand all</button>
-        <button type="button" class="mmb-link" data-mmb-collapse-all><i class="fa fa-minus-square-o" aria-hidden="true"></i> Collapse all</button>
     </div>
 
     <form action="http://localhost/hotel/next-step" method="get" id="booking-form">
@@ -520,19 +520,20 @@
                                             </div>
                 </div>
             </section>
-        
-        <div class="mmb-footer">
-            <span class="mmb-hint hidden-xs"><i class="fa fa-hand-o-up" aria-hidden="true"></i> Select a room to see details and book.</span>
-            <span class="mmb-selection" hidden aria-live="polite">
-                <i class="fa fa-check-square-o" aria-hidden="true"></i>
-                <strong><span class="mmb-sel-count">0</span> room(s)</strong> selected <span class="mmb-sel-total-wrap">&middot; est. <span class="mmb-sel-total">0</span></span>
-            </span>
-            <span class="mmb-footer-buttons">
-                <button type="submit" name="submit" value="reserve" class="btn btn-sm btn-white next-step-btn"><i class="fa fa-bookmark"></i> Reserve</button>
-                <button type="submit" name="submit" value="book" class="btn btn-sm btn-primary next-step-btn"><i class="fa fa-send"></i> Book Now</button>
-            </span>
-        </div>
-    </form>
+            </form>
+
+    
+    <div class="mmb-footer">
+        <span class="mmb-hint hidden-xs"><i class="fa fa-hand-o-up" aria-hidden="true"></i> Select a room to see details and book.</span>
+        <span class="mmb-selection" hidden aria-live="polite">
+            <i class="fa fa-check-square-o" aria-hidden="true"></i>
+            <strong><span class="mmb-sel-count">0</span> room(s)</strong> selected <span class="mmb-sel-total-wrap">&middot; est. <span class="mmb-sel-total">0</span></span>
+        </span>
+        <span class="mmb-footer-buttons">
+            <button type="submit" form="booking-form" name="submit" value="reserve" class="btn btn-sm btn-white next-step-btn"><i class="fa fa-bookmark"></i> Reserve</button>
+            <button type="submit" form="booking-form" name="submit" value="book" class="btn btn-sm btn-primary next-step-btn"><i class="fa fa-send"></i> Book Now</button>
+        </span>
+    </div>
 
     <div class="mmb-backdrop" hidden></div>
     <aside class="mmb-drawer" id="mmb-drawer" role="dialog" aria-modal="true" aria-labelledby="mmb-drawer-title" tabindex="-1" aria-hidden="true">

@@ -166,6 +166,34 @@ for (const width of [360, 768, 1440]) {
     });
 }
 
+for (const width of [360, 768, 1440]) {
+    test(`booking actions and search toolbar stay on screen while scrolling at ${width}px`, async ({ page }) => {
+        await dashboard(page, width);
+        // The bar is bounded by the board, so it appears once the board reaches the viewport.
+        await page.evaluate(() => window.scrollTo(0, document.getElementById('mmb').getBoundingClientRect().top + scrollY - 20));
+        const footer = page.locator('.mmb-footer');
+        const inView = () => footer.evaluate(el => { const r = el.getBoundingClientRect(); return r.top >= 0 && r.bottom <= innerHeight + 1; });
+        expect(await inView()).toBeTruthy();
+        await expect(footer.getByRole('button', { name: 'Book Now' })).toBeInViewport();
+        await expect(footer.getByRole('button', { name: 'Reserve' })).toBeInViewport();
+        const heights = await footer.locator('.btn').evaluateAll(list => list.map(el => el.getBoundingClientRect().height));
+        for (const h of heights) expect(h).toBeGreaterThanOrEqual(44);
+        await page.evaluate(() => document.getElementById('mmb-body-3').scrollIntoView({ block: 'center' }));
+        expect(await inView()).toBeTruthy();
+        await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+        expect(await inView()).toBeTruthy();
+        if (width >= 768) {
+            await page.evaluate(() => window.scrollTo(0, document.getElementById('mmb-body-3').getBoundingClientRect().top + scrollY));
+            const bar = await page.locator('.mmb-search').evaluate(el => { const r = el.getBoundingClientRect(); return { top: r.top, bottom: r.bottom, nav: document.querySelector('.navbar-fixed-top').getBoundingClientRect().bottom }; });
+            expect(bar.top).toBeGreaterThanOrEqual(bar.nav - 2);
+            expect(bar.top).toBeLessThan(bar.nav + 12);
+            await expect(page.getByRole('button', { name: 'Check Availability' })).toBeInViewport();
+            await expect(page.getByRole('button', { name: 'Collapse all' })).toBeInViewport();
+        }
+        expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBeTruthy();
+    });
+}
+
 test('room categories collapse, expand, persist and keep accessible state', async ({ page }) => {
     await dashboard(page);
     const toggle = page.locator('#mmb-toggle-1');
