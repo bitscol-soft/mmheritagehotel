@@ -76,6 +76,13 @@
             return true;
         }
         $input.on('apply.daterangepicker', function (event, p) { commit(p.startDate, p.endDate); });
+        // Keep the whole calendar reachable when the input sits near the bottom of the screen.
+        $input.on('show.daterangepicker', function () {
+            window.requestAnimationFrame(function () {
+                var rect = picker.container[0].getBoundingClientRect();
+                if (rect.bottom > window.innerHeight) window.scrollBy(0, Math.min(rect.bottom - window.innerHeight + 16, rect.top - 8));
+            });
+        });
         $input.on('input', clear);
         $input.on('change', function () {
             var typed = parse(input.value);

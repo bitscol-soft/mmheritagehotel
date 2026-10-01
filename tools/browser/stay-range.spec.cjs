@@ -2,6 +2,7 @@
 // The business date is fixed by the rendered data-business-date (2026-10-01, a Thursday), not by the browser clock.
 const { test, expect } = require('@playwright/test');
 const fs = require('fs');
+const { compose } = require('./compose-fixture.cjs');
 const path = require('path');
 
 const board = fs.readFileSync('tools/fixtures/room-board.html', 'utf8');
@@ -117,4 +118,33 @@ test('dark theme styles the picker', async ({ page }) => {
     });
     expect(colors.bg).toBe('rgb(24, 35, 47)');
     expect(colors.cell).toBe('rgb(228, 236, 245)');
+});
+
+test('the calendar scrolls into view when it would open below the fold', async ({ page }) => {
+    await open(page);
+    await page.setViewportSize({ width: 1440, height: 420 });
+    await input(page).click();
+    await expect(page.locator('.daterangepicker')).toBeVisible();
+    await expect.poll(async () => page.evaluate(() => document.querySelector('.daterangepicker').getBoundingClientRect().bottom <= innerHeight + 1)).toBeTruthy();
+});
+
+test('the dashboard preview fixture loads the picker scripts and the range works end to end', async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 });
+    const errors = [];
+    page.on('pageerror', e => errors.push(e.message));
+    await page.route('http://mm-stay.test/**', route => {
+        const pathname = new URL(route.request().url()).pathname;
+        if (pathname.startsWith('/assets/')) {
+            const file = path.join(process.cwd(), 'public', pathname);
+            return fs.existsSync(file) ? route.fulfill({ path: file }) : route.fulfill({ status: 404, body: '' });
+        }
+        return route.fulfill({ contentType: 'text/html', body: compose('dashboard.html') });
+    });
+    await page.goto('http://mm-stay.test/home');
+    await expect(input(page)).toHaveValue('10/01/2026 - 10/02/2026');
+    await input(page).click();
+    await expect(page.locator('.daterangepicker')).toBeVisible();
+    const range = await submittedRange(page, async () => { await day(page, 6).click(); await day(page, 9).click(); });
+    expect(range).toBe('10/06/2026 - 10/09/2026');
+    expect(errors).toEqual([]);
 });
