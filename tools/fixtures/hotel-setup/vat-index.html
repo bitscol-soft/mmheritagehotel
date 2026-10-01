@@ -1,0 +1,124 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css"><!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY--><section class="mm-ui mm-hotel-setup">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">VAT and services</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">VAT percentages, service charges and the room rate used on invoices.</p>            </div>
+                    </header>
+        <div class="mm-panel tw-p-4 sm:tw-p-6 mm-setup-narrow"><form class="form-horizontal" id="companyForm" action="http://localhost/hotel/vat/1" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="_token" value="fixture-csrf-token">            <input type="hidden" name="_method" value="PUT">            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="form-field-1-1"> Hotel VAT (%)</label>
+
+                        <div class="col-xs-12 col-sm-8">
+                            <div class="input-group">
+                                <input type="number" class="form-control input-sm" name="hotel_vat" value="10" placeholder="Enter Vat Number (%)">
+                                <span class="input-group-addon">Persent (%)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="form-field-1-1">Resturent VAT (%)</label>
+
+                        <div class="col-xs-12 col-sm-8">
+                            <div class="input-group">
+                                <input type="number" class="form-control input-sm" name="resturent_vat" value="5" placeholder="Enter Vat Number (%)">
+                                <span class="input-group-addon">Persent (%)</span>
+                            </div>
+                                                    </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="form-field-1-1">Bar VAT (%)</label>
+                        <div class="col-xs-12 col-sm-8 ">
+                            <div class="input-group">
+                                <input type="number" class="form-control input-sm" name="bar_vat" value="15" placeholder="Enter Vat Number (%)">
+                                <span class="input-group-addon">Persent (%)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="form-field-1-1">VAT Number</label>
+
+                        <div class="col-xs-12 col-sm-8 ">
+                            <input type="text" class="form-control input-sm" name="vat_number" value="BIN-123" placeholder="Enter Vat Number">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Room Rate </label>
+                        <div class="col-xs-12 col-sm-8 "">
+                            <div class="input-group">
+                                <input type="text" class="form-control input-sm" name="room_rate" value="126.50" placeholder="Enter Room Rate">
+                                <span class="input-group-addon">Amount 126.50 For 10(%) </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Room Service (%)</label>
+                        <div class="col-xs-12 col-sm-8 "">
+                            <div class="input-group">
+                                <input type="text" class="form-control input-sm" name="room_service" value="10" placeholder="Enter room Service">
+                                <span class="input-group-addon">Persent (%)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Rst Service (%)</label>
+                        <div class="col-xs-12 col-sm-8 "">
+                            <div class="input-group">
+                                <input type="text" class="form-control input-sm" name="rst_service_charge" value="5" placeholder="Restaurant Service Charge">
+                                <span class="input-group-addon">Persent (%)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Included VAT Calc</label>
+                        <div class="col-xs-12 col-sm-8" style="background: #EDEDED; border-radius: 10px;">
+                            <label>
+                            <input type="radio" name="key[use_vat_included]"checked value="1">
+                                Yes
+                            </label>
+                            <label>
+                            <input type="radio" name="key[use_vat_included]" value="0">
+                                No
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-actions center mb-0" style="text-align: right !important;">
+                <button type="submit" class="mm-button">
+                    <i class="ace-icon fa fa-save icon-on-right bigger-110"></i>
+                    Save
+                </button>
+            </div>
+        </form></div>
+    </div>
+</section>
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
+<!--/MM-JS--></body></html>

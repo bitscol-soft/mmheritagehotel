@@ -24,8 +24,9 @@ acceptance. UI implementation alone is not production completion.
 | Housekeeping | Layout migrated; status behavior unchanged | Staging pending |
 | Booking purposes/platforms | List/filter/create/edit migrated | Staging pending |
 | Booking notes | List/filter presentation/edit migrated; backend blockers below | Pending |
-| Payments, checkout, invoices, night audit | Not migrated | Pending |
-| Remaining hotel setup screens | Not migrated | Pending |
+| Payments, checkout, invoices, night audit | Migrated (collection, checkout, invoices, night audit list/form/report) | Staging pending |
+| Setup: amenities, account types, VAT, currency conversions, registration terms | Migrated | Staging pending |
+| Hotel reports, house-keeping filters, guest modals | Not migrated | Pending |
 
 ## Latest group: Booking Purpose & Platform
 

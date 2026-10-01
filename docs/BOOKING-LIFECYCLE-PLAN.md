@@ -13,7 +13,7 @@ preservation guards in `tools/ui-check.cjs` before any markup moves. Financial s
 | Create (direct form) | `booking.create` | `create` | **frame, sticky actions and single-date fix migrated** |
 | Edit | `booking.edit` | `edit` | **frame, sticky actions and single-date fix migrated** |
 | Booking detail / checkout | `booking.show`, posts `booking.checkout` | `view` (704 → 491) | migrated (panels, summary, shared frame); calculation script byte-identical; staging pending |
-| Room assignment | `booking.assign` | `assaign` | pending |
+| Room assignment | `booking.assign` (PUT) | `booking/assaign` | not migrated: unreachable (see findings below) |
 | Invoices / print | `getInvoice`, `getInvoiceV2`, `reservationInvoice`, `checkoutInvoice` | `checkout_invoice`, `checkout-invoice-v2/v3/v4`, `get_invoice`, `reservation-invoice` | `checkout_invoice`, `reservation-invoice`: screen frame migrated; `checkout-invoice-v3`: screen-only action bar; v2, v4 and `get_invoice` are not referenced by any route or controller and were left alone |
 | Payment collection | `BookingCollection` | `payment-collection.index` (532 → 307) | migrated (search, guest info, invoices table, summary); script byte-identical; staging pending |
 | Night audit | `NightAuditSummaryController` (`index`, `create`, `store`, `show`) | `night-audits/index`, `create-v2` (384 lines, was 552), `invoice` | migrated: list and generate form on the shared frame; the report only gains a screen-only action bar; closing script byte-identical; staging pending |
@@ -44,6 +44,14 @@ preservation guards in `tools/ui-check.cjs` before any markup moves. Financial s
 - Generate shows an overlay and submits after a fixed `setTimeout` of 10 s; a double click schedules two submits.
 - `previous_paid` is posted as one non-indexed hidden input per row, so only the last value reaches the server.
 - Unreferenced views (`index-details`, `create`, `create-v3/v4`, `show`) were not migrated.
+
+## Findings on room assignment (not migrated)
+
+- `booking/assaign.blade.php` is dead: `BookingController::edit()` and `BanquetBookingController` return `booking/edit`, and the
+  `return view('booking/assaign', ...)` line is commented out. The assign form action is commented out in `booking/edit`.
+- The `booking.assign` route and `BookingController::assign()` still exist, but no live Hotel view posts to them. The Banquet
+  module has its own `hall_booking/assaign` and `hall_booking/edit` forms that do.
+- Decision pending: remove the dead view and the route/controller method, or restore the assign step. No UI work was done for it.
 
 ## Findings on edit (backend, not changed)
 

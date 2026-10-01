@@ -70,7 +70,7 @@ test('print removes shell chrome', async ({ page }) => {
     await page.emulateMedia({ media: 'print' });
     await expect(page.locator('#navbar')).toBeHidden();
     await expect(page.locator('#sidebar')).toBeHidden();
-    await expect(page.locator('.mm-shell-toolbar')).toBeHidden();
+    await expect(page.locator('.mm-shell-footer')).toBeHidden();
     await expect(page.locator('#mm-main-content')).toBeVisible();
 });
 

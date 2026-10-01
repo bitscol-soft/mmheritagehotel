@@ -15,9 +15,11 @@ $files=array_merge([$root . '/module/Hotel/views/rooms/create.blade.php', $root 
 $files=array_merge($files, [$root . '/module/Hotel/views/category/create.blade.php', $root . '/module/Hotel/views/category/edit.blade.php', $root . '/resources/views/layouts/master.blade.php', $root . '/resources/views/layouts/includes/head.blade.php', $root . '/resources/views/partials/_header.blade.php', $root . '/resources/views/partials/_sidebar.blade.php'], glob($root . '/resources/views/layouts/shell/*.blade.php'));
 $files=array_merge($files, [$root . '/resources/views/home/hotel-dashboard.blade.php', $root . '/resources/views/home/_inc/dashboard-summary.blade.php', $root . '/resources/views/home/_inc/room-board.blade.php', $root . '/resources/views/home/_inc/room-card.blade.php', $root . '/resources/views/home/_inc/bed-icon.blade.php', $root . '/resources/views/home/_inc/booking_ui.blade.php']);
 $files=array_merge($files, [$root . '/module/Hotel/views/house-keeping/index.blade.php'], glob($root . '/resources/views/layouts/shell/*.blade.php'), [$root . '/resources/views/partials/_header.blade.php']);
+$files=array_merge($files, array_map(function ($v) use ($root) { return $root . '/module/Hotel/views/' . $v . '.blade.php'; }, ['aminities/index', 'aminities/create', 'aminities/edit', 'account_type/index', 'account_type/edit', 'vat/index', 'currency-conversions/index', 'currency-conversions/create', 'currency-conversions/edit', 'guest-registration-terms/index', 'guest-registration-terms/include/filter', 'guest-registration-terms/edit']));
 $files=array_merge($files, glob($root . '/module/Hotel/views/booking-purpose/*.blade.php'), [$root . '/module/Hotel/views/booking-purpose/include/filter.blade.php']);
 $files=array_merge($files, [$root . '/module/Hotel/views/booking-note/index.blade.php', $root . '/module/Hotel/views/booking-note/edit.blade.php', $root . '/module/Hotel/views/booking-note/include/filter.blade.php']);
 $files=array_merge($files, [$root . '/module/Hotel/views/booking/booking_next.blade.php', $root . '/module/Hotel/views/booking/_inc/_booking-next-steps.blade.php', $root . '/module/Hotel/views/booking/view.blade.php', $root . '/module/Hotel/views/night-audits/index.blade.php', $root . '/module/Hotel/views/night-audits/invoice.blade.php', $root . '/module/Hotel/views/night-audits/create-v2.blade.php', $root . '/module/Hotel/views/payment-collection/index.blade.php', $root . '/module/Hotel/views/booking/checkout_invoice.blade.php', $root . '/module/Hotel/views/booking/reservation-invoice.blade.php', $root . '/module/Hotel/views/booking/checkout-invoice-v3.blade.php', $root . '/module/Hotel/views/booking/create.blade.php', $root . '/module/Hotel/views/booking/edit.blade.php', $root . '/module/Hotel/views/booking/_inc/_add-guest-input-info.blade.php', $root . '/module/Hotel/views/booking/_inc/_edit-guest-input-info.blade.php']);
+$files=array_merge($files, array_map(function ($v) use ($root) { return $root . '/module/Hotel/views/hotel/reports/' . $v . '.blade.php'; }, ['all-reports/index', 'cash-flow/index', 'expected-arrival/index', 'expected-departure/index', 'in-house-guest/index', 'room-logs/index', 'services/index', 'today-activities/index', 'today-check-in/index', 'today-check-out/index', 'today-in-house/index', 'vat-report-day/index', 'vat-report-monthly/index', 'night-closing/indexV2']));
 foreach($files as $f){ $compiled=$compiler->compileString(file_get_contents($f)); token_get_all($compiled,TOKEN_PARSE); echo "PASS compile ".basename($f)."\n"; }
 $html = $app->make('view')->make('components.mm.field', ['label'=>'Guest','id'=>'test','name'=>'name','value'=>'<script>','error'=>null,'attributes'=>new Illuminate\View\ComponentAttributeBag])->render();
 
@@ -109,7 +111,6 @@ file_put_contents($probePath, <<<'BLADE'
 @section('title', 'Shell fixture')
 @include('layouts.includes.head')
 @if ($mmShell)
-    @include('layouts.shell.toolbar')
     @include('layouts.shell.navigation-tools')
 @endif
 BLADE
@@ -117,11 +118,11 @@ BLADE
 try {
     foreach ([true, false] as $enabled) {
         $html = $app->make('view')->file($probePath, ['mmShell'=>$enabled, 'fav_icon'=>'/icon.png'])->render();
-        foreach (['ui.css?v=', 'shell.css?v=', 'id="mm-menu-filter"', 'id="mm-density-toggle"'] as $marker) {
+        foreach (['ui.css?v=', 'shell.css?v=', 'id="mm-menu-filter"'] as $marker) {
             if (substr_count($html, $marker) !== ($enabled ? 1 : 0)) throw new RuntimeException('Shell asset/partial gate failed: '.$marker);
         }
     }
-    echo "PASS real head/toolbar/navigation renders, one asset link, rollback omits shell\n";
+    echo "PASS real head/navigation renders, one asset link, rollback omits shell\n";
 } finally { unlink($probePath); }
 
 $html = $app->make('view')->make('home._inc.dashboard-summary', ['total_room'=>25, 'today_room_booked'=>7, 'today_booking'=>3])->render();
@@ -168,7 +169,7 @@ if (getenv('MM_WRITE_FIXTURE')) { file_put_contents(__DIR__ . '/fixtures/room-bo
 if (file_get_contents(__DIR__ . '/fixtures/room-board.html') !== $boardHtml) throw new RuntimeException('tools/fixtures/room-board.html is stale; regenerate it with MM_WRITE_FIXTURE=1');
 echo "PASS dashboard room board render: groups, bed types, states, legacy hooks and escaped guest data\n";
 
-// Render the real shell chrome partials (header tools, toolbar, footer, dialogs) with frozen time.
+// Render the real shell chrome partials (header tools, footer, dialogs) with frozen time.
 // Only the permission check is substituted in a temp copy; it needs an authenticated user.
 Carbon\Carbon::setTestNow(Carbon\Carbon::parse('2026-10-01 09:30:00', 'Asia/Dhaka'));
 $app->instance('env', 'staging');
@@ -177,7 +178,7 @@ $app['config']->set('ui.version', '2026.10.1');
 $app['config']->set('ui.support_url', 'https://example.test/help?a=1&b=<2>');
 $chromeViews = '/tmp/mm-chrome-views';
 @mkdir($chromeViews . '/layouts/shell', 0777, true);
-foreach (['header-tools', 'toolbar', 'footer', 'overlays'] as $partial) {
+foreach (['header-tools', 'footer', 'overlays'] as $partial) {
     $source = file_get_contents($root . '/resources/views/layouts/shell/' . $partial . '.blade.php');
     $source = str_replace("hasPermission('bookings.create', \$slugs)", 'true', $source);
     if (strpos($source, 'hasPermission(') !== false) throw new RuntimeException('Unsubstituted permission check in ' . $partial);
@@ -192,13 +193,12 @@ $chromeRequest = Illuminate\Http\Request::create('/hotel/booking/create');
 $app->instance('request', $chromeRequest);
 $app->instance('url', new Illuminate\Routing\UrlGenerator($chromeRoutes, $chromeRequest));
 $chrome = [];
-foreach (['header-tools', 'toolbar', 'footer', 'overlays'] as $partial) {
+foreach (['header-tools', 'footer', 'overlays'] as $partial) {
     $chrome[$partial] = $app->make('view')->make('layouts.shell.' . $partial, ['slugs' => []])->render();
 }
 $expectChrome = [
     'header-tools' => ['data-mm-palette-open', 'data-mm-theme-toggle', 'data-mm-fullscreen', 'data-mm-shortcuts-open', 'data-mm-action="new-booking"', 'href="http://localhost/hotel/booking/create"'],
-    'toolbar' => ['aria-label="Breadcrumb"', 'aria-current="page"', 'Hotel</span>', 'Booking</span>', 'id="mm-density-toggle"', 'Create'],
-    'footer' => ['role="contentinfo"', 'Business date', '01 Oct 2026', 'id="mm-clock"', 'data-timezone="Asia/Dhaka"', '09:30:00', 'id="mm-online"', 'mm-env-staging', 'v2026.10.1', 'rel="noopener"', 'id="btn-scroll-up"', 'Help &amp; support', 'a=1&amp;b=&lt;2&gt;'],
+    'footer' => ['aria-label="Breadcrumb"', 'aria-current="page"', 'Hotel</span>', 'Booking</span>', 'id="mm-density-toggle"', '>Create</span>', 'role="contentinfo"', 'Business date', '01 Oct 2026', 'id="mm-clock"', 'data-timezone="Asia/Dhaka"', '09:30:00', 'id="mm-online"', 'mm-env-staging', 'v2026.10.1', 'rel="noopener"', 'id="btn-scroll-up"', 'Help &amp; support', 'a=1&amp;b=&lt;2&gt;'],
     'overlays' => ['id="mm-palette"', 'role="combobox"', 'role="listbox"', 'id="mm-shortcuts"', 'aria-labelledby="mm-shortcuts-title"'],
 ];
 foreach ($expectChrome as $partial => $markers) {
@@ -473,3 +473,154 @@ $niFile = __DIR__ . '/fixtures/night-audit-index.html';
 if (getenv('MM_WRITE_FIXTURE')) { file_put_contents($niFile, $niHtml); file_put_contents($previewDir . '/night-audit-index.html', $niHtml); }
 if (file_get_contents($niFile) !== $niHtml) throw new RuntimeException($niFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
 echo "PASS night audit list render: filter, audit rows, totals, actions\n";
+
+// Render the hotel setup screens (amenities, account types, VAT, currency conversions, registration terms) with sample records.
+if (!class_exists('Form')) {
+    class Form {
+        public static function text($name, $value = null, $attrs = []) { return '<input type="text" name="' . e($name) . '" value="' . e($value) . '" class="' . e($attrs['class'] ?? '') . '" placeholder="' . e($attrs['placeholder'] ?? '') . '">'; }
+        public static function select($name, $options, $selected = null, $attrs = []) {
+            $html = '<select name="' . e($name) . '" id="' . e($attrs['id'] ?? '') . '" class="' . e($attrs['class'] ?? '') . '" required>';
+            if (isset($attrs['placeholder'])) $html .= '<option value="">' . e($attrs['placeholder']) . '</option>';
+            foreach ($options as $value => $label) $html .= '<option value="' . e($value) . '"' . ($selected == $value ? ' selected' : '') . '>' . e($label) . '</option>';
+            return $html . '</select>';
+        }
+    }
+}
+$hsViews = $coViews;
+@mkdir($hsViews, 0777, true);
+foreach (['aminities/index', 'aminities/create', 'aminities/edit', 'account_type/index', 'account_type/edit', 'vat/index', 'currency-conversions/index', 'currency-conversions/create', 'currency-conversions/edit', 'guest-registration-terms/index', 'guest-registration-terms/include/filter', 'guest-registration-terms/edit'] as $hsView) {
+    @mkdir(dirname($hsViews . '/' . $hsView), 0777, true);
+    $hsSource = str_replace(["@extends('layouts.master')", '<x-alert-message />'], ["@extends('mm-checkout-layout')", ''], file_get_contents($root . '/module/Hotel/views/' . $hsView . '.blade.php'));
+    file_put_contents($hsViews . '/' . $hsView . '.blade.php', $hsSource);
+}
+$hsRoutes = new Illuminate\Routing\RouteCollection();
+foreach (['aminities' => ['index', 'create', 'store', 'edit', 'update', 'destroy'], 'account-type' => ['index', 'store', 'edit', 'update', 'destroy'], 'vat' => ['update'], 'currency-conversions' => ['index', 'create', 'store', 'edit', 'update', 'destroy'], 'guest-registration-terms' => ['index', 'edit', 'update']] as $hsBase => $hsActions) {
+    foreach ($hsActions as $hsAction) {
+        $hsMethod = in_array($hsAction, ['store']) ? 'POST' : (in_array($hsAction, ['update']) ? 'PUT' : ($hsAction === 'destroy' ? 'DELETE' : 'GET'));
+        $hsUri = 'hotel/' . $hsBase . (in_array($hsAction, ['edit', 'update', 'destroy']) ? '/{id}' . ($hsAction === 'edit' ? '/edit' : '') : ($hsAction === 'create' ? '/create' : ''));
+        $hsRoutes->add((new Illuminate\Routing\Route($hsMethod, $hsUri, function () {}))->name($hsBase . '.' . $hsAction));
+    }
+}
+$hsRequest = Illuminate\Http\Request::create('/hotel/setup');
+$hsRequest->setLaravelSession(new Illuminate\Session\Store('mm', new Illuminate\Session\ArraySessionHandler(10)));
+$app->instance('request', $hsRequest);
+$app->instance('url', new Illuminate\Routing\UrlGenerator($hsRoutes, $hsRequest));
+$hsErrors = new Illuminate\Support\ViewErrorBag();
+$hsData = [
+    'aminities/index' => ['data' => collect([(object) ['id' => 1, 'name' => 'Free WiFi', 'aminities_icon' => 'uploads/wifi.png', 'status' => 1], (object) ['id' => 2, 'name' => 'Pool <i>view</i>', 'aminities_icon' => 'uploads/pool.png', 'status' => 0]])],
+    'aminities/create' => [],
+    'aminities/edit' => ['aminities' => (object) ['id' => 1, 'name' => 'Free WiFi', 'status' => 1]],
+    'account_type/index' => ['account' => collect([(object) ['id' => 1, 'name' => 'Cash'], (object) ['id' => 2, 'name' => 'Card']])],
+    'account_type/edit' => ['account' => (object) ['id' => 1, 'name' => 'Cash', 'status' => 1]],
+    'vat/index' => ['vat' => (object) ['id' => 1, 'hotel_vat' => 10, 'resturent_vat' => 5, 'bar_vat' => 15, 'vat_number' => 'BIN-123', 'room_rate' => '126.50', 'room_service_charge' => 10, 'rst_service_charge' => 5], 'systemSetting' => (object) ['value' => '1']],
+    'currency-conversions/index' => ['currencies' => [1 => 'BDT', 2 => 'USD'], 'currencyConversions' => collect([(object) ['id' => 1, 'currency' => (object) ['name' => 'BDT'], 'rate' => 1, 'effected_date' => '2026-01-01'], (object) ['id' => 3, 'currency' => (object) ['name' => 'USD'], 'rate' => 122.5, 'effected_date' => '2026-09-01']])],
+    'currency-conversions/edit' => ['currencies' => [1 => 'BDT', 2 => 'USD'], 'currencyConversions' => collect(), 'currencyConversion' => (object) ['id' => 3, 'currency_id' => 2, 'rate' => 122.5, 'effected_date' => '2026-09-01']],
+    'guest-registration-terms/index' => ['bookingNotes' => collect([(object) ['id' => 1, 'title' => '<p>Check-in after <b>2pm</b></p>']])],
+    'guest-registration-terms/edit' => ['bookingNote' => (object) ['id' => 1, 'title' => 'Check-in after 2pm']],
+];
+$hsMarkers = [
+    'aminities/index' => ['mm-hotel-setup', 'id="data-table"', 'Free WiFi', 'delete_check(1)', 'id="deleteCheck_1"', 'aminities.create' === 0 ? '' : 'Add New Aminities'],
+    'aminities/create' => ['name="name"', 'name="aminiti_icon"', 'name="status"', 'method="post"'],
+    'aminities/edit' => ['name="_method" value="PUT"', 'name="aminiti_icon"', '<option value="1" selected>Active</option>'],
+    'account_type/index' => ['id="deleteCheck_2"', 'name="name"', 'Add account type'],
+    'account_type/edit' => ['name="_method" value="PUT"', 'name="name" value="Cash"', '<option value="1" selected>Active</option>'],
+    'vat/index' => ['name="hotel_vat" value="10"', 'name="resturent_vat"', 'name="bar_vat"', 'name="vat_number" value="BIN-123"', 'name="room_rate"', 'name="room_service"', 'name="rst_service_charge"', 'name="key[use_vat_included]"'],
+    'currency-conversions/index' => ['class="form-horizontal createCurrencyConversionForm"', 'id="currencyId"', 'id="effectedDate"', 'submitRoomStoreForm', 'render-currency-class', 'id="deleteCheck_3"', 'name="currency_id"'],
+    'currency-conversions/edit' => ['name="_method" value="PUT"', 'render(`', '<option value="2" selected>USD</option>', 'value="122.5"'],
+    'guest-registration-terms/index' => ['name="title"', 'Registration terms', 'Check-in after 2pm'],
+    'guest-registration-terms/edit' => ['name="_method" value="PUT"', '<textarea name="title"', 'Check-in after 2pm'],
+];
+@mkdir(__DIR__ . '/fixtures/hotel-setup', 0777, true);
+foreach ($hsData as $hsView => $hsViewData) {
+    $hsHtml = $app->make('view')->make(str_replace('/', '.', $hsView), array_merge(['errors' => $hsErrors], $hsViewData))->render();
+    $hsHtml = preg_replace('/(name="_token" value=")[A-Za-z0-9]+"/', '$1fixture-csrf-token"', str_replace('http://localhost/assets', '/assets', $hsHtml));
+    foreach ($hsMarkers[$hsView] as $hsMarker) {
+        if ($hsMarker !== '' && strpos($hsHtml, $hsMarker) === false) throw new RuntimeException('Hotel setup view ' . $hsView . ' missing ' . $hsMarker);
+    }
+    if (strpos($hsHtml, '<b>Warning</b>') !== false || strpos($hsHtml, '<b>Notice</b>') !== false) throw new RuntimeException('Hotel setup view ' . $hsView . ' sample data is incomplete (PHP warning in output)');
+    if (strpos($hsHtml, 'Pool <i>view</i>') !== false || strpos($hsHtml, '<p>Check-in after') !== false && $hsView === 'guest-registration-terms/index') throw new RuntimeException('Hotel setup view ' . $hsView . ' did not escape or strip record text');
+    $hsFile = __DIR__ . '/fixtures/hotel-setup/' . str_replace('/', '-', $hsView) . '.html';
+    if (getenv('MM_WRITE_FIXTURE')) { file_put_contents($hsFile, $hsHtml); file_put_contents($previewDir . '/setup-' . str_replace('/', '-', $hsView) . '.html', $hsHtml); }
+    if (file_get_contents($hsFile) !== $hsHtml) throw new RuntimeException($hsFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
+}
+echo "PASS hotel setup screens render: amenities, account types, VAT, currency conversions, registration terms\n";
+
+// Render the hotel report screens (filter bar plus the shared export partial inside the results panel) with sample rows.
+// The layout, alerts, currency/date helpers and the three app components are substituted; the real index views and export partials render.
+if (!function_exists('mm_amount')) { function mm_amount($a, $b) { return $a ?: $b; } }
+if (!function_exists('mm_fdate')) { function mm_fdate($date, $format = 'Y-m-d') { return date($format, strtotime($date)); } }
+$rpNoRecord = trim(file_get_contents($root . '/resources/views/components/no-table-record.blade.php'));
+$rpExport = '<div class="pull-left hidden-print" style="margin-top:10px; margin-left:10px"><a href="/hotel/reports/x?export_type=excel&amp;date=2026-10-01" target="_blank" style="margin-right: 5px"><img src="/assets/images/export-icons/excel-icon.png"></a><a href="/hotel/reports/x?export_type=pdf&amp;date=2026-10-01" target="_blank" style="margin-right: 5px"><img src="/assets/images/export-icons/pdf-icon.png"></a></div>';
+$rpPaginate = '<span class="pull-right"><ul class="pagination"><li class=" disabled"><a class="" href="#">← First</a></li><li class="active"><span>1</span></li><li><a href="#">2</a></li><li><a class="" href="#">Last →</a></li></ul></span>';
+$rpSub = function ($file) use ($root, $rpNoRecord, $rpExport, $rpPaginate) {
+    $source = file_get_contents($root . '/module/Hotel/views/' . $file . '.blade.php');
+    $source = preg_replace('/<x-paginate :data="[^"]*" \/>/', $rpPaginate, $source);
+    $source = str_replace(["@extends('layouts.master')", '<x-alert-message />', "@include('partials._alert_message')", '<x-export-button :pdf=1 :excel=1 />', '<x-no-table-record />', 'calculateCurrencyAmount(', 'fdate(', "date('Y-m-d')", "route('report.detailsShow', "],
+        ["@extends('mm-checkout-layout')", '', '', $rpExport, $rpNoRecord, 'mm_cur(', 'mm_fdate(', "'2026-10-01'", "route('report.detailsShow', "], $source);
+    $source = preg_replace('/getTotalPaymentAmount\([^)]*\)/', '1000', $source);
+    $source = str_replace('= amount(', '= mm_amount(', $source);
+    $source = preg_replace('/getTotalPayment\w+Amount\([^)]*\)/', "['collection' => 1000, 'totalDue' => 200, 'due' => 200]", $source);
+    if (preg_match('/calculateCurrencyAmount|getTotalPayment|x-paginate|x-export-button|x-no-table-record|fdate\(/', preg_replace('/mm_fdate\(/', '', $source))) throw new RuntimeException('Unsubstituted helper in ' . $file);
+    return $source;
+};
+$rpRoutes = new Illuminate\Routing\RouteCollection();
+$rpRoutes->add((new Illuminate\Routing\Route('GET', 'hotel/reports/night-closing/{date}', function () {}))->name('report.detailsShow'));
+$rpGuest = function ($name, $phone) { return (object) ['name' => $name, 'email' => strtolower($name) . '@example.com', 'phone_no' => $phone, 'nid_no' => 'N-1', 'address' => 'Dhaka', 'company' => (object) ['name' => 'Acme']]; };
+$rpBooking = function ($no, $name) use ($rpGuest) {
+    return (object) ['booking_number' => $no, 'guestInfo' => $rpGuest($name, '0170000000'), 'customer' => (object) ['name' => $name], 'pickup' => 'Airport', 'pickup_flight' => 'BG-12', 'drop' => 'Hotel lobby', 'drop_flight' => 'BG-99', 'booking_pax' => 2,
+        'booking_date' => '2026-09-28', 'check_in_date' => '2026-10-01', 'check_out_date' => '2026-10-03', 'check_in_time' => '14:00:00', 'check_out_time' => '11:00:00',
+        'bookingDetails' => collect([(object) ['roomNumber' => (object) ['room_number' => '101', 'name' => 'Deluxe King']]]),
+        'transection' => (object) ['source' => (object) ['details' => collect([(object) ['roomNumber' => (object) ['room_number' => '101']]])]]];
+};
+$rpTx = function ($id, $type, $invoice, $total, $paid) {
+    return (object) ['id' => $id, 'source_type' => $type, 'account' => (object) ['name' => 'Cash'], 'transaction' => (object) ['invoice_no' => $invoice, 'total_amount' => $total, 'collection' => $paid, 'source' => (object) ['details' => collect([(object) ['roomNumber' => (object) ['room_number' => '102']]])]]];
+};
+$rpMoney = function ($invoice, $type, $amount) { return (object) ['date' => '2026-10-01', 'invoice_no' => $invoice, 'source_type' => $type, 'created_user' => (object) ['name' => 'Front desk'], 'service_charge' => $amount, 'total_amount' => $amount * 10, 'vat_amount' => $amount, 'collection' => $amount, 'datetime' => '2026-10-01 14:30:00', 'account' => (object) ['name' => 'Cash']]; };
+$rpAudit = (object) ['id' => 7, 'date' => '2026-09-30', 'details' => collect([(object) ['total_collection' => 5300, 'total_due' => 2000, 'collection' => 5300, 'due' => 2000, 'total_amount' => 7300, 'transaction' => (object) ['invoice_no' => '0007', 'source_type' => 'Booking', 'total_amount' => 7300, 'collection' => 5300, 'due_amount' => 2000, 'transaction_ledgers' => collect()]]])];
+$rpEmpty = collect();
+$rpCases = [
+    'expected-arrival' => ['/hotel/reports/expected-arrival?date=2026-10-01', ['bookings' => collect([$rpBooking('B-0007', 'Rahim'), $rpBooking('B-0008', 'Karim <b>x</b>')])], ['name="date"', 'value="2026-10-01"', 'Rahim', 'B-0007', 'class="pagination"'], ['Karim <b>x</b>']],
+    'expected-departure' => ['/hotel/reports/expected-departure?date=2026-10-01', ['bookings' => collect([$rpBooking('B-0009', 'Salma')])], ['name="date"', 'Salma', 'B-0009'], []],
+    'in-house-guest' => ['/hotel/reports/in-house-guest?to=2026-10-01', ['bookings' => collect([$rpBooking('B-0010', 'Nadia')]), 'roomCategories' => collect([(object) ['name' => 'Deluxe King']])], ['name="to"', 'Nadia'], []],
+    'today-in-house' => ['/hotel/reports/today-in-house?x=1', ['bookings' => $rpEmpty, 'roomCategories' => collect()], ['No records found', 'mm-report'], ['name="date"']],
+    'room-logs' => ['/hotel/reports/room-logs?from_date=2026-10-01', ['rooms' => collect([(object) ['id' => 1, 'name' => 'Deluxe King', 'room_number' => '101']]), 'room_logs' => collect([(object) ['date' => '2026-10-01', 'room' => (object) ['name' => 'Deluxe King', 'room_number' => '101'], 'user' => (object) ['name' => 'Front desk'], 'received' => (object) ['name' => 'Cashier'], 'booked' => (object) ['name' => 'Agent'], 'remarks' => 'Cleaned', 'note' => 'Minibar']])], ['name="room_id"', 'chosen-select', 'name="from_date"', 'name="to_date"', 'Cleaned'], []],
+    'services' => ['/hotel/reports/services?from_date=2026-10-01', ['services' => collect([$rpMoney('0101', 'Restaurant Sale', 250)])], ['name="from_date"', 'name="to_date"', '0101', '250.00'], []],
+    'vat-report-day' => ['/hotel/reports/vat-report-day?from_date=2026-10-01', ['daily_vats' => collect([$rpMoney('0102', 'Booking', 120)])], ['name="from_date"', '0102', '1,200.00'], []],
+    'vat-report-monthly' => ['/hotel/reports/vat-report-monthly?x=1', ['monthly_vats' => $rpEmpty], ['name="from_date"', 'No records found'], []],
+    'cash-flow' => ['/hotel/reports/cash-flow?from_date=2026-10-01', ['cashFlows' => collect([$rpMoney('0103', 'Booking', 900)])], ['name="invoice_no"', 'name="from_time"', 'name="to_time"', 'id="time_start"', 'id="time_end"', '0103', '900.00', "timepicker({"], []],
+    'all-reports' => ['/hotel/reports/all-reports?invoice_no=1', ['transactions' => $rpEmpty, 'account_types' => collect([1 => 'Cash'])], ['name="invoice_no"', 'name="from_date"', 'No records found'], []],
+    'today-activities' => ['/hotel/reports/today-activities?date=2026-10-01', ['date' => '2026-10-01', 'booking_count' => 2, 'total_check_in' => 2, 'total_reservation' => 3, 'total_check_out' => 1, 'total_cancel' => 0, 'total_room' => 32, 'total_booked_room' => 7, 'total_dirty_room' => 4, 'total_maintenance_room' => 1, 'transactions' => collect([$rpTx(11, 'Booking', '0007', 7300, 5300)])],
+        ['name="date"', 'name="total_check_in"', 'class="header-input"', 'name="transaction_ids[]"', 'INV-0007', 'mm-report'], []],
+    'today-check-in' => ['/hotel/reports/today-check-in', ['date' => '2026-10-01', 'today_booking' => collect([$rpBooking('B-0011', 'Tania')])], ['name="date"', 'Today Check-In Report', 'B-0011', 'Tania'], []],
+    'today-check-out' => ['/hotel/reports/today-check-out', ['date' => '2026-10-01', 'today_booking' => collect([$rpBooking('B-0012', 'Imran')])], ['name="date"', 'B-0012', 'Imran'], []],
+    'night-closing' => ['/hotel/reports/night-closing?from_date=2026-09-30', ['nightaudits' => collect([$rpAudit]), 'paginate' => 1, 'account_types' => collect([1 => 'Cash'])], ['name="from_date"', 'name="to_date"', 'id="audit-view-details7"', 'audit-view-details7'], []],
+];
+@mkdir(__DIR__ . '/fixtures/hotel-reports', 0777, true);
+foreach ($rpCases as $rpName => [$rpUrl, $rpData, $rpMarkers, $rpAbsent]) {
+    $rpDir = $rpName === 'night-closing' ? 'night-closing' : $rpName;
+    @mkdir($coViews . '/hotel/reports/' . $rpDir . '/export', 0777, true);
+    $rpIndex = $rpName === 'night-closing' ? 'indexV2' : 'index';
+    file_put_contents($coViews . '/hotel/reports/' . $rpDir . '/' . $rpIndex . '.blade.php', $rpSub('hotel/reports/' . $rpDir . '/' . $rpIndex));
+    file_put_contents($coViews . '/hotel/reports/' . $rpDir . '/export/excel.blade.php', $rpSub('hotel/reports/' . $rpDir . '/export/excel'));
+    if ($rpName === 'night-closing') file_put_contents($coViews . '/hotel/reports/night-closing/details.blade.php', $rpSub('hotel/reports/night-closing/details'));
+}
+foreach ($rpCases as $rpName => [$rpUrl, $rpData, $rpMarkers, $rpAbsent]) {
+    $rpRequest = Illuminate\Http\Request::create($rpUrl);
+    $rpRequest->setLaravelSession(new Illuminate\Session\Store('mm', new Illuminate\Session\ArraySessionHandler(10)));
+    $app->instance('request', $rpRequest);
+    $app->instance('url', new Illuminate\Routing\UrlGenerator($rpRoutes, $rpRequest));
+    $rpIndex = $rpName === 'night-closing' ? 'indexV2' : 'index';
+    $rpHtml = $app->make('view')->make('hotel.reports.' . $rpName . '.' . $rpIndex, array_merge(['errors' => new Illuminate\Support\ViewErrorBag()], $rpData))->render();
+    $rpHtml = str_replace('http://localhost/assets', '/assets', $rpHtml);
+    foreach (array_merge(['mm-report', 'mm-panel', 'mm-page-title'], $rpMarkers) as $rpMarker) {
+        if (strpos($rpHtml, $rpMarker) === false) throw new RuntimeException('Report ' . $rpName . ' missing ' . $rpMarker);
+    }
+    foreach (array_merge(['widget-box', 'widget-main', 'widget-header'], $rpName === 'night-closing' ? [] : ['col-sm-12'], $rpAbsent) as $rpMarker) {
+        if (strpos($rpHtml, $rpMarker) !== false) throw new RuntimeException('Report ' . $rpName . ' still contains ' . $rpMarker);
+    }
+    if (strpos($rpHtml, '<b>Warning</b>') !== false || strpos($rpHtml, '<b>Notice</b>') !== false) throw new RuntimeException('Report ' . $rpName . ' sample data is incomplete (PHP warning in output)');
+    $rpFile = __DIR__ . '/fixtures/hotel-reports/' . $rpName . '.html';
+    if (getenv('MM_WRITE_FIXTURE')) { file_put_contents($rpFile, $rpHtml); file_put_contents($previewDir . '/report-' . $rpName . '.html', $rpHtml); }
+    if (file_get_contents($rpFile) !== $rpHtml) throw new RuntimeException($rpFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
+}
+echo "PASS hotel report screens render: filter bar, results panel, export partial, escaped data\n";

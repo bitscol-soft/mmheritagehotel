@@ -8,116 +8,63 @@
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
-    <style>
-        .file {
-            visibility: hidden;
-            position: absolute;
-        }
-
-        table thead th {
-            background-color: #4d8cb3;
-            color: #fff;
-        }
-    </style>
 @stop
 
-
 @section('content')
-    <div class="row">
+<x-mm.styles />
+<x-mm.page class="mm-report" title="Cash flow" description="Cash received and paid out for the selected invoice, dates and times.">
+    @include('partials._alert_message')
+    <x-mm.panel class="mm-report-filter">
+        <form class="mm-setup-filter mm-report-form">
 
-
-        <div class="col-sm-12">
-            <div class="widget-box">
-                <div class="widget-header">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
-                    @if (hasPermission('pharmacy.view', $slugs))
-                        <span class="widget-toolbar">
-
-                        </span>
-                    @endif
-
-                </div>
-                <div class="widget-body">
-                    <div class="widget-main">
-
-                        @include('partials._alert_message')
-
-                        <!-- Search -->
-                        <div class="row">
-                            <div class="col-sm-10 col-sm-offset-1">
-                                <form>
-                                    <table class="table table-bordered">
-                                        <tbody>
-                                            <tr>
-
-                                                <td>
-                                                    <div class="input-group">
-                                                        <span class="input-group-addon">Invoice</span>
-                                                        <input type="text" name="invoice_no" autocomplete="off"
-                                                            value="{{ request('invoice_no') }}" class="form-control"
-                                                            placeholder="Invoice No">
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="input-group">
-                                                        <span class="input-group-addon">Date</span>
-                                                        <input type="text" name="from_date"
-                                                            value="{{ request('from_date') }}" autocomplete="off"
-                                                            class="form-control date-picker">
-                                                        <span class="input-group-addon"><i
-                                                                class="fa fa-calendar"></i></span>
-                                                        <input type="text" name="to_date"
-                                                            value="{{ request('to_date') }}" autocomplete="off"
-                                                            class="form-control date-picker">
-                                                    </div>
-
-                                                </td>
-                                                <td>
-                                                    <div class="input-group">
-                                                        <span class="input-group-addon">Time</span>
-                                                        <input type="text" class="form-control time-picker" id="time_start" name="from_time"  value="{{ request('from_time') }}">
-                                                        <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
-                                                        <input type="text" class="form-control time-picker" id="time_end" name="to_time"  value="{{ request('to_time') }}">
-                                                    </div>
-                                                </td>
-
-                                                <td style="width: 15%">
-                                                    <div class="btn-group" style="display: flex">
-                                                        <button class="btn btn-sm btn-success" type="submit">
-                                                            <i class="fa fa-search"></i> Search
-                                                        </button>
-                                                        <a href="{{ request()->url() }}" class="btn btn-sm">
-                                                            <i class="fa fa-refresh"></i>
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-
-                                </form>
-                            </div>
-                        </div>
-                        @if (collect(request()->all())->count() > 0)
-                            <div class="row">
-                                <div class="col-sm-12 px-4">
-                                    @include('hotel/reports/cash-flow/export/excel')
-                                    <x-paginate :data="$cashFlows" />
-                                </div>
-                                <x-export-button :pdf=1 :excel=1 />
-                            </div>
-                        @endif
-
-
-                    </div>
-                </div>
+            <div class="input-group">
+                <span class="input-group-addon">Invoice</span>
+                <input type="text" name="invoice_no" autocomplete="off"
+                    value="{{ request('invoice_no') }}" class="form-control"
+                    placeholder="Invoice No">
             </div>
 
+            <div class="input-group">
+                <span class="input-group-addon">Date</span>
+                <input type="text" name="from_date"
+                    value="{{ request('from_date') }}" autocomplete="off"
+                    class="form-control date-picker">
+                <span class="input-group-addon"><i
+                            class="fa fa-calendar"></i></span>
+                        <input type="text" name="to_date"
+                            value="{{ request('to_date') }}" autocomplete="off"
+                            class="form-control date-picker">
+            </div>
 
-        </div>
-    </div>
+            <div class="input-group">
+                <span class="input-group-addon">Time</span>
+                <input type="text" class="form-control time-picker" id="time_start" name="from_time"  value="{{ request('from_time') }}">
+                <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                <input type="text" class="form-control time-picker" id="time_end" name="to_time"  value="{{ request('to_time') }}">
+            </div>
 
+            <div class="btn-group" style="display: flex">
+                <button class="mm-button" type="submit">
+                    <i class="fa fa-search"></i> Search
+                </button>
+                <a href="{{ request()->url() }}" class="mm-button mm-button-secondary" aria-label="Reset">
+                    <i class="fa fa-refresh"></i>
+                </a>
+            </div>
 
+        </form>
+    </x-mm.panel>
+    @if (collect(request()->all())->count() > 0)
+        <x-mm.panel>
+            <x-mm.table-scroll label="Cash flow">
+                @include('hotel/reports/cash-flow/export/excel')
+            </x-mm.table-scroll>
+            <x-paginate :data="$cashFlows" />
+
+            <x-export-button :pdf=1 :excel=1 />
+        </x-mm.panel>
+    @endif
+</x-mm.page>
 @endsection
 
 @section('js')

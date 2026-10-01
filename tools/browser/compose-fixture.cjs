@@ -12,7 +12,7 @@ function fullMenuMarkup() {
 function compose(name, source) {
     const parts = {
         '<!--HEADER-TOOLS-->': () => read('shell-header-tools.html'),
-        '<!--SHELL-TOOLBAR-->': () => read('shell-toolbar.html'),
+        '<!--SHELL-TOOLBAR-->': () => '',
         '<!--SHELL-FOOTER-->': () => read('shell-footer.html'),
         '<!--SHELL-OVERLAYS-->': () => read('shell-overlays.html'),
         '<!--PRIMARY-MENU-->': fullMenuMarkup,

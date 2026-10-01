@@ -94,9 +94,6 @@ $mmShell = config('ui.admin_shell', true) && $isAdminHeader && $isAdminSidebar;
 
 
 
-                    @if ($mmShell)
-                        @include('layouts.shell.toolbar')
-                    @endif
                     <!-- MAIN / DYNAMIC CONTENT -->
                     @yield('content', 'Default Content')
 

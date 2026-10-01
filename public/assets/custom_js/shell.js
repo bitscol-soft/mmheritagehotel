@@ -74,6 +74,14 @@
     };
     if (mobile.addEventListener) mobile.addEventListener('change', breakpointChanged);
     else mobile.addListener(breakpointChanged);
+    // The footer (breadcrumb, copyright, status) is fixed to the bottom of the screen; publish its height so content and sticky bars clear it.
+    var footer = document.querySelector('.mm-shell-footer');
+    if (footer) {
+        var syncFooter = function () { body.style.setProperty('--mm-footer-h', footer.offsetHeight + 'px'); };
+        syncFooter();
+        if (window.ResizeObserver) new ResizeObserver(syncFooter).observe(footer);
+        else window.addEventListener('resize', syncFooter);
+    }
     if (density) {
         function compact(value) {
             body.classList.toggle('mm-compact', value);

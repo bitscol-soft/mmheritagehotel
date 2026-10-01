@@ -545,3 +545,45 @@ Legacy issues kept, not fixed (they sit in expressions the guard protects):
   fields, the overlay, that nothing posts before 10 s, that all legacy fields post once afterwards, and no sideways scroll at
   360, 768 and 1280 px.
 - Preview pages: `/preview/night-audit` and `/preview/night-audit-generate` (sample data).
+
+## Twenty-fourth increment: hotel setup screens
+
+- Migrated together: amenities (index, create, edit), account types (index, edit), VAT, currency conversions (index plus the
+  create/edit fragments that the index loads), registration terms (index, filter, edit). All use `x-mm.page`, `x-mm.panel` and
+  `x-mm.table-scroll`, and share the `.mm-hotel-setup` block in `resources/css/ui.css` (it reuses the booking setup form rules).
+- Preserved: every field name, id, route, hidden `_method`, the `delete_check` forms and scripts, the currency fragment scripts
+  and the data tables. `npm run ui:check` compares them with `22774024`.
+- One view fix: the amenities create form had `method="get"` while its route is POST-only, so Save never reached `store`. It now
+  posts. This is the only behaviour change in this increment.
+- Left alone: `guest-registration-terms/create` is a stale copy of the guest form that posts to `guests.store` and is not linked from
+  the list; the amenities store ignores the status select; the currency edit button validates through a function written for the
+  create form.
+- Tests: `tools/browser/hotel-setup.spec.cjs` (34) renders the real views through the php-wasm harness and checks the frame, no
+  sideways scroll at 360 and 768 px, the POST payloads, the VAT radio group, the currency validation and the account type layout.
+- Preview pages: `/preview/setup-*` (amenities, add amenity, account types, VAT, currency conversions, registration terms).
+
+## Twenty-fifth increment: breadcrumb in a sticky footer, compact page title
+
+- The top toolbar (`layouts/shell/toolbar.blade.php`: breadcrumb, date, density button) is removed. The business date was already
+  in the footer status row; the "Compact spacing" button (same `#mm-density-toggle` id and behaviour) moved to the footer.
+- The breadcrumb now lives in `layouts/shell/footer.blade.php` beside the copyright, links and status row. The footer is
+  `position: fixed` to the bottom edge (left of it is the sidebar width) in two compact rows, about 54 px (47 px on phones, where the
+  developer, help and keyboard links, server time and version are hidden).
+- `shell.js` publishes the footer height as `--mm-footer-h`; the main content, the back-to-top button and the two sticky bottom bars
+  (dashboard booking bar, `booking_next` actions) use it to stay clear of the footer.
+- `x-mm.page`: the "MM Heritage Hotel" eyebrow is gone, the title is 20 px and the subtitle 13 px, and they share one line when
+  there is room (title block about 25 px instead of about 90 px). Applies to every migrated screen.
+- Tests: `chrome.spec.cjs` covers the fixed footer, the clearance variable and the compact title; `shell-toolbar.html` fixture removed.
+
+## Twenty-sixth increment: hotel reports group
+
+Fourteen report screens under `module/Hotel/views/hotel/reports/` moved from the legacy `widget-box` frame to `x-mm.page`, `x-mm.panel` and `x-mm.table-scroll`, scoped to `.mm-report` in `resources/css/ui.css`:
+
+- `all-reports`, `cash-flow`, `expected-arrival`, `expected-departure`, `in-house-guest`, `room-logs`, `services`, `today-activities`, `today-check-in`, `today-check-out`, `today-in-house`, `vat-report-day`, `vat-report-monthly`, `night-closing/indexV2`.
+- The table-based filter forms are now one flex filter bar. Field names, ids, placeholders, the `date-picker`/`time-picker`/`chosen-select` classes and the GET submit are unchanged. The Search button uses `mm-button`; the reset link got an `aria-label`.
+- The results sit in a panel: the shared `export/excel` partial inside `x-mm.table-scroll`, then `x-paginate` and `x-export-button` as before. **The export partials are shared with the Excel/PDF export and were not touched**; the guard fails if they change.
+- The blue `table thead th` and `.header-input`/`.footer-input` `@push('style')` blocks were removed; the equivalent rules live in `.mm-report`.
+- Dead code removed: commented-out markup, an empty `widget-toolbar` guarded by `hasPermission('pharmacy.view')` (all-reports, cash-flow) and the empty filter form on `today-in-house`.
+- `night-closing/details` (the per-day modal) is unchanged. `monthly/index`, `monthly/booking-ui` (calendar grids with `x-widget.*` inputs and a month picker) and `night-closing/invoice` (printable document) are **not migrated yet**.
+
+Checks: `tools/ui-blade-check.php` renders every migrated view with its real export partial and sample rows (`tools/fixtures/hotel-reports/*.html`); `tools/browser/hotel-reports.spec.cjs` (49 tests: frame, no sideways scroll at 360/768, GET fields, room select, reset/export/pagination, today totals, night audit modal); `tools/ui-check.cjs` compares expressions, controls, directives, components, inline tables and scripts against `99d3c63b`. Preview pages: `/preview/report-*`.

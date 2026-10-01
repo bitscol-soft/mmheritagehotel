@@ -305,12 +305,12 @@
 }
 
 .mm-ui .mm-setup-filter { display: flex; flex-wrap: wrap; align-items: end; gap: 12px; }
-.mm-ui.mm-booking-setup .form-horizontal .form-group { margin: 0 0 20px; }
-.mm-ui.mm-booking-setup .form-horizontal .control-label { text-align: left; margin-bottom: 8px; }
-.mm-ui.mm-booking-setup .form-horizontal input[type=text] { min-height: 40px; border: 1px solid var(--mm-line); border-radius: 6px; }
-.mm-ui.mm-booking-setup .form-actions { margin: 16px 0 0; padding: 16px; background: var(--mm-bg); }
-.mm-ui.mm-booking-setup table { margin: 0; }
-.mm-ui.mm-booking-setup th, .mm-ui.mm-booking-setup td { padding: 12px; }
+.mm-ui:is(.mm-booking-setup, .mm-hotel-setup) .form-horizontal .form-group { margin: 0 0 20px; }
+.mm-ui:is(.mm-booking-setup, .mm-hotel-setup) .form-horizontal .control-label { text-align: left; margin-bottom: 8px; }
+.mm-ui:is(.mm-booking-setup, .mm-hotel-setup) .form-horizontal input[type=text] { min-height: 40px; border: 1px solid var(--mm-line); border-radius: 6px; }
+.mm-ui:is(.mm-booking-setup, .mm-hotel-setup) .form-actions { margin: 16px 0 0; padding: 16px; background: var(--mm-bg); }
+.mm-ui:is(.mm-booking-setup, .mm-hotel-setup) table { margin: 0; }
+.mm-ui:is(.mm-booking-setup, .mm-hotel-setup) th, .mm-ui:is(.mm-booking-setup, .mm-hotel-setup) td { padding: 12px; }
 @media (max-width: 575px) { .mm-ui .mm-setup-filter > :first-of-type { flex-basis: 100%; } }
 
 .mm-ui.mm-booking-notes textarea { width: 100%; min-height: 180px; resize: vertical; border: 1px solid var(--mm-line); border-radius: 6px; padding: 12px; }
@@ -396,7 +396,7 @@
 .mm-ui.mm-dashboard .mmb-rate { margin-top: auto; font-size: 13px; font-weight: 700; color: #3b6c2b; }
 .mm-ui.mm-dashboard .mmb-proxy, .mm-ui.mm-dashboard .mmb-proxy-trigger { display: none !important; }
 .mm-ui.mm-dashboard .mmb-empty { padding: 20px; color: var(--mm-muted); text-align: center; }
-.mm-ui.mm-dashboard .mmb-footer { position: sticky; bottom: 0; z-index: 20; display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 10px; margin-top: 12px; padding: 10px 12px; border: 1px solid var(--mm-line); border-radius: 10px; background: var(--mm-surface); box-shadow: 0 -6px 18px rgba(20, 40, 70, .12); }
+.mm-ui.mm-dashboard .mmb-footer { position: sticky; bottom: var(--mm-footer-h, 0px); z-index: 20; display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 10px; margin-top: 12px; padding: 10px 12px; border: 1px solid var(--mm-line); border-radius: 10px; background: var(--mm-surface); box-shadow: 0 -6px 18px rgba(20, 40, 70, .12); }
 .mm-ui.mm-dashboard .mmb-hint { margin-right: auto; color: var(--mm-muted); font-size: 12px; }
 .mm-ui.mm-dashboard .mmb-selection { margin-right: auto; font-size: 13px; color: #37536a; }
 .mm-ui.mm-dashboard .mmb-selection[hidden], .mm-ui.mm-dashboard .mmb-sel-total-wrap[hidden] { display: none; }
@@ -460,7 +460,7 @@
 .mm-ui .mm-stay-summary > div { padding: 8px 12px; border: 1px solid var(--mm-line); border-radius: 6px; background: var(--mm-bg); }
 .mm-ui .mm-stay-summary dt { color: var(--mm-muted); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
 .mm-ui .mm-stay-summary dd { margin: 0; color: var(--mm-ink); font-size: 16px; font-weight: 600; overflow-wrap: anywhere; }
-.mm-ui.mm-booking-next .mm-form-actions { position: sticky; bottom: 0; z-index: 5; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; margin-top: 16px; padding: 12px 16px; border: 1px solid var(--mm-line); border-radius: 10px; background: var(--mm-surface); box-shadow: 0 -4px 12px rgba(31, 42, 51, .08); }
+.mm-ui.mm-booking-next .mm-form-actions { position: sticky; bottom: var(--mm-footer-h, 0px); z-index: 5; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; margin-top: 16px; padding: 12px 16px; border: 1px solid var(--mm-line); border-radius: 10px; background: var(--mm-surface); box-shadow: 0 -4px 12px rgba(31, 42, 51, .08); }
 .mm-ui.mm-booking-next .col-lg-5 { margin-left: 0 !important; }
 .mm-ui.mm-booking-next h3.header { margin: 24px 0 12px; padding-bottom: 8px; border-bottom: 1px solid var(--mm-line); color: var(--mm-ink); font-size: 18px; font-weight: 600; }
 .mm-ui .mm-date-error { display: block; margin: 4px 0 0; font-size: 13px; font-weight: 600; }
@@ -524,3 +524,61 @@
 @media (max-width: 760px) {
     .mm-ui.mm-invoice-page .invoice-doc, .mm-ui.mm-invoice-page .print-body { min-width: 680px; }
 }
+
+/* Hotel setup screens (amenities, account types, VAT, currency conversions, registration terms) */
+.mm-ui.mm-hotel-setup .mm-setup-split { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 20px; align-items: start; }
+.mm-ui.mm-hotel-setup .mm-setup-stack { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; min-width: 0; }
+.mm-ui.mm-hotel-setup .mm-setup-narrow { max-width: 760px; width: 100%; margin-inline: auto; }
+.mm-ui.mm-hotel-setup .mm-setup-title { margin: 0 0 16px; font-size: 18px; font-weight: 700; color: var(--mm-ink); }
+.mm-ui.mm-hotel-setup .mm-setup-panel-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 16px; }
+.mm-ui.mm-hotel-setup .mm-setup-panel-head .mm-setup-title { margin: 0; }
+.mm-ui.mm-hotel-setup .mm-setup-filter .input-group { display: flex; width: auto; flex: 1 1 200px; min-width: 0; max-width: 100%; }
+.mm-ui.mm-hotel-setup .mm-setup-filter .input-group .form-control { flex: 1 1 auto; min-width: 0; width: 100%; float: none; }
+.mm-ui.mm-hotel-setup .mm-setup-filter .input-group-addon { width: auto; display: flex; align-items: center; white-space: nowrap; }
+.mm-ui.mm-hotel-setup .mm-setup-split > * { min-width: 0; }
+.mm-ui.mm-hotel-setup .mm-setup-filter .input-group .form-control { min-height: 40px; }
+.mm-ui.mm-hotel-setup .form-horizontal .form-group { margin: 0 0 20px; }
+.mm-ui.mm-hotel-setup .form-horizontal .form-group::after { content: ""; display: table; clear: both; }
+.mm-ui.mm-hotel-setup .form-horizontal .control-label { text-align: left; margin-bottom: 8px; padding-top: 0; }
+.mm-ui.mm-hotel-setup .form-horizontal .col-sm-3.control-label, .mm-ui.mm-hotel-setup .form-horizontal .col-sm-4.control-label { width: 100%; float: none; }
+.mm-ui.mm-hotel-setup .form-horizontal .form-group > :is(.col-sm-7, .col-sm-8) { width: 100%; float: none; }
+.mm-ui.mm-hotel-setup .form-horizontal :is(input[type=text], input[type=number], select, textarea) { width: 100%; min-height: 40px; border: 1px solid var(--mm-line); border-radius: 6px; }
+.mm-ui.mm-hotel-setup .form-horizontal textarea { min-height: 180px; }
+.mm-ui.mm-hotel-setup .form-horizontal :is(input[type=text], input[type=number], select, textarea) { color: var(--mm-ink); }
+.mm-ui.mm-hotel-setup .form-horizontal .form-group > .col-sm-8[style*=background] { padding: 8px 12px; width: 100%; }
+.mm-ui.mm-hotel-setup .form-horizontal .input-group { width: 100%; }
+.mm-ui.mm-hotel-setup .form-horizontal input[type=radio] { width: auto; min-height: 0; margin-right: 6px; }
+.mm-ui.mm-hotel-setup .form-actions { margin: 16px 0 0; padding: 16px; background: var(--mm-bg); text-align: right !important; display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
+.mm-ui.mm-hotel-setup table { margin: 0; }
+.mm-ui.mm-hotel-setup th, .mm-ui.mm-hotel-setup td { padding: 12px; vertical-align: middle; }
+.mm-ui.mm-hotel-setup td img { max-width: 40px; height: auto; }
+.mm-ui.mm-hotel-setup .btn-group form { display: inline; }
+@media (max-width: 991px) { .mm-ui.mm-hotel-setup .mm-setup-split { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 575px) { .mm-ui.mm-hotel-setup .form-actions .mm-button { flex: 1 1 100%; } }
+
+/* Compact page title: title and subtitle share a line when there is room */
+.mm-ui .mm-page-title { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 12px; min-width: 0; }
+.mm-ui .mm-page-title h1 { font-size: 20px; line-height: 1.25; }
+.mm-ui .mm-page-title p { font-size: 13px; line-height: 1.35; }
+
+/* Hotel reports (hotel/reports/*): filter bar, results panel and the legacy export tables, scoped to .mm-report */
+.mm-ui.mm-report .mm-report-form { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 12px; }
+.mm-ui.mm-report .mm-report-form .mm-report-field { flex: 1 1 220px; min-width: 0; max-width: 360px; }
+.mm-ui.mm-report .mm-report-form > .input-group, .mm-ui.mm-report .mm-report-form .mm-report-field > .input-group { display: flex; width: auto; flex: 1 1 260px; min-width: 0; max-width: 100%; }
+.mm-ui.mm-report .mm-report-form .mm-report-field > .input-group { width: 100%; max-width: none; }
+.mm-ui.mm-report .mm-report-form .input-group .form-control { flex: 1 1 0; min-width: 0; width: 100%; float: none; min-height: 40px; border-radius: 0; }
+.mm-ui.mm-report .mm-report-form .input-group-addon { width: auto; display: flex; align-items: center; white-space: nowrap; min-height: 40px; }
+.mm-ui.mm-report .mm-report-form .chosen-container { min-width: 160px; }
+.mm-ui.mm-report .mm-report-form .btn-group { display: flex; gap: 8px; }
+.mm-ui.mm-report .mm-report-form .btn-group .mm-button { min-height: 40px; }
+.mm-ui.mm-report .mm-panel { display: flow-root; }
+.mm-ui.mm-report .mm-table-scroll table { margin: 0; width: 100%; }
+.mm-ui.mm-report .mm-table-scroll thead th { background: var(--mm-bg); color: var(--mm-ink); font-weight: 600; white-space: nowrap; }
+.mm-ui.mm-report .mm-table-scroll th, .mm-ui.mm-report .mm-table-scroll td { padding: 10px 12px; vertical-align: middle; }
+.mm-ui.mm-report .header-input, .mm-ui.mm-report .footer-input { background: transparent !important; border: 0 !important; padding: 0 !important; font-size: 18px !important; font-weight: 700 !important; color: var(--mm-ink) !important; width: 100% !important; box-shadow: none !important; }
+.mm-ui.mm-report .footer-input { text-align: right !important; }
+.mm-ui.mm-report .border-none { border: 0 !important; }
+.mm-ui.mm-report th.border-none { white-space: nowrap; }
+.mm-ui.mm-report .pagination { margin: 10px 0 0; }
+@media (max-width: 575px) { .mm-ui.mm-report .mm-report-form .mm-report-field, .mm-ui.mm-report .mm-report-form > .input-group { flex-basis: 100%; max-width: none; } .mm-ui.mm-report .mm-report-form .btn-group .mm-button { flex: 1 1 auto; } }
+@media print { .mm-ui.mm-report .mm-panel { border: 0; box-shadow: none; padding: 0; } }

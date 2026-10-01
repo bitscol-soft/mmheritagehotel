@@ -1,69 +1,48 @@
-
 @extends('layouts.master')
 @section('title','Edit Registration Terms')
 @section('page-header')
     <i class="fa fa-gears"></i> Edit Registration Terms
 @stop
+
 @section('content')
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="widget-box">
-                <div class="widget-header">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
-                    <span class="widget-toolbar">
+<x-mm.styles />
+<x-mm.page class="mm-hotel-setup" title="Edit registration terms" description="Update the terms text.">
+    <x-slot name="actions"><a class="mm-button mm-button-secondary" href="{{ route('guest-registration-terms.index') }}"><i class="fa fa-list-alt"></i> Registration Terms List</a></x-slot>
+    @include('partials._alert_message')
 
-                            <a href="{{ route('guest-registration-terms.index') }}">
-                                <i class="ace-icon fa fa-list-alt"></i> Registration Terms List
-                            </a>
+    <x-mm.panel>
+        <form class="form-horizontal" id="companyForm" action="{{ route('guest-registration-terms.update',$bookingNote->id) }}" method="post" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
+            <div class="row">
+                <div class="col-sm-12">
 
-                    </span>
-                </div>
+                    <hr>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Title<sup class="text-danger">*</sup></label>
 
-                <div class="widget-body">
-                    <div class="widget-main no-padding">
-
-                        <div style="margin: 20px;">
-                            @include('partials._alert_message')
+                        <div class="col-xs-12 col-sm-8">
+                            <textarea name="title" class="form-control" cols="30" rows="10" required>{{ $bookingNote->title }}</textarea>
                         </div>
-
-                        <form class="form-horizontal" id="companyForm" action="{{ route('guest-registration-terms.update',$bookingNote->id) }}" method="post" enctype="multipart/form-data">
-                            @csrf
-                            @method('PUT')
-                            <div class="row">
-                                <div class="col-sm-12">
-
-                                    <hr>
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label">Title<sup class="text-danger">*</sup></label>
-
-                                        <div class="col-xs-12 col-sm-8">
-                                            <textarea name="title" class="form-control" cols="30" rows="10" required>{{ $bookingNote->title }}</textarea>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-
-
-                            <div class="form-actions center" style="text-align: right !important;">
-                                <button type="submit" class=" btn-sm btn-outline-success">
-                                    <i class="fa fa-save"></i>
-                                    Save
-                                </button>
-
-                                <a href="{{ route('guest-registration-terms.index') }}" class="btn-sm btn btn-default">
-                                    <i class="fa fa-backward"></i> Back List
-                                </a>
-                            </div>
-                        </form>
-
                     </div>
+
                 </div>
             </div>
 
 
-        </div>
-    </div>
+            <div class="form-actions center" style="text-align: right !important;">
+                <button type="submit" class="mm-button">
+                    <i class="fa fa-save"></i>
+                    Save
+                </button>
+
+                <a href="{{ route('guest-registration-terms.index') }}" class="mm-button mm-button-secondary">
+                    <i class="fa fa-backward"></i> Back List
+                </a>
+            </div>
+        </form>
+    </x-mm.panel>
+</x-mm.page>
 @endsection
 
 @section('js')

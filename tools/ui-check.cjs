@@ -421,3 +421,75 @@ console.log('PASS: note list/edit expressions, forms and status scripts; legacy 
  assert(/@media print \{\s*\.inv-screen-bar \{\s*display: none !important;/.test(inv)&&inv.includes('window.print();'),'night audit report: action bar must be hidden in print and auto-print kept');
  console.log('PASS: night audit form, list and report keep fields, expressions, scripts and printed output; frame and action bar only');
 }
+
+{
+ // Hotel setup screens: amenities, account types, VAT, currency conversions, registration terms. Fields, expressions, tables and scripts stay as they were.
+ const base='22774024';
+ const nc=s=>s.replace(/\{\{--[\s\S]*?--\}\}/g,'');
+ const ex=s=>(nc(s).match(/\{\{[\s\S]*?\}\}|\{!![\s\S]*?!!\}/g)||[]).map(x=>x.replace(/\s+/g,' '));
+ const ctl=s=>(nc(s).replace(/\{\{[\s\S]*?\}\}/g,'{{}}').match(/<(input|select|textarea|button)\b[^>]*>/g)||[]).map(x=>x.replace(/\s+/g,' ').replace(/ class="[^"]*"/,''));
+ const forms=s=>(nc(s).match(/<form[^>]*>/g)||[]).map(x=>x.replace(/\s+/g,' '));
+ const only=(l,m)=>{const c={};l.forEach(x=>c[x]=(c[x]||0)+1);m.forEach(x=>c[x]=(c[x]||0)-1);return Object.entries(c).filter(([,n])=>n).map(([k,n])=>`${n>0?'-':'+'}${Math.abs(n)} ${k}`).sort();};
+ const tables=s=>(nc(s).match(/<table[\s\S]*?<\/table>/g)||[]).filter(t=>t.includes('<thead>')).map(t=>t.replace(/\s+/g,' ').replace(/ class="(btn|mm-button)[^"]*"/g,'')).join('|');
+ const tail=s=>{const i=s.indexOf("@section('js')");return i<0?'':s.slice(i);};
+ const scripts=s=>(nc(s).match(/<script[\s\S]*?<\/script>/g)||[]).map(t=>t.replace(/\s+/g,' ')).join('|');
+ const backLink="+1 {{ route('aminities.index') }}";
+ const expected={
+  'aminities/create':{ex:[backLink],forms:['+1 <form class="form-horizontal" id="companyForm" action="{{ route(\'aminities.store\') }}" method="post" enctype="multipart/form-data">','-1 <form class="form-horizontal" id="companyForm" action="{{ route(\'aminities.store\') }}" method="get" enctype="multipart/form-data">'].sort()},
+  'aminities/edit':{ex:[backLink]},
+  'account_type/edit':{ex:["+1 {{ route('account-type.index') }}"]},
+  'currency-conversions/index':{ctl:['+1 <button aria-label="Search">','-1 <button>'],forms:['+1 <form action="" class="mm-setup-filter">','-1 <form action="">']},
+  'guest-registration-terms/include/filter':{forms:['+1 <form action="" class="mm-setup-filter">','-1 <form action="">']},
+ };
+ for(const f of ['aminities/index','aminities/create','aminities/edit','account_type/index','account_type/edit','vat/index','currency-conversions/index','currency-conversions/create','currency-conversions/edit','guest-registration-terms/index','guest-registration-terms/include/filter','guest-registration-terms/edit']){
+  const p=`module/Hotel/views/${f}.blade.php`,after=fs.readFileSync(p,'utf8'),before=execFileSync('git',['show',`${base}:${p}`],{encoding:'utf8'}),e=expected[f]||{};
+  assert.deepEqual(only(ex(before),ex(after)),(e.ex||[]).sort(),`${f}: Blade expressions changed`);
+  assert.deepEqual(only(ctl(before),ctl(after)),(e.ctl||[]).sort(),`${f}: form controls changed`);
+  assert.deepEqual(only(forms(before),forms(after)),(e.forms||[]).sort(),`${f}: form tags changed`);
+  assert.equal(tables(after),tables(before),`${f}: tables changed`);
+  assert.equal(tail(after),tail(before),`${f}: page script changed`);
+  assert.equal(scripts(after),scripts(before),`${f}: scripts changed`);
+  assert(after.includes('<x-mm.page')||after.includes('<x-mm.panel'),`${f}: shared layout expected`);
+  assert(!after.includes('widget-box')&&!after.includes('page-header">'),`${f}: legacy widget frame should be gone`);
+ }
+ console.log('PASS: hotel setup screens keep fields, expressions, tables and scripts; amenities create now posts to its store route');
+}
+
+{
+ // Hotel report screens: fields, Blade expressions, directives, includes, inline tables and scripts stay as they were; only the legacy widget frame and filter layout changed.
+ const base='22774024';
+ const nc=s=>s.replace(/\{\{--[\s\S]*?--\}\}/g,'');
+ const ex=s=>(nc(s).match(/\{\{[\s\S]*?\}\}|\{!![\s\S]*?!!\}/g)||[]).map(x=>x.replace(/\s+/g,' '));
+ const ctl=s=>(nc(s).replace(/\{\{[\s\S]*?\}\}/g,'{{}}').match(/<(input|select|textarea|button)\b[^>]*>/g)||[]).map(x=>x.replace(/\s+/g,' ').replace(/ class="[^"]*"/,''));
+ const forms=s=>(nc(s).match(/<form[^>]*>/g)||[]).map(x=>x.replace(/\s+/g,' ').replace(/ class="[^"]*"/,''));
+ const directives=s=>(nc(s).match(/@(?:if|elseif|else|endif|foreach|endforeach|forelse|empty|endforelse|php|endphp|include|isset|endisset)\b(?:\s*\([^\n]*\))?/g)||[]).map(x=>x.replace(/\s+/g,' ').trim()).filter(x=>!/^@(?:empty|else|endif|endforeach|endforelse|endphp|endisset|php)$/.test(x)||true);
+ const comps=s=>(nc(s).match(/<x-(?:paginate|export-button|alert-message)\b[^>]*>/g)||[]).map(x=>x.replace(/\s+/g,' '));
+ const only=(l,m)=>{const c={};l.forEach(x=>c[x]=(c[x]||0)+1);m.forEach(x=>c[x]=(c[x]||0)-1);return Object.entries(c).filter(([,n])=>n).map(([k,n])=>`${n>0?'-':'+'}${Math.abs(n)} ${k}`).sort();};
+ const tables=s=>(nc(s).match(/<table[\s\S]*?<\/table>/g)||[]).filter(t=>t.includes('<thead>')).map(t=>t.replace(/\s+/g,' ').replace(/ class="(btn|mm-button)[^"]*"/g,'')).join('|');
+ const tail=s=>{const i=s.indexOf("@section('js')");return i<0?'':s.slice(i);};
+ const scripts=s=>(nc(s).match(/<script[\s\S]*?<\/script>/g)||[]).map(t=>t.replace(/\s+/g,' ')).join('|');
+ const expected={
+  'today-in-house/index':{forms:['-1 <form action="" method="GET">']},
+  'all-reports/index':{dir:['-1 @endif',"-1 @if (hasPermission('pharmacy.view', $slugs))"]},
+  'cash-flow/index':{dir:['-1 @endif',"-1 @if (hasPermission('pharmacy.view', $slugs))"]},
+ };
+ const views=['all-reports','cash-flow','expected-arrival','expected-departure','in-house-guest','room-logs','services','today-activities','today-check-in','today-check-out','today-in-house','vat-report-day','vat-report-monthly'].map(n=>`${n}/index`).concat('night-closing/indexV2');
+ for(const f of views){
+  const p=`module/Hotel/views/hotel/reports/${f}.blade.php`,after=fs.readFileSync(p,'utf8'),before=execFileSync('git',['show',`${base}:${p}`],{encoding:'utf8'}),e=expected[f]||{};
+  const exB=ex(before),exA=ex(after);
+  assert.deepEqual(only(exB,exA),[],`${f}: Blade expressions changed`);
+  assert.deepEqual(only(ctl(before),ctl(after)),[],`${f}: form controls changed`);
+  assert.deepEqual(only(forms(before),forms(after)),(e.forms||[]).sort(),`${f}: form tags changed`);
+  assert.deepEqual(only(directives(before),directives(after)),(e.dir||[]).sort(),`${f}: Blade directives changed`);
+  assert.deepEqual(only(comps(before),comps(after)),[],`${f}: alert, paginate or export components changed`);
+  assert.equal(tables(after),tables(before),`${f}: tables changed`);
+  assert.equal(tail(after),tail(before),`${f}: page script changed`);
+  assert.equal(scripts(after),scripts(before),`${f}: scripts changed`);
+  assert(after.includes('<x-mm.page')&&after.includes('class="mm-report"'),`${f}: shared layout expected`);
+  assert(!after.includes('widget-box')&&!after.includes('widget-main')&&!after.includes('<style>'),`${f}: legacy widget frame and inline styles should be gone`);
+ }
+ // the export partials are shared with Excel/PDF export and must not change
+ const changed=execFileSync('git',['diff','--name-only',base,'--','module/Hotel/views/hotel/reports'],{encoding:'utf8'}).split('\n').filter(x=>/\/export\//.test(x));
+ assert.deepEqual(changed,[],'report export partials must stay unchanged');
+ console.log('PASS: hotel report screens keep fields, expressions, directives, components, tables and scripts; export partials untouched');
+}

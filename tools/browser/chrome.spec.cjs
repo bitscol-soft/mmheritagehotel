@@ -59,6 +59,33 @@ test('breadcrumb shows the current location', async ({ page }) => {
     await expect(crumbs.locator('[aria-current="page"]')).toHaveText('Create');
 });
 
+test('breadcrumb lives in a footer fixed to the bottom of the screen; the top toolbar is gone', async ({ page }) => {
+    await open(page, 1280, { height: 700 });
+    await expect(page.locator('.mm-shell-toolbar')).toHaveCount(0);
+    const footer = page.locator('.mm-shell-footer');
+    await expect(footer.getByRole('navigation', { name: 'Breadcrumb' })).toBeVisible();
+    await expect(footer).toContainText('2026');
+    await expect(footer.locator('#mm-density-toggle')).toBeVisible();
+    const box = async () => footer.evaluate(el => { const r = el.getBoundingClientRect(); return { bottom: Math.round(r.bottom), height: Math.round(r.height) }; });
+    expect((await box()).bottom).toBe(700);
+    expect((await box()).height).toBeLessThanOrEqual(64);
+    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+    expect((await box()).bottom).toBe(700);
+    // the published height keeps the end of the content clear of the footer
+    const clearance = await page.evaluate(() => parseInt(getComputedStyle(document.body).getPropertyValue('--mm-footer-h'), 10));
+    expect(clearance).toBeGreaterThanOrEqual((await box()).height - 1);
+});
+
+test('page title block is compact: title and subtitle share a line on wide screens', async ({ page }) => {
+    await open(page, 1280, { name: 'dashboard.html', height: 900 });
+    const head = page.locator('.mm-page-head');
+    await expect(head.locator('.mm-page-title p').first()).toBeVisible();
+    const sizes = await head.evaluate(el => ({ height: el.querySelector('.mm-page-title').getBoundingClientRect().height, h1: parseFloat(getComputedStyle(el.querySelector('h1')).fontSize), eyebrow: el.textContent.includes('MM Heritage Hotel') }));
+    expect(sizes.h1).toBe(20);
+    expect(sizes.height).toBeLessThanOrEqual(30);
+    expect(sizes.eyebrow).toBe(false);
+});
+
 test('command palette opens with the keyboard, filters permitted menu screens and navigates', async ({ page }) => {
     const errors = await open(page);
     await page.keyboard.press(`${modifier}+k`);
@@ -183,6 +210,33 @@ test('dark theme keeps dashboard content readable', async ({ page }) => {
         return bad;
     });
     expect(readable).toEqual([]);
+});
+
+test('dark theme room cards keep the coloured state border and a visible hover', async ({ page }) => {
+    await page.addInitScript(() => localStorage.setItem('mm-theme', 'dark'));
+    await open(page, 1440, { name: 'dashboard.html' });
+    await expect(page.locator('body')).toHaveClass(/mm-dark/);
+    const cards = page.locator('.mmb-card');
+    expect(await cards.count()).toBeGreaterThan(1);
+    const info = await page.evaluate(() => [...document.querySelectorAll('.mmb-card')].map(card => {
+        const style = getComputedStyle(card);
+        return { state: card.dataset.state, top: style.borderTopColor, side: style.borderLeftColor, width: style.borderTopWidth, dot: getComputedStyle(card.closest('[data-state]') || card).getPropertyValue('--mmb-dot') };
+    }));
+    for (const card of info) {
+        expect(card.width).toBe('4px');
+        expect(card.top, `${card.state} top border must differ from the side border`).not.toBe(card.side);
+    }
+    expect(new Set(info.filter(c => c.state).map(c => c.top)).size).toBeGreaterThan(1);
+    const first = cards.first();
+    await page.waitForTimeout(600); // let the theme transition settle
+    const before = await first.evaluate(el => { const s = getComputedStyle(el); return { bg: s.backgroundColor, side: s.borderLeftColor, shadow: s.boxShadow, top: s.borderTopColor }; });
+    await first.hover();
+    const read = () => first.evaluate(el => { const s = getComputedStyle(el); return { bg: s.backgroundColor, side: s.borderLeftColor, shadow: s.boxShadow, top: s.borderTopColor }; });
+    await expect.poll(async () => (await read()).side, { timeout: 5000 }).toBe('rgb(74, 103, 132)');
+    const after = await read();
+    expect(after.bg).not.toBe(before.bg);
+    expect(after.shadow).not.toBe(before.shadow);
+    await expect.poll(async () => (await read()).top, { timeout: 5000 }).toBe(before.top);
 });
 
 test('footer clock ticks, offline state is announced and last sync is relative', async ({ page, context }) => {
