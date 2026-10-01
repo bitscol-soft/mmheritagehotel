@@ -449,3 +449,11 @@ overflow; icon-only controls without accessible names).
 Not included: a **language switch**. `resources/lang` has only `en` and no locale route,
 so a switcher would do nothing. Also unverified: the real Laravel render with a database,
 the real notification dropdown with data, and staging.
+
+## Seventeenth increment: new-booking form (booking lifecycle step 2)
+
+`booking_next` now uses `x-mm.page`/`x-mm.panel`, a display-only progress and stay summary
+(`booking/_inc/_booking-next-steps.blade.php`) and a sticky Save/Reset bar. Form fields, expressions, includes, scripts and
+`BookingController` are guarded as unchanged by `npm run ui:check`. The room table is intentionally not wrapped in a scroll
+container because Chosen dropdowns would be clipped. Plan and risks: `docs/BOOKING-LIFECYCLE-PLAN.md`.
+Tests: `tools/browser/booking-next.spec.cjs` (fixture rendered from the real partial; the full form is not rendered).

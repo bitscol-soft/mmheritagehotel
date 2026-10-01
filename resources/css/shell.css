@@ -290,3 +290,4 @@
 .mm-shell.mm-dark .mm-ui.mm-dashboard .mmb-btn { background: #1c2a38; border-color: #2f4256; color: #e4ecf5; }
 .mm-shell.mm-dark .mm-ui.mm-dashboard .mmb-btn-primary { background: #3f77c4; border-color: #3f77c4; color: #fff; }
 @media (min-width: 992px) { .mm-shell .mm-shell-footer { padding-right: 64px; } }
+.mm-shell.mm-dark .mm-ui .mm-steps li.is-current .mm-step-mark { color: #0f1720; }

@@ -1,0 +1,37 @@
+# Booking lifecycle: migration plan
+
+Scope: `module/Hotel/views/booking/*` and the screens it feeds. Laravel + Blade + Tailwind, module by module, with
+preservation guards in `tools/ui-check.cjs` before any markup moves. Financial screens change last and only with guards.
+
+## Flow and screens
+
+| Step | Route / controller method | View | Status |
+|---|---|---|---|
+| Room board | `booking.ui`, dashboard | `booking_ui`, `home/_inc/room-board` | migrated |
+| Booking list | `booking.index` | `index` | migrated |
+| **New booking (step 2)** | `booking.next.step` -> `nextStep()` | `booking_next` | **frame, progress, summary, sticky actions migrated** |
+| Create (direct form) | `booking.create` | `create` (195 lines) | pending |
+| Edit | `booking.edit` | `edit` (312) | pending |
+| Booking detail / checkout | `booking.show`, posts `booking.checkout` | `view` (704) | pending, financial |
+| Room assignment | `booking.assign` | `assaign` | pending |
+| Invoices / print | `getInvoice`, `getInvoiceV2`, `reservationInvoice`, `checkoutInvoice` | `checkout_invoice`, `checkout-invoice-v2/v3/v4`, `get_invoice`, `reservation-invoice` | pending, print |
+| Payment collection | `BookingCollection` | `payment-collection.index` | pending |
+| Night audit | n/a | n/a | pending |
+
+## Risks
+
+- `booking_next` and `view` are driven by legacy jQuery that reads input names and classes (`room_category[]`,
+  `due_amount`, `payment_type`, `.input-total-amount`, `.per-night-amount*`, `.grand-*`, `.payable-amount`).
+  Never rename these. Tables with Chosen selects must not be wrapped in an `overflow` container (the dropdown is clipped).
+- `view.blade.php` posts hidden arrays (`id[]`, `item_ids[]`, `item_types[]`, `total_amount[]`, `item_amount[]`,
+  `service_charge[]`, `vat_amount[]`) plus `extra-charge`, `old_discount`, `payble_amount`, `is_adjust`, `night_count`,
+  `pay_by`, `payment_type`, `check_out_date`. A guard must compare these byte for byte with the base commit.
+- Invoices are printed. Verify print CSS (A4, no shell chrome) separately; do not restyle invoice numbers or tax rows.
+- Real Laravel, database and permission behaviour is not verified by the fixture tests. Staging acceptance is required.
+
+## Order
+
+1. `booking_next` (done in this increment) then `create` and `edit`: guest and room forms, lower financial risk.
+2. `view` (checkout) with a form-field guard and a fixture exercising totals.
+3. Invoices and print styles.
+4. Payment collection, then night audit.

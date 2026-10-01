@@ -17,6 +17,7 @@ $files=array_merge($files, [$root . '/resources/views/home/hotel-dashboard.blade
 $files=array_merge($files, [$root . '/module/Hotel/views/house-keeping/index.blade.php'], glob($root . '/resources/views/layouts/shell/*.blade.php'), [$root . '/resources/views/partials/_header.blade.php']);
 $files=array_merge($files, glob($root . '/module/Hotel/views/booking-purpose/*.blade.php'), [$root . '/module/Hotel/views/booking-purpose/include/filter.blade.php']);
 $files=array_merge($files, [$root . '/module/Hotel/views/booking-note/index.blade.php', $root . '/module/Hotel/views/booking-note/edit.blade.php', $root . '/module/Hotel/views/booking-note/include/filter.blade.php']);
+$files=array_merge($files, [$root . '/module/Hotel/views/booking/booking_next.blade.php', $root . '/module/Hotel/views/booking/_inc/_booking-next-steps.blade.php']);
 foreach($files as $f){ $compiled=$compiler->compileString(file_get_contents($f)); token_get_all($compiled,TOKEN_PARSE); echo "PASS compile ".basename($f)."\n"; }
 $html = $app->make('view')->make('components.mm.field', ['label'=>'Guest','id'=>'test','name'=>'name','value'=>'<script>','error'=>null,'attributes'=>new Illuminate\View\ComponentAttributeBag])->render();
 
@@ -216,3 +217,21 @@ $noBooking = str_replace('data-mm-action="new-booking"', 'data-x', $chrome['head
 $denied = file_get_contents($root . '/resources/views/layouts/shell/header-tools.blade.php');
 if (strpos($denied, "@if (hasPermission('bookings.create', \$slugs))") === false) throw new RuntimeException('New booking action lost its permission gate');
 echo "PASS shell chrome render: header tools, breadcrumbs, footer status and dialogs\n";
+
+// Render the new-booking progress/summary partial with sample rows and hostile text.
+$stepsHtml = $app->make('view')->make('booking._inc._booking-next-steps', ['booking' => [
+    ['check_in' => '2026-10-02', 'check_out' => '2026-10-05', 'nights' => 3, 'category_name' => 'Deluxe'],
+    ['check_in' => '2026-10-02', 'check_out' => '<script>alert(1)</script>', 'nights' => 2, 'category_name' => 'Suite'],
+]])->render();
+foreach (['aria-label="Booking progress"', 'aria-current="step"', 'Select rooms', 'Guest and stay details', 'Review and save', '<dt>Rooms</dt><dd>2</dd>', '<dt>Nights</dt><dd>3</dd>', '2026-10-02'] as $marker) {
+    if (strpos($stepsHtml, $marker) === false) throw new RuntimeException('Booking steps missing ' . $marker);
+}
+$emptyHtml = $app->make('view')->make('booking._inc._booking-next-steps', ['booking' => []])->render();
+if (strpos($emptyHtml, '<dt>Rooms</dt><dd>0</dd>') === false || strpos($emptyHtml, '<dt>Nights</dt><dd>-</dd>') === false) throw new RuntimeException('Booking steps empty state failed');
+// Only the first row's check-out is displayed; escaping is verified on the first row too.
+$escHtml = $app->make('view')->make('booking._inc._booking-next-steps', ['booking' => [['check_in' => '<b>x</b>', 'check_out' => '2026-10-03', 'nights' => 1]]])->render();
+if (strpos($escHtml, '<b>x</b>') !== false || strpos($escHtml, '&lt;b&gt;x&lt;/b&gt;') === false) throw new RuntimeException('Booking steps escaping failed');
+$stepsFile = __DIR__ . '/fixtures/booking-next-steps.html';
+if (getenv('MM_WRITE_FIXTURE')) file_put_contents($stepsFile, $stepsHtml);
+if (file_get_contents($stepsFile) !== $stepsHtml) throw new RuntimeException($stepsFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
+echo "PASS new-booking progress and stay summary render, empty state and escaping\n";

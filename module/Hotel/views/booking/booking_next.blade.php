@@ -47,23 +47,16 @@
         $tomorrow = date('Y-m-d', strtotime($date1 . '+1 days'));
     @endphp
 
-    <div class="row">
-
-        <div class="col-sm-12">
-            <div class="widget-box">
-                <div class="widget-header">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
-
-                    <span class="widget-toolbar">
-                        <a href="{{ route('booking.index') }}">
-                            <i class="ace-icon fa fa-list-alt"></i> Booking List
-                        </a>
-                    </span>
-
-                </div>
-
-                <div class="widget-body">
-                    <div class="widget-main">
+    <x-mm.styles />
+    <x-mm.page class="mm-booking-next" title="New booking" description="Confirm the selected rooms, add guest details and save the booking.">
+        <x-slot name="actions">
+            <a class="mm-button mm-button-secondary" href="{{ route('booking.index') }}">
+                <i class="ace-icon fa fa-list-alt" aria-hidden="true"></i> Booking List
+            </a>
+        </x-slot>
+        @include('booking._inc._booking-next-steps')
+        <x-mm.panel>
+                    <div>
 
                         <x-alert-message />
 
@@ -437,32 +430,24 @@
                                 </div>
                             </div>
 
-                            <div class="form-group">
-                                <label for="inputError" class="col-xs-12 col-sm-3 col-md-3 control-label"></label>
-                                <div class="col-xs-12 col-sm-12 text-right">
-                                    <button class="btn-sm btn-outline-success" onclick="submitBookingForm()"
-                                        type="button">
-                                        <i class="fa fa-save"></i>
-                                        Save
-                                    </button>
-
-                                    <button class="btn-sm btn-outline-danger" type="Reset">
-                                        <i class="fa fa-refresh"></i>
-                                        Reset
-                                    </button>
-                                </div>
+                            <div class="mm-form-actions">
+                                <button class="mm-button" onclick="submitBookingForm()"
+                                    type="button">
+                                    <i class="fa fa-save" aria-hidden="true"></i>
+                                    Save
+                                </button>
+                                <button class="mm-button mm-button-secondary" type="Reset">
+                                    <i class="fa fa-refresh" aria-hidden="true"></i>
+                                    Reset
+                                </button>
                             </div>
 
                             @include('booking/_modal/member-detail-modal')
 
                         </form>
                     </div>
-                </div>
-            </div>
-
-
-        </div>
-    </div>
+        </x-mm.panel>
+    </x-mm.page>
 
     @include('partials.modal.new_guest_modal')
     @include('partials/modal/edit_v1_guest_modal')

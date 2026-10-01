@@ -83,3 +83,7 @@ Header search/command palette, New booking shortcut, theme/full-screen/shortcuts
 breadcrumbs, and a status footer (business date, server clock, last sync, online state,
 environment) are in the shared admin shell. Language switching is not available (English
 only). Staging acceptance pending.
+
+### Booking lifecycle (in progress)
+New-booking form (`booking_next`) frame, progress, stay summary and sticky actions done; create, edit, checkout, invoices,
+payment collection and night audit pending. See `docs/BOOKING-LIFECYCLE-PLAN.md`.

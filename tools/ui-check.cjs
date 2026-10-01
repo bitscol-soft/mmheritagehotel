@@ -226,3 +226,23 @@ console.log('PASS: note list/edit expressions, forms and status scripts; legacy 
  for(const key of ["'admin_shell'","'version'","'support_url'","'timezone'"]) assert(ui.includes(key),`config/ui.php missing ${key}`);
  console.log('PASS: shell header tools, footer and palette are additive, gated, rollback-safe and free of HTML injection');
 }
+
+{
+ // Booking lifecycle step 2 (new-booking form): only the frame, progress, summary and action buttons changed.
+ const nextPath='module/Hotel/views/booking/booking_next.blade.php';
+ const before=execFileSync('git',['show',`2227b07a:${nextPath}`],{encoding:'utf8'});
+ const after=fs.readFileSync(nextPath,'utf8');
+ const collapse=s=>s.replace(/\s+/g,' ').trim();
+ const formOf=s=>s.slice(s.indexOf('<form class="form-horizontal"'),s.indexOf('</form>')+7);
+ const split=s=>{const f=formOf(s);const start=f.search(/<div class="(form-group|mm-form-actions)">\s*(<label for="inputError"|<button)/);const end=f.indexOf("@include('booking/_modal/member-detail-modal')");assert(start>0&&end>start,'booking_next buttons block not found');return [collapse(f.slice(0,start)),collapse(f.slice(end))];};
+ assert.deepEqual(split(after),split(before),'booking_next form fields, expressions and includes must be unchanged except the action buttons');
+ assert(/<form class="form-horizontal" action="\{\{ route\('booking\.store'\) \}\}" id="submitBookingUpdateForm"\s+method="post" enctype="multipart\/form-data">\s*@csrf/.test(after),'New booking form must still post to booking.store with CSRF');
+ const actions=after.slice(after.indexOf('<div class="mm-form-actions">'),after.indexOf("@include('booking/_modal/member-detail-modal')"));
+ assert(actions.includes('onclick="submitBookingForm()"')&&actions.includes('type="button"')&&actions.includes('type="Reset"'),'Save must still call submitBookingForm() and Reset must stay a reset button');
+ assert(after.includes('<x-alert-message />')&&after.includes("@include('booking._inc._booking-next-input-info')")&&after.includes("@include('booking._script.booking-next-script')")&&after.includes("@include('partials.modal.new_guest_modal')"),'booking_next lost an include');
+ assert(!after.includes('widget-box'),'booking_next should use the shared page frame');
+ for(const path of ['module/Hotel/views/booking/_inc/_booking-next-input-info.blade.php','module/Hotel/views/booking/_script/booking-next-script.blade.php','module/Hotel/views/booking/_inc/_check-sms-and-email.blade.php','module/Hotel/views/booking/_css/css.blade.php','module/Hotel/Controllers/BookingController.php']) assert.equal(fs.readFileSync(path,'utf8'),execFileSync('git',['show',`2227b07a:${path}`],{encoding:'utf8'}),`${path} must be unchanged`);
+ const steps=fs.readFileSync('module/Hotel/views/booking/_inc/_booking-next-steps.blade.php','utf8');
+ assert(steps.includes('aria-current="step"')&&!/<(input|form|button|script)/.test(steps)&&!steps.includes('{!!'),'Step summary must be display-only with escaped output');
+ console.log('PASS: new-booking form fields, totals expressions, scripts and controller preserved; progress/summary display-only');
+}
