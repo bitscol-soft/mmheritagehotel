@@ -1,9 +1,7 @@
-@extends('layouts.master')
-@section('title', 'Sale Return Details')
-
-@section('css')
-    <style>
-        @media print {
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">    <style>
+        @media  print {
 
             .no-border {
                 border-left: 1px solid white !important;
@@ -19,31 +17,23 @@
         }
 
     </style>
-@stop
-
-
-@section('content')
-
-<x-mm.styles />
-<x-mm.page class="mm-invoice-page mm-rst" title="Sale return details" description="Items returned against a restaurant invoice.">
-    @if (hasPermission('pharmacy.view', $slugs))
-        <x-slot name="actions">
-            <a href="{{ route('rst.sales.create') }}" class="mm-button mm-button-secondary">
+<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+<section class="mm-ui mm-invoice-page mm-rst">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Sale return details</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Items returned against a restaurant invoice.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a href="http://localhost/rst/sales/create" class="mm-button mm-button-secondary">
                 <i class="fa fa-plus-circle" aria-hidden="true"></i> Create
             </a>
-            <a href="{{ route('rst.sales.index') }}" class="mm-button mm-button-secondary">
+            <a href="http://localhost/rst/sales" class="mm-button mm-button-secondary">
                 <i class="fa fa-list-alt" aria-hidden="true"></i> Return List
             </a>
             <a href="javascript:void(0)" class="mm-button" onclick="printPage('print_body')">
                 <i class="fa fa-print" aria-hidden="true"></i> Print
-            </a>
-        </x-slot>
-    @endif
-
-    @include('partials._alert_message')
-
-    <x-mm.panel class="tw-p-4">
-        <div class="row">
+            </a></div>        </header>
+        <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><div class="row">
 
             <!-- Print This area -->
             <div id="print_body" class="col-lg-12">
@@ -56,10 +46,10 @@
 
                         <!-- Company Info -->
                         <div class="company-info text-center">
-                            <h4>{{ optional($sale->company)->name }}</h4>
-                            <p>{{ optional($sale->company)->head_office }}</p>
-                            <p>{{ optional($sale->company)->phone_number }},
-                                {{ optional($sale->company)->email }}</p>
+                            <h4>MM Heritage</h4>
+                            <p>Dhaka</p>
+                            <p>029,
+                                a@example.com</p>
                         </div>
 
                         <!-- panel title -->
@@ -79,27 +69,27 @@
                         <div class="customerInfo" style="width: 50%;float: left;">
 
                             <p class="patient"><b>Invoice No : </b>
-                                {{ $sale->invoice_no }}
+                                RET-1
                             </p>
 
                             <p class="patient"><b>Name : </b>
-                                {{ optional($sale->guest)->name ?? $sale->guest_name }}
+                                Aisha
                             </p>
                             <p class="patient"><b>Mobile : </b>
-                                {{ optional($sale->guest)->mobile_number }}
+                                017
                             </p>
 
 
                             <p class="patient">
                                 <b>Sales By : </b>
-                                {{ optional($sale->user)->name }}
+                                Rahim
                             </p>
                         </div>
 
                         <!-- Customer Info Left side -->
                         <div class="customerInfo" style="width: 50%; float: right;">
                             <p class="pull-right"><b> Date : </b>
-                                {{ $sale->date->format('d-m-Y') }}</p>
+                                01-10-2026</p>
                         </div>
 
                     </div>
@@ -129,30 +119,28 @@
 
                             <!-- Table Body -->
                             <tbody>
-                                @foreach ($sale->items as $key => $item)
-                                    <tr>
-                                        <td>{{ ++$key }}</td>
-                                        <td>{{ optional($item->product)->name }}</td>
+                                                                    <tr>
+                                        <td>1</td>
+                                        <td>Lassi</td>
                                         <td class="text-center">
-                                            {{ number_format($item->sales_price, 2) }}
+                                            100.00
                                         </td>
-                                        <td class="text-center">{{ $item->quantity }}</td>
+                                        <td class="text-center">1</td>
                                         <td class="text-right">
-                                            {{ number_format($item->item_price, 2) }} &#x09F3;
+                                            100.00 &#x09F3;
                                         </td>
                                     </tr>
-                                @endforeach
-
+                                
                                 <tr>
                                     <td colspan="4" class="no-border">
                                         Discount :</td>
-                                    <td style="text-align: right">{{ number_format($sale->discount,2) }} &#x09F3;</td>
+                                    <td style="text-align: right">0.00 &#x09F3;</td>
                                 </tr>
                                 <tr>
                                     <td colspan="4" class="no-border">
                                         Total : </td>
                                     <td style="text-align: right">
-                                        {{ number_format($sale->discount, 2) }}
+                                        0.00
                                         &#x09F3;
                                     </td>
                                 </tr>
@@ -161,7 +149,7 @@
                                         Return :
                                     </td>
                                     <td style="text-align: right">
-                                        {{ number_format($sale->return_amount, 2) }}
+                                        400.00
                                         &#x09F3;
                                     </td>
                                 </tr>
@@ -170,7 +158,7 @@
                                     <td colspan="4" class="no-border">Due
                                         :</td>
                                     <td style="text-align: right">
-                                        {{ number_format($sale->due_amount, 2) }}
+                                        100.00
                                         &#x09F3;
                                     </td>
                                 </tr>
@@ -200,31 +188,12 @@
 
             </div>
 
-        </div>
-    </x-mm.panel>
-</x-mm.page>
+        </div></div>
+    </div>
+</section>
 
-@endsection
-
-@section('script')
-
-
-    <script src="{{ url('assets/custom_js/printThis.js') }}"></script>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            setTimeout(function() {
-                print()
-            }, 5000);
-        })
-
-
-
-
-        function printPage(id) {
-            $('#' + id).printThis({
-                importStyle: true
-            });
-        };
-    </script>
-
-@endsection
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
+<!--/MM-JS--></body></html>

@@ -866,3 +866,118 @@ foreach ($prCases as $prName => [$prViewName, $prUrl, $prData, $prMarkers, $prAb
     if (file_get_contents($prFile) !== $prHtml) throw new RuntimeException($prFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
 }
 echo "PASS permission screens render: module lists, permissions, users, password forms and access matrices\n";
+
+// Render the Restaurant screens: tables, kitchen board/list/ticket, night audit list and generate form, payment collection and the five reports.
+// Layout, permissions, currency/date helpers and app components are substituted. The shared export partials of the reports are stubbed with a small
+// table (they are not changed); the night audit partials and every other view render for real.
+if (!class_exists('MmRsDate')) {
+    class MmRsDate {
+        public function __construct(private $d) {}
+        public function format($f) { return date($f, strtotime($this->d)); }
+        public function __toString() { return $this->d; }
+    }
+}
+if (!class_exists('MmRsModel')) {
+    class MmRsModel {
+        public function __construct($fields) { foreach ($fields as $k => $v) $this->$k = $v; }
+        public function __toString() { return json_encode($this); }
+    }
+}
+if (!function_exists('mm_status')) { function mm_status($s) { return $s == 1 ? 'Active' : 'Inactive'; } }
+if (!function_exists('mm_setting')) { function mm_setting($key) { return 0; } }
+if (!function_exists('mm_words')) { function mm_words($amount) { return 'Words of ' . $amount; } }
+if (!function_exists('mm_mount')) { function mm_mount($a = null, $b = null, $c = null) { return 0; } }
+$rsExport = '<div class="pull-left hidden-print"><a href="/rst/export?export_type=excel"><img src="/assets/images/export-icons/excel-icon.png"></a></div>';
+$rsStub = '<table class="table table-striped table-bordered"><thead><tr><th>SL</th><th>Invoice</th><th>Total</th></tr></thead><tbody><tr><td>1</td><td>RST-0101</td><td>1,250.00</td></tr></tbody></table>';
+$rsSubst = function ($file) use ($root, $rpNoRecord, $rpPaginate, $rsExport) {
+    $source = file_get_contents($root . '/module/Restaurant/views/' . $file . '.blade.php');
+    $source = str_replace(["@extends('layouts.master')", '<x-alert-message />', "@include('partials._alert_message')", '<x-export-button pdf="1" excel="1" />', '<x-export-button :pdf=1 :excel=1 />', '<x-paginate :data="$nightaudits" />', '<x-paginate :data="$cashFlows" />', '<x-paginate :data="$sales" />', '<x-paginate :data="$products" />', '<x-no-table-record />', 'calculateCurrencyAmount(', 'today_from_system()', "@include('currency-conversions.inc.script')", "@include('kitchen.inc.script')", '<x-widget.date-filter />', '{{ $sales->links() }}', '<x-company-info :company="$sale->company" />', 'convert_number(', "@include('sales/_inc/guest-modal')", "@include('sales/_inc/script')"],
+        ["@extends('mm-checkout-layout')", '', '', $rsExport, $rsExport, $rpPaginate, $rpPaginate, $rpPaginate, $rpPaginate, $rpNoRecord, 'mm_cur(', "'2026-10-01'", '', '', '<div class="input-group"><input type="text" name="from_date" class="form-control date-picker"><input type="text" name="to_date" class="form-control date-picker"></div>', $rpPaginate, '<div class="company-info"><h3>MM Heritage</h3></div>', 'mm_words(', "@include('rs.sales._inc.guest-modal')", "@include('rs.sales._inc.script')"], $source);
+    $source = preg_replace('/<x-paginate :data="[^"]*" \/>/', $rpPaginate, $source);
+    $source = str_replace("@include('bar/inventory/includes/filter')", "@include('rs-filter')", $source);
+    $source = str_replace(["@include('rst.tables.create-modal')", "@include('rst.tables.edit-modal')", "@include('restaurant-night-audits/export.excel')", "@include('restaurant-night-audits.details')"], ["@include('rs.rst.tables.create-modal')", "@include('rs.rst.tables.edit-modal')", "@include('rs.restaurant-night-audits.export.excel')", "@include('rs.restaurant-night-audits.details')"], $source);
+    $source = preg_replace(['/hasPermission\([^)]*\)/', '/(?<![\w>])status\(/', '/getTotalPaymentAmount\(/', '/(?<![\w>])setting\(/', "/@include\('(?:bar\/reports\/cash-flow\/export\/excel|rst\/reports\/sales\/export\/excel|reports\/inventory\/export\/excel|reports\/inventory-ledger\/export\/excel|reports\.today-activities\.export\.excel)'\)/", '/fdate\(/'], ['true', 'mm_status(', 'mm_mount(', 'mm_setting(', "@include('rs-stub')", 'mm_fdate('], $source);
+    if (preg_match('/hasPermission\(|calculateCurrencyAmount|x-export-button|x-paginate|x-no-table-record|today_from_system/', $source)) throw new RuntimeException('Unsubstituted helper in Restaurant view ' . $file);
+    return $source;
+};
+if (!function_exists('mm_fdate')) { function mm_fdate($date, $format = 'Y-m-d') { return date($format, strtotime($date)); } }
+file_put_contents($coViews . '/rs-stub.blade.php', $rsStub);
+// Stand-in for the shared Bar inventory filter (not changed): same wrapper classes, a product, a category and a date input.
+file_put_contents($coViews . '/rs-filter.blade.php', '<div class="col-sm-12 mb-2 ml-4"><form method="get"><div class="row"><div class="col-md-4"><div class="input-group"><div class="input-group-addon"><label class="input-group-text">Product</label></div><input type="text" name="id" class="form-control"></div></div><div class="col-md-3"><div class="input-group"><div class="input-group-addon"><label class="input-group-text">Category</label></div><select name="category_id" class="form-control"><option>All</option></select></div></div><div class="col-md-3"><div class="input-group"><div class="input-group-addon"><label class="input-group-text">From</label></div><input type="text" name="from_date" class="form-control date-picker"></div></div><div class="col-md-2"><button type="submit" class="btn btn-sm btn-primary">Search</button></div></div></form><script>function loadSelect2() {} function formatProduct() {} function formatSelection() {} // the product-select widget defines this in the real filter</script></div>');
+$rsViews = ['rst/tables/index', 'rst/tables/create-modal', 'rst/tables/edit-modal', 'kitchen/index', 'kitchen/create', 'kitchen/show', 'restaurant-night-audits/index', 'restaurant-night-audits/export/excel', 'restaurant-night-audits/details', 'restaurant-night-audits/create-v2', 'rst-payment-collection/index', 'sales/index', 'sales/show', 'sales/create', 'sales/_inc/guest-modal', 'sales/_inc/script', 'sales/return/index', 'sales/return/show', 'sales/return/create', 'rst/reports/cash-flow/index', 'rst/reports/sales/index', 'reports/today-activities/index', 'reports/inventory/index', 'reports/inventory-ledger/index'];
+foreach ($rsViews as $rsView) {
+    @mkdir(dirname($coViews . '/rs/' . $rsView), 0777, true);
+    file_put_contents($coViews . '/rs/' . $rsView . '.blade.php', $rsSubst($rsView));
+}
+$rsRoutes = new Illuminate\Routing\RouteCollection();
+foreach (['rst.table-manages.update' => 'PUT rst/table-manages/{id}', 'rst.table-manages.store' => 'POST rst/table-manages', 'rst.table-manages.destroy' => 'DELETE rst/table-manages/{id}', 'kit.kitchen.show' => 'GET kitchen/kitchen/{id}', 'kit.update-status' => 'POST kitchen/update-status/{id}', 'rst.night-audits.index' => 'GET rst/night-audit', 'rst.sales.index' => 'GET rst/sales', 'rst.sales.create' => 'GET rst/sales/create', 'rst.sales.store' => 'POST rst/sales', 'rst.sales.show' => 'GET rst/sales/{id}', 'rst.sales.destroy' => 'DELETE rst/sales/{id}', 'rst.sales-v2.create' => 'GET rst/sales-v2/create', 'rst.sales-v2.show' => 'GET rst/sales-v2/{id}', 'rst.sale-returns.create' => 'GET rst/sale-returns/create', 'rst.sale-returns.store' => 'POST rst/sale-returns', 'rst.sale-returns.show' => 'GET rst/sale-returns/{id}', 'rst.sale-returns.destroy' => 'DELETE rst/sale-returns/{id}', 'rst.save-guest-data' => 'POST rst/save-guest-data', 'rst.night-audits.create' => 'GET rst/night-audits/create', 'rst.night-audits.store' => 'POST rst/night-audits', 'rst.night-audits.show' => 'GET rst/night-audit-show/{id}', 'night-audits.index' => 'GET hotel/night-audit', 'night-audits.destroy' => 'DELETE hotel/night-audits/{id}', 'rst.sales.store-payment-collection' => 'POST rst/store-payment-collection'] as $rsName => $rsDef) {
+    [$rsMethod, $rsUri] = explode(' ', $rsDef);
+    $rsRoutes->add((new Illuminate\Routing\Route($rsMethod, $rsUri, function () {}))->name($rsName));
+}
+$rsProduct = function ($name, $qty) { return (object) ['product' => (object) ['name' => $name], 'qty' => $qty, 'price' => 100 * $qty]; };
+$rsOrder = function ($id, $invoice, $table, $status) use ($rsProduct) { return (object) ['id' => $id, 'invoice_no' => $invoice, 'table_no' => $table, 'waiter_no' => 'W-' . $id, 'total_amount' => 450, 'date' => '2026-10-01', 'order_status' => $status, 'customer_name' => 'Rahim <b>x</b>', 'order_items' => collect([$rsProduct('Biryani <i>hot</i>', 2), $rsProduct('Lassi', 1)])]; };
+$rsOrders = collect([$rsOrder(1, 'R-0101', 'T1', 'Pending'), $rsOrder(2, 'R-0102', 'T2', 'Cooking'), $rsOrder(3, 'R-0103', 'T3', 'Ready'), $rsOrder(4, 'R-0104', 'T4', 'Complete')]);
+$rsAuditDay = function ($date, $collection, $due) { return new MmHsAudit(['id' => 9, 'date' => $date, 'collection' => $collection, 'due_amount' => $due, 'details' => collect([(object) ['total_amount' => 1000, 'collection' => $collection, 'due' => $due, 'transaction' => (object) ['invoice_no' => 'R-0101', 'source_type' => 'Restaurant Sale', 'total_amount' => 1000, 'collection' => $collection, 'due_amount' => $due, 'transaction_ledgers' => collect()]]])]); };
+$rsLedger = function ($id, $in, $account) { return (object) ['id' => $id, 'in' => $in, 'payment_type' => 1, 'account' => (object) ['name' => $account]]; };
+$rsTx = function ($id, $invoice, $total, $paid) use ($rsLedger) { return (object) ['id' => $id, 'date' => '2026-10-01', 'source_type' => 'Restaurant Sale', 'invoice_no' => $invoice, 'total_amount' => $total, 'collection' => $paid, 'ledger_paid' => $paid, 'discount' => 0, 'previous_paid' => 0, 'total_due_amount' => $total - $paid, 'extra_charge' => 0, 'transaction_ledgers' => collect([$rsLedger($id + 100, $paid, 'Cash')]), 'source' => (object) ['details' => collect([])]]; };
+$rsPay = function ($id, $invoice, $total, $paid) { return (object) ['source_id' => $id, 'source_type' => 'Restaurant Sale', 'total_amount' => $total, 'due_amount' => $total - $paid, 'service_amount' => 0, 'extra_charge' => 0, 'collection' => $paid, 'invoice_no' => $invoice, 'discount' => 0, 'date' => '2026-10-01', 'change_amount' => 0, 'source' => (object) ['date' => '2026-10-01', 'service_amount' => 0, 'vat_amount' => 0, 'discount' => 0, 'created_by' => 1, 'company_id' => null]]; };
+
+$rsSaleRow = function ($id, $invoice, $total, $paid) { return (object) ['id' => $id, 'date' => '2026-10-01', 'invoice_no' => $invoice, 'guest_name' => 'Aisha <b>x</b>', 'guestInfo' => (object) ['name' => 'Aisha <b>x</b>', 'phone_no' => '017', 'address' => 'Dhaka', 'is_stuff' => 0], 'table' => (object) ['table_no' => 'T1'], 'payable_amount' => $total, 'discount' => 50, 'paid_amount' => $paid, 'subtotal' => $total, 'vat_amount' => 10, 'service_amount' => 5, 'change_amount' => 0, 'waiter_no' => 'W-1', 'company' => null, 'user' => (object) ['name' => 'Rahim'],
+    'booking' => (object) ['bookingDetails' => collect([(object) ['roomNumber' => (object) ['room_number' => '101']]])], 'transaction_ledgers' => collect([(object) ['account' => (object) ['name' => 'Cash']]]),
+    'items' => collect([(object) ['product' => (object) ['name' => 'Biryani <i>hot</i>'], 'sales_price' => 250, 'quantity' => 2, 'item_price' => 500]])]; };
+$rsReturnRow = function ($id, $invoice) { return (object) ['id' => $id, 'date' => new MmRsDate('2026-10-01'), 'subtotal' => 500, 'invoice_no' => $invoice, 'guest_name' => 'Aisha <b>x</b>', 'guest' => (object) ['name' => 'Aisha', 'mobile_number' => '017'], 'company' => (object) ['name' => 'MM Heritage', 'head_office' => 'Dhaka', 'phone_number' => '029', 'email' => 'a@example.com'], 'user' => (object) ['name' => 'Rahim'], 'discount' => 0, 'payable_amount' => 500, 'total_amount' => 500, 'return_amount' => 400, 'due_amount' => 100, 'paid_amount' => 400,
+    'items' => collect([(object) ['product' => (object) ['name' => 'Lassi'], 'sales_price' => 100, 'quantity' => 1, 'item_price' => 100]])]; };
+$rsCases = [
+    'tables' => ['rs.rst.tables.index', '/rst/table-manages', ['table_manages' => new MmHsPage([new MmRsModel(['id' => 1, 'name' => 'Terrace <b>1</b>', 'table_no' => 'T1', 'status' => 1]), new MmRsModel(['id' => 2, 'name' => 'Hall', 'table_no' => 'T2', 'status' => 2])]), 'slugs' => []],
+        ['mm-hotel-setup', 'mm-rst', 'id="data-table"', 'href="#modal-dialog"', 'data-toggle="modal"', 'onclick="editTable(', 'delete_item(', 'function editTable(', 'Terrace &lt;b&gt;1&lt;/b&gt;'], ['widget-box', 'widget-main', 'widget-header', 'Terrace <b>1</b>']],
+    'kitchen-list' => ['rs.kitchen.index', '/kitchen/kitchen', ['orders' => $rsOrders],
+        ['mm-rst-kitchen', 'id="data-table"', 'R-0101', 'id="myModal"', 'id="modalContent"', 'kitchen/kitchen/1', 'function delete_check('], ['widget-box', 'widget-main', 'widget-header', 'page-header']],
+    'kitchen-board' => ['rs.kitchen.create', '/kitchen/kitchen/create', ['orders' => $rsOrders],
+        ['mm-board-card', 'action="http://localhost/kitchen/update-status/1"', 'name="type" value="Cooking"', 'name="type" value="Ready"', 'name="type" value="Complete"', 'don\'t accept', 'Biryani &lt;i&gt;hot&lt;/i&gt;', 'id="data-table"', 'Order List'], ['widget-box', 'widget-main', 'widget-header', 'page-header', 'Biryani <i>hot</i>']],
+    'kitchen-show' => ['rs.kitchen.show', '/kitchen/kitchen/1', ['orders' => $rsOrder(1, 'R-0101', 'T1', 'Pending'), 'slugs' => []],
+        ['mm-invoice-page', 'id="print_body"', 'printPage(', 'R-0101', 'Biryani &lt;i&gt;hot&lt;/i&gt;', 'Rahim &lt;b&gt;x&lt;/b&gt;', 'Pending', 'printThis('], ['widget-box', 'widget-main', 'widget-header', 'Rahim <b>x</b>']],
+    'audit-list' => ['rs.restaurant-night-audits.index', '/rst/night-audit?from_date=2026-09-29', ['nightaudits' => collect([$rsAuditDay('2026-09-30', 1000, 0), $rsAuditDay('2026-09-29', 500, 200)]), 'account_types' => collect([1 => 'Cash'])],
+        ['mm-hs-audit', 'name="from_date"', 'name="to_date"', 'id="data-table"', 'rst/night-audits/create', 'class="pagination"', 'View Details'], ['widget-box', 'widget-main', 'widget-header']],
+    'audit-generate' => ['rs.restaurant-night-audits.create-v2', '/rst/night-audits/create?from_date=2026-10-01&to_date=2026-10-01', ['from_date' => '2026-10-01', 'to_date' => '2026-10-01', 'accountTypes' => collect([1 => 'Cash', 2 => 'Card']), 'total_reservation' => 3, 'total_booked_room' => 7, 'total_check_in' => 2, 'total_check_out' => 1, 'total_room' => 32, 'total_cancel' => 0, 'total_dirty_room' => 4, 'total_maintenance_room' => 1, 'transactions' => collect(['Restaurant Sale' => collect([$rsTx(21, 'R-0101', 800, 800), $rsTx(22, 'R-0102', 600, 100)])])],
+        ['mm-night-audit', 'mm-rst', 'id="formSubmit"', 'action="http://localhost/rst/night-audits"', 'name="date"', 'name="transaction_ids[21]"', 'name="collections[21]"', 'name="due_amounts[21]"', 'name="payment_way[Cash]"', 'name="payment_way[Card]"', 'name="total_amount"', 'name="collection"', 'name="due_amount"', 'save-btn'], ['widget-box', 'widget-main', 'widget-header']],
+    'payment-collection' => ['rs.rst-payment-collection.index', '/rst/payment-collection?hotel_guest_id=1', ['account_type' => [1 => 'Cash', 2 => 'Card'], 'hotelGuests' => collect([(object) ['id' => 1, 'name' => 'Aisha <b>x</b>', 'phone_no' => '017'], (object) ['id' => 2, 'name' => 'Rahim', 'phone_no' => '018']]), 'hotelGuest' => (object) ['name' => 'Aisha', 'email' => 'a@example.com', 'phone_no' => '017', 'nid_no' => '1', 'address' => 'Dhaka', 'booking' => (object) ['bookingInfo' => (object) ['booking_number' => '0007']]], 'transactions' => collect([$rsPay(7, 'R-0007', 5000, 3000), $rsPay(8, 'R-0008', 3000, 1500)])],
+        ['mm-payment-collection', 'name="hotel_guest_id"', 'name="item_ids[]"', 'name="total_amount[]"', 'name="payment_type"', 'id="get-due"', 'id="check-full-payment"', 'action="http://localhost/rst/store-payment-collection"', 'payable-amount', 'current-due', 'R-0007'], ['widget-box', 'widget-main', 'widget-header', 'name="company_id"', 'Aisha <b>x</b>']],
+    'sales-list' => ['rs.sales.index', '/rst/sales?invoice_no=1', ['sales' => new MmHsPage([$rsSaleRow(1, 'R-0101', 1200, 1200), $rsSaleRow(2, 'R-0102', 800, 300)])],
+        ['mm-report', 'mm-rst', 'name="customer"', 'name="date"', 'name="invoice_no"', 'id="datatable"', 'rst/sales-v2/1?invoice_type=pos', 'delete_item(', 'rst/sales-v2/create', 'class="pagination"'], ['widget-box', 'widget-main', 'widget-header', 'col-sm-offset', 'Aisha <b>x</b>']],
+    'sales-show' => ['rs.sales.show', '/rst/sales/1', ['sale' => $rsSaleRow(1, 'R-0101', 1200, 1200)],
+        ['mm-invoice-page', 'id="print_body"', 'printPage(', 'INV-R-0101', 'Biryani &lt;i&gt;hot&lt;/i&gt;', 'Aisha &lt;b&gt;x&lt;/b&gt;', 'Words of 1200', '101'], ['widget-box', 'widget-main', 'widget-header', 'Aisha <b>x</b>']],
+    'sales-create' => ['rs.sales.create', '/rst/sales/create', ['invoice_id' => 'R-0105', 'vat_percent' => 5, 'account_types' => collect([(object) ['id' => 1, 'name' => 'Cash'], (object) ['id' => 2, 'name' => 'Card']])],
+        ['mm-rst-sale', 'class="form-horizontal sales-form"', 'action="http://localhost/rst/sales"', 'name="hotel_guest_id"', 'name="guest_name"', 'name="room_number"', 'name="booking_number"', 'name="invoice_no"', 'name="date"', 'name="product_name"', 'id="drug-name"', 'id="table_auto"', 'id="product-details"', 'name="payment_way"', 'name="subtotal"', 'name="discount"', 'name="total_amount"', 'name="vat_amount"', 'name="service_amount"', 'name="grand_total"', 'name="paid_amount"', 'name="change_amount"', 'name="due_amount"', 'name="draft"', 'id="add-guest-modal"', 'const vat_percent = "5"'], ['widget-box', 'widget-main', 'widget-header']],
+    'return-list' => ['rs.sales.return.index', '/rst/sale-returns', ['sales' => new MmHsPage([$rsReturnRow(1, 'RET-1'), $rsReturnRow(2, 'RET-2')])],
+        ['mm-report', 'mm-rst', 'name="invoice_no"', 'id="datatable"', 'rst/sale-returns/1', 'delete_item(', 'class="pagination"'], ['widget-box', 'widget-main', 'widget-header', 'col-sm-offset']],
+    'return-show' => ['rs.sales.return.show', '/rst/sale-returns/1', ['sale' => $rsReturnRow(1, 'RET-1')],
+        ['mm-invoice-page', 'id="print_body"', 'printPage(', 'RET-1', 'Lassi', '01-10-2026'], ['widget-box', 'widget-main', 'widget-header']],
+    'return-create' => ['rs.sales.return.create', '/rst/sale-returns/create', [],
+        ['mm-rst-sale', 'class="form-horizontal sales-form"', 'action="http://localhost/rst/sale-returns"', 'name="customer_id"', 'name="guest_name"', 'name="invoice_no"', 'name="date"', 'name="product_name"', 'id="table_auto"', 'id="product-details"', 'name="subtotal"', 'name="previous_due"', 'name="payable_amount"', 'name="return_amount"', 'name="due_amount"', 'name="draft"'], ['widget-box', 'widget-main', 'widget-header']],
+    'report-cash-flow' => ['rs.rst.reports.cash-flow.index', '/rst/reports/cash-flow?invoice_no=1', ['cashFlows' => collect([])], ['mm-report', 'mm-rst', 'name="invoice_no"', 'name="from_date"', 'name="to_date"', 'RST-0101'], ['widget-box', 'widget-main', 'widget-header', 'col-sm-offset']],
+    'report-sales' => ['rs.rst.reports.sales.index', '/rst/reports/sales?invoice_no=1', ['sales' => collect([])], ['mm-report', 'name="invoice_no"', 'name="guest_name"', 'name="date"', 'name="outdoor_sale"', 'RST-0101'], ['widget-box', 'widget-main', 'widget-header', 'col-sm-offset']],
+    'report-today' => ['rs.reports.today-activities.index', '/rst/reports/today-activities', [], ['mm-report', 'name="invoice_no"', 'name="from_date"', 'RST-0101'], ['widget-box', 'widget-main', 'widget-header', 'col-sm-offset']],
+    'report-inventory' => ['rs.reports.inventory.index', '/rst/reports/inventory', ['products' => collect([])], ['mm-rst-inventory', 'class="json_table', 'name="category_id"', 'RST-0101'], ['widget-box', 'widget-main', 'widget-header']],
+    'report-ledger' => ['rs.reports.inventory-ledger.index', '/rst/reports/inventory-ledger', [], ['mm-rst-inventory', 'class="json_table', 'name="category_id"', 'Stock ledger'], ['widget-box', 'widget-main', 'widget-header']],
+];
+@mkdir(__DIR__ . '/fixtures/restaurant', 0777, true);
+foreach ($rsCases as $rsName => [$rsViewName, $rsUrl, $rsData, $rsMarkers, $rsAbsent]) {
+    $rsRequest = Illuminate\Http\Request::create($rsUrl);
+    $rsRequest->setLaravelSession(new Illuminate\Session\Store('mm', new Illuminate\Session\ArraySessionHandler(10)));
+    $app->instance('request', $rsRequest);
+    $app->instance('url', new Illuminate\Routing\UrlGenerator($rsRoutes, $rsRequest));
+    try { $rsHtml = $app->make('view')->make($rsViewName, array_merge(['errors' => new Illuminate\Support\ViewErrorBag(), 'slugs' => []], $rsData))->render(); }
+    catch (Throwable $e) { throw new RuntimeException('Restaurant screen ' . $rsName . ' failed to render: ' . $e->getMessage(), 0, $e); }
+    $rsHtml = preg_replace('/(name="_token" value=")[A-Za-z0-9]+"/', '$1fixture-csrf-token"', str_replace('http://localhost/assets', '/assets', $rsHtml));
+    // the real layout loads jquery-ui, loadDetails.js and reference_filter.js for every page; the create screens' guest search scripts need it
+    if (substr($rsName, -6) === 'create' && strpos($rsName, 'audit') === false) $rsHtml = str_replace('<!--MM-JS-->', '<script src="/assets/js/jquery-ui.min.js"></script><script src="/assets/custom_js/loadDetails.js"></script><script src="/assets/custom_js/reference_filter.js"></script><!--MM-JS-->', $rsHtml);
+    $rsMissing = [];
+    foreach (array_merge(['mm-panel', 'mm-page-title'], $rsMarkers) as $rsMarker) { if (strpos($rsHtml, $rsMarker) === false) $rsMissing[] = $rsMarker; }
+    if ($rsMissing) throw new RuntimeException('Restaurant screen ' . $rsName . ' missing ' . implode(' | ', $rsMissing));
+    foreach ($rsAbsent as $rsMarker) { if (strpos($rsHtml, $rsMarker) !== false) throw new RuntimeException('Restaurant screen ' . $rsName . ' still contains ' . $rsMarker); }
+    if (strpos($rsHtml, '<b>Warning</b>') !== false || strpos($rsHtml, '<b>Notice</b>') !== false) throw new RuntimeException('Restaurant screen ' . $rsName . ' sample data is incomplete (PHP warning in output)');
+    $rsFile = __DIR__ . '/fixtures/restaurant/' . $rsName . '.html';
+    if (getenv('MM_WRITE_FIXTURE')) { file_put_contents($rsFile, $rsHtml); file_put_contents($previewDir . '/rst-' . $rsName . '.html', $rsHtml); }
+    if (file_get_contents($rsFile) !== $rsHtml) throw new RuntimeException($rsFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
+}
+echo "PASS restaurant screens render: tables, kitchen board/list/ticket, night audit list and generate, payment collection and reports\n";

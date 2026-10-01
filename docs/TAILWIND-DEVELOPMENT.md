@@ -632,3 +632,27 @@ Legacy behaviour kept and worth knowing: `users/index` prints stored plaintext p
 
 Checks: `tools/ui-blade-check.php` renders the 13 screens with sample data (`tools/fixtures/permission/*.html`; preview pages `/preview/perm-*`); `tools/browser/permission.spec.cjs` (48 tests: frame, no sideways scroll at 360/768, users table, new-user layout, password forms, matrix select-all, employee picker, edit checked state); `tools/ui-check.cjs` compares fields, expressions, directives, tables and scripts with `b5e7ea03` and requires controllers and routes unchanged. Not verified: real Laravel with a database, role matrix saves, staging.
 
+## Thirtieth increment: Restaurant module, group R1
+
+Twelve reachable views under `module/Restaurant/views/` now use `x-mm.page` / `x-mm.panel` / `x-mm.table-scroll`; no `widget-box` markup is left in them. Sales/returns (R2), purchase (R3) and the inventory screens (R4) are not part of this group.
+
+- **Reports** (`rst/reports/cash-flow`, `rst/reports/sales`, `reports/today-activities`, `reports/inventory`, `reports/inventory-ledger`; `.mm-report .mm-rst`): the legacy filter table became one filter panel (`form.mm-setup-filter.mm-report-form`, `.mm-report-field`, `.mm-report-check`). The shared Bar filter and the export partials are included unchanged; for the inventory pages the Bar filter's `col-sm-12`/`row` wrappers are re-laid out with CSS (`.mm-rst-inventory`) instead of editing the Bar view. The sales report checkbox label changed from "Yes" to "Outdoor sale".
+- **Tables** (`rst/tables/index`) and **kitchen orders** (`kitchen/index`): same pattern as the Hotel setup lists.
+- **Kitchen ticket** (`kitchen/show`): the invoice-page frame around the unchanged `#print_body`.
+- **Kitchen board** (`kitchen/create`): the legacy view put `div` cards directly inside a `<table>`. It is now a card grid (`.mm-board-card` head, body, foot) beside the order list; the status forms, hidden `type` values and routes are unchanged. The cards sit beside the list from 992px and stack below.
+- **Night audit** (`restaurant-night-audits/index`, `create-v2`) and **payment collection** (`rst-payment-collection/index`): the Hotel layouts with the Restaurant routes (`rst.night-audits.*`, `rst.sales.store-payment-collection`) and fields. The payment collection has no Company filter (the Restaurant has no `$customers`), and the six readonly guest-detail inputs are shown as plain text.
+
+Legacy behaviour kept and worth knowing: `rst/tables/index` guards its buttons with `pharmacy.*` permissions; the kitchen board's "don't accept" button has no handler; `kitchen/index` still ships dead currency-conversion script includes; `rst/reports/cash-flow` includes a Bar partial; the Restaurant night audit generate form links back to the Hotel `night-audits.index`.
+
+Checks: `tools/ui-blade-check.php` renders the twelve screens with sample data (`tools/fixtures/restaurant/*.html`; preview pages `/preview/rst-*`). Permission checks, currency/date helpers and app components are substituted, and the report export partials and the Bar filter are stubbed with small samples (the frame and filters are what changed, so real report data was not rendered). `tools/browser/restaurant.spec.cjs` covers the frame, no sideways scroll at 360/768, the board layout and status post, audit fields, payment collection and the inventory filter row. `tools/ui-check.cjs` compares fields, expressions, directives and scripts against `5dec6034` and checks the controllers, routes, Bar views and export partials are untouched.
+
+## Thirty-first increment: Restaurant module, group R2 (sales and returns)
+
+Six views move to `x-mm.page` / `x-mm.panel`: `sales/index`, `sales/show`, `sales/create`, `sales/return/index`, `sales/return/show`, `sales/return/create`.
+
+- **Lists** (`.mm-report .mm-rst`): the legacy filter table becomes one filter panel; the datatable and paginator keep their markup and sit in a scroll region.
+- **Invoices** (`mm-invoice-page`): Print (and Create / Return List on the return details) are page actions; the unchanged `#print_body` sits in one panel and `printThis` keeps its legacy auto-print on load.
+- **New sale / new return** (`.mm-rst-sale`, sharing the Hotel Service form rules): three panels (guest and invoice, items, totals). Every id, name and hook the scripts use is unchanged (`#table_auto`, `#product-details`, `#drug-name`, `#subTotal`, `#payment`, the `payment_way` radios, the guest modal). Date inputs gained an `id` so their labels point at them, and `.mm-hotel-service` form rules now also apply to `.mm-rst-sale`.
+- **Left alone on purpose:** the POS workspace (`rst/sales-v2/create` with its `_inc` partials, 781-line script) is a purpose-built two-column screen that does not use the legacy frame; the POS/office print documents (`sales-v2/show`, `pos-print`, `pos-office-print`) auto-print and close. Unreachable: `sales/bck_show`, `sales/exchange/*`, `sales/return/create-copy`, `sales/auto_sale`, `payments/*`, `sales-v2/show-old`.
+
+Checks: six more render fixtures (`tools/fixtures/restaurant/sales-*.html`, `return-*.html`; previews `/preview/rst-sales-*`, `/preview/rst-return-*`), browser tests in `restaurant.spec.cjs`, and the preservation guard now includes the six views. The create fixtures add the layout's global scripts (jquery-ui, `loadDetails.js`, `reference_filter.js`) that the stub layout lacks. Not verified: product search, totals maths and save against a real backend.

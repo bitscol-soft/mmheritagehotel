@@ -1,9 +1,7 @@
-@extends('layouts.master')
-@section('title', 'Sale Invoice')
-
-@section('css')
-    <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">    <link rel="stylesheet" href="/assets/css/chosen.min.css" />
+    <link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css" />
     <style>
         #print_body {
             background-color: #fff;
@@ -47,7 +45,7 @@
             margin: 3px;
         }
 
-        @media print {
+        @media  print {
             .company-info h4 {
                 font-weight: bold;
                 margin-bottom: 0;
@@ -60,65 +58,58 @@
         }
 
     </style>
-@stop
-
-{{-- @dd($invoice) --}}
-@section('content')
-
-<x-mm.styles />
-<x-mm.page class="mm-invoice-page mm-rst" title="Sale invoice" description="Restaurant invoice. Printing outputs the document only.">
-    @if (hasPermission('service.view', $slugs))
-        <x-slot name="actions">
-            <a href="#" class="mm-button" onclick="printPage('print_body'); return false;">
+<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+<section class="mm-ui mm-invoice-page mm-rst">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Sale invoice</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Restaurant invoice. Printing outputs the document only.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a href="#" class="mm-button" onclick="printPage('print_body'); return false;">
                 <i class="fa fa-print" aria-hidden="true"></i> Print
-            </a>
-        </x-slot>
-    @endif
-
-    <x-mm.panel class="tw-p-4">
-        <div class="row">
+            </a></div>        </header>
+        <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><div class="row">
             <div id="print_body">
                 <div id="customer_info" style="padding: 0 10px; margin-bottom: 15px">
                     <div class="row">
 
-                       <x-company-info :company="$sale->company" />
+                       <div class="company-info"><h3>MM Heritage</h3></div>
                         <hr>
 
                         <div class="invoiceInfo" style="width: 40%;float: left; margin-right:20%">
                             <table class="table table-bordered" style="border: none !important;">
-                                {{-- <div class="customerInfo" style="width: 60%;float: left; ">
-                                </div> --}}
+                                
                                 <tr>
                                     <h5><b><u>Guest's Information : </u></b></h5>
                                 </tr>
                                 <tr>
                                     <td style="border: none !important; "> Name : </td>
                                     <td style="border: none !important; ">
-                                        {{ $sale->guest_name ?? '' }}
+                                        Aisha &lt;b&gt;x&lt;/b&gt;
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style="border: none !important;"> Phone No : </td>
                                     <td style="border: none !important;">
-                                        {{ optional($sale->guestInfo)->phone_no ?? '' }}
+                                        017
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style="border: none !important;"> Room No : </td>
                                     <td style="border: none !important;">
-                                        {{ optional(optional($sale->booking)->bookingDetails)->first()->roomNumber->room_number ?? 'N/A' }}
+                                        101
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style="border: none !important;"> Person : </td>
                                     <td style="border: none !important;">
-                                        {{ "N/A" }}
+                                        N/A
                                     </td>
                                 </tr>
                                 <tr>
                                     <td style="border: none !important;"> Address : </td>
                                     <td style="border: none !important;">
-                                        {{ $sale->guestInfo->address ?? "N/A" }}
+                                        Dhaka
                                     </td>
                                 </tr>
                             </table>
@@ -127,52 +118,34 @@
                             <table class="table table-bordered" style="border: none !important;">
                                 <tr>
                                     <th width="50%" style="border: none !important; "> Invoice No : </th>
-                                    <th style="border: none !important; ">INV-{{ $sale->invoice_no }}</th>
+                                    <th style="border: none !important; ">INV-R-0101</th>
                                 </tr>
                                 <tr>
                                     <td style="border: none !important;"> BIN : </td>
                                     <td style="border: none !important;">
-                                        {{ @$sale->company->company_details->vat_no }}</td>
+                                        </td>
                                 </tr>
                                 <tr>
                                     <td style="border: none !important; "> Invoice Date : </td>
                                     <td style="border: none !important; ">
-                                        {{ $sale->date }}</td>
+                                        2026-10-01</td>
                                 </tr>
-                                {{-- <tr>
-                                    <td style="border: none !important;"> Vat Number : </td>
-                                    <td style="border: none !important;">
-                                        {{ $vat_number }}</td>
-                                </tr>
-                                <tr>
-                                    <td style="border: none !important;"> Vat Amount : </td>
-                                    <td style="border: none !important;">
-                                        {{ $sale->vat_amount }}</td>
-                                </tr>
-                                <tr>
-                                    <td style="border: none !important;"> Service Amount : </td>
-                                    <td style="border: none !important;">
-                                        {{ $sale->service_amount }}</td>
-                                </tr> --}}
+                                
                                 <tr>
                                     <td style="border: none !important; "> Payment Way : </td>
                                     <td style="border: none !important; ">
-                                        @foreach ($sale->transaction_ledgers ?? [] as $item)
-                                            {{ optional($item->account)->name }}
-                                            @if (!$loop->last),
-                                            @endif
-                                        @endforeach
-                                    </td>
+                                                                                    Cash
+                                                                                                                        </td>
                                 </tr>
                                 <tr>
                                     <td style="border: none !important;"> Waiter No : </td>
                                     <td style="border: none !important;">
-                                        {{ $sale->waiter_no }}</td>
+                                        W-1</td>
                                 </tr>
                                 <tr>
                                     <td style="border: none !important;"> Table No : </td>
                                     <td style="border: none !important;">
-                                        {{ optional($sale->table)->table_no ?? "N/A" }}
+                                        T1
                                     </td>
                                 </tr>
                             </table>
@@ -193,81 +166,65 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @php
-                                    $total_amount = 0;
-                                @endphp
-                                @foreach ($sale->items as $key => $item)
-                                    @php
-                                        $total_amount = +$item->sales_price;
-                                    @endphp
-                                    <tr>
-                                        <td>{{ ++$loop->index }}</td>
-                                        <td>{{ optional($item->product)->name }}</td>
-                                        {{-- &#x09F3; for taka symbol --}}
-                                        <td>{{ number_format($item->sales_price, 2) }}</td>
-                                        <td class="text-right">{{ $item->quantity }}</td>
+                                                                                                                                        <tr>
+                                        <td>1</td>
+                                        <td>Biryani &lt;i&gt;hot&lt;/i&gt;</td>
+                                        
+                                        <td>250.00</td>
+                                        <td class="text-right">2</td>
                                         <td class="text-right">
-                                            {{ number_format($item->item_price, 2) }} &#x09F3;
+                                            500.00 &#x09F3;
                                         </td>
                                     </tr>
-                                @endforeach
-
+                                
 
                                 <tr>
                                     <td colspan="4" style="text-align: right; border: none !important;">
                                         <strong>Vat Amount</strong><span class="currency-sign"></span> : </td>
                                     <th style="text-align: right; border: none !important;">
-                                        {{ $sale->guestInfo->is_stuff == 1 ? 0 : $sale->vat_amount }}
+                                        10
                                     </th>
                                 </tr>
                                 <tr>
                                     <td colspan="4" style="text-align: right; border: none !important;">
                                         <strong>Service Charge</strong><span class="currency-sign"></span> : </td>
                                     <th style="text-align: right; border: none !important;">
-                                        {{ $sale->guestInfo->is_stuff == 1 ? 0 : $sale->service_amount }}
+                                        5
                                     </th>
                                 </tr>
                                 <tr>
                                     <td colspan="4" style="text-align: right; border: none !important;">
                                         <strong>Discount</strong> : </td>
                                     <th style="text-align: right; border: none !important;">
-                                        {{ $sale->discount }} &#x09F3;</th>
+                                        50 &#x09F3;</th>
                                 </tr>
                                 <tr>
                                     <td colspan="4" style="text-align: right; border: none !important;">
                                         <strong>Total</strong> :</td>
                                     <th style="text-align: right; border: none !important;">
-                                        @if (setting('use_vat_included') == 1)
-                                        {{ number_format($sale->subtotal, 2) }}
-                                        @else
-                                        {{ number_format($sale->payable_amount, 2) }}
-                                        @endif
-                                        &#x09F3;
+                                                                                1,200.00
+                                                                                &#x09F3;
                                     </th>
                                 </tr>
                                 <tr>
                                     <td colspan="4" style="text-align: right; border: none !important;">
                                         <strong>Paid</strong> :</td>
                                     <th style="text-align: right; border: none !important;">
-                                        {{ number_format($sale->paid_amount, 2) }}
+                                        1,200.00
                                         &#x09F3;</th>
                                 </tr>
                                 <tr>
                                     <td colspan="4" style="text-align: right; border: none !important;">
                                         <strong>Due</strong> : </td>
                                     <th style="text-align: right; border: none !important;">
-                                        @if (setting('use_vat_included') == 1)
-                                        {{ $sale->subtotal > $sale->paid_amount ? number_format(( $sale->subtotal - $sale->paid_amount ), 2) : '0' }}
-                                        @else
-                                        {{ $sale->payable_amount > $sale->paid_amount ? number_format(( $sale->payable_amount - $sale->paid_amount ), 2) : '0' }}
-                                        @endif
-                                        &#x09F3;</th>
+                                                                                0
+                                                                                &#x09F3;</th>
                                 </tr>
                                 <tr>
                                     <td colspan="4" style="text-align: right; border: none !important;">
                                         <strong>Change</strong> : </td>
                                     <th style="text-align: right; border: none !important;">
-                                        {{ number_format($sale->change_amount, 2) }}
+                                        0.00
                                         &#x09F3;
                                     </th>
                                 </tr>
@@ -277,13 +234,10 @@
                     <div class="row">
                         <div class="col-md-12">
                             <p class="amount-in-words" style="padding: inherit">Amount In Words :
-                                <b>{{ convert_number(calculateCurrencyAmount($sale->payable_amount, 1)) }}
+                                <b>Words of 1200
                                     Taka Only</b>
                             </p>
-                            {{-- <h5 style="font-weight: 700;">Amount Paid :
-                                {{ number_format($sale->paid_amount, 2 ?? 0) }}
-                                &#x09F3;
-                            </h5> --}}
+                            
                         </div>
                     </div>
                 </div>
@@ -310,7 +264,7 @@
                                 &nbsp;</h5>
                             <h5
                                 style="width:50%;margin: 0 auto;border-top: 1px solid #000;padding: 10px 0;text-align: center;">
-                                Prepared By <br>{{ optional($sale->user)->name }}</h5>
+                                Prepared By <br>Rahim</h5>
                         </div>
                     </div>
                     <div class="copyright-section">
@@ -322,13 +276,14 @@
                     <br>
                 </div>
             </div>
-        </div>
-    </x-mm.panel>
-</x-mm.page>
-@endsection
-
-@section('js')
-    <script src="{{ asset('assets/custom_js/printThis.js') }}"></script>
+        </div></div>
+    </div>
+</section>
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
+    <script src="/assets/custom_js/printThis.js"></script>
     <script type="text/javascript">
         function printPage(id) {
             $('#' + id).printThis({
@@ -339,4 +294,4 @@
             importStyle: true
         });
     </script>
-@stop
+<!--/MM-JS--></body></html>

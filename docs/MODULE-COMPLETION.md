@@ -46,6 +46,18 @@ acceptance. UI implementation alone is not production completion.
 | User role/permission matrix (create, edit) and employee permissions | Migrated; checkbox/accordion scripts unchanged | Staging pending |
 | `EmployeePasswordChangeController` view | Dead; not migrated | n/a |
 
+## Restaurant status (groups R1 and R2 of four)
+
+| Area | UI implementation | Acceptance |
+|---|---|---|
+| Tables, kitchen orders, kitchen board (KDS) and kitchen ticket | Migrated | Staging pending |
+| Night audit list and generate form, payment collection | Migrated | Staging pending |
+| Reports: cash flow, sales, today's activities, product inventory, stock ledger | Migrated; shared Bar/export partials unchanged | Staging pending |
+| Sale list, invoice, new sale; sale return list, details, new return (R2) | Migrated; scripts unchanged | Staging pending |
+| POS sale workspace (`rst/sales-v2/create`) and the auto-print POS/office documents | Not changed (already card-based; needs its own design pass) | n/a |
+| Purchase (R3) and inventory screens (R4) | Not started | n/a |
+| Unreachable views (`sales/bck_show`, `sales/exchange/*`, `purchase/{create,index,show}`, `reports/{cash-flow,sales}/index`, `kitchen/edit`, ...) | Not migrated | n/a |
+
 ## Latest group: Booking Purpose & Platform
 
 - Shared page/panel layouts, responsive table overflow and labelled name fields.

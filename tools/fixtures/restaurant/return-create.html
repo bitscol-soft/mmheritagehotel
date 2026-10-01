@@ -1,26 +1,20 @@
-@extends('layouts.master')
-
-
-@section('title', 'New Sale Return')
-
-
-@section('content')
-
-<x-mm.styles />
-<x-mm.page class="mm-rst mm-rst-sale" title="New sale return" description="Find the original invoice, enter the quantities returned and confirm.">
-    <x-slot name="actions">
-        <a href="{{ route('rst.sales.index') }}" class="mm-button mm-button-secondary">
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css"><!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+<section class="mm-ui mm-rst mm-rst-sale">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">New sale return</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Find the original invoice, enter the quantities returned and confirm.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a href="http://localhost/rst/sales" class="mm-button mm-button-secondary">
             <i class="ace-icon fa fa-list-alt" aria-hidden="true"></i> Sale Return List
-        </a>
-    </x-slot>
-
-    <!-- Form -->
-    <form method="POST" action="{{ route('rst.sale-returns.store') }}" accept-charset="UTF-8"
+        </a></div>        </header>
+        <!-- Form -->
+    <form method="POST" action="http://localhost/rst/sale-returns" accept-charset="UTF-8"
         class="form-horizontal sales-form" role="form" data-parsley-validate novalidate>
-        @csrf
-
-        <x-mm.panel class="mm-hs-info-panel">
-            <h2 class="mm-setup-title">Guest and invoice</h2>
+        <input type="hidden" name="_token" value="fixture-csrf-token">
+        <div class="mm-panel tw-p-4 sm:tw-p-6 mm-hs-info-panel"><h2 class="mm-setup-title">Guest and invoice</h2>
             <div class="mm-hs-info">
                 <!-- Search Guest Name -->
                 <div class="form-group">
@@ -43,7 +37,7 @@
                 <!-- Sale Date -->
                 <div class="form-group">
                     <label class="control-label" for="return_date">Date :</label>
-                    <input type="text" name="date" id="return_date" value="{{ date('Y-m-d') }}"
+                    <input type="text" name="date" id="return_date" value="2026-10-01"
                         class="form-control date-picker" autocomplete="off" />
                 </div>
             </div>
@@ -59,14 +53,11 @@
                     </div>
                 </div>
 
-            </div>
-        </x-mm.panel>
+            </div></div>
 
         <!-- transition -->
-        <x-mm.panel>
-            <h2 class="mm-setup-title">Returned items</h2>
-            <x-mm.table-scroll label="Returned items">
-                <!-- Sale Item -->
+        <div class="mm-panel tw-p-4 sm:tw-p-6"><h2 class="mm-setup-title">Returned items</h2>
+            <div class="mm-table-scroll" role="region" aria-label="Returned items" tabindex="0"><!-- Sale Item -->
                 <table class="table table-bordered table-hover" id="table_auto">
                     <thead>
                         <tr>
@@ -81,12 +72,9 @@
                         </tr>
                     </thead>
                     <tbody id="product-details"></tbody>
-                </table>
-            </x-mm.table-scroll>
-        </x-mm.panel>
+                </table></div></div>
 
-        <x-mm.panel class="mm-hs-totals">
-            <div class="form-inlines">
+        <div class="mm-panel tw-p-4 sm:tw-p-6 mm-hs-totals"><div class="form-inlines">
                 <!-- Total Amount -->
                 <div class="form-group">
                     <label class="control-label" for="total_amount">Total Amount :</label>
@@ -152,21 +140,22 @@
                 <div class="form-group">
                     <button type="submit" name="draft" class="btn btn-primary mm-hs-confirm">Confirm</button>
                 </div>
-            </div>
-        </x-mm.panel>
+            </div></div>
     </form>
     <!-- End Form -->
-</x-mm.page>
+    </div>
+</section>
 
-@endsection
-
-@section('js')
-    <script src="{{ asset('assets/custom_js/guest_filter.js') }}"></script>
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<script src="/assets/js/jquery-ui.min.js"></script><script src="/assets/custom_js/loadDetails.js"></script><script src="/assets/custom_js/reference_filter.js"></script><!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
+    <script src="/assets/custom_js/guest_filter.js"></script>
 
     <script>
         function requestUrl(urlParts) {
             urlParts = $.extend({
-                basePath: '{{ url('/') }}/',
+                basePath: 'http://localhost/',
                 path: '',
                 param: ''
             }, urlParts);
@@ -320,88 +309,7 @@
     </script>
 
 
-    {{-- <script>
-        function appendProductRow(ui, type = 'invoice') {
-            productRow(ui, 'product')
-
-            // $('#guest_name').val(ui.item.data.guest_name);
-            // $('#customer_id').val(ui.item.data.guest_id);
-
-            setTimeout(function() {
-                $('#drug-name').val('');
-            }, 1)
-
-            calculateTotal();
-
-        }
-
-        function productRow(ui, type) {
-            let html = ''
-            if (type == 'product') {
-                let item = ui.item.data;
-                html +=
-                    `<tr class="product-row">
-                        <td>
-                            <span id="product_name">${item.product.name}</span>
-                            <input type="hidden" value="${item.product.id}" name="product_ids[]" id="productId">
-                            <input type="hidden" value="${ui.item.data.sale_id}" name="sale_ids[]" >
-                        </td>
-                        <td>
-                        <span class="returnable_qty">${item.quantity}</span>
-                        </td>
-                        <td>
-                            <input type="text" value="${item.quantity}" min="1" max="${item.quantity}" name="return_quantity[]" class="form-control only-number return-qty"autocomplete="off">
-
-                        </td>
-                        <td>
-                            <input type="number" min="1"  name="product_cost[]" value="${item.product.sale_price}" step="any" id="sales_qty" class="form-control product_cost" autocomplete="off" onkeyup="" onpaste="return false;" placeholder="Quantity">
-                        </td>
-                        <td>
-                            <input type="number" min="1" name="total_amount[]" value="${Number(item.product.sale_price) * Number(item.quantity)}" class="form-control total_cost" autocomplete="off" onkeyup="" onpaste="return false;" placeholder="Quantity">
-                        </td>
-
-                        <td>
-                            <button class="btn btn-xs btn-danger delete" tabindex="-1" type="button"><i class="fa fa-trash-o"></i></button>
-                        </td>
-                    </tr>`
-            } else {
-                let data = ui.item.data.items;
-
-                data.map(function(item, index) {
-
-                    html +=
-                        `<tr class="product-row">
-                            <td>
-                                <span id="product_name">${item.product.name}</span>
-                                <input type="hidden" value="${item.product.id}" name="product_ids[]" id="productId">
-                                <input type="hidden" value="${ui.item.data.id}" name="sale_ids[]" >
-                            </td>
-                            <td>
-                            <span class="returnable_qty">${item.quantity}</span>
-                            </td>
-                            <td>
-                                <input type="text" value="${item.quantity}" min="1" max="${item.quantity}" name="return_quantity[]" class="form-control only-number return-qty"autocomplete="off">
-
-                            </td>
-                            <td>
-                                <input type="number" min="1"  name="product_cost[]" value="${item.product.sale_price}" step="any" id="sales_qty" class="form-control product_cost" autocomplete="off" onkeyup="" onpaste="return false;" placeholder="Quantity">
-                            </td>
-                            <td>
-                                <input type="number" min="1" name="total_amount[]" value="${Number(item.product.sale_price) * Number(item.quantity)}" class="form-control total_cost" autocomplete="off" onkeyup="" onpaste="return false;" placeholder="Quantity">
-                            </td>
-
-                            <td>
-                                <button class="btn btn-xs btn-danger delete" tabindex="-1" type="button"><i class="fa fa-trash-o"></i></button>
-                            </td>
-                        </tr>`
-
-                })
-            }
-
-            $('#product-details').append(html);
-
-        }
-    </script> --}}
+    
 
     <script>
         $(document).on('keyup focus', '.return-qty, .discount, #amountPaid , .total_cost, .product_cost , .item_discount',
@@ -501,4 +409,4 @@
     </script>
 
 
-@endsection
+<!--/MM-JS--></body></html>

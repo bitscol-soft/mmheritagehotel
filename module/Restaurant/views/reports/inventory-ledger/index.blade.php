@@ -18,50 +18,26 @@
 
 
 @section('content')
-    <div id="content" class="content">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="widget-box">
-                    <div class="widget-header">
 
-                        <h4 class="widget-title"><i class="fa fa-info-circle"></i> Stock Ledger </h4>
+<x-mm.styles />
+<x-mm.page class="mm-report mm-rst mm-rst-inventory" title="Stock ledger" description="Stock movements for the selected product and dates.">
+    <x-alert-message />
+    <x-mm.panel class="mm-report-filter">
+        @include('bar/inventory/includes/filter')
+        {{--                                @include('inventory/includes/filter')--}}
+    </x-mm.panel>
+    <x-mm.panel>
+        <div class="json_table mt-2">
+            <x-mm.table-scroll label="Stock ledger">
+                @include('reports/inventory-ledger/export/excel')
 
-                    </div>
+                {{-- <x-paginate :data="$product_ledgers" /> --}}
+            </x-mm.table-scroll>
 
-                    <div class="widget-body">
-                        <div class="widget-main">
-                            <x-alert-message />
-
-                            <div class="my-2">
-                                @include('bar/inventory/includes/filter')
-{{--                                @include('inventory/includes/filter')--}}
-
-                            </div>
-
-
-                            <div class="json_table mt-2">
-
-                                <div class="row">
-                                    <div class="col-xs-12">
-                                        @include('reports/inventory-ledger/export/excel')
-
-                                        {{-- <x-paginate :data="$product_ledgers" /> --}}
-
-                                        <x-export-button pdf="1" excel="1" />
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-                    </div>
-
-                </div>
-            </div>
+            <x-export-button pdf="1" excel="1" />
         </div>
-    </div>
+    </x-mm.panel>
+</x-mm.page>
 
 @endsection
 

@@ -17,49 +17,25 @@
 
 
 @section('content')
-    <div id="content" class="content">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="widget-box">
-                    <div class="widget-header">
 
-                        <h4 class="widget-title"><i class="fa fa-info-circle"></i> Product Inventory </h4>
+<x-mm.styles />
+<x-mm.page class="mm-report mm-rst mm-rst-inventory" title="Product inventory" description="Stock on hand for the selected product filters.">
+    @include('partials._alert_message')
+    <x-mm.panel class="mm-report-filter">
+        @include('bar/inventory/includes/filter')
+    </x-mm.panel>
+    <x-mm.panel>
+        <div class="json_table mt-2">
+            <x-mm.table-scroll label="Product inventory">
+                @include('reports/inventory/export/excel')
+            </x-mm.table-scroll>
 
-                    </div>
+            <x-paginate :data="$products" />
 
-                    <div class="widget-body">
-                        <div class="widget-main">
-                            @include('partials._alert_message')
-
-
-                            <div class="my-2">
-                                @include('bar/inventory/includes/filter')
-                            </div>
-
-
-                            <div class="json_table mt-2">
-
-                                <div class="row">
-                                    <div class="col-xs-12">
-
-                                        @include('reports/inventory/export/excel')
-
-                                        <x-paginate :data="$products" />
-
-                                        <x-export-button pdf="1" excel="1" />
-
-                                    </div>
-                                </div>
-
-                            </div>
-
-                        </div>
-                    </div>
-
-                </div>
-            </div>
+            <x-export-button pdf="1" excel="1" />
         </div>
-    </div>
+    </x-mm.panel>
+</x-mm.page>
 
 @endsection
 

@@ -613,3 +613,40 @@ console.log('PASS: note list/edit expressions, forms and status scripts; legacy 
  assert.equal(untouched,'','Permission controllers and routes must stay unchanged');
  console.log('PASS: permission screens keep fields, expressions, directives, tables and scripts; controllers and routes untouched');
 }
+
+{
+ // Restaurant screens (tables, kitchen, night audits, payment collection, reports): fields, Blade expressions, directives and scripts stay as they were; only the legacy widget frame changed.
+ const base='5dec6034';
+ const nc=s=>s.replace(/\{\{--[\s\S]*?--\}\}/g,'');
+ const ex=s=>(nc(s).match(/\{\{[\s\S]*?\}\}|\{!![\s\S]*?!!\}/g)||[]).map(x=>x.replace(/\s+/g,' '));
+ const added=/ (?:aria-label="[^"]*"|style="[^"]*"|class="[^"]*")/g;
+ const ctl=s=>(nc(s).replace(/\{\{[\s\S]*?\}\}/g,'{{}}').match(/<(input|select|textarea|button)\b[^>]*>/g)||[]).map(x=>x.replace(/\s+/g,' ').replace(added,''));
+ const forms=s=>(nc(s).match(/<form[^>]*>/g)||[]).map(x=>x.replace(/\s+/g,' ').replace(/ class="[^"]*"/,''));
+ const directives=s=>(nc(s).match(/@(?:if|elseif|else|endif|foreach|endforeach|forelse|empty|endforelse|include|isset|endisset|can|endcan|error|enderror|csrf|method)\b/g)||[]);
+ const only=(l,m)=>{const c={};l.forEach(x=>c[x]=(c[x]||0)+1);m.forEach(x=>c[x]=(c[x]||0)-1);return Object.entries(c).filter(([,n])=>n).map(([k,n])=>`${n>0?'-':'+'}${Math.abs(n)} ${k}`).sort();};
+ const scripts=s=>(nc(s).match(/<script[\s\S]*?<\/script>/g)||[]).map(t=>t.replace(/\s+/g,' ')).join('|');
+ const dir='module/Restaurant/views/';
+ const files=['rst/tables/index','kitchen/index','kitchen/show','kitchen/create','restaurant-night-audits/index','restaurant-night-audits/create-v2','rst-payment-collection/index','sales/index','sales/show','sales/create','sales/return/index','sales/return/show','sales/return/create','rst/reports/cash-flow/index','rst/reports/sales/index','reports/today-activities/index','reports/inventory/index','reports/inventory-ledger/index'];
+ // Known, reviewed differences: the payment collection guest details became plain text (6 readonly inputs turned into a description list).
+ // The sale and return forms give the date input an id so its label can point at it.
+ const dateId=(sid,end)=>['+1 <input type="text" name="date" id="'+sid+'" value="{{}}" autocomplete="off"'+end+'>','-1 <input type="text" name="date" value="{{}}" autocomplete="off"'+end+'>'];
+ const droppedControls={'rst-payment-collection/index':['-6 <input type="text" value="{{}}" readonly>'],'sales/create':dateId('sale_date',''),'sales/return/create':dateId('return_date',' /')};
+ for(const f of files){
+  const p=`${dir}${f}.blade.php`,after=fs.readFileSync(p,'utf8'),before=execFileSync('git',['show',`${base}:${p}`],{encoding:'utf8'});
+  assert.deepEqual(only(ex(before),ex(after)),[],`${f}: Blade expressions changed`);
+  assert.deepEqual(only(ctl(before),ctl(after)),droppedControls[f]||[],`${f}: form controls changed`);
+  assert.deepEqual(only(forms(before),forms(after)),[],`${f}: form tags changed`);
+  assert.deepEqual(only(directives(before),directives(after)),[],`${f}: Blade directives changed`);
+  assert.equal(scripts(after),scripts(before),`${f}: scripts changed`);
+  assert(after.includes('<x-mm.page'),`${f}: shared layout expected`);
+  assert(!after.includes('widget-box')&&!after.includes('widget-main')&&!after.includes('widget-header'),`${f}: legacy widget frame should be gone`);
+ }
+ // the shared partials, controllers and routes stay untouched
+ const untouched=execFileSync('git',['diff','--name-only',base,'--','module/Restaurant/Controllers','module/Restaurant/routes','module/Bar/views','module/Restaurant/views/reports/inventory/export','module/Restaurant/views/rst/reports/sales/export','module/Restaurant/views/restaurant-night-audits/export','module/Restaurant/views/restaurant-night-audits/details.blade.php'],{encoding:'utf8'}).trim();
+ assert.equal(untouched,'','Restaurant controllers, routes, shared Bar views and export partials must stay unchanged');
+ // routes used by the rewritten screens
+ const night=fs.readFileSync(`${dir}restaurant-night-audits/create-v2.blade.php`,'utf8');
+ assert(night.includes("route('rst.night-audits.store')"),'night audit generate must post to rst.night-audits.store');
+ assert(fs.readFileSync(`${dir}rst-payment-collection/index.blade.php`,'utf8').includes("route('rst.sales.store-payment-collection')"),'payment collection must post to rst.sales.store-payment-collection');
+ console.log('PASS: restaurant screens (R1 and sales/returns) keep fields, expressions, directives and scripts; controllers, routes, Bar views and export partials untouched');
+}

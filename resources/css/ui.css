@@ -648,27 +648,27 @@
 .mm-ui.mm-report-monthly select.required:invalid { height: 0; opacity: 0; position: absolute; display: flex; }
 
 /* Hotel service screens: sales list filter, new-sale form and invoice frame. */
-.mm-ui.mm-hotel-service .mm-hs-filter-form { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px; }
-.mm-ui.mm-hotel-service .mm-hs-filter-field { flex: 1 1 200px; min-width: 0; max-width: 320px; }
-.mm-ui.mm-hotel-service .mm-hs-filter-field label, .mm-ui.mm-hotel-service .form-horizontal .control-label { display: block; margin: 0 0 6px; padding-top: 0; text-align: left; font-weight: 600; color: var(--mm-ink); }
-.mm-ui.mm-hotel-service .mm-hs-filter-field .form-control, .mm-ui.mm-hotel-service form .form-control { width: 100%; min-height: 40px; border: 1px solid var(--mm-line); border-radius: 6px; color: var(--mm-ink); }
-.mm-ui.mm-hotel-service .mm-hs-filter-actions .btn { min-height: 40px; display: inline-flex; align-items: center; justify-content: center; }
-.mm-ui.mm-hotel-service .form-horizontal .form-group { margin: 0; }
-.mm-ui.mm-hotel-service .form-horizontal .form-group::after { content: ""; display: table; clear: both; }
-.mm-ui.mm-hotel-service .mm-hs-hidden { display: none; }
-.mm-ui.mm-hotel-service #invForm { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
-.mm-ui.mm-hotel-service .mm-setup-title { margin: 0 0 16px; font-size: 18px; font-weight: 700; color: var(--mm-ink); }
-.mm-ui.mm-hotel-service .mm-hs-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 16px; }
-.mm-ui.mm-hotel-service .mm-hs-info .form-group { min-width: 0; }
-.mm-ui.mm-hotel-service table { margin: 0; }
-.mm-ui.mm-hotel-service th, .mm-ui.mm-hotel-service td { padding: 10px; vertical-align: middle; }
-.mm-ui.mm-hotel-service #table_auto { min-width: 640px; }
-.mm-ui.mm-hotel-service .mm-hs-totals .form-inlines { display: grid; gap: 14px; width: 100%; max-width: 420px; margin-left: auto; }
-.mm-ui.mm-hotel-service .mm-hs-totals .input-group { display: flex; width: 100%; }
-.mm-ui.mm-hotel-service .mm-hs-totals .input-group .form-control { flex: 1 1 auto; min-width: 0; float: none; border-radius: 0 6px 6px 0; }
-.mm-ui.mm-hotel-service .mm-hs-totals .input-group-addon { display: flex; align-items: center; width: auto; min-width: 44px; justify-content: center; }
-.mm-ui.mm-hotel-service .mm-hs-confirm { width: 100%; }
-@media (max-width: 767px) { .mm-ui.mm-hotel-service .mm-hs-totals .form-inlines { max-width: none; margin-left: 0; } }
+.mm-ui:is(.mm-hotel-service, .mm-rst-sale) .mm-hs-filter-form { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px; }
+.mm-ui:is(.mm-hotel-service, .mm-rst-sale) .mm-hs-filter-field { flex: 1 1 200px; min-width: 0; max-width: 320px; }
+.mm-ui:is(.mm-hotel-service, .mm-rst-sale) .mm-hs-filter-field label, .mm-ui:is(.mm-hotel-service, .mm-rst-sale) .form-horizontal .control-label { display: block; margin: 0 0 6px; padding-top: 0; text-align: left; font-weight: 600; color: var(--mm-ink); }
+.mm-ui:is(.mm-hotel-service, .mm-rst-sale) .mm-hs-filter-field .form-control, .mm-ui:is(.mm-hotel-service, .mm-rst-sale) form .form-control { width: 100%; min-height: 40px; border: 1px solid var(--mm-line); border-radius: 6px; color: var(--mm-ink); }
+.mm-ui:is(.mm-hotel-service, .mm-rst-sale) .mm-hs-filter-actions .btn { min-height: 40px; display: inline-flex; align-items: center; justify-content: center; }
+.mm-ui:is(.mm-hotel-service, .mm-rst-sale) .form-horizontal .form-group { margin: 0; }
+.mm-ui:is(.mm-hotel-service, .mm-rst-sale) .form-horizontal .form-group::after { content: ""; display: table; clear: both; }
+.mm-ui:is(.mm-hotel-service, .mm-rst-sale) .mm-hs-hidden { display: none; }
+.mm-ui:is(.mm-hotel-service, .mm-rst-sale) :is(#invForm, .sales-form) { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
+.mm-ui:is(.mm-hotel-service, .mm-rst-sale) .mm-setup-title { margin: 0 0 16px; font-size: 18px; font-weight: 700; color: var(--mm-ink); }
+.mm-ui:is(.mm-hotel-service, .mm-rst-sale) .mm-hs-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 16px; }
+.mm-ui:is(.mm-hotel-service, .mm-rst-sale) .mm-hs-info .form-group { min-width: 0; }
+.mm-ui:is(.mm-hotel-service, .mm-rst-sale) table { margin: 0; }
+.mm-ui:is(.mm-hotel-service, .mm-rst-sale) th, .mm-ui:is(.mm-hotel-service, .mm-rst-sale) td { padding: 10px; vertical-align: middle; }
+.mm-ui:is(.mm-hotel-service, .mm-rst-sale) #table_auto { min-width: 640px; }
+.mm-ui:is(.mm-hotel-service, .mm-rst-sale) .mm-hs-totals .form-inlines { display: grid; gap: 14px; width: 100%; max-width: 420px; margin-left: auto; }
+.mm-ui:is(.mm-hotel-service, .mm-rst-sale) .mm-hs-totals .input-group { display: flex; width: 100%; }
+.mm-ui:is(.mm-hotel-service, .mm-rst-sale) .mm-hs-totals .input-group .form-control { flex: 1 1 auto; min-width: 0; float: none; border-radius: 0 6px 6px 0; }
+.mm-ui:is(.mm-hotel-service, .mm-rst-sale) .mm-hs-totals .input-group-addon { display: flex; align-items: center; width: auto; min-width: 44px; justify-content: center; }
+.mm-ui:is(.mm-hotel-service, .mm-rst-sale) .mm-hs-confirm { width: 100%; }
+@media (max-width: 767px) { .mm-ui:is(.mm-hotel-service, .mm-rst-sale) .mm-hs-totals .form-inlines { max-width: none; margin-left: 0; } }
 
 /* Permission screens: module/sub module/parent permission lists, permissions, users, passwords and the access matrices. */
 .mm-ui.mm-perm .mm-setup-title { margin: 0 0 16px; font-size: 18px; font-weight: 700; color: var(--mm-ink); }
@@ -718,3 +718,39 @@
 .mm-ui.mm-perm-user .form-group.row::before, .mm-ui.mm-perm-user .form-group.row::after { display: none; content: none; }
 .mm-ui.mm-perm-access .input-group-btn { display: block; width: auto; flex: 0 0 auto; font-size: 14px; }
 @media (max-width: 991px) { .mm-ui.mm-perm-access .row > [class*="col-md-4"] { float: none !important; width: 100%; } }
+
+/* Restaurant (module/Restaurant/views): report filters, the shared Bar inventory filter, the kitchen board; scoped to .mm-rst */
+.mm-ui.mm-rst .mm-report-check { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; margin: 0; }
+.mm-ui.mm-rst .mm-report-check .lbl { padding-left: 4px; }
+.mm-ui.mm-rst .mm-report-field .form-control { min-height: 40px; }
+.mm-ui.mm-rst-inventory .mm-report-filter > .col-sm-12 { float: none; width: 100%; margin: 0; padding: 0; }
+.mm-ui.mm-rst-inventory .mm-report-filter .row { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 12px; margin: 0; }
+.mm-ui.mm-rst-inventory .mm-report-filter .row::before, .mm-ui.mm-rst-inventory .mm-report-filter .row::after { display: none; }
+.mm-ui.mm-rst-inventory .mm-report-filter .row > [class*="col-"] { float: none; width: auto; flex: 1 1 220px; max-width: 360px; min-width: 0; padding: 0; margin: 0; }
+.mm-ui.mm-rst-inventory .mm-report-filter .input-group { display: flex; width: 100%; }
+.mm-ui.mm-rst-inventory .mm-report-filter .input-group .form-control { flex: 1 1 0; min-width: 0; width: 100%; float: none; min-height: 40px; border-radius: 0; }
+.mm-ui.mm-rst-inventory .mm-report-filter .input-group-addon { width: auto; display: flex; align-items: center; white-space: nowrap; min-height: 40px; }
+.mm-ui.mm-rst-inventory .mm-report-filter .chosen-container { min-width: 160px; }
+.mm-ui.mm-rst-inventory .mm-report-filter .btn { min-height: 40px; }
+.mm-ui.mm-rst-board .mm-board-layout { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+.mm-ui.mm-rst-board .mm-board-orders { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; min-width: 0; }
+.mm-ui.mm-rst-board .mm-board-list { min-width: 0; }
+.mm-ui.mm-rst-board .mm-board-card { display: flex; flex-direction: column; min-width: 0; background: var(--mm-surface); border: 1px solid var(--mm-line); border-radius: 8px; overflow: hidden; }
+.mm-ui.mm-rst-board .mm-board-card-head { padding: 10px 14px; background: var(--mm-bg); border-bottom: 1px solid var(--mm-line); }
+.mm-ui.mm-rst-board .mm-board-card-head h6 { margin: 0; font-size: 14px; font-weight: 700; color: var(--mm-ink); }
+.mm-ui.mm-rst-board .mm-board-card-body { flex: 1 1 auto; padding: 12px 14px; }
+.mm-ui.mm-rst-board .mm-board-card-body .alert { margin: 0; overflow-wrap: anywhere; }
+.mm-ui.mm-rst-board .mm-board-card-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 14px; border-top: 1px solid var(--mm-line); }
+.mm-ui.mm-rst-board .mm-board-card-foot form { margin: 0; }
+.mm-ui.mm-rst-board .mm-board-card-foot .btn { float: none !important; min-height: 32px; }
+@media (max-width: 991px) { .mm-ui.mm-rst-board .mm-board-layout { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 575px) { .mm-ui.mm-rst .mm-report-check { flex-basis: 100%; } .mm-ui.mm-rst-inventory .mm-report-filter .row > [class*="col-"] { flex-basis: 100%; max-width: none; } }
+.mm-ui.mm-rst .mm-setup-title { margin: 0 0 16px; font-size: 18px; font-weight: 700; color: var(--mm-ink); }
+
+.mm-ui.mm-rst-sale .mm-rst-product-search { margin-top: 16px; max-width: 640px; }
+.mm-ui.mm-rst-sale .mm-rst-product-search .input-group { display: flex; width: 100%; }
+.mm-ui.mm-rst-sale .mm-rst-product-search .input-group .form-control { flex: 1 1 auto; min-width: 0; width: 100%; float: none; }
+.mm-ui.mm-rst-sale .mm-rst-product-search .input-group-addon { width: auto; display: flex; align-items: center; }
+.mm-ui.mm-rst-sale .mm-rst-payment-way { display: flex; flex-wrap: wrap; gap: 8px 16px; }
+.mm-ui.mm-rst-sale .mm-rst-payment-way label { margin: 0; display: inline-flex; align-items: center; gap: 6px; }
+.mm-ui:is(.mm-hotel-service, .mm-rst-sale) .mm-hs-totals #payment { display: grid; gap: 14px; }

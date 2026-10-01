@@ -1,29 +1,81 @@
-@extends('layouts.master')
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css"><!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+<div class="modal fade" id="add-guest-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="POST" action="" class="form-horizontal" role="form">
+                <input type="hidden" name="_token" value="fixture-csrf-token">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title"><i class="fa fa-plus-circle"></i> Add Guest</h4>
+                </div>
+
+                <!-- Modal Body -->
+                <div class="modal-body">
+
+                    <!-- Guest Name -->
+                    <div class="form-group">
+                        <label class="control-label col-md-4 col-sm-4">Guest Name <sup
+                                class="text-danger">*</sup>:</label>
+                        <div class="col-md-8 col-sm-8">
+                            <input type="text" class="form-control" name="guest_name" value=""
+                                placeholder="Enter Guest">
+                        </div>
+                    </div>
+
+                    <!-- Guest Mobile -->
+                    <div class="form-group">
+                        <label class="control-label col-md-4 col-sm-4">Guest Mobile <sup
+                                class="text-danger">*</sup>:</label>
+                        <div class="col-md-8 col-sm-8">
+                            <input type="text" class="form-control" name="guest_mobile" value="+880"
+                                placeholder="Enter Mobile">
+                        </div>
+                    </div>
+
+                </div>
 
 
-@section('title', 'Add New Sale')
+                <!-- Modal Footer -->
+                <div class="modal-footer">
+
+                    <!-- Submit -->
+                    <div class="btn-group btn-corner">
+                        <button type="button" class="btn btn-sm btn-success save-guest">
+                            <i class="fa fa-save"></i>
+                            Save
+                        </button>
+                        <a href="javascript:void(0);" class="btn btn-sm btn-danger" data-dismiss="modal">
+                            <i class="fa fa-times"></i> Close
+                        </a>
+                    </div>
 
 
-@section('content')
+                </div>
 
-<x-mm.styles />
-@include('sales/_inc/guest-modal')
-<x-mm.page class="mm-rst mm-rst-sale" title="New sale" description="Pick the guest, add the dishes sold and confirm the invoice.">
-    <x-slot name="actions">
-        <a href="{{ route('rst.sales.index') }}" class="mm-button mm-button-secondary">
+
+            </form>
+        </div>
+    </div>
+</div>
+<section class="mm-ui mm-rst mm-rst-sale">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">New sale</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Pick the guest, add the dishes sold and confirm the invoice.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a href="http://localhost/rst/sales" class="mm-button mm-button-secondary">
             <i class="ace-icon fa fa-list-alt" aria-hidden="true"></i> Sale List
-        </a>
-    </x-slot>
-
-    <!-- Form -->
-    <form method="POST" action="{{ route('rst.sales.store') }}" accept-charset="UTF-8"
+        </a></div>        </header>
+        <!-- Form -->
+    <form method="POST" action="http://localhost/rst/sales" accept-charset="UTF-8"
         class="form-horizontal sales-form" role="form" data-parsley-validate novalidate>
-        @csrf
+        <input type="hidden" name="_token" value="fixture-csrf-token">
+        
 
-        @include('partials._alert_message')
-
-        <x-mm.panel class="mm-hs-info-panel">
-            <h2 class="mm-setup-title">Guest and invoice</h2>
+        <div class="mm-panel tw-p-4 sm:tw-p-6 mm-hs-info-panel"><h2 class="mm-setup-title">Guest and invoice</h2>
             <div class="mm-hs-info">
                 <!-- Search Guest Name -->
                 <div class="form-group">
@@ -41,7 +93,7 @@
                     </div>
                 </div>
 
-                {{-- Search By Room --}}
+                
                 <div class="form-group">
                     <label class="control-label" for="room_number">Room Number :</label>
 
@@ -51,7 +103,7 @@
                         placeholder="Room Number" class="form-control">
                 </div>
 
-                {{-- Search By Booking --}}
+                
                 <div class="form-group">
                     <label class="control-label" for="booking_number">Booking Number :</label>
 
@@ -60,21 +112,21 @@
 
                     <input type="text" name="booking_number" id="booking_number"
                         placeholder="Booking Number" class="form-control">
-                    {{-- <p class="text-danger text-center">Not Found!</p> --}}
+                    
                 </div>
 
                 <!-- Sale Invoice ID -->
                 <div class="form-group">
                     <label class="control-label" for="invoice_id">Invoice ID #</label>
                     <input type="text" tabindex="-1" class="form-control" id="invoice_id"
-                        placeholder="Invoice ID" name="invoice_no" value="{{ $invoice_id }}"
+                        placeholder="Invoice ID" name="invoice_no" value="R-0105"
                         readonly>
                 </div>
 
                 <!-- Sale Date -->
                 <div class="form-group">
                     <label class="control-label" for="sale_date">Date :</label>
-                    <input type="text" name="date" id="sale_date" value="{{ date('Y-m-d') }}"
+                    <input type="text" name="date" id="sale_date" value="2026-10-01"
                         class="form-control date-picker" autocomplete="off">
                 </div>
             </div>
@@ -87,14 +139,11 @@
                         class="form-control" placeholder="Search by Product Name / Barcode"
                         autocomplete="off" style="z-index: 0">
                 </div>
-            </div>
-        </x-mm.panel>
+            </div></div>
 
         <!-- transition -->
-        <x-mm.panel>
-            <h2 class="mm-setup-title">Items</h2>
-            <x-mm.table-scroll label="Sale items">
-                <!-- Sale Item -->
+        <div class="mm-panel tw-p-4 sm:tw-p-6"><h2 class="mm-setup-title">Items</h2>
+            <div class="mm-table-scroll" role="region" aria-label="Sale items" tabindex="0"><!-- Sale Item -->
                 <table class="table table-bordered table-hover" id="table_auto">
                     <thead>
                         <tr>
@@ -108,23 +157,23 @@
                         </tr>
                     </thead>
                     <tbody id="product-details"></tbody>
-                </table>
-            </x-mm.table-scroll>
-        </x-mm.panel>
+                </table></div></div>
 
-        <x-mm.panel class="mm-hs-totals">
-            <div class="form-inlines">
+        <div class="mm-panel tw-p-4 sm:tw-p-6 mm-hs-totals"><div class="form-inlines">
                 <div class="form-group">
                     <label class="control-label">Payment Way:</label>
                     <div class="mm-rst-payment-way">
-                        @foreach ($account_types as $account_type)
-                            <label>
-                                <input name="payment_way" value="{{ $account_type->id }}"
+                                                    <label>
+                                <input name="payment_way" value="1"
                                     class="checked-reference" type="radio">
-                                {{ $account_type->name }}
+                                Cash
                             </label>&nbsp;&nbsp;
-                        @endforeach
-                    </div>
+                                                    <label>
+                                <input name="payment_way" value="2"
+                                    class="checked-reference" type="radio">
+                                Card
+                            </label>&nbsp;&nbsp;
+                                            </div>
                 </div>
 
                 <!-- Sub Total -->
@@ -241,21 +290,63 @@
                         Confirm
                     </button>
                 </div>
-            </div>
-        </x-mm.panel>
+            </div></div>
     </form>
     <!-- End Form -->
-</x-mm.page>
+    </div>
+</section>
 
-@endsection
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<script src="/assets/js/jquery-ui.min.js"></script><script src="/assets/custom_js/loadDetails.js"></script><script src="/assets/custom_js/reference_filter.js"></script><!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
 
-@section('js')
+    <script src="/assets/custom_js/guest_filter.js"></script>
+    <script>
+    const saveGuestBtn  = $('.save-guest')
+    const guestName     = $('[name=guest_name]')
+    const guestMobile   = $('[name=guest_mobile]')
+    const guestSaveRoute = 'http://localhost/rst/save-guest-data'
 
-    <script src="{{ asset('assets/custom_js/guest_filter.js') }}"></script>
-    @include('sales/_inc/script')
+
+    $(document).on('click', '.save-guest', saveGuest);
+
+    function saveGuest() {
+
+        if (guestName.val() == '') {
+            warning('toster', 'Please enter name');
+            return;
+        }
+
+        if (guestMobile.val() == '') {
+            warning('toster', 'Please enter mobile');
+            return;
+        }
+
+        $.post(guestSaveRoute, {
+            _token: 'idsBp5M2rccpcPGxWgyaf2NasnY7wWMbWv9nvkpJ',
+            guest_name  : guestName.val(),
+            guest_mobile: guestMobile.val(),
+            is_stuff    : $('[name="is_stuff"]:checked').val(),
+        }, function(response) {
+            console.log(response);
+            if (response.status) {
+                $('#add-guest-modal').modal('hide')
+                $('#guest_name').val(response.data.name)
+                $('#hotel_guest_id').val(response.data.id)
+                $('#is_stuff').val(response.data.is_stuff)
+
+
+                $('#guest_name').append(`<option value="${ response?.data?.id}" selected>${response?.data?.name}</option>`)
+
+            }
+
+        })
+    }
+</script>
 
     <script>
-        const vat_percent = "{{ $vat_percent }}"
+        const vat_percent = "5"
 
         $(document).on('click', '.ui-menu-item', function() {
             let guest_id = $('#hotel_guest_id').val();
@@ -285,7 +376,7 @@
         }
     </script>
 
-    {{-- Get Room Number --}}
+    
     <script>
         $(document).on('focus', '#room_number', function() {
             $(this).autocomplete({
@@ -317,7 +408,7 @@
     </script>
 
 
-    {{-- Get Booking Number --}}
+    
     <script>
         $(document).on('focus', '#booking_number', function() {
             $(this).autocomplete({
@@ -348,7 +439,7 @@
         })
     </script>
 
-    {{-- Get Info By Booking --}}
+    
 
     <script>
         function getInfoByBooking(booking_id) {
@@ -375,7 +466,7 @@
         }
     </script>
 
-    {{-- Get Info By Room --}}
+    
     <script>
         function GetInfoRoom(rooms_id) {
 
@@ -405,7 +496,7 @@
     <script>
         function requestUrl(urlParts) {
             urlParts = $.extend({
-                basePath: '{{ url('/') }}/',
+                basePath: 'http://localhost/',
                 path: '',
                 param: ''
             }, urlParts);
@@ -640,4 +731,4 @@
         }
     </script>
 
-@endsection
+<!--/MM-JS--></body></html>
