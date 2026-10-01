@@ -65,6 +65,17 @@
                 $bgcolor = '#1e6b99';
             }
 
+            // round-9: compact state caption on the tile itself
+            $tile_tag = 'In-house';
+            if ($room->is_reservation > 0) {
+                $tile_tag = 'Reserved';
+            } elseif ($room->is_booked > 0) {
+                $tile_tag = 'Booked';
+            }
+            if ($to_day_checkout->check_out_date == date('Y-m-d')) {
+                $tile_tag = 'Due today';
+            }
+
             if ($booking->status == 0 || $booking->status == 2) {
                 $check_btn = 'Check In Now';
                 $route = route('check.in.update', optional($room->booking_dates->whereIn('status', [0, 2])->first())->booking_id);
@@ -79,7 +90,7 @@
             // }
         @endphp
 
-        <div class="booked-room-info" style="padding-top: 18px; background: {{ $bgcolor }}; color: white;">
+        <div class="booked-room-info board-booked-tile" style="padding-top: 18px; background: {{ $bgcolor }}; color: white;">
             <span class="popover-success" data-rel="popover" data-placement="top" data-trigger="click"
                 data-original-title="<i class='fa fa-info-circle green'></i> Guest Information"
                 data-content="<p class='tool-pen'>Name: {{ $guestInfo->name }}.</p> <p class='tool-pen'> Phone No : {{ $guestInfo->phone_no }}</p>
@@ -102,13 +113,14 @@
 
 
             </span>
-
+            <span class="board-booked-tag">{{ $tile_tag }}</span>
         </div>
     @else
-        <div class="booked-room-info" style="padding-top: 18px; background: {{ $bgcolor }}; color: white;">
+        <div class="booked-room-info board-booked-tile" style="padding-top: 18px; background: {{ $bgcolor }}; color: white;">
             <span class="popover-success">
                 {{ $room->room_number }}
             </span>
+            <span class="board-booked-tag">{{ $room->is_booked > 0 ? 'Booked' : ($room->is_reservation > 0 ? 'Reserved' : 'In-house') }}</span>
         </div>
     @endif
 @else

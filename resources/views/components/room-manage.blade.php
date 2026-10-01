@@ -2,7 +2,7 @@
     <div class="room-booking-board">
         <form class="form-horizontal" id="searchForm" method="get">
             <div class="row board-toolbar">
-                <div class="col-md-7">
+                <div class="board-date-wrap">
                     <div class="input-group board-date-group">
                         <span class="input-group-addon board-date-icon">
                             <i class="fa fa-calendar bigger-110"></i>
@@ -12,12 +12,17 @@
                             placeholder="Check-in - check-out date range" aria-label="Stay date range" />
                     </div>
                 </div>
-                <div class="col-md-3 board-actions">
+                <div class="board-quick-dates" role="group" aria-label="Quick date ranges">
+                    <button type="button" class="btn btn-xs" data-mode="tonight">Tonight</button>
+                    <button type="button" class="btn btn-xs" data-mode="week">Next 7 days</button>
+                    <button type="button" class="btn btn-xs" data-mode="weekend">Weekend</button>
+                </div>
+                <div class="board-actions">
                     <button type="submit" class="btn btn-sm btn-primary">
                         <i class="fa fa-search"></i> Check Availability
                     </button>
                 </div>
-                <div class="col-md-2 text-right">
+                <div class="board-report">
                     <a href="{{ route('report.monthly-booking') }}" target="_blank"
                         class="btn btn-sm btn-info" title="Monthly booking report">
                         <i class="fa fa-search-plus"></i> <span class="hidden-xs">Monthly Report</span>
@@ -41,6 +46,13 @@
             <form action="{{ route('booking.next.step') }}" method="get" id="booking-form">
                 <input type="hidden" name="booking_availabe" value="{{ request('booking_date', $mix_date) }}">
 
+                @if (count($categories) < 1)
+                    <div class="board-empty">
+                        <i class="fa fa-calendar-times-o"></i>
+                        No room categories found — add rooms under Hotel &rsaquo; Room Management first.
+                    </div>
+                @endif
+
                 @foreach ($categories as $category)
                     @php
                         $roomsTotal = $category->rooms->count();
@@ -48,6 +60,7 @@
                             return $r->is_booked >= 1 || $r->is_reservation >= 1 || $r->is_checkin > 0;
                         })->count();
                         $roomsFree = max($roomsTotal - $roomsOccupied, 0);
+                        $occPct = $roomsTotal > 0 ? (int) round($roomsOccupied / $roomsTotal * 100) : 0;
                     @endphp
                     <div class="room-search-list panel panel-default">
                         <div class="panel-heading clearfix">
@@ -55,9 +68,10 @@
                             @if (setting('room_wise_pricing_booking') != 1)
                                 <span class="category-price">{{ $category->price }}</span>
                             @endif
-                            <span class="category-count pull-right">
+                            <span class="category-count">
                                 <span class="badge badge-success">{{ $roomsFree }} free</span>
                                 <span class="badge">{{ $roomsTotal }} rooms</span>
+                                <span class="badge badge-occ" title="{{ $roomsOccupied }} of {{ $roomsTotal }} occupied">{{ $occPct }}% occupied</span>
                             </span>
                         </div>
 
@@ -104,6 +118,8 @@
                 @endforeach
 
                 <div class="info-submit board-footer">
+                    <span class="board-hint hidden-xs"><i class="fa fa-hand-o-up"></i>
+                        Tap a room tile to add it to the selection</span>
                     <span class="selection-summary hidden">
                         <i class="fa fa-check-square-o"></i>
                         <strong><span class="sel-count">0</span> room(s)</strong> selected
@@ -122,5 +138,37 @@
                 </div>
             </form>
         </div>
+
+        <script>
+            // round-9: quick date chips -> reuse the daterangepicker apply flow (sets input + submits #searchForm)
+            (function () {
+                if (typeof jQuery === 'undefined' || typeof moment === 'undefined') return;
+                $('.room-booking-board').on('click', '.board-quick-dates .btn', function () {
+                    var mode = $(this).data('mode');
+                    try {
+                        var s = moment().startOf('day');
+                        var e = moment().startOf('day').add(1, 'days');
+                        if (mode === 'week') {
+                            e = s.clone().add(6, 'days');
+                        } else if (mode === 'weekend') {
+                            s = moment().isoWeekday ? moment().isoWeekday(6) : moment().day(6);
+                            if (s.isBefore(moment().startOf('day'))) s.add(7, 'days');
+                            e = s.clone().add(2, 'days');
+                        }
+                        var $inp = $('input[name="booking_date"]').first();
+                        if (!$inp.length) return;
+                        var dp = $inp.data('daterangepicker');
+                        if (dp) {
+                            dp.setStartDate(s);
+                            dp.setEndDate(e);
+                            dp.apply();
+                        } else {
+                            $inp.val(s.format('MM/DD/YYYY') + ' - ' + e.format('MM/DD/YYYY'));
+                            $inp.closest('form').trigger('submit');
+                        }
+                    } catch (err) { /* fall back to the manual picker */ }
+                });
+            })();
+        </script>
     </div>
 @endif

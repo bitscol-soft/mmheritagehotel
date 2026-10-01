@@ -52,6 +52,18 @@
                     <div class="widget-main">
                         <x-alert-message />
 
+                        @php
+                            // round-9: board totals chips (same occupancy rule as the room grid)
+                            $boardRoomsTotal = 0;
+                            $boardRoomsFree  = 0;
+                            foreach ($categories as $cat) {
+                                $boardRoomsTotal += $cat->rooms->count();
+                                $boardRoomsFree  += $cat->rooms->filter(function ($r) {
+                                    return !($r->is_booked >= 1 || $r->is_reservation >= 1 || $r->is_checkin > 0);
+                                })->count();
+                            }
+                        @endphp
+
                         <div class="board-stay-strip">
                             <span class="stay-chip"><i class="fa fa-sign-in"></i> Check-in
                                 <b>{{ date('D, d M Y', $in_ts) }}</b></span>
@@ -59,6 +71,10 @@
                                 <b>{{ date('D, d M Y', $out_ts) }}</b></span>
                             <span class="stay-chip"><i class="fa fa-moon-o"></i> <b>{{ $nights }}</b>
                                 night{{ $nights > 1 ? 's' : '' }}</span>
+                            <span class="stay-chip stay-chip-right"><i class="fa fa-home"></i> <b>{{ $boardRoomsTotal }}</b>
+                                rooms</span>
+                            <span class="stay-chip stay-chip-right"><i class="fa fa-check-circle"></i> <b>{{ $boardRoomsFree }}</b>
+                                free now</span>
                         </div>
 
                         <x-room-manage :categories="$categories" :mixdate="$availablity_check" />
