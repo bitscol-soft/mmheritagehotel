@@ -14,26 +14,6 @@
         }
 
         /* ── Booking board polish (scoped: only this admin page) ───────────── */
-        .board-stay-strip {
-            margin: 4px 0 14px;
-        }
-
-        .board-stay-strip .stay-chip {
-            display: inline-block;
-            background: #f4f7fb;
-            border: 1px solid #dbe5f1;
-            border-radius: 4px;
-            padding: 6px 14px;
-            margin-right: 8px;
-            font-size: 12.5px;
-            color: #37536a;
-        }
-
-        .board-stay-strip .stay-chip b {
-            color: #2f63a8;
-            font-weight: 600;
-        }
-
     </style>
 @endpush
 

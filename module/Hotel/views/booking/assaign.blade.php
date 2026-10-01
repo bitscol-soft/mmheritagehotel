@@ -96,6 +96,8 @@
                         <!-- Include Alert Message -->
                         <x-alert-message />
 
+                        @include('booking._inc._booking-context', ['booking' => $booking])
+
 
                         <!-- FORM -->
                         <form class="form-horizontal" id="submitBookingUpdateForm"
@@ -127,26 +129,26 @@
                                 <div class="col-sm-12 col-sm-offset-0">
                                     <h3 class="header smaller lighter blue">Room Information</h3>
 
-                                    <table id="myTable" class="table table-bordered order-list">
+                                    <table id="myTable" class="table table-bordered order-list room-config-table">
                                         <thead>
                                             <tr>
-                                                <td width="25%">Room Category<span class="text-danger">*</span></td>
-                                                <td class="text-left">Room<span class="text-danger">*</span></td>
-                                                <td class="text-center" style="width: 10%">Guest</td>
-                                                <td class="text-left" style="width: 12%">Amount<span
-                                                        class="currency-sign"></span></td>
-                                                <td class="text-right">Infant</td>
-                                                <td class="text-right">Night</td>
-                                                <td class="text-right">Discount<span class="currency-sign"></span></td>
-                                                <td class="text-right">Discount Type</td>
-                                                <td class="text-center">Breakfast</td>
-                                                <td class="text-right" width="15%">T. Amount<span
-                                                        class="currency-sign"></span></td>
-                                                <td class="text-right"><button type="button"
-                                                        class="btn btn-minier btn-success pull-right" id="addrowInEdit">
+                                                <th width="25%">Room Category<span class="text-danger">*</span></th>
+                                                <th class="text-left">Room<span class="text-danger">*</span></th>
+                                                <th class="text-center" style="width: 10%">Guest</th>
+                                                <th class="text-left" style="width: 12%">Amount<span
+                                                        class="currency-sign"></span></th>
+                                                <th class="text-right">Infant</th>
+                                                <th class="text-right">Night</th>
+                                                <th class="text-right">Discount<span class="currency-sign"></span></th>
+                                                <th class="text-right">Discount Type</th>
+                                                <th class="text-center">Breakfast</th>
+                                                <th class="text-right" width="15%">T. Amount<span
+                                                        class="currency-sign"></span></th>
+                                                <th class="text-right"><button type="button"
+                                                        class="btn btn-minier btn-success pull-right" id="addrowInEdit" title="Add another room line" aria-label="Add another room line">
                                                         <i class="fa fa-plus-circle"></i>
                                                     </button>
-                                                </td>
+                                                </th>
                                             </tr>
                                         </thead>
 

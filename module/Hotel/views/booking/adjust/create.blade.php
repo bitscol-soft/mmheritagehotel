@@ -53,6 +53,8 @@
 
                         <div class="widget-main">
 
+                        @include('booking._inc._booking-context', ['booking' => $booking])
+
                             <x-alert-message />
 
 

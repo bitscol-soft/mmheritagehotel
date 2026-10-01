@@ -596,3 +596,73 @@
         max-width: none;
     }
 }
+
+/* ── booking "at a glance" strip + board polish — round 5 ── */
+.board-stay-strip {
+    margin: 4px 0 14px;
+}
+.board-stay-strip .stay-chip {
+    display: inline-block;
+    background: #f4f7fb;
+    border: 1px solid #dbe5f1;
+    border-radius: 4px;
+    padding: 6px 14px;
+    margin: 0 8px 6px 0;
+    font-size: 12.5px;
+    color: #37536a;
+    white-space: nowrap;
+}
+.board-stay-strip .stay-chip b {
+    color: #2f63a8;
+    font-weight: 600;
+}
+.board-stay-strip .ctx-dim {
+    color: #8a9bab;
+}
+.board-stay-strip .ctx-due {
+    color: #c24a48;
+    font-weight: 600;
+    margin-left: 4px;
+}
+.board-stay-strip .ctx-paid {
+    color: #5b7b3a;
+    font-weight: 600;
+    margin-left: 4px;
+}
+.booking-context {
+    display: flex;
+    flex-wrap: wrap;
+}
+/* room tables on assaign/edit: tighter, aligned header cells */
+.room-config-table {
+    border: 1px solid #dbe5f1;
+    border-radius: 4px;
+}
+.room-config-table thead > tr > th {
+    background: #f0f5fa;
+    color: #37536a;
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    padding: 7px 8px;
+    border-bottom: 2px solid #dbe5f1 !important;
+    vertical-align: middle;
+}
+.room-config-table thead > tr > th.text-right {
+    text-align: right;
+}
+.room-config-table tbody > tr > td {
+    padding: 6px;
+    vertical-align: middle;
+}
+.room-config-table tfoot tr td {
+    border: none !important;
+}
+@media (max-width: 991px) {
+    .room-config-table {
+        overflow-x: auto;
+        display: block;
+        width: 100%;
+    }
+}
