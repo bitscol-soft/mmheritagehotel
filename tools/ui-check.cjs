@@ -339,3 +339,29 @@ console.log('PASS: note list/edit expressions, forms and status scripts; legacy 
  assert(after.includes('<x-mm.page class="mm-booking-checkout"')&&!after.includes('widget-header')&&!after.includes('widget-box'),'checkout: should use the shared page frame');
  console.log('PASS: checkout expressions, form controls, charges table and calculation script preserved');
 }
+
+{
+ // Booking lifecycle: invoices. The printed document, its expressions, calculations and scripts stay as they were;
+ // only the on-screen frame (and, for v3, a screen-only action bar) changed.
+ const collapse=s=>s.replace(/\s+/g,' ').trim();
+ const base=path=>execFileSync('git',['show',`ec67feb9:${path}`],{encoding:'utf8'});
+ const exprs=s=>(s.replace(/\{\{--[\s\S]*?--\}\}/g,'').match(/\{\{[\s\S]*?\}\}|\{!![\s\S]*?!!\}/g)||[]).map(x=>x.replace(/\s+/g,' ')).sort();
+ const phpBlocks=s=>s.match(/@php[\s\S]*?@endphp/g)||[];
+ for(const name of ['checkout_invoice','reservation-invoice']) {
+  const path=`module/Hotel/views/booking/${name}.blade.php`, after=fs.readFileSync(path,'utf8'), before=base(path);
+  assert.deepEqual(exprs(after).filter((x,i,a)=>!(x==="{{ route('booking.index') }}"&&a.indexOf(x)===i)),exprs(before),`${name}: Blade expressions changed beyond the Booking List link`);
+  assert.deepEqual(phpBlocks(after),phpBlocks(before),`${name}: @php blocks changed`);
+  const region=(s,tail)=>collapse(s.slice(s.indexOf('<div id="print_body"'),s.indexOf('@endsection',s.indexOf('<div id="print_body"')))).replace(tail,'').trim();
+  assert.equal(region(after,/(<\/x-mm\.panel> <\/x-mm\.page>)$/),region(before,/(<\/div> ?){6}$/),`${name}: the printed document changed`);
+  const part=(s,start)=>s.slice(s.indexOf(start));
+  assert.equal(part(after,"@section('js')"),part(before,"@section('js')"),`${name}: print script changed`);
+  assert.equal(after.slice(after.indexOf("@section('css')"),after.indexOf("@section('content')")),before.slice(before.indexOf("@section('css')"),before.indexOf("@section('content')")),`${name}: invoice styles changed`);
+  assert(after.includes('<x-mm.page class="mm-invoice-page"')&&after.includes('onclick="printPage(\'print_body\'); return false;"')&&after.includes("hasPermission('service.view', $slugs)")&&!after.includes('widget-box'),`${name}: shared frame, permission-gated print action expected`);
+ }
+ const v3Path='module/Hotel/views/booking/checkout-invoice-v3.blade.php', v3=fs.readFileSync(v3Path,'utf8'), v3Base=base(v3Path);
+ const stripBar=s=>s.replace(/\n        \/\* Screen-only action bar[\s\S]*?(?=    <\/style>\n\n<\/head>)/,'').replace(/\n    <nav class="inv-screen-bar"[\s\S]*?<\/nav>\n/,'');
+ assert.equal(stripBar(v3),v3Base,'invoice v3: changed beyond the screen-only action bar');
+ assert(/@media print \{\s*\.inv-screen-bar \{\s*display: none !important;/.test(v3)&&v3.includes('window.print();'),'invoice v3: action bar must be hidden in print and auto-print kept');
+ for(const path of ['module/Hotel/views/booking/checkout-invoice-v2.blade.php','module/Hotel/views/booking/checkout-invoice-v4.blade.php','module/Hotel/views/booking/get_invoice.blade.php','module/Hotel/views/booking/_css/invoice-sheet.blade.php']) assert.equal(fs.readFileSync(path,'utf8'),base(path),`${path} must be unchanged`);
+ console.log('PASS: invoices keep their printed documents, expressions and print scripts; screen frame and action bar only');
+}

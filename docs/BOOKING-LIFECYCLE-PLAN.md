@@ -14,7 +14,7 @@ preservation guards in `tools/ui-check.cjs` before any markup moves. Financial s
 | Edit | `booking.edit` | `edit` | **frame, sticky actions and single-date fix migrated** |
 | Booking detail / checkout | `booking.show`, posts `booking.checkout` | `view` (704 → 491) | migrated (panels, summary, shared frame); calculation script byte-identical; staging pending |
 | Room assignment | `booking.assign` | `assaign` | pending |
-| Invoices / print | `getInvoice`, `getInvoiceV2`, `reservationInvoice`, `checkoutInvoice` | `checkout_invoice`, `checkout-invoice-v2/v3/v4`, `get_invoice`, `reservation-invoice` | pending, print |
+| Invoices / print | `getInvoice`, `getInvoiceV2`, `reservationInvoice`, `checkoutInvoice` | `checkout_invoice`, `checkout-invoice-v2/v3/v4`, `get_invoice`, `reservation-invoice` | `checkout_invoice`, `reservation-invoice`: screen frame migrated; `checkout-invoice-v3`: screen-only action bar; v2, v4 and `get_invoice` are not referenced by any route or controller and were left alone |
 | Payment collection | `BookingCollection` | `payment-collection.index` | pending |
 | Night audit | n/a | n/a | pending |
 

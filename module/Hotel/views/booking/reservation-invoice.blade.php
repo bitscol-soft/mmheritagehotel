@@ -250,28 +250,19 @@
 
 @section('content')
 
-    <div class="row invoice-body">
-        <div class="col-sm-12">
-            <div class="widget-box">
-
-                <!-- WIDGET HEADER -->
-                <div class="widget-header hidden-print">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
-                    @if (hasPermission('service.view', $slugs))
-                        <span class="widget-toolbar">
-
-                            <a href="#" onclick="printPage('print_body')">
-                                <i class="fa fa-print"></i>
-                                Print
-                            </a>
-                        </span>
-                    @endif
-                </div>
-
-                <div class="widget-body">
-                    <div class="widget-main" style="padding: 10px 21px !important">
-
-                        <div class="row">
+    <x-mm.styles />
+    <x-mm.page class="mm-invoice-page" title="Reservation invoice" description="Review the reservation invoice and print it. Printing outputs the document only.">
+        <x-slot name="actions">
+            <a class="mm-button mm-button-secondary" href="{{ route('booking.index') }}">
+                <i class="fa fa-list-alt" aria-hidden="true"></i> Booking List
+            </a>
+            @if (hasPermission('service.view', $slugs))
+                <a href="#" class="mm-button" onclick="printPage('print_body'); return false;">
+                    <i class="fa fa-print" aria-hidden="true"></i> Print
+                </a>
+            @endif
+        </x-slot>
+        <x-mm.panel class="tw-p-4">
                             <div id="print_body" class="print-body">
 
                                 <div class="main-print-body">
@@ -763,12 +754,8 @@
 
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+        </x-mm.panel>
+    </x-mm.page>
 @endsection
 
 @section('js')

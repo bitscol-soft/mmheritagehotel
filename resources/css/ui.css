@@ -496,3 +496,9 @@
     .mm-ui.mm-booking-checkout .mm-co-summary { max-width: none; }
     .mm-ui.mm-booking-checkout .mm-sum-row input[type="text"] { width: 120px; }
 }
+
+/* Booking invoices: on narrow screens keep the A4-style sheet at a readable width and scroll it sideways (the printed output is unaffected). */
+.mm-ui.mm-invoice-page .mm-panel { overflow-x: auto; }
+@media (max-width: 760px) {
+    .mm-ui.mm-invoice-page .invoice-doc, .mm-ui.mm-invoice-page .print-body { min-width: 680px; }
+}

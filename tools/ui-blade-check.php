@@ -17,7 +17,7 @@ $files=array_merge($files, [$root . '/resources/views/home/hotel-dashboard.blade
 $files=array_merge($files, [$root . '/module/Hotel/views/house-keeping/index.blade.php'], glob($root . '/resources/views/layouts/shell/*.blade.php'), [$root . '/resources/views/partials/_header.blade.php']);
 $files=array_merge($files, glob($root . '/module/Hotel/views/booking-purpose/*.blade.php'), [$root . '/module/Hotel/views/booking-purpose/include/filter.blade.php']);
 $files=array_merge($files, [$root . '/module/Hotel/views/booking-note/index.blade.php', $root . '/module/Hotel/views/booking-note/edit.blade.php', $root . '/module/Hotel/views/booking-note/include/filter.blade.php']);
-$files=array_merge($files, [$root . '/module/Hotel/views/booking/booking_next.blade.php', $root . '/module/Hotel/views/booking/_inc/_booking-next-steps.blade.php', $root . '/module/Hotel/views/booking/view.blade.php', $root . '/module/Hotel/views/booking/create.blade.php', $root . '/module/Hotel/views/booking/edit.blade.php', $root . '/module/Hotel/views/booking/_inc/_add-guest-input-info.blade.php', $root . '/module/Hotel/views/booking/_inc/_edit-guest-input-info.blade.php']);
+$files=array_merge($files, [$root . '/module/Hotel/views/booking/booking_next.blade.php', $root . '/module/Hotel/views/booking/_inc/_booking-next-steps.blade.php', $root . '/module/Hotel/views/booking/view.blade.php', $root . '/module/Hotel/views/booking/checkout_invoice.blade.php', $root . '/module/Hotel/views/booking/reservation-invoice.blade.php', $root . '/module/Hotel/views/booking/checkout-invoice-v3.blade.php', $root . '/module/Hotel/views/booking/create.blade.php', $root . '/module/Hotel/views/booking/edit.blade.php', $root . '/module/Hotel/views/booking/_inc/_add-guest-input-info.blade.php', $root . '/module/Hotel/views/booking/_inc/_edit-guest-input-info.blade.php']);
 foreach($files as $f){ $compiled=$compiler->compileString(file_get_contents($f)); token_get_all($compiled,TOKEN_PARSE); echo "PASS compile ".basename($f)."\n"; }
 $html = $app->make('view')->make('components.mm.field', ['label'=>'Guest','id'=>'test','name'=>'name','value'=>'<script>','error'=>null,'attributes'=>new Illuminate\View\ComponentAttributeBag])->render();
 
@@ -284,7 +284,7 @@ file_put_contents($coViews . '/booking/_inc/_booking-context.blade.php', $coCont
 file_put_contents($coViews . '/mm-checkout-layout.blade.php', <<<'BLADE'
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
 <link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
-<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">@stack('style')<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->@yield('content')<!--/MM-BODY--></div>
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">@yield('css')@stack('style')<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->@yield('content')<!--/MM-BODY--></div>
 <script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
 <!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
 <script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); }</script>
@@ -341,3 +341,33 @@ $catHtml = $app->make('view')->make('category.create', ['slugs' => [], 'errors' 
 $catHtml = preg_replace('/(name="_token" value=")[A-Za-z0-9]+"/', '$1fixture-csrf-token"', str_replace('http://localhost/assets', '/assets', $catHtml));
 if (getenv('MM_WRITE_FIXTURE')) file_put_contents($previewDir . '/category-create.html', $catHtml);
 echo "PASS preview page render: room category create\n";
+
+// Render the real booking invoice (checkout_invoice) with sample data. Layout, permission, VAT and auth helpers are substituted.
+@mkdir($coViews . '/booking', 0777, true);
+$invSource = file_get_contents($root . '/module/Hotel/views/booking/checkout_invoice.blade.php');
+$invSource = str_replace(["@extends('layouts.master')", "hasPermission('service.view', \$slugs)", 'vatSetting()->vat_number', 'vatSetting()->hotel_vat', 'optional(auth()->user())->name'], ["@extends('mm-checkout-layout')", 'true', "'VAT-0042'", "'10'", "'Front Desk'"], $invSource);
+if (preg_match('/vatSetting\(|auth\(\)|hasPermission\(/', $invSource)) throw new RuntimeException('Unsubstituted helper in invoice view');
+file_put_contents($coViews . '/booking/checkout_invoice.blade.php', $invSource);
+$invRoutes = new Illuminate\Routing\RouteCollection();
+$invRoutes->add((new Illuminate\Routing\Route('GET', 'hotel/booking', function () {}))->name('booking.index'));
+$app->instance('url', new Illuminate\Routing\UrlGenerator($invRoutes, $coRequest));
+$invItem = function ($cat, $room, $amount, $paid) {
+    return (object) ['id' => 1, 'roomCategory' => (object) ['name' => $cat], 'roomNumber' => (object) ['room_number' => $room], 'total_amount' => $amount, 'bookingTransection' => (object) ['total_amount' => $amount, 'collection' => $paid]];
+};
+$invBooking = (object) ['id' => 7, 'sub_total' => 8000, 'advanced_payment' => 3000, 'getVat' => (object) ['hotel_vat' => 10], 'vat_amount' => 800, 'service_amount' => 400, 'booking_number' => '0007',
+    'booking_date' => '2026-09-28', 'check_in_date' => '2026-10-01', 'check_out_date' => '2026-10-03', 'paymentType' => (object) ['name' => 'Cash'],
+    'guestInfo' => (object) ['name' => 'Aisha <b>O\'Neil</b>', 'address' => 'Dhaka', 'phone_no' => '01700000000', 'country' => (object) ['name' => 'Bangladesh']],
+    'bookingDetail' => (object) ['roomCategory' => (object) ['name' => 'Deluxe'], 'roomNumber' => (object) ['room_number' => '101']],
+    'bookingDetails' => collect([$invItem('Deluxe', '101', 4000, 1500), $invItem('Deluxe', '102', 4000, 1500)]), 'transection' => (object) ['total_amount' => 8000, 'collection' => 3000, 'due_amount' => 5000], 'bookingAdjusts' => collect([]), 'hotelServiceSale' => collect([]), 'resturentServiceSale' => collect([])];
+$invHtml = $app->make('view')->make('booking.checkout_invoice', ['booking' => $invBooking, 'slugs' => [], 'company' => (object) ['name' => 'MM Heritage Hotel', 'head_office' => 'Melaka', 'phone_number' => '0600000000', 'email' => 'info@example.com', 'logo' => ''],
+    'errors' => new Illuminate\Support\ViewErrorBag()])->render();
+$invHtml = preg_replace('/Printed [0-9]{2} [A-Za-z]{3} [0-9]{4}, [0-9]{2}:[0-9]{2} [AP]M/', 'Printed 01 Oct 2026, 09:00 AM', str_replace('http://localhost/assets', '/assets', $invHtml));
+foreach (['id="print_body"', 'class="invoice-doc"', 'mm-invoice-page', 'onclick="printPage(\'print_body\'); return false;"', 'BK-0007', 'VAT-0042', 'Front Desk', 'Booking List'] as $marker) {
+    if (strpos($invHtml, $marker) === false) throw new RuntimeException('Invoice view missing ' . $marker);
+}
+if (strpos($invHtml, '<b>Warning</b>') !== false || strpos($invHtml, '<b>Notice</b>') !== false) throw new RuntimeException('Invoice sample data is incomplete (PHP warning in output)');
+if (strpos($invHtml, '<b>O\'Neil</b>') !== false) throw new RuntimeException('Invoice view did not escape guest data');
+$invFile = __DIR__ . '/fixtures/booking-invoice.html';
+if (getenv('MM_WRITE_FIXTURE')) { file_put_contents($invFile, $invHtml); file_put_contents($previewDir . '/invoice.html', $invHtml); }
+if (file_get_contents($invFile) !== $invHtml) throw new RuntimeException($invFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
+echo "PASS booking invoice render: frame, print action, document markup and escaped data\n";

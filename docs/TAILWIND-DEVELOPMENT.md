@@ -503,3 +503,16 @@ wrapper) and a Payment summary panel. The old `.widget-header` / `.input-group i
 `/preview/checkout` and `/preview/category-create`, rendered from the real Blade views by `tools/ui-blade-check.php`
 (`MM_WRITE_FIXTURE=1` writes `tools/fixtures/preview/*.html`), plus an index at `/preview`. Other URLs show a "not in this preview" page
 and form posts only show a "nothing saved" note. It is a static sample, not the Laravel app.
+
+## Twenty-first increment: booking invoices
+
+Scope is the on-screen frame only. The printed documents, their expressions, `@php` calculations, styles and print scripts are unchanged
+(`tools/ui-check.cjs` compares them with the previous commit).
+- `checkout_invoice` (also used by the banquet module) and `reservation-invoice`: the old `widget-box` frame became the shared page frame
+  with "Booking List" and a permission-gated "Print" button (same `printPage('print_body')`, which prints `#print_body` only).
+  On narrow screens the A4-style sheet keeps a readable width and scrolls inside its panel.
+- `checkout-invoice-v3` (the sheet opened after checkout, which auto-prints): a screen-only bar with "Booking List" and "Print again"; hidden in print.
+- `checkout-invoice-v2`, `checkout-invoice-v4`, `get_invoice` have no route or controller reference. Not touched; candidates for removal after confirmation.
+- Tests: `tools/browser/booking-invoice.spec.cjs` (real rendered `checkout_invoice`; printThis stubbed): auto-print once, Print button, print-media chrome hidden, no sideways page scroll at 360/768/1280px.
+  v3 and `reservation-invoice` are compile-checked and guarded but not rendered with sample data. Real printing (paper size, fonts, the taka sign) needs a check on staging.
+- Preview: `/preview/invoice`.
