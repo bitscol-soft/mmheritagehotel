@@ -19,7 +19,7 @@ acceptance. UI implementation alone is not production completion.
 | Guest directory/create/edit/import | Migrated | Staging pending |
 | Room list/create/edit | Migrated | Staging pending |
 | Category list | Migrated; forms pending | Staging pending |
-| Booking list/board | Migrated; lifecycle/detail/edit pending | Staging pending |
+| Booking list/board | Migrated; create/edit/next/checkout migrated; invoices, payment collection, night audit pending | Staging pending |
 | Dashboard | Migrated | Staging pending |
 | Housekeeping | Layout migrated; status behavior unchanged | Staging pending |
 | Booking purposes/platforms | List/filter/create/edit migrated | Staging pending |

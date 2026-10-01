@@ -1,13 +1,8 @@
-@extends('layouts.master')
-@section('title', 'Booking')
-
-@section('page-header')
-    <i class="fa fa-info-circle"></i> Booking
-@stop
-
-@push('style')
-    <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css"><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css">
+    <link rel="stylesheet" href="/assets/css/chosen.min.css" />
+    <link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css" />
     <style>
         body {
             counter-reset: section;
@@ -26,50 +21,59 @@
             margin-top: 15px !important;
         }
     </style>
-@endpush
-@section('content')
-    @php
-        $sub_total = $booking->sub_total;
-        $adv_amount = $booking->advanced_payment;
-        $vat = optional($booking->getVat)->hotel_vat;
-        $vat_amount = ($sub_total / 100) * $vat;
-        $total_amount = $sub_total + $vat_amount;
-        $current_due = $total_amount - $adv_amount;
-    @endphp
-
-    <x-mm.styles />
-    <x-mm.page class="mm-booking-checkout" title="Checkout and payment" description="Review charges, adjust nights, apply a discount and collect payment for this booking.">
-        <x-slot name="actions">
-            <a class="mm-button mm-button-secondary" href="{{ route('booking.index') }}">
+</head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px">    
+        <section class="mm-ui mm-booking-checkout">
+    <div class="tw-space-y-6 tw-py-4">
+        <header class="tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-4">
+            <div>
+                <p class="tw-m-0 tw-mb-1 tw-text-xs tw-font-semibold tw-uppercase tw-tracking-wide tw-text-muted">MM Heritage Hotel</p>
+                <h1 class="tw-m-0 tw-text-2xl tw-font-semibold tw-text-ink">Checkout and payment</h1>
+                <p class="tw-m-0 tw-mt-2 tw-text-sm tw-text-muted">Review charges, adjust nights, apply a discount and collect payment for this booking.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button mm-button-secondary" href="http://localhost/hotel/booking">
                 <i class="ace-icon fa fa-list-alt" aria-hidden="true"></i> Booking List
-            </a>
-        </x-slot>
-        <form class="form-horizontal" action="{{ route('booking.checkout', $booking->id) }}" method="post"
+            </a></div>        </header>
+        <form class="form-horizontal" action="http://localhost/hotel/checkout/7" method="post"
                             enctype="multipart/form-data">
-                            @csrf
-            <x-alert-message />
-            @include('booking._inc._booking-context', ['booking' => $booking])
+                            <input type="hidden" name="_token" value="fixture-csrf-token">            
+            <div class="board-stay-strip booking-context">
+        <span class="stay-chip"><i class="fa fa-hashtag"></i> <b>BK-0007</b></span>
+        <span class="stay-chip">
+            <span class="label label-xs label-danger arrowed arrowed-right">Check In</span>
+        </span>
+        <span class="stay-chip"><i class="fa fa-user"></i> Aisha O&#039;Neil &lt;script&gt;alert(1)&lt;/script&gt;
+                            <span class="ctx-dim">&middot; 2 room(s)</span>
+                    </span>
+        <span class="stay-chip"><i class="fa fa-sign-in"></i>
+            <b>01 Oct 2026</b></span>
+        <span class="stay-chip"><i class="fa fa-sign-out"></i>
+            <b>03 Oct 2026</b></span>
+        <span class="stay-chip"><i class="fa fa-moon-o"></i> <b>2</b>
+            nights</span>
+                    <span class="stay-chip"><i class="fa fa-dollar"></i> <b>9,240.00</b>
+                                    <span class="ctx-due">due 6,240.00</span>
+                            </span>
+            </div>
 
             <div class="mm-co-grid">
                 <section class="mm-panel mm-co-card" aria-labelledby="mm-co-guest">
                     <h2 id="mm-co-guest" class="mm-co-title">Guest</h2>
                     <dl class="mm-co-list">
-                        <div><dt>Name</dt><dd>{{ optional($booking->guestInfo)->name }}</dd></div>
-                        <div><dt>Booking number</dt><dd>{{ $booking->booking_number }}</dd></div>
-                        <div><dt>Mobile</dt><dd>{{ optional($booking->guestInfo)->phone_no }}</dd></div>
+                        <div><dt>Name</dt><dd>Aisha O&#039;Neil &lt;script&gt;alert(1)&lt;/script&gt;</dd></div>
+                        <div><dt>Booking number</dt><dd>BK-0007</dd></div>
+                        <div><dt>Mobile</dt><dd>01700000000</dd></div>
                     </dl>
                 </section>
 
                 <section class="mm-panel mm-co-card" aria-labelledby="mm-co-stay">
                     <h2 id="mm-co-stay" class="mm-co-title">Stay</h2>
                     <dl class="mm-co-list">
-                        <div><dt>Check in</dt><dd>{{ $booking->check_in_date }}</dd></div>
+                        <div><dt>Check in</dt><dd>2026-10-01</dd></div>
                     </dl>
                     <div class="mm-co-field">
                         <label for="id-date-picker-1">Check out date</label>
                         <input class="form-control date-picker" name="check_out_date"
                                                     id="id-date-picker-1" type="text"
-                                                    value="{{ $booking->check_out_date }}" data-date-format="dd-mm-yyyy"
+                                                    value="2026-10-03" data-date-format="dd-mm-yyyy"
                                                     placeholder="Checkout Date" autocomplete="off">
                     </div>
                 </section>
@@ -81,35 +85,34 @@
                         <select class="form-control chosen-select" name="payment_type"
                                                 data-placeholder="-Choose Payment Type-">
                                                 <option></option>
-                                                @foreach ($account_type as $id => $name)
-                                                    <option value="{{ $id }}"
-                                                        {{ old('payment_type') == $id ? 'selected' : '' }}>
-                                                        {{ $name }}
+                                                                                                    <option value="1"
+                                                        >
+                                                        Cash
                                                     </option>
-                                                @endforeach
-                                            </select>
+                                                                                                    <option value="2"
+                                                        >
+                                                        Card
+                                                    </option>
+                                                                                            </select>
                     </div>
                     <div class="mm-co-field" role="group" aria-labelledby="mm-co-payby">
                         <span id="mm-co-payby" class="mm-co-label">Payment by</span>
                         <select class="form-control chosen-select" name="pay_by"
                                                 data-placeholder="-Choose Member-">
                                                 <option></option>
-                                                {{-- @dd($booking); --}}
-                                                @foreach ($booking->booking_members as $member)
-                                                    <option value="{{ $member->id }}"
-                                                        {{ old('pay_by') == $member->id ? 'selected' : '' }}>
-                                                        {{ $member->name }}
+                                                
+                                                                                                    <option value="5"
+                                                        >
+                                                        Member One
                                                     </option>
-                                                @endforeach
-                                            </select>
+                                                                                            </select>
                     </div>
                 </section>
             </div>
 
             <section class="mm-panel mm-co-charges" aria-labelledby="mm-co-charges">
                 <h2 id="mm-co-charges" class="mm-co-title">Charges</h2>
-                <x-mm.table-scroll label="Booking charges">
-                    <table class="table table-bordered table-striped table-hover guest-detail-table">
+                <div class="mm-table-scroll" role="region" aria-label="Booking charges" tabindex="0"><table class="table table-bordered table-striped table-hover guest-detail-table">
                                             <thead>
                                                 <tr>
                                                     <th width="5%" class="text-center">SL</th>
@@ -125,79 +128,54 @@
                                                     <th class="text-right">Due Amount</th>
                                                 </tr>
                                             </thead>
-                                            @php
-                                                $net_collection = $transactions->sum('collection');
-                                                $service_charge = $due_amount = 0;
-                                            @endphp
-                                            <tbody>
-                                                @foreach ($transactions as $transaction)
-                                                    @php
-                                                        $service_charge += $transaction->service_amount;
-                                                        $due_amount += $transaction->due_amount;
-                                                        $old_dis = $transaction->discount;
-                                                    @endphp
-                                                    <input type="hidden" name="old_discount"
-                                                        value="{{ $old_dis }}">
+                                                                                        <tbody>
+                                                                                                                                                        <input type="hidden" name="old_discount"
+                                                        value="0">
                                                     <tr>
-                                                        <td class="text-center">{{ $loop->iteration }}</td>
+                                                        <td class="text-center">1</td>
                                                         <td>
                                                             <input type="hidden" name="id[]"
-                                                                value="{{ $transaction->id }}">
+                                                                value="1">
                                                             <input type="hidden" name="item_ids[]"
-                                                                value="{{ $transaction->source_id }}">
+                                                                value="7">
                                                             <input type="hidden" name="item_types[]"
-                                                                value="{{ $transaction->source_type }}">
+                                                                value="Booking">
                                                             <input type="hidden" name="total_amount[]"
                                                                 class="input-total-amount"
-                                                                value="{{ $transaction->total_amount }}">
+                                                                value="9240">
                                                             <input type="hidden" name="item_amount[]"
                                                                 class="input-due-amount"
-                                                                value="{{ $transaction->due_amount }}">
+                                                                value="6240">
                                                             <input type="hidden" name="service_charge[]"
                                                                 class="input-service-amount"
-                                                                value="{{ $transaction->service_charge }}">
+                                                                value="400">
                                                             <input type="hidden" name="vat_amount[]"
                                                                 class="input-vat-amount"
-                                                                value="{{ $transaction->vat_amount }}">
+                                                                value="840">
 
                                                             <input type="hidden" class="extra-charge[]"
                                                                 name="extra-charge"
-                                                                value="{{ $transaction->extra_charge }}">
-                                                            {{ $transaction->invoice_no }}
+                                                                value="0">
+                                                            INV-0007
                                                         </td>
                                                         <td>
-                                                            <p style="font-weight: bold">{{ $transaction->source_type }}
+                                                            <p style="font-weight: bold">Booking
                                                             </p>
-                                                            @if ($transaction->source_type == 'Booking')
-                                                                @foreach (optional($transaction->source)->details ?? [] as $item)
-                                                                    {{ $item->roomNumber->room_number }} @if (!$loop->last)
-                                                                        ,
-                                                                    @endif
-                                                                @endforeach
-                                                            @endif
-                                                        </td>
+                                                                                                                                                                                                101                                                                         ,
+                                                                                                                                                                                                        102 &lt;b&gt;x&lt;/b&gt;                                                                                                                                                                                     </td>
                                                         <td>
-                                                            @if ($transaction->source_type == 'Booking')
-                                                                <input type="hidden" class="per-night-amount"
-                                                                    value="{{ ($transaction->total_amount - $transaction->extra_charge) / $total_night }}">
+                                                                                                                            <input type="hidden" class="per-night-amount"
+                                                                    value="4620">
                                                                 <input type="hidden"
                                                                     class="per-night-amount-without-vat-service"
-                                                                    value="{{ ($transaction->total_amount - ($transaction->vat_amount + $transaction->service_charge + $transaction->extra_charge)) / $total_night }}">
+                                                                    value="4000">
                                                                 <input type="hidden" class="per-night-amount-without-vat"
-                                                                    value="{{ ($transaction->total_amount - ($transaction->vat_amount + $transaction->extra_charge)) / $total_night }}">
+                                                                    value="4200">
                                                                 <input type="hidden" class="extra-charge"
                                                                     name="extra-charge"
-                                                                    value="{{ $transaction->extra_charge }}">
+                                                                    value="0">
 
-                                                                @if (optional($transaction->booking)->bookingAdjusts->count() > 0)
-                                                                    <input type="hidden" name="is_adjust"
-                                                                        value="1">
-                                                                    <input type="text" name="night_count"
-                                                                        class="form-control only-number night-count input-sm"
-                                                                        value="{{ $total_night }}" style="height: 22px"
-                                                                        readonly>
-                                                                @else
-                                                                    <div class="input-group">
+                                                                                                                                    <div class="input-group">
                                                                         <div class="input-group-btn">
                                                                             <button class="btn btn-minier btn-danger"
                                                                                 type="button" onclick="decrease(this)">
@@ -206,7 +184,7 @@
                                                                         </div>
                                                                         <input type="text" name="night_count"
                                                                             class="form-control only-number night-count input-sm"
-                                                                            value="{{ $total_night }}"
+                                                                            value="2"
                                                                             style="height: 22px" readonly>
                                                                         <div class="input-group-btn">
                                                                             <button class="btn btn-minier btn-success"
@@ -215,71 +193,116 @@
                                                                             </button>
                                                                         </div>
                                                                     </div>
-                                                                @endif
-                                                            @endif
-                                                            <input type="hidden" class="total-collection"
-                                                                value="{{ $transaction->collection }}">
+                                                                                                                                                                                        <input type="hidden" class="total-collection"
+                                                                value="3000">
                                                         </td>
                                                         <td class="text-right amount">
-                                                            {{ number_format($transaction->total_amount - $transaction->vat_amount - $transaction->service_charge - $transaction->extra_charge, 2) }}
+                                                            8,000.00
                                                         </td>
                                                         <td class="text-right service-charge">
-                                                            {{ number_format($transaction->service_charge, 2) }}</td>
+                                                            400.00</td>
                                                         <td class="text-right vat-amount">
-                                                            {{ number_format($transaction->vat_amount, 2) }}</td>
-                                                        @if ($transaction->source_type == 'Booking')
-                                                            <td class="text-right">
-                                                                {{ number_format($transaction->extra_charge ?? 0, 2) }}
+                                                            840.00</td>
+                                                                                                                    <td class="text-right">
+                                                                0.00
                                                             </td>
-                                                        @else
-                                                            <td class="text-right"> {{ 'N/A' }}</td>
-                                                        @endif
-                                                        <td class="text-right total-amount">
-                                                            {{ number_format($transaction->total_amount, 2) }}</td>
+                                                                                                                <td class="text-right total-amount">
+                                                            9,240.00</td>
                                                         <td class="text-right">
-                                                            {{ number_format($transaction->collection, 2) }}</td>
+                                                            3,000.00</td>
                                                         <td class="text-right due-amount">
-                                                            {{ number_format($transaction->due_amount > 0 ? $transaction->due_amount : 0, 2) }}
+                                                            6,240.00
                                                         </td>
                                                     </tr>
-                                                @endforeach
-                                            </tbody>
+                                                                                                                                                        <input type="hidden" name="old_discount"
+                                                        value="0">
+                                                    <tr>
+                                                        <td class="text-center">2</td>
+                                                        <td>
+                                                            <input type="hidden" name="id[]"
+                                                                value="2">
+                                                            <input type="hidden" name="item_ids[]"
+                                                                value="9">
+                                                            <input type="hidden" name="item_types[]"
+                                                                value="Restaurant">
+                                                            <input type="hidden" name="total_amount[]"
+                                                                class="input-total-amount"
+                                                                value="1500">
+                                                            <input type="hidden" name="item_amount[]"
+                                                                class="input-due-amount"
+                                                                value="0">
+                                                            <input type="hidden" name="service_charge[]"
+                                                                class="input-service-amount"
+                                                                value="0">
+                                                            <input type="hidden" name="vat_amount[]"
+                                                                class="input-vat-amount"
+                                                                value="0">
 
-                                            <input type="hidden" value="{{ $transactions->sum('total_amount') }}"
+                                                            <input type="hidden" class="extra-charge[]"
+                                                                name="extra-charge"
+                                                                value="0">
+                                                            INV-0009
+                                                        </td>
+                                                        <td>
+                                                            <p style="font-weight: bold">Restaurant
+                                                            </p>
+                                                                                                                    </td>
+                                                        <td>
+                                                                                                                        <input type="hidden" class="total-collection"
+                                                                value="1500">
+                                                        </td>
+                                                        <td class="text-right amount">
+                                                            1,500.00
+                                                        </td>
+                                                        <td class="text-right service-charge">
+                                                            0.00</td>
+                                                        <td class="text-right vat-amount">
+                                                            0.00</td>
+                                                                                                                    <td class="text-right"> N/A</td>
+                                                                                                                <td class="text-right total-amount">
+                                                            1,500.00</td>
+                                                        <td class="text-right">
+                                                            1,500.00</td>
+                                                        <td class="text-right due-amount">
+                                                            0.00
+                                                        </td>
+                                                    </tr>
+                                                                                            </tbody>
+
+                                            <input type="hidden" value="10740"
                                                 name="payble_amount">
-                                        </table>
-                </x-mm.table-scroll>
+                                        </table></div>
             </section>
 
             <section class="mm-panel mm-co-summary" aria-labelledby="mm-co-summary">
                 <h2 id="mm-co-summary" class="mm-co-title">Payment summary</h2>
                 <div class="mm-sum-row"><span class="mm-sum-label">Sub Total</span>
                     <p class="font-18 bold grand-subtotal">
-                        {{ number_format($transactions->sum('total_amount'), 2) }}
+                        10,740.00
                     </p></div>
                 <div class="mm-sum-row"><span class="mm-sum-label">Service Charge</span>
                     <p class="font-18 bold grand-service-charge">
-                        {{ number_format($transactions->sum('service_charge'), 2) }}
+                        400.00
                     </p></div>
                 <div class="mm-sum-row"><span class="mm-sum-label">Extra Charge</span>
                     <p class="font-18 bold grand-extra-charge">
-                        {{ count($transactions) > 0 ? number_format($transactions[0]->extra_charge, 2) : 0 }}
+                        0.00
                     </p></div>
                 <div class="mm-sum-row"><span class="mm-sum-label">Vat Amount</span>
                     <p class="font-18 bold grand-vat-amount">
-                        {{ number_format($transactions->sum('vat_amount'), 2) }}
+                        840.00
                     </p></div>
                 <div class="mm-sum-row is-strong"><span class="mm-sum-label">Total Amount</span>
                     <p class="font-18 bold grand-total-amount">
-                        {{ number_format($transactions->sum('total_amount'), 2) }}
+                        10,740.00
                     </p></div>
                 <div class="mm-sum-row"><span class="mm-sum-label">Advanced Paid</span>
                     <p class="font-18 bold ">
-                        {{ number_format($transactions->sum('collection') - $transactions->sum('change_amount'), 2 ?? 0) }}
+                        4,500.00
                     </p></div>
                 <div class="mm-sum-row is-strong"><span class="mm-sum-label">Total Payable</span>
                     <p class="font-18 bold payable-amount">
-                        {{ number_format($current_due_amount = $transactions->sum('due_amount') + $transactions->sum('change_amount'), 2 ?? 0) }}
+                        6,240.00
                     </p></div>
                 <div class="mm-sum-row"><label class="mm-sum-label" for="discount">Discount</label>
                     <p class="font-18 bold">
@@ -300,9 +323,9 @@
                 <div class="mm-sum-row is-due"><span class="mm-sum-label">Current Due</span>
                     <input id="get-due" type="hidden"
                                                                     onkeyup="calculateAmounts()"
-                                                                    value="{{ $current_due_amount }}">
+                                                                    value="6240">
                     <p class="current-due font-18 bold">
-                        {{ number_format($current_due_amount, 2) }}</p></div>
+                        6,240.00</p></div>
                 <div class="mm-sum-full">
                     <input id="check-full-payment" type="checkbox">
                     <label for="check-full-payment"><span>Full
@@ -316,12 +339,14 @@
                 </div>
             </section>
         </form>
-    </x-mm.page>
-@endsection
+    </div>
+</section>
+</div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); }</script>
 
-@section('js')
-
-    <script src="{{ asset('assets/custom_js/chosen-box.js') }}"></script>
+    <script src="/assets/custom_js/chosen-box.js"></script>
 
     <script>
         function calculateAmounts() {
@@ -344,8 +369,8 @@
     </script>
 
     <script>
-        const room_service_amount = `{{ vatSetting()->room_service_charge }}`
-        const hotel_vat_percentage = `{{ vatSetting()->hotel_vat }}`
+        const room_service_amount = `5`
+        const hotel_vat_percentage = `10`
 
 
         $(document).on("input", ".discount", function() {
@@ -488,4 +513,4 @@
 
         }
     </script>
-@stop
+</body></html>

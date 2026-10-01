@@ -481,3 +481,18 @@ and byte-guarded form regions, scripts, tfoot and controller/service. The date f
   sees only valid values; changing check-in recalculates nights the same way;
 - `submitBookingForm()` is wrapped so an invalid stay is stopped with a message; date format attributes are unified to `yyyy-mm-dd`.
 Tests: `tools/browser/booking-dates.spec.cjs` (real rendered partials; legacy night calculation and submit are stubbed).
+
+## Twentieth increment: checkout and payment (`booking/view`)
+
+The screen uses the shared page frame with Guest, Stay and Payment method panels, the charges table (byte-identical, in a scroll
+wrapper) and a Payment summary panel. The old `.widget-header` / `.input-group input` page overrides, which leaked into other screens, are gone.
+- Preserved exactly: the form tag, `@csrf`, every `{{ }}` expression, the `@php` block, the charges table with its hidden arrays,
+  the `grand-*`, `payable-amount`, `current-due`, `#get-due`, `#discount`, `#paidAmount`, `#check-full-payment` hooks, and the whole
+  `@section('js')` calculation script (`tools/ui-check.cjs` compares all of these with the previous version).
+- Removed: four read-only display inputs with no `name` (guest, mobile, booking number, check-in) - shown as plain text from the same expressions.
+- Tests: `tools/browser/booking-checkout.spec.cjs` runs the real rendered view (`tools/fixtures/booking-checkout.html`, 2 rooms x 2 nights, 5% service,
+  10% VAT, 3000 paid, plus a restaurant charge): night +/- (3 nights = 13860 total, due 10860; never below 1 night), discount cap and warning,
+  paid amount, full payment, form post field names, no overflow at 360/768/1280px.
+- Legacy behaviour kept and not fixed: after any night change the script recomputes totals from rows that have a night counter only, so a
+  non-room charge on the same invoice list (e.g. Restaurant) drops out of the grand totals and due amount; `calculateAmounts()` shows NaN on an empty field;
+  only the first `.extra-charge` is read; `warning()` must exist as a global helper. These need a backend/product decision.

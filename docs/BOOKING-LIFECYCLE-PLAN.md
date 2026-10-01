@@ -12,7 +12,7 @@ preservation guards in `tools/ui-check.cjs` before any markup moves. Financial s
 | **New booking (step 2)** | `booking.next.step` -> `nextStep()` | `booking_next` | **frame, progress, summary, sticky actions migrated** |
 | Create (direct form) | `booking.create` | `create` | **frame, sticky actions and single-date fix migrated** |
 | Edit | `booking.edit` | `edit` | **frame, sticky actions and single-date fix migrated** |
-| Booking detail / checkout | `booking.show`, posts `booking.checkout` | `view` (704) | pending, financial |
+| Booking detail / checkout | `booking.show`, posts `booking.checkout` | `view` (704 → 491) | migrated (panels, summary, shared frame); calculation script byte-identical; staging pending |
 | Room assignment | `booking.assign` | `assaign` | pending |
 | Invoices / print | `getInvoice`, `getInvoiceV2`, `reservationInvoice`, `checkoutInvoice` | `checkout_invoice`, `checkout-invoice-v2/v3/v4`, `get_invoice`, `reservation-invoice` | pending, print |
 | Payment collection | `BookingCollection` | `payment-collection.index` | pending |

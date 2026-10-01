@@ -17,7 +17,7 @@ $files=array_merge($files, [$root . '/resources/views/home/hotel-dashboard.blade
 $files=array_merge($files, [$root . '/module/Hotel/views/house-keeping/index.blade.php'], glob($root . '/resources/views/layouts/shell/*.blade.php'), [$root . '/resources/views/partials/_header.blade.php']);
 $files=array_merge($files, glob($root . '/module/Hotel/views/booking-purpose/*.blade.php'), [$root . '/module/Hotel/views/booking-purpose/include/filter.blade.php']);
 $files=array_merge($files, [$root . '/module/Hotel/views/booking-note/index.blade.php', $root . '/module/Hotel/views/booking-note/edit.blade.php', $root . '/module/Hotel/views/booking-note/include/filter.blade.php']);
-$files=array_merge($files, [$root . '/module/Hotel/views/booking/booking_next.blade.php', $root . '/module/Hotel/views/booking/_inc/_booking-next-steps.blade.php', $root . '/module/Hotel/views/booking/create.blade.php', $root . '/module/Hotel/views/booking/edit.blade.php', $root . '/module/Hotel/views/booking/_inc/_add-guest-input-info.blade.php', $root . '/module/Hotel/views/booking/_inc/_edit-guest-input-info.blade.php']);
+$files=array_merge($files, [$root . '/module/Hotel/views/booking/booking_next.blade.php', $root . '/module/Hotel/views/booking/_inc/_booking-next-steps.blade.php', $root . '/module/Hotel/views/booking/view.blade.php', $root . '/module/Hotel/views/booking/create.blade.php', $root . '/module/Hotel/views/booking/edit.blade.php', $root . '/module/Hotel/views/booking/_inc/_add-guest-input-info.blade.php', $root . '/module/Hotel/views/booking/_inc/_edit-guest-input-info.blade.php']);
 foreach($files as $f){ $compiled=$compiler->compileString(file_get_contents($f)); token_get_all($compiled,TOKEN_PARSE); echo "PASS compile ".basename($f)."\n"; }
 $html = $app->make('view')->make('components.mm.field', ['label'=>'Guest','id'=>'test','name'=>'name','value'=>'<script>','error'=>null,'attributes'=>new Illuminate\View\ComponentAttributeBag])->render();
 
@@ -269,3 +269,58 @@ foreach ([
     if (file_get_contents($file) !== $stayFixtures[$fixtureName]) throw new RuntimeException($file . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
 }
 echo "PASS booking create/edit guest and stay partials render with the business date, existing check-in and unified date formats\n";
+
+// Render the real checkout/payment view (booking/view) with sample transactions. Only the master layout, the alert component
+// and app helpers are substituted; the markup, expressions and the calculation script are the real ones.
+$coViews = '/tmp/mm-checkout-views';
+@mkdir($coViews . '/booking/_inc', 0777, true);
+$coSource = file_get_contents($root . '/module/Hotel/views/booking/view.blade.php');
+$coSource = str_replace(["@extends('layouts.master')", '<x-alert-message />', 'vatSetting()->room_service_charge', 'vatSetting()->hotel_vat'], ["@extends('mm-checkout-layout')", '', "'5'", "'10'"], $coSource);
+$coContext = file_get_contents($root . '/module/Hotel/views/booking/_inc/_booking-context.blade.php');
+$coContext = str_replace(['calculateCurrencyAmount($bc_total, 1)', 'calculateCurrencyAmount($bc_paid, 1)', 'calculateCurrencyAmount($bc_total)'], ['($bc_total)', '($bc_paid)', 'number_format($bc_total, 2)'], $coContext);
+if (preg_match('/vatSetting\(|calculateCurrencyAmount|x-alert-message/', $coSource . $coContext)) throw new RuntimeException('Unsubstituted helper in checkout view');
+file_put_contents($coViews . '/booking/view.blade.php', $coSource);
+file_put_contents($coViews . '/booking/_inc/_booking-context.blade.php', $coContext);
+file_put_contents($coViews . '/mm-checkout-layout.blade.php', <<<'BLADE'
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css"><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css">
+@stack('style')</head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px">@yield('content')</div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); }</script>
+@yield('js')</body></html>
+BLADE);
+$app['view']->getFinder()->prependLocation($coViews);
+$coRoutes = new Illuminate\Routing\RouteCollection();
+foreach (['booking.index' => 'hotel/booking', 'booking.checkout' => 'hotel/checkout/{id}'] as $routeName => $uri) {
+    $coRoutes->add((new Illuminate\Routing\Route('GET', $uri, function () {}))->name($routeName));
+}
+$coRequest = Illuminate\Http\Request::create('/hotel/booking/7');
+$coRequest->setLaravelSession(new Illuminate\Session\Store('mm', new Illuminate\Session\ArraySessionHandler(10)));
+$app->instance('request', $coRequest);
+$app->instance('url', new Illuminate\Routing\UrlGenerator($coRoutes, $coRequest));
+$coTx = function (array $overrides) {
+    return (object) array_merge(['id' => 1, 'source_id' => 7, 'source_type' => 'Booking', 'total_amount' => 9240, 'due_amount' => 6240, 'service_charge' => 400, 'service_amount' => 400, 'vat_amount' => 840,
+        'extra_charge' => 0, 'collection' => 3000, 'change_amount' => 0, 'discount' => 0, 'invoice_no' => 'INV-0007',
+        'source' => (object) ['details' => collect([(object) ['roomNumber' => (object) ['room_number' => '101']], (object) ['roomNumber' => (object) ['room_number' => '102 <b>x</b>']]])],
+        'booking' => (object) ['bookingAdjusts' => collect([])]], $overrides);
+};
+$coBooking = (object) ['id' => 7, 'sub_total' => 8000, 'advanced_payment' => 3000, 'getVat' => (object) ['hotel_vat' => 10], 'booking_number' => 'BK-0007', 'status' => 1,
+    'guestInfo' => (object) ['name' => "Aisha O'Neil <script>alert(1)</script>", 'phone_no' => '01700000000'], 'check_in_date' => '2026-10-01', 'check_out_date' => '2026-10-03',
+    'booking_members' => collect([(object) ['id' => 5, 'name' => 'Member One']]), 'bookingDetails' => collect([1, 2]), 'transection' => (object) ['collection' => 3000, 'total_amount' => 9240]];
+$coHtml = $app->make('view')->make('booking.view', ['booking' => $coBooking, 'account_type' => [1 => 'Cash', 2 => 'Card'], 'total_night' => 2,
+    'transactions' => collect([$coTx([]), $coTx(['id' => 2, 'source_id' => 9, 'source_type' => 'Restaurant', 'total_amount' => 1500, 'due_amount' => 0, 'service_charge' => 0, 'service_amount' => 0, 'vat_amount' => 0, 'collection' => 1500, 'invoice_no' => 'INV-0009', 'source' => null, 'booking' => null])]),
+    'errors' => new Illuminate\Support\ViewErrorBag()])->render();
+$coHtml = str_replace('http://localhost/assets', '/assets', $coHtml);
+$coHtml = preg_replace('/(name="_token" value=")[A-Za-z0-9]+"/', '$1fixture-csrf-token"', $coHtml);
+foreach (['name="old_discount"', 'name="id[]"', 'name="item_ids[]"', 'name="item_types[]"', 'name="total_amount[]"', 'name="item_amount[]"', 'name="service_charge[]"', 'name="vat_amount[]"', 'name="extra-charge"', 'name="payble_amount"',
+    'name="night_count"', 'name="discount"', 'name="paid_amount"', 'name="payment_type"', 'name="pay_by"', 'name="check_out_date"', 'id="get-due"', 'id="check-full-payment"', 'class="font-18 bold grand-subtotal"', 'payable-amount', 'current-due',
+    'action="http://localhost/hotel/checkout/7"', 'type="submit"', 'aria-labelledby="mm-co-summary"', 'role="region"'] as $marker) {
+    if (strpos($coHtml, $marker) === false) throw new RuntimeException('Checkout view missing ' . $marker);
+}
+if (strpos($coHtml, '<script>alert(1)</script>') !== false || strpos($coHtml, '102 <b>x</b>') !== false) throw new RuntimeException('Checkout view did not escape guest or room data');
+$coFile = __DIR__ . '/fixtures/booking-checkout.html';
+if (getenv('MM_WRITE_FIXTURE')) file_put_contents($coFile, $coHtml);
+if (file_get_contents($coFile) !== $coHtml) throw new RuntimeException($coFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
+echo "PASS booking checkout view render: charges, summary, form fields, escaped data and the real calculation script\n";

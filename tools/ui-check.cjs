@@ -316,3 +316,26 @@ console.log('PASS: note list/edit expressions, forms and status scripts; legacy 
  for(const needle of ['data-business-date','data-allow-past','setStartDate','mmStayGuarded','submitBookingForm','role','aria-invalid',"trigger('change')"]) assert(js.includes(needle),`stay-dates.js missing ${needle}`);
  console.log('PASS: booking create/edit fields, totals scripts, controller preserved; single-date fields enforce business date and check-out after check-in');
 }
+
+{
+ // Booking lifecycle: checkout and payment screen. Expressions, hidden fields, form controls and the calculation script stay as they were.
+ const path='module/Hotel/views/booking/view.blade.php', after=fs.readFileSync(path,'utf8');
+ const before=execFileSync('git',['show',`84662702:${path}`],{encoding:'utf8'});
+ const ex=s=>(s.replace(/\{\{--[\s\S]*?--\}\}/g,'').match(/\{\{[\s\S]*?\}\}|\{!![\s\S]*?!!\}/g)||[]).map(x=>x.replace(/\s+/g,' ')).sort();
+ assert.deepEqual(ex(after),ex(before),'checkout: Blade expressions changed');
+ const ctl=s=>(s.replace(/\{\{[\s\S]*?\}\}/g,'{{}}').match(/<(input|select|textarea|button)\b[^>]*>/g)||[]).map(x=>x.replace(/\s+/g,' '));
+ const only=(l,m)=>{const c={};l.forEach(x=>c[x]=(c[x]||0)+1);m.forEach(x=>c[x]=(c[x]||0)-1);return Object.entries(c).filter(([,n])=>n).map(([k,n])=>`${n>0?'-':'+'}${Math.abs(n)} ${k}`).sort();};
+ // Allowed: the four nameless read-only display inputs became text, and the submit button took the shared class.
+ assert.deepEqual(only(ctl(before),ctl(after)),['+1 <button class="mm-button" type="submit">','-1 <button class="btn-outline-success btn-sm" type="submit">','-4 <input type="text" value="{{}}" readonly>'].sort(),'checkout: form controls changed beyond the read-only display inputs and the submit button class');
+ const formTag=s=>s.match(/<form[^>]*>/)[0].replace(/\s+/g,' ');
+ assert.equal(formTag(after),formTag(before),'checkout: form tag changed');
+ const php=s=>(s.match(/@php[\s\S]*?@endphp/g)||[]);
+ assert.deepEqual(php(after),php(before),'checkout: @php blocks changed');
+ const js=s=>s.slice(s.indexOf("@section('js')"));
+ assert.equal(js(after),js(before),'checkout: calculation script must be byte-identical');
+ const table=s=>s.slice(s.indexOf('<table'),s.indexOf('</table>'));
+ assert.equal(table(after).replace(/\s+/g,' '),table(before).replace(/\s+/g,' '),'checkout: charges table changed');
+ for(const needle of ['grand-subtotal','grand-service-charge','grand-extra-charge','grand-vat-amount','grand-total-amount','payable-amount','current-due','id="get-due"','id="discount"','id="paidAmount"','id="check-full-payment"']) assert(after.includes(needle),`checkout: missing ${needle}`);
+ assert(after.includes('<x-mm.page class="mm-booking-checkout"')&&!after.includes('widget-header')&&!after.includes('widget-box'),'checkout: should use the shared page frame');
+ console.log('PASS: checkout expressions, form controls, charges table and calculation script preserved');
+}
