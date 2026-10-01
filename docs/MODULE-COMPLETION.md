@@ -55,3 +55,10 @@ Next UI group: remaining room-category forms.
 Shared navigation design applied to all module sidebars through the shell, not by
 editing each permission-driven sidebar. Fixture coverage uses sample links; real
 role/permission and long-label acceptance remains pending in staging.
+
+## Room category forms
+
+Create/edit migrated together with preserved pricing/photo behavior and the
+documented permission/error-key/id fixes. Existing-photo remove icon is inert
+legacy UI (no handler). Staging acceptance pending. Hotel remaining: booking
+lifecycle/detail/edit, payments/checkout/invoices/print, night audit.

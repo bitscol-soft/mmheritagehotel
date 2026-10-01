@@ -160,3 +160,28 @@ console.log('PASS: note list/edit expressions, forms and status scripts; legacy 
  assert.equal(sidebar,base);
  console.log('PASS: full-menu behavior, Ace transition lock safeguard and unchanged permission-driven sidebar sources');
 }
+
+{
+ const normalize = text => text.replace(/\s+/g, ' ').trim();
+ for (const mode of ['create','edit']) {
+  const path=`module/Hotel/views/category/${mode}.blade.php`;
+  const before=execFileSync('git',['show',`207fae47:${path}`],{encoding:'utf8'}), after=fs.readFileSync(path,'utf8');
+  assert.equal(after.split("@section('js')")[1], before.split("@section('js')")[1], `Category JS wrapper changed: ${mode}`);
+  const form=source=>source.match(/<form\b[\s\S]*?<\/form>/)[0];
+  const names=source=>(form(source).match(/\bname="[^"]+"/g)||[]).sort();
+  assert.deepEqual(names(after),names(before),`Category field names changed: ${mode}`);
+  for (const regex of [/\b(?:method|action|enctype|type|value|multiple|required)="[^"]*"/g,/@csrf|@method\('[^']+'\)/g,/{{[\s\S]*?}}/g,/@for\s*\([^\n]+/g,/@foreach\s*\([^\n]+/g]) {
+   for (const hook of form(before).match(regex)||[]) assert(form(after).includes(hook),`Category form hook removed: ${hook}`);
+  }
+  assert.deepEqual(form(after).match(/\brequired\b/g),form(before).match(/\brequired\b/g),'Category validation changed');
+  assert.deepEqual((form(after).match(/<option\b[\s\S]*?<\/option>/g)||[]).map(normalize),(form(before).match(/<option\b[\s\S]*?<\/option>/g)||[]).map(normalize),'Category status options changed');
+  const divs=source=>(form(source).match(/<\/?div\b[^>]*>/g)||[]).map(tag=>tag.startsWith('</')?'</div>':tag.match(/class="([^"]*)"/)?.[1]?.replace(' category-form-actions','')?.trim());
+  assert.deepEqual(divs(after),divs(before),`Category form ancestry changed: ${mode}`);
+  const ids=form(after).replace(/{{--[\s\S]*?--}}/g,"").match(/\bid="[^"]+"/g)||[]; assert.equal(new Set(ids).size,ids.length,`Duplicate IDs remain: ${mode}`);
+  assert(after.includes('id="capacity" name="guest_capacity"'),'Guest capacity must keep the #capacity pricing id');
+  assert(!after.includes("@error('details')"),'Description error key mismatch remains');
+  assert(!/suppliers\.view/.test(after),'Supplier permission remains on category toolbar');
+ }
+ assert.equal(fs.readFileSync('module/Hotel/views/category/inc/script.blade.php','utf8'),execFileSync('git',['show','207fae47:module/Hotel/views/category/inc/script.blade.php'],{encoding:'utf8'}),'Category pricing/photo script changed');
+ console.log('PASS: category create/edit fields, values, validation, rows, status and pricing/photo scripts preserved');
+}

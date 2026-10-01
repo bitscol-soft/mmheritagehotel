@@ -315,3 +315,18 @@
 
 .mm-ui.mm-booking-notes textarea { width: 100%; min-height: 180px; resize: vertical; border: 1px solid var(--mm-line); border-radius: 6px; padding: 12px; }
 .mm-ui.mm-booking-notes textarea:focus { outline: 2px solid var(--mm-brand); outline-offset: 2px; }
+
+.mm-ui.mm-category-form .form-horizontal > .row { margin: 0; }
+.mm-ui.mm-category-form .form-horizontal .row > [class*="col-md-"] { padding-left: 0; padding-right: 0; }
+.mm-ui.mm-category-form .checkbox label { display: inline-flex; margin: 0 16px 8px 0; }
+.mm-ui.mm-category-form .category-images img { max-width: 100%; border: 1px solid var(--mm-line); border-radius: 6px; margin-bottom: 8px; }
+.mm-ui.mm-category-form .guest-wise-price-div { padding: 0; }
+.mm-ui.mm-category-form .price-entry > [class*="col-sm-"] { padding-left: 0; padding-right: 12px; }
+.mm-ui.mm-category-form .input-group-addon { white-space: normal; }
+.mm-ui.mm-category-form .category-form-actions { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: 8px; margin: 24px 0 0; padding: 16px; background: var(--mm-bg); border-top: 1px solid var(--mm-line); }
+.mm-ui.mm-category-form .category-form-actions::before, .mm-ui.mm-category-form .category-form-actions::after { display: none; }
+.mm-ui.mm-category-form .text-right { width: 100%; }
+@media (max-width: 767px) {
+    .mm-ui.mm-category-form .price-entry > [class*="col-sm-"] { width: 100%; padding-right: 0; }
+    .mm-ui.mm-category-form .category-form-actions .mm-button { width: 100%; }
+}

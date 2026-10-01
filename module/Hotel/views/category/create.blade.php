@@ -13,26 +13,17 @@
 @endpush
 
 @section('content')
-<div class="row">
-
-    <div class="col-sm-12">
-        <div class="widget-box">
-            <div class="widget-header">
-                <h4 class="widget-title"> @yield('page-header')</h4>
-
-                @if (hasPermission("suppliers.view", $slugs))
-                <span class="widget-toolbar">
-                    <a href="{{ route('hotel-categories.index') }}">
-                        <i class="ace-icon fa fa-list-alt"></i> Category List
-                    </a>
-                </span>
-                @endif
-
-            </div>
-
-            <div class="widget-body">
-                <div class="widget-main">
-                    <form class="form-horizontal" action="{{ route('hotel-categories.store') }}" method="post" enctype="multipart/form-data">
+    <x-mm.styles />
+    <x-mm.page class="mm-room-form mm-category-form" title="Add a room category" description="Define room type, capacity, rates, amenities, photos and optional guest-based pricing.">
+        @if (hasPermission('hotel-categories.view', $slugs))
+            <x-slot name="actions">
+                <a href="{{ route('hotel-categories.index') }}" class="mm-button mm-button-secondary">
+                    <i class="fa fa-arrow-left" aria-hidden="true"></i> Room categories
+                </a>
+            </x-slot>
+        @endif
+        <x-mm.panel class="tw-p-5">
+<form class="form-horizontal category-form" action="{{ route('hotel-categories.store') }}" method="post" enctype="multipart/form-data">
                         @csrf
 
                         <x-alert-message />
@@ -59,11 +50,11 @@
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label class="col-sm-3 control-label">Description</label>
+                                            <label class="col-sm-3 control-label" for="description">Description</label>
                                             <div class="col-xs-12 col-sm-8 @error('description') has-error @enderror">
-                                                <textarea name="description" rows="5" class="form-control" placeholder="Enter Description">{{ old('description') }}</textarea>
+                                                <textarea id="description" name="description" rows="5" class="form-control" placeholder="Enter Description">{{ old('description') }}</textarea>
 
-                                                @error('details')
+                                                @error('description')
                                                 <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
@@ -71,36 +62,36 @@
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label class="col-sm-3 control-label" for="capacity">Can Sleep </label>
+                                            <label class="col-sm-3 control-label" for="can_sleep">Can Sleep </label>
                                             <div class="col-xs-12 col-sm-8 ">
-                                                <input type="number" id="capacity" name="can_sleep" placeholder="Ex - 1 person" class="form-control">
+                                                <input type="number" id="can_sleep" name="can_sleep" placeholder="Ex - 1 person" class="form-control">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label class="col-sm-3 control-label" for="capacity">Bed Details </label>
+                                            <label class="col-sm-3 control-label" for="bed_details">Bed Details </label>
                                             <div class="col-xs-12 col-sm-8 ">
-                                                <input type="text" id="capacity" name="bed_details" placeholder="EX - Double Bed" class="form-control">
+                                                <input type="text" id="bed_details" name="bed_details" placeholder="EX - Double Bed" class="form-control">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label class="col-sm-3 control-label" for="capacity">Room Sqft</label>
+                                            <label class="col-sm-3 control-label" for="room_size">Room Sqft</label>
                                             <div class="col-xs-12 col-sm-8 ">
-                                                <input type="number" id="capacity" name="room_size" placeholder="EX - 2400sqft" class="form-control">
+                                                <input type="number" id="room_size" name="room_size" placeholder="EX - 2400sqft" class="form-control">
                                             </div>
                                         </div>
                                     </div>
 
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label class="col-sm-3 control-label">Guest Wise Price</label>
+                                            <label class="col-sm-3 control-label" for="guest-wise-price">Guest Wise Price</label>
                                             <div class="col-xs-12 col-sm-8 ">
                                                 <div class="input-group">
                                                     <label>
-                                                        <input name="allow_guest_wise_price" value="1" class="ace ace-switch ace-switch-6 guest-wise-price" type="checkbox">
+                                                        <input id="guest-wise-price" name="allow_guest_wise_price" value="1" class="ace ace-switch ace-switch-6 guest-wise-price" type="checkbox">
                                                         <span class="lbl"></span>
                                                     </label>
                                                 </div>
@@ -123,7 +114,7 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label class="col-sm-3 control-label"> Default Price<span class="currency-sign"></span> <sup class="text-danger">*</sup> </label>
+                                            <label class="col-sm-3 control-label" for="price"> Default Price<span class="currency-sign"></span> <sup class="text-danger">*</sup> </label>
                                             <div class="col-xs-12 col-sm-8 ">
                                                 <input type="number" name="price" id="price" placeholder="Enter Price" class="form-control" required>
                                             </div>
@@ -131,7 +122,7 @@
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label class="col-sm-3 control-label" for="vat"> Vat(%) </label>
+                                            <label class="col-sm-3 control-label" for="vat"> Vat (%) </label>
                                             <div class="col-xs-12 col-sm-8 ">
                                                 <input type="number" id="vat" name="vat" value="0" placeholder="Enter Vat Amount" class="form-control" required>
                                             </div>
@@ -139,7 +130,7 @@
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label class="col-sm-3 control-label" for="price">Aminities <sup class="text-danger">*</sup></label>
+                                            <label class="col-sm-3 control-label" >Aminities <sup class="text-danger">*</sup></label>
                                             <div class="col-xs-12 col-sm-8 ">
                                                 <div class="checkbox">
                                                     @foreach ($aminities as $item)
@@ -155,10 +146,10 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label">Status <sup class="text-danger">*</sup></label>
+                                        <label class="col-sm-3 control-label" for="category-status">Status <sup class="text-danger">*</sup></label>
 
                                         <div class="col-xs-12 col-sm-8 @error('status') has-error @enderror">
-                                            <select name="status" class="chosen-select form-control" required>
+                                            <select id="category-status" name="status" class="chosen-select form-control" required>
                                                 <option></option>
                                                 <option value="1" selected>Active</option>
                                                 <option value="0">In Active</option>
@@ -172,9 +163,9 @@
                                 </div>
                                 <div class="col-md-12">
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label" for="price"> Room Photos </label>
+                                        <label class="col-sm-3 control-label" for="room_photos"> Room Photos </label>
                                         <div class="col-xs-12 col-sm-8 ">
-                                            <input type="file" name="room_photos[]" class="category_photos" multiple>
+                                            <input type="file" id="room_photos" name="room_photos[]" class="category_photos" multiple>
                                         </div>
                                     </div>
                                 </div>
@@ -194,22 +185,17 @@
 
 
 
-                        <div class="form-group">
+                        <div class="form-group category-form-actions">
                             <div class="col-xs-12 col-sm-12 text-right">
                                 <div class="btn-group">
-                                    <button class="btn-sm btn btn-outline-success" type="submit"> <i class="fa fa-save"></i> Save</button>
-                                    <button class="btn-sm btn btn-default" type="Reset"> <i class="fa fa-refresh"></i> Reset</button>
+                                    <button class="mm-button" type="submit"> <i class="fa fa-save"></i> Save</button>
+                                    <button class="mm-button mm-button-secondary" type="Reset"> <i class="fa fa-refresh"></i> Reset</button>
                                 </div>
                             </div>
                         </div>
                     </form>
-                </div>
-            </div>
-        </div>
-
-
-    </div>
-</div>
+        </x-mm.panel>
+    </x-mm.page>
 @endsection
 
 

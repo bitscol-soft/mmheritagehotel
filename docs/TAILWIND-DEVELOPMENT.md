@@ -319,3 +319,21 @@ Access; 15 browser tests at 360/768/1440 pass. Real sidebar partials, permission
 combinations, long production labels and non-Hotel module icon variants still
 need authenticated staging acceptance. The menu is shell-flag controlled
 (`MM_ADMIN_SHELL=false` rolls back).
+
+## Thirteenth increment — room category create/edit (2026-10-01)
+
+Both forms use the shared page/panel and room-form adapter. The inner form,
+field names, old/current values, required attributes, status options, amenity
+loop, guest-wise price rows, photo upload and pricing/photo scripts are preserved
+(row ancestry and script file are guarded). Action buttons use shared button
+styles and mobile-safe layout. 38 Blade templates compile.
+
+Deliberate fixes: (1) create toolbar used `suppliers.view` (copy/paste) and now
+uses the edit form's `hotel-categories.view`; (2) description validation error
+displayed key `details` and now `description`; (3) duplicate `#capacity` ids on
+can sleep/bed details/room size are unique, while Guest Capacity keeps
+`#capacity` for the pricing script; (4) labels are associated with controls.
+
+Found, not changed: edit hover "remove" icon on current photos has no click
+handler, so removal is not implemented in the UI. Staging create/edit/upload,
+guest-wise-price toggling and validation acceptance remain pending; no live writes.
