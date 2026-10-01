@@ -496,3 +496,10 @@ wrapper) and a Payment summary panel. The old `.widget-header` / `.input-group i
 - Legacy behaviour kept and not fixed: after any night change the script recomputes totals from rows that have a night counter only, so a
   non-room charge on the same invoice list (e.g. Restaurant) drops out of the grand totals and due amount; `calculateAmounts()` shows NaN on an empty field;
   only the first `.extra-charge` is read; `warning()` must exist as a global helper. These need a backend/product decision.
+
+### Visual preview with several screens
+
+`node tools/preview-server.cjs` (port 3000) serves the shell with sample data. Besides the dashboard it now serves
+`/preview/checkout` and `/preview/category-create`, rendered from the real Blade views by `tools/ui-blade-check.php`
+(`MM_WRITE_FIXTURE=1` writes `tools/fixtures/preview/*.html`), plus an index at `/preview`. Other URLs show a "not in this preview" page
+and form posts only show a "nothing saved" note. It is a static sample, not the Laravel app.

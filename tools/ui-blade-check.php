@@ -284,12 +284,11 @@ file_put_contents($coViews . '/booking/_inc/_booking-context.blade.php', $coCont
 file_put_contents($coViews . '/mm-checkout-layout.blade.php', <<<'BLADE'
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
 <link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css"><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css">
-@stack('style')</head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px">@yield('content')</div>
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">@stack('style')<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->@yield('content')<!--/MM-BODY--></div>
 <script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
-<script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
 <script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); }</script>
-@yield('js')</body></html>
+@yield('js')<!--/MM-JS--></body></html>
 BLADE);
 $app['view']->getFinder()->prependLocation($coViews);
 $coRoutes = new Illuminate\Routing\RouteCollection();
@@ -320,7 +319,25 @@ foreach (['name="old_discount"', 'name="id[]"', 'name="item_ids[]"', 'name="item
     if (strpos($coHtml, $marker) === false) throw new RuntimeException('Checkout view missing ' . $marker);
 }
 if (strpos($coHtml, '<script>alert(1)</script>') !== false || strpos($coHtml, '102 <b>x</b>') !== false) throw new RuntimeException('Checkout view did not escape guest or room data');
+$previewDir = __DIR__ . '/fixtures/preview';
+if (getenv('MM_WRITE_FIXTURE')) { @mkdir($previewDir, 0777, true); file_put_contents($previewDir . '/checkout.html', $coHtml); }
 $coFile = __DIR__ . '/fixtures/booking-checkout.html';
 if (getenv('MM_WRITE_FIXTURE')) file_put_contents($coFile, $coHtml);
 if (file_get_contents($coFile) !== $coHtml) throw new RuntimeException($coFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
 echo "PASS booking checkout view render: charges, summary, form fields, escaped data and the real calculation script\n";
+
+// Preview-only page: the room category create form (real view, stub layout, sample amenities). Not a guarded fixture.
+@mkdir($coViews . '/category/inc', 0777, true);
+$catSource = preg_replace('/hasPermission\([^)]*\)/', 'true', str_replace(["@extends('layouts.master')", '<x-alert-message />'], ["@extends('mm-checkout-layout')", ''], file_get_contents($root . '/module/Hotel/views/category/create.blade.php')));
+file_put_contents($coViews . '/category/create.blade.php', $catSource);
+file_put_contents($coViews . '/category/inc/script.blade.php', str_replace('currencySign()', "'৳'", file_get_contents($root . '/module/Hotel/views/category/inc/script.blade.php')));
+$catRoutes = new Illuminate\Routing\RouteCollection();
+foreach (['hotel-categories.index' => 'preview/categories', 'hotel-categories.store' => 'preview/categories/store'] as $routeName => $uri) {
+    $catRoutes->add((new Illuminate\Routing\Route('GET', $uri, function () {}))->name($routeName));
+}
+$app->instance('url', new Illuminate\Routing\UrlGenerator($catRoutes, $coRequest));
+$catHtml = $app->make('view')->make('category.create', ['slugs' => [], 'errors' => new Illuminate\Support\ViewErrorBag(),
+    'aminities' => collect(array_map(function ($i, $n) { return (object) ['id' => $i, 'name' => $n]; }, [1, 2, 3, 4], ['Air conditioning', 'Wi-Fi', 'Breakfast', 'Sea view']))])->render();
+$catHtml = preg_replace('/(name="_token" value=")[A-Za-z0-9]+"/', '$1fixture-csrf-token"', str_replace('http://localhost/assets', '/assets', $catHtml));
+if (getenv('MM_WRITE_FIXTURE')) file_put_contents($previewDir . '/category-create.html', $catHtml);
+echo "PASS preview page render: room category create\n";
