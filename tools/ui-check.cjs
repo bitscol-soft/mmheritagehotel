@@ -206,3 +206,23 @@ console.log('PASS: note list/edit expressions, forms and status scripts; legacy 
  for(const path of ['resources/views/components/room-manage.blade.php','resources/views/components/room-status.blade.php','resources/views/home/_inc/script.blade.php','resources/views/home/_inc/style.blade.php']) assert.equal(fs.readFileSync(path,'utf8'),execFileSync('git',['show',`3b824a86:${path}`],{encoding:'utf8'}),`Shared board source changed: ${path}`);
  console.log('PASS: dashboard actions are permission-gated, board component/scripts unchanged, tile visual fixes present');
 }
+
+{
+ // Shell header/footer enhancements: additive, permission-gated, rollback-safe, no HTML injection.
+ const master=fs.readFileSync('resources/views/layouts/master.blade.php','utf8');
+ assert(/@if \(\$mmShell\)\s*@include\('layouts\.shell\.footer'\)\s*@else\s*@include\('partials\._footer'\)\s*@endif/.test(master),'Legacy footer must remain the non-shell fallback');
+ assert(master.includes("@include('layouts.shell.overlays')") && master.includes('shell-tools.js'),'Shell dialogs and tools script must load only inside the shell');
+ const header=fs.readFileSync('resources/views/partials/_header.blade.php','utf8');
+ assert(/@if \(\$mmShell \?\? false\)\s*@include\('layouts\.shell\.header-tools'\)\s*@endif/.test(header),'Header tools must be shell-only');
+ const tools=fs.readFileSync('resources/views/layouts/shell/header-tools.blade.php','utf8');
+ assert(tools.includes("@if (hasPermission('bookings.create', $slugs))") && tools.includes("route('booking.create')"),'New booking action must keep its permission gate');
+ for(const needle of ['aria-label="New booking"','data-mm-palette-open','data-mm-theme-toggle']) assert(tools.includes(needle),`Header tools missing ${needle}`);
+ const js=fs.readFileSync('public/assets/custom_js/shell-tools.js','utf8');
+ assert(!/innerHTML|outerHTML|insertAdjacentHTML|document\.write|eval\(|\.html\(/.test(js),'shell-tools.js must not inject HTML');
+ for(const needle of ['showModal','aria-activedescendant','mm-theme','navigator.onLine','menuEntries','isTyping']) assert(js.includes(needle),`shell-tools.js missing ${needle}`);
+ const footer=fs.readFileSync('resources/views/layouts/shell/footer.blade.php','utf8');
+ assert(footer.includes('id="btn-scroll-up"') && footer.includes('rel="noopener"'),'Shell footer must keep back-to-top and safe external links');
+ const ui=fs.readFileSync('config/ui.php','utf8');
+ for(const key of ["'admin_shell'","'version'","'support_url'","'timezone'"]) assert(ui.includes(key),`config/ui.php missing ${key}`);
+ console.log('PASS: shell header tools, footer and palette are additive, gated, rollback-safe and free of HTML injection');
+}

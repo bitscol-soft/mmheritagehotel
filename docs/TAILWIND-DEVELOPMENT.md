@@ -409,3 +409,43 @@ hidden`, and the bar sat inside `#booking-form`, which bounded how far it could
 stick. The bar now sits after the form and its buttons submit it through the
 `form="booking-form"` attribute. Buttons are 44px tall; on phones Reserve and Book
 Now share one row. Not yet checked with a real browser session against staging.
+
+## Sixteenth increment — shell header, footer and productivity tools (2026-10-01)
+
+Shell-only (`$mmShell`; `MM_ADMIN_SHELL=false` restores the old chrome, including the
+untouched `partials/_footer`). Employee, payroll-print and POS layouts are unchanged.
+
+**Header** (`layouts/shell/header-tools`, included from `_header`; existing RST/BAR,
+cache clear, notifications and account menu are kept):
+- Search button and **Ctrl/⌘+K command palette**. It lists only screens already in the
+  permission-filtered sidebar, plus actions (New booking, theme, compact spacing,
+  sidebar, full screen, shortcuts) and the last five visited screens. Native
+  `<dialog>`, combobox/listbox semantics, arrow keys, Enter, Esc, focus return.
+- **New booking** button, gated by `bookings.create`, using `booking.create`.
+- Dark/light theme toggle (beta), full-screen toggle (hidden if unsupported) and a
+  keyboard shortcuts dialog. Shortcuts: `/` search, `?` help, `[` sidebar, `Esc`;
+  single keys are ignored while typing or when a dialog is open.
+- Header buttons are 44px (40px on phones). Phones hide the palette button because the
+  header row has no room; the sidebar's own menu search remains.
+
+**Toolbar**: breadcrumbs (Home / URL segments / page title) replace the "Hotel workspace"
+badge. Intermediate crumbs are text, not links, because URL prefixes are not always pages.
+
+**Footer** (`layouts/shell/footer`): copyright, optional version, developer link, help
+link, business date, server clock (ticks in the browser from the server time), last sync
+(page load or last successful AJAX response), online/offline status and an environment
+badge. Configure in `config/ui.php`: `MM_APP_VERSION`, `MM_SUPPORT_URL`, `MM_UI_TIMEZONE`.
+
+**Dark theme (beta)**: chrome, `.mm-ui` components, the room board and common legacy
+widgets (tables, forms, widget boxes, modals, tabs, dropdowns). The preference is
+per browser (`mm-theme`). Legacy pages with custom inline colours may still look wrong.
+
+Verification: `tools/ui-blade-check.php` renders the real partials with frozen time and
+writes `tools/fixtures/shell-*.html`; `tools/browser/chrome.spec.cjs` covers overflow at
+360/768/1440, palette, shortcuts, theme and contrast, footer clock/offline, full screen
+and no-dialog fallback. Two defects found by these tests were fixed (phone header
+overflow; icon-only controls without accessible names).
+
+Not included: a **language switch**. `resources/lang` has only `en` and no locale route,
+so a switcher would do nothing. Also unverified: the real Laravel render with a database,
+the real notification dropdown with data, and staging.

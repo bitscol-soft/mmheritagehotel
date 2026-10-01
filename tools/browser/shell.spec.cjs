@@ -2,12 +2,14 @@
 const { test, expect } = require('@playwright/test');
 const fs = require('fs');
 const path = require('path');
+const { compose } = require('./compose-fixture.cjs');
 async function fixture(page, { shell = true, script = true } = {}) {
     await page.route('http://mm-shell.test/**', async route => {
         const pathname = new URL(route.request().url()).pathname;
-        const file = pathname.startsWith('/assets/') ? path.join(process.cwd(), 'public', pathname) : 'tools/fixtures/admin-shell.html';
+        const isAsset = pathname.startsWith('/assets/');
+        const file = isAsset ? path.join(process.cwd(), 'public', pathname) : 'tools/fixtures/admin-shell.html';
         if (pathname === '/assets/custom_js/shell.js' && !script) return route.fulfill({ contentType: 'text/javascript', body: '' });
-        if (file === 'tools/fixtures/admin-shell.html' && !shell) return route.fulfill({ contentType: 'text/html', body: fs.readFileSync(file, 'utf8').replace('no-skin mm-shell', 'no-skin') });
+        if (!isAsset) return route.fulfill({ contentType: 'text/html', body: shell ? compose('admin-shell.html') : compose('admin-shell.html').replace('no-skin mm-shell', 'no-skin') });
         if (!fs.existsSync(file)) return route.fulfill({ status: 404, body: '' });
         await route.fulfill({ path: file });
     });
@@ -125,9 +127,7 @@ test('mobile navigation remains readable without shell JavaScript', async ({ pag
     await expect(page.locator('#mm-menu-filter')).toBeHidden();
 });
 
-// The dashboard fixture borrows the full sidebar menu from the full-menu fixture so the dashboard is tested with the real menu depth.
-const fullMenuMarkup = () => { const html = fs.readFileSync('tools/fixtures/full-menu.html', 'utf8'); const start = html.indexOf('<ul class="nav nav-list" id="mm-primary-menu"'); return html.slice(start, html.indexOf('</ul></div>', start) + 5); };
-const dashboardHtml = () => fs.readFileSync('tools/fixtures/dashboard.html', 'utf8').replace('<!--PRIMARY-MENU-->', () => fullMenuMarkup()).replace('<!--ROOM-BOARD-->', () => fs.readFileSync('tools/fixtures/room-board.html', 'utf8'));
+const dashboardHtml = () => compose('dashboard.html');
 async function dashboard(page, width = 1440) {
     await page.setViewportSize({ width, height: 900 });
     await fixture(page);
@@ -309,7 +309,7 @@ test(`full module menu, nested disclosures and clear search at ${width}px`, asyn
         const errors = [];
         page.on('pageerror', error => errors.push(error.message));
         await fixture(page);
-        await page.route('http://mm-shell.test/full-menu**', route => route.fulfill({ path: 'tools/fixtures/full-menu.html' }));
+        await page.route('http://mm-shell.test/full-menu**', route => route.fulfill({ contentType: 'text/html', body: compose('full-menu.html') }));
         await page.goto('http://mm-shell.test/full-menu');
         if (width < 992) await page.locator('#menu-toggler').click();
         const hotel = menuLink(page, 'Hotel');
@@ -338,7 +338,7 @@ test(`full module menu, nested disclosures and clear search at ${width}px`, asyn
 
 test('query-specific menu links have a single current-page marker', async ({ page }) => {
     await fixture(page);
-    await page.route('http://mm-shell.test/hotel/booking-purpose**', route => route.fulfill({ path: 'tools/fixtures/full-menu.html' }));
+    await page.route('http://mm-shell.test/hotel/booking-purpose**', route => route.fulfill({ contentType: 'text/html', body: compose('full-menu.html') }));
     await page.goto('http://mm-shell.test/hotel/booking-purpose?type=platform');
     await expect(page.locator('#mm-primary-menu [aria-current="page"]')).toHaveCount(1);
     await expect(menuLink(page, 'Platform')).toHaveAttribute('aria-current', 'page');

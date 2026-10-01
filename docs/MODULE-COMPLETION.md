@@ -76,3 +76,10 @@ replace the tile grid on the hotel dashboard only (Hotel and Banquet booking pag
 keep the shared component). Legacy booking form, AJAX endpoints and housekeeping
 handlers are reused. Verified with a rendered-Blade sample and browser tests;
 staging with real data, date search and permissions is still pending.
+
+## Shell header and footer
+
+Header search/command palette, New booking shortcut, theme/full-screen/shortcuts tools,
+breadcrumbs, and a status footer (business date, server clock, last sync, online state,
+environment) are in the shared admin shell. Language switching is not available (English
+only). Staging acceptance pending.

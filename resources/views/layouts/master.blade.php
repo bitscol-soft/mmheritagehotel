@@ -39,6 +39,8 @@ $mmShell = config('ui.admin_shell', true) && $isAdminHeader && $isAdminSidebar;
 
 
     @if ($mmShell)
+        {{-- Apply the saved theme before first paint to avoid a light flash. --}}
+        <script>try { if (localStorage.getItem('mm-theme') === 'dark') document.body.classList.add('mm-dark'); } catch (e) {}</script>
         <a href="#mm-main-content" class="mm-shell-skip">Skip to content</a>
         <button type="button" class="mm-shell-backdrop" data-mm-close aria-label="Close navigation" hidden></button>
     @endif
@@ -113,7 +115,11 @@ $mmShell = config('ui.admin_shell', true) && $isAdminHeader && $isAdminSidebar;
         <!-- footer -->
         @if ($isShowFooter)
 
-            @include('partials._footer')
+            @if ($mmShell)
+                @include('layouts.shell.footer')
+            @else
+                @include('partials._footer')
+            @endif
 
         @endif
 
@@ -127,6 +133,8 @@ $mmShell = config('ui.admin_shell', true) && $isAdminHeader && $isAdminSidebar;
     @include('layouts.includes.master-file-script')
     @if ($mmShell)
         <script src="{{ asset('assets/custom_js/shell.js') }}?v={{ filemtime(public_path('assets/custom_js/shell.js')) }}"></script>
+        @include('layouts.shell.overlays')
+        <script src="{{ asset('assets/custom_js/shell-tools.js') }}?v={{ filemtime(public_path('assets/custom_js/shell-tools.js')) }}"></script>
     @endif
 
 

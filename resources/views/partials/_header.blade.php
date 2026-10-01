@@ -119,6 +119,10 @@
         <div class="navbar-buttons navbar-header pull-right" role="navigation">
             <ul class="nav ace-nav">
 
+                @if ($mmShell ?? false)
+                    @include('layouts.shell.header-tools')
+                @endif
+
                 <!-- Booking -->
                 {{-- <li class="light-10 dropdown-modal" title="Booking">
                     <a href="{{ route('rst.sales-v2.create') }}">

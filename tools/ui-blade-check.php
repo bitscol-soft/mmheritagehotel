@@ -14,7 +14,7 @@ $guestFormFiles = array_map(function ($path) use ($root) { return $root . '/modu
 $files=array_merge([$root . '/module/Hotel/views/rooms/create.blade.php', $root . '/module/Hotel/views/rooms/edit.blade.php', $root . '/module/Hotel/views/rooms/index.blade.php', $root . '/module/Hotel/views/category/index.blade.php', $root . '/module/Hotel/views/booking/booking_ui.blade.php'], $guestFormFiles, glob($root . '/resources/views/components/mm/*.blade.php'), [$root . '/resources/views/ui/kit.blade.php',$root . '/module/Hotel/views/guests/index.blade.php',$root . '/module/Hotel/views/guests/include/filter.blade.php', $root . '/module/Hotel/views/booking/index.blade.php', $root . '/module/Hotel/views/booking/_inc/_filter.blade.php']);
 $files=array_merge($files, [$root . '/module/Hotel/views/category/create.blade.php', $root . '/module/Hotel/views/category/edit.blade.php', $root . '/resources/views/layouts/master.blade.php', $root . '/resources/views/layouts/includes/head.blade.php', $root . '/resources/views/partials/_header.blade.php', $root . '/resources/views/partials/_sidebar.blade.php'], glob($root . '/resources/views/layouts/shell/*.blade.php'));
 $files=array_merge($files, [$root . '/resources/views/home/hotel-dashboard.blade.php', $root . '/resources/views/home/_inc/dashboard-summary.blade.php', $root . '/resources/views/home/_inc/room-board.blade.php', $root . '/resources/views/home/_inc/room-card.blade.php', $root . '/resources/views/home/_inc/bed-icon.blade.php', $root . '/resources/views/home/_inc/booking_ui.blade.php']);
-$files=array_merge($files, [$root . '/module/Hotel/views/house-keeping/index.blade.php']);
+$files=array_merge($files, [$root . '/module/Hotel/views/house-keeping/index.blade.php'], glob($root . '/resources/views/layouts/shell/*.blade.php'), [$root . '/resources/views/partials/_header.blade.php']);
 $files=array_merge($files, glob($root . '/module/Hotel/views/booking-purpose/*.blade.php'), [$root . '/module/Hotel/views/booking-purpose/include/filter.blade.php']);
 $files=array_merge($files, [$root . '/module/Hotel/views/booking-note/index.blade.php', $root . '/module/Hotel/views/booking-note/edit.blade.php', $root . '/module/Hotel/views/booking-note/include/filter.blade.php']);
 foreach($files as $f){ $compiled=$compiler->compileString(file_get_contents($f)); token_get_all($compiled,TOKEN_PARSE); echo "PASS compile ".basename($f)."\n"; }
@@ -166,3 +166,53 @@ foreach (['mmb-proxy-trigger', 'updateStatus'] as $marker) { if (strpos($boardHt
 if (getenv('MM_WRITE_FIXTURE')) { file_put_contents(__DIR__ . '/fixtures/room-board.html', $boardHtml); }
 if (file_get_contents(__DIR__ . '/fixtures/room-board.html') !== $boardHtml) throw new RuntimeException('tools/fixtures/room-board.html is stale; regenerate it with MM_WRITE_FIXTURE=1');
 echo "PASS dashboard room board render: groups, bed types, states, legacy hooks and escaped guest data\n";
+
+// Render the real shell chrome partials (header tools, toolbar, footer, dialogs) with frozen time.
+// Only the permission check is substituted in a temp copy; it needs an authenticated user.
+Carbon\Carbon::setTestNow(Carbon\Carbon::parse('2026-10-01 09:30:00', 'Asia/Dhaka'));
+$app->instance('env', 'staging');
+$app['config']->set('ui.timezone', 'Asia/Dhaka');
+$app['config']->set('ui.version', '2026.10.1');
+$app['config']->set('ui.support_url', 'https://example.test/help?a=1&b=<2>');
+$chromeViews = '/tmp/mm-chrome-views';
+@mkdir($chromeViews . '/layouts/shell', 0777, true);
+foreach (['header-tools', 'toolbar', 'footer', 'overlays'] as $partial) {
+    $source = file_get_contents($root . '/resources/views/layouts/shell/' . $partial . '.blade.php');
+    $source = str_replace("hasPermission('bookings.create', \$slugs)", 'true', $source);
+    if (strpos($source, 'hasPermission(') !== false) throw new RuntimeException('Unsubstituted permission check in ' . $partial);
+    file_put_contents($chromeViews . '/layouts/shell/' . $partial . '.blade.php', $source);
+}
+$app['view']->getFinder()->prependLocation($chromeViews);
+$chromeRoutes = new Illuminate\Routing\RouteCollection();
+foreach (['booking.create' => 'hotel/booking/create', 'home' => 'home'] as $routeName => $uri) {
+    $chromeRoutes->add((new Illuminate\Routing\Route('GET', $uri, function () {}))->name($routeName));
+}
+$chromeRequest = Illuminate\Http\Request::create('/hotel/booking/create');
+$app->instance('request', $chromeRequest);
+$app->instance('url', new Illuminate\Routing\UrlGenerator($chromeRoutes, $chromeRequest));
+$chrome = [];
+foreach (['header-tools', 'toolbar', 'footer', 'overlays'] as $partial) {
+    $chrome[$partial] = $app->make('view')->make('layouts.shell.' . $partial, ['slugs' => []])->render();
+}
+$expectChrome = [
+    'header-tools' => ['data-mm-palette-open', 'data-mm-theme-toggle', 'data-mm-fullscreen', 'data-mm-shortcuts-open', 'data-mm-action="new-booking"', 'href="http://localhost/hotel/booking/create"'],
+    'toolbar' => ['aria-label="Breadcrumb"', 'aria-current="page"', 'Hotel</span>', 'Booking</span>', 'id="mm-density-toggle"', 'Create'],
+    'footer' => ['role="contentinfo"', 'Business date', '01 Oct 2026', 'id="mm-clock"', 'data-timezone="Asia/Dhaka"', '09:30:00', 'id="mm-online"', 'mm-env-staging', 'v2026.10.1', 'rel="noopener"', 'id="btn-scroll-up"', 'Help &amp; support', 'a=1&amp;b=&lt;2&gt;'],
+    'overlays' => ['id="mm-palette"', 'role="combobox"', 'role="listbox"', 'id="mm-shortcuts"', 'aria-labelledby="mm-shortcuts-title"'],
+];
+foreach ($expectChrome as $partial => $markers) {
+    foreach ($markers as $marker) {
+        if (strpos($chrome[$partial], $marker) === false) throw new RuntimeException('Shell ' . $partial . ' missing ' . $marker);
+    }
+}
+foreach ($chrome as $partial => $html) {
+    if (preg_match('/<script/i', $html)) throw new RuntimeException('Shell ' . $partial . ' must not render inline scripts');
+    $file = __DIR__ . '/fixtures/shell-' . $partial . '.html';
+    if (getenv('MM_WRITE_FIXTURE')) file_put_contents($file, $html);
+    if (file_get_contents($file) !== $html) throw new RuntimeException($file . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
+}
+// Without the booking permission the quick action must disappear.
+$noBooking = str_replace('data-mm-action="new-booking"', 'data-x', $chrome['header-tools']);
+$denied = file_get_contents($root . '/resources/views/layouts/shell/header-tools.blade.php');
+if (strpos($denied, "@if (hasPermission('bookings.create', \$slugs))") === false) throw new RuntimeException('New booking action lost its permission gate');
+echo "PASS shell chrome render: header tools, breadcrumbs, footer status and dialogs\n";
