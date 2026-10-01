@@ -17,7 +17,7 @@ $files=array_merge($files, [$root . '/resources/views/home/hotel-dashboard.blade
 $files=array_merge($files, [$root . '/module/Hotel/views/house-keeping/index.blade.php'], glob($root . '/resources/views/layouts/shell/*.blade.php'), [$root . '/resources/views/partials/_header.blade.php']);
 $files=array_merge($files, glob($root . '/module/Hotel/views/booking-purpose/*.blade.php'), [$root . '/module/Hotel/views/booking-purpose/include/filter.blade.php']);
 $files=array_merge($files, [$root . '/module/Hotel/views/booking-note/index.blade.php', $root . '/module/Hotel/views/booking-note/edit.blade.php', $root . '/module/Hotel/views/booking-note/include/filter.blade.php']);
-$files=array_merge($files, [$root . '/module/Hotel/views/booking/booking_next.blade.php', $root . '/module/Hotel/views/booking/_inc/_booking-next-steps.blade.php', $root . '/module/Hotel/views/booking/view.blade.php', $root . '/module/Hotel/views/booking/checkout_invoice.blade.php', $root . '/module/Hotel/views/booking/reservation-invoice.blade.php', $root . '/module/Hotel/views/booking/checkout-invoice-v3.blade.php', $root . '/module/Hotel/views/booking/create.blade.php', $root . '/module/Hotel/views/booking/edit.blade.php', $root . '/module/Hotel/views/booking/_inc/_add-guest-input-info.blade.php', $root . '/module/Hotel/views/booking/_inc/_edit-guest-input-info.blade.php']);
+$files=array_merge($files, [$root . '/module/Hotel/views/booking/booking_next.blade.php', $root . '/module/Hotel/views/booking/_inc/_booking-next-steps.blade.php', $root . '/module/Hotel/views/booking/view.blade.php', $root . '/module/Hotel/views/payment-collection/index.blade.php', $root . '/module/Hotel/views/booking/checkout_invoice.blade.php', $root . '/module/Hotel/views/booking/reservation-invoice.blade.php', $root . '/module/Hotel/views/booking/checkout-invoice-v3.blade.php', $root . '/module/Hotel/views/booking/create.blade.php', $root . '/module/Hotel/views/booking/edit.blade.php', $root . '/module/Hotel/views/booking/_inc/_add-guest-input-info.blade.php', $root . '/module/Hotel/views/booking/_inc/_edit-guest-input-info.blade.php']);
 foreach($files as $f){ $compiled=$compiler->compileString(file_get_contents($f)); token_get_all($compiled,TOKEN_PARSE); echo "PASS compile ".basename($f)."\n"; }
 $html = $app->make('view')->make('components.mm.field', ['label'=>'Guest','id'=>'test','name'=>'name','value'=>'<script>','error'=>null,'attributes'=>new Illuminate\View\ComponentAttributeBag])->render();
 
@@ -371,3 +371,35 @@ $invFile = __DIR__ . '/fixtures/booking-invoice.html';
 if (getenv('MM_WRITE_FIXTURE')) { file_put_contents($invFile, $invHtml); file_put_contents($previewDir . '/invoice.html', $invHtml); }
 if (file_get_contents($invFile) !== $invHtml) throw new RuntimeException($invFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
 echo "PASS booking invoice render: frame, print action, document markup and escaped data\n";
+
+// Render the real payment collection view with sample unpaid invoices (layout and alert component substituted).
+@mkdir($coViews . '/payment-collection', 0777, true);
+$pcSource = str_replace(["@extends('layouts.master')", '<x-alert-message />'], ["@extends('mm-checkout-layout')", ''], file_get_contents($root . '/module/Hotel/views/payment-collection/index.blade.php'));
+file_put_contents($coViews . '/payment-collection/index.blade.php', $pcSource);
+$pcRoutes = new Illuminate\Routing\RouteCollection();
+$pcRoutes->add((new Illuminate\Routing\Route('POST', 'hotel/store-collection', function () {}))->name('store-payment-collection'));
+$pcRequest = Illuminate\Http\Request::create('/hotel/booking-collection?hotel_guest_id=1');
+$pcRequest->setLaravelSession(new Illuminate\Session\Store('mm', new Illuminate\Session\ArraySessionHandler(10)));
+$app->instance('request', $pcRequest);
+$app->instance('url', new Illuminate\Routing\UrlGenerator($pcRoutes, $pcRequest));
+$pcTx = function ($id, $invoice, $total, $paid, $due) {
+    return (object) ['source_id' => $id, 'source_type' => 'Booking', 'total_amount' => $total, 'due_amount' => $due, 'service_amount' => 100, 'extra_charge' => 0, 'collection' => $paid, 'invoice_no' => $invoice,
+        'discount' => 0, 'date' => '2026-10-01', 'change_amount' => 0,
+        'source' => (object) ['service_amount' => 100, 'vat_amount' => 200, 'discount' => 0, 'date' => '2026-10-01', 'created_by' => 1, 'company_id' => null]];
+};
+$pcHtml = $app->make('view')->make('payment-collection.index', ['errors' => new Illuminate\Support\ViewErrorBag(), 'account_type' => [1 => 'Cash', 2 => 'Card'],
+    'hotelGuests' => collect([(object) ['id' => 1, 'name' => 'Aisha <b>O\'Neil</b>', 'phone_no' => '01700000000'], (object) ['id' => 2, 'name' => 'Rahim', 'phone_no' => '01800000000']]),
+    'customers' => collect([(object) ['id' => 9, 'org_name' => 'Acme Ltd', 'org_phone' => '029999']]),
+    'hotelGuest' => (object) ['name' => 'Aisha', 'email' => 'aisha@example.com', 'phone_no' => '01700000000', 'nid_no' => '1234567890', 'address' => 'Dhaka', 'booking' => (object) ['bookingInfo' => (object) ['booking_number' => '0007']]],
+    'transactions' => collect([$pcTx(7, 'INV-0007', 5000, 3000, 2000), $pcTx(8, 'INV-0008', 3000, 1500, 1500)])])->render();
+$pcHtml = preg_replace('/(name="_token" value=")[A-Za-z0-9]+"/', '$1fixture-csrf-token"', str_replace('http://localhost/assets', '/assets', $pcHtml));
+foreach (['name="hotel_guest_id"', 'name="company_id"', 'name="item_ids[]"', 'name="item_types[]"', 'name="total_amount[]"', 'name="item_amount[]"', 'name="previous_collection[]"', 'name="is_from_due_collection"', 'name="total_paid_amount"',
+    'name="total_due_amount"', 'name="payment_type"', 'id="get-due"', 'id="check-full-payment"', 'class="discount only-number', 'payable-amount', 'current-due', 'action="http://localhost/hotel/store-collection"', 'mm-payment-collection'] as $marker) {
+    if (strpos($pcHtml, $marker) === false) throw new RuntimeException('Payment collection view missing ' . $marker);
+}
+if (strpos($pcHtml, '<b>Warning</b>') !== false || strpos($pcHtml, '<b>Notice</b>') !== false) throw new RuntimeException('Payment collection sample data is incomplete (PHP warning in output)');
+if (strpos($pcHtml, '<b>O\'Neil</b>') !== false) throw new RuntimeException('Payment collection did not escape guest data');
+$pcFile = __DIR__ . '/fixtures/payment-collection.html';
+if (getenv('MM_WRITE_FIXTURE')) { file_put_contents($pcFile, $pcHtml); file_put_contents($previewDir . '/payment-collection.html', $pcHtml); }
+if (file_get_contents($pcFile) !== $pcHtml) throw new RuntimeException($pcFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
+echo "PASS payment collection view render: search, invoices, summary, form fields, escaped data and the real script\n";

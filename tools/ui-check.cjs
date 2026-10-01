@@ -365,3 +365,26 @@ console.log('PASS: note list/edit expressions, forms and status scripts; legacy 
  for(const path of ['module/Hotel/views/booking/checkout-invoice-v2.blade.php','module/Hotel/views/booking/checkout-invoice-v4.blade.php','module/Hotel/views/booking/get_invoice.blade.php','module/Hotel/views/booking/_css/invoice-sheet.blade.php']) assert.equal(fs.readFileSync(path,'utf8'),base(path),`${path} must be unchanged`);
  console.log('PASS: invoices keep their printed documents, expressions and print scripts; screen frame and action bar only');
 }
+
+{
+ // Booking lifecycle: payment collection. Expressions, hidden fields, form controls, the invoices table and the script stay as they were.
+ const path='module/Hotel/views/payment-collection/index.blade.php', after=fs.readFileSync(path,'utf8');
+ const before=execFileSync('git',['show',`895b48b3:${path}`],{encoding:'utf8'});
+ const ex=s=>(s.replace(/\{\{--[\s\S]*?--\}\}/g,'').match(/\{\{[\s\S]*?\}\}|\{!![\s\S]*?!!\}/g)||[]).map(x=>x.replace(/\s+/g,' '));
+ const ctl=s=>(s.replace(/\{\{[\s\S]*?\}\}/g,'{{}}').match(/<(input|select|textarea|button)\b[^>]*>/g)||[]).map(x=>x.replace(/\s+/g,' '));
+ const only=(l,m)=>{const c={};l.forEach(x=>c[x]=(c[x]||0)+1);m.forEach(x=>c[x]=(c[x]||0)-1);return Object.entries(c).filter(([,n])=>n).map(([k,n])=>`${n>0?'-':'+'}${Math.abs(n)} ${k}`).sort();};
+ // Allowed: the duplicate Search/Reset pair became one pair, and the six nameless read-only guest display inputs became text.
+ assert.deepEqual(only(ex(before),ex(after)),['-1 {{ request()->url() }}'],'payment collection: Blade expressions changed');
+ assert.deepEqual(only(ctl(before),ctl(after)),['+2 <button class="mm-button" type="submit">','-1 <button class="btn-outline-success btn-sm" type="submit">','-2 <button class="btn btn-sm btn-success" type="submit">','-6 <input type="text" value="{{}}" readonly>'].sort(),'payment collection: form controls changed beyond the allowed set');
+ const forms=s=>(s.match(/<form[^>]*>/g)||[]).map(x=>x.replace(/\s+/g,' '));
+ assert.deepEqual(forms(after),forms(before),'payment collection: form tags changed');
+ const php=s=>s.match(/@php[\s\S]*?@endphp/g)||[];
+ assert.deepEqual(php(after),php(before),'payment collection: @php blocks changed');
+ const js=s=>s.slice(s.indexOf("@section('js')"));
+ assert.equal(js(after),js(before),'payment collection: calculation script must be byte-identical');
+ const table=s=>s.slice(s.indexOf('<table class="table table-bordered table-striped table-hover guest-detail-table">'),s.indexOf('</table>',s.indexOf('guest-detail-table"'))).replace(/\s+/g,' ');
+ assert.equal(table(after),table(before),'payment collection: invoices table changed');
+ for(const needle of ['payable-amount','current-due','id="get-due"','id="check-full-payment"','class="discount only-number','name="total_paid_amount"','name="payment_type"','name="is_from_due_collection"']) assert(after.includes(needle),`payment collection: missing ${needle}`);
+ assert(after.includes('<x-mm.page class="mm-payment-collection"')&&!after.includes('widget-header')&&!after.includes('widget-box'),'payment collection: should use the shared page frame');
+ console.log('PASS: payment collection expressions, form controls, invoices table and calculation script preserved');
+}

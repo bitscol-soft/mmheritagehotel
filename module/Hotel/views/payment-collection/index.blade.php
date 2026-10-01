@@ -12,10 +12,7 @@
         body {
             counter-reset: section;
         }
-        .payment-type-th .chosen-container.chosen-container-single{
-            width: 175px !important;
-            margin-left: 13px !important;
-        }
+
         .count:before {
             counter-increment: section;
             content: counter(section);
@@ -31,217 +28,81 @@
         select:invalid[multiple] {
             margin-top: 15px !important;
         }
-
-        .booking-view {
-            padding: 50px !important;
-        }
-
-        .input-group input {
-            width: 100%;
-            padding-left: 10px !important;
-        }
-
-        .widget-header {
-            background-color: #EAF4FA !important;
-            background-image: none !important;
-        }
-
-        label.input-group-addon {
-            background-color: #EAF4FA;
-            color: #669fc7;
-        }
-
-        .info-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-
-        .guest-detail-table thead th {
-            background-color: #4d8cb3;
-            color: #fff;
-        }
-
-        .payment-info-body {
-            border-bottom: 1px solid #ccc
-        }
-
-        .payment-info-body input {
-            width: 100px;
-            text-align: right
-        }
-
-        .payment-info .submit-btn {
-            background-color: #87b87f;
-            color: #fff;
-            border: 1px solid #87b87f;
-            padding: 5px 15px;
-            border-radius: 5px;
-        }
-
-        .due-info span {
-            font-size: 15px;
-            font-weight: 600;
-            color: #4d8cb3;
-        }
-
     </style>
 @endpush
 
 
 @section('content')
 
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="widget-box">
-                <div class="widget-header">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
+    <x-mm.styles />
+    <x-mm.page class="mm-payment-collection" title="Payment collection" description="Find a guest or company, review unpaid invoices and collect a payment.">
+        <x-alert-message />
+
+        <x-mm.panel class="mm-co-card">
+            <h2 class="mm-co-title">Find unpaid invoices</h2>
+            <form>
+                <div class="mm-pc-search">
+                    <div class="mm-co-field" role="group" aria-labelledby="mm-pc-guest">
+                        <span id="mm-pc-guest" class="mm-co-label">Guest</span>
+                        <select class="form-control chosen-select" name="hotel_guest_id" data-placeholder="- Choose Guest -">
+                                <option></option>
+                                @foreach ($hotelGuests as $guest)
+                                    <option value="{{ $guest->id }}" {{ old('hotel_guest_id') == $guest->id || request('hotel_guest_id') == $guest->id ? 'selected' : '' }}>
+                                        {{ $guest->name }} ({{ $guest->phone_no }})
+                                    </option>
+                                @endforeach
+                            </select>
+                    </div>
+                    <div class="mm-co-field" role="group" aria-labelledby="mm-pc-company">
+                        <span id="mm-pc-company" class="mm-co-label">Company</span>
+                        <select class="form-control chosen-select" name="company_id" data-placeholder="- Choose Company -">
+                                <option></option>
+                                @foreach ($customers as $customer)
+                                    <option value="{{ $customer->id }}" {{ old('company_id') == $customer->id || request('company_id') == $guest->id ? 'selected' : '' }}>
+                                        {{ $customer->org_name }} ({{ $customer->org_phone }})
+                                    </option>
+                                @endforeach
+                            </select>
+                    </div>
+                    <div class="mm-pc-search-actions">
+                        <button class="mm-button" type="submit">
+                            <i class="fa fa-search" aria-hidden="true"></i> Search
+                        </button>
+                        <a href="{{ request()->url() }}" class="mm-button mm-button-secondary" aria-label="Reset search">
+                            <i class="fa fa-refresh" aria-hidden="true"></i> Reset
+                        </a>
+                    </div>
                 </div>
+            </form>
+        </x-mm.panel>
 
-                <div class="widget-body">
-                    <div class="widget-main booking-view">
+        @if ($transactions != null && count($transactions) > 0)
+            <section class="mm-panel mm-co-card" aria-labelledby="mm-pc-info">
+                <h2 id="mm-pc-info" class="mm-co-title">Guest information</h2>
+                <dl class="mm-co-list mm-pc-info">
+                        <div><dt>Name</dt><dd>{{ optional($hotelGuest)->name ?? 'N\A' }}</dd></div>
+                        <div><dt>Email</dt><dd>{{ optional($hotelGuest)->email ?? 'N\A' }}</dd></div>
+                        <div><dt>Mobile number</dt><dd>{{ optional($hotelGuest)->phone_no ?? 'N\A' }}</dd></div>
+                        <div><dt>NID</dt><dd>{{ optional($hotelGuest)->nid_no ?? 'N\A' }}</dd></div>
+                        <div><dt>Booking number</dt><dd>{{ optional(optional($hotelGuest->booking)->bookingInfo)->booking_number ?? 'N\A' }}</dd></div>
+                        <div><dt>Address</dt><dd>{{ optional($hotelGuest)->address ?? 'N\A' }}</dd></div>
+                </dl>
+            </section>
+        @endif
 
-                        <x-alert-message />
+        {{-- GUEST TRANSACTIONS --}}
+        <form class="form-horizontal" action="{{ route('store-payment-collection') }}" method="post" enctype="multipart/form-data">
+            @csrf
 
-                        <!-- Search -->
-                        <div class="row">
-                            <div class="col-sm-6 col-sm-offset-3">
-                                <form>
-                                    <table class="table table-bordered">
-                                        <tbody>
-                                            <tr>
-                                                <td style="display: flex; justify-content: space-around">
-                                                    <div class="input-group">
-                                                        <select class="form-control chosen-select" name="hotel_guest_id" data-placeholder="- Choose Guest -">
-                                                            <option></option>
-                                                            @foreach ($hotelGuests as $guest)
-                                                                <option value="{{ $guest->id }}" {{ old('hotel_guest_id') == $guest->id || request('hotel_guest_id') == $guest->id ? 'selected' : '' }}>
-                                                                    {{ $guest->name }} ({{ $guest->phone_no }})
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                    <div class="btn-group btn-corner">
-                                                        <button class="btn btn-sm btn-success" type="submit">
-                                                            <i class="fa fa-search"></i> Search
-                                                        </button>
-                                                        <a href="{{ request()->url() }}" class="btn btn-sm">
-                                                            <i class="fa fa-refresh"></i>
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    <table class="table table-bordered">
-                                        <tbody>
-                                            <tr>
-                                                <td style="display: flex; justify-content: space-around">
-                                                    <div class="input-group">
-                                                        <select class="form-control chosen-select" name="company_id" data-placeholder="- Choose Company -">
-                                                            <option></option>
-                                                            @foreach ($customers as $customer)
-                                                                <option value="{{ $customer->id }}" {{ old('company_id') == $customer->id || request('company_id') == $guest->id ? 'selected' : '' }}>
-                                                                    {{ $customer->org_name }} ({{ $customer->org_phone }})
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                    <div class="btn-group btn-corner">
-                                                        <button class="btn btn-sm btn-success" type="submit">
-                                                            <i class="fa fa-search"></i> Search
-                                                        </button>
-                                                        <a href="{{ request()->url() }}" class="btn btn-sm">
-                                                            <i class="fa fa-refresh"></i>
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+            @if ($transactions != null && count($transactions) > 0)
 
-                                </form>
-                            </div>
-
-                            @if ($transactions != null && count($transactions) > 0)
-                                <div class="col-md-12">
-                                    <div class="info-title text-center">
-                                        <span><i class="fa  fa-exclamation-circle"></i></span>
-                                        <span class="title">Guest Information</span>
-                                    </div>
-                                    <div class="col-md-2"></div>
-                                    <div class="col-md-4">
-
-                                        <div class="guest-info borderless">
-
-                                            <div class="input-group" style="width:100%">
-                                                <label class="border-none input-group-addon" style="width:125px; text-align:left">
-                                                    Name
-                                                </label>
-                                                <input type="text" value="{{ optional($hotelGuest)->name ?? 'N\A' }}" readonly>
-                                            </div>
-
-                                            <div class="input-group" style="width:100%">
-                                                <label class="border-none input-group-addon" style="width:125px; text-align:left">
-                                                    Email
-                                                </label>
-                                                <input type="text" value="{{ optional($hotelGuest)->email ?? 'N\A' }}" readonly>
-                                            </div>
-
-                                            <div class="input-group" style="width:100%">
-                                                <label class="border-none input-group-addon" style="width:125px; text-align:left">
-                                                    Mobile Number
-                                                </label>
-                                                <input type="text" value="{{ optional($hotelGuest)->phone_no ?? 'N\A' }}" readonly>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-
-                                        <div class="guest-info borderless">
-
-                                            <div class="input-group" style="width:100%">
-                                                <label class="border-none input-group-addon" style="width:132px; text-align:left">
-                                                    NID
-                                                </label>
-                                                <input type="text" value="{{ optional($hotelGuest)->nid_no ?? 'N\A' }}" readonly>
-                                            </div>
-
-                                            <div class="input-group" style="width:100%">
-                                                <label class="border-none input-group-addon" style="width:132px; text-align:left">
-                                                    Booking Number
-                                                </label>
-                                                <input type="text" value="{{ optional(optional($hotelGuest->booking)->bookingInfo)->booking_number ?? 'N\A' }}" readonly>
-                                            </div>
-                                            <div class="input-group" style="width:100%">
-                                                <label class="border-none input-group-addon" style="width:132px; text-align:left">
-                                                    Address
-                                                </label>
-                                                <input type="text" value="{{ optional($hotelGuest)->address ?? 'N\A' }}" readonly>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2"></div>
-                                </div>
-                            @endif
-                        </div>
-
-                        {{-- GUEST TRANSACTIONS --}}
-                        <form class="form-horizontal" action="{{ route('store-payment-collection') }}" method="post" enctype="multipart/form-data">
-                            @csrf
-
-                            @if ($transactions != null && count($transactions) > 0)
-
-                                <input type="hidden" name="hotel_guest_id" value="{{ request('hotel_guest_id') }}">
+                <input type="hidden" name="hotel_guest_id" value="{{ request('hotel_guest_id') }}">
                                 <input type="hidden" name="is_from_due_collection" value="1">
 
-                                <div class="guest-details" style="margin-top: 50px;">
-                                    <div class="row">
-                                        <div class="col-md-12">
-
-                                            <table class="table table-bordered table-striped table-hover guest-detail-table">
+                <section class="mm-panel mm-co-charges" aria-labelledby="mm-co-charges">
+                    <h2 id="mm-co-charges" class="mm-co-title">Unpaid invoices</h2>
+                    <x-mm.table-scroll label="Unpaid invoices">
+<table class="table table-bordered table-striped table-hover guest-detail-table">
                                                 <thead>
                                                     <tr>
                                                         <th width="5%" class="text-center">SL</th>
@@ -320,143 +181,56 @@
                                                 </tbody>
 
                                             </table>
+                    </x-mm.table-scroll>
+                </section>
 
-                                            <div class="payment-info mt-1">
-                                                <div class="row">
-                                                    <div class="col-md-5 col-lg-offset-7">
-                                                        <table class="table table-borderless" style="width: 85%; margin-left: auto;">
-                                                            <tr>
-                                                                <th>
-                                                                    <p class="font-18 medium">Total Payable</p>
-                                                                </th>
-                                                                <th><i class="fa fa-arrow-right"></i></th>
-                                                                <th class="text-right">
-                                                                    <p class="font-18 bold payable-amount">{{ number_format($current_due_amount = $transactions->sum('due_amount') + $transactions->sum('change_amount'), 2 ?? 0) }}</p>
-                                                                </th>
-                                                            </tr>
-                                                            <tr style="visibility: collapse">
-                                                                <th>
-                                                                    <p class="font-18 medium">Discount</p>
-                                                                </th>
-                                                                <th><i class="fa fa-arrow-right"></i></th>
-                                                                <th class="text-right">
-                                                                    <p class="font-18 bold">
-                                                                        <input class="discount only-number input-sm text-right font-18 bold" type="text" min="0" step="any" value="0">
-                                                                    </p>
-                                                                </th>
-                                                            </tr>
-                                                            <tr>
-                                                                <th>
-                                                                    <p class="font-18 medium">Paid Amount</p>
-                                                                </th>
-                                                                <th><i class="fa fa-arrow-right"></i></th>
-                                                                <th class="text-right">
-                                                                    <p class="font-18 bold">
-                                                                        <input name="total_paid_amount" class="paid-amount only-number input-sm text-right font-18 bold" type="text" min="0" step="any" value="0">
-                                                                    </p>
-                                                                </th>
-                                                            </tr>
-                                                            <tr>
-                                                                <th>
-                                                                    <p class="font-18 medium">Current Due</p>
-                                                                </th>
-                                                                <th><b><i class="fa fa-arrow-right"></i></b></th>
-                                                                <th class="text-right">
-                                                                    <input id="get-due" name="total_due_amount" type="hidden" value="{{ $current_due_amount }}">
-                                                                    <p class="current-due font-18 bold">{{ number_format($current_due_amount, 2) }}</p>
-                                                                </th>
-                                                            </tr>
-                                                            <tr>
-                                                                <th>
-                                                                    <p class="font-18 medium">Payment Type</p>
-                                                                </th>
-                                                                <th><i class="fa fa-arrow-right"></i></th>
-                                                                <th class="payment-type-th">
-                                                                    <select class="form-control chosen-select" name="payment_type"
-                                                                        data-placeholder="- Choose Type -">
-                                                                        <option></option>
-                                                                        @foreach ($account_type as $id => $name)
-                                                                            <option value="{{ $id }}"
-                                                                                {{ old('payment_type') == $id ? 'selected' : '' }}>
-                                                                                {{ $name }}
-                                                                            </option>
-                                                                        @endforeach
-                                                                    </select>
-                                                                </th>
-                                                            </tr>
-                                                            <tr>
-                                                                <th></th>
-                                                                <th></th>
-                                                                <th>
-                                                                    <div class="text-center">
-                                                                        <input id="check-full-payment" type="checkbox">
-                                                                        <label for="check-full-payment" style="cursor: pointer;"><span>Full Payment</span></label>
-                                                                    </div>
-                                                                </th>
-                                                            </tr>
-
-                                                        </table>
-                                                        <div class="row due-info">
-
-                                                            <div class="col-md-12 text-right">
-                                                                <button class="btn-outline-success btn-sm" type="submit">
-                                                                    <i class="fa fa-money"></i>
-                                                                    Payment
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            @else
-                                <div class="guest-details" style="margin-top: 50px;">
-                                    <div class="row">
-                                        <div class="col-md-12">
-
-                                            <table class="table table-bordered table-striped table-hover guest-detail-table">
-                                                <thead>
-                                                    <tr>
-                                                        <th width="5%" class="text-center">SL</th>
-                                                        <th width="10%" class="text-center">Invoice No</th>
-                                                        <th width="10%" class="text-center">Date</th>
-                                                        <th class="text-right">Service Charge</th>
-                                                        <th class="text-right">Vat Amount</th>
-                                                        <th class="text-right">Discount</th>
-                                                        <th class="text-right">Total</th>
-                                                        <th class="text-right">Advance Paid</th>
-                                                        <th class="text-right">Due Amount</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td colspan="50" class="text-center">
-                                                            <div class="alert alert-danger text-center">
-                                                                No data Found!
-                                                            </div>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-
-                                        </div>
-                                    </div>
-                                </div>
-                            @endif
-
-                        </form>
-
+                <section class="mm-panel mm-co-summary" aria-labelledby="mm-co-summary">
+                    <h2 id="mm-co-summary" class="mm-co-title">Payment summary</h2>
+                    <div class="mm-sum-row is-strong"><span class="mm-sum-label">Total Payable</span>
+                        <p class="font-18 bold payable-amount">{{ number_format($current_due_amount = $transactions->sum('due_amount') + $transactions->sum('change_amount'), 2 ?? 0) }}</p></div>
+                    <div class="mm-sum-row" hidden><span class="mm-sum-label">Discount</span>
+                        <p class="font-18 bold">
+                            <input class="discount only-number input-sm text-right font-18 bold" type="text" min="0" step="any" value="0">
+                        </p></div>
+                    <label class="mm-sum-row"><span class="mm-sum-label">Paid Amount</span>
+                        <span class="font-18 bold">
+                            <input name="total_paid_amount" class="paid-amount only-number input-sm text-right font-18 bold" type="text" min="0" step="any" value="0">
+                        </span></label>
+                    <div class="mm-sum-row is-due"><span class="mm-sum-label">Current Due</span>
+                        <input id="get-due" name="total_due_amount" type="hidden" value="{{ $current_due_amount }}">
+                        <p class="current-due font-18 bold">{{ number_format($current_due_amount, 2) }}</p></div>
+                    <div class="mm-co-field" role="group" aria-labelledby="mm-pc-paytype">
+                        <span id="mm-pc-paytype" class="mm-co-label">Payment type</span>
+                        <select class="form-control chosen-select" name="payment_type"
+                            data-placeholder="- Choose Type -">
+                            <option></option>
+                            @foreach ($account_type as $id => $name)
+                                <option value="{{ $id }}"
+                                    {{ old('payment_type') == $id ? 'selected' : '' }}>
+                                    {{ $name }}
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
-                </div>
-            </div>
+                    <div class="mm-sum-full">
+                        <input id="check-full-payment" type="checkbox">
+                        <label for="check-full-payment"><span>Full Payment</span></label>
+                    </div>
+                    <div class="mm-form-actions">
+                        <button class="mm-button" type="submit">
+                            <i class="fa fa-money" aria-hidden="true"></i>
+                            Payment
+                        </button>
+                    </div>
+                </section>
+            @else
+                <x-mm.panel class="mm-co-card">
+                    <p class="mm-pc-empty" role="status">No unpaid invoices found. Choose a guest or company above and search.</p>
+                </x-mm.panel>
+            @endif
 
-
-        </div>
-    </div>
-
+        </form>
+    </x-mm.page>
 
 @endsection
 

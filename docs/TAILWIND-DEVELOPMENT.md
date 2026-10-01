@@ -516,3 +516,17 @@ Scope is the on-screen frame only. The printed documents, their expressions, `@p
 - Tests: `tools/browser/booking-invoice.spec.cjs` (real rendered `checkout_invoice`; printThis stubbed): auto-print once, Print button, print-media chrome hidden, no sideways page scroll at 360/768/1280px.
   v3 and `reservation-invoice` are compile-checked and guarded but not rendered with sample data. Real printing (paper size, fonts, the taka sign) needs a check on staging.
 - Preview: `/preview/invoice`.
+
+## Twenty-second increment: payment collection
+
+`payment-collection/index` uses the shared page frame: a search panel (guest and company selects, Search/Reset), a guest information list,
+the unpaid-invoices table (unchanged, in a scroll wrapper) and a payment summary. Guarded by `tools/ui-check.cjs` against the previous commit:
+every `{{ }}` expression, the hidden arrays (`item_ids[]`, `item_types[]`, `total_amount[]`, `item_amount[]`, `previous_collection[]`, ...), form controls, `@php`
+blocks, the invoices table and the whole script. Allowed differences: the duplicate Search/Reset pair became one pair, six nameless read-only guest
+inputs became plain text, buttons use the shared class. The hidden discount row stays hidden (the script still reads it).
+Tests: `tools/browser/payment-collection.spec.cjs` (paid amount, cap at the due amount, full payment, post field names, no overflow at 360/768/1280px). Preview: `/preview/payment-collection`.
+
+Legacy issues kept, not fixed (they sit in expressions the guard protects):
+- The company select marks an option selected when `request('company_id') == $guest->id`, a variable left over from the guest loop; it should compare with `$customer->id`.
+- `$hotelGuest->booking` is read without `optional()`; with transactions found by company (no guest) this may fail on a null guest. Not verified without data.
+- The guest fields print the literal `N\A` when empty.
