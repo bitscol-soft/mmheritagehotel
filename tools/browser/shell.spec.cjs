@@ -125,7 +125,9 @@ test('mobile navigation remains readable without shell JavaScript', async ({ pag
     await expect(page.locator('#mm-menu-filter')).toBeHidden();
 });
 
-const dashboardHtml = () => fs.readFileSync('tools/fixtures/dashboard.html', 'utf8').replace('<!--ROOM-BOARD-->', fs.readFileSync('tools/fixtures/room-board.html', 'utf8'));
+// The dashboard fixture borrows the full sidebar menu from the full-menu fixture so the dashboard is tested with the real menu depth.
+const fullMenuMarkup = () => { const html = fs.readFileSync('tools/fixtures/full-menu.html', 'utf8'); const start = html.indexOf('<ul class="nav nav-list" id="mm-primary-menu"'); return html.slice(start, html.indexOf('</ul></div>', start) + 5); };
+const dashboardHtml = () => fs.readFileSync('tools/fixtures/dashboard.html', 'utf8').replace('<!--PRIMARY-MENU-->', () => fullMenuMarkup()).replace('<!--ROOM-BOARD-->', () => fs.readFileSync('tools/fixtures/room-board.html', 'utf8'));
 async function dashboard(page, width = 1440) {
     await page.setViewportSize({ width, height: 900 });
     await fixture(page);
@@ -154,6 +156,8 @@ for (const width of [360, 768, 1440]) {
         await expect(page.locator('#dashboard-board-title')).toBeVisible();
         await expect(page.locator('.mmb-group')).toHaveCount(6);
         await expect(page.locator('.mmb-card')).toHaveCount(23);
+        expect(await page.locator('#mm-primary-menu li').count()).toBeGreaterThan(40);
+        await expect(page.locator('#mm-primary-menu > li > a .menu-text').first()).toHaveText('Dashboard');
         const smallCards = await page.evaluate(() => Array.from(document.querySelectorAll('.mmb-card')).filter(el => el.getBoundingClientRect().height < 44 || el.getBoundingClientRect().width < 44).length);
         expect(smallCards).toBe(0);
         const beds = await page.evaluate(() => { const type = n => { const card = Array.from(document.querySelectorAll('.mmb-card')).find(c => c.querySelector('.mmb-number').textContent.trim() === n); return [card.querySelector('.mmb-bed-label').textContent.trim(), card.querySelectorAll('.mmb-bed svg').length, card.querySelector('.mmb-bed svg')?.getAttribute('viewBox')]; }; return { single: type('301'), double: type('101'), twin: type('201'), triple: type('401'), multi: type('601') }; });
