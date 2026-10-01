@@ -28,7 +28,6 @@
         .m-auto{
             margin: 0 auto;
         }
-        @include('booking._css.invoice-sheet')
         .company-name{
             text-transform: uppercase;
             font-weight: bold;
@@ -244,7 +243,10 @@
 
 
     </style>
+
+    @include('booking._css.invoice-sheet')
 @stop
+
 
 @section('content')
 

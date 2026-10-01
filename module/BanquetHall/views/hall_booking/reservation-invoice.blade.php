@@ -10,8 +10,6 @@
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
     <link href="https://fonts.googleapis.com/css2?family=Calistoga&display=swap" rel="stylesheet">
     <style>
-        @include('booking._css.invoice-sheet')
-
         #print_body {
             background-color: #fff;
             padding: 10px 20px;
@@ -393,7 +391,10 @@
             }
         }
     </style>
+
+    @include('booking._css.invoice-sheet')
 @stop
+
 
 @section('content')
 
