@@ -80,11 +80,11 @@
                                                             </a>
                                                             {{-- <a href="#" id="openModalBtn"
                                                                 class="btn btn-xs btn-danger">
-                                                                <i class="fa fa-trash"></i>
+                                                                <i class="fa fa-trash-o"></i>
                                                             </a> --}}
                                                             {{-- <a href="#" onclick="delete_item(``)"
                                                                 class="btn btn-xs btn-danger">
-                                                                <i class="fa fa-trash"></i>
+                                                                <i class="fa fa-trash-o"></i>
                                                             </a> --}}
                                                         </div>
                                                     </td>

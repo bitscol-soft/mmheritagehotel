@@ -118,7 +118,7 @@
 
                                                             @if(hasPermission("permission.accesses.delete", $slugs))
                                                                 <button type="button" onclick="delete_check({{ $user->id }})" class="btn btn-xs btn-danger" title="Delete">
-                                                                    <i class="fa fa-trash"></i>
+                                                                    <i class="fa fa-trash-o"></i>
                                                                 </button>
                                                             @endif
                                                         </div>

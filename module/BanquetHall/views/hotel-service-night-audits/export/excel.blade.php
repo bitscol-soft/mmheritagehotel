@@ -63,7 +63,7 @@
                                 </a>
 
                                 {{-- <button type="button" onclick="delete_item(`{{ route('night-audits.destroy', $audit->first()->date) }}`)" class="btn btn-sm btn-danger" title="Delete">
-                                    <i class="fa fa-trash"></i>
+                                    <i class="fa fa-trash-o"></i>
                                 </button> --}}
                             </div>
                         </td>

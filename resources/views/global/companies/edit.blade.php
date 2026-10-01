@@ -512,7 +512,7 @@
                                                     <td>
                                                         <input type="text" value="{{ old('swift_code')[$key] }}" name="swift_code[]"  class="form-control"/>
                                                     </td>
-                                                    <td><button type="button" class="ibtnDel btn btn-sm btn-danger"><i class="fa fa-trash"></i></button></td>
+                                                    <td><button type="button" class="ibtnDel btn btn-sm btn-danger"><i class="fa fa-trash-o"></i></button></td>
                                                 </tr>
                                             @endforeach
 
@@ -536,7 +536,7 @@
                                                 <td>
                                                     <input type="text" value="{{ $company_bank_account->swift_code }}" name="swift_code[]"  class="form-control"/>
                                                 </td>
-                                                <td><button type="button" class="ibtnDel btn btn-sm btn-danger"><i class="fa fa-trash"></i></button></td>
+                                                <td><button type="button" class="ibtnDel btn btn-sm btn-danger"><i class="fa fa-trash-o"></i></button></td>
                                             </tr>
 
                                             @endforeach
@@ -691,7 +691,7 @@
                 cols += '<td><input type="text" class="form-control" name="new_branch[]"/></td>';
                 cols += '<td><input type="text" class="form-control" name="new_swift_code[]"/></td>';
 
-                cols += '<td><button type="button" class="ibtnDel btn btn-sm btn-danger"><i class="fa fa-trash"></i></button></td>';
+                cols += '<td><button type="button" class="ibtnDel btn btn-sm btn-danger"><i class="fa fa-trash-o"></i></button></td>';
                 newRow.append(cols);
                 $("table.order-list").append(newRow);
                 i++;

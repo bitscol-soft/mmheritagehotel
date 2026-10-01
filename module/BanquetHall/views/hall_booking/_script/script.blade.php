@@ -119,7 +119,7 @@
 
                         </td>
                         <td class="text-center">
-                            <a class="btn btn-xs btn-danger ibtnDel"><i class="fa fa-trash"></i></a>
+                            <a class="btn btn-xs btn-danger ibtnDel"><i class="fa fa-trash-o"></i></a>
                         </td>
                     </tr>`
 
@@ -158,7 +158,7 @@
 
                         </td>
                         <td class="text-center">
-                            <a class="btn btn-xs btn-danger ibtnDel"><i class="fa fa-trash"></i></a>
+                            <a class="btn btn-xs btn-danger ibtnDel"><i class="fa fa-trash-o"></i></a>
                         </td>
                     </tr>`
 
@@ -193,7 +193,7 @@
 
                         </td>
                         <td class="text-center">
-                            <a class="btn btn-xs btn-danger ibtnDel"><i class="fa fa-trash"></i></a>
+                            <a class="btn btn-xs btn-danger ibtnDel"><i class="fa fa-trash-o"></i></a>
                         </td>
                     </tr>`
 

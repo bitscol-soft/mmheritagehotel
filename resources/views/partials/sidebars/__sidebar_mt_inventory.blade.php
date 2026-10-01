@@ -11,7 +11,7 @@
     @if (hasPermission('resturant.inventories.index', $slugs))
         <li>
             <a href="#" class="dropdown-toggle">
-                <i class="menu-icon fad fa-warehouse"></i>
+                <i class="menu-icon fa fa-archive"></i>
                 Inventory
                 <b class="arrow fa fa-angle-down"></b>
             </a>

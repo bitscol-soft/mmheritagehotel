@@ -89,7 +89,7 @@
 
                                                 @if(hasPermission("account-purchases.delete", $slugs) && $purchase->source == 'Account')
                                                     <button type="button" onclick="delete_item(`{{ route('acc-purchases.destroy', $purchase->id) }}`)" class="btn btn-minier btn-danger" title="Delete">
-                                                        <i class="fa fa-trash"></i>
+                                                        <i class="fa fa-trash-o"></i>
                                                     </button>
                                                 @endif
                                             </div>

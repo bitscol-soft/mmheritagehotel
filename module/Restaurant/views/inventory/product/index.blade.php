@@ -110,7 +110,7 @@
                                                     </a>
                                                     <a class="btn btn-danger btn-xs" href="#"
                                                         onclick="delete_item(`{{ route('rst.products.destroy', $product->id) }}`)">
-                                                        <i class="fa fa-trash"></i>
+                                                        <i class="fa fa-trash-o"></i>
                                                     </a>
 
                                                 </div>

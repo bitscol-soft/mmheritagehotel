@@ -141,7 +141,7 @@
                                                 @endif
 
                                                 @if(hasPermission("voucher-payments.delete", $slugs))
-                                                    <button type="button" onclick="delete_item('{{ route('voucher-payments.destroy', $item->id) }}')" class="btn btn-danger btn-xs" title="Delete"><i class="fa fa-trash"></i></button>
+                                                    <button type="button" onclick="delete_item('{{ route('voucher-payments.destroy', $item->id) }}')" class="btn btn-danger btn-xs" title="Delete"><i class="fa fa-trash-o"></i></button>
                                                 @endif
                                             </div>
                                         </td>

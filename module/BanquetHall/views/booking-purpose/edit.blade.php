@@ -1,7 +1,7 @@
 @extends('layouts.master')
 @section('title', 'Edit Booking Purpose')
 @section('page-header')
-    <i class="fad fa-plus-circle"></i> Edit Booking @if (request('type') == 'purpose')
+    <i class="fa fa-plus-circle"></i> Edit Booking @if (request('type') == 'purpose')
         Purpose
     @else
         Platform

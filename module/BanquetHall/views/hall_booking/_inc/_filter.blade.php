@@ -80,7 +80,7 @@
                 <input class="form-control input-sm" value="{{ request('booking_number') }}" name="booking_number"
                     type="text" placeholder="Booking Id" autocomplete="off">
                 <span class="input-group-addon">
-                    <i class="fa fa-file-invoice bigger-110"></i>
+                    <i class="fa fa-file-text-o bigger-110"></i>
                 </span>
             </div>
         </div>

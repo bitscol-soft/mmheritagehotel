@@ -83,7 +83,7 @@
                                                         @if (hasPermission('bar.packages.delete', $slugs))
                                                             <a class="btn btn-danger btn-xs" href="javascript:void(0)"
                                                                 onclick="delete_item(`{{ route('bar.packages.destroy', $package->id) }}`)">
-                                                                <i class="fa fa-trash"></i>
+                                                                <i class="fa fa-trash-o"></i>
                                                             </a>
                                                         @endif
 

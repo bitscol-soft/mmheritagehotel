@@ -68,7 +68,7 @@ $canDelete = in_array('items.delete', $isPermitted);
                                     @if ($canDelete || $admin_id == 1)
                                         <button type="button" onclick="delete_check({{ $item_unit->id }})"
                                             class="btn btn-sm btn-danger" title="Delete">
-                                            <i class="fa fa-trash"></i>
+                                            <i class="fa fa-trash-o"></i>
                                         </button>
                                     @endif
 

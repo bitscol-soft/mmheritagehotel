@@ -164,7 +164,7 @@
                                                             <a href="#"
                                                                 onclick="delete_item(`{{ route('rst.sales.destroy', $sale->id) }}`)"
                                                                 class="btn btn-xs btn-danger">
-                                                                <i class="fa fa-trash"></i>
+                                                                <i class="fa fa-trash-o"></i>
                                                             </a>
                                                         @endif
                                                     </div>

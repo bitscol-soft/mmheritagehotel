@@ -82,7 +82,7 @@
 
                                                 @if(hasPermission('notices.delete', $slugs))
                                                     <button class="btn btn-xs btn-danger" onclick="delete_item('{{ route('notices.destroy', $notice->id) }}')" type="button">
-                                                        <i class="fa fa-trash"></i>
+                                                        <i class="fa fa-trash-o"></i>
                                                     </button>
                                                 @endif
                                             </div>

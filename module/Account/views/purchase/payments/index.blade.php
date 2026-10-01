@@ -128,7 +128,7 @@
                                     @if(hasPermission("acc_purchases.delete", $slugs))
                                     <a href="#"
                                         onclick="delete_item('{{ route('acc_purchases.destroy', $value->id) }}')"
-                                        class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
+                                        class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i></a>
                                     @endif
                                 </div>
 

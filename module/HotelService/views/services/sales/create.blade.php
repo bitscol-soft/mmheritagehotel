@@ -454,7 +454,7 @@
                                 <strong class="service-total"></strong>
                             </td>
                             <td>
-                                <button type="button" class="btn btn-danger btn-xs r-btnRemove" onclick="deleteRow(this)" ><i class="fa fa-trash" aria-hidden="true"></i></button>
+                                <button type="button" class="btn btn-danger btn-xs r-btnRemove" onclick="deleteRow(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></button>
                             </td>
                         </tr>`;
 

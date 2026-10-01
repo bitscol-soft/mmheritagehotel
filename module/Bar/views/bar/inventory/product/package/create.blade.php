@@ -333,7 +333,7 @@
                                                     </td>
                                                     <td>
                                                         <a href="javascript:void(0)" class="remove_item btn btn-danger">
-                                                            <i class="fa fa-trash"></i>
+                                                            <i class="fa fa-trash-o"></i>
                                                         </a>
                                                     </td>
                                                 </tr> --}}
@@ -385,7 +385,7 @@
                 </td>
                 <td>
                     <a href="javascript:void(0)" class="remove_item" onclick="removeItem(this)" style="color:red">
-                        <i class="fa fa-trash"></i>
+                        <i class="fa fa-trash-o"></i>
                     </a>
                 </td>
             </tr>

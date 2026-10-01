@@ -1,7 +1,7 @@
 @extends('layouts.master')
 @section('title', 'Add New BanquetHall Category')
 @section('page-header')
-    <i class="fad fa-plus-circle"></i> Add New BanquetHall Category
+    <i class="fa fa-plus-circle"></i> Add New BanquetHall Category
 @stop
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/dropzone.min.css') }}" />

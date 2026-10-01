@@ -88,7 +88,7 @@
                                                     @endif
 
                                                     @if(hasPermission('processes.delete', $slugs))
-                                                        <button class="btn btn-xs btn-danger" onclick="delete_item('{{ route('sms-apis.destroy', $api->id) }}')" type="button"><i class="fa fa-trash"></i></button>
+                                                        <button class="btn btn-xs btn-danger" onclick="delete_item('{{ route('sms-apis.destroy', $api->id) }}')" type="button"><i class="fa fa-trash-o"></i></button>
                                                     @endif
                                                 </div>
                                             </td>

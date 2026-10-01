@@ -137,13 +137,13 @@
 
                                         @if(hasPermission("create.requisitions.approve", $slugs))
                                             <a href="{{ route('unapprove.goods.requisition', $goods_requisition->id) }}" class="btn btn-xs btn-success" title="Unapprove">
-                                                <i class="fas fa-thumbs-down"></i>
+                                                <i class="fa fa-thumbs-down"></i>
                                             </a>
                                         @endif
 
                                         @if(hasPermission("create.requisitions.delete", $slugs) && $goods_requisition->is_approved == 0)
                                             <button type="button" onclick="delete_check({{ $goods_requisition->id }})" class="btn btn-xs btn-danger" title="Delete">
-                                                <i class="fa fa-trash"></i>
+                                                <i class="fa fa-trash-o"></i>
                                             </button>
                                         @endif
                                     </div>

@@ -70,7 +70,7 @@
                                                             <button type="button"
                                                                 onclick="delete_item(`{{ route('rst.suppliers.destroy', $item->id) }}`)"
                                                                 class="btn btn-sm btn-danger" title="Delete">
-                                                                <i class="fa fa-trash"></i>
+                                                                <i class="fa fa-trash-o"></i>
                                                             </button>
                                                         @endif
 

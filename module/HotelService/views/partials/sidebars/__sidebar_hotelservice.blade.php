@@ -1,7 +1,7 @@
 @if (hasPermission('hotel.services.index', $slugs))
 <li>
     <a href="#" class="dropdown-toggle">
-        <i class="menu-icon fas fa-swimming-pool"></i>
+        <i class="menu-icon fa fa-life-ring"></i>
         <span class="menu-text">H. Service</span>
         <b class="arrow fa fa-angle-down"></b>
     </a>

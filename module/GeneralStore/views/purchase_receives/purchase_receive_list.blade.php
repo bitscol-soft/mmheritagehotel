@@ -90,7 +90,7 @@
                                 @if(hasPermission('purchase.receives.delete', $slugs) && $count == 0)
 {{--                                @if(hasPermission('purchase.receives.delete', $slugs) && $purchase_receive->totalQuantity->first()->totalReceived >= $purchase_receive->totalQuantity->first()->totalRemaining)--}}
                                 <button type="button" onclick="delete_check({{ $purchase_receive->id }})" class="btn btn-xs btn-danger" title="Delete">
-                                    <i class="fa fa-trash"></i>
+                                    <i class="fa fa-trash-o"></i>
                                 </button>
                                 @endif
                             </div>

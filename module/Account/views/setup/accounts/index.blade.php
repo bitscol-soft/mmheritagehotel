@@ -91,7 +91,7 @@
                                                         @endif
 
                                                         @if(hasPermission('account.delete', $slugs))
-                                                            <a href="#" onclick="delete_item(`{{ route('accounts.destroy', $item->id) }}`)" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
+                                                            <a href="#" onclick="delete_item(`{{ route('accounts.destroy', $item->id) }}`)" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i></a>
                                                         @endif
                                                     @endif
 

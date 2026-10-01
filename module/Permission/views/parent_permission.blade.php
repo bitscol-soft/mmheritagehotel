@@ -123,7 +123,7 @@
                                             <i class="fa fa-pencil-square-o"></i>
                                         </a>
                                         <button type="button" onclick="delete_check({{ $parentPermission->id }})" class="btn btn-xs btn-danger" title="Delete">
-                                            <i class="fa fa-trash"></i>
+                                            <i class="fa fa-trash-o"></i>
                                         </button>
                                     </div>
 

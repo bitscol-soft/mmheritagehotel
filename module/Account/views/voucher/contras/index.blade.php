@@ -157,7 +157,7 @@
                                                     <button type="button"
                                                         onclick="delete_item('{{ route('voucher-contras.destroy', $item->id) }}')"
                                                         class="btn btn-danger btn-xs" title="Delete"><i
-                                                            class="fa fa-trash"></i></button>
+                                                            class="fa fa-trash-o"></i></button>
                                                 @endif
                                             </div>
                                         </td>

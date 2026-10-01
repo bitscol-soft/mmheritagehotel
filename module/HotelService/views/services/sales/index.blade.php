@@ -154,7 +154,7 @@
                                                 <button type="button"
                                                     onclick="delete_item(`{{ route('hotelservice.service-sales.destroy', $service) }}`)"
                                                     class="btn btn-xs btn-danger" title="Delete">
-                                                    <i class="fa fa-trash"></i>
+                                                    <i class="fa fa-trash-o"></i>
                                                 </button>
                                             @endif
                                         </div>

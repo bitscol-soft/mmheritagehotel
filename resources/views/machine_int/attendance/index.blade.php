@@ -163,7 +163,7 @@
 
                                                             @if(hasPermission('attendance.devices.delete', $slugs))
                                                             <button type="button" onclick="delete_check({{ $attendanceDeviceInfo->id }})" class="btn btn-minier btn-danger" title="Delete">
-                                                                <i class="fa fa-trash"></i>
+                                                                <i class="fa fa-trash-o"></i>
                                                             </button>
                                                             @endif
                                                         </div>

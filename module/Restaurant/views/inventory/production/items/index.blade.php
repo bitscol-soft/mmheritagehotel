@@ -136,7 +136,7 @@
                                             @if($item->purchase_detail_count == 0 && $item->goods_requisition_count == 0)
 
                                             <button type="button" onclick="delete_check({{ $item->id }})" class="btn btn-sm btn-danger" title="Delete">
-                                                <i class="fa fa-trash"></i>
+                                                <i class="fa fa-trash-o"></i>
                                             </button>
                                             @endif
                                         @endif

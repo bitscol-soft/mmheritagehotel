@@ -91,7 +91,7 @@
                                                         <a href="{{route('fund-transfers.edit', $item->id)}}" class="btn btn-primary btn-xs" title="Edit"><i class="fa fa-pencil"></i></a>
                                                     @endif
                                                     @if(hasPermission("fund.transfers.delete", $slugs))
-                                                        <a href="#" onclick="delete_item('{{ route('fund-transfers.destroy', $item->id) }}')" class="btn btn-danger btn-xs" title="Delete"><i class="fa fa-trash"></i></a>
+                                                        <a href="#" onclick="delete_item('{{ route('fund-transfers.destroy', $item->id) }}')" class="btn btn-danger btn-xs" title="Delete"><i class="fa fa-trash-o"></i></a>
                                                     @endif
                                                 @endif
                                             </div>

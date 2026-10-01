@@ -81,7 +81,7 @@
 
                                                 @if(hasPermission("account-sales.delete", $slugs))
                                                     <button type="button" onclick="delete_item(`{{ route('acc-sale-returns.destroy', $saleReturn->id) }}`)" class="btn btn-xs btn-danger" title="Delete">
-                                                        <i class="fa fa-trash"></i>
+                                                        <i class="fa fa-trash-o"></i>
                                                     </button>
                                                 @endif
                                             </div>

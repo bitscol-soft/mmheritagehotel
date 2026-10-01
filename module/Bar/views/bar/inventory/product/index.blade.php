@@ -121,7 +121,7 @@
                                                         @if (hasPermission('bar.products.delete', $slugs))
                                                             <a class="btn btn-danger btn-xs" href="#"
                                                                 onclick="delete_item(`{{ route('bar.products.destroy', $product->id) }}`)">
-                                                                <i class="fa fa-trash"></i>
+                                                                <i class="fa fa-trash-o"></i>
                                                             </a>
                                                         @endif
 

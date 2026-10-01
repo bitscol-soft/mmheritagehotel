@@ -150,14 +150,14 @@
                                     @else
                                         @if(hasPermission("rst.production.approve", $slugs))
                                             <a href="{{ route('unapprove.goods.requisition', $value->id) }}" class="btn btn-xs btn-success" title="Unapprove">
-                                                <i class="fas fa-thumbs-down"></i>
+                                                <i class="fa fa-thumbs-down"></i>
                                             </a>
                                         @endif
                                     @endif --}}
 
                                     @if(hasPermission("rst.production.delete", $slugs))
                                         <button type="button" onclick="delete_check({{ $value->id }})" class="btn btn-xs btn-danger" title="Delete">
-                                            <i class="fa fa-trash"></i>
+                                            <i class="fa fa-trash-o"></i>
                                         </button>
                                     @endif
                                 </div>

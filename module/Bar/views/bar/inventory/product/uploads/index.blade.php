@@ -24,7 +24,7 @@
         <div class="page-header">
 
             <button class="btn btn-xs btn-danger" onclick="delete_item(`{{ route('bar.product.upload-list.delete') }}`)"
-                style="float: right; margin: 0 2px;" type="button"> <i class="fa fa-trash"></i> Delete All From This List
+                style="float: right; margin: 0 2px;" type="button"> <i class="fa fa-trash-o"></i> Delete All From This List
             </button>
 
             <a href="{{ route('bar.products.create', ['type' => 'upload']) }}" class="btn btn-xs btn-pink"
@@ -115,7 +115,7 @@
                                                     </a>
                                                     <a class="btn btn-danger btn-xs" href="#"
                                                         onclick="delete_item(`{{ route('rst.product-uploads.destroy', $product->id) }}`)">
-                                                        <i class="fa fa-trash"></i>
+                                                        <i class="fa fa-trash-o"></i>
                                                     </a>
 
                                                 </div>

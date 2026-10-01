@@ -146,7 +146,7 @@
 
                                     @if($purchase->is_approved != 0 && count($purchase->purchase_receives) == 0 && hasPermission("purchases.approve", $slugs))
                                         <a href="{{ route('gs.unapprove.purchase', $purchase->id) }}" class="btn btn-xs btn-success" title="Unapprove Purchase" id="approveBtn{{ $purchase->id }}">
-                                            <i class="fas fa-thumbs-down"></i>
+                                            <i class="fa fa-thumbs-down"></i>
                                         </a>
                                     @endif
 
@@ -160,7 +160,7 @@
 
                                     @if(hasPermission("purchases.delete", $slugs) && $purchase->is_approved == 0)
                                         <button type="button" onclick="delete_check({{ $purchase->id }})" class="btn btn-xs btn-danger" title="Delete Purchase">
-                                            <i class="fa fa-trash"></i>
+                                            <i class="fa fa-trash-o"></i>
                                         </button>
                                     @endif
 

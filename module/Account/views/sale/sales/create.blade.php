@@ -217,7 +217,7 @@
                                                                 <span class="text-danger"> {{ $message }}</span>
                                                             @enderror
                                                         </td>
-                                                        <td class="text-center"><a class="btn btn-sm btn-danger" disabled="disabled"><i class="fa fa-trash"></i></a></td>
+                                                        <td class="text-center"><a class="btn btn-sm btn-danger" disabled="disabled"><i class="fa fa-trash-o"></i></a></td>
                                                     </tr>
                                                 @endforeach
 
@@ -267,7 +267,7 @@
                                                         <input name="subtotal[]" readonly type="text" class="form-control only-number text-right sub-total input-sm" />
                                                         
                                                     </td>
-                                                    <td class="text-center"><a class="btn btn-sm btn-danger" disabled="disabled"><i class="fa fa-trash"></i></a></td>
+                                                    <td class="text-center"><a class="btn btn-sm btn-danger" disabled="disabled"><i class="fa fa-trash-o"></i></a></td>
                                                 </tr>
                                             @endif
                                         </tbody>
@@ -453,7 +453,7 @@
                             <td>
                                 <input name="subtotal[]" readonly type="text" class="form-control only-number text-right sub-total input-sm" />
                             </td>
-                            <td class="text-center"><a class="btn btn-sm btn-danger ibtnDel"><i class="fa fa-trash"></i></a></td>
+                            <td class="text-center"><a class="btn btn-sm btn-danger ibtnDel"><i class="fa fa-trash-o"></i></a></td>
                         </tr>`
 
 

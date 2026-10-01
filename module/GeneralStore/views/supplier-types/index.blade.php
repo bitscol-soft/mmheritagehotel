@@ -115,7 +115,7 @@
                                                 @if(hasPermission('supplier.types.edit', $slugs))
                                                     <div class="btn-group btn-corner">
                                                         <a href="#edit{{ $supplierType->id }}" role="button" data-toggle="modal" class="btn btn-primary btn-minier"><i class="fa fa-pencil-square-o"></i></a>
-                                                        <button class="btn btn-minier btn-danger" onclick="delete_check({{ $supplierType->id }})" type="button"><i class="fa fa-trash"></i></button>
+                                                        <button class="btn btn-minier btn-danger" onclick="delete_check({{ $supplierType->id }})" type="button"><i class="fa fa-trash-o"></i></button>
                                                     </div>
                                                 @endif
 

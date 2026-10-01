@@ -142,7 +142,7 @@
                                                     <a href="#"
                                                         onclick="delete_item('{{ route('voucher-journals.destroy', $item->id) }}')"
                                                         class="btn btn-danger btn-xs" title="Delete"><i
-                                                            class="fa fa-trash"></i></a>
+                                                            class="fa fa-trash-o"></i></a>
                                                 @endif
                                             </div>
                                         </td>

@@ -299,7 +299,7 @@
                                                                 <th>
                                                                     <p class="font-18 medium">Total Payable</p>
                                                                 </th>
-                                                                <th><i class="fal fa-arrow-right"></i></th>
+                                                                <th><i class="fa fa-arrow-right"></i></th>
                                                                 <th class="text-right">
                                                                     <p class="font-18 bold payable-amount">{{ number_format($current_due_amount = $transactions->sum('due_amount') + $transactions->sum('change_amount'), 2 ?? 0) }}</p>
                                                                 </th>
@@ -308,7 +308,7 @@
                                                                 <th>
                                                                     <p class="font-18 medium">Discount</p>
                                                                 </th>
-                                                                <th><i class="fal fa-arrow-right"></i></th>
+                                                                <th><i class="fa fa-arrow-right"></i></th>
                                                                 <th class="text-right">
                                                                     <p class="font-18 bold">
                                                                         <input class="discount only-number input-sm text-right font-18 bold" type="text" min="0" step="any" value="0">
@@ -319,7 +319,7 @@
                                                                 <th>
                                                                     <p class="font-18 medium">Paid Amount</p>
                                                                 </th>
-                                                                <th><i class="fal fa-arrow-right"></i></th>
+                                                                <th><i class="fa fa-arrow-right"></i></th>
                                                                 <th class="text-right">
                                                                     <p class="font-18 bold">
                                                                         <input name="total_paid_amount" class="paid-amount only-number input-sm text-right font-18 bold" type="text" min="0" step="any" value="0">
@@ -330,7 +330,7 @@
                                                                 <th>
                                                                     <p class="font-18 medium">Current Due</p>
                                                                 </th>
-                                                                <th><b><i class="fal fa-arrow-right"></i></b></th>
+                                                                <th><b><i class="fa fa-arrow-right"></i></b></th>
                                                                 <th class="text-right">
                                                                     <input id="get-due" name="total_due_amount" type="hidden" value="{{ $current_due_amount }}">
                                                                     <p class="current-due font-18 bold">{{ number_format($current_due_amount, 2) }}</p>
@@ -340,7 +340,7 @@
                                                                 <th>
                                                                     <p class="font-18 medium">Payment Type</p>
                                                                 </th>
-                                                                <th><i class="fal fa-arrow-right"></i></th>
+                                                                <th><i class="fa fa-arrow-right"></i></th>
                                                                 <th class="payment-type-th">
                                                                     <select class="form-control chosen-select" name="payment_type"
                                                                         data-placeholder="- Choose Type -">
@@ -370,7 +370,7 @@
 
                                                             <div class="col-md-12 text-right">
                                                                 <button class="btn-outline-success btn-sm" type="submit">
-                                                                    <i class="fas fa-money-bill"></i>
+                                                                    <i class="fa fa-money"></i>
                                                                     Payment
                                                                 </button>
                                                             </div>

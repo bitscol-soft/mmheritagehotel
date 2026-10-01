@@ -225,11 +225,11 @@
                             <div class="btn-group btn-cro pull-right me-2">
                                 <button type="button" name="type" value="reserve" onclick="submitBookingForm()"
                                     class="updateBookingBtn btn-outline-primary btn-sm next-step-btn no-border">
-                                    <i class="fad fa-box-check"></i> Reserve
+                                    <i class="fa fa-bookmark"></i> Reserve
                                 </button>
                                 <button type="button" name="type" value="book" onclick="submitBookingForm()"
                                     class="updateBookingBtn btn-outline-info btn-sm next-step-btn no-border">
-                                    <i class="fal fa-paper-plane"></i> Book Now
+                                    <i class="fa fa-paper-plane"></i> Book Now
                                 </button>
                                 <button class="btn-sm btn-outline-danger" type="Reset">
                                     <i class="fa fa-refresh"></i> Reset

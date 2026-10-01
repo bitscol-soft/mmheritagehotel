@@ -211,7 +211,7 @@
                                                             @enderror
                                                         </td>
                                                         <td class="text-center"><a class="btn btn-sm btn-danger"
-                                                                disabled="disabled"><i class="fa fa-trash"></i></a></td>
+                                                                disabled="disabled"><i class="fa fa-trash-o"></i></a></td>
                                                     </tr>
                                                 @endforeach
                                             @else
@@ -254,7 +254,7 @@
                                                         @enderror
                                                     </td>
                                                     <td class="text-center"><a class="btn btn-sm btn-danger"
-                                                            disabled="disabled"><i class="fa fa-trash"></i></a></td>
+                                                            disabled="disabled"><i class="fa fa-trash-o"></i></a></td>
                                                 </tr>
                                                 <tr>
                                                     <td class="count"></td>
@@ -296,7 +296,7 @@
                                                         @enderror
                                                     </td>
                                                     <td class="text-center"><a class="btn btn-sm btn-danger"
-                                                            disabled="disabled"><i class="fa fa-trash"></i></a></td>
+                                                            disabled="disabled"><i class="fa fa-trash-o"></i></a></td>
                                                 </tr>
                                             @endif
                                         </tbody>
@@ -403,7 +403,7 @@
                             <td>
                                 <input name="credit[]" type="text" onkeypress="return checkOnlyNumber(event)" onclick="enableMe(this)" onkeyup="disabledReverse('input-debit', this)" class="form-control text-right input-credit calculate-total input-sm" />
                             </td>
-                            <td><a class="ibtnDel btn btn-sm btn-danger"><i class="fa fa-trash"></i></a></td>
+                            <td><a class="ibtnDel btn btn-sm btn-danger"><i class="fa fa-trash-o"></i></a></td>
                         </tr>`
 
         jQuery(function($) {

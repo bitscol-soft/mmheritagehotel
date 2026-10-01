@@ -147,7 +147,7 @@
                                                 <input name="credit[]" value="{{ old('credit') ?: '0' }}" type="text" onkeypress="return onlyNumber(event)" onclick="enableMe(this)" onkeyup="disabledReverse('input-debit', this)" class="form-control text-right input-credit calculate-total input-sm" />
                                             @endif
                                             </td>
-                                            <td class="text-center"><a class="ibtnDel btn btn-sm btn-danger"><i class="fa fa-trash"></i></a></td>
+                                            <td class="text-center"><a class="ibtnDel btn btn-sm btn-danger"><i class="fa fa-trash-o"></i></a></td>
                                         </tr>
                                         @endforeach
                                     </tbody>
@@ -267,7 +267,7 @@
                                 <span class="text-danger"> {{ $message }}</span>
                             @enderror
                         </td>
-                        <td><a class="ibtnDel btn btn-sm btn-danger"><i class="fa fa-trash"></i></a></td>
+                        <td><a class="ibtnDel btn btn-sm btn-danger"><i class="fa fa-trash-o"></i></a></td>
                     </tr>`
 
     jQuery(function($) {

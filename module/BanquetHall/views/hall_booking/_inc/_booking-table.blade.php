@@ -105,7 +105,7 @@
                             @if ($data->status == 0 || $data->status == 2)
                                 <a href="#check-in{{ $data->id }}" role="button" data-toggle="modal"
                                     class="btn btn-xs btn-pink" title="Check IN">
-                                    {{-- <i class="far fa-check-square"></i> --}}
+                                    {{-- <i class="fa fa-check-square"></i> --}}
                                     <i class="fa fa-check-square"></i>
                                 </a>
 
@@ -140,7 +140,7 @@
                             @if ($data->booking_type != 'Bulk')
                                 <button type="button" onclick="showExtendDateModal({{ $data->id }})"
                                     class="btn btn-xs btn-info extend-date-btn" title="Extend Checkout Date">
-                                    <i class="fas fa-calendar-alt"></i>
+                                    <i class="fa fa-calendar"></i>
                                 </button>
                             @endif --}}
                         @endif
@@ -159,7 +159,7 @@
                         {{-- @if ($data->status == 3) --}}
                         <a href="{{ route('banquet.generate.invoice-v2', $data->id) }}" target="_blank"
                             class="btn btn-xs btn-success" title="Invoice">
-                            <i class="far fa-print"></i>
+                            <i class="fa fa-print"></i>
                         </a>
                         {{-- @endif --}}
 
@@ -167,7 +167,7 @@
                         <!------- RESERVATION INVOICE ------->
                         <a href="{{ route('banquet.generate.reservation-invoice', $data->id) }}"
                             class="btn btn-xs btn-success" title="Reservation Confirmation" target="_blank">
-                            <i class="far fa-receipt"></i>
+                            <i class="fa fa-file-text-o"></i>
                         </a>
 
 
@@ -179,7 +179,7 @@
                         <button type="button"
                                 onclick="dueCollection(`{{ route('banquet.due-collection', $data->id) }}`, this, `{{ calculateCurrencyAmount($sub_total - $paid_amount, 1) }}`)"
                                 class="btn btn-xs btn-info" title="Due Collection">
-                                <i class="fas fa-usd-circle"></i>
+                                <i class="fa fa-dollar"></i>
                             </button>
                         @endif
 
@@ -189,7 +189,7 @@
                             <button type="button"
                                 onclick="showExtraChargeModal(this, {{ $data->id }}, '{{ $data->booking_number }}')"
                                 class="btn btn-xs btn-info extra-charge-btn" title="Extra Charge">
-                                <i class="fas fa-money-check-edit-alt"></i>
+                                <i class="fa fa-money"></i>
                             </button>
                         @endif --}}
 
@@ -198,7 +198,7 @@
                             <button type="button"
                                 onclick="delete_item(`{{ route('banquet.booking.destroy', $data->id) }}`)"
                                 class="btn btn-xs btn-danger" title="Delete">
-                                <i class="far fa-trash-alt"></i>
+                                <i class="fa fa-trash-o"></i>
                             </button>
                         @endif
                     </div>

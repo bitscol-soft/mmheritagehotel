@@ -477,7 +477,7 @@
                     </td>
                     <td>
                         <button type="button" class="btn btn-sm btn-danger remove-exchange-product-btn">
-                            <i class="fa fa-trash"></i>
+                            <i class="fa fa-trash-o"></i>
                         </button>
                     </td>
                 </tr>

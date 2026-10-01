@@ -52,7 +52,7 @@
                                     <i class="fa fa-pencil-square-o"></i>
                                 </a>
                                 <button type="button" onclick="delete_item(`{{ route('website-core.gallery.destroy',$item->id)}}`)" class="btn btn-xs btn-sm btn-danger" title="Delete">
-                                    <i class="fa fa-trash"></i>
+                                    <i class="fa fa-trash-o"></i>
                                 </button>
                             </div>
 

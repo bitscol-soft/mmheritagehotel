@@ -86,7 +86,7 @@
                                                 <div class="btn-group">
                                                     <a href="{{ route('rst.stock-adjustment.delete', $purchase->id) }}"
                                                         class="btn btn-xs btn-danger deletable">
-                                                        <i class="fa fa-trash"></i>
+                                                        <i class="fa fa-trash-o"></i>
                                                     </a>
                                                 </div>
                                                 {{-- {{ route('rst.stock-adjustment.edit', $purchase->id) }} --}}
@@ -95,11 +95,11 @@
                                                         disabled=""> <i class="fa fa-check-circle"></i></button>
                                                     {{-- <a href="{{ route('rst.stock-adjustment.edit', $purchase->id) }}"
                                                         class="btn btn-xs btn-warning" title="Pending"><i
-                                                            class="fa fa-clock"></i></a> --}}
+                                                            class="fa fa-clock-o"></i></a> --}}
                                                 @elseif($purchase->current_status == 'Pending')
                                                     <a href="{{ route('rst.stock-adjustment.edit', $purchase->id) }}"
                                                         class="btn btn-xs btn-warning" title="Pending"><i
-                                                            class="fa fa-clock"></i></a>
+                                                            class="fa fa-clock-o"></i></a>
                                                 @endif
 
                                             </td>

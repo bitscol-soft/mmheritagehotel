@@ -75,7 +75,7 @@
                                 colspan="30">
                                 <div class="product">
                                     <div class="">
-                                        <strong class="text-danger"><i class="fas fa-exclamation-triangle"></i> No
+                                        <strong class="text-danger"><i class="fa fa-exclamation-triangle"></i> No
                                             records found !</strong>
                                         <p onclick="addRow()" class="card-overlay pointer">
                                             {{-- <i class="fa fa-plus-circle"></i> --}}
@@ -245,7 +245,7 @@
                                 <i class="fa fa-check-circle"></i> Save
                             </button>
                             <button class="btn btn-purple btn-sm save-sale" type="button" name="submit" name="save_print">
-                                <i class="fad fa-file-pdf"></i> Save & Print
+                                <i class="fa fa-file-pdf-o"></i> Save & Print
                             </button>
                             <button class="btn btn-success btn-sm payment-btn" type="button" name="submit" name="payment">
                                 <i class="fa fa-dollar"></i> Payment

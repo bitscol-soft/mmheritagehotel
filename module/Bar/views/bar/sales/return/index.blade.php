@@ -132,7 +132,7 @@
                                                         <a href="#"
                                                             onclick="delete_item(`{{ route('bar.sale-returns.destroy', $sale->id) }}`)"
                                                             class="btn btn-xs btn-danger">
-                                                            <i class="fa fa-trash"></i>
+                                                            <i class="fa fa-trash-o"></i>
                                                         </a>
                                                     </div>
 

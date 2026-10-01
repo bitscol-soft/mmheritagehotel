@@ -224,7 +224,7 @@
                                                             @enderror
                                                         </td>
                                                         <td class="text-center"><a class="btn btn-sm btn-danger"
-                                                                disabled="disabled"><i class="fa fa-trash"></i></a></td>
+                                                                disabled="disabled"><i class="fa fa-trash-o"></i></a></td>
                                                     </tr>
                                                 @endforeach
                                             @else
@@ -266,7 +266,7 @@
                                                         @enderror
                                                     </td>
                                                     <td class="text-center"><a class="btn btn-sm btn-danger"
-                                                            disabled="disabled"><i class="fa fa-trash"></i></a></td>
+                                                            disabled="disabled"><i class="fa fa-trash-o"></i></a></td>
                                                 </tr>
                                                 <tr>
                                                     <td class="count text-center"></td>
@@ -306,7 +306,7 @@
                                                         @enderror
                                                     </td>
                                                     <td class="text-center"><a class="btn btn-sm btn-danger"
-                                                            disabled="disabled"><i class="fa fa-trash"></i></a></td>
+                                                            disabled="disabled"><i class="fa fa-trash-o"></i></a></td>
                                                 </tr>
                                             @endif
                                         </tbody>
@@ -451,7 +451,7 @@
                                     <span class="text-danger"> {{ $message }}</span>
                                 @enderror
                             </td>
-                            <td><a class="ibtnDel btn btn-sm btn-danger"><i class="fa fa-trash"></i></a></td>
+                            <td><a class="ibtnDel btn btn-sm btn-danger"><i class="fa fa-trash-o"></i></a></td>
                         </tr>`
 
 

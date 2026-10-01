@@ -14,10 +14,10 @@
     <div class="row">
         <div class="col-12">
             <div class="breadcrumbs ace-save-state" id="breadcrumbs">
-                <h4 class="pl-2"><i class="far fa-plus-circle"></i> @yield('title')</h4>
+                <h4 class="pl-2"><i class="fa fa-plus-circle"></i> @yield('title')</h4>
 
                 <ul class="breadcrumb mb-1">
-                    <li><a href="{{ route('home') }}"><i class="ace-icon far fa-home-lg-alt"></i></a></li>
+                    <li><a href="{{ route('home') }}"><i class="ace-icon fa fa-home"></i></a></li>
                     <li><a class="text-muted" href="{{ route('inv.purchases.index') }}">Stock Adjsutment</a></li>
                     <li>Create</li>
                 </ul>
@@ -158,7 +158,7 @@
                                             <tr>
                                                 <td colspan="9" class="text-center">
                                                     {{-- <a href="javascript:void(0)" type="button" class="btn btn-xs btn-block btn-light" style="color: #0084db !important" id="addrow">
-                                                        <i class="fas fa-plus-circle"></i> ADD MORE
+                                                        <i class="fa fa-plus-circle"></i> ADD MORE
                                                     </a> --}}
                                                 </td>
                                             </tr>

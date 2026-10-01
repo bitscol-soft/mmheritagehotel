@@ -32,7 +32,7 @@
             <div class="widget-box">
                 <div class="widget-header">
 
-                    <h4 class="widget-title"> <i class="fad fa-plus-circle"></i>  @yield('page-header')</h4>
+                    <h4 class="widget-title"> <i class="fa fa-plus-circle"></i>  @yield('page-header')</h4>
 
                     @if (hasPermission('bar.purchases.index', $slugs))
                         <span class="widget-toolbar">

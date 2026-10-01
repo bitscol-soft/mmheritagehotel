@@ -7,10 +7,10 @@
     <div class="row">
         <div class="col-12">
             <div class="breadcrumbs ace-save-state" id="breadcrumbs">
-                <h4 class="pl-2"><i class="far fa-edit"></i> @yield('title')</h4>
+                <h4 class="pl-2"><i class="fa fa-edit"></i> @yield('title')</h4>
 
                 <ul class="breadcrumb mb-1">
-                    <li><a href="{{ route('home') }}"><i class="ace-icon far fa-home-lg-alt"></i></a></li>
+                    <li><a href="{{ route('home') }}"><i class="ace-icon fa fa-home"></i></a></li>
                     <li><a class="text-muted" href="">Stock Adjustment</a></li>
                     <li>{{ $stockAdjustment->invoice_no }}</li>
                 </ul>
@@ -44,7 +44,7 @@
                         </div>
                         {{-- <div class="btn-group" style="float: right">
                             <a class="btn btn-sm btn-info" href="{{ route('rst.stock-adjustment.index') }}"> <i
-                                    class="fa fa-clock"></i> Pending </a>
+                                    class="fa fa-clock-o"></i> Pending </a>
                         </div> --}}
 
 

@@ -455,7 +455,7 @@
                                                 <i class="fa fa-refresh"></i> Close
                                             </button>
                                             <button type="button" class="btn-sm btn-outline-success save-btn">
-                                                <i class="fal fa-check-double"></i>
+                                                <i class="fa fa-check-circle"></i>
                                                 Generate
                                             </button>
                                         </div>
@@ -528,7 +528,7 @@
                 previous: 'fa fa-chevron-left',
                 next: 'fa fa-chevron-right',
                 today: 'fa fa-arrows ',
-                clear: 'fa fa-trash',
+                clear: 'fa fa-trash-o',
                 close: 'fa fa-times'
             }
         }).next().on(ace.click_event, function() {

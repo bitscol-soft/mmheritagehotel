@@ -97,7 +97,7 @@
                                             <i class="fa fa-pencil-square-o"></i>
                                         </a>
                                         <button type="button" onclick="delete_check({{ $setting->id }})" class="btn btn-sm btn-danger" title="Delete">
-                                            <i class="fa fa-trash"></i>
+                                            <i class="fa fa-trash-o"></i>
                                         </button>
                                     </div>
 

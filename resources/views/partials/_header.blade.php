@@ -130,7 +130,7 @@
                     <!-- Rst Sale -->
                     <li class="light-10 colorful-border" title="Rst Sale">
                         <a href="{{ route('rst.sales-v2.create') }}">
-                            <i class="fa fa-2x fas fa-utensils dark" style="margin-top: 7px;">
+                            <i class="fa fa-2x fa fa-cutlery dark" style="margin-top: 7px;">
                                 RST
                             </i>
                         </a>
@@ -139,7 +139,7 @@
                     <!-- Bar Sale -->
                     <li class="light-10 colorful-border" title="Bar Sale">
                         <a href="{{ route('bar.sales-v2.create') }}">
-                            <i class="fa-2x fas fa-glass-cheers dark" style="margin-top: 7px;">
+                            <i class="fa-2x fa fa-glass dark" style="margin-top: 7px;">
                                 BAR
                             </i>
                         </a>

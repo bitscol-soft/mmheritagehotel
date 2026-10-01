@@ -92,7 +92,7 @@
                                     Room Wise Pricing & Booking
                                     <div class="mt-1"
                                         style="background: #ffe4e4; padding: 7px; color: #7b0000; border-radius: 5px">
-                                        <i class="far fa-info-circle"></i> NOTE <br>
+                                        <i class="fa fa-info-circle"></i> NOTE <br>
                                         <div class="ml-0.2">
                                             <small>Create Room With Room Wise Priceing</small><br>
                                             <small>Create Booking Room Wise Priceing</small>
@@ -102,7 +102,7 @@
                                     Only Category Wise Booking
                                     <div class="mt-0.2"
                                         style="background: #ffe4e4; padding: 5px; color: #7b0000; border-radius: 5px">
-                                        <i class="far fa-info-circle"></i> NOTE <br>
+                                        <i class="fa fa-info-circle"></i> NOTE <br>
                                         <div class="ml-1">
                                             <small>Only Category Select Booking</small><br>
                                             <small>Room Choose And Set After Booked</small>
@@ -132,7 +132,7 @@
                                     Is VAT Included Hotel & Restaurant?
                                     {{-- <div class="mt-0.2"
                                         style="background: #ffe4e4; padding: 5px; color: #7b0000; border-radius: 5px">
-                                        <i class="far fa-info-circle"></i> NOTE <br>
+                                        <i class="fa fa-info-circle"></i> NOTE <br>
                                         <div class="ml-1">
                                             <small>Demo 1</small><br>
                                             <small>Demo 2</small>

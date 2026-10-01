@@ -10,7 +10,7 @@
 @if (hasAnyPermission([$banner, $feature, $galleries, $about, $privacy, $setting ], $slugs))
     <li>
         <a href="#" class="dropdown-toggle">
-            <i class="menu-icon fas fa-globe"></i>
+            <i class="menu-icon fa fa-globe"></i>
             <span class="menu-text">Website CMS</span>
             <b class="arrow fa fa-angle-down"></b>
         </a>

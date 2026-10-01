@@ -189,7 +189,7 @@
                                                 <div class="input-group-btn">
                                                     <button class="btn-outline-info btn-sm next-step-btn no-border"
                                                         type="button" id="checkRoomStatus">
-                                                        <i class="fal fa-paper-plane"></i> Search
+                                                        <i class="fa fa-paper-plane"></i> Search
                                                     </button>
                                                 </div>
                                             </div>
@@ -266,7 +266,7 @@
 
                                 <div class="col-xs-12 col-sm-12 text-right mt-2">
                                     <button class="btn-sm btn-outline-success submit-form-btn" type="button">
-                                        <i class="fad fa-box-check"></i> Book Now
+                                        <i class="fa fa-bookmark"></i> Book Now
                                     </button>
                                 </div>
 
