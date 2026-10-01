@@ -701,3 +701,80 @@ foreach (['guests/invoice', 'hotel/reports/night-closing/invoice'] as $hmDoc) {
     if (strpos($hmCompiled, 'inv-screen-bar') === false || strpos($hmCompiled, 'window.print()') === false) throw new RuntimeException($hmDoc . ' lost its screen-only bar');
 }
 echo "PASS remaining hotel screens render: SMS, night audit detail, monthly calendar, booking migration\n";
+
+// Render the Hotel Service screens: service list with its modals, sales list with the due-payment modal, new sale, sale invoice, night audit list and the printable night audit.
+// Layout, permissions, currency/date helpers and the app components are substituted; the real views and the shared export partial render.
+if (!function_exists('mm_bdt')) { function mm_bdt($amount) { return 'Taka ' . number_format((float) $amount) . ' only'; } }
+if (!function_exists('mm_pay')) { function mm_pay() { return '1,000'; } }
+if (!class_exists('MmHsPage')) {
+    class MmHsPage implements Countable, IteratorAggregate {
+        private $items;
+        public function __construct($items) { $this->items = array_values($items); }
+        public function count(): int { return count($this->items); }
+        public function getIterator(): Iterator { return new ArrayIterator($this->items); }
+        public function firstItem() { return count($this->items) ? 1 : null; }
+        public function appends($query) { return $this; }
+        public function render() { return new Illuminate\Support\HtmlString('<ul class="pagination"><li class="active"><span>1</span></li><li><a href="#">2</a></li></ul>'); }
+    }
+    class MmHsAudit {
+        public function __construct($fields) { foreach ($fields as $k => $v) $this->$k = $v; }
+        public function first() { return $this; }
+    }
+}
+$hsSubst = function ($file) use ($root, $rpNoRecord, $rpExport, $rpPaginate) {
+    $source = file_get_contents($root . '/module/HotelService/views/' . $file . '.blade.php');
+    $source = str_replace(["@extends('layouts.master')", '<x-alert-message />', "@include('partials._alert_message')", '<x-export-button pdf="1" excel="1" />', '<x-paginate :data="$nightaudits" />', '<x-no-table-record />', 'calculateCurrencyAmount(', "date('Y-m-d')", 'BDT(', '= amount(', "route('hotelservice.service-sales.show', \$service)", "route('hotelservice.service-sales.destroy', \$service)"],
+        ["@extends('mm-checkout-layout')", '', '', $rpExport, $rpPaginate, $rpNoRecord, 'mm_cur(', "'2026-10-01'", 'mm_bdt(', '= mm_amount(', "route('hotelservice.service-sales.show', \$service->id)", "route('hotelservice.service-sales.destroy', \$service->id)"], $source);
+    $source = preg_replace(['/getTotalPaymentAmount\([^)]*\)/', '/hasPermission\([^)]*\)/'], ['mm_pay()', 'true'], $source);
+    if (preg_match('/calculateCurrencyAmount|getTotalPayment|x-paginate|x-export-button|x-no-table-record|hasPermission\(|[^_\w]BDT\(|[^_\w]amount\(/', $source)) throw new RuntimeException('Unsubstituted helper in Hotel Service view ' . $file);
+    return $source;
+};
+foreach (['services/category/index', 'services/category/add-modal', 'services/category/edit-modal', 'services/sales/index', 'services/sales/due-payment-modal', 'services/sales/create', 'services/sales/show', 'hotel-service-night-audits/index', 'hotel-service-night-audits/details', 'hotel-service-night-audits/export/excel', 'hotel-service-night-audits/invoice'] as $hsvView) {
+    @mkdir(dirname($coViews . '/' . $hsvView), 0777, true);
+    file_put_contents($coViews . '/' . $hsvView . '.blade.php', $hsSubst($hsvView));
+}
+$hsvRoutes = new Illuminate\Routing\RouteCollection();
+foreach (['hotelservice.services.store' => 'POST hotelservice/services', 'hotelservice.services.update' => 'PUT hotelservice/services/{id}', 'hotelservice.services.destroy' => 'DELETE hotelservice/services/{id}', 'hotelservice.service-sales.index' => 'GET hotelservice/service-sales', 'hotelservice.service-sales.create' => 'GET hotelservice/service-sales/create', 'hotelservice.service-sales.store' => 'POST hotelservice/service-sales', 'hotelservice.service-sales.show' => 'GET hotelservice/service-sales/{id}', 'hotelservice.service-sales.destroy' => 'DELETE hotelservice/service-sales/{id}', 'hotelservice.service-due-receive' => 'PUT hotelservice/service-due-receive/{id}', 'hotelservice.night-audits.index' => 'GET hotelservice/night-audit', 'hotelservice.night-audits.show' => 'GET hotelservice/night-audit-show/{id}'] as $hsvName => $hsvDef) {
+    [$hsvMethod, $hsvUri] = explode(' ', $hsvDef);
+    $hsvRoutes->add((new Illuminate\Routing\Route($hsvMethod, $hsvUri, function () {}))->name($hsvName));
+}
+$hsvGuest = (object) ['id' => 12, 'name' => 'Rahim <b>Uddin</b>', 'phone_no' => '01700000000', 'address' => 'Dhaka', 'country' => (object) ['name' => 'Bangladesh']];
+$hsvSale = function ($id, $invoice, $subtotal, $discount, $paid, $payable) use ($hsvGuest) { return (object) ['id' => $id, 'invoice_no' => $invoice, 'subtotal' => $subtotal, 'discount' => $discount, 'paid_amount' => $paid, 'payable_amount' => $payable, 'hotel_guest' => $hsvGuest, 'guest_name' => 'Walk-in']; };
+$hsvTx = function ($invoice, $total, $paid) { return (object) ['total_amount' => 0, 'collection' => 0, 'due' => 0, 'transaction' => (object) ['invoice_no' => $invoice, 'source_type' => 'Hotel Service Sale', 'total_amount' => $total, 'collection' => $paid, 'due_amount' => $total - $paid, 'account' => (object) ['name' => 'Cash']], 'total_collection' => $paid, 'total_due' => $total - $paid]; };
+$hsvAudit = new MmHsAudit(['id' => 9, 'date' => '2026-09-30', 'total_check_in' => 2, 'total_check_out' => 1, 'total_reservation' => 3, 'total_cancelled' => 0, 'total_cancel' => 0, 'total_room' => 7, 'total_dirty_room' => 4, 'restourantCount' => 2, 'details' => collect([$hsvTx('0301', 1200, 1200), $hsvTx('0302', 800, 300)])]);
+$hsvAudit2 = new MmHsAudit(['id' => 8, 'date' => '2026-09-29', 'total_check_in' => 1, 'total_check_out' => 2, 'total_reservation' => 1, 'total_cancelled' => 1, 'total_cancel' => 1, 'total_room' => 5, 'total_dirty_room' => 2, 'restourantCount' => 1, 'details' => collect([$hsvTx('0299', 500, 500)])]);
+$hsvCases = [
+    'services' => ['services.category.index', '/hotelservice/services', ['services' => new MmHsPage([(object) ['id' => 1, 'name' => 'Laundry <b>x</b>', 'price' => 350, 'created_at' => '2026-09-01 10:00:00', 'updated_at' => '2026-09-02 11:30:00'], (object) ['id' => 2, 'name' => 'Airport pickup', 'price' => 1500, 'created_at' => '2026-09-03 09:00:00', 'updated_at' => '2026-09-03 09:00:00']])],
+        ['mm-hotel-setup', 'mm-hs-services', 'id="data-table"', 'data-toggle="modal"', 'href="#modal-dialog"', 'href="#modal-dialog2"', 'id="modal-dialog"', 'id="modal-dialog1"', 'id="modal-dialog2"', 'name="name"', 'name="price"', 'name="_method" value="PUT"', 'delete_item(', 'Airport pickup', 'Laundry &lt;b&gt;x&lt;/b&gt;'], ['widget-box', 'widget-main', 'widget-header', 'Laundry <b>x</b>']],
+    'sales' => ['services.sales.index', '/hotelservice/service-sales?invoice_no=0301', ['account_types' => collect([1 => 'Cash', 2 => 'Card']), 'services' => new MmHsPage([$hsvSale(1, '0301', 1200, 0, 1200, 1200), $hsvSale(2, '0302', 1000, 200, 300, 800)])],
+        ['mm-hotel-service', 'name="invoice_no"', 'name="customer_id"', 'value="0301"', 'id="exampleModal"', 'id="payment-form"', 'name="previous_due"', 'id="previous-due"', 'id="payable-amount"', 'id="current-due"', 'name="is_from_due_collection"', 'onclick="payment(', 'PAID', 'delete_item(', 'class="pagination"', 'Total Amount', '2,200.00', '500.00'], ['widget-box', 'widget-main', 'widget-header', 'Rahim <b>Uddin</b>']],
+    'sale-create' => ['services.sales.create', '/hotelservice/service-sales/create', [],
+        ['mm-hotel-service', 'id="invForm"', 'name="guest_name"', 'id="guest_name"', 'name="hotel_guest_id"', 'name="hotel_room_id"', 'name="room_number"', 'name="hotel_booking_id"', 'name="booking_number"', 'id="invoice_id"', 'name="date"', 'id="table_auto"', 'class="container"', 'onclick="addItem()"', 'name="subtotal"', 'id="subTotal"', 'name="discount"', 'id="discount"', 'name="payable_amount"', 'id="payable_amount"', 'name="paid_amount"', 'id="amountPaid"', 'name="due_amount"', 'id="amountDue"', 'onclick="submitForm()"', 'function addItem(', 'class="repeat-group"'], ['widget-box', 'widget-main', 'widget-header']],
+    'sale-show' => ['services.sales.show', '/hotelservice/service-sales/1', ['invoice' => (object) ['id' => 1, 'invoice_no' => '0301', 'invoice_date' => '2026-09-30', 'subtotal' => 1200, 'discount' => 100, 'paid_amount' => 1100, 'payable_amount' => 1100, 'company' => (object) ['name' => 'MM Heritage', 'head_office' => 'Dhaka', 'phone_number' => '017', 'email' => 'hi@example.com'], 'hotel_guest' => $hsvGuest, 'user' => (object) ['name' => 'Front desk'],
+            'saleItems' => collect([(object) ['price' => 350, 'quantity' => 2, 'service' => (object) ['name' => 'Laundry']], (object) ['price' => 500, 'quantity' => 1, 'service' => (object) ['name' => 'Airport pickup']]])]],
+        ['mm-invoice-page', 'id="print_body"', 'printPage(', 'Hotel service invoice', 'Guest\'s Information', '0301', 'Laundry', 'Airport pickup', '700.00', 'Taka 1,100 only', 'Received By', 'Prepared By'], ['widget-box', 'widget-main', 'widget-header']],
+    'audits' => ['hotel-service-night-audits.index', '/hotelservice/night-audit?from_date=2026-09-29', ['nightaudits' => collect([$hsvAudit, $hsvAudit2]), 'paginate' => 1, 'account_types' => collect([1 => 'Cash'])],
+        ['mm-hs-audit', 'name="from_date"', 'name="to_date"', 'id="data-table"', 'id="my_Modal9"', 'id="my_Modal8"', 'data-target="#my_Modal9"', 'class="pagination"', 'Cash Sale Amount', 'Total Collection', 'night-audit-show/'], ['widget-box', 'widget-main', 'widget-header']],
+    'audit-invoice' => ['hotel-service-night-audits.invoice', '/hotelservice/night-audit-show/2026-09-30?date=2026-09-30', ['audits' => collect([$hsvAudit, $hsvAudit2]), 'company' => (object) ['name' => 'MM Heritage', 'head_office' => 'Dhaka', 'phone_number' => '017', 'email' => 'hi@example.com', 'logo' => 'logo.png'], 'account_types' => collect([1 => 'Cash'])],
+        ['inv-screen-bar', 'Print again', 'window.print()', 'display: none !important', 'Hotel Service Night Audit/ Day Closing Report', 'INV-0301', 'HOTEL SERVICE SALE'], []],
+];
+@mkdir(__DIR__ . '/fixtures/hotel-service', 0777, true);
+foreach ($hsvCases as $hsvName => [$hsvViewName, $hsvUrl, $hsvData, $hsvMarkers, $hsvAbsent]) {
+    $hsvRequest = Illuminate\Http\Request::create($hsvUrl);
+    $hsvRequest->setLaravelSession(new Illuminate\Session\Store('mm', new Illuminate\Session\ArraySessionHandler(10)));
+    $app->instance('request', $hsvRequest);
+    $app->instance('url', new Illuminate\Routing\UrlGenerator($hsvRoutes, $hsvRequest));
+    $hsvHtml = $app->make('view')->make($hsvViewName, array_merge(['errors' => new Illuminate\Support\ViewErrorBag(), 'slugs' => []], $hsvData))->render();
+    $hsvHtml = preg_replace('/(name="_token" value=")[A-Za-z0-9]+"/', '$1fixture-csrf-token"', str_replace('http://localhost/assets', '/assets', $hsvHtml));
+    foreach (array_merge($hsvName === 'audit-invoice' ? [] : ['mm-panel', 'mm-page-title'], $hsvMarkers) as $hsvMarker) {
+        if (strpos($hsvHtml, $hsvMarker) === false) throw new RuntimeException('Hotel Service screen ' . $hsvName . ' missing ' . $hsvMarker);
+    }
+    foreach ($hsvAbsent as $hsvMarker) {
+        if (strpos($hsvHtml, $hsvMarker) !== false) throw new RuntimeException('Hotel Service screen ' . $hsvName . ' still contains ' . $hsvMarker);
+    }
+    if (strpos($hsvHtml, '<b>Warning</b>') !== false || strpos($hsvHtml, '<b>Notice</b>') !== false) throw new RuntimeException('Hotel Service screen ' . $hsvName . ' sample data is incomplete (PHP warning in output)');
+    $hsvFile = __DIR__ . '/fixtures/hotel-service/' . $hsvName . '.html';
+    if (getenv('MM_WRITE_FIXTURE')) { file_put_contents($hsvFile, $hsvHtml); if ($hsvName !== 'audit-invoice') file_put_contents($previewDir . '/hservice-' . $hsvName . '.html', $hsvHtml); }
+    if (file_get_contents($hsvFile) !== $hsvHtml) throw new RuntimeException($hsvFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
+}
+echo "PASS hotel service screens render: services, sales list and due modal, new sale, invoice, night audit list and printable audit\n";

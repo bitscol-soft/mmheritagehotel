@@ -7,7 +7,7 @@
     <title>Invoice</title>
 
     <style>
-        @page {
+        @page  {
             header: page-header;
             footer: page-footer;
             sheet-size: Letter;
@@ -31,7 +31,7 @@
         .font-bold{
             font-weight: bold;
         }
-        @media print {
+        @media  print {
             body{
                 header: page-header;
                 footer: page-footer;
@@ -231,7 +231,7 @@
     </style>
 
     <style>
-        @media print {
+        @media  print {
             tr.page-break  { display: block; page-break-after: always; }
         }
     </style>
@@ -329,7 +329,7 @@
         .display-none{
             display: none
         }
-        @media print{
+        @media  print{
             .block-container{
                 display: flex;
                 justify-content: space-between;
@@ -403,7 +403,7 @@
             outline-offset: 2px;
         }
 
-        @media print {
+        @media  print {
             .inv-screen-bar {
                 display: none !important;
             }
@@ -414,7 +414,7 @@
 <body>
 
     <nav class="inv-screen-bar" aria-label="Document actions">
-        <a href="{{ route('hotelservice.night-audits.index') }}">&larr; Hotel Service Night Audit</a>
+        <a href="http://localhost/hotelservice/night-audit">&larr; Hotel Service Night Audit</a>
         <button type="button" onclick="window.print()">Print again</button>
     </nav>
 
@@ -431,49 +431,22 @@
                         <div class="col-6">
 
                             <div class="company-logo">
-                                @if (file_exists('uploads/company/' . $company->logo))
-                                    <img src="{{ asset('uploads/company/' . $company->logo) }}" class="logo" alt="Company Logo" width="150" height="80">
-                                @endif
-                            </div>
+                                                            </div>
 
-                            {{-- <div class="guest-info">
-                                <div class="guest-left-side">
-                                    <div class="left-item"><b>Total Check In</b></div>
-                                    <div class="left-item"><b>Total Check Out</b></div>
-                                    <div class="left-item"><b>Total Room</b></div>
-                                </div>
-                                <div class="guest-right-side">
-                                    <div class="right-item">: <b>{{ $audits->sum('total_check_in') ?? 0 }}</b></div>
-                                    <div class="right-item">: <b>{{ $audits->sum('total_check_out') ?? 0 }}</b></div>
-                                    <div class="right-item">: <b>{{ $audits->sum('total_room') ?? 0 }}</b></div>
-                                </div>
-                            </div> --}}
+                            
 
                         </div>
 
                         <div class="col-6 date">
 
                             <div class="company-info-invoice">
-                                <p style="font-size: 18px" class="font-bold">{{ optional($company)->name }}</p>
-                                <p>{{ optional($company)->head_office }}</p>
-                                <p>{{ optional($company)->phone_number }}</p>
-                                <p>{{ optional($company)->email }}</p>
+                                <p style="font-size: 18px" class="font-bold">MM Heritage</p>
+                                <p>Dhaka</p>
+                                <p>017</p>
+                                <p>hi@example.com</p>
                             </div>
 
-                            {{-- <div class="booking-info">
-                                <div class="info-body">
-                                    <div class="booking-left-side">
-                                        <div class="left-item"><b>Total Reservation</b></div>
-                                        <div class="left-item"><b>Total Cancelled</b></div>
-                                        <div class="left-item"><b>Total Dirty</b></div>
-                                    </div>
-                                    <div class="booking-right-side">
-                                        <div class="right-item">: <b>{{ $audits->sum('total_reservation') ?? 0 }}</b></div>
-                                        <div class="right-item">: <b>{{ $audits->sum('total_cancel') ?? 0 }}</b></div>
-                                        <div class="right-item">: <b>{{ $audits->sum('total_dirty_room') ?? 0 }}</b></div>
-                                    </div>
-                                </div>
-                            </div> --}}
+                            
 
                         </div>
 
@@ -486,16 +459,16 @@
 
                 <!------- BARCODE INFO ------->
                 <div class="text-center generate-date">
-                    <p style="font-size: 20px;">Hotel Service Night Audit/ Day Closing Report: {{ request('date', optional($audits->first())->date) }}</p>
+                    <p style="font-size: 20px;">Hotel Service Night Audit/ Day Closing Report: 2026-09-30</p>
                 </div>
 
 
                 <!------- RESTOURANT SALE ------->
 
-                <div class="text-center restourant-sale-info-title" style="{{ $audits[0]->restourantCount > 0 ? 'display: block' : 'display: none' }}">
+                <div class="text-center restourant-sale-info-title" style="display: block">
                     <p style="font-size: 18px; text-transform: uppercase;">HOTEL SERVICE SALE</p>
                 </div>
-                <div class="restourant-sale-info" style="{{ $audits[0]->restourantCount > 0 ? 'display: block' : 'display: none' }}">
+                <div class="restourant-sale-info" style="display: block">
                     <table>
                         <thead>
                             <tr>
@@ -510,46 +483,71 @@
                             </tr>
                         </thead>
 
-                        @php
-                            $total_collection   = $total_due_amount = 0;
-                            $total_amount       = $total_paid_amount = $total_due_amount = 0;
-                        @endphp
-
+                        
                         <tbody>
 
-                            @foreach ($audits as $audit)
-
-                                @forelse ($audit->details ?? [] as $key => $detail)
-
-                                    @php
-                                        $total_amount     = amount($detail->total_amount, optional($detail->transaction)->total_amount);
-                                        $total_collection += $total_paid_amount = amount($detail->collection, optional($detail->transaction)->collection);
-                                        $total_due_amount += $due_amount = amount($detail->due, optional($detail->transaction)->due_amount);
-                                    @endphp
-                                    {{-- @if ($detail->transaction->source_type == 'Hotel Service Sale') --}}
+                            
+                                
+                                                                        
                                         <tr>
-                                            <td class="text-center ">{{ $loop->iteration }}</td>
-                                            <td class="text-center ">{{ optional($detail->transaction)->source_type }}</td>
-                                            <td class="text-center ">INV-{{ optional($detail->transaction)->invoice_no }}</td>
-                                            <td class="text-center ">{{ optional(optional($detail->transaction)->account)->name ?? 'N\A' }}</td>
+                                            <td class="text-center ">1</td>
+                                            <td class="text-center ">Hotel Service Sale</td>
+                                            <td class="text-center ">INV-0301</td>
+                                            <td class="text-center ">Cash</td>
                                             <td class="text-center ">
 
                                                 <label class="label label-default">N\A</label>
 
                                             </td>
                                             <td style="text-align: right;" class="">
-                                                <span class="item-total">{{ number_format($total_amount, 2) }}</span>
+                                                <span class="item-total">1,200.00</span>
                                             </td>
-                                            <td style="text-align: right;" class="">{{ number_format($total_paid_amount, 2) }}</td>
-                                            <td class="text-right ">{{ number_format($due_amount, 2)  }}</td>
+                                            <td style="text-align: right;" class="">1,200.00</td>
+                                            <td class="text-right ">0.00</td>
                                         </tr>
-                                    {{-- @endif --}}
-                                @empty
-                                    <x-no-table-record />
-                                @endforelse
+                                    
+                                
+                                                                        
+                                        <tr>
+                                            <td class="text-center ">2</td>
+                                            <td class="text-center ">Hotel Service Sale</td>
+                                            <td class="text-center ">INV-0302</td>
+                                            <td class="text-center ">Cash</td>
+                                            <td class="text-center ">
 
-                            @endforeach
+                                                <label class="label label-default">N\A</label>
 
+                                            </td>
+                                            <td style="text-align: right;" class="">
+                                                <span class="item-total">800.00</span>
+                                            </td>
+                                            <td style="text-align: right;" class="">300.00</td>
+                                            <td class="text-right ">500.00</td>
+                                        </tr>
+                                    
+                                
+                            
+                                
+                                                                        
+                                        <tr>
+                                            <td class="text-center ">1</td>
+                                            <td class="text-center ">Hotel Service Sale</td>
+                                            <td class="text-center ">INV-0299</td>
+                                            <td class="text-center ">Cash</td>
+                                            <td class="text-center ">
+
+                                                <label class="label label-default">N\A</label>
+
+                                            </td>
+                                            <td style="text-align: right;" class="">
+                                                <span class="item-total">500.00</span>
+                                            </td>
+                                            <td style="text-align: right;" class="">500.00</td>
+                                            <td class="text-right ">0.00</td>
+                                        </tr>
+                                    
+                                
+                            
                         </tbody>
 
                     </table>
@@ -558,23 +556,21 @@
             </div>
 
             <!----- INVOICE BOTTOM PART [FOOTER] ----->
-            <div id="bottomPart" style="{{ $audits[0]->restourantCount > 0 ? 'display: block' : 'display: none' }}">
+            <div id="bottomPart" style="display: block">
                 <div class="row" style="display: flex; justify-content: space-between">
 
                     <div class="col-sm-6 col-lg-6 col-md-6">
                         <div class="invoice-price" style="width: 300px; margin-top: 5px;">
 
-                            @foreach ($account_types as $id => $account_type)
-                                <div class="row" style="display: flex; justify-content: space-between;">
+                                                            <div class="row" style="display: flex; justify-content: space-between;">
                                     <div class="left-side" style="width: 60%; text-align: left;">
-                                        <p><b>{{ $account_type }} Sale Amount</b></p>
+                                        <p><b>Cash Sale Amount</b></p>
                                     </div>
                                     <div class="right-side" style="width: 40%; text-align: left;">
-                                        <p><b>: {{ getTotalPaymentAmount($audits[0]->id, $id, 'Hotel Service Sale') }}</b></p>
+                                        <p><b>: 1,000</b></p>
                                     </div>
                                 </div>
-                            @endforeach
-
+                            
                         </div>
                     </div>
 
@@ -586,8 +582,8 @@
                                     <p><b>Extra Due</b></p>
                                 </div>
                                 <div class="right-side">
-                                    <p><b>: {{ number_format($total_collection, 2) }}</b></p>
-                                    <p><b>: {{ number_format($total_due_amount, 2) }}</b></p>
+                                    <p><b>: 2,000.00</b></p>
+                                    <p><b>: 500.00</b></p>
                                 </div>
                             </div>
 

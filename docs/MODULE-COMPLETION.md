@@ -26,7 +26,16 @@ acceptance. UI implementation alone is not production completion.
 | Booking notes | List/filter presentation/edit migrated; backend blockers below | Pending |
 | Payments, checkout, invoices, night audit | Migrated (collection, checkout, invoices, night audit list/form/report) | Staging pending |
 | Setup: amenities, account types, VAT, currency conversions, registration terms | Migrated | Staging pending |
-| Hotel reports, house-keeping filters, guest modals | Not migrated | Pending |
+| Hotel reports, house-keeping filters, guest modals | Migrated (reports, guest SMS, monthly calendar, booking migration) | Staging pending |
+
+## Hotel Service status
+
+| Area | UI implementation | Acceptance |
+|---|---|---|
+| Service list with add/edit modals | Migrated | Staging pending |
+| Service sales list, due-payment modal, new sale, invoice | Migrated | Staging pending |
+| Night audit list, details modal, printable audit | Migrated | Staging pending |
+| `sales/edit`, `due-receive/*`, `export/pdf`, old sidebar partial | Unreachable; not migrated | n/a |
 
 ## Latest group: Booking Purpose & Platform
 

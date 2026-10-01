@@ -1,12 +1,7 @@
-@extends('layouts.master')
-@section('title', 'Add New Hotel Service Sale')
-@section('page-header')
-    <i class="fa fa-plus-circle"></i> New Hotel Service Sale
-@stop
-
-@section('css')
-    <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">    <link rel="stylesheet" href="/assets/css/chosen.min.css" />
+    <link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css" />
     <style>
         .file {
             visibility: hidden;
@@ -14,34 +9,25 @@
         }
 
     </style>
-@stop
-
-
-@section('content')
-<x-mm.styles />
-<x-mm.page class="mm-hotel-service" title="New hotel service sale" description="Pick the guest, add the services sold and confirm the invoice.">
-    @if (hasPermission('service.view', $slugs))
-        <x-slot name="actions">
-            <a href="{{ route('hotelservice.service-sales.index') }}" class="mm-button mm-button-secondary">
+<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY--><section class="mm-ui mm-hotel-service">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">New hotel service sale</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Pick the guest, add the services sold and confirm the invoice.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a href="http://localhost/hotelservice/service-sales" class="mm-button mm-button-secondary">
                 <i class="fa fa-list-alt" aria-hidden="true"></i> Hotel Service Sale
-            </a>
-        </x-slot>
-    @endif
-
-    @include('partials._alert_message')
-
-    <form method="POST" action="{{ route('hotelservice.service-sales.store') }}"
+            </a></div>        </header>
+        <form method="POST" action="http://localhost/hotelservice/service-sales"
         class="form-horizontal" id="invForm">
-        @csrf
-
+        <input type="hidden" name="_token" value="fixture-csrf-token">
         <!-- hidden fields -->
         <div class="form-group mm-hs-hidden">
             <input class="form-control" type="hidden" name="company_name" />
             <input type="hidden" name="invoice_no">
         </div>
 
-        <x-mm.panel class="mm-hs-info-panel">
-            <h2 class="mm-setup-title">Guest and invoice</h2>
+        <div class="mm-panel tw-p-4 sm:tw-p-6 mm-hs-info-panel"><h2 class="mm-setup-title">Guest and invoice</h2>
             <!-- info -->
             <div class="mm-hs-info">
                 <div class="form-group">
@@ -52,7 +38,7 @@
                     <input type="hidden" value="" name="hotel_guest_id" id="hotel_guest_id">
                 </div>
 
-                {{-- Search By Room --}}
+                
                 <div class="form-group">
                     <label class="control-label" for="room_number">Room Number :</label>
 
@@ -62,7 +48,7 @@
                         placeholder="Room Number" class="form-control">
                 </div>
 
-                {{-- Search By Booking --}}
+                
                 <div class="form-group">
                     <label class="control-label" for="booking_number">Booking Number :</label>
 
@@ -83,17 +69,14 @@
                 <!-- Sale Date -->
                 <div class="form-group">
                     <label class="control-label" for="sale_date">Date :</label>
-                    <input type="text" name="date" id="sale_date" value="{{ date('Y-m-d') }}"
+                    <input type="text" name="date" id="sale_date" value="2026-10-01"
                         class="form-control date-picker" autocomplete="off">
                 </div>
-            </div>
-        </x-mm.panel>
+            </div></div>
 
         <!-- transition -->
-        <x-mm.panel class="view_center_folwchart">
-            <h2 class="mm-setup-title">Services</h2>
-            <x-mm.table-scroll label="Services sold">
-                <table class="table table-bordered table-hover" id="table_auto">
+        <div class="mm-panel tw-p-4 sm:tw-p-6 view_center_folwchart"><h2 class="mm-setup-title">Services</h2>
+            <div class="mm-table-scroll" role="region" aria-label="Services sold" tabindex="0"><table class="table table-bordered table-hover" id="table_auto">
                     <thead>
                         <tr>
                             <th width="30%">Service Name</th>
@@ -112,12 +95,9 @@
                     <tbody class="container">
 
                     </tbody>
-                </table>
-            </x-mm.table-scroll>
-        </x-mm.panel>
+                </table></div></div>
 
-        <x-mm.panel class="mm-hs-totals">
-            <div class="form-inlines">
+        <div class="mm-panel tw-p-4 sm:tw-p-6 mm-hs-totals"><div class="form-inlines">
                 <div class="form-group aside_system">
                     <label class="control-label" for="subTotal">
                         Sub Totals:
@@ -187,20 +167,21 @@
                     <button type="button" onclick="submitForm()"
                         class="mm-button mm-hs-confirm">Confirm</button>
                 </div>
-            </div>
-        </x-mm.panel>
+            </div></div>
     </form>
-</x-mm.page>
-@endsection
-
-@section('js')
-    <script src="{{ asset('assets/js/jquery.form-repeater.js') }}"></script>
-    <script src="{{ asset('assets/custom_js/loadDetails.js') }}"></script>
-    <script src="{{ asset('assets/custom_js/guest_filter.js') }}"></script>
-    <script src="{{ asset('assets/custom_js/reference_filter.js') }}"></script>
-    <script src="{{ asset('assets/js/jquery-ui.min.js') }}"></script>
-    <script src="{{ asset('assets/js/bootstrap-datepicker.min.js') }}"></script>
-    <script src="{{ asset('assets/custom_js/date-picker.js') }}"></script>
+    </div>
+</section>
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
+    <script src="/assets/js/jquery.form-repeater.js"></script>
+    <script src="/assets/custom_js/loadDetails.js"></script>
+    <script src="/assets/custom_js/guest_filter.js"></script>
+    <script src="/assets/custom_js/reference_filter.js"></script>
+    <script src="/assets/js/jquery-ui.min.js"></script>
+    <script src="/assets/js/bootstrap-datepicker.min.js"></script>
+    <script src="/assets/custom_js/date-picker.js"></script>
 
     <script type="text/javascript">
         $(document).ready(function() {
@@ -267,7 +248,7 @@
     </script>
 
 
-    {{-- Get Room Number --}}
+    
     <script>
         $(document).on('focus', '#room_number', function() {
             $(this).autocomplete({
@@ -299,7 +280,7 @@
     </script>
 
 
-    {{-- Get Booking Number --}}
+    
     <script>
         $(document).on('focus', '#booking_number', function() {
             $(this).autocomplete({
@@ -330,7 +311,7 @@
         })
     </script>
 
-    {{-- Get Info By Booking --}}
+    
 
     <script>
         function getInfoByBooking(booking_id) {
@@ -356,7 +337,7 @@
         }
     </script>
 
-    {{-- Get Info By Room --}}
+    
     <script>
         function GetInfoRoom(rooms_id) {
 
@@ -430,7 +411,7 @@
         $(document).on('focus', '.service-names', function() {
             $(this).autocomplete({
                 source: function(request, response) {
-                    $.getJSON("{{ url('hotelservice/get-h-service') }}", {
+                    $.getJSON("http://localhost/hotelservice/get-h-service", {
                         name: request.term
                     }, function(data) {
                         response($.map(data, function(item) {
@@ -468,7 +449,7 @@
 
         function requestUrl(urlParts) {
             urlParts = $.extend({
-                basePath: '{{ url('/') }}/',
+                basePath: 'http://localhost/',
                 path: '',
                 param: ''
             }, urlParts);
@@ -487,4 +468,4 @@
     </script>
 
 
-@endsection
+<!--/MM-JS--></body></html>

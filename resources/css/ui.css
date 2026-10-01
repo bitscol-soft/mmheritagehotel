@@ -646,3 +646,26 @@
 .mm-ui.mm-report-monthly table .bg-0 { background: #D15B47; }
 .mm-ui.mm-report-monthly table .bg-2 { background: #ff8000; }
 .mm-ui.mm-report-monthly select.required:invalid { height: 0; opacity: 0; position: absolute; display: flex; }
+
+/* Hotel service screens: sales list filter, new-sale form and invoice frame. */
+.mm-ui.mm-hotel-service .mm-hs-filter-form { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px; }
+.mm-ui.mm-hotel-service .mm-hs-filter-field { flex: 1 1 200px; min-width: 0; max-width: 320px; }
+.mm-ui.mm-hotel-service .mm-hs-filter-field label, .mm-ui.mm-hotel-service .form-horizontal .control-label { display: block; margin: 0 0 6px; padding-top: 0; text-align: left; font-weight: 600; color: var(--mm-ink); }
+.mm-ui.mm-hotel-service .mm-hs-filter-field .form-control, .mm-ui.mm-hotel-service form .form-control { width: 100%; min-height: 40px; border: 1px solid var(--mm-line); border-radius: 6px; color: var(--mm-ink); }
+.mm-ui.mm-hotel-service .mm-hs-filter-actions .btn { min-height: 40px; display: inline-flex; align-items: center; justify-content: center; }
+.mm-ui.mm-hotel-service .form-horizontal .form-group { margin: 0; }
+.mm-ui.mm-hotel-service .form-horizontal .form-group::after { content: ""; display: table; clear: both; }
+.mm-ui.mm-hotel-service .mm-hs-hidden { display: none; }
+.mm-ui.mm-hotel-service #invForm { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
+.mm-ui.mm-hotel-service .mm-setup-title { margin: 0 0 16px; font-size: 18px; font-weight: 700; color: var(--mm-ink); }
+.mm-ui.mm-hotel-service .mm-hs-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 16px; }
+.mm-ui.mm-hotel-service .mm-hs-info .form-group { min-width: 0; }
+.mm-ui.mm-hotel-service table { margin: 0; }
+.mm-ui.mm-hotel-service th, .mm-ui.mm-hotel-service td { padding: 10px; vertical-align: middle; }
+.mm-ui.mm-hotel-service #table_auto { min-width: 640px; }
+.mm-ui.mm-hotel-service .mm-hs-totals .form-inlines { display: grid; gap: 14px; width: 100%; max-width: 420px; margin-left: auto; }
+.mm-ui.mm-hotel-service .mm-hs-totals .input-group { display: flex; width: 100%; }
+.mm-ui.mm-hotel-service .mm-hs-totals .input-group .form-control { flex: 1 1 auto; min-width: 0; float: none; border-radius: 0 6px 6px 0; }
+.mm-ui.mm-hotel-service .mm-hs-totals .input-group-addon { display: flex; align-items: center; width: auto; min-width: 44px; justify-content: center; }
+.mm-ui.mm-hotel-service .mm-hs-confirm { width: 100%; }
+@media (max-width: 767px) { .mm-ui.mm-hotel-service .mm-hs-totals .form-inlines { max-width: none; margin-left: 0; } }

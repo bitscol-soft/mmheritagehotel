@@ -530,3 +530,46 @@ console.log('PASS: note list/edit expressions, forms and status scripts; legacy 
  }
  console.log('PASS: remaining hotel screens keep fields, expressions, tables and scripts; printable documents only gain a screen-only bar');
 }
+
+{
+ // Hotel Service screens (service list, sales list, new sale, sale invoice, night audit list): fields, Blade expressions, tables and scripts stay as they were; only the legacy widget frame changed.
+ const base='22774024';
+ const nc=s=>s.replace(/\{\{--[\s\S]*?--\}\}/g,'');
+ const ex=s=>(nc(s).match(/\{\{[\s\S]*?\}\}|\{!![\s\S]*?!!\}/g)||[]).map(x=>x.replace(/\s+/g,' '));
+ const added=/ (?:id="(?:hs-invoice-no|hs-customer-id|sale_date)"|aria-label="[^"]*"|style="[^"]*"|class="[^"]*")/g;
+ const ctl=s=>(nc(s).replace(/\{\{[\s\S]*?\}\}/g,'{{}}').match(/<(input|select|textarea|button)\b[^>]*>/g)||[]).map(x=>x.replace(/\s+/g,' ').replace(added,''));
+ const forms=s=>(nc(s).match(/<form[^>]*>/g)||[]).map(x=>x.replace(/\s+/g,' ').replace(/ class="[^"]*"/,''));
+ const directives=s=>(nc(s).match(/@(?:if|elseif|else|endif|foreach|endforeach|forelse|empty|endforelse|php|endphp|include|isset|endisset|can|endcan)\b/g)||[]);
+ const only=(l,m)=>{const c={};l.forEach(x=>c[x]=(c[x]||0)+1);m.forEach(x=>c[x]=(c[x]||0)-1);return Object.entries(c).filter(([,n])=>n).map(([k,n])=>`${n>0?'-':'+'}${Math.abs(n)} ${k}`).sort();};
+ const tables=s=>(nc(s).match(/<table[\s\S]*?<\/table>/g)||[]).filter(t=>t.includes('<thead>')).map(t=>t.replace(/\s+/g,' ').replace(/ class="(btn|mm-button)[^"]*"/g,'').replace(/ aria-label="[^"]*"/g,'').replace(' style="border: none"','')).join('|');
+ const tail=s=>{const i=s.search(/@section\('(?:js|script)'\)/);return i<0?'':s.slice(i);};
+ const scripts=s=>(nc(s).match(/<script[\s\S]*?<\/script>/g)||[]).map(t=>t.replace(/\s+/g,' ')).join('|');
+ const dir='module/HotelService/views/';
+ for(const f of ['services/category/index','services/sales/index','services/sales/create','services/sales/show','hotel-service-night-audits/index']){
+  const p=`${dir}${f}.blade.php`,after=fs.readFileSync(p,'utf8'),before=execFileSync('git',['show',`${base}:${p}`],{encoding:'utf8'});
+  assert.deepEqual(only(ex(before),ex(after)),[],`${f}: Blade expressions changed`);
+  assert.deepEqual(only(ctl(before),ctl(after)),[],`${f}: form controls changed`);
+  assert.deepEqual(only(forms(before),forms(after)),[],`${f}: form tags changed`);
+  assert.deepEqual(only(directives(before),directives(after)),[],`${f}: Blade directives changed`);
+  assert.equal(tables(after),tables(before),`${f}: tables changed`);
+  assert.equal(tail(after),tail(before),`${f}: page script changed`);
+  assert.equal(scripts(after),scripts(before),`${f}: scripts changed`);
+  assert(after.includes('<x-mm.page'),`${f}: shared layout expected`);
+  assert(!after.includes('widget-box')&&!after.includes('widget-main')&&!after.includes('widget-header'),`${f}: legacy widget frame should be gone`);
+ }
+ // the sale form keeps the hooks its script and the form repeater rely on
+ const create=fs.readFileSync(`${dir}services/sales/create.blade.php`,'utf8');
+ for(const hook of ['id="invForm"','id="table_auto"','<tbody class="container">','id="subTotal"','id="payable_amount"','id="amountPaid"','id="amountDue"','id="discount"','id="guest_name"','id="room_number"','id="booking_number"','r-btnAdd','onclick="submitForm()"','onclick="addItem()"']) assert(create.includes(hook),`sale form lost ${hook}`);
+ // everything shared with a modal include, the export partial or the dead screens stays byte-for-byte
+ const untouched=execFileSync('git',['diff','--name-only',base,'--',dir+'services/category/add-modal.blade.php',dir+'services/category/edit-modal.blade.php',dir+'services/sales/due-payment-modal.blade.php',dir+'hotel-service-night-audits/details.blade.php',dir+'hotel-service-night-audits/export',dir+'services/sales/edit.blade.php',dir+'services/due-receive'],{encoding:'utf8'}).trim();
+ assert.equal(untouched,'','Hotel Service modals, export partials and unreachable screens must stay unchanged');
+ // the printable night audit only gains the screen-only bar
+ {
+  const f='hotel-service-night-audits/invoice',p=`${dir}${f}.blade.php`,after=fs.readFileSync(p,'utf8'),before=execFileSync('git',['show',`${base}:${p}`],{encoding:'utf8'});
+  const stripped=after.replace(/\n\n        \/\* Screen-only action bar[\s\S]*?(?=    <\/style>)/,'\n').replace(/\n    <nav class="inv-screen-bar"[\s\S]*?<\/nav>\n/,'');
+  const norm=s=>s.replace(/\s+/g,' ');
+  assert.equal(norm(stripped),norm(before),`${f}: the printed document changed`);
+  assert(after.includes('inv-screen-bar')&&after.includes('@media print')&&/\.inv-screen-bar\s*\{\s*display: none !important/.test(after),`${f}: screen bar must be hidden when printing`);
+ }
+ console.log('PASS: hotel service screens keep fields, expressions, directives, tables and scripts; modals and export partials untouched; printable audit only gains a screen-only bar');
+}
