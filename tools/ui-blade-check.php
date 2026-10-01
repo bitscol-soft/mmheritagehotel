@@ -1,5 +1,6 @@
 <?php
 error_reporting(E_ALL & ~E_DEPRECATED); // newer PHP versions flag deprecations inside the vendored Carbon/Symfony; they must not leak into the rendered fixtures
+set_error_handler(function ($no, $msg, $file, $line) { if (!(error_reporting() & $no)) return false; throw new ErrorException($msg . ' in ' . basename($file) . ':' . $line, 0, $no, $file, $line); }, E_WARNING | E_NOTICE | E_USER_WARNING | E_USER_NOTICE); // sample data must be complete: a warning is a failure, never output
 // Standalone Blade smoke check: no database, .env or application boot needed.
 $root = dirname(__DIR__);
 require $root . '/vendor/autoload.php';
@@ -252,7 +253,7 @@ $stayRequest = Illuminate\Http\Request::create('/hotel/booking/create');
 $stayRequest->setLaravelSession(new Illuminate\Session\Store('mm', new Illuminate\Session\ArraySessionHandler(10)));
 $app->instance('request', $stayRequest);
 $app->instance('url', new Illuminate\Routing\UrlGenerator(new Illuminate\Routing\RouteCollection(), $stayRequest));
-$stayBooking = (object) ['booking_date' => '2026-09-28', 'check_in_date' => '2026-09-29', 'check_out_date' => '2026-10-03', 'booking_pax' => 2, 'customer_id' => 1, 'purpose' => '', 'reference' => '', 'pickup' => '', 'drop' => '', 'pickup_flight' => '', 'drop_flight' => '', 'emergency_cont_name' => '', 'emergency_cont_phone' => '', 'purpose_id' => null, 'platform_id' => null, 'book_type' => 0, 'company_id' => null, 'status' => 0];
+$stayBooking = (object) ['customer' => (object) ['name' => 'Rahim', 'company_id' => null], 'booking_date' => '2026-09-28', 'check_in_date' => '2026-09-29', 'check_out_date' => '2026-10-03', 'booking_pax' => 2, 'customer_id' => 1, 'purpose' => '', 'reference' => '', 'pickup' => '', 'drop' => '', 'pickup_flight' => '', 'drop_flight' => '', 'emergency_cont_name' => '', 'emergency_cont_phone' => '', 'purpose_id' => null, 'platform_id' => null, 'book_type' => 0, 'company_id' => null, 'status' => 0];
 $stayCommon = ['booking_purpose' => collect([]), 'crmCompanies' => collect([]), 'guest' => collect([]), 'guests' => collect([]), 'tomorrow' => '2026-10-02', 'platforms' => collect([]), 'errors' => new Illuminate\Support\ViewErrorBag()];
 $stayFixtures = [
     'booking-add-dates' => $app->make('view')->make('booking._inc._add-guest-input-info', $stayCommon)->render(),
