@@ -1,4 +1,5 @@
 <?php
+error_reporting(E_ALL & ~E_DEPRECATED); // newer PHP versions flag deprecations inside the vendored Carbon/Symfony; they must not leak into the rendered fixtures
 // Standalone Blade smoke check: no database, .env or application boot needed.
 $root = dirname(__DIR__);
 require $root . '/vendor/autoload.php';
