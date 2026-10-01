@@ -113,29 +113,26 @@
     @endif
 @else
     <div class="room-status-ui">
-        <span class="room-heading-right" onclick="updateStatus(`{{ $room->id }}`,`{{ $status_val }}`, this)">
-            <i class="fal fa-arrows-alt"></i>
+        <span class="room-heading-right" onclick="updateStatus(`{{ $room->id }}`,`{{ $status_val }}`, this)"
+            title="Change housekeeping status">
+            <i class="fa fa-exchange"></i>
         </span>
-        <div class="room-info {{ $status }} room-price">
+        <div class="room-info {{ $status }} room-price" role="button" tabindex="0"
+            data-rate="{{ $room->rent }}" data-room-number="{{ $room->room_number }}"
+            title="{{ $status === 'store' ? 'Already in the booking cart' : 'Click to select this room for the booking' }}">
             <input type="hidden" id="category_id" value="{{ $category->id }}">
             <input type="hidden" id="room_id" value="{{ $room->id }}">
             <p>
                 {{ $room->room_number }}
-                <span class="badge badge-info px-1">
-                    <i style="color: rgb(236, 214, 14)" class="fa fa-bed fa-0">
-                    </i>
-                </span>
-                @if (setting('room_wise_pricing_booking') == 1)
-                    <span class="label label-xs reservation arrowed arrowed-right">
-                        <i style="color: rgb(20, 1, 4)" class="fa fa-bed fa-0">
-                            {{ $room->beds }} <br>
-
-                            {{ $room->rent }}
-                        </i>
-
-                    </span>
-                @endif
+                <span class="tile-tick" aria-hidden="true"><i class="fa fa-check"></i></span>
             </p>
+            <span class="room-meta">
+                <i class="fa fa-bed"></i>&nbsp;{{ (int) $room->beds }}
+                @if (setting('room_wise_pricing_booking') == 1 && $room->rent)
+                    <span class="room-meta-dot">&middot;</span>
+                    <span class="room-meta-rate">{{ number_format($room->rent) }}</span>
+                @endif
+            </span>
         </div>
     </div>
 @endif

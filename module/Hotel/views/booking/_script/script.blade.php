@@ -169,7 +169,7 @@
                             <span>ALL ROOM</span>
 
                             <div class="show-all-room" href="#show-category-rooms" role="button" data-toggle="modal">
-                                <i class="fas fa-pen-square"></i>
+                                <i class="fa fa-pencil-square"></i>
                             </div>
 
                             <div id="show-category-rooms" class="modal show-category-room-modal" data-backdrop="static" data-keyboard="false" tabindex="-1">
@@ -194,7 +194,7 @@
 
                                         <div class="modal-footer">
                                             <button class="btn btn-sm" data-dismiss="modal">
-                                                <i class="ace-icon fas fa-save"></i>
+                                                <i class="ace-icon fa fa-save"></i>
                                                 Save
                                             </button>
                                         </div>

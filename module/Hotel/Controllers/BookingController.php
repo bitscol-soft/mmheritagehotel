@@ -1315,7 +1315,7 @@ class BookingController extends Controller
         $check_out      = date('Y-m-d', strtotime($date_split[1] ?? 'tomorrow'));
 
         // round 3 (docs/BUGS.md #44): booking_ui passes $booking_date to <x-room-manage>
-        $booking_date = $req_date ?: date('d-m-Y') . ' - ' . date('d-m-Y', strtotime('+1 day'));
+        $booking_date = $req_date ?: date('m/d/Y') . ' - ' . date('m/d/Y', strtotime('+1 day'));
         $categories = (new RoomStatusService())->availableRoom($check_in, $check_out);
         return view('booking.booking_ui', compact('categories', 'booking_date'));
     }

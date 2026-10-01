@@ -1,12 +1,12 @@
-<form action="" method="get">
+<form action="" method="get" class="booking-filter-panel">
     <div class="row">
 
         @if(url()->current() == route('booking.referred-booking'))
-        <div class="col-md-1" style="height: 40px;"></div>
+        <div class="col-md-1"></div>
         @endif
 
         <!----------- GUEST NAME ----------->
-        <div class="col-md-2" style="height: 40px;">
+        <div class="col-md-2">
             <div class="input-group" style="width:100%">
                 <select name="customer_id" class="form-control chosen-select" id="customer_id"
                     data-selected="{{ request('customer_id') }}" data-placeholder="--Choose Guest--">
@@ -24,7 +24,7 @@
 
         <!----------- ROOM CATEGORY ----------->
         @if(url()->current() != route('booking.referred-booking'))
-        <div class="col-md-2" style="height: 40px;">
+        <div class="col-md-2">
             <div class="input-group" style="width:100%">
                 <select name="category_id" class="form-control chosen-select category" id="category"
                     data-selected="{{ request('category_id') }}" data-placeholder="--Choose category--">
@@ -43,10 +43,10 @@
 
         <!----------- ROOM NUMBER ----------->
         @if(url()->current() != route('booking.referred-booking'))
-        <div class="col-md-2" style="height: 40px;">
+        <div class="col-md-2">
             <div class="input-group" style="width:100%">
                 <select name="room_id" class="form-control chosen-select room_number" id="room_id"
-                    data-selected="{{ request('room_id') }}" data-placeholder="--Choose category--">
+                    data-selected="{{ request('room_id') }}" data-placeholder="--Choose room--">
                     <option></option>
 
                 </select>
@@ -58,15 +58,15 @@
 
         <!----------- BOOKING DATE ----------->
         @if(url()->current() != route('booking.referred-booking'))
-        <div class="col-md-4" style="height: 40px;">
+        <div class="col-md-4">
             <div class="input-group">
                 <input type="text" class="form-control date-picker input-sm" value="{{ request('booking_from_date') }}"
-                    name="booking_from_date" data-date-format="dd-mm-yyyy" placeholder="Booking Date" autocomplete="off">
+                    name="booking_from_date" data-date-format="dd-mm-yyyy" placeholder="Booking From" autocomplete="off">
                 <span class="input-group-addon">
                     <i class="fa fa-calendar bigger-110"></i>
                 </span>
                 <input type="text" class="form-control date-picker input-sm" value="{{ request('booking_to_date') }}"
-                    name="booking_to_date" data-date-format="dd-mm-yyyy" placeholder="Booking Date" autocomplete="off">
+                    name="booking_to_date" data-date-format="dd-mm-yyyy" placeholder="Booking To" autocomplete="off">
             </div>
         </div>
         @endif
@@ -74,7 +74,7 @@
 
 
         <!----------- CHECK IN DATE ------------>
-        <div class="col-md-2" style="height: 40px;">
+        <div class="col-md-2">
             <div class="input-group">
                 <input class="form-control date-picker input-sm" value="{{ request('check_in_date') }}"
                     name="check_in_date" type="text" data-date-format="dd-mm-yyyy" placeholder="Check IN Date"
@@ -88,7 +88,7 @@
 
 
         <!----------- CHECK OUT DATE ----------->
-        <div class="col-md-2" style="height: 40px; margin-top:{{ url()->current() != route('booking.referred-booking') ? '10px' : '0px' }};">
+        <div class="col-md-2" style="margin-top:{{ url()->current() != route('booking.referred-booking') ? '10px' : '0px' }};">
             <div class="input-group">
                 <input class="form-control date-picker input-sm" value="{{ request('check_out_date') }}"
                     name="check_out_date" type="text" data-date-format="dd-mm-yyyy" placeholder="Check Out Date"
@@ -102,12 +102,12 @@
 
 
         <!----------- BOOKING NUMBER ----------->
-        <div class="col-md-2" style="height: 40px; margin-top:{{ url()->current() != route('booking.referred-booking') ? '10px' : '0px' }};">
+        <div class="col-md-2" style="margin-top:{{ url()->current() != route('booking.referred-booking') ? '10px' : '0px' }};">
             <div class="input-group">
                 <input class="form-control input-sm" value="{{ request('booking_number') }}" name="booking_number"
-                    type="text" placeholder="Booking Id" autocomplete="off">
+                    type="text" placeholder="Booking ID / Number" autocomplete="off">
                 <span class="input-group-addon">
-                    <i class="fa fa-file-invoice bigger-110"></i>
+                    <i class="fa fa-hashtag bigger-110"></i>
                 </span>
             </div>
         </div>
@@ -116,12 +116,12 @@
 
         <!-------------- REFERENCE ------------->
         @if(url()->current() == route('booking.referred-booking'))
-            <div class="col-md-2" style="height: 40px; margin-top:{{ url()->current() != route('booking.referred-booking') ? '10px' : '0px' }};">
+            <div class="col-md-2" style="margin-top:{{ url()->current() != route('booking.referred-booking') ? '10px' : '0px' }};">
                 <div class="input-group">
                     <input class="form-control input-sm" value="{{ request('reference') }}" name="reference"
                         type="text" placeholder="Booking Reference" autocomplete="off">
                     <span class="input-group-addon">
-                        <i class="fa fa-file-invoice bigger-110"></i>
+                        <i class="fa fa-link bigger-110"></i>
                     </span>
                 </div>
             </div>
@@ -131,7 +131,7 @@
 
         <!--------------- STATUS --------------->
         @if(url()->current() != route('booking.referred-booking'))
-            <div class="col-md-2" style="height: 40px; margin-top:10px;">
+            <div class="col-md-2" style="margin-top:10px;">
                 <div class="input-group">
                     <span class="input-group-addon">
                         Status
@@ -155,16 +155,16 @@
         @endif
 
         @if(url()->current() == route('booking.referred-booking'))
-        <div class="col-md-1" style="height: 40px;"></div>
+        <div class="col-md-1"></div>
         @endif
 
         @if(url()->current() == route('booking.referred-booking'))
-        <div class="col-md-1" style="height: 40px;"></div>
+        <div class="col-md-1"></div>
         @endif
 
         <!----------- BOOKING FROM ----------->
         @if(url()->current() == route('booking.referred-booking'))
-        <div class="col-md-2" style="height: 40px;">
+        <div class="col-md-2">
             <div class="input-group">
                 <input type="text" class="form-control date-picker input-sm" value="{{ request('booking_from') }}"
                     name="booking_from" data-date-format="dd-mm-yyyy" placeholder="From" autocomplete="off">
@@ -178,7 +178,7 @@
 
         <!----------- BOOKING TO ----------->
         @if(url()->current() == route('booking.referred-booking'))
-        <div class="col-md-2" style="height: 40px;">
+        <div class="col-md-2">
             <div class="input-group">
                 <input type="text" class="form-control date-picker input-sm" value="{{ request('booking_to') }}"
                     name="booking_to" data-date-format="dd-mm-yyyy" placeholder="To" autocomplete="off">

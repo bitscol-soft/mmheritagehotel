@@ -76,7 +76,7 @@
 @else
     <div class="room-status-ui">
         <span class="room-heading-right" onclick="updateStatus(`{{ $room->id }}`,`{{ $status_val }}`, this)">
-            <i class="fal fa-arrows-alt"></i>
+            <i class="fa fa-arrows-alt"></i>
         </span>
         <div class="room-info {{ $status }}">
             <input type="hidden" id="category_id" value="{{ $category->id }}">

@@ -193,6 +193,6 @@
     <!-- bootstrap4 support css -->
     <link rel="stylesheet" href="{{ asset('assets/custom_css/color-size.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/custom_css/bootstrap4.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/custom_css/style.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/custom_css/style.css') }}?v=20261001" />
 
 </head>

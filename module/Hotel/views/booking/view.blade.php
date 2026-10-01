@@ -382,7 +382,7 @@
                                                             <th>
                                                                 <p class="font-18 medium">Sub Total</p>
                                                             </th>
-                                                            <th><i class="fal fa-arrow-right"></i></th>
+                                                            <th><i class="fa fa-arrow-right"></i></th>
                                                             <th class="text-right">
                                                                 <p class="font-18 bold grand-subtotal">
                                                                     {{ number_format($transactions->sum('total_amount'), 2) }}
@@ -393,7 +393,7 @@
                                                             <th>
                                                                 <p class="font-18 medium">Service Charge</p>
                                                             </th>
-                                                            <th><i class="fal fa-arrow-right"></i></th>
+                                                            <th><i class="fa fa-arrow-right"></i></th>
                                                             <th class="text-right">
                                                                 <p class="font-18 bold grand-service-charge">
                                                                     {{ number_format($transactions->sum('service_charge'), 2) }}
@@ -404,7 +404,7 @@
                                                             <th>
                                                                 <p class="font-18 medium">Extra Charge</p>
                                                             </th>
-                                                            <th><i class="fal fa-arrow-right"></i></th>
+                                                            <th><i class="fa fa-arrow-right"></i></th>
                                                             <th class="text-right">
                                                                 <p class="font-18 bold grand-extra-charge">
                                                                     {{ count($transactions) > 0 ? number_format($transactions[0]->extra_charge, 2) : 0 }}
@@ -415,7 +415,7 @@
                                                             <th>
                                                                 <p class="font-18 medium">Vat Amount</p>
                                                             </th>
-                                                            <th><i class="fal fa-arrow-right"></i></th>
+                                                            <th><i class="fa fa-arrow-right"></i></th>
                                                             <th class="text-right">
                                                                 <p class="font-18 bold grand-vat-amount">
                                                                     {{ number_format($transactions->sum('vat_amount'), 2) }}
@@ -426,7 +426,7 @@
                                                             <th>
                                                                 <p class="font-18 medium">Total Amount</p>
                                                             </th>
-                                                            <th><i class="fal fa-arrow-right"></i></th>
+                                                            <th><i class="fa fa-arrow-right"></i></th>
                                                             <th class="text-right">
                                                                 <p class="font-18 bold grand-total-amount">
                                                                     {{ number_format($transactions->sum('total_amount'), 2) }}
@@ -437,7 +437,7 @@
                                                             <th>
                                                                 <p class="font-18 medium">Advanced Paid</p>
                                                             </th>
-                                                            <th><i class="fal fa-arrow-right"></i></th>
+                                                            <th><i class="fa fa-arrow-right"></i></th>
                                                             <th class="text-right">
                                                                 <p class="font-18 bold ">
                                                                     {{ number_format($transactions->sum('collection') - $transactions->sum('change_amount'), 2 ?? 0) }}
@@ -448,7 +448,7 @@
                                                             <th>
                                                                 <p class="font-18 medium">Total Payable</p>
                                                             </th>
-                                                            <th><i class="fal fa-arrow-right"></i></th>
+                                                            <th><i class="fa fa-arrow-right"></i></th>
                                                             <th class="text-right">
                                                                 <p class="font-18 bold payable-amount">
                                                                     {{ number_format($current_due_amount = $transactions->sum('due_amount') + $transactions->sum('change_amount'), 2 ?? 0) }}
@@ -459,7 +459,7 @@
                                                             <th>
                                                                 <p class="font-18 medium">Discount</p>
                                                             </th>
-                                                            <th><i class="fal fa-arrow-right"></i></th>
+                                                            <th><i class="fa fa-arrow-right"></i></th>
                                                             <th class="text-right">
                                                                 <p class="font-18 bold">
                                                                     <input name="discount" id="discount"
@@ -474,7 +474,7 @@
                                                             <th>
                                                                 <p class="font-18 medium">Paid Amount</p>
                                                             </th>
-                                                            <th><i class="fal fa-arrow-right"></i></th>
+                                                            <th><i class="fa fa-arrow-right"></i></th>
                                                             <th class="text-right">
                                                                 <p class="font-18 bold">
                                                                     <input name="paid_amount" id="paidAmount"
@@ -506,7 +506,7 @@
 
                                                         <div class="col-md-12 text-right">
                                                             <button class="btn-outline-success btn-sm" type="submit">
-                                                                <i class="fas fa-money-bill"></i>
+                                                                <i class="fa fa-money"></i>
                                                                 Payment & Checkout
                                                             </button>
                                                         </div>

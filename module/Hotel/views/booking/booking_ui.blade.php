@@ -13,24 +13,25 @@
             margin-bottom: 0 !important;
         }
 
-        body {
-            counter-reset: section;
+        /* ── Booking board polish (scoped: only this admin page) ───────────── */
+        .board-stay-strip {
+            margin: 4px 0 14px;
         }
 
-        .count:before {
-            counter-increment: section;
-            content: counter(section);
+        .board-stay-strip .stay-chip {
+            display: inline-block;
+            background: #f4f7fb;
+            border: 1px solid #dbe5f1;
+            border-radius: 4px;
+            padding: 6px 14px;
+            margin-right: 8px;
+            font-size: 12.5px;
+            color: #37536a;
         }
 
-        select:invalid {
-            height: 0px !important;
-            opacity: 0 !important;
-            position: absolute !important;
-            display: flex !important;
-        }
-
-        select:invalid[multiple] {
-            margin-top: 15px !important;
+        .board-stay-strip .stay-chip b {
+            color: #2f63a8;
+            font-weight: 600;
         }
 
     </style>
@@ -40,11 +41,17 @@
 @section('content')
 
     @php
-        $today              = date('m/d/Y');
-        $tomorrow           =  date('m/d/Y', strtotime($today . '+1 days'));
-        $compact_date       = $today . ' - ' . $tomorrow;
-        $availablity_check  = request('booking_availabe');
-
+        $today        = date('m/d/Y');
+        $tomorrow     = date('m/d/Y', strtotime('tomorrow'));
+        $availablity_check = request('booking_date', $booking_date ?? $today . ' - ' . $tomorrow);
+        // board date-range display: values are MM/DD/YYYY (daterangepicker format)
+        $range_bits = array_values(array_filter(array_map('trim', explode('-', (string) $availablity_check))));
+        $in_ts = strtotime($range_bits[0] ?? 'today');
+        $out_ts = strtotime($range_bits[1] ?? 'tomorrow');
+        if ($out_ts <= $in_ts) {
+            $out_ts = strtotime('+1 day', $in_ts);
+        }
+        $nights = max((int) round(($out_ts - $in_ts) / 86400), 1);
     @endphp
 
     <div class="row">
@@ -64,7 +71,17 @@
                 <div class="widget-body">
                     <div class="widget-main">
                         <x-alert-message />
-                        <x-room-manage :categories="$categories" :mixdate="$booking_date" />
+
+                        <div class="board-stay-strip">
+                            <span class="stay-chip"><i class="fa fa-sign-in"></i> Check-in
+                                <b>{{ date('D, d M Y', $in_ts) }}</b></span>
+                            <span class="stay-chip"><i class="fa fa-sign-out"></i> Check-out
+                                <b>{{ date('D, d M Y', $out_ts) }}</b></span>
+                            <span class="stay-chip"><i class="fa fa-moon-o"></i> <b>{{ $nights }}</b>
+                                night{{ $nights > 1 ? 's' : '' }}</span>
+                        </div>
+
+                        <x-room-manage :categories="$categories" :mixdate="$availablity_check" />
                     </div>
                 </div>
             </div>

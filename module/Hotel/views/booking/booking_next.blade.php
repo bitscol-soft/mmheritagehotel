@@ -74,7 +74,10 @@
                             <div class="row">
                                 <div class="col-md-12">
                                     @php
-                                        $date = explode('-', request('booking_availabe'));
+                                        // round-4 UI pass: tolerate a missing range param and trim both dates
+                                        // (values use the daterangepicker MM/DD/YYYY format on purpose — '-' is the separator)
+                                        $range = request('booking_availabe') ?: date('m/d/Y') . ' - ' . date('m/d/Y', strtotime('+1 day'));
+                                        $date = array_map('trim', explode('-', $range));
                                     @endphp
 
 
