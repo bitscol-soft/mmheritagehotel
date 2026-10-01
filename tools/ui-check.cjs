@@ -141,3 +141,13 @@ for (const mode of ['index','create','edit']) {
  if(mode==='index') assert.deepEqual(after.match(/<tbody>[\s\S]*?<\/tbody>/g).map(s=>s.replace('aria-label="Edit booking label" ','')),before.match(/<tbody>[\s\S]*?<\/tbody>/g));
 }
 console.log('PASS: booking setup forms, table data and scripts preserved');
+
+for (const mode of ['index','edit']) {
+ const path=`module/Hotel/views/booking-note/${mode}.blade.php`;
+ const before=execFileSync('git',['show',`551d4d76:${path}`],{encoding:'utf8'}), after=fs.readFileSync(path,'utf8');
+ const section=mode==='index'?"@section('script')":"@section('js')";
+ assert.equal(after.split(section)[1],before.split(section)[1]);
+ for(const re of [/\b(?:name|id|method|action|enctype)="[^"]+"/g, /@csrf|@method\('[^']+'\)/g, /{{[\s\S]*?}}/g]) for(const value of uncomment(before).match(re)||[]) assert(after.includes(value),`Note contract removed: ${value}`);
+}
+for (const path of ['module/Hotel/Controllers/BookingNoteController.php','module/Hotel/views/booking-note/create.blade.php','resources/views/components/status.blade.php']) assert.equal(fs.readFileSync(path,'utf8'),execFileSync('git',['show',`551d4d76:${path}`],{encoding:'utf8'}));
+console.log('PASS: note list/edit expressions, forms and status scripts; legacy backend unchanged');

@@ -23,7 +23,7 @@ acceptance. UI implementation alone is not production completion.
 | Dashboard | Migrated | Staging pending |
 | Housekeeping | Layout migrated; status behavior unchanged | Staging pending |
 | Booking purposes/platforms | List/filter/create/edit migrated | Staging pending |
-| Booking notes | Next CRUD group | Pending |
+| Booking notes | List/filter presentation/edit migrated; backend blockers below | Pending |
 | Payments, checkout, invoices, night audit | Not migrated | Pending |
 | Remaining hotel setup screens | Not migrated | Pending |
 
@@ -40,3 +40,12 @@ acceptance. UI implementation alone is not production completion.
 
 Deployment remains blocked by staging setup. Temporary preview is sample data,
 not a deployed Laravel application. See TAILWIND-DEVELOPMENT.md for prior work.
+
+## Booking Notes blockers
+
+The legacy controller's create/store/destroy paths operate on Guest records,
+not BookingNote. Do not use these routes as note CRUD. No new controls added.
+The index query uses `name` but the filter submits `title`; search functionality
+is not fixed by the presentation migration. Backend correction and authorization
+review, then authenticated tests, are required before this group is complete.
+Next UI group: remaining room-category forms.

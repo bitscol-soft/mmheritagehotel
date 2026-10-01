@@ -282,3 +282,17 @@ Routes for writes, hidden rule values, validation requirements, CSRF/PUT and JS
 remain unchanged. Build/contracts pass; 33 templates compile. Authenticated CRUD,
 delete confirmation and both type-mode tests remain pending. Module-level status
 and next groups are now tracked in `docs/MODULE-COMPLETION.md`.
+
+## Eleventh increment — booking notes list/edit (2026-10-01)
+
+Migrated list, filter presentation and edit form to shared components. Added
+label associations, textarea focus styling and validation-message presentation.
+Existing title expression, status toggle component/AJAX, update action and CSRF/
+PUT remain unchanged. Build/contracts pass; 36 Blade templates compile.
+
+NOT complete CRUD: inspected controller has guest-copy create/store/destroy
+handlers (including Guest deletion and file deletion), and index queries `name`
+while filter sends `title`. No new create/delete controls were exposed; those
+handlers and the filter mismatch remain unchanged and need a separately tested
+backend correction before claiming module completion. Staging title search,
+update validation and status-toggle acceptance remain pending. No live writes.
