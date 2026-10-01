@@ -61,7 +61,7 @@
             $check_btn = '';
             $route = '';
 
-            if ($to_day_checkout->check_out_date == date('Y-m-d')) {
+            if (optional($to_day_checkout)->check_out_date == date('Y-m-d')) {
                 $bgcolor = '#1e6b99';
             }
 
@@ -72,7 +72,7 @@
             } elseif ($room->is_booked > 0) {
                 $tile_tag = 'Booked';
             }
-            if ($to_day_checkout->check_out_date == date('Y-m-d')) {
+            if (optional($to_day_checkout)->check_out_date == date('Y-m-d')) {
                 $tile_tag = 'Due today';
             }
 
