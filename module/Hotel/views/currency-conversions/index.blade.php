@@ -90,7 +90,7 @@
                                             </a>
                                             <button type="button" onclick="delete_check({{ $data->id }})"
                                                 class="btn btn-xs btn-sm btn-danger" title="Delete">
-                                                <i class="fa fa-trash"></i>
+                                                <i class="fa fa-trash-o"></i>
                                             </button>
                                         @endif
                                     </div>

@@ -18,6 +18,7 @@
                 class="fa fa-plus"></i> Add New Guests </a>
         <h1>
             <i class="fa fa-info-circle green"></i> Guest User List
+            <span class="badge badge-info">Total: {{ $guests->total() }}</span>
         </h1>
     </div>
 
@@ -39,11 +40,11 @@
                         &#10003; Select All
                     </a>
                     <button type="submit" class="btn btn-sm btn-success send-sms-btn" style="transition: 300ms; background-color: #87B87F !important; color: white !important;">
-                        <i class="far fa-paper-plane"></i> Send SMS
+                        <i class="fa fa-paper-plane"></i> Send SMS
                     </button>
                 </div>
 
-                <div>
+                <div class="table-responsive">
                     <table class="table table-striped table-bordered table-hover">
                         <thead>
                             <tr>
@@ -65,7 +66,7 @@
                         </thead>
 
                         <tbody>
-                            @foreach ($guests as $item)
+                            @forelse ($guests as $item)
                                 <tr>
                                     <td class="text-center">
                                         <label class="inline">
@@ -90,23 +91,29 @@
                                     <td>{{ optional($item->country)->name }}</td>
                                     <td class="center">
                                         <div class="btn-group">
-                                            <a class="btn btn-sm btn-success" href="{{ route('guests.edit', $item->id) }}">
+                                            <a class="btn btn-sm btn-success" href="{{ route('guests.edit', $item->id) }}" title="Edit guest">
                                                 <i class="fa fa-edit"></i>
                                             </a>
 
-                                            <a class="btn btn-sm btn-info" href="{{ route('guests.invoice', $item->id) }}" target="_blank">
-                                                <i class="fas fa-print"></i>
+                                            <a class="btn btn-sm btn-info" href="{{ route('guests.invoice', $item->id) }}" target="_blank" title="Guest invoice">
+                                                <i class="fa fa-print"></i>
                                             </a>
 
                                             <button type="button"
                                                 onclick="delete_item(`{{ route('guests.destroy', $item->id) }}`)"
                                                 class="btn btn-sm btn-danger" title="Delete">
-                                                <i class="fas fa-trash"></i>
+                                                <i class="fa fa-trash-o"></i>
                                             </button>
                                         </div>
                                     </td>
                                 </tr>
-                            @endforeach
+                            @empty
+                                <tr>
+                                    <td colspan="9" class="text-center" style="font-size: 15px; line-height: 44px; background: #fdf0f0;">
+                                        <strong class="text-danger"><i class="fa fa-exclamation-triangle"></i> No guests found{{ request()->hasAny(['name','phone_no','nid_no']) ? ' for this search' : '' }}.</strong>
+                                    </td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
                 </div>

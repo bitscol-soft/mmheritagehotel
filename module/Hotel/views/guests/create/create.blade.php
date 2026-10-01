@@ -23,7 +23,7 @@
 
                 <div class="col-xs-12 col-sm-8">
                     <input type="text" class="form-control input-sm" name="guest_name"
-                           value="{{ old('name') }}" placeholder="Guest Name" required>
+                           value="{{ old('guest_name') }}" placeholder="Guest Name" required>
                 </div>
             </div>
 
@@ -31,7 +31,7 @@
                 <label class="col-sm-3 control-label">Phone No<sup class="text-danger">*</sup> </label>
 
                 <div class="col-xs-12 col-sm-8">
-                    <input type="number" class="form-control input-sm" name="phone_no"
+                    <input type="text" inputmode="tel" class="form-control input-sm" name="phone_no"
                            value="{{ old('phone_no') }}" placeholder="Enter Phone no" required>
                 </div>
             </div>
@@ -224,7 +224,7 @@
             <i class="ace-icon fa fa-save icon-on-right bigger-110"></i>
             Save
         </button>
-        <a href="{{ route('company.index') }}" class="btn btn-sm btn-info">
+        <a href="{{ route('guests.index') }}" class="btn btn-sm btn-info">
             <i class="fa fa-backward"></i> Back List
         </a>
     </div>

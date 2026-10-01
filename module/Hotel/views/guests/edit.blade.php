@@ -83,7 +83,7 @@
                                         <label class="col-sm-3 control-label">Phone No </label>
 
                                         <div class="col-xs-12 col-sm-8">
-                                            <input type="number" class="form-control input-sm" name="phone_no"
+                                            <input type="text" inputmode="tel" class="form-control input-sm" name="phone_no"
                                                    value="{{ $guests->phone_no }}" placeholder="Enter Phone no">
                                         </div>
                                     </div>

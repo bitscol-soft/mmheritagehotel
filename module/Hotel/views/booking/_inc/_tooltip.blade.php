@@ -26,7 +26,7 @@
                 <p class='tool-pen'> Passport : {{ $guestInfo->nid_no }}</p>
                 <p class='tool-pen'>Check In: {{ $booking->check_in_time }}</p> <p class='tool-pen'> Check Out : {{ $booking->check_out_time }}</p><div class='btn-group'>
                     <button class='btn btn-xs btn-danger' type='button' onclick='checkOut(`{{ $route }}`, `{{ $check_btn }}`)'>
-                        <i class='fa fa-clock'></i> {{ $check_btn }}
+                        <i class='fa fa-clock-o'></i> {{ $check_btn }}
                     </button>
                 </div>">
 

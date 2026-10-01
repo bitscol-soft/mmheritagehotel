@@ -249,7 +249,7 @@
                                                     </td>
                                                     <td class="text-center">
                                                         <button class="btn btn-xs btn-danger ibtnDel" disabled><i
-                                                                class="fa fa-trash"></i></button>
+                                                                class="fa fa-trash-o"></i></button>
                                                     </td>
                                                 </tr>
                                             @endforeach

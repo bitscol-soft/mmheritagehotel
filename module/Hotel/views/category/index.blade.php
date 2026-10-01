@@ -72,7 +72,7 @@
                                         <button type="button"
                                             onclick="delete_item(`{{ route('hotel-categories.destroy', $item->id) }}`)"
                                             class="btn btn-xs btn-sm btn-danger" title="Delete">
-                                            <i class="fa fa-trash"></i>
+                                            <i class="fa fa-trash-o"></i>
                                         </button>
                                     </div>
                                 </td>

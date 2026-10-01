@@ -67,3 +67,19 @@
         padding: 4px 18px 5px 6px !important;
     }
 </style>
+
+    /* round-7: filter bar consistent with booking list */
+    .guest-filter-panel table {
+        background: #f7fafd;
+        border: 1px solid #e4ebf3;
+        border-radius: 4px;
+    }
+    .guest-filter-panel .input-group {
+        min-width: 180px;
+    }
+    .guest-filter-panel .input-group-addon {
+        background: #eef3f9;
+        color: #4d8cb3;
+        border-color: #dbe5f1;
+        width: 80px;
+    }

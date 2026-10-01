@@ -76,7 +76,7 @@
                                                     <div class="input-group">
                                                         <span class="input-group-addon">Time</span>
                                                         <input type="text" class="form-control time-picker" id="time_start" name="from_time"  value="{{ request('from_time') }}">
-                                                        <span class="input-group-addon"><i class="fa fa-clock"></i></span>
+                                                        <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
                                                         <input type="text" class="form-control time-picker" id="time_end" name="to_time"  value="{{ request('to_time') }}">
                                                     </div>
                                                 </td>

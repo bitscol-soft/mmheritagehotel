@@ -1,6 +1,6 @@
-<div class="row">
-    <form action="">
-        <table class="table table-striped table-bordered table-hover">
+<div class="row guest-filter-panel">
+    <form action="" method="get">
+        <table class="table" style="margin-bottom: 6px;">
             <tr>
                 <td>
                     <div class="input-group">

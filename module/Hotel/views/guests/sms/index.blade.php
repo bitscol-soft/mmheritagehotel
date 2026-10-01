@@ -1,7 +1,7 @@
 @extends('layouts.master')
 @section('title', 'Send SMS')
 @section('page-header')
-    <i class="fas fa-comments"></i> Send SMS
+    <i class="fa fa-comments"></i> Send SMS
 @stop
 
 
@@ -120,7 +120,7 @@
                                     <i class="fa fa-backward"></i> Back List
                                 </a>
                                 <button type="submit" class="btn btn-sm btn-success">
-                                    <i class="ace-icon fas fa-paper-plane icon-on-right bigger-110"></i> Send SMS
+                                    <i class="ace-icon fa fa-paper-plane icon-on-right bigger-110"></i> Send SMS
                                 </button>
                             </div>
 
