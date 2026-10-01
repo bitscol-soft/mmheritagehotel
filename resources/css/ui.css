@@ -466,45 +466,58 @@
 .mm-ui .mm-date-error { display: block; margin: 4px 0 0; font-size: 13px; font-weight: 600; }
 
 /* Booking lifecycle: checkout and payment */
-.mm-ui:is(.mm-booking-checkout, .mm-payment-collection) .mm-co-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-top: 16px; }
-.mm-ui:is(.mm-booking-checkout, .mm-payment-collection) .mm-co-card, .mm-ui:is(.mm-booking-checkout, .mm-payment-collection) .mm-co-charges, .mm-ui:is(.mm-booking-checkout, .mm-payment-collection) .mm-co-summary { padding: 16px; margin-top: 16px; }
-.mm-ui:is(.mm-booking-checkout, .mm-payment-collection) .mm-co-grid .mm-co-card { margin-top: 0; }
-.mm-ui:is(.mm-booking-checkout, .mm-payment-collection) .mm-co-title { margin: 0 0 12px; font-size: 16px; font-weight: 600; color: var(--mm-ink); }
-.mm-ui:is(.mm-booking-checkout, .mm-payment-collection) .mm-co-list { margin: 0 0 12px; }
-.mm-ui:is(.mm-booking-checkout, .mm-payment-collection) .mm-co-list > div { display: flex; justify-content: space-between; gap: 12px; padding: 6px 0; border-bottom: 1px solid var(--mm-line); }
-.mm-ui:is(.mm-booking-checkout, .mm-payment-collection) .mm-co-list dt { color: var(--mm-muted); font-weight: 600; }
-.mm-ui:is(.mm-booking-checkout, .mm-payment-collection) .mm-co-list dd { margin: 0; text-align: right; overflow-wrap: anywhere; }
-.mm-ui:is(.mm-booking-checkout, .mm-payment-collection) .mm-co-field { margin-top: 12px; }
-.mm-ui:is(.mm-booking-checkout, .mm-payment-collection) .mm-co-field > label, .mm-ui:is(.mm-booking-checkout, .mm-payment-collection) .mm-co-label { display: block; margin-bottom: 4px; color: var(--mm-muted); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
-.mm-ui:is(.mm-booking-checkout, .mm-payment-collection) .mm-co-field .form-control { min-height: 40px; }
-.mm-ui:is(.mm-booking-checkout, .mm-payment-collection) .mm-co-field .chosen-container { width: 100% !important; }
-.mm-ui:is(.mm-booking-checkout, .mm-payment-collection) .guest-detail-table .night-count { min-width: 44px; text-align: center; }
-.mm-ui:is(.mm-booking-checkout, .mm-payment-collection) .guest-detail-table .btn { min-width: 28px; min-height: 28px; }
-.mm-ui:is(.mm-booking-checkout, .mm-payment-collection) .mm-co-summary { margin-left: auto; width: 100%; max-width: 460px; }
-.mm-ui:is(.mm-booking-checkout, .mm-payment-collection) .mm-sum-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--mm-line); }
-.mm-ui:is(.mm-booking-checkout, .mm-payment-collection) .mm-sum-row p { margin: 0; text-align: right; }
-.mm-ui:is(.mm-booking-checkout, .mm-payment-collection) .mm-sum-label { color: var(--mm-muted); font-weight: 600; margin: 0; }
-.mm-ui:is(.mm-booking-checkout, .mm-payment-collection) .mm-sum-row.is-strong .mm-sum-label, .mm-ui:is(.mm-booking-checkout, .mm-payment-collection) .mm-sum-row.is-due .mm-sum-label { color: var(--mm-ink); }
-.mm-ui:is(.mm-booking-checkout, .mm-payment-collection) .mm-sum-row.is-due { border-bottom: 0; padding-top: 12px; font-size: 18px; }
-.mm-ui:is(.mm-booking-checkout, .mm-payment-collection) .mm-sum-row input[type="text"] { width: 150px; min-height: 40px; padding: 8px 12px; border: 1px solid #aab9ca; border-radius: 6px; text-align: right; }
-.mm-ui:is(.mm-booking-checkout, .mm-payment-collection) .mm-sum-full { display: flex; align-items: center; gap: 8px; padding: 8px 0; }
-.mm-ui:is(.mm-booking-checkout, .mm-payment-collection) .mm-sum-full label { margin: 0; font-weight: 600; }
-.mm-ui:is(.mm-booking-checkout, .mm-payment-collection) .mm-co-summary .mm-form-actions { position: static; margin-top: 12px; padding: 0; border: 0; box-shadow: none; background: transparent; }
-.mm-ui:is(.mm-booking-checkout, .mm-payment-collection) .mm-co-summary .mm-form-actions .mm-button { width: 100%; min-height: 44px; }
-.mm-ui:is(.mm-booking-checkout, .mm-payment-collection) .stay-chip { max-width: 100%; overflow-wrap: anywhere; white-space: normal; }
+.mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-co-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-top: 16px; }
+.mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-co-card, .mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-co-charges, .mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-co-summary { padding: 16px; margin-top: 16px; }
+.mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-co-grid .mm-co-card { margin-top: 0; }
+.mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-co-title { margin: 0 0 12px; font-size: 16px; font-weight: 600; color: var(--mm-ink); }
+.mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-co-list { margin: 0 0 12px; }
+.mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-co-list > div { display: flex; justify-content: space-between; gap: 12px; padding: 6px 0; border-bottom: 1px solid var(--mm-line); }
+.mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-co-list dt { color: var(--mm-muted); font-weight: 600; }
+.mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-co-list dd { margin: 0; text-align: right; overflow-wrap: anywhere; }
+.mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-co-field { margin-top: 12px; }
+.mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-co-field > label, .mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-co-label { display: block; margin-bottom: 4px; color: var(--mm-muted); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
+.mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-co-field .form-control { min-height: 40px; }
+.mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-co-field .chosen-container { width: 100% !important; }
+.mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .guest-detail-table .night-count { min-width: 44px; text-align: center; }
+.mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .guest-detail-table .btn { min-width: 28px; min-height: 28px; }
+.mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-co-summary { margin-left: auto; width: 100%; max-width: 460px; }
+.mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-sum-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--mm-line); }
+.mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-sum-row p { margin: 0; text-align: right; }
+.mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-sum-label { color: var(--mm-muted); font-weight: 600; margin: 0; }
+.mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-sum-row.is-strong .mm-sum-label, .mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-sum-row.is-due .mm-sum-label { color: var(--mm-ink); }
+.mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-sum-row.is-due { border-bottom: 0; padding-top: 12px; font-size: 18px; }
+.mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-sum-row input[type="text"] { width: 150px; min-height: 40px; padding: 8px 12px; border: 1px solid #aab9ca; border-radius: 6px; text-align: right; }
+.mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-sum-full { display: flex; align-items: center; gap: 8px; padding: 8px 0; }
+.mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-sum-full label { margin: 0; font-weight: 600; }
+.mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-co-summary .mm-form-actions { position: static; margin-top: 12px; padding: 0; border: 0; box-shadow: none; background: transparent; }
+.mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-co-summary .mm-form-actions .mm-button { width: 100%; min-height: 44px; }
+.mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .stay-chip { max-width: 100%; overflow-wrap: anywhere; white-space: normal; }
 @media (max-width: 575px) {
-    .mm-ui:is(.mm-booking-checkout, .mm-payment-collection) .mm-co-summary { max-width: none; }
-    .mm-ui:is(.mm-booking-checkout, .mm-payment-collection) .mm-sum-row input[type="text"] { width: 120px; }
+    .mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-co-summary { max-width: none; }
+    .mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-sum-row input[type="text"] { width: 120px; }
 }
 
 /* Payment collection */
-.mm-ui.mm-payment-collection .mm-pc-search { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px 16px; align-items: end; }
-.mm-ui.mm-payment-collection .mm-pc-search .mm-co-field { margin-top: 0; }
-.mm-ui.mm-payment-collection .mm-pc-search-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.mm-ui:is(.mm-payment-collection, .mm-night-audit) .mm-pc-search { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px 16px; align-items: end; }
+.mm-ui:is(.mm-payment-collection, .mm-night-audit) .mm-pc-search .mm-co-field { margin-top: 0; }
+.mm-ui:is(.mm-payment-collection, .mm-night-audit) .mm-pc-search-actions { display: flex; flex-wrap: wrap; gap: 8px; }
 .mm-ui.mm-payment-collection .mm-pc-empty { margin: 0; color: var(--mm-muted); text-align: center; padding: 16px 0; }
-.mm-ui.mm-payment-collection label.mm-sum-row { cursor: pointer; }
+.mm-ui:is(.mm-payment-collection, .mm-night-audit) label.mm-sum-row { cursor: pointer; }
 .mm-ui.mm-payment-collection .mm-pc-info { margin-bottom: 0; }
-.mm-ui.mm-payment-collection .guest-detail-table .text-right { text-align: right; }
+.mm-ui:is(.mm-payment-collection, .mm-night-audit) .guest-detail-table .text-right { text-align: right; }
+
+/* Night audit */
+.mm-ui.mm-night-audit #data-table th, .mm-ui.mm-night-audit #data-table td { padding-inline: 8px; }
+.mm-ui.mm-night-audit .mm-na-date { margin-bottom: 12px; }
+.mm-ui.mm-night-audit .mm-na-date input { min-height: 44px; font-size: 20px; font-weight: 700; color: #b8400f; border: 1px solid #aab9ca !important; border-radius: 6px; padding: 6px 12px; max-width: 100%; }
+.mm-ui.mm-night-audit .mm-na-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 8px 16px; }
+.mm-ui.mm-night-audit .mm-na-stat { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin: 0; padding: 8px 0; border-bottom: 1px solid var(--mm-line); }
+.mm-ui.mm-night-audit .mm-na-stat input.header-input { width: 72px; text-align: right; font-size: 16px; font-weight: 700; background: transparent !important; border: 0 !important; padding: 0 !important; }
+.mm-ui.mm-night-audit .mm-sum-row input.footer-input { width: 180px; min-height: 0; text-align: right; font-size: 18px; font-weight: 700; background: transparent !important; border: 0 !important; padding: 0 !important; }
+.mm-ui.mm-night-audit .mm-form-actions { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
+.mm-ui.mm-night-audit .mm-co-summary .mm-form-actions .mm-button { width: auto; flex: 1 1 140px; }
+.mm-ui.mm-night-audit input.header-input, .mm-ui.mm-night-audit input.footer-input { color: var(--mm-ink) !important; -webkit-text-fill-color: var(--mm-ink); opacity: 1; }
+.mm-ui.mm-night-audit .mm-co-charges table th, .mm-ui.mm-night-audit .mm-co-charges table td { vertical-align: middle; }
 
 /* Booking invoices: on narrow screens keep the A4-style sheet at a readable width and scroll it sideways (the printed output is unaffected). */
 .mm-ui.mm-invoice-page .mm-panel { overflow-x: auto; }

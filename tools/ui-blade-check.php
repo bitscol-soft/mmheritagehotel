@@ -17,7 +17,7 @@ $files=array_merge($files, [$root . '/resources/views/home/hotel-dashboard.blade
 $files=array_merge($files, [$root . '/module/Hotel/views/house-keeping/index.blade.php'], glob($root . '/resources/views/layouts/shell/*.blade.php'), [$root . '/resources/views/partials/_header.blade.php']);
 $files=array_merge($files, glob($root . '/module/Hotel/views/booking-purpose/*.blade.php'), [$root . '/module/Hotel/views/booking-purpose/include/filter.blade.php']);
 $files=array_merge($files, [$root . '/module/Hotel/views/booking-note/index.blade.php', $root . '/module/Hotel/views/booking-note/edit.blade.php', $root . '/module/Hotel/views/booking-note/include/filter.blade.php']);
-$files=array_merge($files, [$root . '/module/Hotel/views/booking/booking_next.blade.php', $root . '/module/Hotel/views/booking/_inc/_booking-next-steps.blade.php', $root . '/module/Hotel/views/booking/view.blade.php', $root . '/module/Hotel/views/payment-collection/index.blade.php', $root . '/module/Hotel/views/booking/checkout_invoice.blade.php', $root . '/module/Hotel/views/booking/reservation-invoice.blade.php', $root . '/module/Hotel/views/booking/checkout-invoice-v3.blade.php', $root . '/module/Hotel/views/booking/create.blade.php', $root . '/module/Hotel/views/booking/edit.blade.php', $root . '/module/Hotel/views/booking/_inc/_add-guest-input-info.blade.php', $root . '/module/Hotel/views/booking/_inc/_edit-guest-input-info.blade.php']);
+$files=array_merge($files, [$root . '/module/Hotel/views/booking/booking_next.blade.php', $root . '/module/Hotel/views/booking/_inc/_booking-next-steps.blade.php', $root . '/module/Hotel/views/booking/view.blade.php', $root . '/module/Hotel/views/night-audits/index.blade.php', $root . '/module/Hotel/views/night-audits/invoice.blade.php', $root . '/module/Hotel/views/night-audits/create-v2.blade.php', $root . '/module/Hotel/views/payment-collection/index.blade.php', $root . '/module/Hotel/views/booking/checkout_invoice.blade.php', $root . '/module/Hotel/views/booking/reservation-invoice.blade.php', $root . '/module/Hotel/views/booking/checkout-invoice-v3.blade.php', $root . '/module/Hotel/views/booking/create.blade.php', $root . '/module/Hotel/views/booking/edit.blade.php', $root . '/module/Hotel/views/booking/_inc/_add-guest-input-info.blade.php', $root . '/module/Hotel/views/booking/_inc/_edit-guest-input-info.blade.php']);
 foreach($files as $f){ $compiled=$compiler->compileString(file_get_contents($f)); token_get_all($compiled,TOKEN_PARSE); echo "PASS compile ".basename($f)."\n"; }
 $html = $app->make('view')->make('components.mm.field', ['label'=>'Guest','id'=>'test','name'=>'name','value'=>'<script>','error'=>null,'attributes'=>new Illuminate\View\ComponentAttributeBag])->render();
 
@@ -287,7 +287,7 @@ file_put_contents($coViews . '/mm-checkout-layout.blade.php', <<<'BLADE'
 <!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">@yield('css')@stack('style')<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->@yield('content')<!--/MM-BODY--></div>
 <script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
 <!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
-<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); }</script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
 @yield('js')<!--/MM-JS--></body></html>
 BLADE);
 $app['view']->getFinder()->prependLocation($coViews);
@@ -403,3 +403,73 @@ $pcFile = __DIR__ . '/fixtures/payment-collection.html';
 if (getenv('MM_WRITE_FIXTURE')) { file_put_contents($pcFile, $pcHtml); file_put_contents($previewDir . '/payment-collection.html', $pcHtml); }
 if (file_get_contents($pcFile) !== $pcHtml) throw new RuntimeException($pcFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
 echo "PASS payment collection view render: search, invoices, summary, form fields, escaped data and the real script\n";
+
+// Render the real night audit generate form (create-v2) with sample ledger rows. Layout, alert, currency and business-date helpers are substituted.
+if (!function_exists('mm_cur')) { function mm_cur($amount, $ignore = 0) { return $ignore ? $amount : number_format($amount, 2); } }
+@mkdir($coViews . '/night-audits', 0777, true);
+$naSource = str_replace(["@extends('layouts.master')", '<x-alert-message />', 'calculateCurrencyAmount(', 'today_from_system()'], ["@extends('mm-checkout-layout')", '', 'mm_cur(', "'2026-10-01'"], file_get_contents($root . '/module/Hotel/views/night-audits/create-v2.blade.php'));
+if (preg_match('/calculateCurrencyAmount|today_from_system|setting\(/', $naSource)) throw new RuntimeException('Unsubstituted helper in night audit view');
+file_put_contents($coViews . '/night-audits/create-v2.blade.php', $naSource);
+$naRoutes = new Illuminate\Routing\RouteCollection();
+foreach (['night-audits.index' => ['GET', 'hotel/night-audits'], 'night-audits.store' => ['POST', 'hotel/night-audits']] as $routeName => [$method, $uri]) {
+    $naRoutes->add((new Illuminate\Routing\Route($method, $uri, function () {}))->name($routeName));
+}
+$naRequest = Illuminate\Http\Request::create('/hotel/night-audits/create?from_date=2026-10-01&to_date=2026-10-01');
+$naRequest->setLaravelSession(new Illuminate\Session\Store('mm', new Illuminate\Session\ArraySessionHandler(10)));
+$app->instance('request', $naRequest);
+$app->instance('url', new Illuminate\Routing\UrlGenerator($naRoutes, $naRequest));
+$naLedger = function ($id, $in, $account) { return (object) ['id' => $id, 'in' => $in, 'payment_type' => 1, 'account' => (object) ['name' => $account]]; };
+$naTx = function ($id, $type, $invoice, $paid, $total_due, $ledgers, $source = null) {
+    return (object) ['id' => $id, 'date' => '2026-10-01', 'source_type' => $type, 'invoice_no' => $invoice, 'ledger_paid' => $paid, 'discount' => 0, 'previous_paid' => 500, 'total_due_amount' => $total_due, 'extra_charge' => 0,
+        'transaction_ledgers' => collect($ledgers), 'source' => $source];
+};
+$naHtml = $app->make('view')->make('night-audits.create-v2', ['errors' => new Illuminate\Support\ViewErrorBag(), 'from_date' => '2026-10-01', 'to_date' => '2026-10-01', 'accountTypes' => collect([1 => 'Cash', 2 => 'Card']),
+    'total_reservation' => 3, 'total_booked_room' => 7, 'total_check_in' => 2, 'total_check_out' => 1, 'total_room' => 32, 'total_cancel' => 0, 'total_dirty_room' => 4, 'total_maintenance_room' => 1,
+    'transactions' => collect([
+        'Booking' => collect([$naTx(11, 'Booking', '0007', 3000, 2000, [$naLedger(101, 3000, 'Cash')], (object) ['details' => collect([(object) ['roomNumber' => (object) ['room_number' => '101']], (object) ['roomNumber' => (object) ['room_number' => '102']]])]),
+            $naTx(12, 'Booking', '0008', 1500, 0, [$naLedger(102, 1500, 'Card')], (object) ['details' => collect([(object) ['roomNumber' => (object) ['room_number' => '201 <b>x</b>']]])])]),
+        'Restaurant Sale' => collect([$naTx(21, 'Restaurant Sale', '0101', 800, 0, [$naLedger(103, 800, 'Cash')])]),
+    ])])->render();
+$naHtml = preg_replace('/(name="_token" value=")[A-Za-z0-9]+"/', '$1fixture-csrf-token"', str_replace('http://localhost/assets', '/assets', $naHtml));
+foreach (['name="from_date"', 'name="to_date"', 'name="date"', 'name="total_reservation"', 'name="total_booked_room"', 'name="total_check_in"', 'name="total_check_out"', 'name="total_room"', 'name="total_cancelled"', 'name="total_dirty_room"', 'name="total_room_maintenance"',
+    'name="transaction_ledger_ids[11]"', 'name="transaction_ids[11]"', 'name="total_amounts[11]"', 'name="previous_paid"', 'name="collections[11]"', 'name="due_amounts[11]"', 'name="total_amount"', 'name="collection"', 'name="due_amount"',
+    'id="formSubmit"', 'action="http://localhost/hotel/night-audits"', 'save-btn', 'mm-night-audit'] as $marker) {
+    if (strpos($naHtml, $marker) === false) throw new RuntimeException('Night audit view missing ' . $marker);
+}
+if (strpos($naHtml, '<b>Warning</b>') !== false || strpos($naHtml, '<b>Notice</b>') !== false) throw new RuntimeException('Night audit sample data is incomplete (PHP warning in output)');
+if (strpos($naHtml, '201 <b>x</b>') !== false) throw new RuntimeException('Night audit did not escape room data');
+$naFile = __DIR__ . '/fixtures/night-audit-create.html';
+if (getenv('MM_WRITE_FIXTURE')) { file_put_contents($naFile, $naHtml); file_put_contents($previewDir . '/night-audit-create.html', $naHtml); }
+if (file_get_contents($naFile) !== $naHtml) throw new RuntimeException($naFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
+echo "PASS night audit generate view render: period filter, ledger groups, summary, form fields and escaped data\n";
+
+// Render the real night audit list (index) with sample audit days. Components that need the app (export button, paginator) and currency helpers are substituted.
+@mkdir($coViews . '/night-audits/export', 0777, true);
+$niSub = function ($file) use ($root) {
+    return str_replace(["@extends('layouts.master')", '<x-alert-message />', '<x-export-button pdf="1" excel="1" />', '<x-paginate :data="$nightaudits" />', 'calculateCurrencyAmount('], ["@extends('mm-checkout-layout')", '', '', '', 'mm_cur('], file_get_contents($root . $file));
+};
+$niSource = $niSub('/module/Hotel/views/night-audits/index.blade.php');
+$niExcel = $niSub('/module/Hotel/views/night-audits/export/excel.blade.php');
+if (preg_match('/calculateCurrencyAmount|x-export-button|x-paginate/', $niSource . $niExcel)) throw new RuntimeException('Unsubstituted helper in night audit list');
+file_put_contents($coViews . '/night-audits/index.blade.php', $niSource);
+file_put_contents($coViews . '/night-audits/export/excel.blade.php', $niExcel);
+$niRoutes = new Illuminate\Routing\RouteCollection();
+foreach (['night-audits.create' => ['GET', 'hotel/night-audits/create'], 'night-audits.show' => ['GET', 'hotel/night-audits/{id}'], 'night-audits.destroy' => ['DELETE', 'hotel/night-audits/{id}']] as $routeName => [$method, $uri]) {
+    $niRoutes->add((new Illuminate\Routing\Route($method, $uri, function () {}))->name($routeName));
+}
+$niRequest = Illuminate\Http\Request::create('/hotel/night-audits?from_date=2026-09-30');
+$niRequest->setLaravelSession(new Illuminate\Session\Store('mm', new Illuminate\Session\ArraySessionHandler(10)));
+$app->instance('request', $niRequest);
+$app->instance('url', new Illuminate\Routing\UrlGenerator($niRoutes, $niRequest));
+$niDay = function ($date, $in, $out, $res, $cancel, $room, $dirty, $collection, $due) { return (object) ['date' => $date, 'total_check_in' => $in, 'total_check_out' => $out, 'total_reservation' => $res, 'total_cancelled' => $cancel, 'total_room' => $room, 'total_dirty_room' => $dirty, 'collection' => $collection, 'due_amount' => $due]; };
+$niHtml = $app->make('view')->make('night-audits.index', ['errors' => new Illuminate\Support\ViewErrorBag(), 'paginate' => 1,
+    'nightaudits' => collect([$niDay('2026-09-30', 2, 1, 3, 0, 7, 4, 5300, 2000), $niDay('2026-09-29', 1, 2, 1, 1, 5, 2, 4100, 0)])])->render();
+$niHtml = preg_replace('/(name="_token" value=")[A-Za-z0-9]+"/', '$1fixture-csrf-token"', str_replace('http://localhost/assets', '/assets', $niHtml));
+foreach (['name="from_date"', 'name="to_date"', 'id="data-table"', 'mm-night-audit', 'Generate', 'delete_item(', 'View Details', '2026-09-30', '5,300.00'] as $marker) {
+    if (strpos($niHtml, $marker) === false) throw new RuntimeException('Night audit list missing ' . $marker);
+}
+if (strpos($niHtml, '<b>Warning</b>') !== false || strpos($niHtml, '<b>Notice</b>') !== false) throw new RuntimeException('Night audit list sample data is incomplete (PHP warning in output)');
+$niFile = __DIR__ . '/fixtures/night-audit-index.html';
+if (getenv('MM_WRITE_FIXTURE')) { file_put_contents($niFile, $niHtml); file_put_contents($previewDir . '/night-audit-index.html', $niHtml); }
+if (file_get_contents($niFile) !== $niHtml) throw new RuntimeException($niFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
+echo "PASS night audit list render: filter, audit rows, totals, actions\n";

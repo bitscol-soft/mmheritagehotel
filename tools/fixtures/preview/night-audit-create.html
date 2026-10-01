@@ -1,0 +1,465 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">    <link rel="stylesheet" href="/assets/css/bootstrap-datetimepicker.min.css">
+<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+        <section class="mm-ui mm-night-audit">
+    <div class="tw-space-y-6 tw-py-4">
+        <header class="tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-4">
+            <div>
+                <p class="tw-m-0 tw-mb-1 tw-text-xs tw-font-semibold tw-uppercase tw-tracking-wide tw-text-muted">MM Heritage Hotel</p>
+                <h1 class="tw-m-0 tw-text-2xl tw-font-semibold tw-text-ink">Generate night audit</h1>
+                <p class="tw-m-0 tw-mt-2 tw-text-sm tw-text-muted">Pick the audit period, review the day&#039;s reservations, collections and dues, then generate the audit.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button mm-button-secondary" href="http://localhost/hotel/night-audits">
+                <i class="fa fa-list-alt" aria-hidden="true"></i> Audit List
+            </a></div>        </header>
+        <div class="mm-panel tw-p-4 sm:tw-p-6 mm-co-card hidden-print"><h2 class="mm-co-title">Audit period</h2>
+            <form action="" method="GET">
+                <div class="mm-pc-search">
+                    <div class="mm-co-field" role="group" aria-labelledby="mm-na-from">
+                        <span id="mm-na-from" class="mm-co-label">From</span>
+                        <div class="input-group">
+                            <label class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></label>
+                            <input type="text" class="date-picker-v2 form-control text-center"
+                                                        autocomplete="off" name="from_date"
+                                                        value="2026-10-01">
+                        </div>
+                    </div>
+                    <div class="mm-co-field" role="group" aria-labelledby="mm-na-to">
+                        <span id="mm-na-to" class="mm-co-label">To</span>
+                        <div class="input-group">
+                            <label class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></label>
+                            <input type="text" class="date-picker-v2 form-control text-center"
+                                                        autocomplete="off" name="to_date"
+                                                        value="2026-10-01">
+                        </div>
+                    </div>
+                    <div class="mm-pc-search-actions">
+                        <button type="submit" class="mm-button">
+                            <i class="fa fa-search" aria-hidden="true"></i> Search
+                        </button>
+                        <a href="http://localhost/hotel/night-audits/create" class="mm-button mm-button-secondary" aria-label="Reset">
+                            <i class="fa fa-refresh" aria-hidden="true"></i> Reset
+                        </a>
+                    </div>
+                </div>
+            </form></div>
+
+                    <form action="http://localhost/hotel/night-audits" method="post" id="formSubmit">
+                <input type="hidden" name="_token" value="fixture-csrf-token">
+                <section class="mm-panel mm-co-card" aria-labelledby="mm-na-day">
+                    <h2 id="mm-na-day" class="mm-co-title">Generate date</h2>
+                    <div class="mm-na-date">
+                        <input type="text" name="date" class="input-sm date-picker bs-tooltip"
+                                                value="2026-10-01"
+                                                title="Generate Date"
+                                                style="border: none; font-size:20px;font-weight:bold;color:rgb(216, 64, 18)">
+                    </div>
+                    <div class="mm-na-stats">
+                        <label class="mm-na-stat"><span class="mm-sum-label">Total Reservation</span>
+                            <input type="text" readonly class="header-input"
+                                                        style="background: white !important" name="total_reservation"
+                                                        value="3">
+                        </label>
+                        <label class="mm-na-stat"><span class="mm-sum-label">Total Booked</span>
+                            <input type="text" readonly class="header-input"
+                                                        style="background: white !important" name="total_booked_room"
+                                                        value="7">
+                        </label>
+                        <label class="mm-na-stat"><span class="mm-sum-label">Total Check In</span>
+                            <input type="text" readonly class="header-input"
+                                                        style="background: white !important" name="total_check_in"
+                                                        value="2">
+                        </label>
+                        <label class="mm-na-stat"><span class="mm-sum-label">Total Check Out</span>
+                            <input type="text" readonly class="header-input"
+                                                        style="background: white !important" name="total_check_out"
+                                                        value="1">
+                        </label>
+                        <label class="mm-na-stat"><span class="mm-sum-label">Total Room</span>
+                            <input type="text" readonly class="header-input"
+                                                        style="background: white !important" name="total_room"
+                                                        value="32">
+                        </label>
+                        <label class="mm-na-stat"><span class="mm-sum-label">Total Cancelled</span>
+                            <input type="text" readonly class="header-input"
+                                                        style="background: white !important" name="total_cancelled"
+                                                        value="0">
+                        </label>
+                        <label class="mm-na-stat"><span class="mm-sum-label">Total Dirty Room</span>
+                            <input type="text" readonly class="header-input"
+                                                        style="background: white !important" name="total_dirty_room"
+                                                        value="4">
+                        </label>
+                        <label class="mm-na-stat"><span class="mm-sum-label">Total Maintenance Room</span>
+                            <input type="text" readonly class="header-input"
+                                                        style="background: white !important" name="total_room_maintenance"
+                                                        value="1">
+                        </label>
+                    </div>
+                </section>
+
+                                                    <section class="mm-panel mm-co-charges">
+                        <h2 class="mm-co-title">Booking</h2>
+                        <div class="mm-table-scroll" role="region" aria-label="Booking transactions" tabindex="0"><table class="table table-bordered table-striped table-hover"
+                                                style="border: none">
+
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-center">SL</th>
+                                                        <th class="text-center">Date</th>
+                                                        <th class="text-center">Type</th>
+                                                        <th class="text-center">Invoice No</th>
+                                                        <th class="text-center">Payment Type</th>
+                                                                                                                    <th class="text-center" style="width: 30%">Room No</th>
+                                                            <th class="text-right">Extra Charge <span
+                                                                    class="currency-sign"></span></th>
+                                                                                                                <th class="text-right">Total Amount <span
+                                                                class="currency-sign"></span></th>
+                                                        <th class="text-right">Previous Paid <span
+                                                                class="currency-sign"></span></th>
+                                                        <th class="text-right">Paid Amount <span
+                                                                class="currency-sign"></span></th>
+                                                        <th class="text-right" style="width: 14% !important">Due
+                                                            Amount<span class="currency-sign"></span></th>
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                    
+                                                                                                                                                                                                                                <input type="hidden"
+                                                                name="transaction_ledger_ids[11]"
+                                                                value="101">
+                                                                                                                <tr>
+                                                            <td class="text-center">
+                                                                1
+
+                                                                <input type="hidden"
+                                                                    name="transaction_ids[11]"
+                                                                    value="11">
+                                                            </td>
+                                                            <td class="text-center">2026-10-01</td>
+                                                            <td class="text-center">Booking</td>
+                                                            <td class="text-center">
+                                                                INV-0007
+                                                            </td>
+
+                                                            <td class="text-center">
+                                                                                                                                                                                                        Cash
+                                                                                                                                    
+                                                            </td>
+
+                                                                                                                            <td class="text-center">
+                                                                                                                                                                                                                <label
+                                                                            class="label label-success">101</label>
+                                                                                                                                            <label
+                                                                            class="label label-success">102</label>
+                                                                                                                                    </td>
+                                                                <td style="text-align: right;">
+                                                                    0.00
+                                                                </td>
+                                                                                                                        <td style="text-align: right;">
+                                                                <input type="hidden"
+                                                                    name="total_amounts[11]"
+                                                                    value="3000">
+                                                                3,000.00
+                                                            </td>
+                                                            <td style="text-align: right;">
+                                                                <input type="hidden"
+                                                                    name="previous_paid"
+                                                                    value="500">
+                                                                500.00
+                                                            </td>
+                                                            <td style="text-align: right;">
+                                                                <input type="hidden"
+                                                                    name="collections[11]"
+                                                                    value="3000">
+                                                                3,000.00
+                                                            </td>
+                                                            <td class="text-right">
+                                                                <input type="hidden"
+                                                                    name="due_amounts[11]"
+                                                                    value="2000">
+
+                                                                2,000.00
+                                                            </td>
+                                                        </tr>
+                                                                                                                                                                                                                                <input type="hidden"
+                                                                name="transaction_ledger_ids[12]"
+                                                                value="102">
+                                                                                                                <tr>
+                                                            <td class="text-center">
+                                                                2
+
+                                                                <input type="hidden"
+                                                                    name="transaction_ids[12]"
+                                                                    value="12">
+                                                            </td>
+                                                            <td class="text-center">2026-10-01</td>
+                                                            <td class="text-center">Booking</td>
+                                                            <td class="text-center">
+                                                                INV-0008
+                                                            </td>
+
+                                                            <td class="text-center">
+                                                                                                                                                                                                        Card
+                                                                                                                                    
+                                                            </td>
+
+                                                                                                                            <td class="text-center">
+                                                                                                                                                                                                                <label
+                                                                            class="label label-success">201 &lt;b&gt;x&lt;/b&gt;</label>
+                                                                                                                                    </td>
+                                                                <td style="text-align: right;">
+                                                                    0.00
+                                                                </td>
+                                                                                                                        <td style="text-align: right;">
+                                                                <input type="hidden"
+                                                                    name="total_amounts[12]"
+                                                                    value="1500">
+                                                                1,500.00
+                                                            </td>
+                                                            <td style="text-align: right;">
+                                                                <input type="hidden"
+                                                                    name="previous_paid"
+                                                                    value="500">
+                                                                500.00
+                                                            </td>
+                                                            <td style="text-align: right;">
+                                                                <input type="hidden"
+                                                                    name="collections[12]"
+                                                                    value="1500">
+                                                                1,500.00
+                                                            </td>
+                                                            <td class="text-right">
+                                                                <input type="hidden"
+                                                                    name="due_amounts[12]"
+                                                                    value="0">
+
+                                                                0
+                                                            </td>
+                                                        </tr>
+                                                                                                    </tbody>
+
+
+                                                <tfoot>
+                                                    <tr>
+                                                        <th class="text-right" colspan="7">
+                                                            <strong style="font-size: 18px">Total:</strong>
+                                                        </th>
+                                                        <th class="text-right"><strong
+                                                                style="font-size: 18px">4500</strong>
+                                                        </th>
+                                                        <th class="text-right"><strong
+                                                                style="font-size: 18px">1000</strong>
+                                                        </th>
+                                                        <th class="text-right"><strong
+                                                                style="font-size: 18px">4500</strong>
+                                                        </th>
+                                                        
+
+                                                        <th class="text-right"><strong
+                                                                style="font-size: 18px">2000</strong>
+                                                        </th>
+                                                    </tr>
+
+
+                                                </tfoot>
+                                            </table></div>
+                    </section>
+                                                        <section class="mm-panel mm-co-charges">
+                        <h2 class="mm-co-title">Restaurant Sale</h2>
+                        <div class="mm-table-scroll" role="region" aria-label="Restaurant Sale transactions" tabindex="0"><table class="table table-bordered table-striped table-hover"
+                                                style="border: none">
+
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-center">SL</th>
+                                                        <th class="text-center">Date</th>
+                                                        <th class="text-center">Type</th>
+                                                        <th class="text-center">Invoice No</th>
+                                                        <th class="text-center">Payment Type</th>
+                                                                                                                <th class="text-right">Total Amount <span
+                                                                class="currency-sign"></span></th>
+                                                        <th class="text-right">Previous Paid <span
+                                                                class="currency-sign"></span></th>
+                                                        <th class="text-right">Paid Amount <span
+                                                                class="currency-sign"></span></th>
+                                                        <th class="text-right" style="width: 14% !important">Due
+                                                            Amount<span class="currency-sign"></span></th>
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                    
+                                                                                                                                                                                                                                <input type="hidden"
+                                                                name="transaction_ledger_ids[21]"
+                                                                value="103">
+                                                                                                                <tr>
+                                                            <td class="text-center">
+                                                                1
+
+                                                                <input type="hidden"
+                                                                    name="transaction_ids[21]"
+                                                                    value="21">
+                                                            </td>
+                                                            <td class="text-center">2026-10-01</td>
+                                                            <td class="text-center">Restaurant Sale</td>
+                                                            <td class="text-center">
+                                                                INV-0101
+                                                            </td>
+
+                                                            <td class="text-center">
+                                                                                                                                                                                                        Cash
+                                                                                                                                    
+                                                            </td>
+
+                                                                                                                        <td style="text-align: right;">
+                                                                <input type="hidden"
+                                                                    name="total_amounts[21]"
+                                                                    value="800">
+                                                                800.00
+                                                            </td>
+                                                            <td style="text-align: right;">
+                                                                <input type="hidden"
+                                                                    name="previous_paid"
+                                                                    value="500">
+                                                                500.00
+                                                            </td>
+                                                            <td style="text-align: right;">
+                                                                <input type="hidden"
+                                                                    name="collections[21]"
+                                                                    value="800">
+                                                                800.00
+                                                            </td>
+                                                            <td class="text-right">
+                                                                <input type="hidden"
+                                                                    name="due_amounts[21]"
+                                                                    value="0">
+
+                                                                0
+                                                            </td>
+                                                        </tr>
+                                                                                                    </tbody>
+
+
+                                                <tfoot>
+                                                    <tr>
+                                                        <th class="text-right" colspan="5">
+                                                            <strong style="font-size: 18px">Total:</strong>
+                                                        </th>
+                                                        <th class="text-right"><strong
+                                                                style="font-size: 18px">800</strong>
+                                                        </th>
+                                                        <th class="text-right"><strong
+                                                                style="font-size: 18px">500</strong>
+                                                        </th>
+                                                        <th class="text-right"><strong
+                                                                style="font-size: 18px">800</strong>
+                                                        </th>
+                                                        
+
+                                                        <th class="text-right"><strong
+                                                                style="font-size: 18px">0</strong>
+                                                        </th>
+                                                    </tr>
+
+
+                                                </tfoot>
+                                            </table></div>
+                    </section>
+                                    
+                <section class="mm-panel mm-co-summary" aria-labelledby="mm-na-summary">
+                    <h2 id="mm-na-summary" class="mm-co-title">Summary</h2>
+                    <label class="mm-sum-row is-strong"><span class="mm-sum-label">Total Amount</span>
+                        <input type="text" readonly class="footer-input"
+                                                    style="background: white !important; padding: 0 !important"
+                                                    name="total_amount" value="5300">
+                    </label>
+                    <label class="mm-sum-row is-strong"><span class="mm-sum-label">Total Collection</span>
+                        <input type="text" readonly class="footer-input"
+                                                    style="background: white !important; padding: 0 !important"
+                                                    name="collection" value="5300">
+                    </label>
+                    <label class="mm-sum-row is-due"><span class="mm-sum-label">Total Due</span>
+                        <input type="text" readonly class="footer-input"
+                                                    style="background: white !important" name="due_amount"
+                                                    value="2000">
+                    </label>
+                    <div class="mm-form-actions">
+                        <button class="mm-button mm-button-secondary">
+                                                <i class="fa fa-refresh"></i> Close
+                                            </button>
+                        <button type="button" class="mm-button save-btn">
+                                                <i class="fa fa-check-circle"></i>
+                                                Generate
+                                            </button>
+                    </div>
+                </section>
+            </form>
+    </div>
+</section>
+
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
+    <script src="/assets/js/moment.min.js"></script>
+    <script src="/assets/js/bootstrap-datetimepicker.min.js"></script>
+    <script>
+        $('.save-btn').on('click', () => {
+            $.LoadingOverlay("show", {
+                image: '<svg></svg>',
+                imageClass: 'loader',
+                imageAnimation: false,
+                progress: false,
+                rogressAutoResize: true,
+                progressResizeFactor: 0.25,
+                progressColor: "#8a256c",
+                progressClass: "",
+                progressOrder: 2,
+                progressFixedPosition: "center",
+                progressSpeed: 200,
+                progressMin: 20,
+                progressMax: 100,
+                size: 50,
+                maxSize: 120,
+                minSize: 20,
+                direction: "column",
+                fade: [400, 200],
+                resizeInterval: 50,
+                zIndex: 2147483647
+
+            })
+
+            // setInterval(() => {
+            //     $.LoadingOverlay("hide")
+            //     $('#formSubmit').submit();
+            // }, 1000);
+
+            setTimeout(() => {
+                $.LoadingOverlay("hide")
+                $('#formSubmit').submit();
+            }, 10000);
+
+        })
+
+
+        $('.date-picker-v2').datetimepicker({
+            //  format: 'YYYY-MM-DD H:mm:ss',//use this option to display seconds
+            format: 'YYYY-MM-DD h:mm:ss A', //use this option to display seconds
+            icons: {
+                time: 'fa fa-clock-o',
+                date: 'fa fa-calendar',
+                up: 'fa fa-chevron-up',
+                down: 'fa fa-chevron-down',
+                previous: 'fa fa-chevron-left',
+                next: 'fa fa-chevron-right',
+                today: 'fa fa-arrows ',
+                clear: 'fa fa-trash-o',
+                close: 'fa fa-times'
+            }
+        }).next().on(ace.click_event, function() {
+            $(this).prev().focus();
+        });
+    </script>
+<!--/MM-JS--></body></html>

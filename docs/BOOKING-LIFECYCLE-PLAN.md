@@ -16,7 +16,7 @@ preservation guards in `tools/ui-check.cjs` before any markup moves. Financial s
 | Room assignment | `booking.assign` | `assaign` | pending |
 | Invoices / print | `getInvoice`, `getInvoiceV2`, `reservationInvoice`, `checkoutInvoice` | `checkout_invoice`, `checkout-invoice-v2/v3/v4`, `get_invoice`, `reservation-invoice` | `checkout_invoice`, `reservation-invoice`: screen frame migrated; `checkout-invoice-v3`: screen-only action bar; v2, v4 and `get_invoice` are not referenced by any route or controller and were left alone |
 | Payment collection | `BookingCollection` | `payment-collection.index` (532 → 307) | migrated (search, guest info, invoices table, summary); script byte-identical; staging pending |
-| Night audit | n/a | n/a | pending |
+| Night audit | `NightAuditSummaryController` (`index`, `create`, `store`, `show`) | `night-audits/index`, `create-v2` (384 lines, was 552), `invoice` | migrated: list and generate form on the shared frame; the report only gains a screen-only action bar; closing script byte-identical; staging pending |
 
 ## Risks
 
@@ -35,6 +35,15 @@ preservation guards in `tools/ui-check.cjs` before any markup moves. Financial s
 2. `view` (checkout) with a form-field guard and a fixture exercising totals.
 3. Invoices and print styles.
 4. Payment collection, then night audit.
+
+## Findings on night audit (backend, not changed)
+
+- `create()` has `->take(5)` on the transactions query, so the generate form lists and closes only five transactions
+  (looks like a leftover debugging limit).
+- The Close button has no `type`, so it submits the store form at once and skips the ten-second delay.
+- Generate shows an overlay and submits after a fixed `setTimeout` of 10 s; a double click schedules two submits.
+- `previous_paid` is posted as one non-indexed hidden input per row, so only the last value reaches the server.
+- Unreferenced views (`index-details`, `create`, `create-v3/v4`, `show`) were not migrated.
 
 ## Findings on edit (backend, not changed)
 

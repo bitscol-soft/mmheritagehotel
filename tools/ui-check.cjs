@@ -388,3 +388,36 @@ console.log('PASS: note list/edit expressions, forms and status scripts; legacy 
  assert(after.includes('<x-mm.page class="mm-payment-collection"')&&!after.includes('widget-header')&&!after.includes('widget-box'),'payment collection: should use the shared page frame');
  console.log('PASS: payment collection expressions, form controls, invoices table and calculation script preserved');
 }
+
+{
+ // Booking lifecycle: night audit. The closing form keeps its fields, table, @php blocks and delay script; the list keeps its filter and shared export table; the report only gains a screen-only action bar.
+ const read=(path,rev)=>rev?execFileSync('git',['show',`${rev}:${path}`],{encoding:'utf8'}):fs.readFileSync(path,'utf8');
+ const nc=s=>s.replace(/\{\{--[\s\S]*?--\}\}/g,'');
+ const ex=s=>(nc(s).match(/\{\{[\s\S]*?\}\}|\{!![\s\S]*?!!\}/g)||[]).map(x=>x.replace(/\s+/g,' '));
+ const ctl=s=>(nc(s).replace(/\{\{[\s\S]*?\}\}/g,'{{}}').match(/<(input|select|textarea|button)\b[^>]*>/g)||[]).map(x=>x.replace(/\s+/g,' '));
+ const only=(l,m)=>{const c={};l.forEach(x=>c[x]=(c[x]||0)+1);m.forEach(x=>c[x]=(c[x]||0)-1);return Object.entries(c).filter(([,n])=>n).map(([k,n])=>`${n>0?'-':'+'}${Math.abs(n)} ${k}`).sort();};
+ const forms=s=>(nc(s).match(/<form[^>]*>/g)||[]).map(x=>x.replace(/\s+/g,' '));
+ const js=s=>s.slice(s.indexOf("@section('js')"));
+ const base='45091d5a';
+ const createPath='module/Hotel/views/night-audits/create-v2.blade.php', cAfter=read(createPath), cBefore=read(createPath,base);
+ assert.deepEqual(only(ex(cBefore),ex(cAfter)),[],'night audit form: Blade expressions changed');
+ assert.deepEqual(only(ctl(cBefore),ctl(cAfter)),['+1 <button class="mm-button mm-button-secondary">','+1 <button type="button" class="mm-button save-btn">','+1 <button type="submit" class="mm-button">','-1 <button class="btn-outline-danger btn-sm">','-1 <button type="button" class="btn-sm btn-outline-success save-btn">','-1 <button type="submit" class="btn btn-sm btn-primary">'].sort(),'night audit form: controls changed beyond button classes');
+ assert.deepEqual(forms(cAfter),forms(cBefore),'night audit form: form tags changed');
+ const php=s=>nc(s).match(/@php[\s\S]*?@endphp/g)||[];
+ assert.deepEqual(php(cAfter),php(cBefore),'night audit form: @php blocks changed');
+ assert.equal(js(cAfter),js(cBefore),'night audit form: closing script must be byte-identical');
+ const tbl=s=>(nc(s).match(/<table[\s\S]*?<\/table>/g)||[]).filter(t=>t.includes('Invoice No')).map(t=>t.replace(/\s+/g,' ')).join('|');
+ assert.equal(tbl(cAfter),tbl(cBefore),'night audit form: transaction tables changed');
+ assert(cAfter.includes('<x-mm.page class="mm-night-audit"')&&cAfter.includes('id="formSubmit"')&&!cAfter.includes('widget-box')&&!cAfter.includes('<style>'),'night audit form: shared frame expected');
+ const idxPath='module/Hotel/views/night-audits/index.blade.php', iAfter=read(idxPath), iBefore=read(idxPath,base);
+ assert.deepEqual(only(ex(iBefore),ex(iAfter)),[],'night audit list: Blade expressions changed');
+ assert.deepEqual(only(ctl(iBefore),ctl(iAfter)),['+1 <button type="submit" class="mm-button">','-1 <button type="submit" class="btn btn-sm btn-primary">'],'night audit list: controls changed');
+ assert.equal(js(iAfter),js(iBefore),'night audit list: script changed');
+ assert(iAfter.includes("@include('night-audits.export.excel')")&&iAfter.includes('<x-export-button pdf="1" excel="1" />')&&iAfter.includes('<x-paginate :data="$nightaudits" />')&&iAfter.includes('name="from_date"')&&iAfter.includes('name="to_date"'),'night audit list: export table, export buttons, paginator and filters expected');
+ for(const path of ['module/Hotel/views/night-audits/export/excel.blade.php','module/Hotel/views/night-audits/export/pdf.blade.php','module/Hotel/Controllers/NightAuditSummaryController.php']) assert.equal(read(path),read(path,base),`${path} must be unchanged`);
+ const invPath='module/Hotel/views/night-audits/invoice.blade.php', inv=read(invPath), invBase=read(invPath,base);
+ const stripBar=s=>s.replace(/\n        \/\* Screen-only action bar[\s\S]*?(?=    <\/style>\n\n<\/head>)/,'').replace(/\n    <nav class="inv-screen-bar"[\s\S]*?<\/nav>\n/,'');
+ assert.equal(stripBar(inv),invBase,'night audit report: changed beyond the screen-only action bar');
+ assert(/@media print \{\s*\.inv-screen-bar \{\s*display: none !important;/.test(inv)&&inv.includes('window.print();'),'night audit report: action bar must be hidden in print and auto-print kept');
+ console.log('PASS: night audit form, list and report keep fields, expressions, scripts and printed output; frame and action bar only');
+}

@@ -530,3 +530,18 @@ Legacy issues kept, not fixed (they sit in expressions the guard protects):
 - The company select marks an option selected when `request('company_id') == $guest->id`, a variable left over from the guest loop; it should compare with `$customer->id`.
 - `$hotelGuest->booking` is read without `optional()`; with transactions found by company (no guest) this may fail on a null guest. Not verified without data.
 - The guest fields print the literal `N\A` when empty.
+
+## Twenty-third increment: night audit
+
+- `night-audits/create-v2` (the generate form), `night-audits/index` (the list) moved onto `x-mm.page`, `x-mm.panel` and `x-mm.table-scroll`.
+  The page-global `<style>` block (blue table headers, `.widget-header`, `.header-input`, `.footer-input`) was removed; the
+  readonly figures are styled by the `.mm-night-audit` block in `resources/css/ui.css`, which also reuses the checkout and
+  payment-collection card, field and summary classes.
+- `night-audits/invoice` (the printed report behind `night-audits.show`) is untouched apart from a screen-only action bar
+  (back to the list, print again) that is hidden in print.
+- Preserved byte for byte: every field name, `#formSubmit`, the `.save-btn` overlay and 10 s delay script, the `$$name`
+  variable-variable blocks and the transaction tables. `npm run ui:check` guards this against `45091d5a`.
+- Tests: `tools/browser/night-audit.spec.cjs` (9) renders the real views through the php-wasm harness. It checks totals, readonly
+  fields, the overlay, that nothing posts before 10 s, that all legacy fields post once afterwards, and no sideways scroll at
+  360, 768 and 1280 px.
+- Preview pages: `/preview/night-audit` and `/preview/night-audit-generate` (sample data).
