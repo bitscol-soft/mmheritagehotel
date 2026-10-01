@@ -1,6 +1,6 @@
 # Frontend / UI Development Plan — execution companion to Plan B
 ### Task-level breakdown of `docs/UI-REDESIGN-PLAN.md` so anyone can pick this up cold and continue
-Owner: — · Tracker: GitHub milestone **“UI Renovation”** (issues `W0…W7`) · Strategy doc: `docs/UI-REDESIGN-PLAN.md` · Prepared 2026-10-01 (branch `arena/01a0f37d-mmheritagehotel`, PR #4)
+Owner: — · Tracker: GitHub **milestone “UI Renovation”** — waves are issues **#5–#12**, decisions/backlog **#13** (tick boxes there) · Strategy doc: `docs/UI-REDESIGN-PLAN.md` · Prepared 2026-10-01 (branch `arena/01a0f37d-mmheritagehotel`, PR #4)
 
 ---
 
@@ -19,7 +19,7 @@ Screen inventory (verified by count): Hotel 87 routes/173 views · Account 61/17
 
 ---
 
-## 1. W0 — Unblock shipping (do before any pixels) · issue **W0**
+## 1. W0 — Unblock shipping (do before any pixels)  → issue #5
 
 - [ ] **W0.1** Create GitHub environments `staging`/`production`; add secrets `STAGING_SSH_HOST/USER/PORT/SSH_KEY/DEPLOY_PATH/PHP_BIN/URL` (format: `docs/DEPLOYMENT.md`).
 - [ ] **W0.2** Dry-run `gh workflow run deploy-staging.yml -f ref=arena/01a0f37d-mmheritagehotel` → must reach Health check (preflight proves secrets; rsync excludes already protect `.env`, `storage/`, `public/uploads`).
@@ -27,7 +27,7 @@ Screen inventory (verified by count): Hotel 87 routes/173 views · Account 61/17
 - [ ] **W0.4** Add repo check `tools/ui-guard.sh`: greps staged diff for (a) changes to `*_invoice*/`+`*amount*` lines → fail; (b) `@include` between `<style>`…`</style>` → fail. Wire into a CI workflow (`ui-guard.yml`, push/PR).
   Exit: waves ship same-day, guardrail is mechanical, not tribal knowledge.
 
-## 2. W1 — Design system core · issue **W1**
+## 2. W1 — Design system core  → issue #6
 
 Files: `public/assets/custom_css/tokens.css` (new), `resources/views/components/*` (new), `public/assets/custom_css/style.css` (append-only during this wave, becomes the legacy bucket).
 
@@ -40,7 +40,7 @@ Files: `public/assets/custom_css/tokens.css` (new), `resources/views/components/
 - [ ] **W1.7** Convert **three proving screens**: booking board (wrap in `x-page`/`x-toolbar` — must be visually a no-op), booking list (`x-filter-bar`+`x-data-table`), guest list. Gate: harness render diffs show zero removed hook strings.
   Exit: 12 components + gallery + 3 converted screens, all behaviour-clean.
 
-## 3. W2 — App shell · issue **W2**
+## 3. W2 — App shell  → issue #7
 
 - [ ] **W2.1** Sidebar icon-rail (68px, persisted in `localStorage`), active-item pill, module counters (arrivals/departures/due-today via existing AJAX endpoints, 60s cache).
 - [ ] **W2.2** Topbar: global search (wire to existing `searchRoomByNumberAjax`-style endpoints per module *only where an endpoint already exists*; else omit), quick-add menu (route-gated by same permissions as their create buttons), date button → board-today.
@@ -49,7 +49,7 @@ Files: `public/assets/custom_css/tokens.css` (new), `resources/views/components/
 - [ ] **W2.5** `prefers-reduced-motion` + focus-visible global tokens; contrast sweep: replace sub-12px `--mm-muted` on colored bg (board meta pattern) with `--mm-ink-soft`.
   Exit: every module visually inherits shell without per-page edits; 360px audit passes on dashboard, booking list, login.
 
-## 4. W3 — Hotel module completion + print programme · issue **W3**
+## 4. W3 — Hotel module completion + print programme  → issue #8
 
 Order = user value; each task = one PR-size chunk. Screens not listed keep their layout until their archetype lands.
 
@@ -64,12 +64,12 @@ Order = user value; each task = one PR-size chunk. Screens not listed keep their
 - [ ] **W3.9** Hotel `booking/create|edit|adjust` deep pass: `x-stepper` wrapping the existing `booking_next` flow; payment tab → `x-field`; modals → `x-modal` (extend-date, extra-charge, member-detail).
   Exit: Hotel module has no bespoke `<style>` block > 20 lines; print docs all sheet-based; module frozen 2 sprints → eligible for T2.
 
-## 5. W4–W7 summary (full task lists live in the issues)
+## 5. W4–W7 summary (full task lists in issues #9–#12)
 
-- **W4 Banquet & services** (issue W4): hall lists/forms ride Hotel partials (cheap by design — verify bleed, don't fork); `hall_booking/reservation-invoice` → `x-print-sheet`; HotelService + News & Events lists/tables; booking-purpose CRUD.
-- **W5 POS cluster** (issue W5): Restaurant table map → board-grid; order screen → `x-stepper` (courses→fire→pay); kitchen ticket 80mm (`x-print-sheet --sheet=thermal`); Bar & Merchandising & Knitting follow the same 3 patterns (list/create/print). GS: requisition/GRN lists + stock-count board grid.
-- **W6 Finance & admin** (issue W6): Account voucher entry (ledger rows as `x-field` repeat-groups; totals JS untouched), statements/ledgers → `x-data-table` with sticky totals row, financial-report prints; HRM payslip; Permission matrix screen → grid + bulk toggle; system settings → section cards; login/password pages → clean token-based layout (first public-facing screen to renovate).
-- **W7 Public site** (issue W7): HotelWebsite landing, availability search, gallery, guest self-register flow — brand-led pass, separate token set (`--web-*`), no admin dependency. T2/T3 decisions recorded here too (gate: 2 quiet sprints per module).
+- **W4 Banquet & services** (issue #9): hall lists/forms ride Hotel partials (cheap by design — verify bleed, don't fork); `hall_booking/reservation-invoice` → `x-print-sheet`; HotelService + News & Events lists/tables; booking-purpose CRUD.
+- **W5 POS cluster** (issue #10): Restaurant table map → board-grid; order screen → `x-stepper` (courses→fire→pay); kitchen ticket 80mm (`x-print-sheet --sheet=thermal`); Bar & Merchandising & Knitting follow the same 3 patterns (list/create/print). GS: requisition/GRN lists + stock-count board grid.
+- **W6 Finance & admin** (issue #11): Account voucher entry (ledger rows as `x-field` repeat-groups; totals JS untouched), statements/ledgers → `x-data-table` with sticky totals row, financial-report prints; HRM payslip; Permission matrix screen → grid + bulk toggle; system settings → section cards; login/password pages → clean token-based layout (first public-facing screen to renovate).
+- **W7 Public site** (issue #12): HotelWebsite landing, availability search, gallery, guest self-register flow — brand-led pass, separate token set (`--web-*`), no admin dependency. T2/T3 decisions recorded here too (gate: 2 quiet sprints per module).
 
 ## 6. Verification workflow (per task — the part that makes this safe)
 
@@ -83,7 +83,7 @@ Order = user value; each task = one PR-size chunk. Screens not listed keep their
 3. For print tasks: `curl` HTML + headless PDF (chromium `--print-to-pdf`) → page-count + no-clipped-text check; never compare screenshots of amounts — compare the **PHP expressions in the diff** (must be absent).
 4. Update `screenshots/` pairs + PR comment per round; record any newly found-but-unfixed quirks in `docs/BUGS.md`.
 
-## 7. Backlog & decisions (issue **UI-backlog**)
+## 7. Backlog & decisions (issue #13)
 
 | ID | Item | Status |
 |---|---|---|
