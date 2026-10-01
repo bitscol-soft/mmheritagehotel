@@ -28,6 +28,7 @@
         .m-auto{
             margin: 0 auto;
         }
+        @include('booking._css.invoice-sheet')
         .company-name{
             text-transform: uppercase;
             font-weight: bold;
@@ -204,6 +205,9 @@
             }
             .main-print-body {
                 height: 985px;
+            }
+            .main-print-body table tr {
+                page-break-inside: avoid;
             }
             #print_body {
                 /* page-break-after: auto;
@@ -773,8 +777,10 @@
                 importStyle: true
             });
         };
-        window.onreadystatechange = $('#print_body').printThis({
-            importStyle: true
+        // round-6: fire after load; the old version ran at parse time against a
+        // non-existent window.onreadystatechange event
+        window.addEventListener('load', function () {
+            setTimeout(function () { $('#print_body').printThis({ importStyle: true }); }, 400);
         });
     </script>
 @stop
