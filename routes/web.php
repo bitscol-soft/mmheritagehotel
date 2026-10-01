@@ -188,3 +188,6 @@ Route::group(['middleware' => 'auth'], function () {
         return redirect()->back()->with('message', 'DebugBar updated successfully');
     })->middleware(['auth', 'super-admin']);
 
+
+// Design-system preview: uses the existing administrator gate, never public.
+Route::view('/ui-kit', 'ui.kit')->middleware(['auth', 'super-admin'])->name('ui.kit');

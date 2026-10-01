@@ -1,0 +1,215 @@
+/* No @tailwind base: even Tailwind's universal variable reset is deliberately
+   excluded. Bootstrap/Ace owns legacy elements; these rules are opt-in only. */
+@tailwind components;
+@tailwind utilities;
+
+.mm-ui {
+    --mm-brand: #2f63a8;
+    --mm-ink: #1f2a33;
+    --mm-muted: #526578;
+    --mm-line: #dbe5f1;
+    --mm-bg: #f7fafd;
+    --mm-surface: #ffffff;
+    color: var(--mm-ink);
+    font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    min-width: 0;
+}
+.mm-ui *, .mm-ui *::before, .mm-ui *::after { box-sizing: border-box; }
+.mm-ui .mm-panel { border: 1px solid var(--mm-line); border-radius: 10px; background: var(--mm-surface); }
+.mm-ui .mm-button {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    min-height: 40px; padding: 8px 16px; border: 1px solid var(--mm-brand);
+    border-radius: 6px; background: var(--mm-brand); color: white;
+    font: inherit; font-weight: 600; text-decoration: none; cursor: pointer;
+}
+.mm-ui .mm-button:hover { background: #275188; border-color: #275188; color: white; }
+.mm-ui .mm-button-secondary { background: white; color: var(--mm-brand); border-color: var(--mm-line); }
+.mm-ui .mm-button-secondary:hover { background: #eef3f9; color: var(--mm-brand); }
+.mm-ui :focus-visible { outline: 3px solid var(--mm-brand); outline-offset: 3px; }
+.mm-ui .mm-input {
+    display: block; width: 100%; min-height: 40px; padding: 8px 12px;
+    border: 1px solid #aab9ca; border-radius: 6px; color: var(--mm-ink);
+    background: white; font: inherit;
+}
+.mm-ui .mm-table-scroll { width: 100%; overflow-x: auto; }
+.mm-ui .mm-table-scroll table { width: 100%; margin: 0; border-collapse: collapse; font-size: 14px; }
+.mm-ui .mm-table-scroll thead th { background: var(--mm-bg); color: var(--mm-muted); font-size: 12px; white-space: nowrap; }
+.mm-ui .mm-table-scroll th, .mm-ui .mm-table-scroll td { padding: 12px; border: 0; border-bottom: 1px solid var(--mm-line); vertical-align: middle; }
+.mm-ui .mm-table-scroll tbody tr:hover { background: #f0f5fa; }
+.mm-ui .mm-table-scroll .btn-group { white-space: nowrap; display: inline-flex; }
+.mm-ui .mm-badge { display: inline-flex; padding: 4px 12px; border-radius: 9999px; background: #eef3f9; color: #275188; font-size: 12px; font-weight: 600; }
+@media (prefers-reduced-motion: reduce) {
+    .mm-ui *, .mm-ui *::before, .mm-ui *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+}
+@media print {
+    .mm-ui .mm-no-print { display: none !important; }
+    .mm-ui .mm-table-scroll { overflow: visible; }
+}
+
+/* Booking page compatibility rules, moved intact out of its Blade view. */
+.mm-ui.mm-bookings ul li {
+            list-style: none;
+        }
+.mm-ui.mm-bookings .total-room-amount input[readonly] {
+            background-color: white !important;
+        }
+.mm-ui.mm-bookings .total-night-count input[readonly] {
+            background-color: white !important;
+        }
+.mm-ui.mm-bookings .apprearence-none {
+            appearance: none;
+        }
+.mm-ui.mm-bookings table thead th {
+            background-color: #4d8cb3;
+            color: #fff;
+        }
+.mm-ui.mm-bookings .transactions p {
+            margin-bottom: 0 !important;
+        }
+.mm-ui.mm-bookings .action-button-td {
+            padding: 5px 3px !important;
+        }
+.mm-ui.mm-bookings .action-button {
+            width: 105px;
+            margin: 0 auto;
+        }
+.mm-ui.mm-bookings .action-button a,
+.mm-ui.mm-bookings .action-button button {
+            padding: 0px !important;
+            border-width: 2px !important;
+            margin-bottom: 3px;
+            width: 22px;
+            height: 22px;
+            line-height: 20px;
+            text-align: center;
+            align-items: center;
+        }
+.mm-ui.mm-bookings .action-button a i,
+.mm-ui.mm-bookings .action-button button i {
+            font-size: 12px;
+        }
+
+.mm-ui.mm-bookings .middle-col {
+            position: relative;
+        }
+.mm-ui.mm-bookings .middle-col::after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -8px;
+            height: 34px;
+            width: 1.7px;
+            background: #ccc;
+        }
+.mm-ui.mm-bookings .booking-filter-panel {
+            background: #f7fafd;
+            border: 1px solid #e4ebf3;
+            border-radius: 4px;
+            padding: 12px 6px 8px;
+        }
+.mm-ui.mm-bookings .booking-filter-panel .chosen-container {
+            min-height: 32px;
+        }
+.mm-ui.mm-bookings .booking-filter-panel .input-group {
+            margin-bottom: 4px;
+        }
+.mm-ui.mm-bookings .middle-col::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            right: -7px;
+            height: 34px;
+            width: 1.7px;
+            background: #ccc;
+        }
+
+/* Scoped plugin adapters: keep Chosen/date-picker classes and their JS intact. */
+.mm-ui.mm-bookings .mm-booking-filter { padding: 20px; border-radius: 10px; }
+.mm-ui.mm-bookings .mm-booking-filter .input-group { width: 100%; margin: 0; }
+.mm-ui.mm-bookings .mm-booking-filter .form-control { min-height: 40px; font-size: 14px; }
+.mm-ui.mm-bookings .mm-booking-filter .chosen-container { width: 100% !important; min-width: 0; }
+.mm-ui.mm-bookings .mm-booking-filter .chosen-single { min-height: 40px; line-height: 38px; border-radius: 6px; background: white; }
+.mm-ui.mm-bookings .mm-booking-filter .chosen-single div b { background-position-y: 10px; }
+.mm-ui.mm-bookings .mm-booking-filter .chosen-drop { border-color: var(--mm-line); }
+/* Override former compact action rules only in the results region, not modals. */
+.mm-ui.mm-bookings .mm-table-scroll thead th { background: var(--mm-bg); color: var(--mm-muted); }
+.mm-ui.mm-bookings .mm-table-scroll .action-button { width: 132px; }
+.mm-ui.mm-bookings .mm-table-scroll .action-button a,
+.mm-ui.mm-bookings .mm-table-scroll .action-button button { width: 30px; height: 30px; line-height: 26px; }
+
+/* Guest form adapter. The original Bootstrap/plugin nodes and hooks remain. */
+.mm-ui.mm-guest-form .form-horizontal > .row { margin: 0; }
+.mm-ui.mm-guest-form .form-horizontal > .row > .col-sm-12 { padding: 0; }
+.mm-ui.mm-guest-form .form-group { margin: 0 0 24px; }
+.mm-ui.mm-guest-form .form-group > .control-label { color: var(--mm-ink); font-weight: 600; padding-top: 10px; }
+.mm-ui.mm-guest-form .form-control { min-height: 40px; border-radius: 6px; font-size: 14px; }
+.mm-ui.mm-guest-form textarea.form-control { min-height: 80px; }
+.mm-ui.mm-guest-form .chosen-container,
+.mm-ui.mm-guest-form .select2-container { width: 100% !important; max-width: 100%; }
+.mm-ui.mm-guest-form .chosen-single { min-height: 40px; line-height: 38px; background: white; border-radius: 6px; }
+.mm-ui.mm-guest-form .form-actions { margin: 24px 0 0; padding: 16px; border-top: 1px solid var(--mm-line); background: var(--mm-bg); }
+.mm-ui.mm-guest-form .form-actions .mm-button { margin: 4px; }
+.mm-ui.mm-guest-form #results img,
+.mm-ui.mm-guest-form #my_camera img,
+.mm-ui.mm-guest-form #my_camera video { max-width: 100%; height: auto; }
+.mm-ui.mm-guest-form #my_camera { max-width: 100%; }
+.mm-ui.mm-guest-form .upload_nid .ace-file-input { display: block; }
+.mm-ui.mm-guest-form .photo-remove { position: absolute; background: #a12b29; color: white; padding: 10px 15px; border-radius: 6px; top: 0; cursor: pointer; display: none; }
+.mm-ui.mm-guest-form .nid_photo:hover .photo-remove { display: block; }
+@media (max-width: 767px) {
+    .mm-ui.mm-guest-form .form-group > [class*="col-"] { width: 100%; float: none; padding-left: 0; padding-right: 0; }
+    .mm-ui.mm-guest-form .form-group > .control-label { display: block; text-align: left; margin-bottom: 8px; padding-top: 0; }
+    .mm-ui.mm-guest-form .form-group > .col-xs-6 { margin-bottom: 12px; }
+    .mm-ui.mm-guest-form .form-actions { text-align: left !important; }
+}
+
+/* Room board shell only: tile/status/grid/selection styles remain legacy-owned. */
+.mm-ui.mm-booking-board-page .table { margin-bottom: 0 !important; }
+.mm-ui.mm-booking-board-page .board-stay-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0 0 24px;
+}
+.mm-ui.mm-booking-board-page .board-stay-strip .stay-chip {
+    margin: 0;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    color: var(--mm-ink);
+    background: var(--mm-bg);
+    border-color: var(--mm-line);
+}
+.mm-ui.mm-booking-board-page .board-stay-strip .stay-chip b { color: var(--mm-brand); }
+@media (max-width: 479px) {
+    .mm-ui.mm-booking-board-page .board-stay-strip .stay-chip { flex: 1 1 140px; }
+}
+
+/* DataTables adapters confined to migrated room-management pages. */
+.mm-ui.mm-room-inventory .dataTables_wrapper > .row { margin-left: 0; margin-right: 0; }
+.mm-ui.mm-room-inventory .dataTables_filter input,
+.mm-ui.mm-room-inventory .dataTables_length select { min-height: 36px; border-radius: 6px; }
+.mm-ui.mm-room-inventory .mm-table-scroll .btn-group .btn { min-width: 36px; min-height: 36px; line-height: 28px; }
+.mm-ui.mm-room-inventory .mm-table-scroll img { max-width: 120px; object-fit: contain; }
+@media (max-width: 767px) {
+    .mm-ui.mm-room-inventory .dataTables_filter { text-align: left; }
+    .mm-ui.mm-room-inventory .dataTables_filter input { max-width: 180px; }
+}
+
+/* Room forms retain the shared .row ancestry used by duplicate-number checks. */
+.mm-ui.mm-room-form .form-horizontal > .row { margin: 0; }
+.mm-ui.mm-room-form .form-horizontal > .row > .col-sm-12 { padding: 0; }
+.mm-ui.mm-room-form .form-group { margin: 0 0 24px; }
+.mm-ui.mm-room-form .control-label { color: var(--mm-ink); font-weight: 600; }
+.mm-ui.mm-room-form .form-control { min-height: 40px; border-radius: 6px; font-size: 14px; }
+.mm-ui.mm-room-form .chosen-container { width: 100% !important; max-width: 100%; }
+.mm-ui.mm-room-form .chosen-single { min-height: 40px; line-height: 38px; background: white; border-radius: 6px; }
+.mm-ui.mm-room-form .mm-room-form-actions { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: 8px; margin: 24px 0 0; padding: 16px; background: var(--mm-bg); border-top: 1px solid var(--mm-line); }
+.mm-ui.mm-room-form .chosen-container-active .chosen-single { outline: 3px solid var(--mm-brand); outline-offset: 2px; }
+@media (max-width: 767px) {
+    .mm-ui.mm-room-form .form-group > [class*="col-"] { width: 100%; float: none; padding-left: 0; padding-right: 0; }
+    .mm-ui.mm-room-form .control-label { display: block; text-align: left; margin-bottom: 8px; padding-top: 0; }
+    .mm-ui.mm-room-form .mm-room-form-actions .mm-button { width: 100%; }
+}

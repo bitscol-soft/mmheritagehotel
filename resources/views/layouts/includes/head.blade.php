@@ -7,7 +7,7 @@
     <title>@yield('title') - Smart ERP</title>
 
     <meta name="description" content="overview &amp; stats" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 
 
@@ -195,4 +195,10 @@
     <link rel="stylesheet" href="{{ asset('assets/custom_css/bootstrap4.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/custom_css/style.css') }}?v=20261001" />
 
+    {{-- Scoped Tailwind layer: requested by the admin shell or an opted-in screen. --}}
+    @if ($mmShell ?? false)
+        <x-mm.styles />
+        <link rel="stylesheet" href="{{ asset('assets/custom_css/shell.css') }}?v={{ filemtime(public_path('assets/custom_css/shell.css')) }}">
+    @endif
+    @stack('ui-styles')
 </head>

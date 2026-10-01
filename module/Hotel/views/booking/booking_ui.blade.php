@@ -8,13 +8,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/daterangepicker.min.css') }}" />
-    <style>
-        .table {
-            margin-bottom: 0 !important;
-        }
 
-        /* ── Booking board polish (scoped: only this admin page) ───────────── */
-    </style>
 @endpush
 
 
@@ -34,22 +28,14 @@
         $nights = max((int) round(($out_ts - $in_ts) / 86400), 1);
     @endphp
 
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="widget-box">
-                <div class="widget-header">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
-
-                    <span class="widget-toolbar">
-                        <a href="{{ route('booking.index') }}">
-                            <i class="ace-icon fa fa-list-alt"></i> Booking List
-                        </a>
-                    </span>
-
-                </div>
-
-                <div class="widget-body">
-                    <div class="widget-main">
+    <x-mm.styles />
+    <x-mm.page class="mm-booking-board-page" title="Room availability" description="Choose your stay dates, review room availability and select rooms for a booking.">
+        <x-slot name="actions">
+            <a class="mm-button mm-button-secondary" href="{{ route('booking.index') }}">
+                <i class="fa fa-list-alt" aria-hidden="true"></i> Booking List
+            </a>
+        </x-slot>
+        <x-mm.panel>
                         <x-alert-message />
 
                         @php
@@ -64,7 +50,7 @@
                             }
                         @endphp
 
-                        <div class="board-stay-strip">
+                        <div class="board-stay-strip" role="group" aria-label="Stay and room availability summary">
                             <span class="stay-chip"><i class="fa fa-sign-in"></i> Check-in
                                 <b>{{ date('D, d M Y', $in_ts) }}</b></span>
                             <span class="stay-chip"><i class="fa fa-sign-out"></i> Check-out
@@ -78,12 +64,8 @@
                         </div>
 
                         <x-room-manage :categories="$categories" :mixdate="$availablity_check" />
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
+        </x-mm.panel>
+    </x-mm.page>
 
 @endsection
 

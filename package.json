@@ -7,12 +7,21 @@
         "watch-poll": "mix watch -- --watch-options-poll=1000",
         "hot": "mix watch --hot",
         "prod": "npm run production",
-        "production": "mix --production"
+        "production": "mix --production",
+        "ui:build": "npm run ui:build:components && npm run ui:build:shell",
+        "ui:watch": "tailwindcss -c tailwind.config.js -i resources/css/ui.css -o public/assets/custom_css/ui.css --watch",
+        "ui:check": "node tools/ui-check.cjs",
+        "ui:build:components": "tailwindcss -c tailwind.config.js -i resources/css/ui.css -o public/assets/custom_css/ui.css --minify",
+        "ui:build:shell": "tailwindcss -c tailwind.config.js -i resources/css/shell.css -o public/assets/custom_css/shell.css --minify",
+        "ui:browser": "playwright test",
+        "ui:watch:shell": "tailwindcss -c tailwind.config.js -i resources/css/shell.css -o public/assets/custom_css/shell.css --watch"
     },
     "devDependencies": {
+        "@playwright/test": "1.56.1",
         "axios": "^0.21",
         "laravel-mix": "^6.0.6",
         "lodash": "^4.17.19",
-        "postcss": "^8.1.14"
+        "postcss": "^8.1.14",
+        "tailwindcss": "3.4.19"
     }
 }

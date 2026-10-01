@@ -12,15 +12,13 @@
 @stop
 
 @section('content')
-    <div class="page-header">
-        <div class="page-header">
-            <a class="btn btn-xs btn-info" href="{{ route('rooms.create') }}" style="float: right; margin: 0 2px;"> <i
-                    class="fa fa-plus"></i> Add New Room</a>
-            <h1>
-                <i class="fa fa-info-circle green"></i> Room List
-            </h1>
-        </div>
-    </div>
+    <x-mm.styles />
+    <x-mm.page class="mm-room-inventory" title="Rooms" description="Find rooms by name, room number or access card.">
+        <x-slot name="actions">
+            <a class="mm-button" href="{{ route('rooms.create') }}">
+                <i class="fa fa-plus" aria-hidden="true"></i> Add New Room
+            </a>
+        </x-slot>
 
     <x-alert-message />
 
@@ -29,58 +27,33 @@
     <div class="row">
         <div class="col-xs-12">
 
-            <!-- SEARCHING -->
-            <div class="row">
-                <form action="">
-                    <table class="table table-bordered">
-                        <tr>
-                            <td>
-                                <div class="input-group">
-                                    <span class="input-group-addon">Name</span>
-                                    <input type="text" name="name" class="form-control" placeholder="Room Name">
-                                </div>
-                            </td>
-                            <td>
-                                <div class="input-group">
-                                    <span class="input-group-addon">Room No</span>
-                                    <input type="text" name="room_number" class="form-control" placeholder="Room No.">
-                                </div>
-                            </td>
-                            <td>
-                                <div class="input-group">
-                                    <span class="input-group-addon">Card No</span>
-                                    <input type="text" name="f_r_id_card" class="form-control" placeholder="Card No.">
-                                </div>
-                            </td>
-                            <td style="width: 10%">
-                                <div class="btn-group">
-                                    <button class="btn btn-xs btn-info">
-                                        <i class="fa fa-search"></i>
-                                    </button>
-                                    <a href="{{ request()->url() }}" class="btn btn-xs btn-default">
-                                        <i class="fa fa-refresh"></i>
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
+            <x-mm.panel class="tw-mb-4">
+                <form action="" class="tw-grid tw-gap-4 sm:tw-grid-cols-2 lg:tw-grid-cols-4 tw-items-end">
+                    <x-mm.field label="Name" id="room-filter-name" name="name" placeholder="Room Name" />
+                    <x-mm.field label="Room number" id="room-filter-number" name="room_number" placeholder="Room No." />
+                    <x-mm.field label="Card number" id="room-filter-card" name="f_r_id_card" placeholder="Card No." />
+                    <div class="tw-flex tw-flex-wrap tw-gap-2">
+                        <button type="submit" class="mm-button"><i class="fa fa-search" aria-hidden="true"></i> Search</button>
+                        <a href="{{ request()->url() }}" class="mm-button mm-button-secondary"><i class="fa fa-refresh" aria-hidden="true"></i> Clear</a>
+                    </div>
                 </form>
-            </div>
+            </x-mm.panel>
 
-            <div class="table-responsive" style="border: 1px #cdd9e8 solid;">
+            <div class="mm-panel tw-p-4">
+                <x-mm.table-scroll label="Room inventory">
                 <table id="data-table" class="table table-striped table-bordered table-hover">
                     <thead>
                         <tr>
-                            <th width="5%">SL</th>
-                            <th width="25%" class="text-center">Name</th>
-                            <th width="10%" class="text-center">Room No</th>
+                            <th scope="col" width="5%">SL</th>
+                            <th scope="col" width="25%" class="text-center">Name</th>
+                            <th scope="col" width="10%" class="text-center">Room No</th>
                             @if (setting('room_wise_pricing_booking') == 1)
-                                <th width="10%" class="text-center">Bed</th>
-                                <th width="10%" class="text-center">Price</th>
+                                <th scope="col" width="10%" class="text-center">Bed</th>
+                                <th scope="col" width="10%" class="text-center">Price</th>
                             @endif
-                            <th width="10%" class="text-center">F R ID </th>
-                            <th width="10%" class="text-center">Status</th>
-                            <th width="10%" class="text-center">Action</th>
+                            <th scope="col" width="10%" class="text-center">F R ID </th>
+                            <th scope="col" width="10%" class="text-center">Status</th>
+                            <th scope="col" width="10%" class="text-center">Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -130,10 +103,12 @@
                         @endforeach
                     </tbody>
                 </table>
+                </x-mm.table-scroll>
             </div>
         </div>
 
     </div>
+    </x-mm.page>
 @endsection
 
 @section('js')

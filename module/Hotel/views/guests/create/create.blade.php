@@ -6,7 +6,7 @@
 
             <hr>
             <div class="form-group">
-                <label class="col-sm-3 control-label add_asterisk">Company</label>
+                <label for="company_id" class="col-sm-3 control-label add_asterisk">Company</label>
 
                 <div class="col-xs-12 col-sm-8">
                     <select name="company_id" class="form-control chosen-select" id="company_id">
@@ -19,37 +19,37 @@
             </div>
 
             <div class="form-group">
-                <label class="col-sm-3 control-label">Guest Name<sup class="text-danger">*</sup></label>
+                <label for="guest-guest-name" class="col-sm-3 control-label">Guest Name<sup class="text-danger">*</sup></label>
 
                 <div class="col-xs-12 col-sm-8">
-                    <input type="text" class="form-control input-sm" name="guest_name"
+                    <input id="guest-guest-name" type="text" class="form-control input-sm" name="guest_name"
                            value="{{ old('guest_name') }}" placeholder="Guest Name" required>
                 </div>
             </div>
 
             <div class="form-group">
-                <label class="col-sm-3 control-label">Phone No<sup class="text-danger">*</sup> </label>
+                <label for="guest-phone-no" class="col-sm-3 control-label">Phone No<sup class="text-danger">*</sup> </label>
 
                 <div class="col-xs-12 col-sm-8">
-                    <input type="text" inputmode="tel" class="form-control input-sm" name="phone_no"
+                    <input id="guest-phone-no" type="text" inputmode="tel" class="form-control input-sm" name="phone_no"
                            value="{{ old('phone_no') }}" placeholder="Enter Phone no" required>
                 </div>
             </div>
 
             <div class="form-group">
-                <label class="col-sm-3 control-label">Email </label>
+                <label for="guest-email" class="col-sm-3 control-label">Email </label>
 
                 <div class="col-xs-12 col-sm-8">
-                    <input type="text" class="form-control input-sm" name="email"
+                    <input id="guest-email" type="text" class="form-control input-sm" name="email"
                            value="{{ old('email') }}" placeholder="Enter Email">
                 </div>
             </div>
 
             <div class="form-group">
-                <label class="col-sm-3 control-label">Gender</label>
+                <label for="guest-gender" class="col-sm-3 control-label">Gender</label>
 
                 <div class="col-xs-4 col-sm-8">
-                    <select name="gender" class="form-control select select2">
+                    <select id="guest-gender" name="gender" class="form-control select select2">
                         <option value="">Select Gender</option>
                         <option value="1">Male</option>
                         <option value="2">Female</option>
@@ -60,58 +60,58 @@
 
             </div>
             <div class="form-group">
-                <label class="col-sm-3 control-label">Age</label>
+                <label for="guest-age" class="col-sm-3 control-label">Age</label>
 
                 <div class="col-xs-4 col-sm-8">
-                    <input type="text" class="form-control input-sm" name="age" value="{{ old('age') }}" placeholder="Age">
+                    <input id="guest-age" type="text" class="form-control input-sm" name="age" value="{{ old('age') }}" placeholder="Age">
                 </div>
             </div>
 
             <div class="form-group">
-                <label class="col-sm-3 control-label">Profession</label>
+                <label for="guest-profession" class="col-sm-3 control-label">Profession</label>
 
                 <div class="col-xs-12 col-sm-8">
-                    <input type="text" class="form-control input-sm" name="profession" value="{{ old('profession') }}" placeholder="Profession">
+                    <input id="guest-profession" type="text" class="form-control input-sm" name="profession" value="{{ old('profession') }}" placeholder="Profession">
                 </div>
             </div>
 
             <div class="form-group">
-                <label class="col-sm-3 control-label">Father's Name</label>
+                <label for="guest-father-name" class="col-sm-3 control-label">Father's Name</label>
 
                 <div class="col-xs-12 col-sm-8">
-                    <input type="text" class="form-control input-sm" name="father_name" value="{{ old('father_name') }}" placeholder="Father's Name">
+                    <input id="guest-father-name" type="text" class="form-control input-sm" name="father_name" value="{{ old('father_name') }}" placeholder="Father's Name">
                 </div>
             </div>
 
             <div class="form-group">
-                <label class="col-sm-3 control-label">NID / Passport Number</label>
+                <label for="guest-nid-no" class="col-sm-3 control-label">NID / Passport Number</label>
 
                 <div class="col-xs-12 col-sm-8 @error('nid_no') has-error @enderror">
-                    <input type="text" class="form-control input-sm" name="nid_no"
+                    <input id="guest-nid-no" type="text" class="form-control input-sm" name="nid_no"
                            value="{{ old('nid_no') }}" placeholder="Enter NID or Passport Number">
                 </div>
             </div>
 
             <div class="form-group">
-                <label class="col-sm-3 control-label">Passport Expiry Date</label>
+                <label for="guest-passport-expiry-date" class="col-sm-3 control-label">Passport Expiry Date</label>
 
                 <div class="col-xs-12 col-sm-8">
-                    <input type="text" class="form-control input-sm date-picker pointer" name="passport_expiry_date"
+                    <input id="guest-passport-expiry-date" type="text" class="form-control input-sm date-picker pointer" name="passport_expiry_date"
                            value="{{ old('passport_expiry_date') }}" placeholder="Enter Passport expire date">
                 </div>
             </div>
 
             <div class="form-group">
-                <label class="col-sm-3 control-label">Spouse Name (Optional)</label>
+                <label for="guest-spouse-name" class="col-sm-3 control-label">Spouse Name (Optional)</label>
 
                 <div class="col-xs-12 col-sm-8">
-                    <input type="text" class="form-control input-sm" name="spouse_name"
+                    <input id="guest-spouse-name" type="text" class="form-control input-sm" name="spouse_name"
                            value="{{ old('spouse_name') }}" placeholder="Enter Spouse Name (Optional)">
                 </div>
             </div>
 
             <div class="form-group">
-                <label class="col-sm-3 control-label add_asterisk">Country</label>
+                <label for="country_id" class="col-sm-3 control-label add_asterisk">Country</label>
 
                 <div class="col-xs-12 col-sm-8">
                     <select name="country_id" class="form-control" id="country_id">
@@ -123,27 +123,27 @@
             </div>
 
             <div class="form-group">
-                <label class="col-sm-3 control-label">City</label>
+                <label for="guest-city-id" class="col-sm-3 control-label">City</label>
 
                 <div class="col-xs-12 col-sm-8">
-                    <input type="text" class="form-control input-sm" name="city_id" value="{{ old('city_id') }}" placeholder="Enter City Name">
+                    <input id="guest-city-id" type="text" class="form-control input-sm" name="city_id" value="{{ old('city_id') }}" placeholder="Enter City Name">
                 </div>
             </div>
 
             <div class="form-group">
-                <label class="col-sm-3 control-label">Address</label>
+                <label for="guest-address" class="col-sm-3 control-label">Address</label>
 
                 <div class="col-xs-12 col-sm-8">
-                    <textarea type="text" class="form-control input-sm" name="address"
+                    <textarea id="guest-address" type="text" class="form-control input-sm" name="address"
                         placeholder="Enter guest address">{{ old('address') }}</textarea>
 
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-3 control-label">Reference Name</label>
+                <label for="guest-reference" class="col-sm-3 control-label">Reference Name</label>
 
                 <div class="col-xs-12 col-sm-8">
-                    <textarea type="text" class="form-control input-sm" name="reference"
+                    <textarea id="guest-reference" type="text" class="form-control input-sm" name="reference"
                         placeholder="Reference Name">{{ old('reference') }}</textarea>
 
                 </div>
@@ -179,14 +179,14 @@
 
             </div>
             <div class="form-group">
-                <label class="col-sm-3 control-label">Image</label>
+                <label for="guest-image" class="col-sm-3 control-label">Image</label>
                 <div class="col-xs-6 col-sm-4 image-section" style="position: relative">
 
-                    <input type="file" name="image" class="image">
+                    <input id="guest-image" type="file" name="image" class="image">
 
                     @include('guests.include.webcam-modal')
                     <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-primary btn-sm webcam-modal-btn" onclick="configure()" style="position: absolute;top:1px;right:14px;border: none;" data-toggle="modal" data-target="#webcam-modal">
+                    <button type="button" class="btn btn-primary btn-sm webcam-modal-btn" onclick="configure()" style="position: absolute;top:1px;right:14px;border: none;" data-toggle="modal" aria-label="Take guest photo with webcam" data-target="#webcam-modal">
                         <i class="fa fa-camera"></i>
                     </button>
                     <input type="hidden" name="web_cam" value="0" class="is_web_cam_or_not">
@@ -198,21 +198,21 @@
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-3 control-label">NID / Passport Photo (Optional)</label>
+                <label for="guest-nid-front" class="col-sm-3 control-label">NID / Passport Photo (Optional)</label>
                 <div class="col-xs-6 col-sm-4">
-                    <input type="file" name="nid_front" class="nid-front">
+                    <input id="guest-nid-front" type="file" name="nid_front" class="nid-front">
                 </div>
                 <div class="col-xs-6 col-sm-4">
-                    <input type="file" name="nid_back" class="nid-back">
+                    <input type="file" aria-label="NID or passport back" name="nid_back" class="nid-back">
                 </div>
             </div>
             <div class="form-group">
-                <label class="col-sm-3 control-label">Spouse NID / Passport Photo (Optional)</label>
+                <label for="guest-spouse-nid-front" class="col-sm-3 control-label">Spouse NID / Passport Photo (Optional)</label>
                 <div class="col-xs-6 col-sm-4">
-                    <input type="file" name="spouse_nid_front" class="nid-front">
+                    <input id="guest-spouse-nid-front" type="file" name="spouse_nid_front" class="nid-front">
                 </div>
                 <div class="col-xs-6 col-sm-4">
-                    <input type="file" name="spouse_nid_back" class="nid-back">
+                    <input type="file" aria-label="Spouse NID or passport back" name="spouse_nid_back" class="nid-back">
                 </div>
             </div>
         </div>
@@ -220,11 +220,11 @@
 
 
     <div class="form-actions center" style="text-align: right !important;">
-        <button type="submit" class="btn btn-sm btn-success">
+        <button type="submit" class="mm-button">
             <i class="ace-icon fa fa-save icon-on-right bigger-110"></i>
             Save
         </button>
-        <a href="{{ route('guests.index') }}" class="btn btn-sm btn-info">
+        <a href="{{ route('guests.index') }}" class="mm-button mm-button-secondary">
             <i class="fa fa-backward"></i> Back List
         </a>
     </div>

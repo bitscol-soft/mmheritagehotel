@@ -1,4 +1,6 @@
 # Frontend / UI Development Plan — execution companion to Plan B
+
+> **2026-10-01 implementation update:** The owner approved Laravel + Blade + Tailwind. See [TAILWIND-DEVELOPMENT.md](TAILWIND-DEVELOPMENT.md) for the active stack, first delivery and verification status. Earlier Bootstrap-first tasks below are historical planning, not the current implementation contract.
 ### Task-level breakdown of `docs/UI-REDESIGN-PLAN.md` so anyone can pick this up cold and continue
 Owner: — · Tracker: GitHub **milestone “UI Renovation”** — waves are issues **#5–#12**, decisions/backlog **#13** (tick boxes there) · Strategy doc: `docs/UI-REDESIGN-PLAN.md` · Prepared 2026-10-01 (branch `arena/01a0f37d-mmheritagehotel`, PR #4)
 

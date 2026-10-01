@@ -5,13 +5,13 @@
 @stop
 
 @section('content')
-    <div class="page-header">
-        <a class="btn btn-xs btn-info" href="{{ route('hotel-categories.create') }}" style="float: right; margin: 0 2px;"> <i
-                class="fa fa-plus"></i> Add New Category </a>
-        <h1>
-            <i class="fa fa-info-circle green"></i> Room Categories List
-        </h1>
-    </div>
+    <x-mm.styles />
+    <x-mm.page class="mm-room-inventory" title="Room categories" description="Review room types, guest capacity and configured rates.">
+        <x-slot name="actions">
+            <a class="mm-button" href="{{ route('hotel-categories.create') }}">
+                <i class="fa fa-plus" aria-hidden="true"></i> Add New Category
+            </a>
+        </x-slot>
 
     <x-alert-message />
 
@@ -20,18 +20,19 @@
             <div class="clearfix">
                 <div class="pull-right tableTools-container"></div>
             </div>
-            <div>
+            <div class="mm-panel tw-p-4">
+                <x-mm.table-scroll label="Room categories">
                 <table id="dynamic-table" class="table table-striped table-bordered table-hover">
                     <thead>
                         <tr>
-                            <th class="center">SL</th>
-                            <th>Name</th>
-                            <th class="center">Guest Capacity</th>
-                            <th class="hidden-480 center">Price</th>
-                            <th class="hidden-480 center">Image</th>
-                            <th class="center">Status</th>
+                            <th scope="col" class="center">SL</th>
+                            <th scope="col">Name</th>
+                            <th scope="col" class="center">Guest Capacity</th>
+                            <th scope="col" class="hidden-480 center">Price</th>
+                            <th scope="col" class="hidden-480 center">Image</th>
+                            <th scope="col" class="center">Status</th>
 
-                            <th class="center">Action</th>
+                            <th scope="col" class="center">Action</th>
                         </tr>
                     </thead>
 
@@ -64,14 +65,14 @@
 
                                 <td class="center">
                                     <div class="btn-group">
-                                        <a class="btn btn-xs btn-success"
+                                        <a class="btn btn-xs btn-success" aria-label="Edit category"
                                             href="{{ route('hotel-categories.edit', $item->id) }}">
                                             <i class="ace-icon fa fa-edit"></i>
                                         </a>
 
                                         <button type="button"
                                             onclick="delete_item(`{{ route('hotel-categories.destroy', $item->id) }}`)"
-                                            class="btn btn-xs btn-sm btn-danger" title="Delete">
+                                            class="btn btn-xs btn-sm btn-danger" title="Delete" aria-label="Delete category">
                                             <i class="fa fa-trash-o"></i>
                                         </button>
                                     </div>
@@ -80,9 +81,11 @@
                         @endforeach
                     </tbody>
                 </table>
+                </x-mm.table-scroll>
             </div>
         </div>
     </div>
+    </x-mm.page>
 @endsection
 
 @section('js')

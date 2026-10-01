@@ -1,4 +1,6 @@
 # Plan B — Complete UI Redesign / Renovation Plan
+
+> **2026-10-01 implementation update:** The owner approved Laravel + Blade + Tailwind. See [TAILWIND-DEVELOPMENT.md](TAILWIND-DEVELOPMENT.md) for the active stack, first delivery and verification status. Earlier Bootstrap-first tasks below are historical planning, not the current implementation contract.
 ### Every screen of `mmheritagehotel`, made modern, consistent, responsive and print-ready
 Target repo: `bitscol-soft/mmheritagehotel` · Prepared 2026-10-01
 Companion to: `docs/PLAN-MODERNIZATION.md` (Plan A — whole-platform strategy). This document is the **UI track**: what the user sees, in what order, with what guardrails. Platform/security items stay in Plan A.

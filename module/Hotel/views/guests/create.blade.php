@@ -9,53 +9,27 @@
     <!-- page specific plugin styles -->
 	<link rel="stylesheet" href="{{ asset('assets/css/dropzone.min.css') }}" />
 
-    <style>
 
-    .results img{
-        width: 360px;
-        height: 173px;
-    }
-    video{
-        width: 546px;
-        height: 195px;
-    }
-    </style>
 @stop
 
 @section('content')
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="widget-box">
-                <div class="widget-header">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
-                    <span class="widget-toolbar">
+    <x-mm.styles />
+    <x-mm.page class="mm-guest-form" :title="request('type') == 'upload' ? 'Import guests' : 'Add a guest'" description="Manage guest details, contact information and identity documents.">
+        <x-slot name="actions">
+            <a href="{{ route('guests.index') }}" class="mm-button mm-button-secondary">
+                <i class="fa fa-arrow-left" aria-hidden="true"></i> Guest directory
+            </a>
+        </x-slot>
+        <x-mm.panel>
+        @include('partials._alert_message')
+        @if (request('type') == 'upload')
+            @include('guests.create.upload')
+        @else
+            @include('guests.create.create')
+        @endif
 
-                            <a href="{{ route('guests.index') }}">
-                                <i class="ace-icon fa fa-list-alt"></i> List
-                            </a>
-
-                    </span>
-                </div>
-
-                <div class="widget-body">
-                    <div class="widget-main no-padding">
-
-                        <div style="margin: 20px;">
-                            @include('partials._alert_message')
-                        </div>
-                        @if (request('type') == 'upload')
-                        @include('guests.create.upload')
-                        @else
-                            @include('guests.create.create')
-                        @endif
-
-                    </div>
-                </div>
-            </div>
-
-
-        </div>
-    </div>
+        </x-mm.panel>
+    </x-mm.page>
 @endsection
 
 @section('js')
