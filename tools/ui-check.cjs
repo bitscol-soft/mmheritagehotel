@@ -151,3 +151,12 @@ for (const mode of ['index','edit']) {
 }
 for (const path of ['module/Hotel/Controllers/BookingNoteController.php','module/Hotel/views/booking-note/create.blade.php','resources/views/components/status.blade.php']) assert.equal(fs.readFileSync(path,'utf8'),execFileSync('git',['show',`551d4d76:${path}`],{encoding:'utf8'}));
 console.log('PASS: note list/edit expressions, forms and status scripts; legacy backend unchanged');
+
+{
+ const shellCss=fs.readFileSync('resources/css/shell.css','utf8'), shellJs=fs.readFileSync('public/assets/custom_js/shell.js','utf8');
+ assert(!/#sidebar \*\s*\{\s*transition:\s*none/.test(shellCss),'Ace submenu transitions must not be disabled; they release its toggle lock');
+ for(const needle of ['aria-controls','aria-expanded','queryKey','mm-menu-clear']) assert(shellJs.includes(needle),`Menu behavior missing ${needle}`);
+ const sidebar=fs.readFileSync('resources/views/partials/_sidebar.blade.php','utf8'), base=execFileSync('git',['show','207fae47:resources/views/partials/_sidebar.blade.php'],{encoding:'utf8'});
+ assert.equal(sidebar,base);
+ console.log('PASS: full-menu behavior, Ace transition lock safeguard and unchanged permission-driven sidebar sources');
+}

@@ -85,16 +85,46 @@
             compact(value); save('mm-shell-compact', value ? '1' : '0');
         });
     }
+    var clearSearch = document.getElementById('mm-menu-clear');
+    function directLink(li) { return Array.from(li.children).find(function (el) { return el.tagName === 'A'; }); }
+    function directSubmenu(li) { return Array.from(li.children).find(function (el) { return el.classList.contains('submenu'); }); }
+    // Reflect Ace state in accessible disclosures. Ace remains the click owner.
+    var disclosures = [];
+    menu.querySelectorAll('li').forEach(function (li, index) {
+        var link = directLink(li), sub = directSubmenu(li);
+        if (!link || !sub || !link.classList.contains('dropdown-toggle')) return;
+        if (!sub.id) sub.id = 'mm-submenu-' + index;
+        link.setAttribute('aria-controls', sub.id);
+        disclosures.push({ item: li, link: link });
+        // Links with href="#" already respond to Enter; add Space without duplicate handlers.
+        link.addEventListener('keydown', function (event) {
+            if (event.key === ' ') { event.preventDefault(); link.click(); }
+        });
+    });
+    function syncDisclosures() {
+        disclosures.forEach(function (entry) {
+            var expanded = entry.item.classList.contains('open') || (sidebar.classList.contains('mm-menu-searching') && entry.item.classList.contains('mm-menu-match'));
+            entry.link.setAttribute('aria-expanded', String(expanded));
+        });
+    }
+    new MutationObserver(syncDisclosures).observe(menu, { subtree: true, attributes: true, attributeFilter: ['class'] });
+    syncDisclosures();
+    if (clearSearch && filter) clearSearch.addEventListener('click', function () {
+        filter.value = '';
+        filter.dispatchEvent(new Event('input'));
+        filter.focus();
+    });
     // Only search links already rendered by the permission-filtered sidebar.
     if (filter) filter.addEventListener('input', function () {
         var query = filter.value.toLowerCase().trim();
+        if (clearSearch) clearSearch.hidden = !query;
         var items = Array.from(menu.querySelectorAll('li'));
         items.forEach(function (li) { li.classList.remove('mm-menu-hidden', 'mm-menu-match'); });
         sidebar.classList.toggle('mm-menu-searching', !!query);
-        if (!query) { if (empty) empty.hidden = true; return; }
+        if (!query) { if (empty) empty.hidden = true; syncDisclosures(); return; }
         var matches = 0;
         items.forEach(function (li) {
-            var link = Array.from(li.children).find(function (el) { return el.tagName === 'A'; });
+            var link = directLink(li);
             if (!link || link.textContent.toLowerCase().indexOf(query) < 0) return;
             matches++;
             li.classList.add('mm-menu-match');
@@ -104,12 +134,20 @@
         });
         items.forEach(function (li) { li.classList.toggle('mm-menu-hidden', !li.classList.contains('mm-menu-match')); });
         if (empty) empty.hidden = matches !== 0;
+        syncDisclosures();
     });
-    // Mark exact-path current links without rewriting existing active/open rules.
+    // Match path plus query so setup Purpose/Platform links do not both look current.
+    // Leave server-rendered permission and active conditions intact.
+    function queryKey(url) {
+        return Array.from(url.searchParams.entries()).sort(function (a, b) { return (a[0] + '=' + a[1]).localeCompare(b[0] + '=' + b[1]); }).map(function (pair) { return JSON.stringify(pair); }).join('&');
+    }
+    var currentUrl = new URL(location.href);
     menu.querySelectorAll('a[href]').forEach(function (link) {
         if (link.getAttribute('href') === '#') return;
-        var url = new URL(link.href, window.location.href);
-        if (url.origin === location.origin && url.pathname === location.pathname && !url.hash) link.setAttribute('aria-current', 'page');
+        var url;
+        try { url = new URL(link.href, window.location.href); } catch (e) { return; }
+        if (url.origin === location.origin && url.pathname === location.pathname && !url.hash && queryKey(url) === queryKey(currentUrl)) link.setAttribute('aria-current', 'page');
     });
+    syncDisclosures();
     render();
 }());

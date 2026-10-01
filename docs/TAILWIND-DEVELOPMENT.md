@@ -296,3 +296,26 @@ while filter sends `title`. No new create/delete controls were exposed; those
 handlers and the filter mismatch remain unchanged and need a separately tested
 backend correction before claiming module completion. Staging title search,
 update validation and status-toggle acceptance remain pending. No live writes.
+
+## Twelfth increment — full navigation menu design (2026-10-01)
+
+Shared shell CSS now styles every sidebar depth the same way: module icon tiles,
+wrapped long labels, nested guide lines, hover/open/current states, no duplicate
+Ace connectors and no module-specific icon rotation/colour. JS adds disclosure
+`aria-expanded`/`aria-controls`, Space-key activation, a clear-search button,
+and path+query current-page matching (Purpose and Platform no longer both mark
+current). Sidebar Blade sources, links, permissions and route conditions are
+unchanged; this only decorates rendered output.
+
+Regression found and fixed during testing: shell CSS had disabled transitions on
+all sidebar descendants. Ace releases its submenu lock on `transitionend`, so
+after the first expansion later toggles were blocked. Only inputs/buttons/links
+now disable transitions; Ace's height transition is left alone. A browser test
+expands module then nested groups.
+
+Verification: fixtures contain representative sample links for Hotel, Banquet,
+Services, Restaurant, Bar, Store, Finance, Website, Global Setting and User
+Access; 15 browser tests at 360/768/1440 pass. Real sidebar partials, permission
+combinations, long production labels and non-Hotel module icon variants still
+need authenticated staging acceptance. The menu is shell-flag controlled
+(`MM_ADMIN_SHELL=false` rolls back).

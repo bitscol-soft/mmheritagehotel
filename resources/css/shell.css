@@ -22,7 +22,8 @@
 .mm-shell #main-container { padding-top: var(--mm-header-height); }
 .mm-shell #sidebar { display: block !important; position: fixed !important; top: var(--mm-header-height) !important; bottom: 0; max-height: none; left: 0 !important; width: var(--mm-nav-width) !important; margin: 0 !important; transform: none; overflow-y: auto !important; overflow-x: hidden; background: #fff; border: 0; border-right: 1px solid #dbe5f1; z-index: 1040; }
 /* Ace transitions "all" on inputs, which delays inherited visibility and focus. */
-.mm-shell #sidebar, .mm-shell #sidebar * { transition: none !important; }
+.mm-shell #sidebar, .mm-shell #sidebar input, .mm-shell #sidebar button, .mm-shell #sidebar .nav-list a { transition: none !important; }
+/* Ace waits for the submenu height transition event; suppressing it locks later toggles. */
 .mm-shell #sidebar .mm-input:focus { border-color: #2f63a8; outline: 2px solid #2f63a8; outline-offset: 2px; }
 .mm-shell #sidebar::before { display: none; }
 .mm-shell #sidebar .sidebar-toggle { display: none; }
@@ -88,3 +89,31 @@
     .mm-shell .main-content { margin: 0 !important; }
     .mm-shell .page-content { padding: 0 !important; }
 }
+
+/* Full admin navigation: shared styling at every module/submenu depth. */
+.mm-shell { --mm-nav-width: 272px; }
+.mm-shell #sidebar .nav-list { padding: 8px 14px 28px; }
+.mm-shell #sidebar .nav-list li { position: relative; border: 0; }
+.mm-shell #sidebar .nav-list li > a { display: flex; align-items: center; gap: 10px; height: auto; min-height: 42px; line-height: 20px; white-space: normal; overflow-wrap: anywhere; padding: 10px 12px !important; border: 0; border-radius: 8px; color: #37536a; background: transparent; }
+.mm-shell #sidebar .nav-list > li > a { font-weight: 600; }
+.mm-shell #sidebar .nav-list > li > a > .menu-icon { display: inline-flex; flex: 0 0 28px; width: 28px; height: 28px; align-items: center; justify-content: center; margin: 0; font-size: 16px; border-radius: 7px; background: #eef3f8; color: #526578 !important; transform: none !important; }
+.mm-shell #sidebar .nav-list .menu-text { min-width: 0; }
+.mm-shell #sidebar .nav-list a > .arrow { position: static; margin-left: auto; flex-shrink: 0; width: 16px; line-height: 20px; font-size: 15px; color: #758ba0; }
+.mm-shell #sidebar .nav-list a[aria-expanded="true"] > .arrow { transform: rotate(180deg); }
+.mm-shell #sidebar .nav-list li > b.arrow, .mm-shell #sidebar .nav-list li::before, .mm-shell #sidebar .nav-list a::before, .mm-shell #sidebar .nav-list li::after { display: none !important; }
+.mm-shell #sidebar .nav-list .submenu { margin: 4px 0 8px 14px; padding: 0 0 0 10px; border: 0; border-left: 1px solid #dbe5f1; background: transparent; }
+.mm-shell #sidebar .nav-list .submenu::before { display: none; }
+.mm-shell #sidebar .nav-list .submenu > li { margin: 2px 0; }
+.mm-shell #sidebar .nav-list .submenu > li > a { margin: 0; font-size: 13px; }
+.mm-shell #sidebar .nav-list .submenu .submenu { margin-left: 8px; padding-left: 6px; }
+.mm-shell #sidebar .nav-list .submenu a > .menu-icon { display: none !important; }
+.mm-shell #sidebar .nav-list li > a:hover { color: #275188; background: #f0f5fa; }
+.mm-shell #sidebar .nav-list li.open > a { background: #f4f7fb; color: #275188; }
+.mm-shell #sidebar .nav-list li.active > a, .mm-shell #sidebar .nav-list a[aria-current="page"] { background: #eaf1fa; color: #275188; font-weight: 600; box-shadow: inset 3px 0 #2f63a8; }
+.mm-shell #sidebar .nav-list > li + li { margin-top: 6px; }
+.mm-shell .mm-shell-search-row { display: flex; align-items: center; gap: 6px; }
+.mm-shell .mm-shell-search-row .mm-input { min-width: 0; flex: 1; }
+.mm-shell .mm-shell-search-row .mm-shell-icon { flex-shrink: 0; }
+.mm-shell .mm-shell-nav-tools { border-bottom: 1px solid #edf2f7; margin-bottom: 8px; }
+.mm-shell.mm-nav-collapsed { --mm-nav-width: 0px; }
+@media (max-width: 991px) { .mm-shell { --mm-nav-width: 0px; } }

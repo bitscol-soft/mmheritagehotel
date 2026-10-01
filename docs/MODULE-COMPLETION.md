@@ -49,3 +49,9 @@ The index query uses `name` but the filter submits `title`; search functionality
 is not fixed by the presentation migration. Backend correction and authorization
 review, then authenticated tests, are required before this group is complete.
 Next UI group: remaining room-category forms.
+
+## Full menu design
+
+Shared navigation design applied to all module sidebars through the shell, not by
+editing each permission-driven sidebar. Fixture coverage uses sample links; real
+role/permission and long-label acceptance remains pending in staging.

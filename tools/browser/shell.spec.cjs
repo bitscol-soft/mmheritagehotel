@@ -13,6 +13,7 @@ async function fixture(page, { shell = true, script = true } = {}) {
     });
     await page.goto('http://mm-shell.test/home');
 }
+function menuLink(page, name) { return page.locator('#mm-primary-menu a').filter({ hasText: new RegExp('^\\s*' + name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\s*$') }); }
 for (const width of [360, 768, 1440]) {
     test(`navigation, menu search and spacing at ${width}px`, async ({ page }) => {
         await page.setViewportSize({ width, height: 900 });
@@ -136,3 +137,45 @@ for (const width of [360, 768, 1440]) {
         expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBeTruthy();
     });
 }
+
+for (const width of [360, 768, 1440]) {
+test(`full module menu, nested disclosures and clear search at ${width}px`, async ({ page }) => {
+        await page.setViewportSize({ width, height: 900 });
+        const errors = [];
+        page.on('pageerror', error => errors.push(error.message));
+        await fixture(page);
+        await page.route('http://mm-shell.test/full-menu**', route => route.fulfill({ path: 'tools/fixtures/full-menu.html' }));
+        await page.goto('http://mm-shell.test/full-menu');
+        if (width < 992) await page.locator('#menu-toggler').click();
+        const hotel = menuLink(page, 'Hotel');
+        await expect(hotel).toHaveAttribute('aria-expanded', 'false');
+        await hotel.focus();
+        await page.keyboard.press('Space');
+        await expect(hotel).toHaveAttribute('aria-expanded', 'true');
+        // Ace ignores submenu clicks while the parent slide animation is running.
+        await expect(page.locator('#mm-primary-menu .submenu.nav-show').first()).not.toHaveAttribute('style', /height/);
+        const setup = menuLink(page, 'Setup');
+        await setup.click();
+        await expect(setup).toHaveAttribute('aria-expanded', 'true');
+        await expect(menuLink(page, 'Purpose')).toBeVisible();
+        await page.locator('#mm-menu-filter').fill('general ledger');
+        await expect(menuLink(page, 'General ledger')).toBeVisible();
+        await expect(menuLink(page, 'Accounts & Finance')).toHaveAttribute('aria-expanded', 'true');
+        await expect(hotel).toBeHidden();
+        await page.getByRole('button', { name: 'Clear menu search' }).click();
+        await expect(page.locator('#mm-menu-filter')).toBeFocused();
+        await expect(hotel).toHaveAttribute('aria-expanded', 'true');
+        await expect(menuLink(page, 'Accounts & Finance')).toHaveAttribute('aria-expanded', 'false');
+        expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBeTruthy();
+        expect(errors).toEqual([]);
+    });
+}
+
+test('query-specific menu links have a single current-page marker', async ({ page }) => {
+    await fixture(page);
+    await page.route('http://mm-shell.test/hotel/booking-purpose**', route => route.fulfill({ path: 'tools/fixtures/full-menu.html' }));
+    await page.goto('http://mm-shell.test/hotel/booking-purpose?type=platform');
+    await expect(page.locator('#mm-primary-menu [aria-current="page"]')).toHaveCount(1);
+    await expect(menuLink(page, 'Platform')).toHaveAttribute('aria-current', 'page');
+    await expect(menuLink(page, 'Purpose')).not.toHaveAttribute('aria-current');
+});
