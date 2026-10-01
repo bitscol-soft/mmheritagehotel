@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
     <link href="https://fonts.googleapis.com/css2?family=Calistoga&display=swap" rel="stylesheet">
     <style>
+        @include('booking._css.invoice-sheet')
+
         #print_body {
             background-color: #fff;
             padding: 10px 20px;
@@ -351,6 +353,9 @@
 
             .main-print-body {
                 height: 985px;
+            }
+            .main-print-body table tr {
+                page-break-inside: avoid;
             }
 
             #print_body {

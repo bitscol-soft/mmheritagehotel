@@ -74,6 +74,21 @@
             background: #ccc;
         }
 
+        .booking-filter-panel {
+            background: #f7fafd;
+            border: 1px solid #e4ebf3;
+            border-radius: 4px;
+            padding: 12px 6px 8px;
+        }
+
+        .booking-filter-panel .chosen-container {
+            min-height: 32px;
+        }
+
+        .booking-filter-panel .input-group {
+            margin-bottom: 4px;
+        }
+
         .middle-col::before {
             content: '';
             position: absolute;

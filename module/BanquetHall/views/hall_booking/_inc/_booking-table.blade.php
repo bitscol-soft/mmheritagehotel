@@ -86,15 +86,15 @@
                 <td class="text-center">
 
                     @if ($data->status == 1)
-                        <span class="label label-danger">Check In</span>
+                        <span class="label label-xs label-danger arrowed arrowed-right">Check In</span>
                     @elseif ($data->status == 2)
-                        <span class="label booked">Booked</span>
+                        <span class="label label-xs booked arrowed arrowed-right">Booked</span>
                     @elseif ($data->status == 3)
-                        <span class="label today-checkout">Check Out</span>
+                        <span class="label label-xs today-checkout arrowed arrowed-right">Check Out</span>
                     @elseif ($data->status == 0)
-                        <span class="label reservation">Reservation</span>
+                        <span class="label label-xs reservation arrowed arrowed-right">Reservation</span>
                     @elseif ($data->status == 4)
-                        <span class="label label-yellow">Cancelled</span>
+                        <span class="label label-xs label-yellow arrowed arrowed-right">Cancelled</span>
                     @endif
                 </td>
 

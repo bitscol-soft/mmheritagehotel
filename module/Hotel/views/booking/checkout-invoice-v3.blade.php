@@ -23,7 +23,8 @@
 
         body {
             width: 816px;
-            height: 1056px;
+            /* round-8: was a fixed height — invoices longer than one A4 page were clipped; min-height keeps the sheet look but lets it flow */
+            min-height: 1056px;
             margin: 0px auto;
             background: rgb(224, 224, 224)
         }
