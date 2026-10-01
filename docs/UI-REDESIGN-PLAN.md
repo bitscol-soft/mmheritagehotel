@@ -2,6 +2,7 @@
 ### Every screen of `mmheritagehotel`, made modern, consistent, responsive and print-ready
 Target repo: `bitscol-soft/mmheritagehotel` · Prepared 2026-10-01
 Companion to: `docs/PLAN-MODERNIZATION.md` (Plan A — whole-platform strategy). This document is the **UI track**: what the user sees, in what order, with what guardrails. Platform/security items stay in Plan A.
+Execution follow-up: `docs/FRONTEND-DEV-PLAN.md` (task-level breakdown, verification workflow, GitHub milestone “UI Renovation” issues).
 
 ---
 
