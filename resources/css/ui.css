@@ -213,3 +213,93 @@
     .mm-ui.mm-room-form .control-label { display: block; text-align: left; margin-bottom: 8px; padding-top: 0; }
     .mm-ui.mm-room-form .mm-room-form-actions .mm-button { width: 100%; }
 }
+
+/* Dashboard-only legacy chart/room-price adapters. */
+.mm-ui.mm-dashboard .infobox {
+
+            height: 90px !important;
+            width: fit-content !important;
+        }
+.mm-ui.mm-dashboard .infobox-content {
+            white-space: nowrap;
+        }
+.mm-ui.mm-dashboard .infobox-small {
+            width: 100% !important;
+        }
+.mm-ui.mm-dashboard .new-employee-table>tbody>tr>td,
+.mm-ui.mm-dashboard .table>tbody>tr>th,
+.mm-ui.mm-dashboard .table>tfoot>tr>td,
+.mm-ui.mm-dashboard .table>tfoot>tr>th,
+.mm-ui.mm-dashboard .table>thead>tr>td,
+.mm-ui.mm-dashboard .table>thead>tr>th {
+            padding: 4px;
+        }
+.mm-ui.mm-dashboard .chosen-container>.chosen-single,
+.mm-ui.mm-dashboard [class*=chosen-container]>.chosen-single {
+            line-height: 24px !important;
+            height: 25px !important;
+        }
+.mm-ui.mm-dashboard .chosen-container-single {
+            width: 164px !important;
+        }
+.mm-ui.mm-dashboard .top-sheet>.chosen-container-single .chosen-single {
+            background: #a3cc8d !important;
+        }
+.mm-ui.mm-dashboard .dept-wise-attnd>.chosen-container-single .chosen-single {
+            background: #d495c3 !important;
+        }
+.mm-ui.mm-dashboard .shift-wise-attnd>.chosen-container-single .chosen-single {
+            background: #bdb0b0 !important;
+        }
+.mm-ui.mm-dashboard .fc-month-view>td,
+.mm-ui.mm-dashboard th {
+            height: 20px !important;
+            width: 20px !important;
+        }
+.mm-ui.mm-dashboard .room-price .label.label-xs.arrowed {
+            padding: 12px 8px;
+        }
+.mm-ui.mm-dashboard .room-price .label.label-xs.arrowed i {
+            margin-top: -12px;
+        }
+.mm-ui.mm-dashboard .room-price span.label.label-xs.arrowed::before,
+.mm-ui.mm-dashboard .room-price span.label.label-xs.arrowed::after {
+            border-width: 12px 6px !important;
+        }
+
+.mm-ui .mm-dashboard-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.mm-ui .mm-dashboard-stat { min-width: 0; border: 1px solid var(--mm-line); border-top: 3px solid var(--mm-brand); border-radius: 10px; background: var(--mm-surface); padding: 20px; }
+.mm-ui .mm-dashboard-stat h2 { margin: 0; font-size: 14px; line-height: 20px; font-weight: 600; color: var(--mm-muted); }
+.mm-ui .mm-dashboard-value { margin: 16px 0; font-size: 32px; font-weight: 700; line-height: 1.2; overflow-wrap: anywhere; }
+.mm-ui .mm-dashboard-value span { display: block; margin-top: 4px; font-size: 12px; font-weight: 400; color: var(--mm-muted); }
+.mm-ui .mm-dashboard-stat dl { margin: 0; border-top: 1px solid var(--mm-line); padding-top: 12px; }
+.mm-ui .mm-dashboard-stat dl > div { display: flex; justify-content: space-between; gap: 12px; margin-top: 6px; }
+.mm-ui .mm-dashboard-stat dt { font-size: 12px; font-weight: 400; color: var(--mm-muted); }
+.mm-ui .mm-dashboard-stat dd { margin: 0; font-weight: 600; overflow-wrap: anywhere; }
+.mm-ui .mm-dashboard-rooms { border-top-color: #387b69; }
+.mm-ui .mm-dashboard-board { border-top: 1px solid var(--mm-line); padding-top: 24px; }
+.mm-ui.mm-dashboard .mm-dashboard-board > .row { margin: 0; }
+@media (max-width: 1199px) { .mm-ui .mm-dashboard-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 575px) { .mm-ui .mm-dashboard-grid { grid-template-columns: minmax(0, 1fr); } }
+
+/* Housekeeping layout only: status colours and AJAX logic stay with legacy code. */
+.mm-ui.mm-housekeeping { counter-reset: section; }
+.mm-ui.mm-housekeeping .table { margin-bottom: 0 !important; }
+.mm-ui.mm-housekeeping .count:before { counter-increment: section; content: counter(section); }
+.mm-ui.mm-housekeeping select:invalid { height: 0px !important; opacity: 0 !important; position: absolute !important; display: flex !important; }
+.mm-ui.mm-housekeeping select:invalid[multiple] { margin-top: 15px !important; }
+.mm-ui .mm-housekeeping-help { padding: 20px; background: #edf4fb; border: 1px solid var(--mm-line); border-radius: 10px; }
+.mm-ui .mm-housekeeping-help p { margin: 8px 0 0; color: var(--mm-muted); }
+.mm-ui .mm-housekeeping-board { padding: 20px; }
+.mm-ui.mm-housekeeping .col-sm-9.col-sm-offset-3 { width: 100%; margin-left: 0; float: none; padding: 0; }
+.mm-ui.mm-housekeeping .col-sm-9 > p { display: flex; flex-wrap: wrap; gap: 12px; margin: 0 0 20px; }
+.mm-ui.mm-housekeeping .search-results { margin-top: 0 !important; }
+.mm-ui.mm-housekeeping .room-search-list { padding: 20px 0; border-top: 1px solid var(--mm-line); }
+.mm-ui.mm-housekeeping .room-list > .row { display: flex; flex-wrap: wrap; gap: 12px; margin: 0; }
+.mm-ui.mm-housekeeping .room-list > .row > .col-md-1 { float: none; flex: 0 0 100px; width: 100px; padding: 0; }
+.mm-ui.mm-housekeeping .room-list > .row > .col-md-5 { width: 100%; }
+.mm-ui.mm-housekeeping .room-status-ui, .mm-ui.mm-housekeeping .booked-room-info { min-height: 80px; }
+@media (max-width: 575px) {
+    .mm-ui .mm-housekeeping-board { padding: 12px; }
+    .mm-ui.mm-housekeeping .room-list > .row > .col-md-1 { flex-basis: calc(50% - 6px); width: calc(50% - 6px); }
+}

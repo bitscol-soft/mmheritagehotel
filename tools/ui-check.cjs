@@ -110,3 +110,25 @@ for (const path of ['resources/views/layouts/includes/master-file-script.blade.p
 assert(fs.readFileSync('resources/views/partials/_sidebar.blade.php','utf8').includes('@unless ($mmShell ?? false)'));
 console.log('PASS: shell CSS isolation, layout exclusions, header actions/permissions, dynamic sidebar and shared scripts preserved');
 assert(fs.readFileSync('tools/fixtures/admin-shell.html', 'utf8').includes(fs.readFileSync('resources/views/layouts/shell/navigation-tools.blade.php', 'utf8')), 'Browser fixture navigation tools drifted from Blade partial');
+
+const dashPath = 'resources/views/home/hotel-dashboard.blade.php';
+const dashBefore = execFileSync('git', ['show', `d96fc4cf:${dashPath}`], {encoding:'utf8'});
+const dashAfter = fs.readFileSync(dashPath,'utf8');
+const dashSummary = fs.readFileSync('resources/views/home/_inc/dashboard-summary.blade.php','utf8');
+const uncomment = s => s.replace(/{{--[\s\S]*?--}}/g, '');
+for (const expression of uncomment(dashBefore).match(/{{[\s\S]*?}}/g) || []) assert((dashAfter + dashSummary).includes(expression), `Dashboard expression changed: ${expression}`);
+assert.equal(dashAfter.split("@section('js')")[1], dashBefore.split("@section('js')")[1]);
+for (const condition of dashBefore.match(/@if\([^\n]+|@if \([^\n]+/g) || []) assert(dashAfter.includes(condition));
+for (const path of ['resources/views/home/_inc/booking_ui.blade.php','resources/views/home/_inc/script.blade.php']) assert.equal(fs.readFileSync(path,'utf8'), execFileSync('git',['show',`d96fc4cf:${path}`],{encoding:'utf8'}));
+assert(!dashAfter.includes('<style>'));
+console.log('PASS: dashboard displayed expressions, visibility gates, scripts and shared booking board preserved');
+
+const keepingPath = 'module/Hotel/views/house-keeping/index.blade.php';
+const keepingBefore = execFileSync('git', ['show', `d96fc4cf:${keepingPath}`], {encoding:'utf8'});
+const keepingAfter = fs.readFileSync(keepingPath,'utf8');
+assert.equal(keepingAfter.split("@section('script')")[1], keepingBefore.split("@section('script')")[1]);
+assert.deepEqual(keepingAfter.match(/@php[\s\S]*?@endphp/g), keepingBefore.match(/@php[\s\S]*?@endphp/g));
+assert(keepingAfter.includes('<x-room-keeping :categories="$categories" :mixdate="$booking_date" />'));
+for (const path of ['resources/views/components/room-keeping.blade.php','resources/views/components/room-status-keeping.blade.php','module/Hotel/views/house-keeping/_script/script.blade.php']) assert.equal(fs.readFileSync(path,'utf8'), execFileSync('git',['show',`d96fc4cf:${path}`],{encoding:'utf8'}), `Housekeeping behavior changed: ${path}`);
+assert(!keepingAfter.includes('<style>'));
+console.log('PASS: housekeeping PHP, room components, permission gate and status-update scripts preserved');

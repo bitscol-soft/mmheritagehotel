@@ -233,3 +233,42 @@ shell globally in the first increment.
   notifications, logout, Chosen/DataTables resize, booking board/modals, and
   employee/POS/payroll print exclusions on staging. Existing npm audit reports
   13 dependency/toolchain vulnerabilities; no forced framework upgrades made.
+
+## Eighth increment — hotel dashboard (2026-10-01)
+
+- Added a shared page heading and responsive four-card summary for bookings,
+  check-ins, check-outs and room counts. Today, last-day and seven-day expressions
+  are unchanged; no new aggregation queries or financial calculations added.
+- Explicitly explains that the existing ready-room figure is total minus booked,
+  not verified housekeeping readiness. Added a titled booking-board section while
+  preserving the existing visibility setting, shared board and scripts.
+- Moved dashboard inline CSS into dashboard-scoped adapters, removing its global
+  table-header and Chosen styling effects on other pages.
+- PASS: production build, preservation/isolation checks, 28 Blade compilations,
+  actual summary render, and 11 Chromium fixture tests (including dashboard at
+  360/768/1440px). Sample dashboard fixture is available in the temporary preview;
+  it is not the authenticated application and its sample numbers are not live.
+- Pending staging: real counters, setting on/off, full booking board interaction,
+  long values, role matrix and chart/plugin compatibility. No deployment or data
+  writes performed. Existing hidden attendance section remains hidden.
+
+## Ninth increment — housekeeping workspace (2026-10-01)
+
+- Migrated the housekeeping page to the shared page/panel layout with guidance
+  and an explicit permission-denied message. The existing component retains its
+  own permission check. No additional permissions or routes are introduced.
+- Room-category cards now wrap with consistent spacing; the existing status
+  legend uses the available width and wraps on narrow screens. Status colours,
+  calculation precedence, restricted booked/reserved controls and room contents
+  remain in the unchanged room components.
+- Moved page-level table/counter/select rules into the scoped housekeeping layer.
+- PASS: build, selector and preservation checks, 29 Blade compilations and prior
+  rendering tests. Guards verify page PHP and script sections plus byte identity
+  of both housekeeping room components and the status-update script.
+- The 11 browser fixtures cover the shell/dashboard, NOT housekeeping acceptance.
+  Pending staging: actual category/room layouts, empty/denied roles, status dialog,
+  cancel/save/errors, date/remarks payload and mobile room controls. The existing
+  status-update implementation is intentionally unchanged; this update does not
+  claim to fix its optimistic updates or backend error handling.
+- No deployment or hotel data writes performed. Temporary preview remains the
+  sample dashboard until an actual housekeeping fixture or staging is available.

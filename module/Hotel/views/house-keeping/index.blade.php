@@ -8,31 +8,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/daterangepicker.min.css') }}" />
-    <style>
-        .table {
-            margin-bottom: 0 !important;
-        }
 
-        body {
-            counter-reset: section;
-        }
-
-        .count:before {
-            counter-increment: section;
-            content: counter(section);
-        }
-
-        select:invalid {
-            height: 0px !important;
-            opacity: 0 !important;
-            position: absolute !important;
-            display: flex !important;
-        }
-
-        select:invalid[multiple] {
-            margin-top: 15px !important;
-        }
-    </style>
 @endpush
 
 
@@ -46,29 +22,22 @@
         
     @endphp
 
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="widget-box">
-                <div class="widget-header">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
-
-                    {{-- <span class="widget-toolbar">
-                        <a href="{{ route('booking.index') }}">
-                            <i class="ace-icon fa fa-list-alt"></i> Booking List
-                        </a>
-                    </span> --}}
-
-                </div>
-
-                <div class="widget-body">
-                    <div class="widget-main">
-                        <x-alert-message />
-                        <x-room-keeping :categories="$categories" :mixdate="$booking_date" />
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <x-mm.styles />
+    <x-mm.page title="Housekeeping" description="Review rooms by category and manage their housekeeping status." class="mm-housekeeping">
+        <x-alert-message />
+        @if (hasPermission('Booking.HouseKeeping', p_slugs()))
+            <aside class="mm-housekeeping-help" aria-label="Housekeeping guidance">
+                <strong>Room care workspace</strong>
+                <p>Use the expand control on an available room card to open the existing status dialog. Review the status and remarks before saving.</p>
+                <p>Booked and reserved rooms retain their existing restricted controls. Room colours follow the current system status rules.</p>
+            </aside>
+        @else
+            <x-mm.panel><p class="tw-m-0">You do not have permission to view housekeeping rooms.</p></x-mm.panel>
+        @endif
+        <x-mm.panel class="mm-housekeeping-board">
+            <x-room-keeping :categories="$categories" :mixdate="$booking_date" />
+        </x-mm.panel>
+    </x-mm.page>
 
 
 @endsection

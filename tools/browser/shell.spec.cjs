@@ -123,3 +123,16 @@ test('mobile navigation remains readable without shell JavaScript', async ({ pag
     await expect(page.getByRole('link', { name: 'Rooms', exact: true })).toBeVisible();
     await expect(page.locator('#mm-menu-filter')).toBeHidden();
 });
+
+for (const width of [360, 768, 1440]) {
+    test(`dashboard summary fixture at ${width}px`, async ({ page }) => {
+        await page.setViewportSize({width, height:900});
+        await fixture(page);
+        await page.route('http://mm-shell.test/dashboard-preview', route => route.fulfill({path:'tools/fixtures/dashboard.html'}));
+        await page.goto('http://mm-shell.test/dashboard-preview');
+        await expect(page.locator('.mm-dashboard-stat')).toHaveCount(4);
+        await expect(page.getByRole('heading', {name:'Hotel dashboard', exact:true})).toBeVisible();
+        await expect(page.getByText('not a housekeeping readiness check', {exact:false})).toBeVisible();
+        expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBeTruthy();
+    });
+}
