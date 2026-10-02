@@ -1145,10 +1145,12 @@ foreach ($riCases as $riName => [$riViewName, $riUrl, $riData, $riMarkers, $riAb
 echo "PASS restaurant inventory screens render: setup lists, catalog, production, purchase and stock adjustment\n";
 
 // ---- General Store G1: items, item units, suppliers, supplier types (module/GeneralStore/views, same helper substitutions as the Restaurant views) ----
-$gsViews = ['item-units/index', 'item-units/create', 'item-units/edit', 'items/index', 'items/create', 'items/edit', 'items/upload', 'suppliers/index', 'suppliers/create', 'suppliers/edit', 'supplier-types/index'];
+$gsViews = ['item-units/index', 'item-units/create', 'item-units/edit', 'items/index', 'items/create', 'items/edit', 'items/upload', 'suppliers/index', 'suppliers/create', 'suppliers/edit', 'supplier-types/index',
+    'purchases/index', 'purchases/show', 'purchases/approve', 'purchases/create', 'purchases/edit', 'purchase_receives/create', 'purchase_receives/grn_list', 'purchase_receives/purchase_receive_list',
+    'goods_requisitions/index', 'goods_requisitions/gin_list', 'goods_requisitions/approve', 'goods_requisitions/create', 'goods_requisitions/edit', 'reports/weakly_movement_issue', 'reports/stock-in-hand', 'reports/item-ledger'];
 foreach ($gsViews as $gsView) {
     $gsSource = $rsSubst($gsView, 'GeneralStore');
-    $gsSource = preg_replace("/@include\\('partials\\._paginate', \\['data' => [^\\]]*\\]\\)/", $rpPaginate, $gsSource);
+    $gsSource = preg_replace("/@include\\('(?:partials\\._paginate|reports\\.gs-paginate)', \\['data' => [^\\]]*\\]\\)/", $rpPaginate, $gsSource);
     $gsSource = str_replace(['Auth::user()', "\\Carbon\\Carbon::parse(", 'Carbon\\Carbon::parse('], ['mm_auth_user()', 'mm_gs_date(', 'mm_gs_date('], $gsSource);
     @mkdir(dirname($coViews . '/gs/' . $gsView), 0777, true);
     file_put_contents($coViews . '/gs/' . $gsView . '.blade.php', $gsSource);
@@ -1165,6 +1167,10 @@ foreach ($gsViews as $gsView) {
 }
 $gsType = function ($id, $name) use ($riRow) { return $riRow(['id' => $id, 'name' => $name]); };
 $gsSupplier = $riRow(['id' => 1, 'name' => 'Sarker <b>Traders</b>', 'mobile' => '017', 'phone' => '018', 'email' => 's@example.com', 'address' => 'Dhaka <i>1</i>', 'attention' => 'Mr Sarker', 'fax' => '', 'website' => '', 'head_office' => '', 'factory_' => '', 'country_id' => 18, 'supplier_type_id' => 1, 'created_at' => '2026-09-30', 'updated_at' => '2026-10-01', 'supplier_type' => $riRow(['name' => 'Local <b>x</b>']), 'group' => $riRow(['name' => 'Main'])]);
+$gsItem = $riRow(['id' => 7, 'name' => 'Basmati <b>rice</b>', 'current_stock' => 12, 'item_unit' => $riRow(['name' => 'Kg'])]);
+$gsDetail = $riRow(['id' => 3, 'item_id' => 7, 'quantity' => 3, 'received_quantity' => 1, 'item' => $gsItem]);
+$gsPurchase = function ($id, $form, $approved) use ($riRow, $riList, $gsDetail) { return $riRow(['id' => $id, 'form_number' => $form, 'purchase_date' => '2026-10-01', 'purchase_reference' => 'REF-' . $id, 'company_id' => 1, 'is_approved' => $approved, 'created_at' => '2026-10-01', 'updated_at' => '2026-10-01', 'company' => $riRow(['name' => 'MM <b>Heritage</b>']), 'created_user' => $riRow(['name' => 'Rahim <b>x</b>']), 'updated_user' => $riRow(['name' => 'Karim']), 'purchase_details' => $riList([$gsDetail]), 'purchase_receives' => $riList([])]); };
+$gsReceive = $riRow(['id' => 5, 'form_number' => 'GRN-0001', 'purchase_challan_number' => 'CH-9', 'purchase_receive_date' => '2026-10-01', 'remarks' => 'Fine', 'updated_at' => '2026-10-01', 'company' => $riRow(['name' => 'MM Heritage']), 'updated_user' => $riRow(['name' => 'Karim']), 'purchase' => $riRow(['id' => 1, 'form_number' => 'GP-0001', 'purchase_date' => '2026-10-01', 'purchase_details' => collect([$gsDetail])]), 'purchase_receive_details' => collect([$riRow(['item_id' => 7, 'quantity' => 1, 'rate' => 100, 'is_in_stock' => [], 'item' => $gsItem])])]);
 $gsCases = [
     'item-units' => ['gs.item-units.index', '/gs/item-units', ['item_units' => $riList([$riRow(['id' => 1, 'name' => 'Sack <b>x</b>', 'conversion' => 25, 'status' => 1]), $riRow(['id' => 2, 'name' => 'Box', 'conversion' => 12, 'status' => 0])])],
         ['mm-gs', 'id="dynamic-table"', 'delete_check(1)', 'Sack &lt;b&gt;x&lt;/b&gt;', 'class="pagination"'], ['Sack <b>x</b>', 'btnPrint']],
@@ -1181,7 +1187,39 @@ $gsCases = [
     'form-supplier-edit' => ['gs.suppliers.edit', '/generalstore/suppliers/1/edit', ['Supplier' => $gsSupplier, 'supplier_types' => [1 => 'Local <b>x</b>'], 'countries' => [18 => 'Bangladesh']], ['mm-gs', 'mm-rst-form', 'name="_method" value="PUT"', 'Sarker &lt;b&gt;Traders&lt;/b&gt;'], ['Sarker <b>Traders</b>']],
     'supplier-types' => ['gs.supplier-types.index', '/generalstore/supplier-types?name=1', ['supplierTypes' => $riList([$riRow(['id' => 1, 'name' => 'Local <b>x</b>']), $riRow(['id' => 2, 'name' => 'Import'])])],
         ['mm-gs', 'id="myTable"', 'name="name[]"', 'href="#edit1"', 'id="edit1"', 'delete_check(1)', 'Local &lt;b&gt;x&lt;/b&gt;', 'Total : 2', 'class="pagination"'], ['Local <b>x</b>']],
+    'purchases' => ['gs.purchases.index', '/gs/purchases?purchase_number=1', ['companies' => [1 => 'MM Heritage'], 'systemSetting' => $riRow(['value' => 'Ref No.']), 'purchases' => $riList([$gsPurchase(1, 'GP-0001', 0), $gsPurchase(2, 'GP-0002', 1)])],
+        ['mm-gs', 'mm-report-filter', 'name="is_approved"', 'GP-0002', 'Not Approved', 'class="pagination"', 'delete_check(1)', 'class="exportForm"'], ['MM <b>Heritage</b></td>']],
+    'purchase-show' => ['gs.purchases.show', '/gs/purchases/1', ['purchase' => $gsPurchase(1, 'GP-0001', 1), 'systemSetting' => $riRow(['value' => 'Ref No.'])], ['mm-invoice-page', 'mm-gs', 'printForm(', 'GP-0001', 'Basmati &lt;b&gt;rice&lt;/b&gt;', 'Designation'], ['Basmati <b>rice</b>']],
+    'form-purchase-approve' => ['gs.purchases.approve', '/gs/purchase-approve/1', ['purchase' => $gsPurchase(1, 'GP-0001', 0), 'companies' => [1 => 'MM Heritage'], 'items' => collect([$riRow(['id' => 7, 'name' => 'Basmati <b>rice</b>', 'company_id' => 1])]), 'last_purchases' => [0 => $riRow(['id' => 4, 'form_number' => 'GP-0000'])]], ['mm-gs', 'mm-rst-form', 'name="last_purchases[]"'], []],
+    'form-purchase-create' => ['gs.purchases.create', '/gs/purchases/create', ['companies' => [1 => 'MM Heritage'], 'items' => collect([$riRow(['id' => 7, 'name' => 'Basmati <b>rice</b>', 'company_id' => 1])]), 'systemSetting' => $riRow(['value' => 'Ref No.'])], ['mm-gs', 'mm-rst-form', 'name="company_id"'], []],
+    'form-purchase-edit' => ['gs.purchases.edit', '/gs/purchases/1/edit', ['purchase' => $gsPurchase(1, 'GP-0001', 0), 'companies' => [1 => 'MM Heritage'], 'items' => collect([$riRow(['id' => 7, 'name' => 'Basmati <b>rice</b>', 'company_id' => 1])]), 'systemSetting' => $riRow(['value' => 'Ref No.'])], ['mm-gs', 'mm-rst-form', 'name="_method" value="PUT"'], []],
+    'grn-list' => ['gs.purchase_receives.grn_list', '/gs/grn-list', ['companies' => [1 => 'MM Heritage'], 'purchase_receives' => $riList([$gsReceive])], ['mm-gs', 'mm-report', 'GRN-0001', 'class="pagination"'], []],
+    'receive-list' => ['gs.purchase_receives.purchase_receive_list', '/gs/purchase-receive/list/1', ['purchase_receives' => $riList([$gsReceive])], ['mm-gs', 'mm-report', 'GRN-0001'], []],
+    'form-receive-create' => ['gs.purchase_receives.create', '/gs/purchase-receive/create/1', ['purchase' => $gsPurchase(1, 'GP-0001', 1), 'suppliers' => [1 => 'Sarker <b>Traders</b>'], 'receive_items' => collect([]), 'receive_items_quantity' => 0, 'requisition_number' => 'REQ-1', 'requisition_from_item' => [], 'systemSetting' => $riRow(['value' => 'Ref No.'])], ['mm-gs', 'mm-rst-form', 'name="purchase_id"'], []],
 ];
+$gsGrDetail = function ($id, $qty) use ($riRow, $gsItem) { return $riRow(['id' => $id, 'item_id' => 7, 'quantity' => $qty, 'remarks' => 'For <i>kitchen</i>', 'item' => $gsItem]); };
+$gsGr = function ($id, $form, $approved) use ($riRow, $riList, $gsGrDetail) { return $riRow(['id' => $id, 'form_number' => $form, 'goods_requisition_date' => '2026-10-01', 'goods_requisition_reference' => 'REF-' . $id, 'company_id' => 1, 'department_id' => 1, 'is_approved' => $approved, 'issue_date' => '2026-10-01', 'issue_number' => $approved ? 'GIN-000' . $id : '', 'created_at' => '2026-10-01', 'updated_at' => '2026-10-01', 'company' => $riRow(['name' => 'MM <b>Heritage</b>']), 'department' => $riRow(['name' => 'Kitchen <b>x</b>']), 'created_user' => $riRow(['name' => 'Rahim <b>x</b>']), 'updated_user' => $riRow(['name' => 'Karim']), 'goods_requisition_details' => $riList([$gsGrDetail(3, 4)])]); };
+$gsGrItems = collect([$riRow(['id' => 7, 'name' => 'Basmati <b>rice</b>', 'company_id' => 1])]);
+$gsGrCases = [
+    'gr-list' => ['gs.goods_requisitions.index', '/gs/goods-requisitions?requisition_number=1', ['companies' => [1 => 'MM Heritage'], 'systemSetting' => $riRow(['value' => 'Ref No.']), 'goods_requisitions' => $riList([$gsGr(1, 'GR-0001', 0), $gsGr(2, 'GR-0002', 1)])],
+        ['mm-gs', 'name="requisition_number"', 'name="gin_number"', 'name="is_approved"', 'GR-0002', 'GIN-0002', 'class="pagination"', 'delete_check(1)', 'id="goods-requisition-details1"', 'class="exportForm"', 'Kitchen &lt;b&gt;x&lt;/b&gt;'], ['Kitchen <b>x</b>']],
+    'gin-list' => ['gs.goods_requisitions.gin_list', '/gs/gin-list', ['companies' => [1 => 'MM Heritage'], 'systemSetting' => $riRow(['value' => 'Ref No.']), 'goods_requisitions' => $riList([$gsGr(2, 'GR-0002', 1)])],
+        ['mm-gs', 'mm-report', 'GIN-0002', 'id="goods-requisition-details2"', 'class="pagination"'], ['Kitchen <b>x</b>']],
+    'form-gr-approve' => ['gs.goods_requisitions.approve', '/gs/goods-requisitions/approve/1', ['goodsRequisition' => $gsGr(1, 'GR-0001', 0), 'companies' => [1 => 'MM Heritage'], 'departments' => [1 => 'Kitchen'], 'items' => $gsGrItems, 'previous_unapprove' => null, 'message' => ''],
+        ['mm-gs', 'mm-rst-form', 'id="goods_requisition_table"', 'name="_method" value="PUT"', 'name="company_id"', 'Approve'], []],
+    'form-gr-create' => ['gs.goods_requisitions.create', '/gs/goods-requisitions/create', ['companies' => [1 => 'MM Heritage'], 'departments' => [1 => 'Kitchen'], 'items' => $gsGrItems, 'systemSetting' => $riRow(['value' => 'Ref No.']), 'message' => ''],
+        ['mm-gs', 'mm-rst-form', 'id="purchase_table"', 'name="company_id"', 'name="department_id"'], []],
+    'form-gr-edit' => ['gs.goods_requisitions.edit', '/gs/goods-requisitions/1/edit', ['goodsRequisition' => $gsGr(1, 'GR-0001', 0), 'companies' => [1 => 'MM Heritage'], 'departments' => [1 => 'Kitchen'], 'items' => $gsGrItems, 'systemSetting' => $riRow(['value' => 'Ref No.']), 'message' => '', 'receive_items' => [0 => []], 'receive_items_quantity' => [0 => []], 'requisition_number' => [0 => $riRow(['id' => 2, 'issue_number' => 'GIN-0002'])], 'requisition_from_item' => [0 => null]],
+        ['mm-gs', 'mm-rst-form', 'id="goods_requisition_table"', 'name="_method" value="PUT"', 'GIN-0002'], []],
+    'weekly-movement' => ['gs.reports.weakly_movement_issue', '/gs/gs-reports/weakly-movement-issue?x=1', ['companies' => [1 => 'MM Heritage'], 'departments' => [1 => 'Kitchen'], 'systemSetting' => $riRow(['value' => 'Ref No.']), 'goods_requisitions' => $riList([$gsGr(2, 'GR-0002', 1)]), 'requisition_from_items' => [0 => [0 => null]], 'requisition_from_receives' => [0 => [0 => []]]],
+        ['mm-gs', 'GIN-0002', 'id="goods-requisition-details2"', 'class="pagination"'], ['Kitchen <b>x</b>']],
+    'stock-in-hand' => ['gs.reports.stock-in-hand', '/gs/gs-reports/items-stock', ['companies' => [1 => 'MM Heritage'], 'units' => [1 => 'Kg'], 'items' => [7 => 'Basmati <b>rice</b>'], 'item_stocks' => $riList([$riRow(['id' => 7, 'name' => 'Basmati <b>rice</b>', 'company_id' => 1, 'current_stock' => 12, 'created_at' => '2026-09-30', 'item_unit' => $riRow(['name' => 'Kg']), 'company' => $riRow(['name' => 'MM <b>Heritage</b>'])])])],
+        ['mm-gs', 'name="unit_id"', 'id="dynamic-table"', 'Records Found', 'Basmati &lt;b&gt;rice&lt;/b&gt;', 'class="pagination"', 'class="exportForm"'], ['Basmati <b>rice</b></td>']],
+    'item-ledger' => ['gs.reports.item-ledger', '/gs/reports/item-ledger?item_id=Rice', ['companies' => [1 => 'MM Heritage'], 'selected_item' => $riRow(['name' => 'Basmati <b>rice</b>', 'created_at' => '2026-09-30']), 'opening_stock' => 5, 'opening_rate' => 100,
+        'item_stock_details' => collect([$riRow(['date' => '2026-10-01', 'type' => 'Purchase Receive', 'source_number' => 'GRN-0001', 'credit_qty' => 10, 'credit_rate' => 100, 'debit_qty' => 0, 'debit_rate' => 0]), $riRow(['date' => '2026-10-01', 'type' => 'Issue', 'source_number' => 'GIN-0002', 'credit_qty' => 0, 'credit_rate' => 0, 'debit_qty' => 3, 'debit_rate' => 100])])],
+        ['mm-gs', 'name="item_id"', 'GRN-0001', 'GIN-0002', 'Stock Details', 'class="pagination"', 'class="exportForm"'], []],
+];
+$gsCases = array_merge($gsCases, $gsGrCases);
 @mkdir(__DIR__ . '/fixtures/general-store', 0777, true);
 foreach ($gsCases as $gsName => [$gsViewName, $gsUrl, $gsData, $gsMarkers, $gsAbsent]) {
     $gsRequest = Illuminate\Http\Request::create($gsUrl);
@@ -1200,4 +1238,4 @@ foreach ($gsCases as $gsName => [$gsViewName, $gsUrl, $gsData, $gsMarkers, $gsAb
     if (getenv('MM_WRITE_FIXTURE')) { file_put_contents($gsFile, $gsHtml); file_put_contents($previewDir . '/gs-' . $gsName . '.html', $gsHtml); }
     if (file_get_contents($gsFile) !== $gsHtml) throw new RuntimeException($gsFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
 }
-echo "PASS general store screens render: items, item units, suppliers and supplier types\n";
+echo "PASS general store screens render: items, item units, suppliers, supplier types, purchases, receives, GRN list, requisitions, GIN and reports\n";

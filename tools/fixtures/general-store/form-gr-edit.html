@@ -1,11 +1,7 @@
-@extends('layouts.master')
-@section('title','Edit Goods Requisition')
-@section('page-header')
-    <i class="fa fa-gear"></i> Edit Goods Requisition
-@stop
-@section('css')
-    <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">    <link rel="stylesheet" href="/assets/css/chosen.min.css" />
+    <link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css" />
     <style>
 
         .file {
@@ -14,84 +10,50 @@
         }
 
     </style>
-@stop
+<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+<section class="mm-ui mm-gs mm-rst mm-rst-inv mm-rst-form">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Edit goods requisition</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Change the requested items before approval.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a href="http://localhost/rst/goods-requisitions/index" class="mm-button"><i class="ace-icon fa fa-list-alt"></i> Requisition List</a></div>        </header>
+        <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><form class="form-horizontal" action="http://localhost/gs/goods-requisitions/update/1" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="_token" value="fixture-csrf-token"> <input type="hidden" name="_method" value="PUT">
 
-@section('content')
-
-<x-mm.styles />
-<x-mm.page class="mm-gs mm-rst mm-rst-inv mm-rst-form" title="Edit goods requisition" description="Change the requested items before approval.">
-    <x-slot name="actions">
-        <a href="{{ route('goods-requisitions.index') }}" class="mm-button"><i class="ace-icon fa fa-list-alt"></i> Requisition List</a>
-    </x-slot>
-    <x-mm.panel class="tw-p-4">
-        <form class="form-horizontal" action="{{ route('goods-requisitions.update', $goodsRequisition->id) }}" method="post" enctype="multipart/form-data">
-            @csrf @method('PUT')
-
-
-            @if ($errors->any())
-                <div class="alert alert-danger error">
-                    <button type="button" class="close" data-dismiss="alert">
-                        <i class="ace-icon fa fa-times"></i>
-                    </button>
-
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            @if ($error != "The company id field is required." )
-                                <li>Fillup all items and required quantity</li>
-                                @php
-                                    break;
-                                @endphp
-                            @endif
-
-                        @endforeach
-                    </ul>
-                </div>
-            @elseif (session()->get('message'))
-                @include('partials._alert_message')
-            @endif
-
+            
 
             <div class="form-group">
                 <label class="col-sm-3 control-label" for="form-field-1-1"> Company </label>
-                <div class="col-xs-12 col-sm-8 @error('company_id') has-error @enderror">
+                <div class="col-xs-12 col-sm-8 ">
                     <select name="company_id" class="form-control company_id" id="company_id" onchange="load_items(this)">
                         <option value="" selected>select</option>
-                        @foreach($companies as $id => $company)
-                            <option value="{{ $id }}" {{ old('company_id') == $id || $goodsRequisition->company_id == $id ? 'selected' : '' }}>{{ $company }}</option>
-                        @endforeach
-                    </select>
+                                                    <option value="1" selected>MM Heritage</option>
+                                            </select>
 
-                    @error('company_id')
-                    <span class="text-danger">{{ $message }}</span>
-                    @enderror
-
+                    
                 </div>
             </div>
 
 
             <div class="form-group">
                 <label class="col-sm-3 control-label" for="form-field-1-1"> Department </label>
-                <div class="col-xs-12 col-sm-8 @error('department_id') has-error @enderror">
+                <div class="col-xs-12 col-sm-8 ">
 
                     <select name="department_id" class="form-control chosen-select" onchange="load_items(this)">
                         <option value="0">select</option>
-                        @foreach($departments as $id => $department)
-                            <option value="{{ $id }}" {{ $goodsRequisition->department_id == $id ? 'selected' : '' }}>{{ $department }}</option>
-                        @endforeach
-                    </select>
-                    @error('department_id')
-                    <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                </div>
+                                                    <option value="1" selected>Kitchen</option>
+                                            </select>
+                                    </div>
             </div>
 
 
 
             <div class="form-group col-">
                 <label for="inputError" class="col-xs-12 col-sm-3 col-md-3 control-label"> Date </label>
-                <div  class="col-xs-12 col-sm-8 @error('goods_requisition_date') has-error @enderror">
+                <div  class="col-xs-12 col-sm-8 ">
                     <div class="input-group">
-                        <input class="form-control date-picker" name="goods_requisition_date" id="id-date-picker-1" value="{{ old('goods_requisition_date') ?? $goodsRequisition->goods_requisition_date }}" type="text" data-date-format="yyyy-mm-dd"/>
+                        <input class="form-control date-picker" name="goods_requisition_date" id="id-date-picker-1" value="2026-10-01" type="text" data-date-format="yyyy-mm-dd"/>
                         <span class="input-group-addon">
                             <i class="fa fa-calendar bigger-110"></i>
                         </span>
@@ -101,13 +63,10 @@
             </div>
 
             <div class="form-group">
-                <label class="col-sm-3 control-label" for="form-field-1-1"> {{ $systemSetting->value != null ? $systemSetting->value : "Reference" }} </label>
-                <div class="col-xs-12 col-sm-8 @error('goods_requisition_reference') has-error @enderror">
-                    <input type="number" step="0.01" class="form-control" name="goods_requisition_reference" value="{{ old('goods_requisition_reference') ?? $goodsRequisition->goods_requisition_reference }}" placeholder="{{ $systemSetting->value != null ? $systemSetting->value : "Reference" }}">
-                    @error('goods_requisition_reference')
-                    <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                </div>
+                <label class="col-sm-3 control-label" for="form-field-1-1"> Ref No. </label>
+                <div class="col-xs-12 col-sm-8 ">
+                    <input type="number" step="0.01" class="form-control" name="goods_requisition_reference" value="REF-1" placeholder="Ref No.">
+                                    </div>
             </div>
 
 
@@ -115,8 +74,7 @@
                 <div class="col-sm-10 col-sm-offset-1">
                     <h3 class="header smaller lighter blue">Goods Requisition</h3>
 
-                    <x-mm.table-scroll label="Requisition items">
-                        <table id="goods_requisition_table" class="table table-bordered edu1 container">
+                    <div class="mm-table-scroll" role="region" aria-label="Requisition items" tabindex="0"><table id="goods_requisition_table" class="table table-bordered edu1 container">
                             <thead>
                                 <tr>
                                     <td rowspan="2">Item</td>
@@ -138,112 +96,45 @@
 
                             <tbody class="">
 
-                                @if (old('item_id'))
-                                    @foreach(old('item_id') as $key => $value)
-                                        <tr >
-                                            <td>
-                                                <select name="item_id[]" class="form-control item item'+ item_row + ' chosen-select" onchange="load_item_stock(this)">
-                                                    <option value="">select</option>
-                                                    @foreach($items as $i => $item)
-                                                        @if($item->company_id == old('company_id'))
-                                                            <option value="{{ $item->id }}" {{ old('item_id')[$key] == $item->id ? 'selected' : '' }}>{{ $item->name }}</option>')
-                                                        @endif
-                                                    @endforeach
-                                                </select>
-                                            </td>
-                                            <td>
-                                                <input type="text" value="{{ old('item_unit_id')[$key] }}" name="item_unit_id[]" class="form-control item_unit" readonly="readonly" />
-                                            </td>
-                                            <td>
-                                                <input type="text" value="{{ old('current_stock')[$key] }}" name="current_stock[]" class="form-control current_stock" readonly="readonly" />
-                                            </td>
-                                            <td>
-                                                <input type="text" value="{{ old('quantity')[$key] }}" name="quantity[]" onkeyup="checkQtyLimit(this)"onkeypress='return event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' class="form-control quantity" />
-                                            </td>
-                                            <td>
-                                                <input type="text" class="form-control" name="remarks[]" value="{{ old('remarks')[$key] }}">
-                                            </td>
-
-                                            <td><span class="issue_number">{{ old('issue_number')[$key] ?? '' }}</span></td>
-                                            <td><span class="source">{{ old('source_input')[$key] ?? '' }}</span></td>
-                                            <td><span class="issue_rate">{{ old('issue_rate_input')[$key] ?? '' }}</span></td>
-                                            <td><span class="issue_quantity">{{ old('issue_quantity_input')[$key] ?? '' }}</span></td>
-
-                                            <td><button type="button" class="ibtnDel btn btn-sm btn-danger delete_row" onclick="removeRow(this)"><i class="fa fa-times-circle"></i></button></td>
-
-                                            <input type="hidden" name="issue_number[]" class="issue_number_input" value="{{ old('issue_number')[$key] }}">
-                                            <input type="hidden" name="source[]" class="source_input" value="{{ old('source_input')[$key] }}">
-                                            <input type="hidden" name="issue_rates[]" class="issue_rate_input" value="{{ old('issue_rate_input')[$key] }}">
-                                            <input type="hidden" name="issue_quantities[]" class="issue_quantity_input" value="{{ old('issue_quantity_input')[$key] }}">
-                                        </tr>
-                                    @endforeach
-                                @else
-                                    @php $i = 0; @endphp
-
-                                    @foreach($goodsRequisition->goods_requisition_details as $ik => $detail)
-
+                                                                    
+                                    
                                         <tr>
                                             <td>
                                                 <select name="item_id[]" class="form-control item chosen-select" onchange="load_item_stock(this)" id="select20">
                                                     <option value="" disabled selected>select</option>
-                                                    @foreach($items as $key => $item)
-                                                        @if($item->company_id == $goodsRequisition->company_id)
-                                                            <option value="{{ $item->id }}" {{ $item->id == $detail->item_id ? 'selected' : '' }}>{{ $item->name }}</option>
-                                                        @endif
-                                                    @endforeach
-                                                </select>
+                                                                                                                                                                        <option value="7" selected>Basmati &lt;b&gt;rice&lt;/b&gt;</option>
+                                                                                                                                                            </select>
                                             </td>
                                             <td>
-                                                <input type="text" value="{{ $detail->item->item_unit->name }}" name="item_unit_id[]" class="form-control item_unit" readonly="readonly" />
+                                                <input type="text" value="Kg" name="item_unit_id[]" class="form-control item_unit" readonly="readonly" />
                                             </td>
                                             <td>
-                                                <input type="text" value="{{ round($detail->item->current_stock, 2) }}" name="current_stock[]" id="current_stock0" class="form-control current_stock" readonly="readonly" />
+                                                <input type="text" value="12" name="current_stock[]" id="current_stock0" class="form-control current_stock" readonly="readonly" />
                                             </td>
                                             <td>
-                                                <input type="text" id="q0" value="{{ $detail->quantity }}" onkeyup="checkQtyLimit(this)" onkeypress='return event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' name="quantity[]" class="form-control quantity" />
+                                                <input type="text" id="q0" value="4" onkeyup="checkQtyLimit(this)" onkeypress='return event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' name="quantity[]" class="form-control quantity" />
                                             </td>
                                             <td>
-                                                <input type="text" class="form-control" name="remarks[]" value="{{ $detail->remarks }}">
+                                                <input type="text" class="form-control" name="remarks[]" value="For &lt;i&gt;kitchen&lt;/i&gt;">
                                             </td>
-                                            <td><span class="issue_number">@if (!empty(old('issue_number_input')[$i])){{ old('issue_number_input')[$i] }}@else<a target="_blank" href="/gs/gin-list/{{ optional($requisition_number[$i])->id }}">{{ optional($requisition_number[$i])->issue_number }}</a>@endif</span></td>
+                                            <td><span class="issue_number"><a target="_blank" href="/gs/gin-list/2">GIN-0002</a></span></td>
                                             <td>
-                                                @if ($requisition_from_item[$i])
-                                                    <a target="_blank" href="{{ route('items.show', optional($requisition_from_item[$i])['id']) }}" >Opening, </a>
-                                                @endif
-                                                @foreach($receive_items[$i] as $j => $receive_item)
-                                                    <a target="_blank" href="{{ route('grn.list.show', $receive_item->id) }}" >{{ $receive_item->form_number }},</a>
-                                                @endforeach
+                                                                                                                                            </td>
+                                            <td>
+                                                                                                
                                             </td>
                                             <td>
-                                                @if ($requisition_from_item[$i])
-                                                    {{ $requisition_from_item[$i]['issue_quantity'] }},
-                                                @endif
-                                                @foreach($receive_items[$i] as $j => $receive_item)
-                                                    {{ $receive_item->purchase_receive_details->first()->rate }},
-                                                @endforeach
-
-                                            </td>
-                                            <td>
-                                                @if ($requisition_from_item[$i])
-                                                    {{ $requisition_from_item[$i]['issue_quantity'] }},
-                                                @endif
-                                                @foreach($receive_items[$i] as $j => $receive_item)
-                                                    {{ $receive_items_quantity[$i][$j] }},
-                                                @endforeach
-
+                                                                                                
                                             </td>
 
                                             <td><button type="button" class="ibtnDel btn btn-sm btn-danger delete_row" onclick="removeRow(this)"><i class="fa fa-times-circle"></i></button></td>
 
-                                            <input type="hidden" name="issue_number[]" class="issue_number_input" value="{{ old('issue_number_input')[$key] ?? '<a target="_blank" href="/gs/gin-list/' . optional($requisition_number[$i])->id . '">'. optional($requisition_number[$i])->issue_number . '</a>'  }}">
-                                            <input type="hidden" name="source[]" class="source_input" value="{{ old('source_input')[$key] ?? '' }}">
-                                            <input type="hidden" name="issue_rates[]" class="issue_rate_input" value="{{ old('issue_rate_input')[$key] ?? '' }}">
-                                            <input type="hidden" name="issue_quantities[]" class="issue_quantity_input" value="{{ old('issue_quantity_input')[$key] ?? '' }}">
+                                            <input type="hidden" name="issue_number[]" class="issue_number_input" value="&lt;a target=&quot;_blank&quot; href=&quot;/gs/gin-list/2&quot;&gt;GIN-0002&lt;/a&gt;">
+                                            <input type="hidden" name="source[]" class="source_input" value="">
+                                            <input type="hidden" name="issue_rates[]" class="issue_rate_input" value="">
+                                            <input type="hidden" name="issue_quantities[]" class="issue_quantity_input" value="">
                                         </tr>
-                                        @php $i++; @endphp
-                                    @endforeach
-                                @endif
-
+                                                                                                            
                                 <tr id="addr1"></tr>
                                 <tr>
                                     <td colspan="11" style="text-align: right;">
@@ -254,8 +145,7 @@
                                 </tr>
 
                             </tbody>
-                        </table>
-                    </x-mm.table-scroll>
+                        </table></div>
 
                 </div>
             </div>
@@ -266,34 +156,31 @@
                 <div class="row">
                     <div class="form-group">
                         <div class="pull-right" style="padding-right: 80px !important;">
-                            @if(hasPermission('create.requisitions.edit', $slugs))
-                                <button class="btn btn-success btn-sm"> <i class="fa fa-save"></i> Update </button>
-                            @endif
-                            <button class="btn btn-gray btn-sm" type="Reset"> <i class="fa fa-refresh"></i> Reset </button>
-                            @if(hasPermission('create.requisitions.view', $slugs))
-                                <a href="{{ route('goods-requisitions.index') }}" class="btn btn-info btn-sm"> <i class="fa fa-list"></i> List </a>
-                            @endif
-                        </div>
+                                                            <button class="btn btn-success btn-sm"> <i class="fa fa-save"></i> Update </button>
+                                                        <button class="btn btn-gray btn-sm" type="Reset"> <i class="fa fa-refresh"></i> Reset </button>
+                                                            <a href="http://localhost/rst/goods-requisitions/index" class="btn btn-info btn-sm"> <i class="fa fa-list"></i> List </a>
+                                                    </div>
                     </div>
                 </div>
             </div>
 
-        </form>
-    </x-mm.panel>
-</x-mm.page>
+        </form></div>
+    </div>
+</section>
 
-@endsection
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
 
-@section('js')
-
-    <script src="{{ asset('assets/js/jquery.maskedinput.min.js') }}"></script>
+    <script src="/assets/js/jquery.maskedinput.min.js"></script>
     
-    <script src="{{ asset('assets/js/chosen.jquery.min.js') }}"></script>
-    <script src="{{ asset('assets/custom_js/jq_repeater.js') }}"></script>
+    <script src="/assets/js/chosen.jquery.min.js"></script>
+    <script src="/assets/custom_js/jq_repeater.js"></script>
 
 
-    <script src="{{ asset('assets/js/bootstrap-datepicker.min.js') }}"></script>
-    <script src="{{ asset('assets/js/bootstrap-timepicker.min.js') }}"></script>
+    <script src="/assets/js/bootstrap-datepicker.min.js"></script>
+    <script src="/assets/js/bootstrap-timepicker.min.js"></script>
 
     
 
@@ -322,7 +209,7 @@
             var row = $(element).closest('tr');
 
             $.ajax({
-                url: '{{ url("ajax/item/get-item-details") }}',
+                url: 'http://localhost/ajax/item/get-item-details',
                 type: 'GET',
                 data: 'id=' + id,
                 success: function(res) {
@@ -464,7 +351,7 @@
             var row = $(element).closest('tr');
 
             $.ajax({
-                url: '{{ url("generalstore/ajax/items/get-item-list") }}',
+                url: 'http://localhost/generalstore/ajax/items/get-item-list',
                 type: 'GET',
                 data: 'id=' + id,
                 success: function(res) {
@@ -554,4 +441,4 @@
         }
     </script>
 
-@stop
+<!--/MM-JS--></body></html>

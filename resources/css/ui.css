@@ -804,3 +804,12 @@
 /* General Store forms (module/GeneralStore/views) reuse the inventory scope; two-column rows must contain their floats and fields use the full column */
 .mm-ui.mm-gs .mm-panel .row { display: flow-root; }
 .mm-ui.mm-gs.mm-rst-form .form-group > [class*="col-"] { float: none; width: 100%; }
+/* Ace checkboxes are absolutely positioned; contain them so a scrolling filter table never widens the page */
+.mm-ui.mm-gs .mm-table-scroll { position: relative; }
+/* legacy filter tables: let fixed-width date ranges shrink so the Search button stays on screen */
+.mm-ui.mm-gs.mm-report .mm-table-scroll .table-bordered td .input-group { width: auto !important; max-width: 100%; }
+.mm-ui.mm-gs.mm-report .mm-table-scroll .table-bordered td .input-group .form-control { min-width: 90px; }
+.mm-ui.mm-gs.mm-report .mm-table-scroll th, .mm-ui.mm-gs.mm-report .mm-table-scroll td { padding: 8px 6px; }
+.mm-ui.mm-gs.mm-report .mm-table-scroll td.text-center[style*="min-width"] { min-width: 0 !important; white-space: nowrap; }
+.mm-ui.mm-gs.mm-report .mm-table-scroll .btn-minier, .mm-ui.mm-gs.mm-report .mm-table-scroll .btn-xs { margin: 0 1px; }
+.mm-ui.mm-gs.mm-report .mm-table-scroll .table-bordered td .input-group .input-group-addon { padding: 6px 8px; }

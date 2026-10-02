@@ -704,3 +704,25 @@ Reviewed legacy bugs in `module/Restaurant/views/purchase-v2/`, all view-level (
 - Item unit list: the empty-link export icons and the print link to `gs-setup/print-item-unit` (no such route) are commented out, as in the Restaurant material units.
 - Item list: the Add button says "Add Item" (it printed "Add Item List").
 - Fixtures: `tools/fixtures/general-store/*`, previews `/preview/gs-*`, spec `tools/browser/general-store.spec.cjs`.
+
+## Thirty-sixth increment: General Store G2
+
+`module/GeneralStore/views/purchases/*` (index, show, approve, create, edit) and `purchase_receives/{create,grn_list,purchase_receive_list}` use `x-mm.page` (classes `mm-gs mm-rst mm-rst-inv`, `mm-rst-form` on forms, `mm-report` on lists).
+
+- Purchase index and edit come from the migrated Restaurant production purchase views; the other screens were wrapped from the General Store originals. `tools/ui-check.cjs` compares expressions, controls, forms, directives and scripts with `3ed5211b` after normalising whitespace and quotes.
+- `purchase_receives/print-receive` is a standalone HTML print document and is left unchanged (like `goods_requisitions/print-gin-details`).
+- The GRN and receive lists wrap their tables in `x-mm.table-scroll` so phones scroll the table instead of the page.
+- `mm-rst-purchase` was dropped from the approve/create wrappers because its Restaurant CSS targets other markup.
+- Visible changes: the Purchase List link on the create screen is shown (the original `only-print` class hid it); the printer image on the purchase form is a Print button calling `printForm()`.
+- Controllers, routes, models and exports are unchanged. Fixtures `tools/fixtures/general-store/*`, previews `/preview/gs-*`, spec `tools/browser/general-store.spec.cjs`.
+
+## Thirty-seventh increment: General Store G3
+
+`module/GeneralStore/views/goods_requisitions/{index,gin_list,create,edit,approve}` and `reports/{weakly_movement_issue,stock-in-hand,item-ledger}` use `x-mm.page` (`mm-gs mm-rst mm-rst-inv`, `mm-rst-form` on forms, `mm-report` on lists).
+
+- Wrapped from the General Store originals so expressions and scripts stay identical; `tools/ui-check.cjs` compares them with `3ed5211b` (whitespace and quote insensitive). The legacy filter tables are kept and wrapped in `x-mm.table-scroll`.
+- `goods_requisitions/print-gin-details`, `reports/print_item_details`, `reports/print_items_stock`, `reports/gs-paginate` and `gs-exports` are unchanged.
+- Fixes: create's "Goods Requisition List" link now goes to `goods-requisitions.index` (it pointed at `purchases.index`); edit gives `old('source_input')`, `old('issue_rate_input')` and `old('issue_quantity_input')` a `?? ''` default.
+- CSS (`mm-gs` scope): `.mm-table-scroll` is a positioning context (Ace checkboxes are absolutely positioned and widened the page), fixed-width date ranges in legacy filter tables may shrink, and report tables use tighter cell padding so row actions stay visible.
+- Stock in hand keeps its "Records Found" line (moved into the panel).
+- Fixtures `tools/fixtures/general-store/*`, previews `/preview/gs-*`, spec `tools/browser/general-store.spec.cjs`.

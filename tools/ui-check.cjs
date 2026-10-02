@@ -758,3 +758,73 @@ console.log('PASS: note list/edit expressions, forms and status scripts; legacy 
   assert.equal(untouched,'','General Store controllers, routes, models and export partials must stay unchanged');
   console.log('PASS: general store G1 (items, item units, suppliers, supplier types) keeps fields, expressions, directives and scripts; controllers, routes and export partials untouched');
 }
+
+{
+  // General Store G2 (purchases, purchase receives, GRN list): fields, expressions, directives and scripts stay as they were.
+  // Formatting is normalised (whitespace, quote style) because the Restaurant-derived list and edit views were re-indented.
+  const base='3ed5211b';
+  const nc=s=>s.replace(/\{\{--[\s\S]*?--\}\}/g,'');
+  const q=x=>x.replace(/\s+/g,'').replace(/"/g,"'");
+  const ex=s=>(nc(s).match(/\{\{[\s\S]*?\}\}|\{!![\s\S]*?!!\}/g)||[]).map(q);
+  const added=/ (?:aria-label="[^"]*"|style="[^"]*"|class="[^"]*")/g;
+  const ctl=s=>(nc(s).replace(/\{\{[\s\S]*?\}\}/g,'{{}}').match(/<(input|select|textarea|button)\b[^>]*>/g)||[]).map(x=>x.replace(/\s+/g,' ').replace(added,''));
+  const forms=s=>(nc(s).match(/<form[^>]*>/g)||[]).map(x=>q(x.replace(/ class="[^"]*"/,'')));
+  const directives=s=>(nc(s).match(/@(?:if|elseif|else|endif|foreach|endforeach|forelse|empty|endforelse|include|isset|endisset|can|endcan|error|enderror|csrf|method)\b/g)||[]);
+  const only=(l,m)=>{const c={};l.forEach(x=>c[x]=(c[x]||0)+1);m.forEach(x=>c[x]=(c[x]||0)-1);return Object.entries(c).filter(([,n])=>n).map(([k,n])=>`${n>0?'-':'+'}${Math.abs(n)} ${k}`).sort();};
+  const scripts=s=>(nc(s).match(/<script[\s\S]*?<\/script>/g)||[]).map(q).join('|');
+  const dir='module/GeneralStore/views/';
+  // Known, reviewed difference: the requisition's print icon image became a Print button with a font icon.
+  const dropped={'purchases/show':["-1 {{asset('assets/images/export-icons/printer-icon.png')}}"]};
+  for(const f of ['purchases/index','purchases/show','purchases/approve','purchases/create','purchases/edit','purchase_receives/create','purchase_receives/grn_list','purchase_receives/purchase_receive_list']){
+    const p=`${dir}${f}.blade.php`,after=fs.readFileSync(p,'utf8'),before=execFileSync('git',['show',`${base}:${p}`],{encoding:'utf8'});
+    assert.deepEqual(only(ex(before),ex(after)),dropped[f]||[],`${f}: Blade expressions changed`);
+    assert.deepEqual(only(ctl(before),ctl(after)),[],`${f}: form controls changed`);
+    assert.deepEqual(only(forms(before),forms(after)),[],`${f}: form tags changed`);
+    assert.deepEqual(only(directives(before),directives(after)),[],`${f}: Blade directives changed`);
+    assert.equal(scripts(after),scripts(before),`${f}: scripts changed`);
+    assert(after.includes('<x-mm.page'),`${f}: shared layout expected`);
+    assert(!after.includes('widget-box')&&!after.includes('widget-main')&&!after.includes('widget-header')&&!after.includes('class="page-header'),`${f}: legacy frame should be gone`);
+  }
+  // the standalone print document keeps its own page
+  assert.equal(fs.readFileSync(`${dir}purchase_receives/print-receive.blade.php`,'utf8'),execFileSync('git',['show',`${base}:${dir}purchase_receives/print-receive.blade.php`],{encoding:'utf8'}),'print-receive is a standalone print page and must stay unchanged');
+  const untouched=execFileSync('git',['diff','--name-only',base,'--','module/GeneralStore/Controllers','module/GeneralStore/routes','module/GeneralStore/Models','module/GeneralStore/views/gs-exports'],{encoding:'utf8'}).trim();
+  assert.equal(untouched,'','General Store controllers, routes, models and export partials must stay unchanged');
+  console.log('PASS: general store G2 (purchases, receives, GRN list) keeps fields, expressions, directives and scripts; controllers, routes and export partials untouched');
+}
+
+{
+  // General Store G3 (goods requisitions, GIN list, stock reports): fields, expressions, directives and scripts stay as they were.
+  // Formatting is normalised (whitespace, quote style) because the Restaurant-derived list and edit views were re-indented.
+  const base='3ed5211b';
+  const nc=s=>s.replace(/\{\{--[\s\S]*?--\}\}/g,'');
+  const q=x=>x.replace(/\s+/g,'').replace(/"/g,"'");
+  const ex=s=>(nc(s).match(/\{\{[\s\S]*?\}\}|\{!![\s\S]*?!!\}/g)||[]).map(q);
+  const added=/ (?:aria-label="[^"]*"|style="[^"]*"|class="[^"]*")/g;
+  const ctl=s=>(nc(s).replace(/\{\{[\s\S]*?\}\}/g,'{{}}').match(/<(input|select|textarea|button)\b[^>]*>/g)||[]).map(x=>x.replace(/\s+/g,' ').replace(added,''));
+  const forms=s=>(nc(s).match(/<form[^>]*>/g)||[]).map(x=>q(x.replace(/ class="[^"]*"/,'')));
+  const directives=s=>(nc(s).match(/@(?:if|elseif|else|endif|foreach|endforeach|forelse|empty|endforelse|include|isset|endisset|can|endcan|error|enderror|csrf|method)\b/g)||[]);
+  const only=(l,m)=>{const c={};l.forEach(x=>c[x]=(c[x]||0)+1);m.forEach(x=>c[x]=(c[x]||0)-1);return Object.entries(c).filter(([,n])=>n).map(([k,n])=>`${n>0?'-':'+'}${Math.abs(n)} ${k}`).sort();};
+  const scripts=s=>(nc(s).match(/<script[\s\S]*?<\/script>/g)||[]).map(q).join('|');
+  const dir='module/GeneralStore/views/';
+  // Known, reviewed differences (see docs/MODULE-COMPLETION.md).
+  // create: the "Goods Requisition List" link pointed at purchases.index (a copy-paste slip), edit: three hidden inputs in the non-old-input branch read old()[$key] without a default (an ErrorException on PHP 8).
+  const changed={'goods_requisitions/create':["+1 {{route('goods-requisitions.index')}}","-1 {{route('purchases.index')}}"],
+    'goods_requisitions/edit':["+1 {{old('issue_quantity_input')[$key]??''}}","+1 {{old('issue_rate_input')[$key]??''}}","+1 {{old('source_input')[$key]??''}}","-1 {{old('issue_quantity_input')[$key]}}","-1 {{old('issue_rate_input')[$key]}}","-1 {{old('source_input')[$key]}}"]};
+  for(const f of ['goods_requisitions/index','goods_requisitions/gin_list','goods_requisitions/approve','goods_requisitions/create','goods_requisitions/edit','reports/weakly_movement_issue','reports/stock-in-hand','reports/item-ledger']){
+    const p=`${dir}${f}.blade.php`,after=fs.readFileSync(p,'utf8'),before=execFileSync('git',['show',`${base}:${p}`],{encoding:'utf8'});
+    assert.deepEqual(only(ex(before),ex(after)),changed[f]||[],`${f}: Blade expressions changed`);
+    assert.deepEqual(only(ctl(before),ctl(after)),[],`${f}: form controls changed`);
+    assert.deepEqual(only(forms(before),forms(after)),[],`${f}: form tags changed`);
+    assert.deepEqual(only(directives(before),directives(after)),[],`${f}: Blade directives changed`);
+    assert.equal(scripts(after),scripts(before),`${f}: scripts changed`);
+    assert(after.includes('<x-mm.page'),`${f}: shared layout expected`);
+    assert(!after.includes('widget-box')&&!after.includes('widget-main')&&!after.includes('widget-header')&&!after.includes('class="page-header'),`${f}: legacy frame should be gone`);
+  }
+  // standalone print documents and unreachable views keep their own markup
+  for(const f of ['goods_requisitions/print-gin-details','reports/print_item_details','reports/print_items_stock','reports/gs-paginate']){
+    assert.equal(fs.readFileSync(`${dir}${f}.blade.php`,'utf8'),execFileSync('git',['show',`${base}:${dir}${f}.blade.php`],{encoding:'utf8'}),`${f} must stay unchanged`);
+  }
+  const untouched=execFileSync('git',['diff','--name-only',base,'--','module/GeneralStore/Controllers','module/GeneralStore/routes','module/GeneralStore/Models','module/GeneralStore/views/gs-exports'],{encoding:'utf8'}).trim();
+  assert.equal(untouched,'','General Store controllers, routes, models and export partials must stay unchanged');
+  console.log('PASS: general store G3 (goods requisitions, GIN list, stock reports) keeps fields, expressions, directives and scripts; controllers, routes and export partials untouched');
+}

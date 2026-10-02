@@ -2,9 +2,6 @@
 
 @extends('layouts.master')
 @section('title','Purchase')
-@section('page-header')
-<i class="fa fa-list"></i> Purchase Requisition Detail
-@stop
 @section('css')
 
     <style>
@@ -42,118 +39,114 @@
 
 @section('content')
 
-<div class="page-header d-print-none">
-    @if(hasPermission('purchases.create', $slugs))
-        <a class="btn btn-xs btn-info" href="{{ route('purchases.create') }}" style="float: right; margin: 0 2px;"> <i class="fa fa-plus"></i> Add @yield('title') </a>
-    @endif
-    @if(hasPermission('purchases.view', $slugs))
-        <a href="{{ route('purchases.index') }}" class="btn btn-xs btn-success" style="float: right; margin: 0 2px;"> <i class="fa fa-list"></i> List </a>
-    @endif
+<x-mm.styles />
+<x-mm.page class="mm-invoice-page mm-gs mm-rst mm-rst-inv" title="Purchase requisition details" description="Printable purchase form. Printing outputs the document only.">
+    <x-slot name="actions">
+        @if(hasPermission('purchases.create', $slugs))
+        <a class="mm-button mm-button-secondary" href="{{ route('purchases.create') }}"><i class="fa fa-plus" aria-hidden="true"></i> Add Purchase</a>
+        @endif
+        @if(hasPermission('purchases.view', $slugs))
+        <a href="{{ route('purchases.index') }}" class="mm-button mm-button-secondary"><i class="fa fa-list" aria-hidden="true"></i> List</a>
+        @endif
+        <a href="javascript:void(0)" class="mm-button d-print-none" onclick="printForm()"><i class="fa fa-print" aria-hidden="true"></i> Print</a>
+    </x-slot>
+    <x-mm.panel class="tw-p-4">
+        <div class="row">
+            <div class="col-sm-10 col-sm-offset-1 border-print-none" style="border: none !important;">
+                <table class="table no-spacing" style="border: none !important;">
+                    <tr style="border: none !important;">
+                        <td colspan="9" class="text-center border-print-none" style="border-top: none !important;">
 
-    <span class="d-print-none" onclick="printForm()" style="margin-right: 5px; cursor: pointer;">
-        <img style="float: right" src="{{ asset('assets/images/export-icons/printer-icon.png') }}">
-    </span>
-    <h1>
-        @yield('page-header')
-    </h1>
-</div>
-
-
-
-<div class="row">
-    <div class="col-sm-10 col-sm-offset-1 border-print-none" style="border: none !important;">
-        <table class="table no-spacing" style="border: none !important;">
-            <tr style="border: none !important;">
-                <td colspan="9" class="text-center border-print-none" style="border-top: none !important;">
-
-                    <div style="border: none !important;">
-                        <h2><b></b> {{ $purchase->company->name }} </h2>
-                        <h3 style="margin-top: -5px !important;" class="text-center">Purchase Form</h3>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="9" style="border-top: none"><b>Purchase Form No:</b> {{ $purchase->form_number }} <b>Date:</b>{{ $purchase->purchase_date }} <b>{{ $systemSetting->value != null ? $systemSetting->value : "Ref No." }}: {{ $purchase->purchase_reference }}</b></td>
-            </tr>
-            <tr>
-                <th class=" border">Sl</th>
-                <th class=" border">Item Description</th>
-                <th class=" border">Unit</th>
-                <th class=" border" width="10%">Required Qty</th>
-                <th class=" border">Stock</th>
-                <th class=" border">Rate</th>
-                <th class=" border">Total</th>
-                <th class=" border">Name of Vendor</th>
-                <th class=" border">Remarks</th>
-            </tr>
-{{--            <thead>--}}
-{{--            </thead>--}}
-{{--            <tbody>--}}
-                @foreach($purchase->purchase_details as $key => $details)
-                <tr>
-                    <td class="border">{{ $key+1 }}</td>
-                    <td class="border">{{ $details->item->name }}</td>
-                    <td class="border">{{ $details->item->item_unit->name }}</td>
-                    <td class="border">{{ $details->quantity }}</td>
-                    <td class="border">{{ $details->item->current_stock }}</td>
-                    <td class="border"></td>
-                    <td class="border"></td>
-                    <td class="border"></td>
-                    <td class="border"></td>
-                </tr>
-                @endforeach
-{{--            </tbody>--}}
-            <tfoot>
-{{--                <tr>--}}
-{{--                    <td class="border text-right" colspan="9" style="font-size: 11px !important;">--}}
-{{--                        <b>Created By: {{ $purchase->created_user->name . ', ' . $purchase->created_at }}--}}
-{{--                        @if($purchase->is_approved == 1)--}}
-{{--                        Approved By:  {{ $purchase->updated_user->name . ',' . $purchase->updated_at }}--}}
-{{--                        @endif--}}
-{{--                        </b>--}}
-{{--                    </td>--}}
-{{--                </tr>--}}
-            </tfoot>
-        </table>
-        <table class="table no-spacing" style="border: none !important; font-size: 10px !important;">
-            <tr>
-                <td style="border-top: none !important;" width="33%">
-                    <b>
-                        <p>Created By: </p>
-                        <p>Name: {{ $purchase->created_user->name }}</p>
-                        <p>Designation: {{ optional(optional($purchase->created_user->employee)->designation)->name }}</p>
-                        <p>Date: {{ $purchase->created_at }}</p>
-                    </b>
-                </td>
-                <td style="border-top: none !important;" width="33%">
-                    <b>
-                        <p>Approved By:</p>
-                        <p>Name: {{ $purchase->is_approved == 1 ? $purchase->updated_user->name : '' }}</p>
-                        <p>Designation: {{ $purchase->is_approved == 1 ? optional(optional($purchase->updated_user->employee)->designation)->name : '' }}</p>
-                        <p>Date: {{ $purchase->is_approved == 1 ? $purchase->updated_at : '' }}</p>
-                    </b>
-                </td>
-{{--                <td style="border-top: none !important;"></td>--}}
-{{--                <td style="border-top: none !important;"></td>--}}
-                <td style="border-top: none !important;" width="33%">
-                    <b>
-                        <p>Checked By:</p>
-                        <p>Name:</p>
-                        <p>Designation:</p>
-                        <p>Date: </p>
-                    </b>
-                </td>
-{{--                <td style="border-top: none !important;">--}}
-{{--                    <b>--}}
-{{--                        <p>Inquired By:</p>--}}
-{{--                        <p>Name:</p>--}}
-{{--                        <p>Designation:</p>--}}
-{{--                    </b>--}}
-{{--                </td>--}}
-            </tr>
-        </table>
-    </div>
-</div>
+                            <div style="border: none !important;">
+                                <h2><b></b> {{ $purchase->company->name }} </h2>
+                                <h3 style="margin-top: -5px !important;" class="text-center">Purchase Form</h3>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="9" style="border-top: none"><b>Purchase Form No:</b> {{ $purchase->form_number }} <b>Date:</b>{{ $purchase->purchase_date }} <b>{{ $systemSetting->value != null ? $systemSetting->value : "Ref No." }}: {{ $purchase->purchase_reference }}</b></td>
+                    </tr>
+                    <tr>
+                        <th class=" border">Sl</th>
+                        <th class=" border">Item Description</th>
+                        <th class=" border">Unit</th>
+                        <th class=" border" width="10%">Required Qty</th>
+                        <th class=" border">Stock</th>
+                        <th class=" border">Rate</th>
+                        <th class=" border">Total</th>
+                        <th class=" border">Name of Vendor</th>
+                        <th class=" border">Remarks</th>
+                    </tr>
+        {{--            <thead>--}}
+        {{--            </thead>--}}
+        {{--            <tbody>--}}
+                        @foreach($purchase->purchase_details as $key => $details)
+                        <tr>
+                            <td class="border">{{ $key+1 }}</td>
+                            <td class="border">{{ $details->item->name }}</td>
+                            <td class="border">{{ $details->item->item_unit->name }}</td>
+                            <td class="border">{{ $details->quantity }}</td>
+                            <td class="border">{{ $details->item->current_stock }}</td>
+                            <td class="border"></td>
+                            <td class="border"></td>
+                            <td class="border"></td>
+                            <td class="border"></td>
+                        </tr>
+                        @endforeach
+        {{--            </tbody>--}}
+                    <tfoot>
+        {{--                <tr>--}}
+        {{--                    <td class="border text-right" colspan="9" style="font-size: 11px !important;">--}}
+        {{--                        <b>Created By: {{ $purchase->created_user->name . ', ' . $purchase->created_at }}--}}
+        {{--                        @if($purchase->is_approved == 1)--}}
+        {{--                        Approved By:  {{ $purchase->updated_user->name . ',' . $purchase->updated_at }}--}}
+        {{--                        @endif--}}
+        {{--                        </b>--}}
+        {{--                    </td>--}}
+        {{--                </tr>--}}
+                    </tfoot>
+                </table>
+                <table class="table no-spacing" style="border: none !important; font-size: 10px !important;">
+                    <tr>
+                        <td style="border-top: none !important;" width="33%">
+                            <b>
+                                <p>Created By: </p>
+                                <p>Name: {{ $purchase->created_user->name }}</p>
+                                <p>Designation: {{ optional(optional($purchase->created_user->employee)->designation)->name }}</p>
+                                <p>Date: {{ $purchase->created_at }}</p>
+                            </b>
+                        </td>
+                        <td style="border-top: none !important;" width="33%">
+                            <b>
+                                <p>Approved By:</p>
+                                <p>Name: {{ $purchase->is_approved == 1 ? $purchase->updated_user->name : '' }}</p>
+                                <p>Designation: {{ $purchase->is_approved == 1 ? optional(optional($purchase->updated_user->employee)->designation)->name : '' }}</p>
+                                <p>Date: {{ $purchase->is_approved == 1 ? $purchase->updated_at : '' }}</p>
+                            </b>
+                        </td>
+        {{--                <td style="border-top: none !important;"></td>--}}
+        {{--                <td style="border-top: none !important;"></td>--}}
+                        <td style="border-top: none !important;" width="33%">
+                            <b>
+                                <p>Checked By:</p>
+                                <p>Name:</p>
+                                <p>Designation:</p>
+                                <p>Date: </p>
+                            </b>
+                        </td>
+        {{--                <td style="border-top: none !important;">--}}
+        {{--                    <b>--}}
+        {{--                        <p>Inquired By:</p>--}}
+        {{--                        <p>Name:</p>--}}
+        {{--                        <p>Designation:</p>--}}
+        {{--                    </b>--}}
+        {{--                </td>--}}
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </x-mm.panel>
+</x-mm.page>
 
 @endsection
 

@@ -1,0 +1,312 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">    <link rel="stylesheet" href="/assets/css/chosen.min.css" />
+    <link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css" />
+    <style>
+        .bg-dark{
+            background-color: #C9DAF8;
+        }
+
+    </style>
+<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->    
+<section class="mm-ui mm-report mm-gs mm-rst mm-rst-inv">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">GRN list</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Goods received notes against general store purchases.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button" href="http://localhost/gs/purchases/create"><i class="fa fa-plus"></i> Add Purchase</a>
+                        <a class="mm-button mm-button-secondary" href="http://localhost/purchases"><i class="fa fa-list"></i> Purchase List</a></div>        </header>
+        <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><div class="row">
+            <form class="form-horizontal" action="http://localhost/gs/grn/list" method="get">
+                <input type="hidden" name="_token" value="fixture-csrf-token">                <div class="col-sm-12">
+                    <div class="mm-table-scroll" role="region" aria-label="Filter" tabindex="0"><table class="table table-bordered">
+                            <tr>
+                                <th class="bg-dark">Company</th>
+                                <th class="bg-dark">From - To</th>
+                                <th class="bg-dark">GRN No</th>
+                                <th class="bg-dark">Purchase No</th>
+                                <th class="bg-dark text-center">Action</th>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <select name="company_id" class="form-control chosen-select">
+                                        <option selected value="">- Select Company -</option>
+                                                                                    <option value="1" >MM Heritage</option>
+                                                                            </select>
+                                </td>
+                                <td>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control input-sm date-picker" name="from_date" value="" autocomplete="off">
+                                        <span class="input-group-addon">From|To</span>
+                                        <input type="text" class="form-control input-sm date-picker" name="to_date" value="" autocomplete="off">
+                                    </div>
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control input-sm" name="grn_no" value="" style="max-width: 145px !important;" placeholder="GRN No">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control input-sm" name="purchase_number" value="" style="max-width: 145px !important;" placeholder="Purchase No">
+                                </td>
+                                <td class="text-right">
+                                    <div class="btn-group btn-corner">
+                                        <button class="btn btn-xs btn-primary"><i class="fa fa-search"></i> Search</button>
+                                        <a href="http://localhost/gs/grn/list" class="btn btn-xs btn-pink"><i class="fa fa-refresh"></i> Refresh</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table></div>
+                </div>
+            </form>
+        </div>
+
+
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="mm-table-scroll" role="region" aria-label="GRN list" tabindex="0"><table class="table table-striped table-bordered table-hover">
+                        <thead>
+                            <tr style="background: #C9DAF8 !important; color:black !important">
+                                <th>SL</th>
+                                <th>Date</th>
+                                <th>GRN No.</th>
+                                <th>Date</th>
+                                <th>Purchase Number</th>
+                                <th>Company</th>
+                                <th>Required Qty</th>
+                                <th>Received Qty</th>
+                                <th>Challan Number</th>
+                                <th>Received By</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                                                                                            <tr>
+                                    <td>1</td>
+                                    <td style="min-width: 90px">2026-10-01</td>
+                                    <td class="text-success" style="font-weight:bold !important">GRN-0001</td>
+                                    <td style="min-width: 90px">2026-10-01</td>
+                                    <td>GP-0001</td>
+                                    <td>MM Heritage</td>
+                                    <td>3</td>
+                                    <td>1.00</td>
+                                    <td>CH-9</td>
+                                    <td>
+                                        <p title="Update Time : 2026-10-01">Karim</p>
+                                        <p style="margin-top:-10px !important; font-size: 10px !important;">2026-10-01 (2026-10-01)</p>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group btn-corner" style="min-width: 50px">
+
+                                            <a href="http://localhost/gs/print/purchase-receive/5" role="button" target="__blank" class="btn btn-xs btn-info" title="Print">
+                                                <i class="fa fa-print"></i>
+                                            </a>
+                                            <a href="#purchase-receive-details5" role="button" data-toggle="modal" class="btn btn-xs btn-purple" title="View Details">
+                                                <i class="fa fa-eye"></i>
+                                            </a>
+
+                                            
+                                                                                        <button type="button" onclick="delete_check(5)" class="btn btn-xs btn-danger" title="Delete">
+                                                <i class="fa fa-trash-o"></i>
+                                            </button>
+                                                                                    </div>
+
+                                        <form action="http://localhost/gs/purchase/receives/destroy/5" id="deleteCheck_5" method="POST">
+                                            <input type="hidden" name="_token" value="fixture-csrf-token">                                            <input type="hidden" name="_method" value="DELETE">                                        </form>
+
+                                    </td>
+                                </tr>
+                            
+                                                    </tbody>
+                    </table></div>
+
+                                    <span class="pull-right"><ul class="pagination"><li class=" disabled"><a class="" href="#">← First</a></li><li class="active"><span>1</span></li><li><a href="#">2</a></li><li><a class="" href="#">Last →</a></li></ul></span>
+
+                    <div class="pull-left" style="margin-top:10px; margin-left:10px">
+                        <span onclick="exportData('http://localhost/export-gs-as-excel')" style="margin-right: 5px; cursor: pointer;">
+                            <img src="/assets/images/export-icons/excel-icon.png">
+                        </span>
+                        <span onclick="exportData('http://localhost/export-gs-as-pdf')" style="margin-right: 5px; cursor: pointer;">
+                            <img src="/assets/images/export-icons/pdf-icon.png">
+                        </span>
+                    </div>
+
+                    <form class="exportForm" method="POST">
+                        <input type="hidden" name="_token" value="fixture-csrf-token">                        <input type="hidden" name="model" value="GRN List">
+                        <input type="hidden" name="company_id" value="">
+                        <input type="hidden" name="from_date" value="">
+                        <input type="hidden" name="to_date" value="">
+                        <input type="hidden" name="grn_no" value="">
+                        <input type="hidden" name="purchase_number" value="">
+                    </form>
+                
+
+            </div>
+        </div>
+
+
+
+        
+        
+            <div id="purchase-receive-details5" class="modal" tabindex="-1">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="blue bigger"><i class="fa fa-eye"></i> View Purchase Receive Details</h4>
+                        </div>
+
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <dl id="dt-list-1" class="dl-horizontal">
+                                        <p class="text-center">Date : 2026-10-01</p>
+                                        <p class="text-center">Purchase Number : GP-0001</p>
+                                        <p class="text-center">GRN Number : GRN-0001</p>
+                                        
+
+                                        <table class="table table-bordered">
+                                            <tr>
+                                                <th>Items</th>
+                                                <th>Item Unit</th>
+                                                <th>Vendor</th>
+                                                <th>Remarks</th>
+                                                <th>Required Qty</th>
+                                                <th>Received Qty</th>
+                                                <th>Rate</th>
+                                                <th>Total</th>
+                                            </tr>
+                                                                                                                                                                                        <tr>
+                                                    <td>Basmati &lt;b&gt;rice&lt;/b&gt;</td>
+                                                    <td>Kg</td>
+                                                    <td></td>
+                                                    <td>Fine</td>
+                                                    <td>3</td>
+                                                    <td>1.00</td>
+                                                    <td>100</td>
+                                                    <td class="text-right">100</td>
+                                                </tr>
+                                                                                        <tr>
+                                                <td colspan="4">Total</td>
+                                                <td>3</td>
+                                                <td colspan="2">1.00</td>
+                                                <td class="text-right">100</td>
+                                            </tr>
+                                        </table>
+
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button class="btn btn-sm" data-dismiss="modal">
+                                <i class="ace-icon fa fa-times"></i>
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div></div>
+    </div>
+</section>
+
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
+
+    <script src="/assets/js/chosen.jquery.min.js"></script>
+    <script src="/assets/js/bootstrap-datepicker.min.js"></script>
+
+    
+
+    <!-- printThis -->
+    <script src="/assets/js/printThis.js"></script>
+    <script type="text/javascript">
+        function printReceive (receiveNumber) {
+            $('#purchase-receive-details'+receiveNumber).printThis({
+                importCSS: true
+            });
+            // $('#purchase-receive-details'+receiveNumber).printThis({
+            //     importCSS: true,
+            // });
+        }
+    </script>
+
+    <script type="text/javascript">
+        function exportData(url)
+        {
+            $('.exportForm').attr('action', url).submit();
+        }
+    </script>
+
+    <!-- inline scripts related to this page -->
+    <script type="text/javascript">
+        function delete_check(id) {
+            Swal.fire({
+                title: 'Are you sure ?',
+                html: "<b>You want to delete permanently !</b>",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!',
+                width: 400,
+            }).then((result) => {
+                if (result.value) {
+                    $('#deleteCheck_' + id).submit();
+                }
+            })
+
+        }
+    </script>
+
+    <!--  Select Box Search-->
+    <script type="text/javascript">
+
+        jQuery(function($){
+
+            if(!ace.vars['touch']) {
+                $('.chosen-select').chosen({allow_single_deselect:true});
+                //resize the chosen on window resize
+
+                $(window)
+                    .off('resize.chosen')
+                    .on('resize.chosen', function() {
+                        $('.chosen-select').each(function() {
+                            var $this = $(this);
+                            $this.next().css({'width': '200px'});
+                        })
+                    }).trigger('resize.chosen');
+                //resize chosen on sidebar collapse/expand
+                $(document).on('settings.ace.chosen', function(e, event_name, event_val) {
+                    if(event_name != 'sidebar_collapsed') return;
+                    $('.chosen-select').each(function() {
+                        var $this = $(this);
+                        $this.next().css({'width':'200px'});
+                    })
+                });
+            }
+
+        })
+    </script>
+
+    <!--datepicker plugin-->
+    <script type="text/javascript">
+        jQuery(function($) {
+
+            $('.date-picker').datepicker({
+                autoclose: true,
+                format:'yyyy-mm-dd',
+                todayHighlight: true
+            })
+                //show datepicker when clicking on the icon
+                .next().on(ace.click_event, function(){
+                $(this).prev().focus();
+            });
+
+        })
+    </script>
+<!--/MM-JS--></body></html>

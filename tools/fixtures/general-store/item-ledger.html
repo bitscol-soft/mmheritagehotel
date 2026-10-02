@@ -1,0 +1,374 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">    <link rel="stylesheet" href="/assets/css/chosen.min.css" />
+    <link rel="stylesheet" href="/assets/css/jquery-ui.min.css" />
+    <link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css" />
+
+
+    <style>
+        select.required:invalid {
+            height: 0px !important;
+            opacity: 0 !important;
+            position: absolute !important;
+            display: flex !important;
+        }
+
+        .bg-header {
+            background-color: aliceblue !important;
+        }
+    </style>
+<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+<section class="mm-ui mm-report mm-gs mm-rst mm-rst-inv">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Item ledger</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Stock movement of one item over a period.</p>            </div>
+                    </header>
+        <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><form class="form-horizontal" action="http://localhost/gs/item_details" method="get">
+            <div class="row">
+                <input type="hidden" name="_token" value="fixture-csrf-token">                <div class="col-sm-12">
+                    <div class="mm-table-scroll" role="region" aria-label="Item ledger" tabindex="0"><table class="table table-bordered">
+                            <tr>
+                                <td>
+                                    <div class="input-group">
+                                        <span class="input-group-addon">Company</span>
+                                        <select name="company_id" class="form-control company_id chosen-select" onchange="load_items(this)">
+                                            <option selected disabled>select</option>
+                                                                                            <option value="1" >MM Heritage</option>
+                                                                                    </select>
+
+                                    </div>
+                                </td>
+                                <td width="320px">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control input-sm date-picker" name="from_date" value="" autocomplete="off">
+                                        <span class="input-group-addon">From|To</span>
+                                        <input type="text" class="form-control input-sm date-picker" name="to_date" value="" autocomplete="off">
+                                    </div>
+                                </td>
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+
+                                <td>
+                                    <div class="input-group">
+                                        <label for="inputError" class="input-group-addon"> Item</label>
+                                        <input type="text" name="item_id" class="form-control items required" required="required" value="Rice"/>
+            
+                                        <div class="space-4"></div>
+                                    </div>
+                                </td>
+
+                                <td width="200px">
+                                    <div class="btn-group btn-corner">
+                                        <button class="btn btn-xs btn-primary"><i class="fa fa-search"></i> Search</button>
+                                        <a href="http://localhost/gs/item_details" class="btn btn-xs btn-pink"><i class="fa fa-refresh"></i> Refresh</a>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="4" class="text-center" style="font-size:20px"><strong> &#039;Basmati &lt;b&gt;rice&lt;/b&gt;&#039; -  Stock Details</strong></td>
+                            </tr>
+                        </table></div>
+                </div>
+            </div>
+
+        <div class="clearfix"></div>
+
+        <div class="row">
+            <div class="col-xs-12">
+
+                <div class="mm-table-scroll" role="region" aria-label="Item ledger" tabindex="0"><table class="table table-striped table-bordered table-hover">
+                        <thead>
+                            <tr>
+                                <th class="text-center bg-header" rowspan="2" style="width:100px !important">Date</th>
+                                <th class="text-center bg-header" colspan="3">Opening Balance</th>
+                                <th class="text-center bg-header" colspan="4">Receive</th>
+                                <th class="text-center bg-header" colspan="4">Issue</th>
+                                <th class="text-center bg-header" colspan="3">Closing Balance</th>
+                            </tr>
+                            <tr>
+                                <th class="bg-header text-center">Qty</th>
+                                <th class="bg-header text-right">Rate</th>
+                                <th class="bg-header text-right">Amount</th>
+                                <th class="bg-header" style="width:130px !important;">GRN</th>
+                                <th class="bg-header text-center">Qty</th>
+                                <th class="bg-header text-right">Rate</th>
+                                <th class="bg-header text-right">Amount</th>
+                                <th class="bg-header">GIN</th>
+                                <th class="bg-header text-center">Qty</th>
+                                <th class="bg-header text-right">Rate</th>
+                                <th class="bg-header text-right">Amount</th>
+                                <th class="bg-header text-center">Qty</th>
+                                <th class="bg-header text-right">Rate</th>
+                                <th class="bg-header text-right">Amount</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                                                            
+
+                                                                    <tr>
+                                        <td>2026-10-01 (2026-10-01)</td>
+                                        <td class="text-center">5.00</td>
+                                        <td class="text-right">100.00</td>
+                                        <td class="text-right">500</td>
+
+                                                                                    <td>GRN-0001</td>
+                                            <td class="text-center">10.00</td>
+                                            <td class="text-right">100.00</td>
+                                            <td class="text-right">1,000.00</td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        
+                                        
+                                        <td>15.00</td>
+                                        <td class="text-right">100.00</td>
+                                        <td class="text-right">1,500.00</td>
+                                    </tr>
+
+                                        <input type="hidden" name="last_qty" value="15">
+                                        <input type="hidden" name="last_cost" value="100">
+                                        <input type="hidden" name="last_amount" value="1500">
+
+                                                                        <tr>
+                                        <td>2026-10-01 (2026-10-01)</td>
+                                        <td class="text-center">15.00</td>
+                                        <td class="text-right">100.00</td>
+                                        <td class="text-right">1500</td>
+
+                                                                                    <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>GIN-0002</td>
+                                            <td class="text-center">3.00</td>
+                                            <td class="text-right">100.00</td>
+                                            <td class="text-right">300.00</td>
+                                        
+                                        
+                                        <td>12.00</td>
+                                        <td class="text-right">100.00</td>
+                                        <td class="text-right">1,200.00</td>
+                                    </tr>
+
+                                        <input type="hidden" name="last_qty" value="12">
+                                        <input type="hidden" name="last_cost" value="100">
+                                        <input type="hidden" name="last_amount" value="1200">
+
+                                    
+                                                            
+                        </tbody>
+                    </table></div>
+
+
+            </div>
+        </div>
+
+        </form>
+                    <span class="pull-right"><ul class="pagination"><li class=" disabled"><a class="" href="#">← First</a></li><li class="active"><span>1</span></li><li><a href="#">2</a></li><li><a class="" href="#">Last →</a></li></ul></span>
+
+            <div class="pull-left" style="margin-top:10px; margin-left:10px">
+                <span onclick="exportData('http://localhost/export-item-details-excel')" style="margin-right: 5px; cursor: pointer;">
+                    <img src="/assets/images/export-icons/excel-icon.png">
+                </span>
+                    <span onclick="exportData('http://localhost/export-gs-item-details-pdf')" style="margin-right: 5px; cursor: pointer;">
+                    <img src="/assets/images/export-icons/pdf-icon.png">
+                </span>
+            </div>
+
+            <form class="exportForm" method="POST">
+                <input type="hidden" name="_token" value="fixture-csrf-token">                <input type="hidden" name="model" value="Stock Details">
+                <input type="hidden" name="company_id" value="">
+                <input type="hidden" name="item_id" class="item_id" value="Rice">
+                <input type="hidden" name="from_date" value="">
+                <input type="hidden" name="to_date" value="">
+            </form></div>
+    </div>
+</section>
+
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
+    <script src="/assets/js/chosen.jquery.min.js"></script>
+
+
+    <script src="/assets/js/jquery.dataTables.min.js"></script>
+    <script src="/assets/js/jquery.dataTables.bootstrap.min.js"></script>
+
+    <script src="/assets/js/bootstrap-datepicker.min.js"></script>
+    
+
+<script src="/assets/js/jquery-ui.min.js"></script>
+<script src="/assets/js/jquery-ui.custom.min.js"></script>
+<script src="/assets/js/jquery.ui.touch-punch.min.js"></script>
+<script src="/assets/js/chosen.jquery.min.js"></script>
+<script src="/assets/js/spinbox.min.js"></script>
+<script src="/assets/js/bootstrap-datepicker.min.js"></script>
+<script src="/assets/js/bootstrap-timepicker.min.js"></script>
+<script src="/assets/js/moment.min.js"></script>
+<script src="/assets/js/daterangepicker.min.js"></script>
+<script src="/assets/js/bootstrap-datetimepicker.min.js"></script>
+<script src="/assets/js/bootstrap-colorpicker.min.js"></script>
+<script src="/assets/js/jquery.knob.min.js"></script>
+<script src="/assets/js/autosize.min.js"></script>
+<script src="/assets/js/jquery.inputlimiter.min.js"></script>
+<script src="/assets/js/jquery.maskedinput.min.js"></script>
+<script src="/assets/js/bootstrap-tag.min.js"></script>
+
+
+<script type="text/javascript">
+    function exportData(url)
+    {
+        $('.exportForm').attr('action', url).submit();
+    }
+</script>
+<!-- inline scripts related to this page -->
+
+<script type="text/javascript">
+
+    jQuery(function($){
+
+        if(!ace.vars['touch']) {
+            $('.chosen-select').chosen({allow_single_deselect:true});
+            //resize the chosen on window resize
+
+            $(window)
+                .off('resize.chosen')
+                .on('resize.chosen', function() {
+                    $('.chosen-select').each(function() {
+                        var $this = $(this);
+                        $this.next().css({'width': '200px'});
+                    })
+                }).trigger('resize.chosen');
+            //resize chosen on sidebar collapse/expand
+            $(document).on('settings.ace.chosen', function(e, event_name, event_val) {
+                if(event_name != 'sidebar_collapsed') return;
+                $('.chosen-select').each(function() {
+                    var $this = $(this);
+                    $this.next().css({'width': '200px'});
+                })
+            });
+
+
+            $('#chosen-multiple-style .btn').on('click', function(e){
+                var target = $(this).find('input[type=radio]');
+                var which = parseInt(target.val());
+                if(which == 2) $('#form-field-select-4').addClass('tag-input-style');
+                else $('#form-field-select-4').removeClass('tag-input-style');
+            });
+        }
+
+    })
+
+    // data table
+    $('#dynamic-table').DataTable({
+        "ordering": false,
+        "bPaginate": false,
+        "lengthChange": false,
+        "info": false,
+        'searching': false
+    });
+
+    // data picker
+    $('.date-picker').datepicker({
+        autoclose: true,
+        todayHighlight: true,
+        format:'yyyy-mm-dd',
+    });
+
+</script>
+
+
+<script type="text/javascript">
+
+    //load items by company
+    function load_items(element) {
+        var id = $(element).val();
+        var row = $(element).closest('tr');
+
+        $.ajax({
+            url: 'http://localhost/generalstore/ajax/items/get-item-list',
+            type: 'GET',
+            data: 'id=' + id,
+            success: function(res) {
+                $('.item').empty();
+                $('.item').append('<option value="">select</option>');
+                $.each(res['items'], function(id, name) {
+                    $('.item').append('<option value="' + id + '">' + name + '</option>').trigger('chosen:updated');
+                });
+                items = res['items'];
+            }
+        });
+    }
+
+
+    //load items by company
+    function load_items(element) {
+        var id = $(element).val();
+        var row = $(element).closest('tr');
+
+        $.ajax({
+            url: 'http://localhost/generalstore/ajax/items/get-item-list',
+            type: 'GET',
+            data: 'id=' + id,
+            success: function(res) {
+                $('.item').empty();
+                $('.item').append('<option value="">select</option>');
+                $.each(res['items'], function(id, name) {
+                    $('.item').append('<option value="' + id + '">' + name + '</option>').trigger('chosen:updated');
+                });
+                items = res['items'];
+            }
+        });
+    }
+
+</script>
+
+<!--autocomplete-->
+<script type="text/javascript">
+    $('.items').keyup(function () {
+        var items = [];
+
+        var company_id = $('.company_id').val();
+        var item_name  = $('.items').val();
+
+        $.ajax({
+            url: 'http://localhost/ajax/items/get-item-list-by-type',
+            type: 'GET',
+            data: {
+                company_id: company_id,
+                name: item_name
+            },
+            success: function(res) {
+                $.each(res['items'], function(id, name) {
+                    // items.push({
+                    //         label: name,
+                    //         value: id,
+                    //      });
+                    items.push(name);
+                });
+            }
+        });
+        $( ".items" ).autocomplete({
+            source: items
+        });
+    });
+</script>
+
+<!--/MM-JS--></body></html>

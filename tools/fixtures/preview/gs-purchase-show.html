@@ -1,0 +1,185 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">
+    <style>
+        @media  print {
+            .d-print-none {
+                display: none !important;
+            }
+
+            .d-none {
+                display: block !important;
+            }
+
+            .border-print-none {
+                border: none !important;
+            }
+        }
+
+        @page    {
+            size: A4;
+
+        }
+        @page  :left {
+            margin-left: 3cm;
+        }
+
+        .d-none {
+            display: none !important;
+        }
+
+        .border {
+            border: 1px solid black !important;
+        }
+    </style>
+<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+<section class="mm-ui mm-invoice-page mm-gs mm-rst mm-rst-inv">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Purchase requisition details</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Printable purchase form. Printing outputs the document only.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button mm-button-secondary" href="http://localhost/gs/purchases/create"><i class="fa fa-plus" aria-hidden="true"></i> Add Purchase</a>
+                        <a href="http://localhost/purchases" class="mm-button mm-button-secondary"><i class="fa fa-list" aria-hidden="true"></i> List</a>
+                <a href="javascript:void(0)" class="mm-button d-print-none" onclick="printForm()"><i class="fa fa-print" aria-hidden="true"></i> Print</a></div>        </header>
+        <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><div class="row">
+            <div class="col-sm-10 col-sm-offset-1 border-print-none" style="border: none !important;">
+                <table class="table no-spacing" style="border: none !important;">
+                    <tr style="border: none !important;">
+                        <td colspan="9" class="text-center border-print-none" style="border-top: none !important;">
+
+                            <div style="border: none !important;">
+                                <h2><b></b> MM &lt;b&gt;Heritage&lt;/b&gt; </h2>
+                                <h3 style="margin-top: -5px !important;" class="text-center">Purchase Form</h3>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="9" style="border-top: none"><b>Purchase Form No:</b> GP-0001 <b>Date:</b>2026-10-01 <b>Ref No.: REF-1</b></td>
+                    </tr>
+                    <tr>
+                        <th class=" border">Sl</th>
+                        <th class=" border">Item Description</th>
+                        <th class=" border">Unit</th>
+                        <th class=" border" width="10%">Required Qty</th>
+                        <th class=" border">Stock</th>
+                        <th class=" border">Rate</th>
+                        <th class=" border">Total</th>
+                        <th class=" border">Name of Vendor</th>
+                        <th class=" border">Remarks</th>
+                    </tr>
+        
+        
+        
+                                                <tr>
+                            <td class="border">1</td>
+                            <td class="border">Basmati &lt;b&gt;rice&lt;/b&gt;</td>
+                            <td class="border">Kg</td>
+                            <td class="border">3</td>
+                            <td class="border">12</td>
+                            <td class="border"></td>
+                            <td class="border"></td>
+                            <td class="border"></td>
+                            <td class="border"></td>
+                        </tr>
+                                
+                    <tfoot>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+                    </tfoot>
+                </table>
+                <table class="table no-spacing" style="border: none !important; font-size: 10px !important;">
+                    <tr>
+                        <td style="border-top: none !important;" width="33%">
+                            <b>
+                                <p>Created By: </p>
+                                <p>Name: Rahim &lt;b&gt;x&lt;/b&gt;</p>
+                                <p>Designation: </p>
+                                <p>Date: 2026-10-01</p>
+                            </b>
+                        </td>
+                        <td style="border-top: none !important;" width="33%">
+                            <b>
+                                <p>Approved By:</p>
+                                <p>Name: Karim</p>
+                                <p>Designation: </p>
+                                <p>Date: 2026-10-01</p>
+                            </b>
+                        </td>
+        
+        
+                        <td style="border-top: none !important;" width="33%">
+                            <b>
+                                <p>Checked By:</p>
+                                <p>Name:</p>
+                                <p>Designation:</p>
+                                <p>Date: </p>
+                            </b>
+                        </td>
+        
+        
+        
+        
+        
+        
+        
+                    </tr>
+                </table>
+            </div>
+        </div></div>
+    </div>
+</section>
+
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
+
+<script src="/assets/js/jquery.dataTables.min.js"></script>
+<script src="/assets/js/jquery.dataTables.bootstrap.min.js"></script>
+
+<script src="/assets/js/ace-elements.min.js"></script>
+<script src="/assets/js/ace.min.js"></script>
+
+<!-- inline scripts related to this page -->
+<script type="text/javascript">
+    function printForm() {
+        print()
+    }
+    function delete_check(id) {
+        Swal.fire({
+            title: 'Are you sure ?',
+            html: "<b>You want to delete permanently !</b>",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
+            width: 400,
+        }).then((result) => {
+            if (result.value) {
+                $('#deleteCheck_' + id).submit();
+            }
+        })
+
+    }
+</script>
+
+
+<script type="text/javascript">
+    jQuery(function($) {
+        $('#dynamic-table').DataTable({
+            "ordering": false,
+            "bPaginate": true,
+        });
+
+    })
+</script>
+<!--/MM-JS--></body></html>
