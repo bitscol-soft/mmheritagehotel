@@ -1,0 +1,81 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css"><link rel="stylesheet" href="/assets/css/chosen.min.css" />
+<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY--><section class="mm-ui mm-web mm-room-form">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Our services heading</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Heading and text above the service boxes.</p>            </div>
+                    </header>
+        <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-5 mm-web-narrow"><form class="form-horizontal" id="companyForm" action="http://localhost/hw/website-core/our_service/store" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="_token" value="fixture-csrf-token">            
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="form-field-1-1">Heading Title</label>
+
+                        <div class="col-xs-12 col-sm-8 ">
+                            <input type="text" class="form-control input-sm" name="heading_title" value="Our &lt;b&gt;services&lt;/b&gt;" placeholder="Enter Feature Title">
+
+                                                    </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="form-field-1-1">Section BG</label>
+
+                        <div class="col-xs-12 col-sm-8 ">
+                            <div class="img-box">
+                                <img height="300" src="http://localhost/uploads/s.png" alt="">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="form-field-1-1">Section BG Upload</label>
+
+                        <div class="col-xs-12 col-sm-8 ">
+                            <div class="form-group">
+                                <div class="text-danger">*Upload size should be (1680 x 1280)px</div>
+                                <input type="file" name="section_background" class="category_photos">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-actions center" style="text-align: right !important; margin: 0;">
+                <button type="submit" class="mm-button">
+                    <i class="ace-icon fa fa-save icon-on-right bigger-110"></i>
+                    Save
+                </button>
+            </div>
+        </form></div>
+    </div>
+</section>
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
+
+<script src="/assets/js/jquery.dataTables.min.js"></script>
+<script src="/assets/js/jquery.dataTables.bootstrap.min.js"></script>
+
+<script type="text/javascript">
+    jQuery(function($) {
+        $('.category_photos').ace_file_input({
+            style: 'well',
+            btn_choose: 'Upload Section Photos',
+            btn_change: null,
+            no_icon: 'ace-icon fa fa-cloud-upload',
+            droppable: true,
+            thumbnail: 'small' //large | fit
+
+        }).on('change', function() {
+        });
+    });
+</script>
+<!--/MM-JS--></body></html>

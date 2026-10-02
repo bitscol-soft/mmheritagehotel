@@ -790,3 +790,14 @@ Reviewed legacy bugs in `module/Restaurant/views/purchase-v2/`, all view-level (
 - Left as they were: the category create page gates its List link on `suppliers.view` (copied from Suppliers), the `rooms.inc.script` and `category.inc.script` includes resolve to the Hotel copies (identical files), and the hall booking list's Edit link opens the Hotel booking edit view.
 - Fixtures `tools/fixtures/banquet/*`, previews `/preview/bq-*`, spec `tools/browser/banquet.spec.cjs`.
 
+## Forty-fourth increment: HotelWebsite
+
+Twenty reachable views in `module/HotelWebsite/views` now use `x-mm.page` and `x-mm.panel` under a new `mm-web` marker.
+
+- **Lists** (`banner`, `gallery`, `hotel_feature/feature_list`, `our_service/service_list`, `pages`) use `mm-web mm-room-inventory`: the floating "Add" button moved into the page actions, and the table sits in `x-mm.table-scroll`.
+- **Forms** with a list link (`banner`, `gallery`, `pages` create/edit) use `mm-web mm-room-form`; the legacy `hasPermission('suppliers.view', $slugs)` gate on the List link is kept as it was.
+- **Singleton forms** (`about`, `hotel_feature`, `our_service`, feature and service box create/edit) keep `form#companyForm` and use the `mm-web-narrow` panel (max 760px) instead of the old `margin-left:25%; margin-top:100px` inline centring.
+- Field names, ids, expressions, directives, scripts and `delete_item(...)` calls are unchanged. The guard in `tools/ui-check.cjs` (base `4ee6b7d3`) compares them with no allowlist. Controllers, routes and models are untouched.
+- Layout section titles fixed (copy errors only): `gallery/edit` ("Add New Image" to "Edit Image"), `feature_list/index` ("Add New Aminities" to "Homepage Feature List") and `privacy_policy/index` ("Website Setting" to "Privacy Policy", also the tab title).
+- Tests: `tools/browser/hotelwebsite.spec.cjs` (25), fixtures in `tools/fixtures/hotelwebsite/`, previews at `/preview/web-*`.
+- Legacy quirks left as they were: the wrong `suppliers.view` slug on the List links, unused `delete_check` scripts next to `delete_item(...)`, and several tab titles that read "Edit Feature Header" on create pages.

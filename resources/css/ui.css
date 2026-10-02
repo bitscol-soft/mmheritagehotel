@@ -845,3 +845,4 @@
 .mm-ui.mm-acc .mm-panel.mm-report-filter .row .input-group-addon { width: auto; display: flex; align-items: center; white-space: nowrap; min-height: 40px; }
 .mm-ui.mm-acc .mm-panel.mm-report-filter .row .input-group .form-control { flex: 1 1 0; min-width: 0; width: 100%; float: none; min-height: 40px; }
 .mm-ui.mm-acc .mm-panel.mm-report-filter .row .input-group .chosen-container { flex: 1 1 0; min-width: 0; width: auto !important; }
+.mm-ui.mm-web .mm-web-narrow { max-width: 760px; }

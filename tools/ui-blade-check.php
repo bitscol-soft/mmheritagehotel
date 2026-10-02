@@ -1690,3 +1690,70 @@ foreach ($bqCases as $bqName => [$bqViewName, $bqUrl, $bqData, $bqMarkers, $bqAb
     if (!getenv('MM_DEBUG') && file_get_contents($bqFile) !== $bqHtml) throw new RuntimeException($bqFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
 }
 echo "PASS banquet hall screens render\n";
+
+// ---- HotelWebsite: public website content (banners, gallery, features, services, pages, about, policy, settings) ----
+$hwMigrated = ['banner/index', 'banner/create', 'banner/edit', 'gallery/index', 'gallery/create', 'gallery/edit', 'hotel_feature/create', 'hotel_feature/feature_list/index', 'hotel_feature/feature_list/create', 'hotel_feature/feature_list/edit', 'our_service/create', 'our_service/service_list/index', 'our_service/service_list/create', 'our_service/service_list/edit', 'pages/index', 'pages/create', 'pages/edit', 'about/create', 'privacy_policy/index', 'site_setting/index'];
+foreach ($hwMigrated as $hwFile) { token_get_all($compiler->compileString(file_get_contents($root . '/module/HotelWebsite/views/' . $hwFile . '.blade.php')), TOKEN_PARSE); }
+echo "PASS compile hotel website views\n";
+foreach ($hwMigrated as $hwView) {
+    $hwSource = $rsSubst($hwView, 'HotelWebsite');
+    $hwSource = str_replace(['@include(\'partials._alert_message\')', '<x-alert-message />'], '', $hwSource);
+    @mkdir(dirname($coViews . '/hw/' . $hwView), 0777, true);
+    file_put_contents($coViews . '/hw/' . $hwView . '.blade.php', $hwSource);
+}
+$hwSeen = [];
+foreach ($hwMigrated as $hwView) {
+    preg_match_all("/route\\('([\\w.-]+)'/", file_get_contents($coViews . '/hw/' . $hwView . '.blade.php'), $hwMatch);
+    foreach ($hwMatch[1] as $hwRoute) {
+        if (isset($hwSeen[$hwRoute]) || $rsRoutes->getByName($hwRoute)) continue;
+        $hwSeen[$hwRoute] = true;
+        $rsRoutes->add((new Illuminate\Routing\Route(['GET', 'POST'], 'hw/' . str_replace('.', '/', $hwRoute) . '/{id?}', function () {}))->name($hwRoute));
+    }
+}
+$hwOpt = function ($rows) use ($riRow) { return collect(array_map(function ($r) use ($riRow) { return $riRow($r); }, $rows)); };
+$hwBanner = ['id' => 3, 'banner_title' => 'Welcome <b>home</b>', 'banner_sub_title' => 'Sub <i>title</i>', 'banner_short_desc' => 'Short <u>text</u>', 'banner_image' => 'uploads/banner.png', 'status' => 1];
+$hwFeature = ['id' => 4, 'title' => 'Free <b>wifi</b>', 'sub_title' => 'Fast <i>speed</i>', 'feature_icon' => 'fa fa-wifi', 'status' => 1];
+$hwService = ['id' => 6, 'service_title' => 'Spa <b>care</b>', 'service_description' => 'Relax <i>well</i>', 'service_icon' => 'fa fa-leaf', 'service_list' => 'Massage, Sauna', 'status' => 1];
+$hwPage = ['id' => 8, 'title' => 'Terms <b>page</b>', 'sub_title' => 'Sub <i>page</i>', 'short_description' => 'Short <u>page</u>', 'description' => 'Long <i>page</i> body', 'image' => 'uploads/page.png', 'status' => 1];
+$hwCases = [
+    'banner-index' => ['hw.banner.index', '/hotel-website/banner', ['data' => $hwOpt([$hwBanner])], ['mm-web', 'mm-room-inventory', 'id="data-table"', 'Homepage banners', 'Add Banner', 'Welcome &lt;b&gt;home&lt;/b&gt;', 'Sub &lt;i&gt;title&lt;/i&gt;'], ['Welcome <b>home</b>']],
+    'banner-create' => ['hw.banner.create', '/hotel-website/banner/create', [], ['mm-web', 'mm-room-form', 'Add a banner', 'name="banner_head_title"', 'enctype="multipart/form-data"'], []],
+    'banner-edit' => ['hw.banner.edit', '/hotel-website/banner/3/edit', ['data' => $riRow($hwBanner)], ['mm-web', 'mm-room-form', 'Edit banner', 'name="_method"', 'Welcome &lt;b&gt;home&lt;/b&gt;'], ['Welcome <b>home</b>']],
+    'gallery-index' => ['hw.gallery.index', '/hotel-website/gallery', ['data' => $hwOpt([['id' => 2, 'name' => 'uploads/g.png', 'gallery_text' => 'Lobby <b>view</b>', 'status' => 1]])], ['mm-web', 'mm-room-inventory', 'id="data-table"', 'Add Gallery', 'Lobby &lt;b&gt;view&lt;/b&gt;'], ['Lobby <b>view</b>']],
+    'gallery-create' => ['hw.gallery.create', '/hotel-website/gallery/create', [], ['mm-web', 'mm-room-form', 'Add an image', 'enctype="multipart/form-data"'], []],
+    'gallery-edit' => ['hw.gallery.edit', '/hotel-website/gallery/2/edit', ['gallery' => $riRow(['id' => 2, 'gallery_text' => 'Lobby <b>view</b>'])], ['mm-web', 'mm-room-form', 'Edit image', 'name="_method"', 'Lobby &lt;b&gt;view&lt;/b&gt;'], ['Lobby <b>view</b>']],
+    'feature-heading' => ['hw.hotel_feature.create', '/hotel-website/hotel-feature', ['feature' => $riRow(['exists' => true, 'id' => 1, 'title' => 'Why <b>us</b>', 'sub_title' => 'Sub <i>line</i>'])], ['mm-web', 'mm-web-narrow', 'id="companyForm"', 'Homepage feature heading', 'Why &lt;b&gt;us&lt;/b&gt;'], ['Why <b>us</b>']],
+    'feature-list-index' => ['hw.hotel_feature.feature_list.index', '/hotel-website/hotel-feature-list', ['feature_list' => $hwOpt([$hwFeature]), 'data' => $riRow($hwFeature)], ['mm-web', 'mm-room-inventory', 'id="data-table"', 'Homepage features', 'Free &lt;b&gt;wifi&lt;/b&gt;'], ['Free <b>wifi</b>']],
+    'feature-list-create' => ['hw.hotel_feature.feature_list.create', '/hotel-website/hotel-feature-list/create', [], ['mm-web', 'mm-web-narrow', 'id="companyForm"', 'Add a feature'], []],
+    'feature-list-edit' => ['hw.hotel_feature.feature_list.edit', '/hotel-website/hotel-feature-list/4/edit', ['data' => $riRow($hwFeature)], ['mm-web', 'mm-web-narrow', 'id="companyForm"', 'Edit feature', 'Free &lt;b&gt;wifi&lt;/b&gt;'], ['Free <b>wifi</b>']],
+    'service-heading' => ['hw.our_service.create', '/hotel-website/our-service', ['service' => $riRow(['service_heading' => 'Our <b>services</b>', 'service_background_img' => 'uploads/s.png'])], ['mm-web', 'mm-web-narrow', 'id="companyForm"', 'Our services heading', 'Our &lt;b&gt;services&lt;/b&gt;'], ['Our <b>services</b>']],
+    'service-list-index' => ['hw.our_service.service_list.index', '/hotel-website/our-service-list', ['service' => $hwOpt([$hwService])], ['mm-web', 'mm-room-inventory', 'id="data-table"', 'Service boxes', 'Spa &lt;b&gt;care&lt;/b&gt;'], ['Spa <b>care</b>']],
+    'service-list-create' => ['hw.our_service.service_list.create', '/hotel-website/our-service-list/create', [], ['mm-web', 'mm-web-narrow', 'id="companyForm"', 'Add a service box'], []],
+    'service-list-edit' => ['hw.our_service.service_list.edit', '/hotel-website/our-service-list/6/edit', ['service' => $riRow($hwService)], ['mm-web', 'mm-web-narrow', 'id="companyForm"', 'Edit service box', 'Spa &lt;b&gt;care&lt;/b&gt;'], ['Spa <b>care</b>']],
+    'pages-index' => ['hw.pages.index', '/hotel-website/pages', ['pages' => $hwOpt([$hwPage])], ['mm-web', 'mm-room-inventory', 'id="data-table"', 'New Page', 'Terms &lt;b&gt;page&lt;/b&gt;'], ['Terms <b>page</b>']],
+    'pages-create' => ['hw.pages.create', '/hotel-website/pages/create', [], ['mm-web', 'mm-room-form', 'Add a page', 'enctype="multipart/form-data"'], []],
+    'pages-edit' => ['hw.pages.edit', '/hotel-website/pages/8/edit', ['page' => $riRow($hwPage)], ['mm-web', 'mm-room-form', 'Edit page', 'name="_method"', 'Terms &lt;b&gt;page&lt;/b&gt;'], ['Terms <b>page</b>']],
+    'about' => ['hw.about.create', '/hotel-website/about', ['about' => $riRow(['about_heading' => 'About <b>us</b>', 'about_description' => 'Story <i>text</i>', 'first_image' => 'uploads/a1.png', 'second_image' => 'uploads/a2.png', 'offer_title' => 'Offer <b>t</b>', 'offer_description' => 'Offer <i>d</i>'])], ['mm-web', 'mm-web-narrow', 'About section', 'About &lt;b&gt;us&lt;/b&gt;'], ['About <b>us</b>']],
+    'privacy' => ['hw.privacy_policy.index', '/hotel-website/privacy-policy', ['our_privacy' => $riRow(['privacy_header_title' => 'Privacy <b>head</b>', 'privacy_policy' => 'Policy <i>text</i>', 'terms_header_title' => 'Terms <b>head</b>', 'terms_condition' => 'Terms <i>text</i>'])], ['mm-web', 'Privacy policy', 'Privacy &lt;b&gt;head&lt;/b&gt;'], ['Privacy <b>head</b>']],
+    'settings' => ['hw.site_setting.index', '/hotel-website/site-setting', ['setting' => $riRow(['address' => 'Dhaka <b>road</b>', 'email' => 'a@b.test', 'facebook_url' => 'https://fb.test', 'linkedin_url' => 'https://li.test', 'location_map' => 'map', 'meta_description' => 'Meta <i>d</i>', 'meta_keyword' => 'k1,k2', 'phone_no' => '017', 'site_first_name' => 'MM', 'site_last_name' => 'Heritage', 'site_slogan' => 'Slogan <b>x</b>', 'twitter_url' => 'https://tw.test', 'youtube_url' => 'https://yt.test'])], ['mm-web', 'Website settings', 'Dhaka &lt;b&gt;road&lt;/b&gt;'], ['Dhaka <b>road</b>']],
+];
+@mkdir(__DIR__ . '/fixtures/hotelwebsite', 0777, true);
+foreach ($hwCases as $hwName => [$hwViewName, $hwUrl, $hwData, $hwMarkers, $hwAbsent]) {
+    $hwRequest = Illuminate\Http\Request::create($hwUrl);
+    $hwRequest->setLaravelSession(new Illuminate\Session\Store('mm', new Illuminate\Session\ArraySessionHandler(10)));
+    $app->instance('request', $hwRequest);
+    $app->instance('url', new Illuminate\Routing\UrlGenerator($rsRoutes, $hwRequest));
+    try { $hwHtml = $app->make('view')->make($hwViewName, array_merge(['errors' => new Illuminate\Support\ViewErrorBag(), 'slugs' => []], $hwData))->render(); }
+    catch (Throwable $e) { if (getenv('MM_DEBUG')) { echo 'FAIL ' . $hwName . ': ' . $e->getMessage() . "\n"; continue; } throw new RuntimeException('Website screen ' . $hwName . ' failed to render: ' . $e->getMessage(), 0, $e); }
+    $hwHtml = preg_replace('/(name="_token" value=")[A-Za-z0-9]+"/', '$1fixture-csrf-token"', str_replace('http://localhost/assets', '/assets', $hwHtml));
+    $hwMissing = [];
+    foreach (array_merge(['mm-panel', 'mm-page-title'], $hwMarkers) as $hwMarker) { if (strpos($hwHtml, $hwMarker) === false) $hwMissing[] = $hwMarker; }
+    if ($hwMissing) { if (getenv('MM_DEBUG')) { echo 'MISSING ' . $hwName . ': ' . implode(' | ', $hwMissing) . "\n"; continue; } throw new RuntimeException('Website screen ' . $hwName . ' missing ' . implode(' | ', $hwMissing)); }
+    if (preg_match('/class="[^"]*\\b(?:widget-box|widget-main|widget-header|page-header)\\b/', $hwHtml)) throw new RuntimeException('Website screen ' . $hwName . ' still contains the legacy frame');
+    foreach ($hwAbsent as $hwMarker) { if (strpos($hwHtml, $hwMarker) !== false) throw new RuntimeException('Website screen ' . $hwName . ' still contains ' . $hwMarker); }
+    if (strpos($hwHtml, '<b>Warning</b>') !== false || strpos($hwHtml, '<b>Notice</b>') !== false) throw new RuntimeException('Website screen ' . $hwName . ' sample data is incomplete (PHP warning in output)');
+    $hwFixture = __DIR__ . '/fixtures/hotelwebsite/' . $hwName . '.html';
+    if (getenv('MM_WRITE_FIXTURE')) { file_put_contents($hwFixture, $hwHtml); file_put_contents($previewDir . '/web-' . $hwName . '.html', $hwHtml); }
+    if (!getenv('MM_DEBUG') && file_get_contents($hwFixture) !== $hwHtml) throw new RuntimeException($hwFixture . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
+}
+echo "PASS hotel website screens render\n";

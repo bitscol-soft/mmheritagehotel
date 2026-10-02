@@ -1038,3 +1038,37 @@ console.log('PASS: note list/edit expressions, forms and status scripts; legacy 
   assert.equal(untouched,'','Banquet Hall controllers, routes and models must stay unchanged');
   console.log('PASS: banquet hall BH1 (amenities, categories, halls, booking list and new booking) keeps fields, expressions, directives, components and scripts; controllers and routes untouched');
 }
+
+{
+  // HotelWebsite (banners, gallery, features, services, pages, about, policy, settings): fields, expressions, directives, components and scripts stay as they were.
+  const base='4ee6b7d3';
+  const nc=s=>s.replace(/\{\{--[\s\S]*?--\}\}/g,'');
+  const q=x=>x.replace(/\s+/g,'').replace(/"/g,"'");
+  const ex=s=>(nc(s).match(/\{\{[\s\S]*?\}\}|\{!![\s\S]*?!!\}/g)||[]).map(q);
+  const comps=s=>(nc(s).match(/<x-(?!mm\.|slot)[a-z.-]+[^>]*>/g)||[]).map(q);
+  const added=/ (?:aria-label="[^"]*"|style="[^"]*"|class="[^"]*")/g;
+  const ctl=s=>(nc(s).replace(/\{\{[\s\S]*?\}\}/g,'{{}}').match(/<(input|select|textarea|button)\b[^>]*>/g)||[]).map(x=>x.replace(/\s+/g,' ').replace(added,''));
+  const forms=s=>(nc(s).match(/<form[^>]*>/g)||[]).map(x=>q(x.replace(/ class="[^"]*"/,'')));
+  const directives=s=>(nc(s).match(/@(?:if|elseif|else|endif|foreach|endforeach|forelse|empty|endforelse|include|isset|endisset|can|endcan|error|enderror|csrf|method|php|endphp)\b/g)||[]);
+  const only=(l,m)=>{const c={};l.forEach(x=>c[x]=(c[x]||0)+1);m.forEach(x=>c[x]=(c[x]||0)-1);return Object.entries(c).filter(([,n])=>n).map(([k,n])=>`${n>0?'-':'+'}${Math.abs(n)} ${k}`).sort();};
+  const scripts=s=>(nc(s).match(/<script[\s\S]*?<\/script>/g)||[]).map(q).join('|');
+  const dir='module/HotelWebsite/views/';
+  const changed={};
+  const ctlChanged={};
+  const dirChanged={};
+  const files=['banner/index','banner/create','banner/edit','gallery/index','gallery/create','gallery/edit','hotel_feature/create','hotel_feature/feature_list/index','hotel_feature/feature_list/create','hotel_feature/feature_list/edit','our_service/create','our_service/service_list/index','our_service/service_list/create','our_service/service_list/edit','pages/index','pages/create','pages/edit','about/create','privacy_policy/index','site_setting/index'];
+  for(const f of files){
+    const p=`${dir}${f}.blade.php`,after=fs.readFileSync(p,'utf8'),before=execFileSync('git',['show',`${base}:${p}`],{encoding:'utf8'});
+    assert.deepEqual(only(ex(before),ex(after)),changed[f]||[],`${f}: Blade expressions changed`);
+    assert.deepEqual(only(comps(before),comps(after)),[],`${f}: Blade components changed`);
+    assert.deepEqual(only(ctl(before),ctl(after)),ctlChanged[f]||[],`${f}: form controls changed`);
+    assert.deepEqual(only(forms(before),forms(after)),[],`${f}: form tags changed`);
+    assert.deepEqual(only(directives(before),directives(after)),dirChanged[f]||[],`${f}: Blade directives changed`);
+    assert.equal(scripts(after),scripts(before),`${f}: scripts changed`);
+    assert(after.includes('<x-mm.page'),`${f}: shared layout expected`);
+    assert(!/class="[^"]*\b(?:widget-box|widget-main|widget-header|page-header)\b/.test(after),`${f}: legacy frame should be gone`);
+  }
+  const untouched=execFileSync('git',['diff','--name-only',base,'--','module/HotelWebsite/Controllers','module/HotelWebsite/routes','module/HotelWebsite/Models'],{encoding:'utf8'}).trim();
+  assert.equal(untouched,'','HotelWebsite controllers, routes and models must stay unchanged');
+  console.log('PASS: hotel website (20 views) keeps fields, expressions, directives, components and scripts; controllers and routes untouched');
+}

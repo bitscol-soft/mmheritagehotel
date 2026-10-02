@@ -1,0 +1,224 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">    <link rel="stylesheet" href="/assets/css/dropzone.min.css" />
+    <style>
+        .checkbox label input[type=checkbox].ace+.lbl {
+            margin-bottom: 10px;
+        }
+    </style>
+<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY--><section class="mm-ui mm-web mm-room-form">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Website settings</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Contact details, logos and social links of the public website.</p>            </div>
+                    </header>
+        <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-5"><form class="form-horizontal" action="http://localhost/hw/website-core/settings/store" method="post"
+            enctype="multipart/form-data">
+            <input type="hidden" name="_token" value="fixture-csrf-token">
+            
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="website_first_name">Website First
+                                    Name</label>
+                                <div class="col-xs-12 col-sm-8 ">
+                                    <input type="text" id="website_first_name" name="website_first_name"
+                                        placeholder="Enter website first name" class="form-control"
+                                        value="MM">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="website_last_name">Website Last
+                                    Name</label>
+                                <div class="col-xs-12 col-sm-8 ">
+                                    <input type="text" id="website_last_name"
+                                        value="Heritage"
+                                        name="website_last_name" placeholder="Enter website last name"
+                                        class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="website_slogan">Website
+                                    Slogan</label>
+                                <div class="col-xs-12 col-sm-8 ">
+                                    <input type="text" id="website_slogan"
+                                        value="Slogan &lt;b&gt;x&lt;/b&gt;" name="website_slogan"
+                                        placeholder="Enter website slogan" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="meta_keyword">Meta
+                                    Keyword</label>
+                                <div class="col-xs-12 col-sm-8 ">
+                                    <textarea name="meta_keywords" rows="2" class="form-control" placeholder="Enter Keywords">k1,k2</textarea>
+
+                                                                    </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Meta Description</label>
+                                <div
+                                    class="col-xs-12 col-sm-8 ">
+                                    <textarea name="meta_description" rows="3" class="form-control" placeholder="Enter Description">Meta &lt;i&gt;d&lt;/i&gt;</textarea>
+
+                                                                    </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+
+            <div class="row">
+                <div class="col-sm-12 col-sm-offset-0">
+                    <h3 class="header smaller lighter blue">Contact Information</h3>
+
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="phone_no">Phone No</label>
+                                    <div class="col-xs-12 col-sm-8 ">
+                                        <input type="text" id="phone_no" name="phone_no"
+                                            placeholder="Enter phone no" class="form-control"
+                                            value="017">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="email">Email</label>
+                                    <div class="col-xs-12 col-sm-8 ">
+                                        <input type="text" id="email" name="email"
+                                            placeholder="Enter email" class="form-control"
+                                            value="a@b.test">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="address">Address</label>
+                                    <div class="col-xs-12 col-sm-8 ">
+                                        <input type="text" id="address" name="address"
+                                            placeholder="Enter website address" class="form-control"
+                                            value="Dhaka &lt;b&gt;road&lt;/b&gt;">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="location_map">Location
+                                        Map</label>
+                                    <div class="col-xs-12 col-sm-8 ">
+                                        <textarea name="location_map" id="location_map" cols="30" rows="5"
+                                                            placeholder="Enter Embed iframe map link" class="form-control">map</textarea>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            
+            <div class="row">
+                <div class="col-sm-12 col-sm-offset-0">
+                    <h3 class="header smaller lighter blue">Social Information</h3>
+
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="facebook_url">Facebook
+                                        Url</label>
+                                    <div class="col-xs-12 col-sm-8 ">
+                                        <input type="text" id="facebook_url" name="facebook_url"
+                                            placeholder="Enter facebook url" class="form-control"
+                                            value="https://fb.test">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="twitter_url">Instagram
+                                        Url</label>
+                                    <div class="col-xs-12 col-sm-8 ">
+                                        <input type="text" id="twitter_url" name="twitter_url"
+                                            placeholder="Enter instagram url" class="form-control"
+                                            value="https://tw.test">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="linkedin_url">Tiktok
+                                        Url</label>
+                                    <div class="col-xs-12 col-sm-8 ">
+                                        <input type="text" id="linkedin_url" name="linkedin_url"
+                                            placeholder="Enter tiktok url" class="form-control"
+                                            value="https://li.test">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label" for="youtube_url">Youtube
+                                        Url</label>
+                                    <div class="col-xs-12 col-sm-8 ">
+                                        <input type="text" id="youtube_url" name="youtube_url"
+                                            placeholder="Enter youtube url" class="form-control"
+                                            value="https://yt.test">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputError" class="col-xs-12 col-sm-3 col-md-3 control-label"></label>
+                <div class="col-xs-12 col-sm-12 text-right">
+                    <button class="mm-button" type="submit"> <i class="fa fa-save"></i>
+                        Save</button>
+                    <button class="mm-button mm-button-secondary" type="Reset"> <i class="fa fa-refresh"></i>
+                        Reset</button>
+                </div>
+            </div>
+        </form></div>
+    </div>
+</section>
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
+    <script src="/assets/js/ace-elements.min.js"></script>
+    <script src="/assets/js/dropzone.min.js"></script>
+    <!--Drag and drop-->
+    <script type="text/javascript">
+        jQuery(function($) {
+            $('.category_photos').ace_file_input({
+                style: 'well',
+                btn_choose: 'Upload Banner Photos',
+                btn_change: null,
+                no_icon: 'ace-icon fa fa-cloud-upload',
+                droppable: true,
+                thumbnail: 'small' //large | fit
+
+            }).on('change', function() {});
+        });
+    </script>
+
+<!--/MM-JS--></body></html>

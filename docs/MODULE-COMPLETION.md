@@ -154,3 +154,14 @@ payment collection and night audit pending. See `docs/BOOKING-LIFECYCLE-PLAN.md`
 | `booking-purpose/*`, `services/*`, `hotel-service-night-audits/*` (20 views) | Not used: the Hotel and Hotel Service copies of the same view names win in `config/view.php`, and both are already migrated | n/a |
 | `hall_booking/{edit,view,assaign,booking_next,booking_ui,adjust}`, invoices, `export/*` | Not migrated: the controller renders the Hotel `booking/edit` and `booking/view`, so these are unreachable; invoices and exports stay as documents | n/a |
 
+## HotelWebsite (module/HotelWebsite)
+
+| Area | Views | Status |
+| --- | --- | --- |
+| Banners, gallery, pages | index, create, edit | Migrated (`mm-web`) |
+| Homepage features (heading and list), our services (heading and boxes) | index, create, edit | Migrated (`mm-web`, narrow forms) |
+| About, privacy policy, website settings | singleton forms | Migrated (`mm-web`) |
+| `partials/sidebars/__sidebar_hotelwebsite` | sidebar | Left as is (shell navigation) |
+
+20 of 21 views migrated; guard, render fixtures and `hotelwebsite.spec.cjs` (25 tests) cover them. Not verified: real Laravel with a database, uploads and the public website output.
+
