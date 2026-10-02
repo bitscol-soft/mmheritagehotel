@@ -1,4 +1,4 @@
-@extends('frontend.layouts.master')
+@extends('frontend.layouts.mm-web')
 
 @section('menu_about', $page->title ?? '')
 
