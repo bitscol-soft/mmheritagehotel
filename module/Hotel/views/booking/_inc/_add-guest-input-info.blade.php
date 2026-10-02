@@ -80,7 +80,8 @@
         <div class="input-group width-100">
             <span class="border-none input-group-addon width-27" style="text-align: left"> Check In Date <span
                     style="color: red">*</span></span>
-            <input class="form-control date-picker check-in-date" value="{{ old('check_in_date', date('Y-m-d')) }}"
+            <input class="form-control date-picker check-in-date" value="{{ old('check_in_date', today_from_system()) }}"
+                data-business-date="{{ today_from_system() }}" autocomplete="off"
                 name="check_in_date" type="text" required>
             <span class="input-group-addon">
                 <i class="fa fa-calendar bigger-110"></i>

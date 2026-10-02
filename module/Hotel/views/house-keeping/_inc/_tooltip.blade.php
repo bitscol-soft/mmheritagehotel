@@ -26,7 +26,7 @@
                 <p class='tool-pen'> Passport : {{ $guestInfo->nid_no }}</p>
                 <p class='tool-pen'>Check In: {{ $booking->check_in_time }}</p> <p class='tool-pen'> Check Out : {{ $booking->check_out_time }}</p><div class='btn-group'>
                     <button class='btn btn-xs btn-danger' type='button' onclick='checkOut(`{{ $route }}`, `{{ $check_btn }}`)'>
-                        <i class='fa fa-clock'></i> {{ $check_btn }}
+                        <i class='fa fa-clock-o'></i> {{ $check_btn }}
                     </button>
                 </div>">
 
@@ -45,7 +45,7 @@
 @else
     <div class="room-status-ui">
         <span class="room-heading-right" onclick="updateStatus(`{{ $room->id }}`,`{{ $status_val }}`, this)">
-            <i class="fal fa-arrows-alt"></i>
+            <i class="fa fa-arrows-alt"></i>
         </span>
         <div class="room-info {{ $status }}">
             <input type="hidden" id="category_id" value="{{ $category->id }}">

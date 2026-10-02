@@ -1,6 +1,6 @@
   <li>
       <a href="javascript:void(0)" class="dropdown-toggle" title="Front Desk">
-          <i class="menu-icon fas fa-hotel"></i>
+          <i class="menu-icon fa fa-home"></i>
           Front Desk
           <b class="arrow fa fa-angle-down"></b>
       </a>
@@ -473,7 +473,7 @@
 
   <li>
       <a href="{{ route('Booking.HouseKeeping') }}" title="House Keeping">
-          <i class="menu-icon fas fa-door-closed"></i>
+          <i class="menu-icon fa fa-bed"></i>
           House Keeping
           <b class="arrow fa fa-angle-down"></b>
       </a>

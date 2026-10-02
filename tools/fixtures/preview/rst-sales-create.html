@@ -1,0 +1,734 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css"><!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+<div class="modal fade" id="add-guest-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="POST" action="" class="form-horizontal" role="form">
+                <input type="hidden" name="_token" value="fixture-csrf-token">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title"><i class="fa fa-plus-circle"></i> Add Guest</h4>
+                </div>
+
+                <!-- Modal Body -->
+                <div class="modal-body">
+
+                    <!-- Guest Name -->
+                    <div class="form-group">
+                        <label class="control-label col-md-4 col-sm-4">Guest Name <sup
+                                class="text-danger">*</sup>:</label>
+                        <div class="col-md-8 col-sm-8">
+                            <input type="text" class="form-control" name="guest_name" value=""
+                                placeholder="Enter Guest">
+                        </div>
+                    </div>
+
+                    <!-- Guest Mobile -->
+                    <div class="form-group">
+                        <label class="control-label col-md-4 col-sm-4">Guest Mobile <sup
+                                class="text-danger">*</sup>:</label>
+                        <div class="col-md-8 col-sm-8">
+                            <input type="text" class="form-control" name="guest_mobile" value="+880"
+                                placeholder="Enter Mobile">
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <!-- Modal Footer -->
+                <div class="modal-footer">
+
+                    <!-- Submit -->
+                    <div class="btn-group btn-corner">
+                        <button type="button" class="btn btn-sm btn-success save-guest">
+                            <i class="fa fa-save"></i>
+                            Save
+                        </button>
+                        <a href="javascript:void(0);" class="btn btn-sm btn-danger" data-dismiss="modal">
+                            <i class="fa fa-times"></i> Close
+                        </a>
+                    </div>
+
+
+                </div>
+
+
+            </form>
+        </div>
+    </div>
+</div>
+<section class="mm-ui mm-rst mm-rst-sale">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">New sale</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Pick the guest, add the dishes sold and confirm the invoice.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a href="http://localhost/rst/sales" class="mm-button mm-button-secondary">
+            <i class="ace-icon fa fa-list-alt" aria-hidden="true"></i> Sale List
+        </a></div>        </header>
+        <!-- Form -->
+    <form method="POST" action="http://localhost/rst/sales" accept-charset="UTF-8"
+        class="form-horizontal sales-form" role="form" data-parsley-validate novalidate>
+        <input type="hidden" name="_token" value="fixture-csrf-token">
+        
+
+        <div class="mm-panel tw-p-4 sm:tw-p-6 mm-hs-info-panel"><h2 class="mm-setup-title">Guest and invoice</h2>
+            <div class="mm-hs-info">
+                <!-- Search Guest Name -->
+                <div class="form-group">
+                    <label class="control-label" for="guest_name">Guest:</label>
+
+                    <input type="hidden" name="hotel_guest_id" id="hotel_guest_id" value="">
+
+                    <div class="input-group">
+                        <input type="text" name="guest_name" id="guest_name"
+                            placeholder="Name/Mobile No." class="form-control" required>
+                        <span class="input-group-addon pointer" data-toggle="modal"
+                            data-target="#add-guest-modal" role="button" aria-label="Add guest">
+                            <i class="fa fa-users"></i>
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="form-group">
+                    <label class="control-label" for="room_number">Room Number :</label>
+
+                    <input type="hidden" name="hotel_room_id" id="hotel_room_id">
+
+                    <input type="text" name="room_number" id="room_number"
+                        placeholder="Room Number" class="form-control">
+                </div>
+
+                
+                <div class="form-group">
+                    <label class="control-label" for="booking_number">Booking Number :</label>
+
+                    <input type="hidden" name="hotel_booking_id" id="hotel_booking_id"
+                        value="">
+
+                    <input type="text" name="booking_number" id="booking_number"
+                        placeholder="Booking Number" class="form-control">
+                    
+                </div>
+
+                <!-- Sale Invoice ID -->
+                <div class="form-group">
+                    <label class="control-label" for="invoice_id">Invoice ID #</label>
+                    <input type="text" tabindex="-1" class="form-control" id="invoice_id"
+                        placeholder="Invoice ID" name="invoice_no" value="R-0105"
+                        readonly>
+                </div>
+
+                <!-- Sale Date -->
+                <div class="form-group">
+                    <label class="control-label" for="sale_date">Date :</label>
+                    <input type="text" name="date" id="sale_date" value="2026-10-01"
+                        class="form-control date-picker" autocomplete="off">
+                </div>
+            </div>
+
+            <!-- Product Name -->
+            <div class="mm-rst-product-search">
+                <div class="input-group">
+                    <span class="input-group-addon">Product</span>
+                    <input type="text" name="product_name" id="drug-name"
+                        class="form-control" placeholder="Search by Product Name / Barcode"
+                        autocomplete="off" style="z-index: 0">
+                </div>
+            </div></div>
+
+        <!-- transition -->
+        <div class="mm-panel tw-p-4 sm:tw-p-6"><h2 class="mm-setup-title">Items</h2>
+            <div class="mm-table-scroll" role="region" aria-label="Sale items" tabindex="0"><!-- Sale Item -->
+                <table class="table table-bordered table-hover" id="table_auto">
+                    <thead>
+                        <tr>
+                            <th>Product Name</th>
+                            <th width="15%">Available Qty</th>
+                            <th width="15%">Quantity</th>
+                            <th width="15%">Sales Price</th>
+                            <th width="18%">Total</th>
+                            <th width="1%">
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="product-details"></tbody>
+                </table></div></div>
+
+        <div class="mm-panel tw-p-4 sm:tw-p-6 mm-hs-totals"><div class="form-inlines">
+                <div class="form-group">
+                    <label class="control-label">Payment Way:</label>
+                    <div class="mm-rst-payment-way">
+                                                    <label>
+                                <input name="payment_way" value="1"
+                                    class="checked-reference" type="radio">
+                                Cash
+                            </label>&nbsp;&nbsp;
+                                                    <label>
+                                <input name="payment_way" value="2"
+                                    class="checked-reference" type="radio">
+                                Card
+                            </label>&nbsp;&nbsp;
+                                            </div>
+                </div>
+
+                <!-- Sub Total -->
+                <div class="form-group">
+                    <label class="control-label" for="subTotal">Sub Total :</label>
+                    <div class="input-group">
+                        <div class="input-group-addon currency">৳</div>
+                        <input tabindex="-1" value="0" type="number" min="0"
+                            name="subtotal" step="any" class="form-control" id="subTotal"
+                            placeholder="Sub Total" ondrop="return false;" onpaste="return false;"
+                            readonly>
+                    </div>
+                </div>
+
+                <!-- Discount -->
+                <div class="form-group">
+                    <label class="control-label" for="discount">Discount :</label>
+                    <div class="input-group">
+                        <div class="input-group-addon currency">৳</div>
+                        <input value="0" type="number" min="0" step="any"
+                            class="form-control changesNo discount" name="discount" id="discount"
+                            placeholder="Discount" ondrop="return false;" tabindex="-1">
+                    </div>
+                </div>
+
+                <!-- Total -->
+                <div class="form-group">
+                    <label class="control-label" for="total"><b>Total :</b></label>
+                    <div class="input-group">
+                        <div class="input-group-addon currency">৳</div>
+                        <input tabindex="-1" value="0" type="number" min="0"
+                            step="any" class="form-control" name="total_amount" id="total"
+                            placeholder="Total Amount" ondrop="return false;" onpaste="return false;"
+                            readonly>
+                    </div>
+                </div>
+
+                <!-- Vat -->
+                <div class="form-group">
+                    <label class="control-label" for="vat"><b>Vat :</b></label>
+                    <div class="input-group">
+                        <div class="input-group-addon currency">৳</div>
+                        <input tabindex="-1" value="0" type="number" min="0"
+                            step="any" class="form-control" name="vat_amount" id="vat"
+                            onkeyup="vatUpdate()" placeholder="Vat Amount" />
+                    </div>
+                </div>
+
+                <!-- Service Charge -->
+                <div class="form-group">
+                    <label class="control-label" for="service_charge"><b>Service Charge:</b></label>
+                    <div class="input-group">
+                        <div class="input-group-addon currency">৳</div>
+                        <input tabindex="-1" value="0" type="number" min="0"
+                            step="any" class="form-control" name="service_amount"
+                            id="service_charge" placeholder="Service Charge" ondrop="return false;"
+                            tabindex="-1">
+                    </div>
+                </div>
+
+                <!-- Grand Total -->
+                <div class="form-group">
+                    <label class="control-label" for="grandTotal"><b> Grand Total: </b></label>
+                    <div class="input-group">
+                        <div class="input-group-addon currency">৳</div>
+                        <input tabindex="-1" value="" type="number" min="0"
+                            step="any" class="form-control" name="grand_total" id="grandTotal"
+                            placeholder="Total Amount" ondrop="return false;" onpaste="return false;"
+                            readonly>
+                    </div>
+                </div>
+
+                <div id="payment">
+                    <!-- Paid Amount -->
+                    <div class="form-group aside_system">
+                        <label class="control-label" for="amountPaid">Paid Amount :</label>
+                        <div class="input-group">
+                            <div class="input-group-addon currency">৳</div>
+                            <input value="0" type="number" min="0" step="any"
+                                class="form-control" name="paid_amount" id="amountPaid"
+                                placeholder="Paid Amount" ondrop="return false;"
+                                onpaste="return false;">
+                        </div>
+                    </div>
+
+                    <!-- Change Amount -->
+                    <div class="form-group aside_system">
+                        <label class="control-label" for="change">Change :</label>
+                        <div class="input-group">
+                            <div class="input-group-addon currency">৳</div>
+                            <input tabindex="-1" type="number" min="0" step="any"
+                                class="form-control change" name="change_amount" id="change"
+                                placeholder="Change Amount" ondrop="return false;"
+                                onpaste="return false;" readonly>
+                        </div>
+                    </div>
+
+                    <!-- Due Amount -->
+                    <div class="form-group aside_system">
+                        <label class="control-label" for="amountDue">Amount Due :</label>
+                        <div class="input-group">
+                            <div class="input-group-addon currency">৳</div>
+                            <input tabindex="-1" type="number" min="0" step="any"
+                                class="form-control amountDue only-number" name="due_amount"
+                                id="amountDue" placeholder="Amount Due" ondrop="return false;"
+                                onpaste="return false;" readonly>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="form-group">
+                    <button type="submit" name="draft" class="btn btn-primary mm-hs-confirm">
+                        Confirm
+                    </button>
+                </div>
+            </div></div>
+    </form>
+    <!-- End Form -->
+    </div>
+</section>
+
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<script src="/assets/js/jquery-ui.min.js"></script><script src="/assets/custom_js/loadDetails.js"></script><script src="/assets/custom_js/reference_filter.js"></script><!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
+
+    <script src="/assets/custom_js/guest_filter.js"></script>
+    <script>
+    const saveGuestBtn  = $('.save-guest')
+    const guestName     = $('[name=guest_name]')
+    const guestMobile   = $('[name=guest_mobile]')
+    const guestSaveRoute = 'http://localhost/rst/save-guest-data'
+
+
+    $(document).on('click', '.save-guest', saveGuest);
+
+    function saveGuest() {
+
+        if (guestName.val() == '') {
+            warning('toster', 'Please enter name');
+            return;
+        }
+
+        if (guestMobile.val() == '') {
+            warning('toster', 'Please enter mobile');
+            return;
+        }
+
+        $.post(guestSaveRoute, {
+            _token: 'fixture-csrf-token',
+            guest_name  : guestName.val(),
+            guest_mobile: guestMobile.val(),
+            is_stuff    : $('[name="is_stuff"]:checked').val(),
+        }, function(response) {
+            console.log(response);
+            if (response.status) {
+                $('#add-guest-modal').modal('hide')
+                $('#guest_name').val(response.data.name)
+                $('#hotel_guest_id').val(response.data.id)
+                $('#is_stuff').val(response.data.is_stuff)
+
+
+                $('#guest_name').append(`<option value="${ response?.data?.id}" selected>${response?.data?.name}</option>`)
+
+            }
+
+        })
+    }
+</script>
+
+    <script>
+        const vat_percent = "5"
+
+        $(document).on('click', '.ui-menu-item', function() {
+            let guest_id = $('#hotel_guest_id').val();
+            getGuestInfo(guest_id)
+        });
+
+        function getGuestInfo(guest_id) {
+
+            $.ajax({
+                type: 'get',
+                url: '/hotelservice/guest-d-by-name/' + guest_id,
+                async: true,
+
+                beforeSend: function() {
+                    $("body").css("cursor", "progress");
+                },
+                success: function(data) {
+                    if (data['status'] != 0) {
+                        $('#room_number').val(data.room_number);
+                        $('#booking_number').val(data.booking_number);
+                    }
+                },
+                complete: function(data) {
+                    $("body").css("cursor", "default");
+                }
+            });
+        }
+    </script>
+
+    
+    <script>
+        $(document).on('focus', '#room_number', function() {
+            $(this).autocomplete({
+                source: function(request, response) {
+                    $.getJSON('/hotelservice/get-room-list', {
+                            name: request.term
+                        },
+                        function(data) {
+                            response($.map(data, function(items) {
+                                return {
+                                    value: items.available_quantity,
+                                    label: `${items.room_number}`,
+                                    data: items,
+                                }
+                            }))
+                        }
+                    )
+                },
+                select: function(event, ui) {
+                    let rooms_id = ui.item.data.id;
+                    GetInfoRoom(rooms_id);
+
+                },
+                search: function(event, ui) {},
+                minLength: 1,
+                autoFocus: true
+            })
+        })
+    </script>
+
+
+    
+    <script>
+        $(document).on('focus', '#booking_number', function() {
+            $(this).autocomplete({
+                source: function(request, response) {
+                    $.getJSON('/hotelservice/get-booking-number', {
+                            name: request.term
+                        },
+                        function(data) {
+                            response($.map(data, function(items) {
+                                return {
+                                    value: items.available_quantity,
+                                    label: `${items.booking_number}`,
+                                    data: items,
+                                }
+                            }))
+                        }
+                    )
+                },
+                select: function(event, ui) {
+                    let booking_id = ui.item.data.id;
+                    getInfoByBooking(booking_id);
+
+                },
+                search: function(event, ui) {},
+                minLength: 1,
+                autoFocus: true
+            })
+        })
+    </script>
+
+    
+
+    <script>
+        function getInfoByBooking(booking_id) {
+
+            $.ajax({
+                type: 'get',
+                url: '/hotelservice/guest-by-booking/' + booking_id,
+                async: true,
+
+                beforeSend: function() {
+                    $("body").css("cursor", "progress");
+                },
+                success: function(data) {
+                    console.log(data)
+                    $('#guest_name').val(data['guest_name']);
+                    $('#room_number').val(data['room_number']);
+                    $('#hotel_booking_id').val(booking_id);
+                    $('#hotel_guest_id').val(data['guest_id']);
+                },
+                complete: function(data) {
+                    $("body").css("cursor", "default");
+                }
+            });
+        }
+    </script>
+
+    
+    <script>
+        function GetInfoRoom(rooms_id) {
+
+            $.ajax({
+                type: 'get',
+                url: '/hotelservice/guest-by-rooms/' + rooms_id,
+                async: true,
+
+                beforeSend: function() {
+                    $("body").css("cursor", "progress");
+                },
+                success: function(data) {
+                    console.log(data)
+                    $('#guest_name').val(data['guest_name']);
+                    $('#booking_number').val(data['booking_number']);
+                    $('#hotel_booking_id').val(data['booking_id']);
+                    $('#hotel_guest_id').val(data['guest_id']);
+                    $('#hotel_room_id').val(rooms_id);
+
+                },
+                complete: function(data) {
+                    $("body").css("cursor", "default");
+                }
+            });
+        }
+    </script>
+    <script>
+        function requestUrl(urlParts) {
+            urlParts = $.extend({
+                basePath: 'http://localhost/',
+                path: '',
+                param: ''
+            }, urlParts);
+            return urlParts.basePath + urlParts.path + urlParts.param;
+        }
+
+
+        function patientFilter() {
+            patientWithIndoor('indoor');
+
+        }
+
+        $(document).on('focus', '#drug-name', function() {
+            $(this).autocomplete({
+                source: function(request, response) {
+                    $.getJSON('/restaurant/inventory/get-products', {
+                            name: request.term
+                        },
+                        function(data) {
+                            response($.map(data, function(items) {
+                                return {
+                                    value: items.available_quantity,
+                                    label: `${items.name}`,
+                                    data: items,
+                                }
+                            }))
+                        }
+                    )
+                },
+                select: function(event, ui) {
+                    appendProductRow(ui)
+
+                },
+                search: function(event, ui) {},
+                minLength: 1,
+                autoFocus: true
+            })
+        })
+
+        $(document).on('click', '.delete', function(e) {
+            $(this).parents('tr').remove();
+            calculateTotal();
+        })
+    </script>
+
+
+
+    <script>
+        function appendProductRow(ui) {
+            productRow(ui)
+            $('#drug-name').val('')
+
+            calculateTotal()
+            calculateVat()
+
+        }
+
+
+
+        function productRow(ui) {
+            let html = '';
+
+            html =
+                `<tr class="product-row">
+                        <td>
+                            <span id="product_name">${ui.item.data.name}</span>
+                            <input type="hidden" value="${ui.item.data.id}" name="product_ids[]" id="productId"
+                            class="form-control small-box productId" autocomplete="off">
+                            <input type="hidden" value="${ui.item.data.vat_amount}" name="item_vat_amounts[]">
+                        </td>
+                        <td>
+                            <input type="text" tabindex="-1" value="${ui.item.data.total_qty}"
+                                name="available_qty[]" id="available_qty" class="form-control small-box avaliable_qty"
+                                ondrop="return false;" onpaste="return false;" readonly>
+                            <input type="hidden" tabindex="-1" value="${ui.item.data.total_qty}" name="old_available_qty[]" id="old_available_qty">
+                            <input type="hidden" tabindex="-1" value="${ui.item.data.expiry_date}" name="expiry_date[]">
+                        </td>
+
+                        <td>
+                            <input type="number" min="1" value="1"  name="sales_qty[]" max="${ui.item.data.total_qty}" step="any" id="sales_qty" class="form-control sales-qty small-box" autocomplete="off" onkeyup="" onpaste="return false;" placeholder="Quantity">
+                        </td>
+                        <td>
+                            <input tabindex="-1" type="text" value="${parseFloat(ui.item.data.sale_price).toFixed(2)}" name="sales_price[]" class="form-control sales-price small-box" autocomplete="off" ondrop="return false;" onpaste="return false;" readonly>
+                        </td>
+                        <td>
+                            <input tabindex="-1" type="number" min="0" value="${parseFloat(ui.item.data.sale_price).toFixed(2)}" step="any" name="item_price[]" class="form-control total-line-price small-box" autocomplete="off"  ondrop="return false;" onpaste="return false;" readonly="readonly">
+                        </td>
+                        <td>
+                            <button class="btn btn-xs btn-danger delete" tabindex="-1" type="button"><i class="fa fa-trash-o"></i></button>
+                        </td>
+                    </tr>`
+
+
+
+            $('#product-details').append(html);
+
+        }
+    </script>
+
+    <script>
+        $(document).on('keyup focus', '.sales-qty, .discount, #service_charge, #amountPaid', function(e) {
+
+            calculateTotal(e)
+        });
+
+
+        $(document).on('keyup', '.discount', function(e) {
+            calculateVat(e)
+        })
+
+
+        function calculateTotal(e) {
+
+            var subTotal = linePrice(),
+                total = discount(subTotal),
+                total_With_Vat_Amount = Number($('#vat').val()),
+                finalAmount = chargeAmount(total_With_Vat_Amount + Number(total)),
+                payableAmount = grandTotal(parseFloat(finalAmount))
+
+            dueAmount(payableAmount)
+        }
+
+        function calculateVat(e) {
+
+            var subTotal = linePrice(),
+                total = discount(subTotal),
+                total_With_Vat_Amount = vatApply(total),
+                finalAmount = chargeAmount(total_With_Vat_Amount),
+                payableAmount = grandTotal(parseFloat(finalAmount))
+
+            dueAmount(payableAmount)
+        }
+
+
+        function vatUpdate() {
+            let vat_amount = Number($('#vat').val())
+            let total = Number($('#total').val())
+
+            $('#grandTotal').val(total + vat_amount)
+            dueAmount(total + vat_amount)
+        }
+
+
+        function vatApply(amount) {
+            let vatAmount = parseFloat(amount * vat_percent / 100),
+                subTotal = parseFloat(amount)
+
+            $('#vat').val(vatAmount)
+            var total = (subTotal + vatAmount).toFixed(2)
+            return total
+        }
+
+
+
+        function chargeAmount(amount) {
+
+            var charge = parseFloat($('#service_charge').val()),
+                subTotal = parseFloat(amount)
+
+
+            if (charge > 0) {
+                var total = (subTotal + charge).toFixed(2)
+                $('#service_charge').val(charge);
+                return total
+            }
+            return subTotal
+        }
+
+
+
+        function linePrice() {
+            var rows = $('.product-row')
+            totalDrugPrice = 0, amount = 0
+
+            $.each(rows, function(index, row) {
+
+                let available_qty = $(row).find('#old_available_qty').val()
+                var quantity = $(row).find('.sales-qty').val(),
+                    salesPrice = $(row).find('.sales-price').val(),
+                    totalDrugPrice = (quantity * salesPrice)
+
+
+                now_available_qty = available_qty - quantity
+
+                $(row).find('#available_qty').val(now_available_qty)
+
+                if (!quantity || !salesPrice) quantity = 0, salesPrice = 0
+                $(row).find('.total-line-price').val(Math.round(totalDrugPrice).toFixed(2))
+                amount += totalDrugPrice
+            });
+
+            $('#subTotal').val(Math.round(amount).toFixed(2))
+            return Math.round(amount).toFixed(2)
+        }
+
+
+
+        function discount(stotal) {
+            var discount = parseFloat($('.discount').val() | 0),
+                subTotal = parseFloat(stotal);
+            if (discount > subTotal) {
+                $('.discount').val(0)
+                alert('You can\'t pay more than grand total.');
+            }
+            var total = (subTotal - discount).toFixed(2)
+            $('#total').val(total)
+            return total
+        }
+
+
+
+
+        function grandTotal(total) {
+            $('#grandTotal').val(parseFloat(total).toFixed(2))
+            return total
+        }
+
+
+
+
+
+        function dueAmount(payableAmount) {
+            let paidAmount = parseFloat($('#amountPaid').val())
+            if (!paidAmount) paidAmount = 0
+            if (paidAmount >= payableAmount) {
+                $('#change').val(parseInt(paidAmount - payableAmount))
+                $('#amountDue').val(0)
+            } else {
+                $('#change').val(0)
+                $('#amountDue').val(payableAmount - paidAmount)
+            }
+        }
+    </script>
+
+<!--/MM-JS--></body></html>

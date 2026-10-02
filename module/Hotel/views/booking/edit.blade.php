@@ -68,26 +68,20 @@
 
 @section('content')
 
-    <div class="row">
-
-        <div class="col-sm-12">
-            <div class="widget-box">
-                <div class="widget-header">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
-
-                    <span class="widget-toolbar">
-                        <a href="{{ route('booking.index') }}">
-                            <i class="ace-icon fa fa-list-alt"></i> Booking List
-                        </a>
-                    </span>
-
-                </div>
-
-                <div class="widget-body">
-                    <div class="widget-main" style="padding-bottom: 44px;">
+    <x-mm.styles />
+    <x-mm.page class="mm-booking-next" title="Edit booking" description="Update guest, stay dates, rooms and payment details for this booking.">
+        <x-slot name="actions">
+            <a class="mm-button mm-button-secondary" href="{{ route('booking.index') }}">
+                <i class="ace-icon fa fa-list-alt" aria-hidden="true"></i> Booking List
+            </a>
+        </x-slot>
+        <x-mm.panel>
+                    <div>
 
                         <!-- Include Alert Message -->
                         <x-alert-message />
+
+                        @include('booking._inc._booking-context', ['booking' => $booking])
 
                         {{-- action="{{ route('booking.assign', $booking->id) }}" --}}
                         <!-- FORM -->
@@ -118,26 +112,26 @@
                                 <div class="col-sm-12 col-sm-offset-0">
                                     <h3 class="header smaller lighter blue">Room Information</h3>
 
-                                    <table id="myTable" class="table table-bordered order-list">
+                                    <table id="myTable" class="table table-bordered order-list room-config-table">
                                         <thead>
                                             <tr>
-                                                <td width="25%">Room Category<span class="text-danger">*</span></td>
-                                                <td class="text-left">Room<span class="text-danger">*</span></td>
-                                                <td class="text-center" style="width: 10%">Guest</td>
-                                                <td class="text-left" style="width: 12%">Amount<span
-                                                        class="currency-sign"></span></td>
-                                                <td class="text-right">Infant</td>
-                                                <td class="text-right">Night</td>
-                                                <td class="text-right">Discount<span class="currency-sign"></span></td>
-                                                <td class="text-right">Discount Type</td>
-                                                <td class="text-center">Breakfast</td>
-                                                <td class="text-right" width="15%">T. Amount<span
-                                                        class="currency-sign"></span></td>
-                                                <td class="text-right"><button type="button"
-                                                        class="btn btn-minier btn-success pull-right" id="addrowInEdit">
+                                                <th width="25%">Room Category<span class="text-danger">*</span></th>
+                                                <th class="text-left">Room<span class="text-danger">*</span></th>
+                                                <th class="text-center" style="width: 10%">Guest</th>
+                                                <th class="text-left" style="width: 12%">Amount<span
+                                                        class="currency-sign"></span></th>
+                                                <th class="text-right">Infant</th>
+                                                <th class="text-right">Night</th>
+                                                <th class="text-right">Discount<span class="currency-sign"></span></th>
+                                                <th class="text-right">Discount Type</th>
+                                                <th class="text-center">Breakfast</th>
+                                                <th class="text-right" width="15%">T. Amount<span
+                                                        class="currency-sign"></span></th>
+                                                <th class="text-right"><button type="button"
+                                                        class="btn btn-minier btn-success pull-right" id="addrowInEdit" title="Add another room line" aria-label="Add another room line">
                                                         <i class="fa fa-plus-circle"></i>
                                                     </button>
-                                                </td>
+                                                </th>
                                             </tr>
                                         </thead>
 
@@ -247,7 +241,7 @@
                                                     </td>
                                                     <td class="text-center">
                                                         <button class="btn btn-xs btn-danger ibtnDel" disabled><i
-                                                                class="fa fa-trash"></i></button>
+                                                                class="fa fa-trash-o"></i></button>
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -271,25 +265,20 @@
                         </form>
 
                         <!-- SUBMIT/ACTION BUTTON -->
-                        <div class="col-xs-12 col-sm-12 text-right" style="margin-top: 5px; padding-right: 50px;">
-                            <button class="btn-sm btn-outline-success updateBookingBtn" onclick="submitBookingForm()"
+                        <div class="mm-form-actions">
+                            <button class="updateBookingBtn mm-button" onclick="submitBookingForm()"
                                 type="button">
-                                <i class="fa fa-save"></i>
+                                <i class="fa fa-save" aria-hidden="true"></i>
                                 Save
                             </button>
-                            <button class="btn-sm btn-outline-danger" type="Reset">
-                                <i class="fa fa-refresh"></i>
+                            <button class="mm-button mm-button-secondary" type="Reset">
+                                <i class="fa fa-refresh" aria-hidden="true"></i>
                                 Reset
                             </button>
                         </div>
-
                     </div>
-                </div>
-            </div>
-
-
-        </div>
-    </div>
+        </x-mm.panel>
+    </x-mm.page>
     @include('partials/modal/edit_guest_modal')
 
 @endsection
@@ -298,6 +287,7 @@
 
     @include('booking._script.update-customer-script')
     @include('booking._script.script')
+    <script src="{{ asset('assets/custom_js/stay-dates.js') }}"></script>
 
     <script>
         $('.photo-remove').click(function() {

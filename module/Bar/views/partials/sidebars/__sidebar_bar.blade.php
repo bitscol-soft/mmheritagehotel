@@ -12,7 +12,7 @@
 
     <li>
         <a href="#" class="dropdown-toggle">
-            <i class="menu-icon fas fa-glass-cheers"></i>
+            <i class="menu-icon fa fa-glass"></i>
             <span class="menu-text">Bar</span>
             <b class="arrow fa fa-angle-down"></b>
         </a>

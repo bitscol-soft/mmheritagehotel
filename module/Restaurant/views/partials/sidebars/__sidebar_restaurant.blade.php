@@ -10,7 +10,7 @@
 
     <li>
         <a href="#" class="dropdown-toggle">
-            <i class="menu-icon fas fa-utensils"></i>
+            <i class="menu-icon fa fa-cutlery"></i>
             <span class="menu-text">Restaurant</span>
             <b class="arrow fa fa-angle-down"></b>
         </a>
@@ -312,8 +312,8 @@
         <li>
             <a href="#" class="dropdown-toggle">
                 <span class='fa-stack'>
-                    <i class='far fa-square fa-stack-2x'></i>
-                    <i class='fas fa-utensils fa-stack-1x'></i>
+                    <i class='fa fa-square fa-stack-2x'></i>
+                    <i class='fa fa-cutlery fa-stack-1x'></i>
                 </span>
                 <span class="menu-text">Kitchen</span>
                 <b class="arrow fa fa-angle-down"></b>

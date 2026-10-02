@@ -24,10 +24,11 @@ class HomePageController extends Controller
     //--------------------------------------------------------------------------//
     public function homePage()
     {
-        $data['feature_head']  = HotelFeature::first();
+        // settings tables may legitimately be empty on a fresh install — render blanks, never 500
+        $data['feature_head']  = HotelFeature::first() ?? new HotelFeature();
         $data['feature_list']  = HotelFeatureList::where('status',1)->get();
-        $data['about']         = AboutSection::first();
-        $data['service']       = OurService::first();
+        $data['about']         = AboutSection::first() ?? new AboutSection();
+        $data['service']       = OurService::first() ?? new OurService();
         $data['service_list']  = OurServiceList::where('status',1)->take(2)->get();
         $data['room_category'] = RoomCategory::where('status',1)->get();
         $data['gallery']       = HotelGallery::where('status',1)->get();
@@ -55,7 +56,8 @@ class HomePageController extends Controller
 
 
         $data['category']   = RoomCategory::find($request->room_category);
-        $get_aminity        = $data['category']->room_aminities;
+        abort_if($data['category'] === null, 404);
+        $get_aminity        = $data['category']->room_aminities ?? '';
         $aminities_list     = explode(',', $get_aminity);
 
         $data['aminities']  = [];
@@ -65,10 +67,10 @@ class HomePageController extends Controller
 
         foreach ($aminities_list as $key => $value) {
 
-            $name = Aminities::where('id',$value)->first();
+            $name = Aminities::where('id', $value)->first();
 
-            if ($name != null || $name != '') {
-                array_push($data['aminities'],$name[0]);
+            if ($name !== null) {
+                array_push($data['aminities'], $name);
             }
 
         }
@@ -122,8 +124,9 @@ class HomePageController extends Controller
     public function viewRoom($url_slug)
     {
         $room = RoomCategory::where('url_slug', $url_slug)->first();
+        abort_if($room === null, 404);
 
-        $aminities_list = collect(explode(',', $room->room_aminities))->toArray();
+        $aminities_list = collect(explode(',', $room->room_aminities ?? ''))->toArray();
 
         $aminities = Aminities::whereIn('id', $aminities_list)->get();
 
@@ -142,7 +145,7 @@ class HomePageController extends Controller
     //--------------------------------------------------------------------------//
     public function termsCondition()
     {
-        $data = PrivacyPolicy::first();
+        $data = PrivacyPolicy::first() ?? new PrivacyPolicy();
 
         return view('frontend.terms',compact('data'));
     }
@@ -159,7 +162,7 @@ class HomePageController extends Controller
     //--------------------------------------------------------------------------//
     public function privacyPolicy()
     {
-        $data = PrivacyPolicy::first();
+        $data = PrivacyPolicy::first() ?? new PrivacyPolicy();
 
         return view('frontend.privacy_policy',compact('data'));
     }
@@ -171,7 +174,8 @@ class HomePageController extends Controller
     //--------------------------------------------------------------------------//
     public function singlePage($slug)
     {
-        $data['page'] = Page::where('slug', $slug)->first();
+        // round 3 (docs/BUGS.md #44): unknown slug used to fatal on null -> $page->title in the view
+        $data['page'] = Page::where('slug', $slug)->firstOrFail();
 
         return view('frontend.single-page-view', $data);
     }
@@ -187,8 +191,9 @@ class HomePageController extends Controller
     {
         // return $request->all();
 
-        $check_in    = $request->check_in;
-        $check_out   = $request->check_out;
+        // round 3 (docs/BUGS.md #44): AJAX endpoint deep-linked without dates
+        $check_in    = $request->check_in ?? now()->format('Y-m-d');
+        $check_out   = $request->check_out ?? now()->addDay()->format('Y-m-d');
 
         $room        =  Rooms::where('room_category', $request->category_id);
 

@@ -1,0 +1,158 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css"><!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->        <section class="mm-ui mm-hotel-sms">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Send SMS</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Write one message and send it to the guests you picked.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button mm-button-secondary" href="http://localhost/hotel/guests">
+                <i class="fa fa-list-alt" aria-hidden="true"></i> Guest List
+            </a></div>        </header>
+        <form class="form-horizontal" id="companyForm" action="http://localhost/hotel/guests/submit-sms"
+            method="post" enctype="multipart/form-data">
+            <input type="hidden" name="_token" value="fixture-csrf-token">
+            <div class="mm-sms-grid">
+                <div class="mm-panel tw-p-4 sm:tw-p-6 mobile-widget-box"><h2 class="mm-sms-title">Mobile</h2>
+                    <div class="inline">
+                                                    <input type="hidden" name="isFromGuestList" value="1">
+                            <input class="multiple-phone-input" type="text" name="phone_no"
+                                id="form-field-tags" value="01700000000, 01800000000"
+                                placeholder="Enter Mobile Numbers..." />
+                                            </div></div>
+
+                <div class="mm-panel tw-p-4 sm:tw-p-6 message-widget-box"><h2 class="mm-sms-title">Message</h2>
+                    <textarea name="message" class="textarea message-area" placeholder="Write Messages..." rows="10" cols="40"
+                        autocomplete="off" role="textbox" aria-autocomplete="list" aria-haspopup="true"></textarea></div>
+
+                <div class="mm-panel tw-p-4 sm:tw-p-6 sms-widget-box"><h2 class="mm-sms-title">SMS configuration</h2>
+                    <dl class="mm-sms-stats">
+                        <dt>Balance</dt>
+                        <dd>120</dd>
+                        <dt>Characters</dt>
+                        <dd><span class="total-character-count">0</span></dd>
+                        <dt>SMS</dt>
+                        <dd><span class="part-count">0</span></dd>
+                    </dl></div>
+            </div>
+
+            <div class="mm-sms-actions">
+                <a href="http://localhost/hotel/guests" class="mm-button mm-button-secondary">
+                    <i class="fa fa-backward" aria-hidden="true"></i> Back List
+                </a>
+                <button type="submit" class="mm-button">
+                    <i class="fa fa-paper-plane" aria-hidden="true"></i> Send SMS
+                </button>
+            </div>
+        </form>
+    </div>
+</section>
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
+    <script src="/assets/js/jquery.selectallcheckbox.js"></script>
+
+<script>
+
+    //----------------------------------------------------------------//
+    //                     SELECT ALL CHECKBOX                        //
+    //----------------------------------------------------------------//
+    function onChange( checkboxes, checkedState ) {}
+    $( document ).ready( function(){
+
+       $( "#selectAll, #selectEveryone" ).selectAllCheckbox({
+          checkboxesName   : "guest_id[]",
+          onChangeCallback : onChange,
+          useIndeterminate : false
+       });
+
+    });
+
+
+
+
+
+    //----------------------------------------------------------------//
+    //                  SELECT EVERYONE CHECKBOX                      //
+    //----------------------------------------------------------------//
+    function selectEveryone(){
+
+        let val = $('#isAllSelected').val();
+
+        if (val == 1) {
+            $('#isAllSelected').val(0);
+        }
+        else{
+            $('#isAllSelected').val(1);
+        }
+    };
+
+
+</script>
+
+
+
+
+
+
+
+
+<!--------------------------------------------------------------------
+                    CHOOSE MULTIPLE PHONE NUMBER
+--------------------------------------------------------------------->
+<script src="/assets/js/bootstrap-tag.min.js"></script>
+
+<script type="text/javascript">
+
+    $('#chosen-multiple-style .btn').on('click', function(e){
+        var target = $(this).find('input[type=radio]');
+        var which = parseInt(target.val());
+        if(which == 2) $('#form-field-select-4').addClass('tag-input-style');
+        else $('#form-field-select-4').removeClass('tag-input-style');
+    });
+
+
+
+    var tag_input = $('#form-field-tags');
+
+    if(! ( /msie\s*(8|7|6)/.test(navigator.userAgent.toLowerCase())) ){
+        tag_input.tag(
+            {
+                placeholder:tag_input.attr('placeholder'),
+                source: ace.variable_US_STATES,
+            }
+        );
+    }
+    else {
+        tag_input.after('<textarea id="'+tag_input.attr('id')+'" name="'+tag_input.attr('name')+'" rows="3">'+tag_input.val()+'</textarea>').remove();
+    }
+
+
+
+
+
+
+
+
+    //--------------------------------------------------------------------//
+    //                          COUNT SMS CHARACTER                       //
+    //--------------------------------------------------------------------//
+
+    $('.message-area').keyup(function () {
+        let max = 640
+        let part = 160 //max / 4;
+        let len = $(this).val().length
+        let partCount = (len/part) + 1
+        if (partCount>4) {
+            partCount = 4
+        }
+        if (len == 0) {
+            partCount = 0
+        }
+        $('.part-count').text(parseInt(partCount))
+        $('.total-character-count').text(len)
+    });
+
+</script>
+<!--/MM-JS--></body></html>

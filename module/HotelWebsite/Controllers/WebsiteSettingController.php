@@ -22,7 +22,7 @@ class WebsiteSettingController extends Controller
     public function index()
     {
         $this->hasAccess("websitesettings.create");
-        $setting = WebsiteSetting::first();
+        $setting = WebsiteSetting::firstOrNew([]);
 
         return view('site_setting.index',compact('setting'));
     }

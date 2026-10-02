@@ -78,7 +78,7 @@
                                                     <button type="button" class="btn btn-success btn-xs addBtn"
                                                         tabindex="-1"> <i class="fa fa-plus"></i> </button>
                                                     <button type="button" class="btn btn-danger btn-xs deleteBtn"
-                                                        tabindex="-1"> <i class="fa fa-trash"></i> </button>
+                                                        tabindex="-1"> <i class="fa fa-trash-o"></i> </button>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -131,7 +131,7 @@
                     <button type="button" class="btn btn-success btn-xs addBtn" tabindex="-1"> <i class="fa
                     fa-plus"></i> </button>
                     <button type="button" class="btn btn-danger btn-xs deleteBtn" tabindex="-1"> <i class="fa
-                    fa-trash"></i> </button>
+                    fa-trash-o"></i> </button>
                 </td>
             </tr>
         `)

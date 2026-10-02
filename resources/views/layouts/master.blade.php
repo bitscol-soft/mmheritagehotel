@@ -16,6 +16,8 @@ $isAdminSidebar = !request()->is('hrm/payroll/master-salary/*') && !request()->i
 
 $isShowFooter = !request()->is('hrm/payroll/master-salary/*') && !request()->is('hrm/payroll/bank-salary/*') && !request()->is('hrm/payroll/cash-salary/*') && !request()->is('hrm/payroll/master-salary-without-payslip/*') && !request()->is('hrm/payroll/master-salary-with-payslip/*');
 
+$mmShell = config('ui.admin_shell', true) && $isAdminHeader && $isAdminSidebar;
+
 @endphp
 
 
@@ -32,10 +34,16 @@ $isShowFooter = !request()->is('hrm/payroll/master-salary/*') && !request()->is(
 
 
 
-<body class="no-skin" style="font-family: 'Fira Sans', sans-serif;">
+<body class="no-skin{{ $mmShell ? ' mm-shell' : '' }}" style="font-family: 'Fira Sans', sans-serif;">
 
 
 
+    @if ($mmShell)
+        {{-- Apply the saved theme before first paint to avoid a light flash. --}}
+        <script>try { if (localStorage.getItem('mm-theme') === 'dark') document.body.classList.add('mm-dark'); } catch (e) {}</script>
+        <a href="#mm-main-content" class="mm-shell-skip">Skip to content</a>
+        <button type="button" class="mm-shell-backdrop" data-mm-close aria-label="Close navigation" hidden></button>
+    @endif
     <!-- header -->
     @if ($isAdminHeader)
 
@@ -75,7 +83,7 @@ $isShowFooter = !request()->is('hrm/payroll/master-salary/*') && !request()->is(
 
 
         <!-- main content -->
-        <div class="main-content">
+        <div class="main-content" @if ($mmShell) id="mm-main-content" tabindex="-1" @endif>
 
             <div class="main-content-inner" @if ($dashboard && (request()->is('/') || request()->is('home'))) style="background: #f2f2f2" @endif>
 
@@ -104,7 +112,11 @@ $isShowFooter = !request()->is('hrm/payroll/master-salary/*') && !request()->is(
         <!-- footer -->
         @if ($isShowFooter)
 
-            @include('partials._footer')
+            @if ($mmShell)
+                @include('layouts.shell.footer')
+            @else
+                @include('partials._footer')
+            @endif
 
         @endif
 
@@ -116,6 +128,11 @@ $isShowFooter = !request()->is('hrm/payroll/master-salary/*') && !request()->is(
 
     <!-- master file script -->
     @include('layouts.includes.master-file-script')
+    @if ($mmShell)
+        <script src="{{ asset('assets/custom_js/shell.js') }}?v={{ filemtime(public_path('assets/custom_js/shell.js')) }}"></script>
+        @include('layouts.shell.overlays')
+        <script src="{{ asset('assets/custom_js/shell-tools.js') }}?v={{ filemtime(public_path('assets/custom_js/shell-tools.js')) }}"></script>
+    @endif
 
 
 

@@ -751,6 +751,9 @@ class AccountReportController extends Controller
             $data['transaction_items'] = $data['transaction_items']->paginate(30);
         }
 
+        // round 3 (docs/BUGS.md #42): the view date-groups + paginates $transactions
+        $data['transactions'] = $data['transaction_items'];
+
         return view('reports.expense-analysis.' . ($request->print ? 'print' : 'index'), $data);
     }
 
@@ -923,5 +926,151 @@ class AccountReportController extends Controller
         $view = 'reports.cash-flow.' . ($request->print ? 'print' : 'index');
 
         return view($view, $data);
+    }
+
+
+    /*
+     |--------------------------------------------------------------------------
+     | REVENUE ANALYSIS  (restores the /reports/revenue-analysis route)
+     |--------------------------------------------------------------------------
+    */
+    public function revenueAnalysisReport(Request $request)
+    {
+        $this->hasAccess("account.revenue.analysis.reports");
+
+        $from = $request->from ?? date('Y-01-01');
+        $to   = $request->to ?? date('Y-m-d');
+
+        $base = Transaction::query()
+            ->whereHas('account', function ($q) {
+                $q->where('account_group_id', 4)->where('balance_type', 'Credit');
+            })
+            ->where('date', '>=', $from)
+            ->where('date', '<=', $to);
+
+        $data                  = $this->dataService->getAccountData(['accountControls', 'accountSubsidiaries']);
+        $data['from']          = $from;
+        $data['to']            = $to;
+        $data['total_amount']  = (clone $base)->sum('amount');
+        $data['row_count']     = (clone $base)->count();
+
+        $base = $base->with(['account.accountSubsidiary', 'account.accountControl'])->orderByDesc('date');
+
+        $data['transaction_items'] = $request->print ? $base->get() : $base->paginate(30)->withQueryString();
+
+        return view('reports.revenue-analysis.index', $data);
+    }
+
+
+    /*
+     |--------------------------------------------------------------------------
+     | NOMINAL ACCOUNT LEDGER  (all revenue + expense accounts in one ledger)
+     |--------------------------------------------------------------------------
+    */
+    public function nominalAccountLedgerReport(Request $request)
+    {
+        $this->hasAccess("account.nominal.account.ledger.reports");
+
+        $from = $request->from ?? date('Y-01-01');
+        $to   = $request->to ?? date('Y-m-d');
+
+        $base = Transaction::query()
+            ->whereHas('account', function ($q) {
+                $q->whereIn('account_group_id', [4, 5]);
+            })
+            ->where('date', '>=', $from)
+            ->where('date', '<=', $to);
+
+        $data                 = [];
+        $data['from']         = $from;
+        $data['to']           = $to;
+        $data['debit_total']  = (clone $base)->sum('debit_amount');
+        $data['credit_total'] = (clone $base)->sum('credit_amount');
+
+        $base = $base->with(['account.accountSubsidiary', 'account.accountControl'])->orderBy('date');
+
+        $data['transaction_items'] = $request->print ? $base->get() : $base->paginate(100)->withQueryString();
+
+        return view('reports.nominal-account-ledger.index', $data);
+    }
+
+
+    /*
+     |--------------------------------------------------------------------------
+     | RATIO ANALYSIS (simple financial ratios from posted transactions)
+     |--------------------------------------------------------------------------
+    */
+    public function ratioAnalysisReport(Request $request)
+    {
+        $this->hasAccess("account.ratio.analysis.reports");
+
+        $from = $request->from ?? date('Y-01-01');
+        $to   = $request->to ?? date('Y-m-d');
+
+        $groupTotals = DB::table('transactions')
+            ->join('accounts', 'accounts.id', '=', 'transactions.account_id')
+            ->where('transactions.date', '>=', $from)
+            ->where('transactions.date', '<=', $to)
+            ->selectRaw('accounts.account_group_id as group_id, SUM(transactions.amount) as total')
+            ->groupBy('accounts.account_group_id')
+            ->pluck('total', 'group_id');
+
+        $assets      = (float) ($groupTotals[1] ?? 0);
+        $liabilities = (float) ($groupTotals[2] ?? 0);
+        $equity      = (float) ($groupTotals[3] ?? 0);
+        $revenue     = (float) ($groupTotals[4] ?? 0);
+        $expense     = (float) ($groupTotals[5] ?? 0);
+
+        $netProfit = $revenue - $expense;
+
+        $ratios = [
+            ['Debt to Equity',            $equity != 0    ? round($liabilities / $equity, 2) : 'n/a',   'Total Liabilities / Owner Equity'],
+            ['Debt to Assets',            $assets != 0    ? round($liabilities / $assets, 2) : 'n/a',    'Total Liabilities / Total Assets'],
+            ['Net Profit Margin (%)',     $revenue != 0   ? round($netProfit / $revenue * 100, 2) : 'n/a','Net Profit / Revenue'],
+            ['Expense Coverage (x)',      $expense != 0   ? round($revenue / $expense, 2) : 'n/a',       'Revenue / Expenses'],
+            ['Net Profit',                round($netProfit, 2),                                          'Revenue - Expenses'],
+            ['Return on Assets (%)',       $assets != 0   ? round($netProfit / $assets * 100, 2) : 'n/a','Net Profit / Total Assets'],
+        ];
+
+        $data = [
+            'from'       => $from,
+            'to'         => $to,
+            'assets'     => $assets,
+            'liabilities'=> $liabilities,
+            'equity'     => $equity,
+            'revenue'    => $revenue,
+            'expense'    => $expense,
+            'ratios'     => $ratios,
+        ];
+
+        return view('reports.ratio-analysis.index', $data);
+    }
+
+
+    /*
+     |--------------------------------------------------------------------------
+     | RECEIVED PAYMENT STATEMENT (acc_collections listing by date range)
+     |--------------------------------------------------------------------------
+    */
+    public function receivedPaymentStatementReport(Request $request)
+    {
+        $this->hasAccess("account.received.payment.statement.reports");
+
+        $from = $request->from ?? date('Y-01-01');
+        $to   = $request->to ?? date('Y-m-d');
+
+        $base = \Module\Account\Models\Collection::query()
+            ->where('date', '>=', $from)
+            ->where('date', '<=', $to)
+            ->orderByDesc('date');
+
+        $data               = [];
+        $data['from']       = $from;
+        $data['to']         = $to;
+        $data['total']      = (clone $base)->sum('amount');
+        $data['customers']  = \Module\Account\Models\Customer::query()->pluck('name', 'id');
+        $data['collections'] = $request->print ? $base->get() : $base->paginate(50)->withQueryString();
+
+        return view('reports.received-payment-statement.index', $data);
     }
 }

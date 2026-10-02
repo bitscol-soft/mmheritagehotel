@@ -12,79 +12,21 @@
         body {
             counter-reset: section;
         }
-
         .count:before {
             counter-increment: section;
             content: counter(section);
         }
-
         select:invalid {
             height: 0px !important;
             opacity: 0 !important;
             position: absolute !important;
             display: flex !important;
         }
-
         select:invalid[multiple] {
             margin-top: 15px !important;
         }
-
-        .booking-view {
-            padding: 50px !important;
-        }
-
-        .input-group input {
-            width: 100%;
-            padding-left: 10px !important;
-        }
-
-        .widget-header {
-            background-color: #EAF4FA !important;
-            background-image: none !important;
-        }
-
-        label.input-group-addon {
-            background-color: #EAF4FA;
-            color: #669fc7;
-        }
-
-        .info-title {
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-
-        .guest-detail-table thead th {
-            background-color: #4d8cb3;
-            color: #fff;
-        }
-
-        .payment-info-body {
-            border-bottom: 1px solid #ccc
-        }
-
-        .payment-info-body input {
-            width: 100px;
-            text-align: right
-        }
-
-        .payment-info .submit-btn {
-            background-color: #87b87f;
-            color: #fff;
-            border: 1px solid #87b87f;
-            padding: 5px 15px;
-            border-radius: 5px;
-        }
-
-        .due-info span {
-            font-size: 15px;
-            font-weight: 600;
-            color: #4d8cb3;
-        }
     </style>
 @endpush
-
-
 @section('content')
     @php
         $sub_total = $booking->sub_total;
@@ -95,104 +37,48 @@
         $current_due = $total_amount - $adv_amount;
     @endphp
 
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="widget-box">
-                <div class="widget-header">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
-
-                    <span class="widget-toolbar">
-                        <a href="{{ route('booking.index') }}">
-                            <i class="ace-icon fa fa-list-alt"></i> Booking List
-                        </a>
-                    </span>
-
-                </div>
-
-                <div class="widget-body">
-                    <div class="widget-main booking-view">
-                        <form class="form-horizontal" action="{{ route('booking.checkout', $booking->id) }}" method="post"
+    <x-mm.styles />
+    <x-mm.page class="mm-booking-checkout" title="Checkout and payment" description="Review charges, adjust nights, apply a discount and collect payment for this booking.">
+        <x-slot name="actions">
+            <a class="mm-button mm-button-secondary" href="{{ route('booking.index') }}">
+                <i class="ace-icon fa fa-list-alt" aria-hidden="true"></i> Booking List
+            </a>
+        </x-slot>
+        <form class="form-horizontal" action="{{ route('booking.checkout', $booking->id) }}" method="post"
                             enctype="multipart/form-data">
                             @csrf
+            <x-alert-message />
+            @include('booking._inc._booking-context', ['booking' => $booking])
 
-                            <x-alert-message />
+            <div class="mm-co-grid">
+                <section class="mm-panel mm-co-card" aria-labelledby="mm-co-guest">
+                    <h2 id="mm-co-guest" class="mm-co-title">Guest</h2>
+                    <dl class="mm-co-list">
+                        <div><dt>Name</dt><dd>{{ optional($booking->guestInfo)->name }}</dd></div>
+                        <div><dt>Booking number</dt><dd>{{ $booking->booking_number }}</dd></div>
+                        <div><dt>Mobile</dt><dd>{{ optional($booking->guestInfo)->phone_no }}</dd></div>
+                    </dl>
+                </section>
 
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="col-md-6">
-
-                                        <div class="guest-info borderless">
-                                            <div class="info-title">
-                                                <span><i class="fa  fa-exclamation-circle"></i></span>
-                                                <span class="title">Guest Information</span>
-                                            </div>
-
-                                            <div class="input-group" style="width:100%">
-                                                <label class="border-none input-group-addon"
-                                                    style="width:150px; text-align:left">
-                                                    Name
-                                                </label>
-                                                <input type="text" value="{{ optional($booking->guestInfo)->name }}"
-                                                    readonly>
-                                            </div>
-
-                                            <div class="input-group" style="width:100%">
-                                                <label class="border-none input-group-addon"
-                                                    style="width:150px; text-align:left">
-                                                    Booking Number
-                                                </label>
-                                                <input type="text" value="{{ $booking->booking_number }}" readonly>
-                                            </div>
-
-                                            <div class="input-group" style="width:100%">
-                                                <label class="border-none input-group-addon"
-                                                    style="width:150px; text-align:left">
-                                                    Mobile Number
-                                                </label>
-                                                <input type="text" value="{{ optional($booking->guestInfo)->phone_no }}"
-                                                    readonly>
-                                            </div>
-
-
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-3"></div>
-
-                                    <div class="col-md-3">
-                                        <div class="guest-info">
-                                            <div class="info-title">
-                                                <span><i class="fa  fa-exclamation-circle"></i></span>
-                                                <span class="title">Date Information</span>
-                                            </div>
-                                            <div class="input-group" style="width:100%">
-                                                <label class="input-group-addon" style="width:125px; text-align:left">Check
-                                                    In Date
-                                                </label>
-                                                <input type="text" value="{{ $booking->check_in_date }}" readonly>
-                                            </div>
-                                            <div class="input-group" style="width:100%">
-                                                <label class="input-group-addon" style="width:125px; text-align:left">Check
-                                                    Out Date
-                                                </label>
-                                                <input class="form-control date-picker" name="check_out_date"
+                <section class="mm-panel mm-co-card" aria-labelledby="mm-co-stay">
+                    <h2 id="mm-co-stay" class="mm-co-title">Stay</h2>
+                    <dl class="mm-co-list">
+                        <div><dt>Check in</dt><dd>{{ $booking->check_in_date }}</dd></div>
+                    </dl>
+                    <div class="mm-co-field">
+                        <label for="id-date-picker-1">Check out date</label>
+                        <input class="form-control date-picker" name="check_out_date"
                                                     id="id-date-picker-1" type="text"
                                                     value="{{ $booking->check_out_date }}" data-date-format="dd-mm-yyyy"
                                                     placeholder="Checkout Date" autocomplete="off">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                    </div>
+                </section>
 
-                                <div class="col-md-12">
-                                    <div class="row">
-                                        <div class="col-sm-3 col-sm-offset-9">
-                                            <div class="info-title">
-                                                <span><i class="fa  fa-exclamation-circle"></i></span>
-                                                <span class="title">Payment Type</span>
-                                            </div>
-
-                                            <select class="form-control chosen-select" name="payment_type"
+                <section class="mm-panel mm-co-card" aria-labelledby="mm-co-method">
+                    <h2 id="mm-co-method" class="mm-co-title">Payment method</h2>
+                    <div class="mm-co-field" role="group" aria-labelledby="mm-co-paytype">
+                        <span id="mm-co-paytype" class="mm-co-label">Payment type</span>
+                        <select class="form-control chosen-select" name="payment_type"
                                                 data-placeholder="-Choose Payment Type-">
                                                 <option></option>
                                                 @foreach ($account_type as $id => $name)
@@ -202,17 +88,10 @@
                                                     </option>
                                                 @endforeach
                                             </select>
-
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-3 col-sm-offset-9">
-                                            <div class="info-title">
-                                                <span><i class="fa  fa-exclamation-circle"></i></span>
-                                                <span class="title">Payment By</span>
-                                            </div>
-                                            {{-- @dd(); --}}
-                                            <select class="form-control chosen-select" name="pay_by"
+                    </div>
+                    <div class="mm-co-field" role="group" aria-labelledby="mm-co-payby">
+                        <span id="mm-co-payby" class="mm-co-label">Payment by</span>
+                        <select class="form-control chosen-select" name="pay_by"
                                                 data-placeholder="-Choose Member-">
                                                 <option></option>
                                                 {{-- @dd($booking); --}}
@@ -223,18 +102,14 @@
                                                     </option>
                                                 @endforeach
                                             </select>
+                    </div>
+                </section>
+            </div>
 
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            <div class="guest-details" style="margin-top: 50px;">
-                                <div class="row">
-                                    <div class="col-md-12">
-
-                                        <table class="table table-bordered table-striped table-hover guest-detail-table">
+            <section class="mm-panel mm-co-charges" aria-labelledby="mm-co-charges">
+                <h2 id="mm-co-charges" class="mm-co-title">Charges</h2>
+                <x-mm.table-scroll label="Booking charges">
+                    <table class="table table-bordered table-striped table-hover guest-detail-table">
                                             <thead>
                                                 <tr>
                                                     <th width="5%" class="text-center">SL</th>
@@ -373,161 +248,75 @@
                                             <input type="hidden" value="{{ $transactions->sum('total_amount') }}"
                                                 name="payble_amount">
                                         </table>
-                                        <div class="payment-info mt-1">
-                                            <div class="row">
-                                                <div class="col-md-5 col-lg-offset-7">
-                                                    <table class="table table-borderless"
-                                                        style="width: 85%; margin-left: auto;">
-                                                        <tr>
-                                                            <th>
-                                                                <p class="font-18 medium">Sub Total</p>
-                                                            </th>
-                                                            <th><i class="fal fa-arrow-right"></i></th>
-                                                            <th class="text-right">
-                                                                <p class="font-18 bold grand-subtotal">
-                                                                    {{ number_format($transactions->sum('total_amount'), 2) }}
-                                                                </p>
-                                                            </th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>
-                                                                <p class="font-18 medium">Service Charge</p>
-                                                            </th>
-                                                            <th><i class="fal fa-arrow-right"></i></th>
-                                                            <th class="text-right">
-                                                                <p class="font-18 bold grand-service-charge">
-                                                                    {{ number_format($transactions->sum('service_charge'), 2) }}
-                                                                </p>
-                                                            </th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>
-                                                                <p class="font-18 medium">Extra Charge</p>
-                                                            </th>
-                                                            <th><i class="fal fa-arrow-right"></i></th>
-                                                            <th class="text-right">
-                                                                <p class="font-18 bold grand-extra-charge">
-                                                                    {{ count($transactions) > 0 ? number_format($transactions[0]->extra_charge, 2) : 0 }}
-                                                                </p>
-                                                            </th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>
-                                                                <p class="font-18 medium">Vat Amount</p>
-                                                            </th>
-                                                            <th><i class="fal fa-arrow-right"></i></th>
-                                                            <th class="text-right">
-                                                                <p class="font-18 bold grand-vat-amount">
-                                                                    {{ number_format($transactions->sum('vat_amount'), 2) }}
-                                                                </p>
-                                                            </th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>
-                                                                <p class="font-18 medium">Total Amount</p>
-                                                            </th>
-                                                            <th><i class="fal fa-arrow-right"></i></th>
-                                                            <th class="text-right">
-                                                                <p class="font-18 bold grand-total-amount">
-                                                                    {{ number_format($transactions->sum('total_amount'), 2) }}
-                                                                </p>
-                                                            </th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>
-                                                                <p class="font-18 medium">Advanced Paid</p>
-                                                            </th>
-                                                            <th><i class="fal fa-arrow-right"></i></th>
-                                                            <th class="text-right">
-                                                                <p class="font-18 bold ">
-                                                                    {{ number_format($transactions->sum('collection') - $transactions->sum('change_amount'), 2 ?? 0) }}
-                                                                </p>
-                                                            </th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>
-                                                                <p class="font-18 medium">Total Payable</p>
-                                                            </th>
-                                                            <th><i class="fal fa-arrow-right"></i></th>
-                                                            <th class="text-right">
-                                                                <p class="font-18 bold payable-amount">
-                                                                    {{ number_format($current_due_amount = $transactions->sum('due_amount') + $transactions->sum('change_amount'), 2 ?? 0) }}
-                                                                </p>
-                                                            </th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>
-                                                                <p class="font-18 medium">Discount</p>
-                                                            </th>
-                                                            <th><i class="fal fa-arrow-right"></i></th>
-                                                            <th class="text-right">
-                                                                <p class="font-18 bold">
-                                                                    <input name="discount" id="discount"
+                </x-mm.table-scroll>
+            </section>
+
+            <section class="mm-panel mm-co-summary" aria-labelledby="mm-co-summary">
+                <h2 id="mm-co-summary" class="mm-co-title">Payment summary</h2>
+                <div class="mm-sum-row"><span class="mm-sum-label">Sub Total</span>
+                    <p class="font-18 bold grand-subtotal">
+                        {{ number_format($transactions->sum('total_amount'), 2) }}
+                    </p></div>
+                <div class="mm-sum-row"><span class="mm-sum-label">Service Charge</span>
+                    <p class="font-18 bold grand-service-charge">
+                        {{ number_format($transactions->sum('service_charge'), 2) }}
+                    </p></div>
+                <div class="mm-sum-row"><span class="mm-sum-label">Extra Charge</span>
+                    <p class="font-18 bold grand-extra-charge">
+                        {{ count($transactions) > 0 ? number_format($transactions[0]->extra_charge, 2) : 0 }}
+                    </p></div>
+                <div class="mm-sum-row"><span class="mm-sum-label">Vat Amount</span>
+                    <p class="font-18 bold grand-vat-amount">
+                        {{ number_format($transactions->sum('vat_amount'), 2) }}
+                    </p></div>
+                <div class="mm-sum-row is-strong"><span class="mm-sum-label">Total Amount</span>
+                    <p class="font-18 bold grand-total-amount">
+                        {{ number_format($transactions->sum('total_amount'), 2) }}
+                    </p></div>
+                <div class="mm-sum-row"><span class="mm-sum-label">Advanced Paid</span>
+                    <p class="font-18 bold ">
+                        {{ number_format($transactions->sum('collection') - $transactions->sum('change_amount'), 2 ?? 0) }}
+                    </p></div>
+                <div class="mm-sum-row is-strong"><span class="mm-sum-label">Total Payable</span>
+                    <p class="font-18 bold payable-amount">
+                        {{ number_format($current_due_amount = $transactions->sum('due_amount') + $transactions->sum('change_amount'), 2 ?? 0) }}
+                    </p></div>
+                <div class="mm-sum-row"><label class="mm-sum-label" for="discount">Discount</label>
+                    <p class="font-18 bold">
+                        <input name="discount" id="discount"
                                                                         onkeyup="calculateAmounts()"
                                                                         class="discount only-number input-sm text-right font-18 bold"
                                                                         type="text" min="0" step="any"
                                                                         value="0">
-                                                                </p>
-                                                            </th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>
-                                                                <p class="font-18 medium">Paid Amount</p>
-                                                            </th>
-                                                            <th><i class="fal fa-arrow-right"></i></th>
-                                                            <th class="text-right">
-                                                                <p class="font-18 bold">
-                                                                    <input name="paid_amount" id="paidAmount"
+                    </p></div>
+                <div class="mm-sum-row"><label class="mm-sum-label" for="paidAmount">Paid Amount</label>
+                    <p class="font-18 bold">
+                        <input name="paid_amount" id="paidAmount"
                                                                         onkeyup="calculateAmounts()"
                                                                         class="paid-amount only-number input-sm text-right font-18 bold"
                                                                         type="text" min="0" step="any"
                                                                         value="0">
-                                                                </p>
-                                                            </th>
-                                                        </tr>
-                                                        <tr>
-                                                            <th>
-                                                                <p>Current Due</p>
-                                                                <input id="check-full-payment" type="checkbox">
-                                                                <label for="check-full-payment"><span>Full
-                                                                        Payment</span></label>
-                                                            </th>
-                                                            <th></th>
-                                                            <th class="text-right">
-                                                                <input id="get-due" type="hidden"
+                    </p></div>
+                <div class="mm-sum-row is-due"><span class="mm-sum-label">Current Due</span>
+                    <input id="get-due" type="hidden"
                                                                     onkeyup="calculateAmounts()"
                                                                     value="{{ $current_due_amount }}">
-                                                                <p class="current-due font-18 bold">
-                                                                    {{ number_format($current_due_amount, 2) }}</p>
-                                                            </th>
-                                                        </tr>
-                                                    </table>
-                                                    <div class="row due-info">
-
-                                                        <div class="col-md-12 text-right">
-                                                            <button class="btn-outline-success btn-sm" type="submit">
-                                                                <i class="fas fa-money-bill"></i>
-                                                                Payment & Checkout
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </form>
-                    </div>
+                    <p class="current-due font-18 bold">
+                        {{ number_format($current_due_amount, 2) }}</p></div>
+                <div class="mm-sum-full">
+                    <input id="check-full-payment" type="checkbox">
+                    <label for="check-full-payment"><span>Full
+                            Payment</span></label>
                 </div>
-            </div>
-
-
-        </div>
-    </div>
-
-
+                <div class="mm-form-actions">
+                    <button class="mm-button" type="submit">
+                        <i class="fa fa-money" aria-hidden="true"></i>
+                        Payment &amp; Checkout
+                    </button>
+                </div>
+            </section>
+        </form>
+    </x-mm.page>
 @endsection
 
 @section('js')

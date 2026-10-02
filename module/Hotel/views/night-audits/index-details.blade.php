@@ -291,7 +291,7 @@
                                 <div class="pull-right hidden-print">
                                     @if ($audit)
                                     <button type="button" onclick="delete_item(`{{ route('night-audits.destroy', $audits->first()->date) }}`)" class="btn-xs btn-outline-danger" title="Delete">
-                                        <i class="fa fa-trash"></i>
+                                        <i class="fa fa-trash-o"></i>
                                     </button>
                                     @endif
                                 </div>

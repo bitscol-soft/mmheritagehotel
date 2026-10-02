@@ -10,22 +10,37 @@
         content: '';
         position: absolute;
         left: 0;
-        bottom: -10px;
-        height: 4px;
-        width: 300px;
-        background: #609660;
+        bottom: -12px;
+        height: 2px;
+        width: 100%;
+        max-width: 300px;
+        background: #dbe5f1;
     }
     .main-row{
         padding: 0 15px;
         margin-bottom: 30px
     }
     .room-item {
-        border: 4px solid #9585BF;
-        margin-bottom: 20px;
+        border: 2px solid #9585BF;
+        border-radius: 6px;
+        margin-bottom: 12px;
         cursor: pointer;
         height: 70px;
         text-align: center;
         font-weight: 500;
+        transition: box-shadow .12s ease, transform .12s ease;
+    }
+    .room-item:hover {
+        box-shadow: 0 3px 9px rgba(47, 99, 168, .18);
+        transform: translateY(-1px);
+    }
+    .category-item b {
+        background: #f4f7fb;
+        border: 1px solid #dbe5f1;
+        border-radius: 4px;
+        padding: 4px 12px;
+        font-size: 14px;
+        display: inline-block;
     }
     .room-item .room-number {
         display: flex;

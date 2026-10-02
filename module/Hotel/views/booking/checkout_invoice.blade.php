@@ -63,6 +63,8 @@
 
         }
     </style>
+
+    @include('booking._css.invoice-sheet')
 @stop
 
 @section('content')
@@ -77,92 +79,57 @@
     @endphp
 
 
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="widget-box">
-                <div class="widget-header hidden-print">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
-                    @if (hasPermission('service.view', $slugs))
-                        <span class="widget-toolbar">
+    <x-mm.styles />
+    <x-mm.page class="mm-invoice-page" title="Booking invoice" description="Review the invoice and print it. Printing outputs the document only.">
+        <x-slot name="actions">
+            <a class="mm-button mm-button-secondary" href="{{ route('booking.index') }}">
+                <i class="fa fa-list-alt" aria-hidden="true"></i> Booking List
+            </a>
+            @if (hasPermission('service.view', $slugs))
+                <a href="#" class="mm-button" onclick="printPage('print_body'); return false;">
+                    <i class="fa fa-print" aria-hidden="true"></i> Print
+                </a>
+            @endif
+        </x-slot>
+        <x-mm.panel class="tw-p-4">
+                            <div id="print_body" class="invoice-doc">
+                                <div class="inv-head">
+                                    <div class="inv-brand">
+                                        <h3>{{ $company->name }}</h3>
+                                        <p>{{ $company->head_office }}</p>
+                                        <p>{{ $company->phone_number }}@if (!empty($company->email)), {{ $company->email }}@endif</p>
+                                    </div>
+                                    <div class="inv-doctitle">
+                                        <div class="inv-kind">Invoice</div>
+                                        <div class="inv-no">BK-{{ $booking->booking_number }}</div>
+                                        <div class="inv-printed">Printed {{ date('d M Y, h:i A') }}</div>
+                                    </div>
+                                </div>
 
-                            <a href="#" onclick="printPage('print_body')">
-                                <i class="fa fa-print"></i>
-                                Print
-                            </a>
-                        </span>
-                    @endif
-
-                </div>
-                <div class="widget-body">
-                    <div class="widget-main">
-
-                        <div class="row">
-                            <div id="print_body">
-                                <div id="customer_info" style="padding: 0 10px;">
-                                    <div class="row">
-                                        <x-company-info :company="$company" />
-                                        <hr>
-                                        <div class="customerInfo" style="width: 60%;float: left; ">
-
-                                            <h5><b><u>Guest's Information : </u></b></h5>
-                                            <p class="patient"><b>Name : </b>{{ $booking->guestInfo->name }}</p>
-                                            <p><b>Room :</b>{{ $booking->bookingDetail->roomCategory->name }} -
-                                                {{ $booking->bookingDetail->roomNumber->room_number }}</p>
-                                            <p class="patient"><b>Address : </b>{{ $booking->guestInfo->address }}
-                                            </p>
-                                            <p><b>Nationality :</b>{{ $booking->guestInfo->country->name }}</p>
-                                            <p class="patient"><b>Mobile : </b>{{ $booking->guestInfo->phone_no }}
-                                            </p>
-                                        </div>
-                                        <div class="invoiceInfo" style="width: 40%;float: left;margin-top: 5px;">
-                                            <table class="table table-bordered" style="border: none !important;">
-                                                <tr>
-                                                    <th width="50%" style="border: none !important;"> Booking No : </th>
-                                                    <th style="border: none !important;">
-                                                        BK-{{ $booking->booking_number }}</th>
-                                                </tr>
-                                                <tr>
-                                                    <td style="border: none !important;"> Booking Date : </td>
-                                                    <td style="border: none !important;">{{ $booking->booking_date }}
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="border: none !important;"> Check IN Date : </td>
-                                                    <td style="border: none !important;">{{ $booking->check_in_date }}
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="border: none !important;"> Check out Date : </td>
-                                                    <td style="border: none !important;">{{ $booking->check_out_date }}
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="border: none !important;"> Payment Type : </td>
-                                                    <td style="border: none !important;">
-                                                        {{ $booking->paymentType->name ?? 'None' }}
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="border: none !important;"> Service Charge: </td>
-                                                    <td style="border: none !important;">
-                                                        {{ number_format($booking->service_amount, 2) }}
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td style="border: none !important;"> Vat Number: </td>
-                                                    <td style="border: none !important;">
-                                                        {{ vatSetting()->vat_number }}
-                                                    </td>
-                                                </tr>
-
-                                            </table>
-                                        </div>
+                                <div class="inv-panels">
+                                    <div class="inv-panel">
+                                        <p class="inv-panel-title">Guest</p>
+                                        <p class="inv-defrow"><span>Name</span><span>{{ optional($booking->guestInfo)->name ?: '—' }}</span></p>
+                                        <p class="inv-defrow"><span>Address</span><span>{{ optional($booking->guestInfo)->address ?: '—' }}</span></p>
+                                        <p class="inv-defrow"><span>Mobile</span><span>{{ optional($booking->guestInfo)->phone_no ?: '—' }}</span></p>
+                                        <p class="inv-defrow"><span>Nationality</span><span>{{ optional(optional($booking->guestInfo)->country)->name ?: '—' }}</span></p>
+                                        <p class="inv-defrow"><span>Room</span><span>{{ optional(optional($booking->bookingDetail)->roomCategory)->name }} - {{ optional(optional($booking->bookingDetail)->roomNumber)->room_number }}</span></p>
+                                    </div>
+                                    <div class="inv-panel">
+                                        <p class="inv-panel-title">Booking</p>
+                                        <p class="inv-defrow"><span>Booking No</span><span>BK-{{ $booking->booking_number }}</span></p>
+                                        <p class="inv-defrow"><span>Booking Date</span><span>{{ $booking->booking_date }}</span></p>
+                                        <p class="inv-defrow"><span>Check In</span><span>{{ $booking->check_in_date }}</span></p>
+                                        <p class="inv-defrow"><span>Check Out</span><span>{{ $booking->check_out_date }}</span></p>
+                                        <p class="inv-defrow"><span>Payment Type</span><span>{{ $booking->paymentType->name ?? 'None' }}</span></p>
+                                        <p class="inv-defrow"><span>Service Charge</span><span>{{ number_format($booking->service_amount, 2) }} &#x09F3;</span></p>
+                                        <p class="inv-defrow"><span>VAT Number</span><span>{{ vatSetting()->vat_number }}</span></p>
                                     </div>
                                 </div>
 
                                 <div class="invoice-content">
                                     <div class="table-responsive">
-                                        <table class="table table-bordered" style="border:none !important">
+                                        <table class="table inv-lines">
                                             <thead>
                                                 <tr>
                                                     <th width="5%" class="text-center">SL</th>
@@ -396,7 +363,7 @@
                                                     </tr>
                                                 @endforeach
 
-                                                <tr>
+                                                <tr class="inv-sumrow">
                                                     <td colspan="5"
                                                         style="text-align: right; border: none !important;">
                                                         Subtotal </td>
@@ -405,7 +372,7 @@
                                                         &#x09F3;</th>
                                                 </tr>
 
-                                                <tr>
+                                                <tr class="inv-sumrow">
                                                     <td colspan="5"
                                                         style="text-align: right; border: none !important;">
                                                         Service Charge </td>
@@ -414,7 +381,7 @@
                                                         &#x09F3;</th>
                                                 </tr>
 
-                                                <tr>
+                                                <tr class="inv-sumrow">
                                                     <td colspan="5"
                                                         style="text-align: right; border: none !important;">
                                                         Vat({{ vatSetting()->hotel_vat }}%) </td>
@@ -423,7 +390,7 @@
                                                         &#x09F3;</th>
                                                 </tr>
 
-                                                <tr>
+                                                <tr class="inv-sumrow inv-grand">
                                                     <td colspan="5"
                                                         style="text-align: right; border: none !important;">
                                                         Total </td>
@@ -431,7 +398,7 @@
                                                         {{ number_format($total_amount, 2 ?? 0) }}
                                                         &#x09F3;</th>
                                                 </tr>
-                                                <tr>
+                                                <tr class="inv-sumrow">
                                                     <td colspan="5"
                                                         style="text-align: right; border: none !important;">
                                                         Discount </td>
@@ -439,14 +406,14 @@
                                                         0.00
                                                         &#x09F3;</th>
                                                 </tr>
-                                                <tr>
+                                                <tr class="inv-sumrow">
                                                     <td colspan="5"
                                                         style="text-align: right; border: none !important;">
                                                         Paid</td>
                                                     <th style="text-align: right; border: none !important;">
                                                         {{ number_format($net_collection, 2) }} &#x09F3;</th>
                                                 </tr>
-                                                <tr>
+                                                <tr class="inv-sumrow inv-grand inv-due">
                                                     <td colspan="5"
                                                         style="text-align: right; border: none !important;">Due
                                                     </td>
@@ -457,52 +424,20 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
+</div>
 
-                                            <h5 style="font-weight: 700;">Amount Paid :
-                                                <span>
-                                                    {{ number_format($net_collection, 2 ?? 0) }}&#x09F3;
-                                                </span>
-                                            </h5>
-                                        </div>
-                                    </div>
+                                <div class="inv-sign">
+                                    <div class="sig">Received By</div>
+                                    <div class="sig">Authorized By</div>
+                                    <div class="sig">Prepared By<br>{{ optional(auth()->user())->name }}</div>
                                 </div>
-
-                                <div class="print-footer"
-                                    style="margin-top: 40px;overflow: hidden;width: 100%;padding: 0 10px;">
-                                    <div class="sign" style="width: 100%; overflow: hidden;">
-                                        <div class="company_sign" style="width: 33%; float: left;">
-                                            <h5 style="width:50%; margin: 0 auto; padding: 10px 0;text-align: center;">
-                                                &nbsp;</h5>
-                                            <h5
-                                                style="width:50%;margin: 0 auto;border-top: 1px solid #000;padding: 10px 0;text-align: center;">
-                                                Received By</h5>
-                                        </div>
-                                        <div class="company_sign" style="width: 33%; float: left;">
-                                            <h5 style="width:50%; margin: 0 auto; padding: 10px 0;text-align: center;">
-                                                &nbsp;</h5>
-                                            <h5
-                                                style="width:50%;margin: 0 auto;border-top: 1px solid #000;padding: 10px 0;text-align: center;">
-                                                Authorized By</h5>
-                                        </div>
-                                        <div class="company_sign" style="width: 33%; float: left;">
-                                            <h5 style="width:50%; margin: 0 auto; padding: 10px 0;text-align: center;">
-                                                &nbsp;</h5>
-                                            <h5
-                                                style="width:50%;margin: 0 auto;border-top: 1px solid #000;padding: 10px 0;text-align: center;">
-                                                Prepared By <br>{{ auth()->user()->name }}</h5>
-                                        </div>
-                                    </div>
-
+                                <div class="inv-foot">
+                                    <span>Thank you for staying with us.</span>
+                                    <span>{{ $company->name }}</span>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+        </x-mm.panel>
+    </x-mm.page>
 @endsection
 
 @section('js')
@@ -513,8 +448,10 @@
                 importStyle: true
             });
         };
-        window.onreadystatechange = $('#print_body').printThis({
-            importStyle: true
+        // round-6: print-on-open kept, but fired after load (old version ran at parse time
+        // against a non-existent window.onreadystatechange event)
+        window.addEventListener('load', function () {
+            setTimeout(function () { $('#print_body').printThis({ importStyle: true }); }, 400);
         });
     </script>
 @stop

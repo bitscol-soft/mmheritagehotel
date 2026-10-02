@@ -47,16 +47,16 @@ function getSidebarName($menu)
 
 function getCrmCompany($companyId)
 {
-    $crmCompany = CRMCustomer::find($companyId);
+    $crmCompany = $companyId ? CRMCustomer::find($companyId) : null;
 
-    return $crmCompany->org_name;
+    return optional($crmCompany)->org_name;
 }
 
 function getCrmCompanyAddress($companyId)
 {
-    $crmCompany = CRMCustomer::find($companyId);
+    $crmCompany = $companyId ? CRMCustomer::find($companyId) : null;
 
-    return $crmCompany->address;
+    return optional($crmCompany)->address;
 }
 
 

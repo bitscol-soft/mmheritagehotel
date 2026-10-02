@@ -14,148 +14,116 @@
 
 
 @section('content')
-    <div class="row">
-        <div class="col-sm-12">
 
+<x-mm.styles />
+<x-mm.page class="mm-report mm-acc mm-rst mm-rst-inv mm-rst-form" title="Account Opening Balance" description="Enter opening balances for the ledger accounts.">
+    <x-slot name="actions">
+        <a class="mm-button mm-button-secondary" href="{{ request()->url() }}"><i class="fa fa-refresh"></i> Refresh</a>
+        @if(hasPermission('accounts.create', $slugs))
+            <a class="mm-button" href="{{ route('accounts.create') }}"><i class="fa fa-plus"></i> Add New</a>
+        @endif
+    </x-slot>
+    <x-mm.panel class="mm-report-filter">
+            <form action="" method="GET" class="mm-setup-filter mm-report-form">
+                <div class="input-group">
+                    <label class="input-group-addon">Company <strong class="text-danger">*</strong></label>
+                    <select class="form-control chosen-select-100-percent required" required name="company_id">
+                        <option></option>
+                        @foreach($companies as $id => $name)
+                            <option value="{{ $id }}" {{ $id == request('company_id') ? 'selected' : '' }}>{{ $name }}</option>
+                        @endforeach 
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-group-addon">Account Group</label>
+                    <select class="form-control chosen-select-100-percent" id="account_group_id" name="account_group_id">
+                        <option></option>
+                        @foreach($accountGroups as $id => $name)
+                            <option value="{{ $id }}" {{ $id == request('account_group_id') ? 'selected' : '' }}>{{ $name }}</option>
+                        @endforeach 
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-group-addon">Account Control</label>
+                    <select class="form-control chosen-select-100-percent" id="account_control_id" name="account_control_id">
+                        <option></option>
+                        @foreach($accountControls as $id => $name)
+                            <option value="{{ $id }}" {{ $id == request('account_control_id') ? 'selected' : '' }}>{{ $name }}</option>
+                        @endforeach 
+                    </select>
+                </div>
+
+                <div class="btn-group">
+                    <button type="submit" class="mm-button"><i class="fa fa-check-circle"></i> Get Data</button>
+                </div>
+            </form>
+    </x-mm.panel>
+    <x-mm.panel class="tw-p-4">
         @include('partials._alert_message')
+        <!-- LIST -->
+        <div class="row" style="width: 100%; margin: 0 !important;">
 
-            <div class="widget-box widget-color-white ui-sortable-handle clearfix" id="widget-box-7">
-                
-                
-                <!-- heading -->
-                <div class="widget-header widget-header-small">
-                    <h3 class="widget-title smaller text-primary">
-                        @yield('page-header')
-                    </h3>
+            @if (request()->company_id != '')
 
-                    <div class="widget-toolbar border smaller">
-                        <a href="{{ request()->url() }}">
-                            <i class="fa fa-refresh bigger-110"></i> Refresh
-                        </a>
-                    </div>
-
-                    <div class="widget-toolbar border smaller">
-                        @if(hasPermission('accounts.create', $slugs)))
-                            <a href="{{ route('accounts.create') }}" >
-                                <i class="fa fa-plus bigger-110"></i> Add New
-                            </a>
-                        @endif
-                    </div>
-                </div>
-
-
-
-                <div class="space"></div>
+                <form action="{{ route('account-opening-balances.store') }}" method="POST">
+                    @csrf
 
 
 
 
-                <!-- LIST -->
-                <div class="row" style="width: 100%; margin: 0 !important;">
-
-                    <form action="" method="GET">
-                        <div class="col-sm-4">
-                            <div class="input-group">
-                                <label class="input-group-addon">Company <strong class="text-danger">*</strong></label>
-                                <select class="form-control chosen-select-100-percent required" required name="company_id">
-                                    <option></option>
-                                    @foreach($companies as $id => $name)
-                                        <option value="{{ $id }}" {{ $id == request('company_id') ? 'selected' : '' }}>{{ $name }}</option>
-                                    @endforeach 
-                                </select>
-                            </div>
-                        </div>
-    
-                        <div class="col-sm-3">
-                            <div class="input-group">
-                                <label class="input-group-addon">Account Group</label>
-                                <select class="form-control chosen-select-100-percent" id="account_group_id" name="account_group_id">
-                                    <option></option>
-                                    @foreach($accountGroups as $id => $name)
-                                        <option value="{{ $id }}" {{ $id == request('account_group_id') ? 'selected' : '' }}>{{ $name }}</option>
-                                    @endforeach 
-                                </select>
-                            </div>
-                        </div>
-    
-                        <div class="col-sm-3">
-                            <div class="input-group">
-                                <label class="input-group-addon">Account Control</label>
-                                <select class="form-control chosen-select-100-percent" id="account_control_id" name="account_control_id">
-                                    <option></option>
-                                    @foreach($accountControls as $id => $name)
-                                        <option value="{{ $id }}" {{ $id == request('account_control_id') ? 'selected' : '' }}>{{ $name }}</option>
-                                    @endforeach 
-                                </select>
-                            </div>
-                        </div>
-    
-                        <div class="col-sm-1">
-                            <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-check-circle"></i> Get Data</button>
-                        </div>
-                    </form>
-
-
-                    @if (request()->company_id != '')
-                        
-                        <form action="{{ route('account-opening-balances.store') }}" method="POST">
-                            @csrf
+                    <input type="hidden" name="company_id" value="{{ request('company_id') }}">
 
 
 
 
-                            <input type="hidden" name="company_id" value="{{ request('company_id') }}">
+                    <div class="col-sm-10 col-sm-offset-1 mt-2">
 
+                        <x-mm.table-scroll label="Account Opening Balance">
+                            <table id="data-table" class="table table-bordered table-striped">
+                                <thead>
+                                    <tr class="table-header-bg">
+                                        <th class="text-center" style="color: white !important;" width="8%">Sl</th>
+                                        <th class="pl-3" style="color: white !important;">Account Name</th>
+                                        <th class="pl-3" style="color: white !important;">Opening</th>
+                                    </tr>
+                                </thead>
 
-
-
-                            <div class="col-sm-10 col-sm-offset-1 mt-2">
-
-                                <table id="data-table" class="table table-bordered table-striped">
-                                    <thead>
-                                        <tr class="table-header-bg">
-                                            <th class="text-center" style="color: white !important;" width="8%">Sl</th>
-                                            <th class="pl-3" style="color: white !important;">Account Name</th>
-                                            <th class="pl-3" style="color: white !important;">Opening</th>
+                                <tbody>
+                                    @foreach($accounts as $item)
+                                        <tr>
+                                            <td class="text-center">{{ $loop->iteration }}</td>
+                                            <td class="pl-3">{{ $item->name }}</td>
+                                            <td class="pl-3">
+                                                <input type="hidden" name="account_ids[]" value="{{ $item->id }}">
+                                                <input type="number" class="form-control only-number text-center" autocomplete="off" name="amounts[]" value="{{ optional($item->opening_balances->first())->amount }}">
+                                            </td>
                                         </tr>
-                                    </thead>
-
-                                    <tbody>
-                                        @foreach($accounts as $item)
-                                            <tr>
-                                                <td class="text-center">{{ $loop->iteration }}</td>
-                                                <td class="pl-3">{{ $item->name }}</td>
-                                                <td class="pl-3">
-                                                    <input type="hidden" name="account_ids[]" value="{{ $item->id }}">
-                                                    <input type="number" class="form-control only-number text-center" autocomplete="off" name="amounts[]" value="{{ optional($item->opening_balances->first())->amount }}">
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </x-mm.table-scroll>
 
 
 
-                                @include('partials._paginate', ['data' => $accounts])
+                        @include('partials._paginate', ['data' => $accounts])
 
-                            </div>
+                    </div>
 
 
 
 
-                            <div class="col-sm-10 col-sm-offset-1 mb-2 text-right">
-                                <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-save"></i> Save</button>
-                            </div>
-                        </form>
-                    @endif
+                    <div class="col-sm-10 col-sm-offset-1 mb-2 text-right">
+                        <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-save"></i> Save</button>
+                    </div>
+                </form>
+            @endif
 
-                </div>
-
-
-                <div class="space"></div>
-            </div>
         </div>
-    </div>
+    </x-mm.panel>
+</x-mm.page>
+
 @endsection
 
 
@@ -198,6 +166,7 @@
             })
         });
     </script>
+
 @endsection
 
 

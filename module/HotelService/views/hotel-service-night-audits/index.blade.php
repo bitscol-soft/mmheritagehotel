@@ -9,79 +9,53 @@
 @stop
 
 @section('content')
-
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="widget-box">
-                <div class="widget-header">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
-
-                    {{-- <span class="widget-toolbar">
-                        <a href="{{ route('night-audits.create') }}">
-                            <i class="ace-icon fa fa-plus"></i> Generate
-                        </a>
-                    </span> --}}
-
-                </div>
-
-                <div class="widget-body">
-                    <div class="widget-main">
-
-                        @if( $checkNUll && count($nightaudits[0]->details) > 0)
-                            <div class="row mb-2">
-                                <form action="" method="GET">
-                                    <div class="col-sm-3 col-sm-offset-2">
-                                        <div class="input-group">
-                                            <label class="input-group-addon">From</label>
-                                            <input type="text" class="date-picker form-control text-center" autocomplete="off" name="from_date" value="{{ request('from_date') }}" placeholder="From Date">
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-3">
-                                        <div class="input-group">
-                                            <label class="input-group-addon">To</label>
-                                            <input type="text" class="form-control date-picker text-center" autocomplete="off" name="to_date" value="{{ request('to_date') }}" placeholder="To Date">
-                                        </div>
-                                    </div>
-
-                                    <div class="col-sm-3">
-                                        <div class="btn-group">
-                                            <button type="submit" class="btn btn-sm btn-primary">
-                                                <i class="fa fa-search-plus"></i> Search
-                                            </button>
-                                            <a href="{{ request()->url() }}" class="btn btn-sm">
-                                                <i class="fa fa-refresh"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-
-                                </form>
-                            </div>
-                        @endif
-
-                        <div class="row">
-
-                            <x-alert-message />
-
-                            <div class="col-xs-12">
-
-
-                                @include('hotel-service-night-audits.export.excel')
-
-                                @if( $checkNUll && count($nightaudits[0]->details) > 0) <x-export-button pdf="1" excel="1" /> @endif
-
-                                <x-paginate :data="$nightaudits" />
-                                {{-- @include('partials._paginate', ['data' => $nightaudits]) --}}
-                            </div>
-                        </div>
+<x-mm.styles />
+<x-mm.page class="mm-report mm-hs-audit" title="Hotel service night audit" description="Service night audits closed in the selected period.">
+    <x-alert-message />
+    @if( $checkNUll && count($nightaudits[0]->details) > 0)
+        <x-mm.panel class="mm-report-filter">
+            <form action="" method="GET" class="mm-setup-filter mm-report-form">
+                <div class="mm-report-field">
+                    <div class="input-group">
+                        <label class="input-group-addon">From</label>
+                        <input type="text" class="date-picker form-control text-center" autocomplete="off" name="from_date" value="{{ request('from_date') }}" placeholder="From Date">
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
+                <div class="mm-report-field">
+                    <div class="input-group">
+                        <label class="input-group-addon">To</label>
+                        <input type="text" class="form-control date-picker text-center" autocomplete="off" name="to_date" value="{{ request('to_date') }}" placeholder="To Date">
+                    </div>
+                </div>
+                <div class="mm-report-field">
+                    <div class="btn-group">
+                        <button type="submit" class="mm-button">
+                            <i class="fa fa-search-plus"></i> Search
+                        </button>
+                        <a href="{{ request()->url() }}" class="mm-button mm-button-secondary" aria-label="Reset">
+                            <i class="fa fa-refresh"></i>
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </x-mm.panel>
+    @endif
 
-    @foreach ($nightaudits as $audit)
-        @include('hotel-service-night-audits.details')
-    @endforeach
+    <x-mm.panel>
+        <x-mm.table-scroll label="Hotel service night audits">
+            @include('hotel-service-night-audits.export.excel')
+        </x-mm.table-scroll>
+
+        @if( $checkNUll && count($nightaudits[0]->details) > 0) <x-export-button pdf="1" excel="1" /> @endif
+
+        <x-paginate :data="$nightaudits" />
+        {{-- @include('partials._paginate', ['data' => $nightaudits]) --}}
+    </x-mm.panel>
+</x-mm.page>
+
+@foreach ($nightaudits as $audit)
+    @include('hotel-service-night-audits.details')
+@endforeach
 
 @endsection
 

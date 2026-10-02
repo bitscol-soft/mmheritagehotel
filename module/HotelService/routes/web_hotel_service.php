@@ -16,10 +16,9 @@ Route::group(['prefix' => 'hotelservice', 'as' => 'hotelservice.'], function () 
     |--------------------------------------------------------------------------
     */
 
-    Route::resources([
-        'services'                  => HotelServiceController::class,
-        'service-sales'             => HotelServiceSaleController::class,
-    ]);
+    // HotelServiceController implements index/store/update/destroy only
+    Route::resource('services', HotelServiceController::class)->only(['index', 'store', 'update', 'destroy']);
+    Route::resource('service-sales', HotelServiceSaleController::class);
 
     Route::put('service-due-receive/{id}',       [HotelServiceSaleController::class, 'dueReceive'])->name('service-due-receive');
 

@@ -8,20 +8,13 @@
 @stop
 
 @section('content')
-    <div class="page-header">
-        <a class="btn btn-xs btn-info" href="{{ route('banquet.aminities.create') }}" style="float: right; margin: 0 2px;"> <i
-                class="fa fa-plus"></i> Add New Aminities</a>
-        <h1>
-            <i class="fa fa-info-circle green"></i> Aminities Name List
-        </h1>
-    </div>
+    <x-mm.styles />
+    <x-mm.page class="mm-banquet mm-hotel-setup" title="Hall amenities" description="Amenities available for halls.">
+        <x-slot name="actions"><a class="mm-button" href="{{ route('banquet.aminities.create') }}"><i class="fa fa-plus"></i> Add New Aminities</a></x-slot>
+        @include('partials._alert_message')
 
-    @include('partials._alert_message')
-
-    <div class="row">
-        <div class="col-xs-12">
-
-            <div class="table-responsive" style="border: 1px #cdd9e8 solid;">
+        <x-mm.panel>
+            <x-mm.table-scroll label="Hall amenities">
                 <table id="data-table" class="table table-striped table-bordered table-hover">
                     <thead>
                         <tr>
@@ -56,7 +49,7 @@
                                         </a>
                                         <button type="button" onclick="delete_check({{ $data->id }})"
                                             class="btn btn-xs btn-sm btn-danger" title="Delete">
-                                            <i class="fa fa-trash"></i>
+                                            <i class="fa fa-trash-o"></i>
                                         </button>
                                     </div>
 
@@ -70,58 +63,9 @@
                         @endforeach
                     </tbody>
                 </table>
-            </div>
-        </div>
-
-        {{-- <div class="col-xs-6">
-        <div class="col-sm-12">
-            <div class="widget-box">
-                <div class="widget-header">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
-                </div>
-
-                <div class="widget-body">
-                    <div class="widget-main no-padding">
-
-                        <div style="margin: 20px;">
-
-                        </div>
-
-                        <form class="form-horizontal" id="companyForm" action="{{ route('aminities.store') }}" method="post" enctype="multipart/form-data">
-                            @csrf
-
-                            <div class="row">
-                                <div class="col-sm-12">
-
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label" for="form-field-1-1"> Aminities Name </label>
-
-                                        <div class="col-xs-12 col-sm-8 @error('name') has-error @enderror">
-                                            <input type="text" class="form-control input-sm" name="name" value="{{ old('name') }}" placeholder="Aminities Name">
-
-                                            @error('name')
-                                            <span class="text-danger"> {{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div class="form-actions center" style="text-align: right !important;">
-                                <button type="submit" class="btn btn-sm btn-success">
-                                    <i class="ace-icon fa fa-save icon-on-right bigger-110"></i>
-                                    Save
-                                </button>
-                            </div>
-                        </form>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> --}}
-    </div>
+            </x-mm.table-scroll>
+        </x-mm.panel>
+    </x-mm.page>
 @endsection
 
 @section('js')

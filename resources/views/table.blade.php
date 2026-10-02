@@ -266,7 +266,7 @@
 
         <button type="button" onclick="delete_all_check()" class="btn btn-xs btn-danger" title="Delete"
                 style="float: right; margin: 0 2px;">
-            <i class="fa fa-trash"></i> Delete All
+            <i class="fa fa-trash-o"></i> Delete All
         </button>
 
         <form action="" id="deleteAllCheck" method="POST">
@@ -318,7 +318,7 @@
                                 <i class="fa fa-thumbs-up"></i>
                             </a>
                             <button type="button" onclick="delete_check('1')" class="btn btn-sm btn-danger" title="Delete">
-                                <i class="fa fa-trash"></i>
+                                <i class="fa fa-trash-o"></i>
                             </button>
 
                             <form action="{{ url('/form')}}" id="deleteCheck_1" method="POST">
@@ -346,7 +346,7 @@
                                 <i class="fa fa-thumbs-up"></i>
                             </a>
                             <button type="button" onclick="delete_check('1')" class="btn btn-sm btn-danger" title="Delete">
-                                <i class="fa fa-trash"></i>
+                                <i class="fa fa-trash-o"></i>
                             </button>
 
                             <form action="{{ url('/form')}}" id="deleteCheck_1" method="POST">

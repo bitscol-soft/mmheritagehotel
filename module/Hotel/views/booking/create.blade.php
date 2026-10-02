@@ -72,30 +72,22 @@
 
 @section('content')
     @php
-        $date = date('Y-m-d');
+        $date = today_from_system();
         $date1 = str_replace('-', '/', $date);
         $tomorrow = date('Y-m-d', strtotime($date1 . '+1 days'));
 
     @endphp
 
-    <div class="row">
+    <x-mm.styles />
+    <x-mm.page class="mm-booking-next" title="New booking" description="Choose the guest and stay dates, then add rooms and payment details.">
+        <x-slot name="actions">
+            <a class="mm-button mm-button-secondary" href="{{ route('booking.index') }}">
+                <i class="ace-icon fa fa-list-alt" aria-hidden="true"></i> Booking List
+            </a>
+        </x-slot>
+        <x-mm.panel>
+                    <div>
 
-
-        <div class="col-sm-12">
-            <div class="widget-box">
-                <div class="widget-header">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
-
-                    <span class="widget-toolbar">
-                        <a href="{{ route('booking.index') }}">
-                            <i class="ace-icon fa fa-list-alt"></i> Booking List
-                        </a>
-                    </span>
-
-                </div>
-
-                <div class="widget-body">
-                    <div class="widget-main">
                         <form class="form-horizontal" id="submitBookingUpdateForm" action="{{ route('booking.store') }}"
                             method="post" enctype="multipart/form-data">
                             @csrf
@@ -158,30 +150,22 @@
 
 
                         <!-- ACTION/SUBMIT FORM -->
-                        <div class="row my-2" style="margin-top: 5px; padding-right: 65px;">
-                            <div class="btn-group btn-cro pull-right me-2">
-                                <button type="button" name="type" value="reserve" onclick="submitBookingForm()"
-                                    class="updateBookingBtn btn-outline-primary btn-sm next-step-btn no-border">
-                                    <i class="fad fa-box-check"></i> Reserve
-                                </button>
-                                <button type="button" name="type" value="book" onclick="submitBookingForm()"
-                                    class="updateBookingBtn btn-outline-info btn-sm next-step-btn no-border">
-                                    <i class="fal fa-paper-plane"></i> Book Now
-                                </button>
-                                <button class="btn-sm btn-outline-danger" type="Reset">
-                                    <i class="fa fa-refresh"></i> Reset
-                                </button>
-                            </div>
+                        <div class="mm-form-actions">
+                            <button type="button" name="type" value="reserve" onclick="submitBookingForm()"
+                                class="updateBookingBtn next-step-btn mm-button mm-button-secondary">
+                                <i class="fa fa-bookmark" aria-hidden="true"></i> Reserve
+                            </button>
+                            <button type="button" name="type" value="book" onclick="submitBookingForm()"
+                                class="updateBookingBtn next-step-btn mm-button">
+                                <i class="fa fa-paper-plane" aria-hidden="true"></i> Book Now
+                            </button>
+                            <button class="mm-button mm-button-secondary" type="Reset">
+                                <i class="fa fa-refresh" aria-hidden="true"></i> Reset
+                            </button>
                         </div>
-
-
                     </div>
-                </div>
-            </div>
-
-
-        </div>
-    </div>
+        </x-mm.panel>
+    </x-mm.page>
     @include('partials/modal/new_guest_modal')
     @include('partials/modal/edit_v1_guest_modal')
 
@@ -190,6 +174,7 @@
 @section('script')
 
     @include('booking._script.script')
+    <script src="{{ asset('assets/custom_js/stay-dates.js') }}"></script>
 
 
 @endsection

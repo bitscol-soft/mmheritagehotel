@@ -1,0 +1,126 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css"><!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY--><section class="mm-ui mm-perm mm-perm-user">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Add new user</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Create a login for staff who are not linked to an employee record.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button mm-button-secondary" href="http://localhost/setting/permitted-users" title="Add New User"> <i class="fa fa-list-alt"></i> User List </a></div>        </header>
+        <div class="mm-panel tw-p-4 sm:tw-p-6"><form action="http://localhost/setting/store-user" method="POST">
+                        <input type="hidden" name="_token" value="fixture-csrf-token">
+
+                        
+
+                        <div class="row">
+                            <div class="col-sm-10 col-sm-offset-1 mt-2">
+
+
+                                <!-- User Name -->
+                                <div class="form-group row">
+                                    <label class="col-md-3 control-label" for="name">
+                                        User Name 
+                                        <span class="text-danger">*</span> :
+                                    </label>
+
+                                    <div class="col-md-8">
+                                        <input class="form-control" type="text" name="name" value="" placeholder="User Name" required />
+                                    </div>
+                                </div>
+
+
+
+
+
+
+
+
+                                <!-- Email-->
+                                <div class="form-group row">
+                                    <label class="col-md-3 control-label" for="email">
+                                        Email
+                                        <span class="text-danger">*</span> :
+                                    </label>
+
+                                    <div class="col-md-8">
+                                        <input class="form-control" type="email" name="email" value="" placeholder="example@email.com" autocomplete="off" required />
+                                    </div>
+                                </div>
+
+
+
+
+
+
+                                <!-- Mobile Number -->
+                                <div class="form-group row">
+                                    <label class="col-md-3 control-label" for="mobile_number">
+                                        Mobile :
+                                    </label>
+
+                                    <div class="col-md-8">
+                                        <input class="form-control" type="text" name="mobile_number" value="" placeholder="Mobile Number"/>
+                                    </div>
+                                </div>
+
+
+
+
+
+
+
+                                <!-- Password -->
+                                <div class="form-group row">
+                                    <label class="col-md-3 control-label" for="password">
+                                        Password 
+                                        <span class="text-danger">*</span> :
+                                    </label>
+
+                                    <div class="col-md-8">
+                                        <input class="form-control" type="password" name="password" placeholder="............" autocomplete="off" required />
+                                    </div>
+                                </div>
+
+
+
+
+
+
+                                <!-- Confirm Password -->
+                                <div class="form-group row">
+                                    <label class="col-md-3 control-label" for="password">
+                                        Confirm Password 
+                                        <span class="text-danger">*</span> :
+                                    </label>
+
+                                    <div class="col-md-8">
+                                        <input class="form-control" type="password" name="confirm_password" placeholder="............" autocomplete="off" required />
+                                    </div>
+                                </div>
+
+
+
+
+
+
+                                <!-- Action -->
+                                <div class="form-group row">
+                                    <div class="col-sm-11 text-right">
+                                        <div class="btn-group">
+                                            <a href="http://localhost/setting/permitted-users" class="btn btn-sm btn-danger p-2"><i class="fa fa-times"></i> Close</a>                                            
+                                            <button type="submit" class="btn btn-sm btn-primary p-2"><i class="fa fa-save"></i> Save</button>                                             
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form></div>
+    </div>
+</section>
+
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
+
+<!--/MM-JS--></body></html>

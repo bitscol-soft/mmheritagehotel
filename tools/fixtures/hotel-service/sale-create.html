@@ -1,0 +1,471 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">    <link rel="stylesheet" href="/assets/css/chosen.min.css" />
+    <link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css" />
+    <style>
+        .file {
+            visibility: hidden;
+            position: absolute;
+        }
+
+    </style>
+<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY--><section class="mm-ui mm-hotel-service">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">New hotel service sale</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Pick the guest, add the services sold and confirm the invoice.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a href="http://localhost/hotelservice/service-sales" class="mm-button mm-button-secondary">
+                <i class="fa fa-list-alt" aria-hidden="true"></i> Hotel Service Sale
+            </a></div>        </header>
+        <form method="POST" action="http://localhost/hotelservice/service-sales"
+        class="form-horizontal" id="invForm">
+        <input type="hidden" name="_token" value="fixture-csrf-token">
+        <!-- hidden fields -->
+        <div class="form-group mm-hs-hidden">
+            <input class="form-control" type="hidden" name="company_name" />
+            <input type="hidden" name="invoice_no">
+        </div>
+
+        <div class="mm-panel tw-p-4 sm:tw-p-6 mm-hs-info-panel"><h2 class="mm-setup-title">Guest and invoice</h2>
+            <!-- info -->
+            <div class="mm-hs-info">
+                <div class="form-group">
+                    <label class="control-label" for="guest_name">Guest Name :</label>
+
+                    <input class="form-control" type="text" id="guest_name" name="guest_name" placeholder="Guest Name" autocomplete="off"
+                    required />
+                    <input type="hidden" value="" name="hotel_guest_id" id="hotel_guest_id">
+                </div>
+
+                
+                <div class="form-group">
+                    <label class="control-label" for="room_number">Room Number :</label>
+
+                    <input type="hidden" name="hotel_room_id" id="hotel_room_id">
+
+                    <input type="text" name="room_number" id="room_number"
+                        placeholder="Room Number" class="form-control">
+                </div>
+
+                
+                <div class="form-group">
+                    <label class="control-label" for="booking_number">Booking Number :</label>
+
+                    <input type="hidden" name="hotel_booking_id" id="hotel_booking_id" value="">
+
+                    <input type="text" name="booking_number" id="booking_number"
+                        placeholder="Booking Number" class="form-control">
+                </div>
+
+                <!-- Sale Invoice ID -->
+                <div class="form-group">
+                    <label class="control-label" for="invoice_id">Invoice ID #</label>
+                    <input type="text" tabindex="-1" class="form-control" id="invoice_id"
+                        placeholder="Invoice ID" name="invoice_no" value=""
+                        readonly>
+                </div>
+
+                <!-- Sale Date -->
+                <div class="form-group">
+                    <label class="control-label" for="sale_date">Date :</label>
+                    <input type="text" name="date" id="sale_date" value="2026-10-01"
+                        class="form-control date-picker" autocomplete="off">
+                </div>
+            </div></div>
+
+        <!-- transition -->
+        <div class="mm-panel tw-p-4 sm:tw-p-6 view_center_folwchart"><h2 class="mm-setup-title">Services</h2>
+            <div class="mm-table-scroll" role="region" aria-label="Services sold" tabindex="0"><table class="table table-bordered table-hover" id="table_auto">
+                    <thead>
+                        <tr>
+                            <th width="30%">Service Name</th>
+                            <th width="15%">Service Price</th>
+                            <th width="15%">Quantity</th>
+                            <th width="15%">Total</th>
+                            <th width="5%">
+                                <button type="button" onclick="addItem()"
+                                    class="btn btn-success btn-xs r-btnAdd" aria-label="Add service">
+                                    <i class="fa fa-plus" aria-hidden="true"></i>
+                                </button>
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody class="container">
+
+                    </tbody>
+                </table></div></div>
+
+        <div class="mm-panel tw-p-4 sm:tw-p-6 mm-hs-totals"><div class="form-inlines">
+                <div class="form-group aside_system">
+                    <label class="control-label" for="subTotal">
+                        Sub Totals:
+                    </label>
+                    <div class="input-group">
+                        <div class="input-group-addon currency">৳</div>
+                        <input value="" type="number" min="0" step="any"
+                            class="form-control" name="subtotal"
+                            id="subTotal" placeholder="Subtotal"
+                            onkeypress="return IsNumeric(event);"
+                            ondrop="return false;" onpaste="return false;"
+                            readonly>
+                    </div>
+                </div>
+                <div class="form-group aside_system">
+                    <label class="control-label" for="discount">
+                        Discount:
+                        <span id="service-discount"></span>
+                    </label>
+                    <input type="hidden" id="service-discount-val">
+                    <div class="input-group">
+                        <div class="input-group-addon currency">৳</div>
+                        <input value="0" type="number" min="0" step="any"
+                            class="form-control" name="discount"
+                            id="discount" placeholder="Discount">
+                    </div>
+                </div>
+                <div class="form-group aside_system">
+                    <label class="control-label" for="payable_amount">
+                        Total Amount:
+                    </label>
+                    <div class="input-group">
+                        <div class="input-group-addon currency">৳</div>
+                        <input value="" type="number" min="0" step="any"
+                            class="form-control" name="payable_amount"
+                            id="payable_amount" placeholder="Payable Amount"
+                            onkeypress="return IsNumeric(event);"
+                            ondrop="return false;" onpaste="return false;"
+                            readonly>
+                    </div>
+                </div>
+                <div class="form-group aside_system">
+                    <label class="control-label" for="amountPaid">
+                        Paid Amount:
+                    </label>
+                    <div class="input-group">
+                        <div class="input-group-addon currency">৳</div>
+                        <input value="0" type="number" min="0" step="any"
+                            class="form-control" autocomplete="off"
+                            name="paid_amount" id="amountPaid"
+                            placeholder="Paid Amount"
+                            onkeypress="return IsNumeric(event);"
+                            ondrop="return false;" onpaste="return false;">
+                    </div>
+                </div>
+                <div class="form-group aside_system">
+                    <label class="control-label" for="amountDue">Amount Due
+                        :</label>
+                    <div class="input-group">
+                        <div class="input-group-addon currency">৳</div>
+                        <input value="" class="form-control"
+                            name="due_amount" id="amountDue"
+                            placeholder="Amount Due" readonly>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="button" onclick="submitForm()"
+                        class="mm-button mm-hs-confirm">Confirm</button>
+                </div>
+            </div></div>
+    </form>
+    </div>
+</section>
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
+    <script src="/assets/js/jquery.form-repeater.js"></script>
+    <script src="/assets/custom_js/loadDetails.js"></script>
+    <script src="/assets/custom_js/guest_filter.js"></script>
+    <script src="/assets/custom_js/reference_filter.js"></script>
+    <script src="/assets/js/jquery-ui.min.js"></script>
+    <script src="/assets/js/bootstrap-datepicker.min.js"></script>
+    <script src="/assets/custom_js/date-picker.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('.reference').hide()
+            $('.internal-doctor').show()
+        })
+        $('.checked-reference').click(function() {
+
+            loadStaff($(this).val())
+
+        })
+
+        $('#discount, #amountPaid').keyup(function() {
+            totalAmount()
+        })
+
+        function submitForm() {
+            let is_submit = true;
+
+
+            if ($('#guest_name').val() == '') {
+                is_submit = false;
+                warning('toster', 'Please select Guest Type!')
+
+            } else if ($('.today').val() == '') {
+                is_submit = false;
+
+                warning('toster', 'Please select date !')
+
+            } else {
+                $('.service-ids').each(function() {
+                    console.log($(this).val());
+                    if ($(this).val() == '') {
+                        is_submit = false;
+
+                        warning('toster', 'Please choose service !')
+                    }
+                })
+            }
+
+            if (is_submit == true) {
+                $('#invForm').submit();
+            }
+        }
+
+        function totalAmount() {
+            let total = 0;
+            let discount = $('#discount').val() ? parseFloat($('#discount').val()) : 0
+            let amountPaid = $('#amountPaid').val() ? parseFloat($('#amountPaid').val()) : 0
+            $('.service-total').each(function(i, price) {
+                let p = $(price).text();
+                total += p ? parseFloat(p) : 0;
+            });
+            let discount_amount = Math.ceil((total * discount) / 100);
+
+            let payableAmount = total - discount;
+
+            $('#subTotal').val(total);
+            $('#payable_amount').val(payableAmount);
+            // $('#discount').val(discount_amount).attr('readonly', true);
+            $('#amountDue').val(payableAmount - amountPaid)
+
+        }
+    </script>
+
+
+    
+    <script>
+        $(document).on('focus', '#room_number', function() {
+            $(this).autocomplete({
+                source: function(request, response) {
+                    $.getJSON('/hotelservice/get-room-list', {
+                            name: request.term
+                        },
+                        function(data) {
+                            response($.map(data, function(items) {
+                                return {
+                                    value: items.available_quantity,
+                                    label: `${items.room_number}`,
+                                    data: items,
+                                }
+                            }))
+                        }
+                    )
+                },
+                select: function(event, ui) {
+                    let rooms_id = ui.item.data.id;
+                    GetInfoRoom(rooms_id);
+
+                },
+                search: function(event, ui) {},
+                minLength: 1,
+                autoFocus: true
+            })
+        })
+    </script>
+
+
+    
+    <script>
+        $(document).on('focus', '#booking_number', function() {
+            $(this).autocomplete({
+                source: function(request, response) {
+                    $.getJSON('/hotelservice/get-booking-number', {
+                            name: request.term
+                        },
+                        function(data) {
+                            response($.map(data, function(items) {
+                                return {
+                                    value: items.available_quantity,
+                                    label: `${items.booking_number}`,
+                                    data: items,
+                                }
+                            }))
+                        }
+                    )
+                },
+                select: function(event, ui) {
+                    let booking_id = ui.item.data.id;
+                    getInfoByBooking(booking_id);
+
+                },
+                search: function(event, ui) {},
+                minLength: 1,
+                autoFocus: true
+            })
+        })
+    </script>
+
+    
+
+    <script>
+        function getInfoByBooking(booking_id) {
+
+            $.ajax({
+                type:'get',
+                url: '/hotelservice/guest-by-booking/'+booking_id,
+                async :true,
+
+                beforeSend: function () {
+                    $("body").css("cursor", "progress");
+                },
+                success: function (data) {
+                    $('#guest_name').val(data['guest_name']);
+                    $('#room_number').val(data['room_number']);
+                    $('#hotel_booking_id').val(booking_id);
+                    $('#hotel_guest_id').val(data['guest_id']);
+                },
+                complete: function (data) {
+                    $("body").css("cursor", "default");
+                }
+            });
+        }
+    </script>
+
+    
+    <script>
+        function GetInfoRoom(rooms_id) {
+
+            $.ajax({
+                type:'get',
+                url: '/hotelservice/guest-by-rooms/'+rooms_id,
+                async :true,
+
+                beforeSend: function () {
+                    $("body").css("cursor", "progress");
+                },
+                success: function (data) {
+                    $('#guest_name').val(data['guest_name']);
+                    $('#booking_number').val(data['booking_number']);
+                    $('#hotel_booking_id').val(data['booking_id']);
+                    $('#hotel_guest_id').val(data['guest_id']);
+
+                },
+                complete: function (data) {
+                    $("body").css("cursor", "default");
+                }
+            });
+        }
+    </script>
+
+    <script>
+        addItem()
+
+        function addItem(e) {
+            let html = `<tr class="repeat-group">
+                            <td>
+                                <input type="hidden" class="service-ids" name="service_id[]" >
+                                <input class="form-control service-names" type="text" name="name[]" required />
+                            </td>
+                            <td>
+                                <input class="form-control service-prices" type="text" name="price[]" id="service_0_price" readonly/>
+                            </td>
+                            <td>
+                                <input class="form-control service-quantity" onkeyup=itemTotal(this) type="number" name="quantity[]"/>
+                            </td>
+                            <td>
+                                <strong class="service-total"></strong>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-danger btn-xs r-btnRemove" onclick="deleteRow(this)" ><i class="fa fa-trash-o" aria-hidden="true"></i></button>
+                            </td>
+                        </tr>`;
+
+            $('.container').append(html);
+        }
+
+
+        function deleteRow(obj) {
+            $(obj).parents('.repeat-group').remove();
+        }
+
+
+        function itemTotal(object) {
+            let price = parseFloat($(object).closest('tr').find('.service-prices').val());
+            let qty = parseInt($(object).val());
+
+            let total = parseFloat(price * qty);
+            $(object).closest('tr').find('.service-total').text(total)
+
+            totalAmount();
+
+        }
+    </script>
+
+    <script>
+        $(document).on('focus', '.service-names', function() {
+            $(this).autocomplete({
+                source: function(request, response) {
+                    $.getJSON("http://localhost/hotelservice/get-h-service", {
+                        name: request.term
+                    }, function(data) {
+                        response($.map(data, function(item) {
+                            return {
+                                value: item.name,
+                                label: item.name,
+                                data: item,
+                            }
+                        }))
+                    })
+                },
+                select: function(event, ui) {
+                    var item = $(event.target);
+                    let check = true
+                    $('.service-ids').map(function() {
+                        if ($(this).val() == ui.item.data.id) {
+                            check = false
+                            warning('toster', 'This service already added !')
+                            $(this).val().val('')
+                        }
+                    })
+
+
+                    if (check == true) {
+                        item.parents('tr').find('.service-prices').val(ui.item.data.price);
+                        item.parents('tr').find('.service-ids').val(ui.item.data.id);
+                        // totalAmount();
+                    }
+
+                },
+            });
+        })
+
+
+
+        function requestUrl(urlParts) {
+            urlParts = $.extend({
+                basePath: 'http://localhost/',
+                path: '',
+                param: ''
+            }, urlParts);
+            return urlParts.basePath + urlParts.path + urlParts.param;
+        }
+
+
+        function patientFilter() {
+            selfFilter('service');
+
+        }
+
+        function referencePersonFilter() {
+            referenceFilter();
+        }
+    </script>
+
+
+<!--/MM-JS--></body></html>

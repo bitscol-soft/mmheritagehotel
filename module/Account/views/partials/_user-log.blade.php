@@ -8,5 +8,5 @@
 
        <hr/>
        <p>Updated By: {{ optional($data->updated_user)->name }}.</p> <p> Updated At : {{ $data->updated_at }} </p>">
-    <i class="far fa-info-circle" style="color: #000000 !important"></i>
+    <i class="fa fa-info-circle" style="color: #000000 !important"></i>
 </span>

@@ -14,8 +14,8 @@ Route::get('room_for_booking/{id}',             [BookingController::class, 'getR
 Route::get('room_by_search_category/{id}',      [BookingController::class, 'roomSearchCategory']);
 
 Route::post('add_booking',                      [BookingController::class, 'addBooking']);
-Route::post('remove_booking',                   [BookingController::class, 'removeBooking']);
-Route::get('remove_booking_next',               [BookingController::class, 'removeNextBk']);
+// removed (docs/BUGS.md round 3): BookingController::removeBooking does not exist; the booking flow uses remove_booking_next
+Route::match(['get', 'post'], 'remove_booking_next', [BookingController::class, 'removeNextBk']);
 
 Route::get('get-sms-balance',                   [GuestController::class, 'getSMSBalance']);
 

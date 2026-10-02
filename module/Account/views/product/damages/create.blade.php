@@ -49,40 +49,23 @@
 
 
 @section('content')
-    <div class="row">
-        <div class="col-sm-12 col-sm-offset-0">
 
-            <div class="widget-box widget-color-white ui-sortable-handle clearfix" id="widget-box-7">
+<x-mm.styles />
+<x-mm.page class="mm-acc mm-rst mm-rst-inv mm-rst-form" title="Damage Create" description="Record damaged products.">
+    <x-slot name="actions">
+        <a class="mm-button" href="{{ route('damages.index') }}"><i class="fa fa-list-alt"></i> List</a>
+    </x-slot>
+    <x-mm.panel class="tw-p-4">
+        <!-- body -->
+                <form class="form-horizontal" action="{{ route('damages.store') }}" method="post" enctype="multipart/form-data">
 
-                <!-- heading -->
-                <div class="widget-header widget-header-small">
-                    <h3 class="widget-title smaller text-primary">
-                        @yield('page-header')
-                    </h3>
+                    @csrf
+                    @include('partials._alert_message')
 
-
-                    <div class="widget-toolbar">
-                        <a href="{{ route('damages.index') }}" ><i class="fa fa-list-alt"></i> List</a>
-                    </div>
-
-                </div>
+                    <input hidden name="account_id" value="{{ $account->id }}">
 
 
-
-
-
-                <!-- body -->
-                <div class="widget-body">
-                    <div class="widget-main">
-                        <form class="form-horizontal" action="{{ route('damages.store') }}" method="post" enctype="multipart/form-data">
-
-                            @csrf
-                            @include('partials._alert_message')
-
-                            <input hidden name="account_id" value="{{ $account->id }}">
-
-
-                            <div class="row">
+                    <div class="row">
 
 
 
@@ -90,21 +73,61 @@
 
 
 
-                                <!-- Companies -->
+                        <!-- Companies -->
+                        <div class="col-sm-4 my-1">
+                            <div class="input-group">
+                                <span class="input-group-addon">Company</span>
+
+                                <select required name="company_id" class="chosen-select-100-percent select-company" data-placeholder="- Select Company -">
+                                    <option></option>
+
+                                    @foreach($companies as $id => $name)
+
+                                        @if(count($companies) > 1)
+                                            <option value="{{ $id }}" {{ old('company_id') == $id ? 'selected' : '' }}>{{ $name }}</option>
+                                        @else
+                                            <option value="{{ $id }}" selected>{{ $name }}</option>
+                                        @endif
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+
+
+
+
+                        <!-- Date -->
+                        <div class="col-sm-3 my-1">
+                            <div class="input-group">
+                                <span class="input-group-addon input-sm">
+                                    Date<span class="text-danger">*</span>
+                                </span>
+                                <input name="date" class="form-control date-picker" id="id-date-picker-1" type="text" value=" {{ old('date') ?:  date('Y-m-d') }}" data-date-format="yyyy-mm-dd">
+                            </div>
+                        </div>
+
+
+
+
+
+
+                        <!-- PRODUCT EXCHANGE INFORMATION -->
+                        <div class="col-sm-12 mt-3">
+
+
+
+                           <div class="row">
+                                <!-- Product -->
                                 <div class="col-sm-4 my-1">
                                     <div class="input-group">
-                                        <span class="input-group-addon">Company</span>
-
-                                        <select required name="company_id" class="chosen-select-100-percent select-company" data-placeholder="- Select Company -">
+                                        <span class="input-group-addon input-sm">
+                                            Product
+                                        </span>
+                                        <select class="form-control chosen-select-100-percent select-product" >
                                             <option></option>
-
-                                            @foreach($companies as $id => $name)
-
-                                                @if(count($companies) > 1)
-                                                    <option value="{{ $id }}" {{ old('company_id') == $id ? 'selected' : '' }}>{{ $name }}</option>
-                                                @else
-                                                    <option value="{{ $id }}" selected>{{ $name }}</option>
-                                                @endif
+                                            @foreach($products as $prod)
+                                                <option value="{{ $prod->id }}" data-unit="{{ optional($prod->unit)->name }}" data-price="{{ $prod->purchase_price }}">{{ $prod->name }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -112,143 +135,103 @@
 
 
 
-
-
-                                <!-- Date -->
+                                <!-- Product -->
                                 <div class="col-sm-3 my-1">
                                     <div class="input-group">
                                         <span class="input-group-addon input-sm">
-                                            Date<span class="text-danger">*</span>
+                                            Price
                                         </span>
-                                        <input name="date" class="form-control date-picker" id="id-date-picker-1" type="text" value=" {{ old('date') ?:  date('Y-m-d') }}" data-date-format="yyyy-mm-dd">
+                                        <input class="form-control only-number text-center input-price" placeholder="Purchase Price">
+                                    </div>
+                                </div>
+
+
+                                <!-- Product -->
+                                <div class="col-sm-3 my-1">
+                                    <div class="input-group">
+                                        <span class="input-group-addon input-sm">
+                                            Quantity
+                                        </span>
+                                        <input class="form-control only-number text-center input-qty" placeholder="Exchange Quantity">
                                     </div>
                                 </div>
 
 
 
-
-
-
-                                <!-- PRODUCT EXCHANGE INFORMATION -->
-                                <div class="col-sm-12 mt-3">
-
-
-
-                                   <div class="row">
-                                        <!-- Product -->
-                                        <div class="col-sm-4 my-1">
-                                            <div class="input-group">
-                                                <span class="input-group-addon input-sm">
-                                                    Product
-                                                </span>
-                                                <select class="form-control chosen-select-100-percent select-product" >
-                                                    <option></option>
-                                                    @foreach($products as $prod)
-                                                        <option value="{{ $prod->id }}" data-unit="{{ optional($prod->unit)->name }}" data-price="{{ $prod->purchase_price }}">{{ $prod->name }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-
-
-
-                                        <!-- Product -->
-                                        <div class="col-sm-3 my-1">
-                                            <div class="input-group">
-                                                <span class="input-group-addon input-sm">
-                                                    Price
-                                                </span>
-                                                <input class="form-control only-number text-center input-price" placeholder="Purchase Price">
-                                            </div>
-                                        </div>
-
-
-                                        <!-- Product -->
-                                        <div class="col-sm-3 my-1">
-                                            <div class="input-group">
-                                                <span class="input-group-addon input-sm">
-                                                    Quantity
-                                                </span>
-                                                <input class="form-control only-number text-center input-qty" placeholder="Exchange Quantity">
-                                            </div>
-                                        </div>
-
-
-
-                                        <!-- ACTION -->
-                                        <div class="col-sm-2 my-1">
-                                            <button type="button" class="btn btn-sm btn-primary add-product-btn">
-                                                <i class="fa fa-plus"></i> Add
-                                            </button>
-                                        </div>
-                                   </div>
-
-
-                                    <table id="myTable" class="table table-bordered order-list">
-
-                                        <!-- head -->
-                                        <thead>
-                                            <tr>
-                                                <td width="40px;">SL.</td>
-                                                <td style="width: 25%">Product Name</td>
-                                                <td class="text-center" width="120px;">Unit</td>
-                                                <td class="text-center" width="120px;">Price</td>
-                                                <td class="text-center" width="120px;">Quantity</td>
-                                                <td class="text-center" width="120px;">Subtotal</td>
-                                                <td style="width: 5%"></td>
-                                            </tr>
-                                        </thead>
-
-
-
-                                        <!-- body -->
-                                        <tbody class="exchange-product-details">
-                                           
-                                            
-                                        </tbody>
-
-
-
-
-                                        <!-- footer -->
-                                        <tfoot>
-                                            <tr>
-                                                <td colspan="4" class="text-right">Total</td>
-                                                <td>
-                                                    <input readonly name="total_qty" value="{{ old('total_qty') }}" class="total-qty text-center form-control">
-                                                </td>
-                                                <td>
-                                                    <input readonly name="total_amount" value="{{ old('total_amount') }}" class="total-amount text-center form-control">
-                                                </td>
-                                                <td></td>
-                                            </tr>
-                                        </tfoot>
-                                    </table>
+                                <!-- ACTION -->
+                                <div class="col-sm-2 my-1">
+                                    <button type="button" class="btn btn-sm btn-primary add-product-btn">
+                                        <i class="fa fa-plus"></i> Add
+                                    </button>
                                 </div>
+                           </div>
+
+
+                            <x-mm.table-scroll label="Damage Create">
+                                <table id="myTable" class="table table-bordered order-list">
+
+                                    <!-- head -->
+                                    <thead>
+                                        <tr>
+                                            <td width="40px;">SL.</td>
+                                            <td style="width: 25%">Product Name</td>
+                                            <td class="text-center" width="120px;">Unit</td>
+                                            <td class="text-center" width="120px;">Price</td>
+                                            <td class="text-center" width="120px;">Quantity</td>
+                                            <td class="text-center" width="120px;">Subtotal</td>
+                                            <td style="width: 5%"></td>
+                                        </tr>
+                                    </thead>
+
+
+
+                                    <!-- body -->
+                                    <tbody class="exchange-product-details">
+
+
+                                    </tbody>
+
+
+
+
+                                    <!-- footer -->
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="4" class="text-right">Total</td>
+                                            <td>
+                                                <input readonly name="total_qty" value="{{ old('total_qty') }}" class="total-qty text-center form-control">
+                                            </td>
+                                            <td>
+                                                <input readonly name="total_amount" value="{{ old('total_amount') }}" class="total-amount text-center form-control">
+                                            </td>
+                                            <td></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </x-mm.table-scroll>
+                        </div>
 
 
 
 
 
 
-                                <!-- Action -->
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <div class="pull-right px-1">
-                                            <button type="submit" class="btn btn-sm btn-success save-btn">
-                                                <i class="fa fa fa-save"></i>
-                                                Save
-                                            </button>
-                                        </div>
-                                    </div>
+                        <!-- Action -->
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="pull-right px-1">
+                                    <button type="submit" class="btn btn-sm btn-success save-btn">
+                                        <i class="fa fa fa-save"></i>
+                                        Save
+                                    </button>
                                 </div>
                             </div>
-                        </form>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
+                </form>
+    </x-mm.panel>
+</x-mm.page>
+
 @endsection
 
 
@@ -325,7 +308,7 @@
                     </td>
                     <td>
                         <button type="button" class="btn btn-sm btn-danger remove-product-btn">
-                            <i class="fa fa-trash"></i>
+                            <i class="fa fa-trash-o"></i>
                         </button>
                     </td>
                 </tr>
@@ -349,7 +332,7 @@
             let total_amount    = 0
 
             $('div').find('.serial').each(function(index) {
-                
+
                 $(this).text(Number(index) + 1)
 
                 let quantity  = Number($(this).closest('tr').find('.exchange-product-qty').val())

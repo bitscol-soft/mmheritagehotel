@@ -23,7 +23,9 @@ class CollectionController extends Controller
     {
         $this->hasAccess("acc_collections.create");
 
-        return view('purchase.collections.create');
+        // TODO: dedicated collection form (module is a stub in this repo)
+        return redirect()->route('acc_collections.index')
+            ->with('info', 'Collection entry form is not available yet; collections are recorded through the voucher module.');
     }
 
     public function store(Request $request): RedirectResponse
@@ -37,8 +39,9 @@ class CollectionController extends Controller
     {
         $this->hasAccess("acc_collections.edit");
 
-
-        return view('purchase.collections.edit');
+        // TODO: dedicated collection form (module is a stub in this repo)
+        return redirect()->route('acc_collections.index')
+            ->with('info', 'Collection edit form is not available yet.');
     }
 
     public function update(Request $request, Collection $collection): RedirectResponse

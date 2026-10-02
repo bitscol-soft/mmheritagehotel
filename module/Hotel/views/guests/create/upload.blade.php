@@ -26,19 +26,21 @@
 
             <!-- file upload -->
             <div class="col-sm-8 col-sm-offset-2">
-                <input type="file" class="form-control ace-file-upload" name="csv_file">
+                <label for="guest-csv" class="tw-block tw-mb-2 tw-font-semibold">Guest CSV file</label>
+                <p id="guest-csv-help" class="tw-text-muted">Download the sample to check the expected columns before importing.</p>
+                <input id="guest-csv" aria-describedby="guest-csv-help" type="file" class="form-control ace-file-upload" name="csv_file">
             </div>
 
             <!-- Action -->
             <div class="col-sm-8 col-sm-offset-2 text-right">
                 <a href="{{ asset('assets/upload-guest.csv') }}" download
-                    class="btn btn-primary btn-sm">
+                    class="mm-button mm-button-secondary">
                     <span class="translate">
                         Download Sample
                     </span>
                     <i class="fa fa-download"></i>
                 </a>
-                <button class="btn btn-inverse btn-sm" type="submit">
+                <button class="mm-button" type="submit">
                     <span class="translate">
                         Import Guests
                     </span>

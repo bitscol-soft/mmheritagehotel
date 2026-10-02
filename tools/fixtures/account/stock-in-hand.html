@@ -1,0 +1,142 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">
+    <link rel="stylesheet" href="/assets/css/chosen.min.css" />
+    <link rel="stylesheet" href="/assets/css/jquery-ui.min.css" />
+<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+<section class="mm-ui mm-report mm-acc mm-rst mm-rst-inv">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Product Stock In Hand</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Stock on hand with average rate.</p>            </div>
+                    </header>
+        <div class="mm-panel tw-p-4 sm:tw-p-6 mm-report-filter"><form class="form-horizontal mm-setup-filter mm-report-form" action="" method="get">
+            <div class="input-group">
+                <span class="input-group-addon">Company</span>
+                <select name="company_id" id="company_id" class="form-control chosen-select-180">
+                    <option selected disabled>select</option>
+
+                                            <option value="1"
+                            >MM &lt;b&gt;Heritage&lt;/b&gt;
+                        </option>
+                                    </select>
+            </div>
+
+            <div class="input-group">
+                <span class="input-group-addon">Unit</span>
+                <select name="unit_id" class="form-control chosen-select-180">
+                    <option selected value="">select</option>
+                                            <option value="1"
+                            >kg</option>
+                                    </select>
+            </div>
+
+            <div class="input-group">
+                <span class="input-group-addon">Product</span>
+                <select name="product_id" class="form-control chosen-select" id="product_id">
+                    <option selected value="">select</option>
+
+                                            <option value="1"
+                            >Rice &lt;b&gt;50kg&lt;/b&gt;
+                        </option>
+                                    </select>
+            </div>
+
+            <div class="btn-group">
+                <button class="mm-button" type="submit">
+                    <i class="fa fa-search"></i> Search
+                </button>
+                <a href="http://localhost/acc/report/stock-in-hand" class="mm-button mm-button-secondary" aria-label="Reset">
+                    <i class="fa fa-refresh"></i>
+                </a>
+            </div>
+        </form></div>
+
+    <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><p class="text-muted">(<b>1 </b>Records Found, page
+                <b>1</b> of <b>1</b>, Data Show per page
+                <b>15</b> ) </p>
+        <div class="mm-table-scroll" role="region" aria-label="Product Stock In Hand" tabindex="0"><table id="dynamic-table" class="table table-striped table-bordered table-hover">
+
+
+
+                            <thead>
+                                <tr style="background: #C9DAF8 !important; color:black !important">
+                                    <th>SL</th>
+                                    <th>Product</th>
+                                    <th>Unit</th>
+                                    <th class="text-right">Avg. Rate</th>
+                                    <th class="text-center">Stock</th>
+                                    <th class="text-right">Total Avg. Price</th>
+                                </tr>
+                            </thead>
+
+
+
+
+                            <tbody>
+                                                                    <tr>
+                                        <td>1</td>
+                                        <td>Rice &lt;b&gt;50kg&lt;/b&gt;</td>
+                                        <td>kg</td>
+                                        <td class="text-right">40</td>
+                                        <td class="text-center">12.00</td>
+                                        <td class="text-right">480.00</td>
+                                    </tr>
+                                                            </tbody>
+
+
+                            <tfoot>
+                                
+                            </tfoot>
+                        </table></div>
+
+        <span class="only-print" id="print_btn" style="margin-right: 5px; margin-top:5px; cursor: pointer;">
+                        <img src="/assets/images/export-icons/printer-icon.png">
+                    </span></div>
+    </div>
+</section>
+
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
+
+
+
+    <script src="/assets/js/chosen.jquery.min.js"></script>
+    <script src="/assets/custom_js/chosen-box.js"></script>
+
+    <script type="text/javascript">
+        function exportData(url) {
+            $('.exportForm').attr('action', url).submit();
+        }
+
+        $('#print_btn').on("click", function() {
+            print()
+        });
+    </script>
+
+    <script type="text/javascript">
+        const products = $('#product_id')
+        let counter = 0;
+        $(document).ready(function() {
+
+            $('#company_id').change(function() {
+                
+                $.get(`/ajax/company-wise-product?company_id=${$(this).val()}`, function(res) {
+                    products.empty().append('<option></option>')
+                    res.forEach(function(item) {
+                            products.append(`<option value="${item.id}">${item.name}</option>`)
+                        })
+
+                    products.trigger('chosen:updated');
+
+                    counter++
+                })
+            })
+        })
+    </script>
+
+
+<!--/MM-JS--></body></html>

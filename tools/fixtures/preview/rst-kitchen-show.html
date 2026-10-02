@@ -1,0 +1,170 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">    <link rel="stylesheet" href="/assets/css/chosen.min.css" />
+    <link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css" />
+    <style>
+        #print_body {
+            background-color: #fff;
+            padding: 10px 20px;
+            overflow: hidden;
+        }
+
+        .company-info {
+            color: #000;
+        }
+
+        .company-info h3 {
+            font-weight: bold;
+            margin-bottom: 0;
+        }
+
+        .company-info p {
+            margin-bottom: 2px;
+        }
+
+        .table {
+            box-shadow: none !important;
+        }
+
+        .table-bordered>thead>tr>th,
+        .table-bordered>tbody>tr>th,
+        .table-bordered>tfoot>tr>th,
+        .table-bordered>thead>tr>td,
+        .table-bordered>tbody>tr>td,
+        .table-bordered>tfoot>tr>td {
+            border: .4px solid #fff;
+            padding: 4.5px;
+        }
+
+        th {
+            background: #efefef;
+            box-shadow: none;
+        }
+
+        .patient {
+            margin: 3px;
+        }
+
+        @media  print {
+            .company-info h4 {
+                font-weight: bold;
+                margin-bottom: 0;
+            }
+
+            .company-info p {
+                margin-bottom: 2px;
+            }
+
+        }
+    </style>
+<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+<section class="mm-ui mm-invoice-page mm-rst">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Order details</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Kitchen copy of the order. Printing outputs the document only.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a href="#" class="mm-button" onclick="printPage('print_body'); return false;">
+                <i class="fa fa-print" aria-hidden="true"></i> Print
+            </a></div>        </header>
+        <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><div class="row">
+            <div id="print_body">
+                <div id="customer_info" style="padding: 0 10px; margin-bottom: 15px">
+                    <div class="row">
+                        <div class="customerInfo" style="width: 60%;float: left; ">
+
+
+                            <p><b>Name : Rahim &lt;b&gt;x&lt;/b&gt;</b>&nbsp;
+
+                            </p>
+                            <p class=""><b>Table No : </b>
+                                <b>T1</b>
+                            </p>
+                        </div>
+                        <div class="invoiceInfo" style="width: 40%;float: left;margin-top: 5px;">
+                            <table class="table table-bordered" style="border: none !important;">
+                                <tr>
+                                    <th width="50%" style="border: none !important; "> Invoice No : </th>
+                                    <th style="border: none !important; ">
+                                        R-0101
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <td style="border: none !important; "> Invoice Date : </td>
+                                    <td style="border: none !important; ">
+                                        2026-10-01
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="invoice-content">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" style="border: none !important;" align="center">
+                            <thead>
+                                <tr>
+                                    <th width="5%">SL</th>
+                                    <th>Product Name</th>
+                                    
+                                    <th>QTY</th>
+                                    
+                                </tr>
+                            </thead>
+                            <tbody>
+                                                                
+                                                                                                        <tr>
+                                        <td>1</td>
+                                        <td>Biryani &lt;i&gt;hot&lt;/i&gt;</td>
+                                        
+                                        
+                                        <td class="text-left">2</td>
+                                        
+                                    </tr>
+                                                                                                        <tr>
+                                        <td>2</td>
+                                        <td>Lassi</td>
+                                        
+                                        
+                                        <td class="text-left">1</td>
+                                        
+                                    </tr>
+                                
+
+                            </tbody>
+                            
+                        </table>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <h5 style="font-weight: 700;">Status :
+                                <span class="label label-sm label-primary">
+                                    Pending
+                                </span>
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div></div>
+    </div>
+</section>
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
+    <script src="/assets/custom_js/printThis.js"></script>
+    <script type="text/javascript">
+        function printPage(id) {
+            $('#' + id).printThis({
+                importStyle: true
+            });
+        };
+        window.onreadystatechange = $('#print_body').printThis({
+            importStyle: true
+        });
+    </script>
+<!--/MM-JS--></body></html>

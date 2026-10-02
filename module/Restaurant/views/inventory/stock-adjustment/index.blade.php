@@ -33,7 +33,7 @@
                     <td width="25%">
                         <div class="input-group">
                             <input type="text" class="form-control date-picker text-center" name="from" id="fromDate" value="{{ old('date') }}" autocomplete="off" placeholder="From Date" data-date-format="yyyy-mm-dd">
-                            <span class="input-group-addon"><i class="fas fa-exchange"></i></span>
+                            <span class="input-group-addon"><i class="fa fa-exchange"></i></span>
                             <input type="text" class="form-control date-picker text-center" name="to" id="toDate" value="{{ old('date') }}" autocomplete="off" placeholder="To Date" data-date-format="yyyy-mm-dd">
                         </div>
                     </td>
@@ -109,7 +109,7 @@
                                                             <p><b>Approved By:</b> {{ optional($stockAdjustment->approvedBy)->name }}.</p> <p> Approved At : {{ $stockAdjustment->approved_at }} </p>
                                                         </div>"
                                             >
-                                            <i class="fal fa-info-circle"></i>
+                                            <i class="fa fa-info-circle"></i>
                                         </span>
 
                                         @if (hasPermission("inv.stock-adjustments.view", $slugs))
@@ -120,19 +120,19 @@
                                         @if($stockAdjustment->current_status == 'Pending')
                                             {{-- @if (hasPermission("inv.stock-transfer.edit", $slugs))
                                                 <a href="{{ route('inv.stock-transfer.edit', $stockAdjustment->id) }}" class="btn btn-xs btn-primary" title="Edit">
-                                                    <i class="far fa-edit"></i>
+                                                    <i class="fa fa-edit"></i>
                                                 </a>
                                             @endif --}}
                                             @if (hasPermission("inv.stock-adjustments.approve", $slugs))
                                                 <a href="{{ route('inv.stock-adjustments-approve', $stockAdjustment->id) }}" class="btn btn-xs btn-warning" title="Approve Now!">
-                                                    <i class="fad fa-thumbs-up"></i>
+                                                    <i class="fa fa-thumbs-up"></i>
                                                 </a>
                                             @endif
 
                                         @elseif($stockAdjustment->current_status == 'Approved')
                                                 @if (in_array($stockAdjustment->to_warehouse_id, warehouse_access()))
                                                     <a href="javascript:void(0)" class="btn btn-xs btn-success" title="Approved">
-                                                        <i class="fad fa-thumbs-up"></i>
+                                                        <i class="fa fa-thumbs-up"></i>
                                                     </a>
                                                 @endif
 
@@ -142,13 +142,13 @@
                                             @if (hasPermission("inv.stock-adjustments.cancel", $slugs))
                                                 @if($stockAdjustment->current_status != 'Cancelled')
                                                     <a href="{{ route('inv.stock-adjustments-cancel', $stockAdjustment->id)}}" class="btn btn-xs btn-warning" title="Cancel">
-                                                        <i class="fas fa-undo-alt"></i>
+                                                        <i class="fa fa-undo"></i>
                                                     </a>
                                                 @endif
                                             @endif
                                             @if (hasPermission("inv.stock-adjustments.delete", $slugs))
                                                 <button type="button" class="btn btn-xs btn-danger" title="Delete" onclick="delete_item('{{ route('inv.stock-adjustments.destroy', $stockAdjustment->id) }}')">
-                                                    <i class="fad fa-trash"></i>
+                                                    <i class="fa fa-trash-o"></i>
                                                 </button>
                                             @endif
                                         @endif

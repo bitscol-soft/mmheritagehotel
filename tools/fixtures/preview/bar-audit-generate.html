@@ -1,0 +1,484 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">    <link rel="stylesheet" href="/assets/css/bootstrap-datetimepicker.min.css">
+    <style>
+        .widget-header {
+            background-color: #EAF4FA !important;
+            background-image: none !important;
+        }
+
+
+        table thead th {
+            background-color: #4d8cb3;
+            color: #fff;
+        }
+
+        .border-none {
+            border: none !important;
+        }
+
+        .header-input {
+            background: white !important;
+            border: none !important;
+            font-size: 18px !important;
+            font-weight: bold !important;
+            padding: 0 !important;
+            color: black !important;
+            width: 100% !important;
+        }
+
+        .footer-input {
+            background: white !important;
+            border: none !important;
+            text-align: right !important;
+            font-size: 18px !important;
+            font-weight: bold !important;
+            padding: 0 !important;
+            color: black !important;
+            width: 100% !important;
+        }
+    </style>
+<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+<section class="mm-ui mm-night-audit mm-bar mm-rst">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Generate bar night audit</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Pick the audit period, review the day&#039;s bar collections and dues, then generate the audit.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button" href="http://localhost/hotel/night-audit">
+            <i class="ace-icon fa fa-list-alt"></i> List
+        </a></div>        </header>
+        <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><div class="row mb-2 hidden-print">
+                <form action="" method="GET">
+                    <div class="col-sm-8 col-sm-offset-2">
+                        <div class="mm-table-scroll" role="region" aria-label="Night audit" tabindex="0"><table class="table table-bordered">
+                                <tr>
+                                    <td>
+                                        <div class="input-group">
+                                            <label class="input-group-addon"><i class="fa fa-calendar"></i></label>
+                                            <input type="text" class="date-picker-v2 form-control text-center"
+                                                autocomplete="off" name="from_date"
+                                                value="2026-10-01">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="input-group">
+                                            <label class="input-group-addon"><i class="fa fa-calendar"></i></label>
+                                            <input type="text" class="date-picker-v2 form-control text-center"
+                                                autocomplete="off" name="to_date"
+                                                value="2026-10-01">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <button type="submit" class="btn btn-sm btn-primary">
+                                                <i class="fa fa-search"></i> Search
+                                            </button>
+                                            <a href="http://localhost/bar/night-audits/create" class="btn btn-sm btn-default">
+                                                <i class="fa fa-refresh"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table></div>
+                    </div>
+                </form>
+            </div>
+
+                            
+                <form action="http://localhost/rst/night-audits" method="post" id="formSubmit">
+                    <input type="hidden" name="_token" value="fixture-csrf-token">
+
+                    <div class="row">
+                        <h3 class="text-center">
+                            <strong>Generate Date</strong> :
+                            <span>
+                                <input type="text" name="date" class="input-sm date-picker bs-tooltip"
+                                    value="2026-10-01"
+                                    title="Generate Date"
+                                    style="border: none; font-size:20px;font-weight:bold;color:rgb(216, 64, 18)">
+                            </span>
+                        </h3>
+                        <hr>
+
+                        <div class="col-sm-9 col-sm-offset-2">
+                            <div class="mm-table-scroll" role="region" aria-label="Night audit" tabindex="0"><table class="table" style="border: none">
+
+                                    <tr style="border-bottom:none !important">
+                                        <th class="text-right border-none"
+                                            style="padding: 0 7px 0 0 !important; width: 20%">Total Reservation
+                                            : </th>
+                                        <th class="border-none" style="padding: 0 7px 0 0 !important;">
+                                            <input type="text" readonly class="header-input"
+                                                style="background: white !important" name="total_reservation"
+                                                value="3">
+                                        </th>
+
+
+                                        <th style="border: none"></th>
+                                        <th class="text-right border-none" style="padding: 0 7px 0 0 !important;">
+                                            Total Booked :
+                                        </th>
+                                        <th class="border-none" style="padding: 0 7px 0 0 !important;">
+                                            <input type="text" readonly class="header-input"
+                                                style="background: white !important" name="total_booked_room"
+                                                value="7">
+                                        </th>
+                                    </tr>
+                                    <tr style="border-bottom:none !important">
+                                        <th class="text-right border-none"
+                                            style="padding: 0 7px 0 0 !important; width: 20%">Total Check In :
+                                        </th>
+                                        <th class="border-none" style="padding: 0 7px 0 0 !important;">
+                                            <input type="text" readonly class="header-input"
+                                                style="background: white !important" name="total_check_in"
+                                                value="2">
+                                        </th>
+                                        <th style="border: none"></th>
+                                        <th class="text-right border-none" style="padding: 0 7px 0 0 !important;">
+                                            Total
+                                            Check Out : </th>
+                                        <th class="border-none" style="padding: 0 7px 0 0 !important;">
+                                            <input type="text" readonly class="header-input"
+                                                style="background: white !important" name="total_check_out"
+                                                value="1">
+                                        </th>
+
+                                    </tr>
+                                    <tr style="border-bottom:none !important">
+                                        <th class="text-right border-none" style="padding: 0 7px 0 0 !important;">
+                                            Total Room :
+                                        </th>
+                                        <th class="border-none" style="padding: 0 7px 0 0 !important;">
+                                            <input type="text" readonly class="header-input"
+                                                style="background: white !important" name="total_room"
+                                                value="32">
+                                        </th>
+
+                                        <th style="border: none"></th>
+                                        <th class="text-right border-none" style="padding: 0 7px 0 0 !important;">
+                                            Total
+                                            Cancelled : </th>
+                                        <th class="border-none" style="padding: 0 7px 0 0 !important;">
+                                            <input type="text" readonly class="header-input"
+                                                style="background: white !important" name="total_cancelled"
+                                                value="0">
+                                        </th>
+                                    </tr>
+                                    <tr style="border-bottom:none !important">
+                                        <th class="text-right border-none" style="padding: 0 7px 0 0 !important;">
+                                            Total Dirty Room :
+                                        </th>
+                                        <th class="border-none" style="padding: 0 7px 0 0 !important;">
+                                            <input type="text" readonly class="header-input"
+                                                style="background: white !important" name="total_dirty_room"
+                                                value="4">
+                                        </th>
+
+                                        <th style="border: none"></th>
+                                        <th class="text-right border-none" style="padding: 0 7px 0 0 !important;">
+                                            Total Maintainance Room :
+                                        </th>
+                                        <th class="border-none" style="padding: 0 7px 0 0 !important;">
+                                            <input type="text" readonly class="header-input"
+                                                style="background: white !important" name="total_room_maintenance"
+                                                value="1">
+                                        </th>
+                                    </tr>
+                                </table></div>
+                        </div>
+                                                                            
+                            <div class="col-md-12">
+                                <h6 style="width: 100%;text-align: center" class="mb-2">
+                                    <b
+                                        style="padding: 10px 20px; border-radius: 10px; color: #000; border:1px solid #ddd;">
+                                        Bar Sale
+                                    </b>
+                                </h6>
+                                <div class="mm-table-scroll" role="region" aria-label="Night audit" tabindex="0"><table class="table table-bordered table-striped table-hover"
+                                        style="border: none">
+
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center">SL</th>
+                                                <th class="text-center">Date</th>
+                                                <th class="text-center">Type</th>
+                                                <th class="text-center">Invoice No</th>
+                                                <th class="text-center">Payment Type</th>
+                                                                                                <th class="text-right">Total Amount <span
+                                                        class="currency-sign"></span></th>
+                                                <th class="text-right">Paid Amount <span
+                                                        class="currency-sign"></span></th>
+                                                <th class="text-right" style="width: 14% !important">Due
+                                                    Amount<span class="currency-sign"></span></th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            
+                                            
+                                                                                                                                                                                                <input type="hidden"
+                                                        name="transaction_ledger_ids[21]"
+                                                        value="121">
+                                                                                                <tr>
+                                                    <td class="text-center">
+                                                        1
+
+                                                        <input type="hidden"
+                                                            name="transaction_ids[21]"
+                                                            value="21">
+                                                    </td>
+                                                    <td class="text-center">2026-10-01</td>
+                                                    <td class="text-center">Restaurant Sale</td>
+                                                    <td class="text-center">
+                                                        INV-B-0101
+                                                    </td>
+
+                                                    <td class="text-center">
+                                                                                                                                                                                Cash
+                                                                                                                    
+                                                    </td>
+
+                                                                                                        <td style="text-align: right;">
+                                                        <input type="hidden"
+                                                            name="total_amounts[21]"
+                                                            value="800">
+                                                        800.00
+                                                    </td>
+                                                    <td style="text-align: right;">
+                                                        <input type="hidden"
+                                                            name="collections[21]"
+                                                            value="800">
+                                                        800.00
+                                                    </td>
+                                                    <td class="text-right">
+                                                        <input type="hidden"
+                                                            name="due_amounts[21]"
+                                                            value="0">
+
+                                                        0
+                                                    </td>
+                                                </tr>
+                                                                                                                                                                                                <input type="hidden"
+                                                        name="transaction_ledger_ids[22]"
+                                                        value="122">
+                                                                                                <tr>
+                                                    <td class="text-center">
+                                                        2
+
+                                                        <input type="hidden"
+                                                            name="transaction_ids[22]"
+                                                            value="22">
+                                                    </td>
+                                                    <td class="text-center">2026-10-01</td>
+                                                    <td class="text-center">Restaurant Sale</td>
+                                                    <td class="text-center">
+                                                        INV-B-0102
+                                                    </td>
+
+                                                    <td class="text-center">
+                                                                                                                                                                                Cash
+                                                                                                                    
+                                                    </td>
+
+                                                                                                        <td style="text-align: right;">
+                                                        <input type="hidden"
+                                                            name="total_amounts[22]"
+                                                            value="600">
+                                                        600.00
+                                                    </td>
+                                                    <td style="text-align: right;">
+                                                        <input type="hidden"
+                                                            name="collections[22]"
+                                                            value="100">
+                                                        100.00
+                                                    </td>
+                                                    <td class="text-right">
+                                                        <input type="hidden"
+                                                            name="due_amounts[22]"
+                                                            value="500">
+
+                                                        500.00
+                                                    </td>
+                                                </tr>
+                                                                                    </tbody>
+
+
+                                        <tfoot>
+                                            <tr>
+                                                <th class="text-right" colspan="5">
+                                                    <strong style="font-size: 18px">Total:</strong>
+                                                </th>
+                                                <th class="text-right"><strong
+                                                        style="font-size: 18px">1400</strong>
+                                                </th>
+                                                <th class="text-right"><strong
+                                                        style="font-size: 18px">900</strong>
+                                                </th>
+                                                
+
+                                                <th class="text-right"><strong
+                                                        style="font-size: 18px">500</strong>
+                                                </th>
+                                            </tr>
+
+
+                                        </tfoot>
+                                    </table></div>
+                            </div>
+                                                    
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="mm-table-scroll" role="region" aria-label="Night audit" tabindex="0"><table class="table table-borderedless">
+                                <thead>
+                                    <tr>
+                                        <h6 style="width: 100%;text-align: center" class="mb-2">
+                                            <b
+                                                style="padding: 10px 20px; border-radius: 10px; color: #000; border:1px solid #ddd;">
+                                                SUMMARY
+                                            </b>
+                                        </h6>
+                                    </tr>
+                                </thead>
+                                <tr style="border-bottom:none !important">
+                                    <th class="text-right border-none">
+                                        Total Amount:
+                                    </th>
+                                    <th class="text-right border-none"
+                                        style="padding: 3px 7px 0px 0px !important;">
+                                        <input type="text" readonly class="footer-input"
+                                            style="background: white !important; padding: 0 !important"
+                                            name="total_amount" value="1400">
+                                    </th>
+                                </tr>
+                                <tr style="border-bottom:none !important">
+                                    <th class="text-right border-none">
+                                        Total Collection:
+                                    </th>
+                                    <th class="text-right border-none"
+                                        style="padding: 3px 7px 0px 0px !important;">
+                                        <input type="text" readonly class="footer-input"
+                                            style="background: white !important; padding: 0 !important"
+                                            name="collection" value="900">
+                                    </th>
+                                </tr>
+
+                                                                    <tr style="border-bottom:none !important">
+                                        <th class="text-right border-none">
+                                            Cash:
+                                        </th>
+                                        <th class="text-right border-none"
+                                            style="padding: 3px 7px 0px 0px !important;">
+                                            <input type="text" readonly class="footer-input"
+                                                style="background: white !important; padding: 0 !important"
+                                                name="payment_way[Cash]"
+                                                value="900">
+                                        </th>
+                                    </tr>
+                                                                    <tr style="border-bottom:none !important">
+                                        <th class="text-right border-none">
+                                            Card:
+                                        </th>
+                                        <th class="text-right border-none"
+                                            style="padding: 3px 7px 0px 0px !important;">
+                                            <input type="text" readonly class="footer-input"
+                                                style="background: white !important; padding: 0 !important"
+                                                name="payment_way[Card]"
+                                                value="0">
+                                        </th>
+                                    </tr>
+                                
+                                <tr style="border-bottom:none !important">
+                                    <th class="text-right border-none" style="padding: 0 7px 0 0 !important;">
+                                        Total Due:</th>
+                                    <th class="text-right border-none" style="padding: 0 7px 0 0 !important;">
+                                        <input type="text" readonly class="footer-input"
+                                            style="background: white !important" name="due_amount"
+                                            value="500">
+                                    </th>
+                                </tr>
+                            </table></div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-4 pull-right text-right">
+                            <div class="btn-group btn-corner">
+                                <button class="btn-outline-danger btn-sm">
+                                    <i class="fa fa-refresh"></i> Close
+                                </button>
+                                <button type="button" class="btn-sm btn-outline-success save-btn">
+                                    <i class="fa fa-check-circle"></i>
+                                    Generate
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form></div>
+    </div>
+</section>
+
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
+    <script src="/assets/js/moment.min.js"></script>
+    <script src="/assets/js/bootstrap-datetimepicker.min.js"></script>
+    <script>
+        $('.save-btn').on('click', () => {
+            $.LoadingOverlay("show", {
+                image: '<svg></svg>',
+                imageClass: 'loader',
+                imageAnimation: false,
+                progress: false,
+                rogressAutoResize: true,
+                progressResizeFactor: 0.25,
+                progressColor: "#8a256c",
+                progressClass: "",
+                progressOrder: 2,
+                progressFixedPosition: "center",
+                progressSpeed: 200,
+                progressMin: 20,
+                progressMax: 100,
+                size: 50,
+                maxSize: 120,
+                minSize: 20,
+                direction: "column",
+                fade: [400, 200],
+                resizeInterval: 50,
+                zIndex: 2147483647
+
+            })
+
+            // setInterval(() => {
+            //     $.LoadingOverlay("hide")
+            //     $('#formSubmit').submit();
+            // }, 1000);
+
+            setTimeout(() => {
+                $.LoadingOverlay("hide")
+                $('#formSubmit').submit();
+            }, 10000);
+
+        })
+
+
+        $('.date-picker-v2').datetimepicker({
+            //  format: 'YYYY-MM-DD H:mm:ss',//use this option to display seconds
+            format: 'YYYY-MM-DD h:mm:ss A', //use this option to display seconds
+            icons: {
+                time: 'fa fa-clock-o',
+                date: 'fa fa-calendar',
+                up: 'fa fa-chevron-up',
+                down: 'fa fa-chevron-down',
+                previous: 'fa fa-chevron-left',
+                next: 'fa fa-chevron-right',
+                today: 'fa fa-arrows ',
+                clear: 'fa fa-trash-o',
+                close: 'fa fa-times'
+            }
+        }).next().on(ace.click_event, function() {
+            $(this).prev().focus();
+        });
+    </script>
+<!--/MM-JS--></body></html>

@@ -1,0 +1,479 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">    <link rel="stylesheet" href="/assets/css/chosen.min.css" />
+    <link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css" />
+    <link rel="stylesheet" href="/assets/css/daterangepicker.min.css" />
+
+
+    <style>
+    .category-item{
+        margin: 0 0 30px 12px;
+        position: relative;
+        font-size: 18px;
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+    .category-item::after{
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -12px;
+        height: 2px;
+        width: 100%;
+        max-width: 300px;
+        background: #dbe5f1;
+    }
+    .main-row{
+        padding: 0 15px;
+        margin-bottom: 30px
+    }
+    .room-item {
+        border: 2px solid #9585BF;
+        border-radius: 6px;
+        margin-bottom: 12px;
+        cursor: pointer;
+        height: 70px;
+        text-align: center;
+        font-weight: 500;
+        transition: box-shadow .12s ease, transform .12s ease;
+    }
+    .room-item:hover {
+        box-shadow: 0 3px 9px rgba(47, 99, 168, .18);
+        transform: translateY(-1px);
+    }
+    .category-item b {
+        background: #f4f7fb;
+        border: 1px solid #dbe5f1;
+        border-radius: 4px;
+        padding: 4px 12px;
+        font-size: 14px;
+        display: inline-block;
+    }
+    .room-item .room-number {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        height: 100%;
+    }
+    .room-item.active {
+        background-color: #9585BF !important;
+        color: #fff;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</style>
+<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+    
+        <section class="mm-ui mm-booking-adjust">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Booking migration</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Move this booking to another room or date.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a href="http://localhost/hotel/booking" class="mm-button mm-button-secondary">
+                <i class="fa fa-list-alt" aria-hidden="true"></i> Booking List
+            </a></div>        </header>
+        <!-- Adjust Booking Form -->
+        <form action="http://localhost/hotel/booking-adjusts" class="store-form" method="POST" id="store-form">
+            <input type="hidden" name="_token" value="fixture-csrf-token">
+            <!-- BOOKING ID -->
+            <input type="hidden" name="booking_id" value="5" required>
+            <input type="hidden" name="type" value="migrate" required>
+            <input type="hidden" name="from_booking_migration" value="1">
+
+            <div class="board-stay-strip booking-context">
+        <span class="stay-chip"><i class="fa fa-hashtag"></i> <b>B-0007</b></span>
+        <span class="stay-chip">
+            <span class="label label-xs label-danger arrowed arrowed-right">Check In</span>
+        </span>
+        <span class="stay-chip"><i class="fa fa-user"></i> Rahim &lt;b&gt;Uddin&lt;/b&gt;
+                            <span class="ctx-dim">&middot; 2 room(s)</span>
+                    </span>
+        <span class="stay-chip"><i class="fa fa-sign-in"></i>
+            <b>01 Oct 2026</b></span>
+        <span class="stay-chip"><i class="fa fa-sign-out"></i>
+            <b>03 Oct 2026</b></span>
+        <span class="stay-chip"><i class="fa fa-moon-o"></i> <b>2</b>
+            nights</span>
+                    <span class="stay-chip"><i class="fa fa-dollar"></i> <b>9,000.00</b>
+                                    <span class="ctx-due">due 8,000.00</span>
+                            </span>
+            </div>
+
+            
+
+            <div class="mm-panel tw-p-4 sm:tw-p-6 mm-adjust-guest"><!-- GUEST INFORMATION -->
+                <div class="mm-adjust-info">
+                    <div>
+                        <h2 class="mm-adjust-title">Guest's information</h2>
+
+                        <p class="guest"><b>Name </b> :
+                            Rahim &lt;b&gt;Uddin&lt;/b&gt;</p>
+
+                        <p class="guest"><b>Address </b> :
+                            Dhaka
+                        </p>
+                        <p class="guest"><b>Mobile </b> :
+                            01700000000
+                        </p>
+                        <p><b>Nationality </b>
+                            : Bangladesh
+                        </p>
+                    </div>
+
+                    <div>
+                        <h2 class="mm-adjust-title">Booking</h2>
+                        <table class="table mm-adjust-booking">
+                            <tr>
+                                <th> Booking No </th>
+                                <th>
+                                    : BK-B-0007</th>
+                            </tr>
+                            <tr>
+                                <td> Booking Date </td>
+                                <td>: 2026-09-28
+                                </td>
+                            </tr>
+                            <tr>
+                                <td> Check IN Date </td>
+                                <td>: 2026-10-01
+                                    <input type="hidden" value="2026-10-01"
+                                        class="check-in-date">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td> Check out Date </td>
+                                <td>: <span
+                                        class="tr-checkout-date">2026-10-03</span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div></div>
+
+            <div class="mm-panel tw-p-4 sm:tw-p-6 mm-adjust-rooms"><!-- BOOKING ROOM INFORMATION -->
+                <input type="hidden" value="8000"
+                    id="previousDue">
+                <input type="hidden" value="1000"
+                    id="previousAdvance">
+                <input type="hidden" value="2026-10-01" id="currentDate">
+                <input type="hidden" name="previous_check_out_date" value="2026-10-03"
+                    id="previous_check_out_date">
+                <input type="hidden"
+                    value="1"
+                    id="selectedRoom">
+                <input type="hidden"
+                    value="101"
+                    id="selectedRoomNumber">
+
+                <h2 class="mm-adjust-title">Room to migrate</h2>
+                <div class="mm-adjust-room-picks">
+                                            <div>
+                            <div class="text-danger">
+                                
+                            </div>
+                            <label class="block">
+                                <input name="room_ids" type="checkbox"
+                                    value="101"
+                                    class="ace input-lg room-select"
+                                    data-guest_count="2"
+                                    data-room-id="1"
+                                    data-room-category="Deluxe King"
+                                    data-price="4000"
+                                    data-infant_count="0"
+                                    data-night_count="2"
+                                    data-check_out_date="2026-10-03"
+                                    data-allow_breakfast="1"
+                                    
+                                    
+                                    checked>
+                                <span class="lbl bigger-120"> Room ->
+                                    101</span>
+                            </label>
+                        </div>
+                                            <div>
+                            <div class="text-danger">
+                                
+                            </div>
+                            <label class="block">
+                                <input name="room_ids" type="checkbox"
+                                    value="102"
+                                    class="ace input-lg room-select"
+                                    data-guest_count="1"
+                                    data-room-id="2"
+                                    data-room-category="Standard Twin"
+                                    data-price="3000"
+                                    data-infant_count="0"
+                                    data-night_count="2"
+                                    data-check_out_date="2026-10-03"
+                                    data-allow_breakfast="0"
+                                    
+                                    
+                                    disabled>
+                                <span class="lbl bigger-120"> Room ->
+                                    102</span>
+                            </label>
+                        </div>
+                                    </div>
+
+                <!-- BOOKING DATE FILTERING -->
+                <div class="mm-adjust-dates">
+                    <div class="input-group">
+                        <label class="input-group-addon">
+                            Migrate Date
+                        </label>
+                        <input type="text" name="migrate_date" autocomplete="off"
+                            class="form-control date-picker-disable-past pointer migrate_date empty-rooms"
+                            value="2026-10-01">
+                        <label class="input-group-addon">
+                            Check Out Date
+                        </label>
+                        <input type="text" name="check_out_date" autocomplete="off"
+                            class="form-control date-picker-disable-past pointer empty-rooms"
+                            value="2026-10-03">
+                        <div class="input-group-btn">
+                            <button class="mm-button next-step-btn"
+                                type="button" id="checkRoomStatus">
+                                <i class="fa fa-paper-plane"></i> Search
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="available-rooms" style="display: none">
+                    <div class="row main-row">
+
+            <p class="category-item">
+                <b>Deluxe King - 4000</b>
+            </p>
+
+                            <div class="col-md-1">
+                    <div class="room-item" onclick="pickRoom(this, `Deluxe King`)">
+                        <input type="hidden" class="room-category-id" value="1">
+                        <input type="hidden" class="room-number" value="111">
+                        <input type="hidden" class="room-price" value="4000">
+                        <input type="hidden" class="room-id" value="11">
+                        <p class="room-number">
+                            <span style="font-size: 12px; margin-top: 5px;">Room No</span>
+                            <span style="font-size: 24px">111</span>
+                        </p>
+                    </div>
+                </div>
+                            <div class="col-md-1">
+                    <div class="room-item" onclick="pickRoom(this, `Deluxe King`)">
+                        <input type="hidden" class="room-category-id" value="1">
+                        <input type="hidden" class="room-number" value="112">
+                        <input type="hidden" class="room-price" value="4000">
+                        <input type="hidden" class="room-id" value="12">
+                        <p class="room-number">
+                            <span style="font-size: 12px; margin-top: 5px;">Room No</span>
+                            <span style="font-size: 24px">112</span>
+                        </p>
+                    </div>
+                </div>
+            
+        </div>
+                    </div>
+
+                <div id="available-room">
+
+                </div></div>
+
+            <!-- Room Information Table -->
+            <div class="mm-panel tw-p-4 sm:tw-p-6 mm-adjust-table"><h2 class="mm-adjust-title">Room Information</h2>
+
+                <div class="mm-table-scroll" role="region" aria-label="Room information" tabindex="0"><table class="table table-bordered room-list">
+                        <thead>
+                            <tr>
+
+                                <th class="text-center" style="width: 10%">
+                                    Category
+                                </th>
+                                <th class="text-center" style="width: 12%">
+                                    Room
+                                </th>
+                                <th class="text-center" style="width: 10%">Guest</th>
+                                <th style="width:12%">Amount <span class="currency-sign"></span></th>
+                                <th class="text-right">Infant</th>
+                                                                <th class="text-right">Night</th>
+                                <th class="text-right">Discount<span class="currency-sign"></span></th>
+                                <th class="text-center">Breakfast</th>
+                                <th class="text-right" width="15%">T.Amount
+                                    <span class="currency-sign"></span>
+                                </th>
+                                <th class="text-right" style="width: 3%"></th>
+                            </tr>
+                        </thead>
+                        <tbody class="item-details roomTbody">
+
+                        </tbody>
+                        <tfoot style="position: relative;">
+
+    <tr style="position: absolute; left: 3%; top: 3%;">
+    <td colspan="8" class="text-right borderless">Send Sms :</td>
+    <td class="send-sms borderless text-center">
+        <label>
+            <input name="sms" class="ace ace-switch ace-switch-6" type="checkbox">
+            <span class="lbl"></span>
+        </label>
+    </td>
+    <td colspan="8" class="text-right borderless">Send Email :</td>
+    <td class="send-email borderless text-center">
+        <label>
+            <input name="email" class="ace ace-switch ace-switch-6" type="checkbox">
+            <span class="lbl"></span>
+        </label>
+    </td>
+
+    <td colspan="8" class="text-right borderless">Room Number In Print :</td>
+    <td class="borderless text-center">
+        <label>
+            <input name="is_room_in_invoice" class="ace ace-switch ace-switch-6" value="1" type="checkbox" checked>
+            <span class="lbl"></span>
+        </label>
+    </td>
+
+    
+
+</tr>
+
+
+
+    <tr>
+
+        <td class="text-right borderless" colspan="8">Subtotal <span class="currency-sign"></span></td>
+        <td class="borderless">
+            <input class="form-control subtotal-amount text-right"
+                value="0" readonly style="padding-right: 5px;">
+            <input type="hidden" name="line_total" id="line_total">
+        </td>
+
+    </tr>
+
+    <tr>
+        <td class="text-right borderless" colspan="8">Service Charge <span
+                class="currency-sign"></span></td>
+        <td class="borderless">
+            <input name="service_amount" value="0"
+                class="form-control service_amount text-right" readonly style="padding-right: 5px;">
+        </td>
+    </tr>
+    <tr>
+        <td class="text-right borderless" colspan="8">
+            <input type="hidden" name="vat" id="vat" value="10">
+
+            Vat(10%) <span class="currency-sign"></span>
+        </td>
+        <td class="borderless">
+            <input type="text" name="vat_amount"
+                value="0"
+                class="form-control vat-amount text-right only-number" value="" readonly>
+        </td>
+    </tr>
+    
+
+    <tr>
+        <td class="text-right borderless" colspan="8">Grand Total <span class="currency-sign"></span>
+        </td>
+        <td class="borderless">
+            <input name="sub_total" value=""
+                class="form-control grandtotal text-right" readonly style="padding-right: 5px !important;">
+            <input type="hidden" name="line_total" id="line_total">
+        </td>
+
+    </tr>
+
+            <tr>
+            <td class="text-right borderless" colspan="8">Prev. Adv Amount <span
+                    class="currency-sign"></span></td>
+            <td class="borderless">
+                <input type="number" name="previous_advance" value=""
+                    class="form-control previous-advance text-right" readonly>
+            </td>
+        </tr>
+    
+    <tr>
+        <td class="text-right borderless" colspan="8">Advanced Amount RM</td>
+        <td class="borderless">
+            
+            <input type="number" name="advanced_amount"
+                value="0"
+                class="form-control adv-amount text-right">
+        </td>
+    </tr>
+
+            <tr>
+            <td class="text-right borderless" colspan="8">Prev. Due Amount <span
+                    class="currency-sign"></span></td>
+            <td class="borderless">
+                <input type="number" value="" class="form-control previous-due text-right" readonly>
+            </td>
+        </tr>
+    
+    <tr>
+
+        <td class="text-right borderless" colspan="8">Due Amount <span class="currency-sign"></span>
+        </td>
+        <td class="borderless">
+            <input type="number" name="due_amount" value=""
+                class="form-control due-amount text-right" readonly>
+        </td>
+    </tr>
+    <tr>
+        <td class="text-right borderless" colspan="8">Payment Method</td>
+        <td class="borderless">
+            <select class="form-control chosen-select payment-type" name="payment_type"
+                data-placeholder="-Choose Payment Type-" data-selected="">
+                <option></option>
+                                    <option value="1" >
+                        Cash
+                    </option>
+                            </select>
+        </td>
+    </tr>
+    <tr class="card_info" style="display: none">
+        <td class="text-right borderless" colspan="8">Card Authorized No</td>
+        <td class="borderless">
+            <input type="text" name="card_info" value=""
+                class="form-control text-center" placeholder="XXXX-XXXX-XXX">
+        </td>
+    </tr>
+
+</tfoot>
+
+                    </table></div>
+
+                <div class="mm-adjust-actions">
+                    <button class="mm-button submit-form-btn" type="button">
+                        <i class="fa fa-bookmark"></i> Book Now
+                    </button>
+                </div></div>
+        </form>
+    </div>
+</section>
+
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
+<!--/MM-JS--></body></html>

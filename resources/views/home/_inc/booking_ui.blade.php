@@ -1,9 +1,7 @@
-<div class="widget-body" style="border: 1px dotted rgb(29, 91, 173)">
-    <div class="widget-main">
+<div class="mm-panel tw-p-4 mm-dashboard-board-panel">
 
-        <x-alert-message />
+    <x-alert-message />
 
-        <x-room-manage :categories="$categories" :mixdate="$mix_date" />
+    @include('home._inc.room-board', ['categories' => $categories, 'mix_date' => $mix_date])
 
-    </div>
 </div>

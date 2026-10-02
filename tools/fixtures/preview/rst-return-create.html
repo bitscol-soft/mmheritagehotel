@@ -1,0 +1,412 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css"><!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+<section class="mm-ui mm-rst mm-rst-sale">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">New sale return</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Find the original invoice, enter the quantities returned and confirm.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a href="http://localhost/rst/sales" class="mm-button mm-button-secondary">
+            <i class="ace-icon fa fa-list-alt" aria-hidden="true"></i> Sale Return List
+        </a></div>        </header>
+        <!-- Form -->
+    <form method="POST" action="http://localhost/rst/sale-returns" accept-charset="UTF-8"
+        class="form-horizontal sales-form" role="form" data-parsley-validate novalidate>
+        <input type="hidden" name="_token" value="fixture-csrf-token">
+        <div class="mm-panel tw-p-4 sm:tw-p-6 mm-hs-info-panel"><h2 class="mm-setup-title">Guest and invoice</h2>
+            <div class="mm-hs-info">
+                <!-- Search Guest Name -->
+                <div class="form-group">
+                    <label class="control-label" for="guest_name">Guest Name<sup class="text-danger">*</sup>
+                        :</label>
+
+                    <input type="hidden" name="customer_id" id="hotel_guest_id" required>
+
+                    <input type="text" name="guest_name" id="guest_name"
+                        placeholder="Guest/Customer's Name" class="form-control" required />
+                </div>
+
+                <!-- Sale Invoice ID -->
+                <div class="form-group">
+                    <label class="control-label" for="invoice_no">Invoice ID #</label>
+                    <input type="text" name="invoice_no" id="invoice_no" class="form-control"
+                        placeholder="Search by Sale Invoice No" autocomplete="off">
+                </div>
+
+                <!-- Sale Date -->
+                <div class="form-group">
+                    <label class="control-label" for="return_date">Date :</label>
+                    <input type="text" name="date" id="return_date" value="2026-10-01"
+                        class="form-control date-picker" autocomplete="off" />
+                </div>
+            </div>
+
+            <div class="row" hidden>
+
+                <!-- Product Name -->
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <label class="control-label">Product Name :</label>
+                        <input type="text" name="product_name" id="drug-name" class="form-control"
+                            placeholder="Search by Product Name / Barcode" autocomplete="off" />
+                    </div>
+                </div>
+
+            </div></div>
+
+        <!-- transition -->
+        <div class="mm-panel tw-p-4 sm:tw-p-6"><h2 class="mm-setup-title">Returned items</h2>
+            <div class="mm-table-scroll" role="region" aria-label="Returned items" tabindex="0"><!-- Sale Item -->
+                <table class="table table-bordered table-hover" id="table_auto">
+                    <thead>
+                        <tr>
+                            <th>Product Name</th>
+                            <th width="15%">Returnable Qty</th>
+                            <th>Return Qty</th>
+                            <th width="15%">Price</th>
+                            <th width="15%">Discount</th>
+                            <th width="15%">Amount</th>
+                            <th width="1%">
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="product-details"></tbody>
+                </table></div></div>
+
+        <div class="mm-panel tw-p-4 sm:tw-p-6 mm-hs-totals"><div class="form-inlines">
+                <!-- Total Amount -->
+                <div class="form-group">
+                    <label class="control-label" for="total_amount">Total Amount :</label>
+                    <div class="input-group">
+                        <div class="input-group-addon currency">৳</div>
+                        <input tabindex="-1" value="0" type="number" min="0"
+                            name="subtotal" step="any" class="form-control" id="total_amount"
+                            placeholder="Total Amount" ondrop="return false;" onpaste="return false;"
+                            readonly>
+                    </div>
+                </div>
+
+                <!-- Previous Due -->
+                <div class="form-group">
+                    <label class="control-label" for="total"><b>Previous Due :</b></label>
+                    <div class="input-group">
+                        <div class="input-group-addon currency">৳</div>
+                        <input tabindex="-1" value="0" type="number" min="0"
+                            step="any" class="form-control" name="previous_due" id="total"
+                            placeholder="Previous Due" ondrop="return false;" onpaste="return false;"
+                            readonly>
+                    </div>
+                </div>
+
+                <!-- Grand Total -->
+                <div class="form-group">
+                    <label class="control-label" for="grandTotal"><b> Grand Total: </b></label>
+                    <div class="input-group">
+                        <div class="input-group-addon currency">৳</div>
+                        <input tabindex="-1" value="" type="number" min="0"
+                            step="any" class="form-control" name="payable_amount"
+                            id="grandTotal" placeholder="Total Amount" readonly>
+                    </div>
+                </div>
+
+                <div id="payment">
+                    <!-- Return Amount -->
+                    <div class="form-group aside_system">
+                        <label class="control-label" for="returnAmount">Return Amount :</label>
+                        <div class="input-group">
+                            <div class="input-group-addon currency">৳</div>
+                            <input value="0" type="number" min="0" step="any"
+                                class="form-control" name="return_amount" id="returnAmount"
+                                placeholder="Return Amount" ondrop="return false;"
+                                onpaste="return false;">
+                        </div>
+                    </div>
+
+                    <!-- Due Amount -->
+                    <div class="form-group aside_system">
+                        <label class="control-label" for="amountDue">Amount Due :</label>
+                        <div class="input-group">
+                            <div class="input-group-addon currency">৳</div>
+                            <input tabindex="-1" value="" type="number" min="0"
+                                step="any" class="form-control amountDue only-number"
+                                name="due_amount" id="amountDue" placeholder="Amount Due"
+                                ondrop="return false;" onpaste="return false;" readonly>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="form-group">
+                    <button type="submit" name="draft" class="btn btn-primary mm-hs-confirm">Confirm</button>
+                </div>
+            </div></div>
+    </form>
+    <!-- End Form -->
+    </div>
+</section>
+
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<script src="/assets/js/jquery-ui.min.js"></script><script src="/assets/custom_js/loadDetails.js"></script><script src="/assets/custom_js/reference_filter.js"></script><!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
+    <script src="/assets/custom_js/guest_filter.js"></script>
+
+    <script>
+        function requestUrl(urlParts) {
+            urlParts = $.extend({
+                basePath: 'http://localhost/',
+                path: '',
+                param: ''
+            }, urlParts);
+            return urlParts.basePath + urlParts.path + urlParts.param;
+        }
+
+
+        $(document).on('click', '.ui-menu-item', function() {
+
+            let guest_id = $('#hotel_guest_id').val();
+
+            getGuestInfo(guest_id)
+        });
+
+        function getGuestInfo(guest_id) {
+
+            $.ajax({
+                type: 'get',
+                url: '/hotelservice/guest-d-by-name/' + guest_id,
+                async: true,
+
+                beforeSend: function() {
+                    $("body").css("cursor", "progress");
+                },
+                success: function(data) {
+                    $('#room_number').val(data['room_number']);
+                    $('#booking_number').val(data['booking_number']);
+                    if (data['status'] == 0) {
+                        $('#room_number').append('<p class="text-danger text-center">NOT FOUND</p>');
+                    }
+                },
+                complete: function(data) {
+                    $("body").css("cursor", "default");
+                }
+            });
+        }
+
+
+        function patientFilter() {
+            patientWithIndoor('indoor');
+
+        }
+
+        $(document).on('focus', '#invoice_no', function() {
+            $(this).autocomplete({
+                source: function(request, response) {
+                    $.getJSON('/restaurant/get-product-by-sale-invoice', {
+                            invoice_no: request.term
+                        },
+                        function(data) {
+                            response($.map(data, function(items) {
+                                return {
+                                    value: items.invoice_no,
+                                    label: `${items.invoice_no}`,
+
+                                    data: items,
+                                }
+                            }))
+                        }
+                    )
+                },
+                select: function(event, ui) {
+
+                    $('#guest_name').val(ui.item.data.guest_name)
+                    $('#hotel_guest_id').val(ui.item.data.hotel_guest_id)
+                    getProducts(ui.item.data.invoice_no);
+                },
+                search: function(event, ui) {},
+                minLength: 1,
+                autoFocus: true
+            })
+        })
+
+
+
+
+        function getProducts(invoice) {
+            $.ajax({
+                type: 'get',
+                url: '/restaurant/get-saleable-products',
+                async: true,
+                data: {
+                    invoice_no: invoice
+                },
+
+                beforeSend: function() {
+
+                    $("body").css("cursor", "progress");
+
+                },
+                success: function(data) {
+
+                    $('#product-details').html(data);
+
+                    calculateTotal();
+                },
+                complete: function(data) {
+                    $("body").css("cursor", "default");
+                }
+            });
+        }
+
+
+        $(document).on('focus', '#drug-name', function() {
+            // if ($('#guest_name').val() == '') {
+            //     warning('toster', 'Please select Guest/Customer')
+
+            //     return false;
+            // }
+            $(this).autocomplete({
+
+                source: function(request, response) {
+                    $.getJSON('/restaurant/get-saleable-products', {
+                            invoice_no: $('#invoice_no').val(),
+                            // guest_name: $('#guest_name').val(),
+                        },
+                        function(data) {
+
+                            response($.map(data[0].items, function(items) {
+                                return {
+                                    value: items.product.name,
+                                    label: `${items.product.name}`,
+                                    data: items,
+                                }
+                            }))
+                        }
+                    )
+                },
+                select: function(event, ui) {
+
+                    // appendProductRow(ui, 'product')
+                },
+                search: function(event, ui) {},
+                minLength: 1,
+                autoFocus: true
+            })
+        })
+
+
+
+        // $(function() {
+        //     $("#drug-name").focus();
+        // });
+
+
+
+        $(document).on('click', '.delete', function(e) {
+            $(this).parents('tr').remove();
+            calculateTotal();
+        })
+    </script>
+
+
+    
+
+    <script>
+        $(document).on('keyup focus', '.return-qty, .discount, #amountPaid , .total_cost, .product_cost , .item_discount',
+            function(e) {
+
+                calculateTotal(e);
+            });
+
+
+
+
+        //<-- calculateTotal  -->//
+        function calculateTotal(e) {
+            var row = $(e.target).closest('.product-row'); // Get the current product row
+
+            var return_qty = Number(row.find('.return-qty').val()); // Get the return quantity value
+            var product_cost = Number(row.find('.product_cost').val()); // Get the product cost value
+            var item_discount = Number(row.find('.item_discount').val()); // Get the product cost value
+
+            var total_cost = return_qty * product_cost - item_discount; // Calculate the total cost
+
+            row.find('.total_cost').val(total_cost); // Update the total cost field in the current row
+
+            var subTotal = linePrice();
+            var total = grandTotal(subTotal);
+
+            // Call the dueAmount function if needed
+            // dueAmount(payableAmount);
+        }
+
+
+
+        //<--Return Amount-->//
+        $('#returnAmount').keyup(function() {
+            let amount = Number($(this).val());
+            let grandTotal = Number($('#grandTotal').val());
+
+
+            if (amount > grandTotal) {
+
+                amount = grandTotal;
+
+                $('#returnAmount').val(grandTotal)
+            }
+            amount = Number(grandTotal - amount)
+            $('#amountDue').val(amount)
+
+        })
+
+
+        //<--linePrice-->//
+        function linePrice() {
+            var rows = $('.product-row')
+            totalDrugPrice = 0, amount = 0;
+
+            $.each(rows, function(index, row) {
+                amount += Number($(row).find('.total_cost').val())
+                // amount += totalDrugPrice;
+            });
+
+
+            $('#total_amount').val(Math.round(amount).toFixed(2));
+            // $('#grandTotal').val(Math.round(amount).toFixed(2));
+
+            return Math.round(amount).toFixed(2);
+        }
+
+        // <--discount--> //
+        function discount(stotal) {
+            var discount = parseFloat($('.discount').val()),
+                subTotal = parseFloat(stotal);
+            if (discount > subTotal) {
+                $('.discount').val(0);
+                alert('You can\'t pay more than grand total.');
+            }
+            var total = (subTotal - discount).toFixed(2)
+            $('#total').val(total);
+            return total;
+        }
+
+        function grandTotal(total) {
+            $('#grandTotal').val(parseFloat(total).toFixed(2));
+            return total;
+        }
+
+        function dueAmount(payableAmount) {
+            let paidAmount = parseFloat($('#amountPaid').val());
+            if (!paidAmount) paidAmount = 0;
+            if (paidAmount >= payableAmount) {
+                $('#change').val(paidAmount - payableAmount);
+                $('#amountDue').val(0);
+            } else {
+                $('#change').val(0);
+                $('#amountDue').val(payableAmount - paidAmount);
+            }
+        }
+    </script>
+
+
+<!--/MM-JS--></body></html>

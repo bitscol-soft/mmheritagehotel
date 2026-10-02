@@ -5,75 +5,11 @@
 @stop
 @section('css')
 
-    <style>
-        .infobox {
-            /* height: fit-content !important; */
-            height: 90px !important;
-            width: fit-content !important;
-        }
 
-        .infobox-content {
-            white-space: nowrap;
-        }
-
-        .infobox-small {
-            width: 100% !important;
-        }
-
-        .new-employee-table>tbody>tr>td,
-        .table>tbody>tr>th,
-        .table>tfoot>tr>td,
-        .table>tfoot>tr>th,
-        .table>thead>tr>td,
-        .table>thead>tr>th {
-            padding: 4px;
-        }
-
-        .chosen-container>.chosen-single,
-        [class*=chosen-container]>.chosen-single {
-            line-height: 24px !important;
-            height: 25px !important;
-        }
-
-        .chosen-container-single {
-            width: 164px !important;
-        }
-
-        .top-sheet>.chosen-container-single .chosen-single {
-            background: #a3cc8d !important;
-        }
-
-        .dept-wise-attnd>.chosen-container-single .chosen-single {
-            background: #d495c3 !important;
-        }
-
-        .shift-wise-attnd>.chosen-container-single .chosen-single {
-            background: #bdb0b0 !important;
-        }
-
-        .fc-month-view>td,
-        th {
-            height: 20px !important;
-            width: 20px !important;
-        }
-    </style>
 
 
     {{-- Room Price Design And CSS --}}
-    <style>
-        .room-price .label.label-xs.arrowed {
-            padding: 12px 8px;
-        }
 
-        .room-price .label.label-xs.arrowed i {
-            margin-top: -12px;
-        }
-
-        .room-price span.label.label-xs.arrowed::before,
-        .room-price span.label.label-xs.arrowed::after {
-            border-width: 12px 6px !important;
-        }
-    </style>
 
     @if ($settings->where('key', 'visible_booking_ui_dashboard')->first()->value == 1)
         @include('home._inc.style')
@@ -84,73 +20,24 @@
 @section('content')
 
 
-    <div class="row clearfix">
-
-        <div class="col-sm-3">
-            <div class="infobox infobox-green infobox-small infobox-dark" style="border-radius: 3px">
-                <div class="infobox-icon" style="background: #708828; border-radius: 50%; text-align: center">
-                    <i class="fa fa-hospital-o" style="font-size: 20px; margin-top: 10px"></i>
-                </div>
-                <div class="infobox-data " style="max-width: 70%">
-                    <div class="infobox-content">Booking</div>
-                    <div class="infobox-content">Today: {{ $today_booking ?? '0' }}</div>
-                    <div class="infobox-content">Last Day: {{ $yesterday_booking ?? '0' }}</div>
-                    <div class="infobox-content">Last 7 Days: {{ $last_7_days_booking ?? '0' }}</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-sm-3">
-            <div class="infobox infobox-blue infobox-small infobox-dark" style="border-radius: 3px">
-                <div class="infobox-icon" style="background: #2a7aaf; border-radius: 50%; text-align: center">
-                    <i class="fa fa-hospital-o" style="font-size: 20px; margin-top: 10px"></i>
-                </div>
-                <div class="infobox-data" style="max-width: 70%">
-                    <div class="infobox-content">Check IN</div>
-                    <div class="infobox-content">Today: {{ $today_checkin ?? 0 }}</div>
-                    <div class="infobox-content">Last Day: {{ $yesterday_checkin ?? '0' }}</div>
-                    <div class="infobox-content">Last 7 Days: {{ $last_7_days_checkin ?? 0 }}</div>
-                    {{-- <div class="infobox-content">Total: {{ $total_checkin ?? 0 }}</div> --}}
-                </div>
-            </div>
-        </div>
-
-        <div class="col-sm-3">
-            <div class="infobox infobox-grey infobox-small infobox-dark" style="border-radius: 3px">
-                <div class="infobox-icon" style="background: #6b5f5f; border-radius: 50%; text-align: center">
-                    <i class="fa fa-hospital-o" style="font-size: 20px; margin-top: 10px"></i>
-                </div>
-                <div class="infobox-data" style="max-width: 100%">
-                    <div class="infobox-content">Check Out</div>
-                    <div class="infobox-content">Today: {{ $today_checkout ?? 0 }}</div>
-                    <div class="infobox-content">Last Day: {{ $yesterday_checkout ?? 0 }}</div>
-                    <div class="infobox-content">Last 7 Days: {{ $last_7_days_checkout ?? 0 }}</div>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="infobox infobox-purple infobox-small infobox-dark" style="border-radius: 3px; background: #d277de">
-                <div class="infobox-icon" style="background: #c2b3c4; border-radius: 50%; text-align: center">
-                    <i class="fa fa-hospital-o" style="font-size: 20px; margin-top: 10px"></i>
-                </div>
-                <div class="infobox-data" style="max-width: 100%">
-                    <div class="infobox-content">Total Room ({{ $total_room }})</div>
-                    <div class="infobox-content">Booked: {{ $today_room_booked ?? 0 }}</div>
-                    {{-- <div class="infobox-content">Ready Room: {{ $today_room_ready ?? 0 }}</div> --}}
-                    <!-- will be use in future if you calculate properly -->
-                    <div class="infobox-content">Ready Room: {{ $total_room - $today_room_booked ?? 0 }}</div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-
-
-
-
-
-
+    <x-mm.styles />
+    <x-mm.page title="Hotel dashboard" description="Daily activity and room availability at a glance." class="mm-dashboard">
+        <x-slot name="actions">
+            <span class="mm-dashboard-date" title="Hotel business date"><i class="fa fa-calendar" aria-hidden="true"></i> {{ fdate(today_from_system(), 'd M Y') }}</span>
+            @if (hasPermission('bookings.index', $slugs))
+                <a class="mm-button mm-button-secondary" href="{{ route('booking.index') }}">Booking list</a>
+            @endif
+            @if (hasPermission('hotel.expected-arrival.index', $slugs))
+                <a class="mm-button mm-button-secondary" href="{{ route('report.expected-arrival') }}">Expected arrivals</a>
+            @endif
+            @if (hasPermission('hotel.expected-departure.index', $slugs))
+                <a class="mm-button mm-button-secondary" href="{{ route('report.expected-departure') }}">Expected departures</a>
+            @endif
+            @if (hasPermission('hotel.in-house-guest.index', $slugs))
+                <a class="mm-button mm-button-secondary" href="{{ route('report.in-house-guest') }}">In-house guests</a>
+            @endif
+        </x-slot>
+        @include('home._inc.dashboard-summary')
 
     <!-- Attendance -->
     <div class="row clearfix" style="display: none">
@@ -191,14 +78,18 @@
 
     <!-- BOOKING UI IF VISIBLE ON DASHBOARD -->
     @if ($settings->where('key', 'visible_booking_ui_dashboard')->first()->value == 1)
-        <hr style="padding-bottom: 0; margin-bottom: 0">
-
-
-        <div class="row clearfix">
-            @include('home._inc.booking_ui')
-        </div>
+        <section class="mm-dashboard-board" aria-labelledby="dashboard-board-title">
+            <header class="tw-mb-4">
+                <h2 id="dashboard-board-title" class="tw-m-0 tw-text-xl tw-font-semibold">Room booking board</h2>
+                <p class="tw-m-0 tw-mt-2 tw-text-sm tw-text-muted">Review dates and room status using the existing booking controls.</p>
+            </header>
+            <div class="row clearfix">
+                @include('home._inc.booking_ui')
+            </div>
+        </section>
     @endif
 
+    </x-mm.page>
 @endsection
 
 @section('js')
@@ -219,7 +110,9 @@
 
 
 
+    <script src="{{ asset('assets/custom_js/stay-range.js') }}"></script>
     @include('home._inc.script')
+    <script src="{{ asset('assets/custom_js/room-board.js') }}"></script>
 
     <script type="text/javascript">
         $(document).ready(function() {

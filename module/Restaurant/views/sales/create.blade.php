@@ -6,337 +6,246 @@
 
 @section('content')
 
-
-    @include('sales/_inc/guest-modal')
-    <div class="row">
-
-        <div class="col-sm-12">
-            <div class="widget-box">
-
-
-
-                <!-- Header -->
-                <div class="widget-header">
-                    <h4 class="widget-title">
-                        <i class="fa fa-plus-circle"></i> New Sale
-                    </h4>
-
-                    <span class="widget-toolbar">
-                        <a href="{{ route('rst.sales.index') }}">
-                            <i class="ace-icon fa fa-list-alt"></i>
-                            Sale List
-                        </a>
-                    </span>
-                </div>
-
-                <!-- Body -->
-                <div class="widget-body">
-                    <div class="widget-main">
-
-                        <!-- Form -->
-                        <form method="POST" action="{{ route('rst.sales.store') }}" accept-charset="UTF-8"
-                            class="form-horizontal sales-form" role="form" data-parsley-validate novalidate>
-                            @csrf
-
-
-                            <div class="col-md-12">
-                                <div class='row'>
-
-                                    @include('partials._alert_message')
-
-                                    <!-- Search Guest Name -->
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label class="control-label">Guest:</label>
-
-                                            <input type="hidden" name="hotel_guest_id" id="hotel_guest_id" value="">
-
-                                            <div class="input-group">
-                                                <input type="text" name="guest_name" id="guest_name"
-                                                    placeholder="Name/Mobile No." class="form-control" required>
-                                                <span class="input-group-addon pointer" data-toggle="modal"
-                                                    data-target="#add-guest-modal">
-                                                    <i class="fa fa-users"></i>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-                                    {{-- Search By Room --}}
-                                    <div class="col-md-2 ml-1">
-                                        <div class="form-group">
-                                            <label class="control-label">Room Number :</label>
-
-                                            <input type="hidden" name="hotel_room_id" id="hotel_room_id">
-
-                                            <input type="text" name="room_number" id="room_number"
-                                                placeholder="Room Number" class="form-control">
-                                        </div>
-                                    </div>
-
-
-                                    {{-- Search By Booking --}}
-                                    <div class="col-md-2 ml-1">
-                                        <div class="form-group">
-                                            <label class="control-label">Booking Number :</label>
-
-                                            <input type="hidden" name="hotel_booking_id" id="hotel_booking_id"
-                                                value="">
-
-                                            <input type="text" name="booking_number" id="booking_number"
-                                                placeholder="Booking Number" class="form-control">
-                                            {{-- <p class="text-danger text-center">Not Found!</p> --}}
-                                        </div>
-                                    </div>
-
-
-
-                                    <!-- Sale Invoice ID -->
-                                    <div class="col-md-2 ml-1">
-                                        <div class="form-group">
-                                            <label class="control-label">Invoice ID #</label>
-                                            <input type="text" tabindex="-1" class="form-control" id="invoice_id"
-                                                placeholder="Invoice ID" name="invoice_no" value="{{ $invoice_id }}"
-                                                readonly>
-                                        </div>
-                                    </div>
-
-
-
-
-                                    <!-- Sale Date -->
-                                    <div class="col-md-2 ml-1">
-                                        <div class="form-group">
-                                            <label class="control-label">Date :</label>
-                                            <input type="text" name="date" value="{{ date('Y-m-d') }}"
-                                                class="form-control date-picker" autocomplete="off">
-                                        </div>
-                                    </div>
-
-                                </div>
-
-
-
-                                <div class="row">
-
-                                    <!-- Product Name -->
-                                    <div class="col-md-8">
-                                        <div class="form-group">
-                                            <div class="input-group">
-                                                <span class="input-group-addon">Product</span>
-                                                <input type="text" name="product_name" id="drug-name"
-                                                    class="form-control" placeholder="Search by Product Name / Barcode"
-                                                    autocomplete="off" style="z-index: 0">
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-
-                            <!-- transition -->
-
-
-                            <div class='row'>
-                                <div class='col-md-8'>
-
-
-                                    <!-- Sale Item -->
-                                    <table class="table table-bordered table-hover" id="table_auto">
-                                        <thead>
-                                            <tr>
-                                                <th>Product Name</th>
-                                                <th width="15%">Available Qty</th>
-                                                <th width="15%">Quantity</th>
-                                                <th width="15%">Sales Price</th>
-                                                <th width="18%">Total</th>
-                                                <th width="1%">
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="product-details"></tbody>
-                                    </table>
-
-
-                                </div>
-
-
-                                <div class='col-md-4'>
-
-
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label">Payment Way:</label>
-                                        <div class="col-md-8">
-                                            @foreach ($account_types as $account_type)
-                                                <label>
-                                                    <input name="payment_way" value="{{ $account_type->id }}"
-                                                        class="checked-reference" type="radio">
-                                                    {{ $account_type->name }}
-                                                </label>&nbsp;&nbsp;
-                                            @endforeach
-                                        </div>
-                                    </div>
-
-                                    <!-- Sub Total -->
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label">Sub Total :</label>
-                                        <div class="input-group col-md-8">
-                                            <div class="input-group-addon currency">৳</div>
-                                            <input tabindex="-1" value="0" type="number" min="0"
-                                                name="subtotal" step="any" class="form-control" id="subTotal"
-                                                placeholder="Sub Total" ondrop="return false;" onpaste="return false;"
-                                                readonly>
-                                        </div>
-                                    </div>
-
-
-
-                                    <!-- Discount -->
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label">Discount :</label>
-                                        <div class="input-group col-md-8">
-                                            <div class="input-group-addon currency">৳</div>
-                                            <input value="0" type="number" min="0" step="any"
-                                                class="form-control changesNo discount" name="discount" id="discount"
-                                                placeholder="Discount" ondrop="return false;" tabindex="-1">
-                                        </div>
-                                    </div>
-
-
-
-
-                                    <!-- Total -->
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label"><b>Total :</b></label>
-                                        <div class="input-group col-md-8">
-                                            <div class="input-group-addon currency">৳</div>
-                                            <input tabindex="-1" value="0" type="number" min="0"
-                                                step="any" class="form-control" name="total_amount" id="total"
-                                                placeholder="Total Amount" ondrop="return false;" onpaste="return false;"
-                                                readonly>
-                                        </div>
-                                    </div>
-
-
-
-
-                                    <!-- Vat -->
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label"><b>Vat :</b></label>
-                                        <div class="input-group col-md-8">
-                                            <div class="input-group-addon currency">৳</div>
-                                            <input tabindex="-1" value="0" type="number" min="0"
-                                                step="any" class="form-control" name="vat_amount" id="vat"
-                                                onkeyup="vatUpdate()" placeholder="Vat Amount" />
-                                        </div>
-                                    </div>
-
-
-
-                                    <!-- Service Charge -->
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label"><b>Service Charge:</b></label>
-                                        <div class="input-group col-md-8">
-                                            <div class="input-group-addon currency">৳</div>
-                                            <input tabindex="-1" value="0" type="number" min="0"
-                                                step="any" class="form-control" name="service_amount"
-                                                id="service_charge" placeholder="Service Charge" ondrop="return false;"
-                                                tabindex="-1">
-                                        </div>
-                                    </div>
-
-
-
-                                    <!-- Grand Total -->
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label"><b> Grand Total: </b></label>
-                                        <div class="input-group col-md-8">
-                                            <div class="input-group-addon currency">৳</div>
-                                            <input tabindex="-1" value="" type="number" min="0"
-                                                step="any" class="form-control" name="grand_total" id="grandTotal"
-                                                placeholder="Total Amount" ondrop="return false;" onpaste="return false;"
-                                                readonly>
-                                        </div>
-                                    </div>
-
-
-                                    <div id="payment">
-                                        <!-- Paid Amount -->
-
-
-                                        <div class="form-group aside_system">
-                                            <label class="col-md-4 control-label">Paid Amount :</label>
-                                            <div class="input-group col-md-8">
-                                                <div class="input-group-addon currency">৳</div>
-                                                <input value="0" type="number" min="0" step="any"
-                                                    class="form-control" name="paid_amount" id="amountPaid"
-                                                    placeholder="Paid Amount" ondrop="return false;"
-                                                    onpaste="return false;">
-                                            </div>
-                                        </div>
-
-
-                                        <!-- Change Amount -->
-                                        <div class="form-group aside_system">
-                                            <label class="col-md-4 control-label">Change :</label>
-                                            <div class="input-group col-md-8">
-                                                <div class="input-group-addon currency">৳</div>
-                                                <input tabindex="-1" type="number" min="0" step="any"
-                                                    class="form-control change" name="change_amount" id="change"
-                                                    placeholder="Change Amount" ondrop="return false;"
-                                                    onpaste="return false;" readonly>
-                                            </div>
-                                        </div>
-
-
-
-
-
-
-
-                                        <!-- Due Amount -->
-                                        <div class="form-group aside_system">
-                                            <label class="col-md-4 control-label">Amount Due :</label>
-                                            <div class="input-group col-md-8">
-                                                <div class="input-group-addon currency">৳</div>
-                                                <input tabindex="-1" type="number" min="0" step="any"
-                                                    class="form-control amountDue only-number" name="due_amount"
-                                                    id="amountDue" placeholder="Amount Due" ondrop="return false;"
-                                                    onpaste="return false;" readonly>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-
-                                        <!-- Submit Button -->
-                                        <div class="col-md-8 col-sm-8 pull-right">
-                                            <div class="form-group">
-                                                <button type="submit" name="draft" class="btn btn-primary"
-                                                    style="width: 100%;">
-                                                    Confirm
-                                                </button>
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-                                </div>
-                            </div>
-
-
-                        </form>
-                        <!-- End Form -->
-
-
+<x-mm.styles />
+@include('sales/_inc/guest-modal')
+<x-mm.page class="mm-rst mm-rst-sale" title="New sale" description="Pick the guest, add the dishes sold and confirm the invoice.">
+    <x-slot name="actions">
+        <a href="{{ route('rst.sales.index') }}" class="mm-button mm-button-secondary">
+            <i class="ace-icon fa fa-list-alt" aria-hidden="true"></i> Sale List
+        </a>
+    </x-slot>
+
+    <!-- Form -->
+    <form method="POST" action="{{ route('rst.sales.store') }}" accept-charset="UTF-8"
+        class="form-horizontal sales-form" role="form" data-parsley-validate novalidate>
+        @csrf
+
+        @include('partials._alert_message')
+
+        <x-mm.panel class="mm-hs-info-panel">
+            <h2 class="mm-setup-title">Guest and invoice</h2>
+            <div class="mm-hs-info">
+                <!-- Search Guest Name -->
+                <div class="form-group">
+                    <label class="control-label" for="guest_name">Guest:</label>
+
+                    <input type="hidden" name="hotel_guest_id" id="hotel_guest_id" value="">
+
+                    <div class="input-group">
+                        <input type="text" name="guest_name" id="guest_name"
+                            placeholder="Name/Mobile No." class="form-control" required>
+                        <span class="input-group-addon pointer" data-toggle="modal"
+                            data-target="#add-guest-modal" role="button" aria-label="Add guest">
+                            <i class="fa fa-users"></i>
+                        </span>
                     </div>
                 </div>
+
+                {{-- Search By Room --}}
+                <div class="form-group">
+                    <label class="control-label" for="room_number">Room Number :</label>
+
+                    <input type="hidden" name="hotel_room_id" id="hotel_room_id">
+
+                    <input type="text" name="room_number" id="room_number"
+                        placeholder="Room Number" class="form-control">
+                </div>
+
+                {{-- Search By Booking --}}
+                <div class="form-group">
+                    <label class="control-label" for="booking_number">Booking Number :</label>
+
+                    <input type="hidden" name="hotel_booking_id" id="hotel_booking_id"
+                        value="">
+
+                    <input type="text" name="booking_number" id="booking_number"
+                        placeholder="Booking Number" class="form-control">
+                    {{-- <p class="text-danger text-center">Not Found!</p> --}}
+                </div>
+
+                <!-- Sale Invoice ID -->
+                <div class="form-group">
+                    <label class="control-label" for="invoice_id">Invoice ID #</label>
+                    <input type="text" tabindex="-1" class="form-control" id="invoice_id"
+                        placeholder="Invoice ID" name="invoice_no" value="{{ $invoice_id }}"
+                        readonly>
+                </div>
+
+                <!-- Sale Date -->
+                <div class="form-group">
+                    <label class="control-label" for="sale_date">Date :</label>
+                    <input type="text" name="date" id="sale_date" value="{{ date('Y-m-d') }}"
+                        class="form-control date-picker" autocomplete="off">
+                </div>
             </div>
-        </div>
-    </div>
+
+            <!-- Product Name -->
+            <div class="mm-rst-product-search">
+                <div class="input-group">
+                    <span class="input-group-addon">Product</span>
+                    <input type="text" name="product_name" id="drug-name"
+                        class="form-control" placeholder="Search by Product Name / Barcode"
+                        autocomplete="off" style="z-index: 0">
+                </div>
+            </div>
+        </x-mm.panel>
+
+        <!-- transition -->
+        <x-mm.panel>
+            <h2 class="mm-setup-title">Items</h2>
+            <x-mm.table-scroll label="Sale items">
+                <!-- Sale Item -->
+                <table class="table table-bordered table-hover" id="table_auto">
+                    <thead>
+                        <tr>
+                            <th>Product Name</th>
+                            <th width="15%">Available Qty</th>
+                            <th width="15%">Quantity</th>
+                            <th width="15%">Sales Price</th>
+                            <th width="18%">Total</th>
+                            <th width="1%">
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="product-details"></tbody>
+                </table>
+            </x-mm.table-scroll>
+        </x-mm.panel>
+
+        <x-mm.panel class="mm-hs-totals">
+            <div class="form-inlines">
+                <div class="form-group">
+                    <label class="control-label">Payment Way:</label>
+                    <div class="mm-rst-payment-way">
+                        @foreach ($account_types as $account_type)
+                            <label>
+                                <input name="payment_way" value="{{ $account_type->id }}"
+                                    class="checked-reference" type="radio">
+                                {{ $account_type->name }}
+                            </label>&nbsp;&nbsp;
+                        @endforeach
+                    </div>
+                </div>
+
+                <!-- Sub Total -->
+                <div class="form-group">
+                    <label class="control-label" for="subTotal">Sub Total :</label>
+                    <div class="input-group">
+                        <div class="input-group-addon currency">৳</div>
+                        <input tabindex="-1" value="0" type="number" min="0"
+                            name="subtotal" step="any" class="form-control" id="subTotal"
+                            placeholder="Sub Total" ondrop="return false;" onpaste="return false;"
+                            readonly>
+                    </div>
+                </div>
+
+                <!-- Discount -->
+                <div class="form-group">
+                    <label class="control-label" for="discount">Discount :</label>
+                    <div class="input-group">
+                        <div class="input-group-addon currency">৳</div>
+                        <input value="0" type="number" min="0" step="any"
+                            class="form-control changesNo discount" name="discount" id="discount"
+                            placeholder="Discount" ondrop="return false;" tabindex="-1">
+                    </div>
+                </div>
+
+                <!-- Total -->
+                <div class="form-group">
+                    <label class="control-label" for="total"><b>Total :</b></label>
+                    <div class="input-group">
+                        <div class="input-group-addon currency">৳</div>
+                        <input tabindex="-1" value="0" type="number" min="0"
+                            step="any" class="form-control" name="total_amount" id="total"
+                            placeholder="Total Amount" ondrop="return false;" onpaste="return false;"
+                            readonly>
+                    </div>
+                </div>
+
+                <!-- Vat -->
+                <div class="form-group">
+                    <label class="control-label" for="vat"><b>Vat :</b></label>
+                    <div class="input-group">
+                        <div class="input-group-addon currency">৳</div>
+                        <input tabindex="-1" value="0" type="number" min="0"
+                            step="any" class="form-control" name="vat_amount" id="vat"
+                            onkeyup="vatUpdate()" placeholder="Vat Amount" />
+                    </div>
+                </div>
+
+                <!-- Service Charge -->
+                <div class="form-group">
+                    <label class="control-label" for="service_charge"><b>Service Charge:</b></label>
+                    <div class="input-group">
+                        <div class="input-group-addon currency">৳</div>
+                        <input tabindex="-1" value="0" type="number" min="0"
+                            step="any" class="form-control" name="service_amount"
+                            id="service_charge" placeholder="Service Charge" ondrop="return false;"
+                            tabindex="-1">
+                    </div>
+                </div>
+
+                <!-- Grand Total -->
+                <div class="form-group">
+                    <label class="control-label" for="grandTotal"><b> Grand Total: </b></label>
+                    <div class="input-group">
+                        <div class="input-group-addon currency">৳</div>
+                        <input tabindex="-1" value="" type="number" min="0"
+                            step="any" class="form-control" name="grand_total" id="grandTotal"
+                            placeholder="Total Amount" ondrop="return false;" onpaste="return false;"
+                            readonly>
+                    </div>
+                </div>
+
+                <div id="payment">
+                    <!-- Paid Amount -->
+                    <div class="form-group aside_system">
+                        <label class="control-label" for="amountPaid">Paid Amount :</label>
+                        <div class="input-group">
+                            <div class="input-group-addon currency">৳</div>
+                            <input value="0" type="number" min="0" step="any"
+                                class="form-control" name="paid_amount" id="amountPaid"
+                                placeholder="Paid Amount" ondrop="return false;"
+                                onpaste="return false;">
+                        </div>
+                    </div>
+
+                    <!-- Change Amount -->
+                    <div class="form-group aside_system">
+                        <label class="control-label" for="change">Change :</label>
+                        <div class="input-group">
+                            <div class="input-group-addon currency">৳</div>
+                            <input tabindex="-1" type="number" min="0" step="any"
+                                class="form-control change" name="change_amount" id="change"
+                                placeholder="Change Amount" ondrop="return false;"
+                                onpaste="return false;" readonly>
+                        </div>
+                    </div>
+
+                    <!-- Due Amount -->
+                    <div class="form-group aside_system">
+                        <label class="control-label" for="amountDue">Amount Due :</label>
+                        <div class="input-group">
+                            <div class="input-group-addon currency">৳</div>
+                            <input tabindex="-1" type="number" min="0" step="any"
+                                class="form-control amountDue only-number" name="due_amount"
+                                id="amountDue" placeholder="Amount Due" ondrop="return false;"
+                                onpaste="return false;" readonly>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="form-group">
+                    <button type="submit" name="draft" class="btn btn-primary mm-hs-confirm">
+                        Confirm
+                    </button>
+                </div>
+            </div>
+        </x-mm.panel>
+    </form>
+    <!-- End Form -->
+</x-mm.page>
 
 @endsection
 

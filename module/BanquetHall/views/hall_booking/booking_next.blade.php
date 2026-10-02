@@ -234,7 +234,7 @@
                                                         <td class="text-center">
                                                             {{-- <a class="btn-sm btn-outline-danger booking_delete pointer" style="pointer-events: none"> --}}
                                                             <a class="btn-sm btn-outline-danger booking_delete pointer">
-                                                                <i class="fa fa-trash"></i>
+                                                                <i class="fa fa-trash-o"></i>
                                                             </a>
                                                         </td>
                                                     </tr>

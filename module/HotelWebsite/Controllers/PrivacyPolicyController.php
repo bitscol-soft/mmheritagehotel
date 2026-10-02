@@ -11,7 +11,7 @@ class PrivacyPolicyController extends Controller
     public function index()
     {
         $this->hasAccess("privacypoilicies.create");
-        $our_privacy = PrivacyPolicy::first();
+        $our_privacy = PrivacyPolicy::firstOrNew([]);
         return view('privacy_policy.index',compact('our_privacy'));
     }
 

@@ -5,256 +5,158 @@
 
 
 @section('content')
-    <div class="row">
 
-        <div class="col-sm-12">
-            <div class="widget-box">
+<x-mm.styles />
+<x-mm.page class="mm-rst mm-rst-sale" title="New sale return" description="Find the original invoice, enter the quantities returned and confirm.">
+    <x-slot name="actions">
+        <a href="{{ route('rst.sales.index') }}" class="mm-button mm-button-secondary">
+            <i class="ace-icon fa fa-list-alt" aria-hidden="true"></i> Sale Return List
+        </a>
+    </x-slot>
 
+    <!-- Form -->
+    <form method="POST" action="{{ route('rst.sale-returns.store') }}" accept-charset="UTF-8"
+        class="form-horizontal sales-form" role="form" data-parsley-validate novalidate>
+        @csrf
 
+        <x-mm.panel class="mm-hs-info-panel">
+            <h2 class="mm-setup-title">Guest and invoice</h2>
+            <div class="mm-hs-info">
+                <!-- Search Guest Name -->
+                <div class="form-group">
+                    <label class="control-label" for="guest_name">Guest Name<sup class="text-danger">*</sup>
+                        :</label>
 
-                <!-- Header -->
-                <div class="widget-header">
-                    <h4 class="widget-title">
-                        <i class="fa fa-plus-circle"></i> New Sale Return
-                    </h4>
+                    <input type="hidden" name="customer_id" id="hotel_guest_id" required>
 
-                    <span class="widget-toolbar">
-                        <a href="{{ route('rst.sales.index') }}">
-                            <i class="ace-icon fa fa-list-alt"></i>
-                            Sale Return List
-                        </a>
-                    </span>
+                    <input type="text" name="guest_name" id="guest_name"
+                        placeholder="Guest/Customer's Name" class="form-control" required />
                 </div>
 
-
-
-
-
-
-                <!-- Body -->
-                <div class="widget-body">
-                    <div class="widget-main">
-
-
-
-
-                        <!-- Form -->
-                        <form method="POST" action="{{ route('rst.sale-returns.store') }}" accept-charset="UTF-8"
-                            class="form-horizontal sales-form" role="form" data-parsley-validate novalidate>
-                            @csrf
-
-
-                            <div class="col-md-12">
-                                <div class='row'>
-
-
-
-                                    <!-- Search Guest Name -->
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label class="control-label">Guest Name<sup class="text-danger">*</sup>
-                                                :</label>
-
-                                            <input type="hidden" name="customer_id" id="hotel_guest_id" required>
-
-                                            <input type="text" name="guest_name" id="guest_name"
-                                                placeholder="Guest/Customer's Name" class="form-control" required />
-                                        </div>
-                                    </div>
-
-
-
-                                    <!-- Sale Invoice ID -->
-                                    <div class="col-md-3 ml-1">
-                                        <div class="form-group">
-                                            <label class="control-label">Invoice ID #</label>
-                                            <input type="text" name="invoice_no" id="invoice_no" class="form-control"
-                                                placeholder="Search by Sale Invoice No" autocomplete="off">
-                                        </div>
-                                    </div>
-
-
-
-
-                                    <!-- Sale Date -->
-                                    <div class="col-md-2 ml-1">
-                                        <div class="form-group">
-                                            <label class="control-label">Date :</label>
-                                            <input type="text" name="date" value="{{ date('Y-m-d') }}"
-                                                class="form-control date-picker" autocomplete="off" />
-                                        </div>
-                                    </div>
-
-                                </div>
-
-
-
-
-
-                                <div class="row" hidden>
-
-                                    <!-- Product Name -->
-                                    <div class="col-md-8">
-                                        <div class="form-group">
-                                            <label class="control-label">Product Name :</label>
-                                            <input type="text" name="product_name" id="drug-name" class="form-control"
-                                                placeholder="Search by Product Name / Barcode" autocomplete="off" />
-                                        </div>
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-
-                            <!-- transition -->
-
-
-                            <div class='row'>
-                                <div class='col-md-8'>
-
-
-                                    <!-- Sale Item -->
-                                    <table class="table table-bordered table-hover" id="table_auto">
-                                        <thead>
-                                            <tr>
-                                                <th>Product Name</th>
-                                                <th width="15%">Returnable Qty</th>
-                                                <th>Return Qty</th>
-                                                <th width="15%">Price</th>
-                                                <th width="15%">Discount</th>
-                                                <th width="15%">Amount</th>
-                                                <th width="1%">
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="product-details"></tbody>
-                                    </table>
-
-
-                                </div>
-
-
-                                <div class='col-md-4'>
-
-
-
-
-                                    <!-- Total Amount -->
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label">Total Amount :</label>
-                                        <div class="input-group col-md-8">
-                                            <div class="input-group-addon currency">৳</div>
-                                            <input tabindex="-1" value="0" type="number" min="0"
-                                                name="subtotal" step="any" class="form-control" id="total_amount"
-                                                placeholder="Total Amount" ondrop="return false;" onpaste="return false;"
-                                                readonly>
-                                        </div>
-                                    </div>
-
-                                    <!-- Total Amount -->
-                                    {{-- <div class="form-group">
-                                        <label class="col-md-4 control-label">Total Amount :</label>
-                                        <div class="input-group col-md-8">
-                                            <div class="input-group-addon currency">৳</div>
-                                            <input tabindex="-1" value="0" type="number" min="0"
-                                                name="subtotal" step="any" class="form-control" id="total_amount"
-                                                placeholder="Total Amount" ondrop="return false;" onpaste="return false;"
-                                                readonly>
-                                        </div>
-                                    </div> --}}
-
-
-
-
-                                    <!-- Previous Due -->
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label"><b>Previous Due :</b></label>
-                                        <div class="input-group col-md-8">
-                                            <div class="input-group-addon currency">৳</div>
-                                            <input tabindex="-1" value="0" type="number" min="0"
-                                                step="any" class="form-control" name="previous_due" id="total"
-                                                placeholder="Previous Due" ondrop="return false;" onpaste="return false;"
-                                                readonly>
-                                        </div>
-                                    </div>
-
-
-
-                                    <!-- Grand Total -->
-                                    <div class="form-group">
-                                        <label class="col-md-4 control-label"><b> Grand Total: </b></label>
-                                        <div class="input-group col-md-8">
-                                            <div class="input-group-addon currency">৳</div>
-                                            <input tabindex="-1" value="" type="number" min="0"
-                                                step="any" class="form-control" name="payable_amount"
-                                                id="grandTotal" placeholder="Total Amount" readonly>
-                                        </div>
-                                    </div>
-
-
-
-                                    <div id="payment">
-                                        <!-- Return Amount -->
-
-
-                                        <div class="form-group aside_system">
-                                            <label class="col-md-4 control-label">Return Amount :</label>
-                                            <div class="input-group col-md-8">
-                                                <div class="input-group-addon currency">৳</div>
-                                                <input value="0" type="number" min="0" step="any"
-                                                    class="form-control" name="return_amount" id="returnAmount"
-                                                    placeholder="Return Amount" ondrop="return false;"
-                                                    onpaste="return false;">
-                                            </div>
-                                        </div>
-
-
-
-
-
-                                        <!-- Due Amount -->
-                                        <div class="form-group aside_system">
-                                            <label class="col-md-4 control-label">Amount Due :</label>
-                                            <div class="input-group col-md-8">
-                                                <div class="input-group-addon currency">৳</div>
-                                                <input tabindex="-1" value="" type="number" min="0"
-                                                    step="any" class="form-control amountDue only-number"
-                                                    name="due_amount" id="amountDue" placeholder="Amount Due"
-                                                    ondrop="return false;" onpaste="return false;" readonly>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="row">
-
-
-
-
-                                        <!-- Submit Button -->
-                                        <div class="col-md-8 col-sm-8 pull-right">
-                                            <div class="form-group">
-                                                <button type="submit" name="draft" class="btn btn-primary"
-                                                    style="width: 100%;">Confirm</button>
-                                            </div>
-                                        </div>
-
-                                    </div>
-
-
-                                </div>
-                            </div>
-
-
-                        </form>
-                        <!-- End Form -->
-
-
-                    </div>
+                <!-- Sale Invoice ID -->
+                <div class="form-group">
+                    <label class="control-label" for="invoice_no">Invoice ID #</label>
+                    <input type="text" name="invoice_no" id="invoice_no" class="form-control"
+                        placeholder="Search by Sale Invoice No" autocomplete="off">
+                </div>
+
+                <!-- Sale Date -->
+                <div class="form-group">
+                    <label class="control-label" for="return_date">Date :</label>
+                    <input type="text" name="date" id="return_date" value="{{ date('Y-m-d') }}"
+                        class="form-control date-picker" autocomplete="off" />
                 </div>
             </div>
-        </div>
-    </div>
+
+            <div class="row" hidden>
+
+                <!-- Product Name -->
+                <div class="col-md-8">
+                    <div class="form-group">
+                        <label class="control-label">Product Name :</label>
+                        <input type="text" name="product_name" id="drug-name" class="form-control"
+                            placeholder="Search by Product Name / Barcode" autocomplete="off" />
+                    </div>
+                </div>
+
+            </div>
+        </x-mm.panel>
+
+        <!-- transition -->
+        <x-mm.panel>
+            <h2 class="mm-setup-title">Returned items</h2>
+            <x-mm.table-scroll label="Returned items">
+                <!-- Sale Item -->
+                <table class="table table-bordered table-hover" id="table_auto">
+                    <thead>
+                        <tr>
+                            <th>Product Name</th>
+                            <th width="15%">Returnable Qty</th>
+                            <th>Return Qty</th>
+                            <th width="15%">Price</th>
+                            <th width="15%">Discount</th>
+                            <th width="15%">Amount</th>
+                            <th width="1%">
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id="product-details"></tbody>
+                </table>
+            </x-mm.table-scroll>
+        </x-mm.panel>
+
+        <x-mm.panel class="mm-hs-totals">
+            <div class="form-inlines">
+                <!-- Total Amount -->
+                <div class="form-group">
+                    <label class="control-label" for="total_amount">Total Amount :</label>
+                    <div class="input-group">
+                        <div class="input-group-addon currency">৳</div>
+                        <input tabindex="-1" value="0" type="number" min="0"
+                            name="subtotal" step="any" class="form-control" id="total_amount"
+                            placeholder="Total Amount" ondrop="return false;" onpaste="return false;"
+                            readonly>
+                    </div>
+                </div>
+
+                <!-- Previous Due -->
+                <div class="form-group">
+                    <label class="control-label" for="total"><b>Previous Due :</b></label>
+                    <div class="input-group">
+                        <div class="input-group-addon currency">৳</div>
+                        <input tabindex="-1" value="0" type="number" min="0"
+                            step="any" class="form-control" name="previous_due" id="total"
+                            placeholder="Previous Due" ondrop="return false;" onpaste="return false;"
+                            readonly>
+                    </div>
+                </div>
+
+                <!-- Grand Total -->
+                <div class="form-group">
+                    <label class="control-label" for="grandTotal"><b> Grand Total: </b></label>
+                    <div class="input-group">
+                        <div class="input-group-addon currency">৳</div>
+                        <input tabindex="-1" value="" type="number" min="0"
+                            step="any" class="form-control" name="payable_amount"
+                            id="grandTotal" placeholder="Total Amount" readonly>
+                    </div>
+                </div>
+
+                <div id="payment">
+                    <!-- Return Amount -->
+                    <div class="form-group aside_system">
+                        <label class="control-label" for="returnAmount">Return Amount :</label>
+                        <div class="input-group">
+                            <div class="input-group-addon currency">৳</div>
+                            <input value="0" type="number" min="0" step="any"
+                                class="form-control" name="return_amount" id="returnAmount"
+                                placeholder="Return Amount" ondrop="return false;"
+                                onpaste="return false;">
+                        </div>
+                    </div>
+
+                    <!-- Due Amount -->
+                    <div class="form-group aside_system">
+                        <label class="control-label" for="amountDue">Amount Due :</label>
+                        <div class="input-group">
+                            <div class="input-group-addon currency">৳</div>
+                            <input tabindex="-1" value="" type="number" min="0"
+                                step="any" class="form-control amountDue only-number"
+                                name="due_amount" id="amountDue" placeholder="Amount Due"
+                                ondrop="return false;" onpaste="return false;" readonly>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="form-group">
+                    <button type="submit" name="draft" class="btn btn-primary mm-hs-confirm">Confirm</button>
+                </div>
+            </div>
+        </x-mm.panel>
+    </form>
+    <!-- End Form -->
+</x-mm.page>
 
 @endsection
 

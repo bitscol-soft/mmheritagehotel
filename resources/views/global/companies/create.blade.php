@@ -488,7 +488,7 @@
                                                     <td>
                                                         <input type="text" value="{{ old('swift_code')[$key] }}" name="swift_code[]"  class="form-control input-sm"/>
                                                     </td>
-                                                    <td><button type="button" class="ibtnDel btn btn-sm btn-danger"><i class="fa fa-trash"></i></button></td>
+                                                    <td><button type="button" class="ibtnDel btn btn-sm btn-danger"><i class="fa fa-trash-o"></i></button></td>
                                                 </tr>
                                             @endforeach
 
@@ -509,7 +509,7 @@
                                                 <td>
                                                     <input type="text" name="swift_code[]"  class="form-control input-sm"/>
                                                 </td>
-                                                <td><a class="btn btn-sm btn-danger" disabled="disabled" ><i class="fa fa-trash"></i></a></td>
+                                                <td><a class="btn btn-sm btn-danger" disabled="disabled" ><i class="fa fa-trash-o"></i></a></td>
                                             </tr>
                                         @endif
 
@@ -662,7 +662,7 @@
                 cols += '<td><input type="text" class="form-control input-sm" name="branch[]' + i + '"/></td>';
                 cols += '<td><input type="text" class="form-control input-sm" name="swift_code[]' + i + '"/></td>';
 
-                cols += '<td><button type="button" class="ibtnDel btn btn-sm btn-danger"><i class="fa fa-trash"></i></button></td>';
+                cols += '<td><button type="button" class="ibtnDel btn btn-sm btn-danger"><i class="fa fa-trash-o"></i></button></td>';
                 newRow.append(cols);
                 $("table.order-list").append(newRow);
                 i++;

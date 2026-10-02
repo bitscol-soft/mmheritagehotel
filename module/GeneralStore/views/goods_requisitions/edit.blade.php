@@ -18,284 +18,269 @@
 
 @section('content')
 
-    <div class="row">
-
-        <div class="col-sm-12">
-            <div class="widget-box">
-                <div class="widget-header">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
-
-                    <span class="widget-toolbar">
-                    <a href="{{ route('goods-requisitions.index') }}">
-                        <i class="ace-icon fa fa-list-alt"></i> Requisition List
-                    </a>
-                </span>
-
-                </div>
-
-                <div class="widget-body">
-                    <div class="widget-main">
-                        <form class="form-horizontal" action="{{ route('goods-requisitions.update', $goodsRequisition->id) }}" method="post" enctype="multipart/form-data">
-                            @csrf @method('PUT')
+<x-mm.styles />
+<x-mm.page class="mm-gs mm-rst mm-rst-inv mm-rst-form" title="Edit goods requisition" description="Change the requested items before approval.">
+    <x-slot name="actions">
+        <a href="{{ route('goods-requisitions.index') }}" class="mm-button"><i class="ace-icon fa fa-list-alt"></i> Requisition List</a>
+    </x-slot>
+    <x-mm.panel class="tw-p-4">
+        <form class="form-horizontal" action="{{ route('goods-requisitions.update', $goodsRequisition->id) }}" method="post" enctype="multipart/form-data">
+            @csrf @method('PUT')
 
 
-                            @if ($errors->any())
-                                <div class="alert alert-danger error">
-                                    <button type="button" class="close" data-dismiss="alert">
-                                        <i class="ace-icon fa fa-times"></i>
-                                    </button>
+            @if ($errors->any())
+                <div class="alert alert-danger error">
+                    <button type="button" class="close" data-dismiss="alert">
+                        <i class="ace-icon fa fa-times"></i>
+                    </button>
 
-                                    <ul>
-                                        @foreach ($errors->all() as $error)
-                                            @if ($error != "The company id field is required." )
-                                                <li>Fillup all items and required quantity</li>
-                                                @php
-                                                    break;
-                                                @endphp
-                                            @endif
-
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            @elseif (session()->get('message'))
-                                @include('partials._alert_message')
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            @if ($error != "The company id field is required." )
+                                <li>Fillup all items and required quantity</li>
+                                @php
+                                    break;
+                                @endphp
                             @endif
 
-
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label" for="form-field-1-1"> Company </label>
-                                <div class="col-xs-12 col-sm-8 @error('company_id') has-error @enderror">
-                                    <select name="company_id" class="form-control company_id" id="company_id" onchange="load_items(this)">
-                                        <option value="" selected>select</option>
-                                        @foreach($companies as $id => $company)
-                                            <option value="{{ $id }}" {{ old('company_id') == $id || $goodsRequisition->company_id == $id ? 'selected' : '' }}>{{ $company }}</option>
-                                        @endforeach
-                                    </select>
-
-                                    @error('company_id')
-                                    <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-
-                                </div>
-                            </div>
+                        @endforeach
+                    </ul>
+                </div>
+            @elseif (session()->get('message'))
+                @include('partials._alert_message')
+            @endif
 
 
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label" for="form-field-1-1"> Department </label>
-                                <div class="col-xs-12 col-sm-8 @error('department_id') has-error @enderror">
+            <div class="form-group">
+                <label class="col-sm-3 control-label" for="form-field-1-1"> Company </label>
+                <div class="col-xs-12 col-sm-8 @error('company_id') has-error @enderror">
+                    <select name="company_id" class="form-control company_id" id="company_id" onchange="load_items(this)">
+                        <option value="" selected>select</option>
+                        @foreach($companies as $id => $company)
+                            <option value="{{ $id }}" {{ old('company_id') == $id || $goodsRequisition->company_id == $id ? 'selected' : '' }}>{{ $company }}</option>
+                        @endforeach
+                    </select>
 
-                                    <select name="department_id" class="form-control chosen-select" onchange="load_items(this)">
-                                        <option value="0">select</option>
-                                        @foreach($departments as $id => $department)
-                                            <option value="{{ $id }}" {{ $goodsRequisition->department_id == $id ? 'selected' : '' }}>{{ $department }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('department_id')
-                                    <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
+                    @error('company_id')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
 
-
-
-                            <div class="form-group col-">
-                                <label for="inputError" class="col-xs-12 col-sm-3 col-md-3 control-label"> Date </label>
-                                <div  class="col-xs-12 col-sm-8 @error('goods_requisition_date') has-error @enderror">
-                                    <div class="input-group">
-                                        <input class="form-control date-picker" name="goods_requisition_date" id="id-date-picker-1" value="{{ old('goods_requisition_date') ?? $goodsRequisition->goods_requisition_date }}" type="text" data-date-format="yyyy-mm-dd"/>
-                                        <span class="input-group-addon">
-                                            <i class="fa fa-calendar bigger-110"></i>
-                                        </span>
-                                    </div>
-
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label" for="form-field-1-1"> {{ $systemSetting->value != null ? $systemSetting->value : "Reference" }} </label>
-                                <div class="col-xs-12 col-sm-8 @error('goods_requisition_reference') has-error @enderror">
-                                    <input type="number" step="0.01" class="form-control" name="goods_requisition_reference" value="{{ old('goods_requisition_reference') ?? $goodsRequisition->goods_requisition_reference }}" placeholder="{{ $systemSetting->value != null ? $systemSetting->value : "Reference" }}">
-                                    @error('goods_requisition_reference')
-                                    <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-
-
-                            <div class="row">
-                                <div class="col-sm-10 col-sm-offset-1">
-                                    <h3 class="header smaller lighter blue">Goods Requisition</h3>
-
-                                    <table id="goods_requisition_table" class="table table-bordered edu1 container">
-                                        <thead>
-                                            <tr>
-                                                <td rowspan="2">Item</td>
-                                                <td rowspan="2">Unit</td>
-                                                <td rowspan="2">Stock</td>
-                                                <td rowspan="2">Quantity</td>
-                                                <td rowspan="2">Remarks</td>
-                                                <td colspan="4" class="text-center">History</td>
-                                                <td rowspan="2" colspan="2">Action</td>
-                                            </tr>
-                                            <tr>
-                                                <td width="5%">GIN</td>
-                                                <td width="5%">Source</td>
-                                                <td width="5%">Rate</td>
-                                                <td width="5%">Qty</td>
-                                            </tr>
-                                        </thead>
-
-
-                                        <tbody class="">
-
-                                            @if (old('item_id'))
-                                                @foreach(old('item_id') as $key => $value)
-                                                    <tr >
-                                                        <td>
-                                                            <select name="item_id[]" class="form-control item item'+ item_row + ' chosen-select" onchange="load_item_stock(this)">
-                                                                <option value="">select</option>
-                                                                @foreach($items as $i => $item)
-                                                                    @if($item->company_id == old('company_id'))
-                                                                        <option value="{{ $item->id }}" {{ old('item_id')[$key] == $item->id ? 'selected' : '' }}>{{ $item->name }}</option>')
-                                                                    @endif
-                                                                @endforeach
-                                                            </select>
-                                                        </td>
-                                                        <td>
-                                                            <input type="text" value="{{ old('item_unit_id')[$key] }}" name="item_unit_id[]" class="form-control item_unit" readonly="readonly" />
-                                                        </td>
-                                                        <td>
-                                                            <input type="text" value="{{ old('current_stock')[$key] }}" name="current_stock[]" class="form-control current_stock" readonly="readonly" />
-                                                        </td>
-                                                        <td>
-                                                            <input type="text" value="{{ old('quantity')[$key] }}" name="quantity[]" onkeyup="checkQtyLimit(this)"onkeypress='return event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' class="form-control quantity" />
-                                                        </td>
-                                                        <td>
-                                                            <input type="text" class="form-control" name="remarks[]" value="{{ old('remarks')[$key] }}">
-                                                        </td>
-
-                                                        <td><span class="issue_number">{!! old('issue_number')[$key] !!}</span></td>
-                                                        <td><span class="source">{!! old('source_input')[$key] !!}</span></td>
-                                                        <td><span class="issue_rate">{!! old('issue_rate_input')[$key] !!}</span></td>
-                                                        <td><span class="issue_quantity">{!! old('issue_quantity_input')[$key] !!}</span></td>
-
-                                                        <td><button type="button" class="ibtnDel btn btn-sm btn-danger delete_row" onclick="removeRow(this)"><i class="fa fa-times-circle"></i></button></td>
-
-                                                        <input type="hidden" name="issue_number[]" class="issue_number_input" value="{{ old('issue_number')[$key] }}">
-                                                        <input type="hidden" name="source[]" class="source_input" value="{{ old('source_input')[$key] }}">
-                                                        <input type="hidden" name="issue_rates[]" class="issue_rate_input" value="{{ old('issue_rate_input')[$key] }}">
-                                                        <input type="hidden" name="issue_quantities[]" class="issue_quantity_input" value="{{ old('issue_quantity_input')[$key] }}">
-                                                    </tr>
-                                                @endforeach
-                                            @else
-                                                @php $i = 0; @endphp
-                                                
-                                                @foreach($goodsRequisition->goods_requisition_details as $ik => $detail)
-
-                                                    <tr>
-                                                        <td>
-                                                            <select name="item_id[]" class="form-control item chosen-select" onchange="load_item_stock(this)" id="select20">
-                                                                <option value="" disabled selected>select</option>
-                                                                @foreach($items as $key => $item)
-                                                                    @if($item->company_id == $goodsRequisition->company_id)
-                                                                        <option value="{{ $item->id }}" {{ $item->id == $detail->item_id ? 'selected' : '' }}>{{ $item->name }}</option>
-                                                                    @endif
-                                                                @endforeach
-                                                            </select>
-                                                        </td>
-                                                        <td>
-                                                            <input type="text" value="{{ $detail->item->item_unit->name }}" name="item_unit_id[]" class="form-control item_unit" readonly="readonly" />
-                                                        </td>
-                                                        <td>
-                                                            <input type="text" value="{{ round($detail->item->current_stock, 2) }}" name="current_stock[]" id="current_stock0" class="form-control current_stock" readonly="readonly" />
-                                                        </td>
-                                                        <td>
-                                                            <input type="text" id="q0" value="{{ $detail->quantity }}" onkeyup="checkQtyLimit(this)" onkeypress='return event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' name="quantity[]" class="form-control quantity" />
-                                                        </td>
-                                                        <td>
-                                                            <input type="text" class="form-control" name="remarks[]" value="{{ $detail->remarks }}">
-                                                        </td>
-                                                        <td><span class="issue_number">{!! old('issue_number_input')[$i] ?? '<a target="_blank" href="/gs/gin-list/' . optional($requisition_number[$i])->id . '">'. optional($requisition_number[$i])->issue_number . '</a>'  !!}</span></td>
-                                                        <td>
-                                                            @if ($requisition_from_item[$i])
-                                                                <a target="_blank" href="{{ route('items.show', optional($requisition_from_item[$i])['id']) }}" >Opening, </a>
-                                                            @endif
-                                                            @foreach($receive_items[$i] as $j => $receive_item)
-                                                                <a target="_blank" href="{{ route('grn.list.show', $receive_item->id) }}" >{{ $receive_item->form_number }},</a>
-                                                            @endforeach
-                                                        </td>
-                                                        <td>
-                                                            @if ($requisition_from_item[$i])
-                                                                {{ $requisition_from_item[$i]['issue_quantity'] }},
-                                                            @endif
-                                                            @foreach($receive_items[$i] as $j => $receive_item)
-                                                                {{ $receive_item->purchase_receive_details->first()->rate }},
-                                                            @endforeach
-
-                                                        </td>
-                                                        <td>
-                                                            @if ($requisition_from_item[$i])
-                                                                {{ $requisition_from_item[$i]['issue_quantity'] }},
-                                                            @endif
-                                                            @foreach($receive_items[$i] as $j => $receive_item)
-                                                                {{ $receive_items_quantity[$i][$j] }},
-                                                            @endforeach
-
-                                                        </td>
-
-                                                        <td><button type="button" class="ibtnDel btn btn-sm btn-danger delete_row" onclick="removeRow(this)"><i class="fa fa-times-circle"></i></button></td>
-
-                                                        <input type="hidden" name="issue_number[]" class="issue_number_input" value="{{ old('issue_number_input')[$key] ?? '<a target="_blank" href="/gs/gin-list/' . optional($requisition_number[$i])->id . '">'. optional($requisition_number[$i])->issue_number . '</a>'  }}">
-                                                        <input type="hidden" name="source[]" class="source_input" value="{{ old('source_input')[$key] }}">
-                                                        <input type="hidden" name="issue_rates[]" class="issue_rate_input" value="{{ old('issue_rate_input')[$key] }}">
-                                                        <input type="hidden" name="issue_quantities[]" class="issue_quantity_input" value="{{ old('issue_quantity_input')[$key] }}">
-                                                    </tr>
-                                                    @php $i++; @endphp
-                                                @endforeach
-                                            @endif
-
-                                            <tr id="addr1"></tr>
-                                            <tr>
-                                                <td colspan="11" style="text-align: right;">
-                                                    <button type="button" onclick="insert_Row(this)" class="btn btn-xs btn-inverse add_row r-btnAdd">
-                                                        + Add New
-                                                    </button>
-                                                </td>
-                                            </tr>
-
-                                        </tbody>
-                                    </table>
-
-                                </div>
-                            </div>
-
-                            <input type="hidden" id="total" value="0" name="total">
-
-                            <div class="container">
-                                <div class="row">
-                                    <div class="form-group">
-                                        <div class="pull-right" style="padding-right: 80px !important;">
-                                            @if(hasPermission('create.requisitions.edit', $slugs))
-                                                <button class="btn btn-success btn-sm"> <i class="fa fa-save"></i> Update </button>
-                                            @endif
-                                            <button class="btn btn-gray btn-sm" type="Reset"> <i class="fa fa-refresh"></i> Reset </button>
-                                            @if(hasPermission('create.requisitions.view', $slugs))
-                                                <a href="{{ route('goods-requisitions.index') }}" class="btn btn-info btn-sm"> <i class="fa fa-list"></i> List </a>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </form>
-                    </div>
                 </div>
             </div>
 
 
-        </div>
-    </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label" for="form-field-1-1"> Department </label>
+                <div class="col-xs-12 col-sm-8 @error('department_id') has-error @enderror">
 
+                    <select name="department_id" class="form-control chosen-select" onchange="load_items(this)">
+                        <option value="0">select</option>
+                        @foreach($departments as $id => $department)
+                            <option value="{{ $id }}" {{ $goodsRequisition->department_id == $id ? 'selected' : '' }}>{{ $department }}</option>
+                        @endforeach
+                    </select>
+                    @error('department_id')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
+
+
+
+            <div class="form-group col-">
+                <label for="inputError" class="col-xs-12 col-sm-3 col-md-3 control-label"> Date </label>
+                <div  class="col-xs-12 col-sm-8 @error('goods_requisition_date') has-error @enderror">
+                    <div class="input-group">
+                        <input class="form-control date-picker" name="goods_requisition_date" id="id-date-picker-1" value="{{ old('goods_requisition_date') ?? $goodsRequisition->goods_requisition_date }}" type="text" data-date-format="yyyy-mm-dd"/>
+                        <span class="input-group-addon">
+                            <i class="fa fa-calendar bigger-110"></i>
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label" for="form-field-1-1"> {{ $systemSetting->value != null ? $systemSetting->value : "Reference" }} </label>
+                <div class="col-xs-12 col-sm-8 @error('goods_requisition_reference') has-error @enderror">
+                    <input type="number" step="0.01" class="form-control" name="goods_requisition_reference" value="{{ old('goods_requisition_reference') ?? $goodsRequisition->goods_requisition_reference }}" placeholder="{{ $systemSetting->value != null ? $systemSetting->value : "Reference" }}">
+                    @error('goods_requisition_reference')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-sm-10 col-sm-offset-1">
+                    <h3 class="header smaller lighter blue">Goods Requisition</h3>
+
+                    <x-mm.table-scroll label="Requisition items">
+                        <table id="goods_requisition_table" class="table table-bordered edu1 container">
+                            <thead>
+                                <tr>
+                                    <td rowspan="2">Item</td>
+                                    <td rowspan="2">Unit</td>
+                                    <td rowspan="2">Stock</td>
+                                    <td rowspan="2">Quantity</td>
+                                    <td rowspan="2">Remarks</td>
+                                    <td colspan="4" class="text-center">History</td>
+                                    <td rowspan="2" colspan="2">Action</td>
+                                </tr>
+                                <tr>
+                                    <td width="5%">GIN</td>
+                                    <td width="5%">Source</td>
+                                    <td width="5%">Rate</td>
+                                    <td width="5%">Qty</td>
+                                </tr>
+                            </thead>
+
+
+                            <tbody class="">
+
+                                @if (old('item_id'))
+                                    @foreach(old('item_id') as $key => $value)
+                                        <tr >
+                                            <td>
+                                                <select name="item_id[]" class="form-control item item'+ item_row + ' chosen-select" onchange="load_item_stock(this)">
+                                                    <option value="">select</option>
+                                                    @foreach($items as $i => $item)
+                                                        @if($item->company_id == old('company_id'))
+                                                            <option value="{{ $item->id }}" {{ old('item_id')[$key] == $item->id ? 'selected' : '' }}>{{ $item->name }}</option>')
+                                                        @endif
+                                                    @endforeach
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <input type="text" value="{{ old('item_unit_id')[$key] }}" name="item_unit_id[]" class="form-control item_unit" readonly="readonly" />
+                                            </td>
+                                            <td>
+                                                <input type="text" value="{{ old('current_stock')[$key] }}" name="current_stock[]" class="form-control current_stock" readonly="readonly" />
+                                            </td>
+                                            <td>
+                                                <input type="text" value="{{ old('quantity')[$key] }}" name="quantity[]" onkeyup="checkQtyLimit(this)"onkeypress='return event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' class="form-control quantity" />
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control" name="remarks[]" value="{{ old('remarks')[$key] }}">
+                                            </td>
+
+                                            <td><span class="issue_number">{{ old('issue_number')[$key] ?? '' }}</span></td>
+                                            <td><span class="source">{{ old('source_input')[$key] ?? '' }}</span></td>
+                                            <td><span class="issue_rate">{{ old('issue_rate_input')[$key] ?? '' }}</span></td>
+                                            <td><span class="issue_quantity">{{ old('issue_quantity_input')[$key] ?? '' }}</span></td>
+
+                                            <td><button type="button" class="ibtnDel btn btn-sm btn-danger delete_row" onclick="removeRow(this)"><i class="fa fa-times-circle"></i></button></td>
+
+                                            <input type="hidden" name="issue_number[]" class="issue_number_input" value="{{ old('issue_number')[$key] }}">
+                                            <input type="hidden" name="source[]" class="source_input" value="{{ old('source_input')[$key] }}">
+                                            <input type="hidden" name="issue_rates[]" class="issue_rate_input" value="{{ old('issue_rate_input')[$key] }}">
+                                            <input type="hidden" name="issue_quantities[]" class="issue_quantity_input" value="{{ old('issue_quantity_input')[$key] }}">
+                                        </tr>
+                                    @endforeach
+                                @else
+                                    @php $i = 0; @endphp
+
+                                    @foreach($goodsRequisition->goods_requisition_details as $ik => $detail)
+
+                                        <tr>
+                                            <td>
+                                                <select name="item_id[]" class="form-control item chosen-select" onchange="load_item_stock(this)" id="select20">
+                                                    <option value="" disabled selected>select</option>
+                                                    @foreach($items as $key => $item)
+                                                        @if($item->company_id == $goodsRequisition->company_id)
+                                                            <option value="{{ $item->id }}" {{ $item->id == $detail->item_id ? 'selected' : '' }}>{{ $item->name }}</option>
+                                                        @endif
+                                                    @endforeach
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <input type="text" value="{{ $detail->item->item_unit->name }}" name="item_unit_id[]" class="form-control item_unit" readonly="readonly" />
+                                            </td>
+                                            <td>
+                                                <input type="text" value="{{ round($detail->item->current_stock, 2) }}" name="current_stock[]" id="current_stock0" class="form-control current_stock" readonly="readonly" />
+                                            </td>
+                                            <td>
+                                                <input type="text" id="q0" value="{{ $detail->quantity }}" onkeyup="checkQtyLimit(this)" onkeypress='return event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' name="quantity[]" class="form-control quantity" />
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control" name="remarks[]" value="{{ $detail->remarks }}">
+                                            </td>
+                                            <td><span class="issue_number">@if (!empty(old('issue_number_input')[$i])){{ old('issue_number_input')[$i] }}@else<a target="_blank" href="/gs/gin-list/{{ optional($requisition_number[$i])->id }}">{{ optional($requisition_number[$i])->issue_number }}</a>@endif</span></td>
+                                            <td>
+                                                @if ($requisition_from_item[$i])
+                                                    <a target="_blank" href="{{ route('items.show', optional($requisition_from_item[$i])['id']) }}" >Opening, </a>
+                                                @endif
+                                                @foreach($receive_items[$i] as $j => $receive_item)
+                                                    <a target="_blank" href="{{ route('grn.list.show', $receive_item->id) }}" >{{ $receive_item->form_number }},</a>
+                                                @endforeach
+                                            </td>
+                                            <td>
+                                                @if ($requisition_from_item[$i])
+                                                    {{ $requisition_from_item[$i]['issue_quantity'] }},
+                                                @endif
+                                                @foreach($receive_items[$i] as $j => $receive_item)
+                                                    {{ $receive_item->purchase_receive_details->first()->rate }},
+                                                @endforeach
+
+                                            </td>
+                                            <td>
+                                                @if ($requisition_from_item[$i])
+                                                    {{ $requisition_from_item[$i]['issue_quantity'] }},
+                                                @endif
+                                                @foreach($receive_items[$i] as $j => $receive_item)
+                                                    {{ $receive_items_quantity[$i][$j] }},
+                                                @endforeach
+
+                                            </td>
+
+                                            <td><button type="button" class="ibtnDel btn btn-sm btn-danger delete_row" onclick="removeRow(this)"><i class="fa fa-times-circle"></i></button></td>
+
+                                            <input type="hidden" name="issue_number[]" class="issue_number_input" value="{{ old('issue_number_input')[$key] ?? '<a target="_blank" href="/gs/gin-list/' . optional($requisition_number[$i])->id . '">'. optional($requisition_number[$i])->issue_number . '</a>'  }}">
+                                            <input type="hidden" name="source[]" class="source_input" value="{{ old('source_input')[$key] ?? '' }}">
+                                            <input type="hidden" name="issue_rates[]" class="issue_rate_input" value="{{ old('issue_rate_input')[$key] ?? '' }}">
+                                            <input type="hidden" name="issue_quantities[]" class="issue_quantity_input" value="{{ old('issue_quantity_input')[$key] ?? '' }}">
+                                        </tr>
+                                        @php $i++; @endphp
+                                    @endforeach
+                                @endif
+
+                                <tr id="addr1"></tr>
+                                <tr>
+                                    <td colspan="11" style="text-align: right;">
+                                        <button type="button" onclick="insert_Row(this)" class="btn btn-xs btn-inverse add_row r-btnAdd">
+                                            + Add New
+                                        </button>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </x-mm.table-scroll>
+
+                </div>
+            </div>
+
+            <input type="hidden" id="total" value="0" name="total">
+
+            <div class="container">
+                <div class="row">
+                    <div class="form-group">
+                        <div class="pull-right" style="padding-right: 80px !important;">
+                            @if(hasPermission('create.requisitions.edit', $slugs))
+                                <button class="btn btn-success btn-sm"> <i class="fa fa-save"></i> Update </button>
+                            @endif
+                            <button class="btn btn-gray btn-sm" type="Reset"> <i class="fa fa-refresh"></i> Reset </button>
+                            @if(hasPermission('create.requisitions.view', $slugs))
+                                <a href="{{ route('goods-requisitions.index') }}" class="btn btn-info btn-sm"> <i class="fa fa-list"></i> List </a>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </x-mm.panel>
+</x-mm.page>
 
 @endsection
 

@@ -1,0 +1,261 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">    <link rel="stylesheet" href="/assets/css/chosen.min.css" />
+    <link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css" />
+    <style>
+        #print_body {
+            background-color: #fff;
+            padding: 10px 20px;
+            overflow: hidden;
+        }
+
+        .company-info {
+            color: #000;
+        }
+
+        .company-info h3 {
+            font-weight: bold;
+            margin-bottom: 0;
+        }
+
+        .company-info p {
+            margin-bottom: 2px;
+        }
+
+        .table {
+            box-shadow: none !important;
+        }
+
+        .table-bordered>thead>tr>th,
+        .table-bordered>tbody>tr>th,
+        .table-bordered>tfoot>tr>th,
+        .table-bordered>thead>tr>td,
+        .table-bordered>tbody>tr>td,
+        .table-bordered>tfoot>tr>td {
+            border: .4px solid #fff;
+            padding: 4.5px;
+        }
+
+        th {
+            background: #efefef;
+            box-shadow: none;
+        }
+
+        .patient {
+            margin: 3px;
+        }
+
+        @media  print {
+            .company-info h4 {
+                font-weight: bold;
+                margin-bottom: 0;
+            }
+
+            .company-info p {
+                margin-bottom: 2px;
+            }
+
+        }
+
+    </style>
+<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY--><section class="mm-ui mm-invoice-page mm-hotel-service">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Hotel service invoice</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Review the service invoice and print it. Printing outputs the document only.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button mm-button-secondary" href="http://localhost/hotelservice/service-sales/create">
+                <i class="fa fa-plus" aria-hidden="true"></i> Create New
+            </a>
+            <a class="mm-button mm-button-secondary" href="http://localhost/hotelservice/service-sales">
+                <i class="fa fa-list" aria-hidden="true"></i> All Sales
+            </a>
+            <a href="#" class="mm-button" onclick="printPage('print_body'); return false;">
+                <i class="fa fa-print" aria-hidden="true"></i> Print
+            </a></div>        </header>
+        <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><div id="print_body">
+                                <div id="customer_info" style="padding: 0 10px;">
+                                    <div class="row">
+
+
+                                        <div class="company-info text-center">
+                                            <h4>MM Heritage</h4>
+                                            <p>Dhaka</p>
+                                            <p>017,
+                                                hi@example.com</p>
+                                        </div>
+                                        <hr>
+                                        <div class="customerInfo" style="width: 60%;float: left; ">
+
+                                            <h5><b><u>Guest's Information : </u></b></h5>
+                                            <p class="patient"><b>ID : </b>
+                                                12
+                                            </p>
+
+                                            <p class="patient"><b>Name : </b>
+                                                Rahim &lt;b&gt;Uddin&lt;/b&gt;
+                                            </p>
+                                            <p class="patient"><b>Address : </b>
+                                                Dhaka &nbsp;
+                                                &nbsp; <b>Nationality :</b>
+                                                Bangladesh
+                                            </p>
+                                            <p class="patient"><b>Mobile : </b>
+                                                01700000000
+                                            </p>
+
+
+                                        </div>
+                                        <div class="invoiceInfo" style="width: 40%;float: left;margin-top: 5px;">
+                                            <table class="table table-bordered" style="border: none !important;">
+                                                <tr>
+                                                    <th width="50%" style="border: none !important;"> Invoice No : </th>
+                                                    <th style="border: none !important;">0301</th>
+                                                </tr>
+                                                <tr>
+                                                    <td style="border: none !important;"> Invoice Date : </td>
+                                                    <td style="border: none !important;">
+                                                        2026-09-30</td>
+                                                </tr>
+
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="invoice-content">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered" style="border: none !important;">
+                                            <thead>
+                                                <tr>
+                                                    <th width="5%">SL</th>
+                                                    <th>Name of Service</th>
+                                                    <th>Item Price</th>
+                                                    <th>Quantity</th>
+                                                    <th width="25%" style="text-align:right">Amount (&#x09F3;)</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                                                                    <tr>
+                                                        <td>1</td>
+                                                        <td>Laundry</td>
+                                                        
+                                                        <td>350</td>
+                                                        <td>2</td>
+                                                        <td class="text-right">
+                                                            700.00
+                                                            &#x09F3;
+                                                        </td>
+                                                    </tr>
+                                                                                                    <tr>
+                                                        <td>2</td>
+                                                        <td>Airport pickup</td>
+                                                        
+                                                        <td>500</td>
+                                                        <td>1</td>
+                                                        <td class="text-right">
+                                                            500.00
+                                                            &#x09F3;
+                                                        </td>
+                                                    </tr>
+                                                                                                <tr>
+                                                    <td colspan="4" style="text-align: right; border: none !important;">
+                                                        Subtotal </td>
+                                                    <th style="text-align: right; border: none !important;">
+                                                        1200
+                                                        &#x09F3;</th>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="4" style="text-align: right; border: none !important;">
+                                                        Discount </td>
+                                                    <th style="text-align: right; border: none !important;">
+                                                        100
+                                                        &#x09F3;</th>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="4" style="text-align: right; border: none !important;">
+                                                        Total </td>
+                                                    <th style="text-align: right; border: none !important;">
+                                                        1,100.00
+                                                        &#x09F3;</th>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="4" style="text-align: right; border: none !important;">
+                                                        Paid </td>
+                                                    <th style="text-align: right; border: none !important;">
+                                                        1100 &#x09F3;</th>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="4" style="text-align: right; border: none !important;">Due
+                                                    </td>
+                                                    <th style="text-align: right; border: none !important;">
+                                                        0.00
+                                                        &#x09F3;</th>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+
+                                            <h5 style="font-weight: 700;">Amount Paid :
+                                                <span>
+                                                    Taka 1,100 only
+                                                </span>
+                                            </h5>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="print-footer"
+                                    style="margin-top: 40px;overflow: hidden;width: 100%;padding: 0 10px;">
+                                    <div class="sign" style="width: 100%; overflow: hidden;">
+                                        <div class="company_sign" style="width: 33%; float: left;">
+                                            <h5 style="width:50%; margin: 0 auto; padding: 10px 0;text-align: center;">
+                                                &nbsp;</h5>
+                                            <h5
+                                                style="width:50%;margin: 0 auto;border-top: 1px solid #000;padding: 10px 0;text-align: center;">
+                                                Received By</h5>
+                                        </div>
+                                        <div class="company_sign" style="width: 33%; float: left;">
+                                            <h5 style="width:50%; margin: 0 auto; padding: 10px 0;text-align: center;">
+                                                &nbsp;</h5>
+                                            <h5
+                                                style="width:50%;margin: 0 auto;border-top: 1px solid #000;padding: 10px 0;text-align: center;">
+                                                Authorized By</h5>
+                                        </div>
+                                        <div class="company_sign" style="width: 33%; float: left;">
+                                            <h5 style="width:50%; margin: 0 auto; padding: 10px 0;text-align: center;">
+                                                &nbsp;</h5>
+                                            <h5
+                                                style="width:50%;margin: 0 auto;border-top: 1px solid #000;padding: 10px 0;text-align: center;">
+                                                Prepared By <br>Front desk</h5>
+                                        </div>
+                                    </div>
+                                    <div class="copyright-section">
+
+                                        <p class="text-center mt-30"><i>Treatment to the highest accuracy & excellence in
+                                                education is
+                                                our motto</i></p>
+                                    </div>
+                                    <br>
+                                </div>
+                            </div></div>
+    </div>
+</section>
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
+    <script src="/assets/custom_js/printThis.js"></script>
+    <script type="text/javascript">
+        function printPage(id) {
+            $('#' + id).printThis({
+                importStyle: true
+            });
+        };
+        window.onreadystatechange = $('#print_body').printThis({
+            importStyle: true
+        });
+    </script>
+<!--/MM-JS--></body></html>

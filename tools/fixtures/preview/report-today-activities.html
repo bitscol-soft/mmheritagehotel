@@ -1,0 +1,197 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css"><!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY--><section class="mm-ui mm-report">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Today report</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Check-ins, check-outs and reservations for one day.</p>            </div>
+                    </header>
+        <div class="mm-panel tw-p-4 sm:tw-p-6 mm-report-filter hidden-print"><form action="" method="GET" class="mm-setup-filter mm-report-form">
+            <div class="mm-report-field">
+                <div class="input-group">
+                    <label class="input-group-addon"><i class="fa fa-calendar"></i></label>
+                    <input type="text" class="date-picker form-control text-center"
+                        autocomplete="off" name="date" value="2026-10-01"
+                        placeholder="Date">
+                </div>
+            </div>
+            <div class="mm-report-field">
+                <div class="btn-group">
+                    <button type="submit" class="mm-button">
+                        <i class="fa fa-search"></i> Search
+                    </button>
+                    <a href="http://localhost/hotel/reports/today-activities" class="mm-button mm-button-secondary" aria-label="Reset">
+                        <i class="fa fa-refresh"></i>
+                    </a>
+                </div>
+            </div>
+
+        </form></div>
+            <div class="mm-panel tw-p-4 sm:tw-p-6"><div class="mm-table-scroll" role="region" aria-label="Today report" tabindex="0"><input type="hidden" name="date" value="2026-10-01">
+                    <hr>
+
+                    <table class="table" style="border: none">
+
+                        <tr style="border-bottom:none !important">
+                            <th class="text-right border-none"
+                                    style="padding: 0 7px 0 0 !important; width: 20%">Total Check In :
+                            </th>
+                            <th class="border-none" style="padding: 0 7px 0 0 !important;">
+                                <input type="text" readonly class="header-input"
+                                    style="background: white !important" name="total_check_in"
+                                    value="2">
+                            </th>
+                            <th style="border: none"></th>
+                            <th class="text-right border-none"
+                                    style="padding: 0 7px 0 0 !important; width: 20%">Total Reservation
+                                : </th>
+                            <th class="border-none" style="padding: 0 7px 0 0 !important;">
+                                <input type="text" readonly class="header-input"
+                                    style="background: white !important" name="total_reservation"
+                                    value="3">
+                            </th>
+                        </tr>
+                        <tr style="border-bottom:none !important">
+                            <th class="text-right border-none" style="padding: 0 7px 0 0 !important;">
+                                Total
+                                Check Out : </th>
+                            <th class="border-none" style="padding: 0 7px 0 0 !important;">
+                                <input type="text" readonly class="header-input"
+                                    style="background: white !important" name="total_check_out"
+                                    value="1">
+                            </th>
+
+                            <th style="border: none"></th>
+                            <th class="text-right border-none" style="padding: 0 7px 0 0 !important;">
+                                Total
+                                Cancelled : </th>
+                            <th class="border-none" style="padding: 0 7px 0 0 !important;">
+                                <input type="text" readonly class="header-input"
+                                    style="background: white !important" name="total_cancelled"
+                                    value="0">
+                            </th>
+                        </tr>
+                        <tr style="border-bottom:none !important">
+                            <th class="text-right border-none" style="padding: 0 7px 0 0 !important;">
+                                Total Room :
+                            </th>
+                            <th class="border-none" style="padding: 0 7px 0 0 !important;">
+                                <input type="text" readonly class="header-input"
+                                    style="background: white !important" name="total_room"
+                                    value="32">
+                            </th>
+
+                            <th style="border: none"></th>
+                            <th class="text-right border-none" style="padding: 0 7px 0 0 !important;">
+                                Booked Room :
+                            </th>
+                            <th class="border-none" style="padding: 0 7px 0 0 !important;">
+                                <input type="text" readonly class="header-input"
+                                    style="background: white !important" name="total_booked_room"
+                                    value="7">
+                            </th>
+                        </tr>
+                        <tr style="border-bottom:none !important">
+                            <th class="text-right border-none" style="padding: 0 7px 0 0 !important;">
+                                Today Dirty Room :
+                            </th>
+                            <th class="border-none" style="padding: 0 7px 0 0 !important;">
+                                <input type="text" readonly class="header-input"
+                                    style="background: white !important" name="total_dirty_room"
+                                    value="4">
+                            </th>
+
+                            <th style="border: none"></th>
+                            <th class="text-right border-none" style="padding: 0 7px 0 0 !important;">
+                                Today Maintainance Room :
+                            </th>
+                            <th class="border-none" style="padding: 0 7px 0 0 !important;">
+                                <input type="text" readonly class="header-input"
+                                    style="background: white !important" name="total_room_maintenance"
+                                    value="1">
+                            </th>
+                        </tr>
+                    </table>
+
+                    <table class="table table-bordered table-striped table-hover"
+                            style="border: none">
+
+                        <thead>
+                            <tr>
+                                <th class="text-center">SL</th>
+                                <th class="text-center">Type</th>
+                                <th class="text-center">Invoice No</th>
+                                <th class="text-center">Payment Type</th>
+                                <th class="text-center">Room No</th>
+                                <th class="text-right">Total Amount<span class="currency-sign"></span></th>
+                                <th class="text-right">Paid Amount<span class="currency-sign"></span></th>
+                                <th class="text-right" style="width: 14% !important">Due Amount<span class="currency-sign"></span></th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            
+                                                            
+                                <tr>
+                                    <td class="text-center">
+                                        1
+
+                                        <input type="hidden" name="transaction_ids[]"
+                                            value="11">
+                                    </td>
+                                    <td class="text-center">Booking</td>
+                                    <td class="text-center">
+                                        INV-0007
+                                    </td>
+                                    <td class="text-center">
+                                        Cash
+                                    </td>
+                                    <td class="text-center">
+                                                                                                                            <label
+                                                    class="label label-success">102</label>
+                                                                            </td>
+                                    <td style="text-align: right;">
+                                        <span
+                                                class="item-total">7,300.00</span>
+                                    </td>
+                                    <td style="text-align: right;">
+                                        5,300.00
+                                    </td>
+                                    <td class="text-right">2,000.00
+                                    </td>
+                                </tr>
+                                                    </tbody>
+
+                        <tfoot>
+                            <tr style="border-bottom:none !important">
+                                <th colspan="7" class="text-right border-none">Total Collection <span class="currency-sign"></span>
+                                </th>
+                                <th class="text-right border-none"
+                                        style="padding: 3px 7px 0px 0px !important;">
+                                    <input type="text" readonly class="footer-input"
+                                        style="background: white !important; padding: 0 !important"
+                                        name="collection" value="5300">
+                                </th>
+                            </tr>
+
+                            <tr style="border-bottom:none !important">
+                                <th colspan="7" class="text-right border-none"
+                                        style="padding: 0 7px 0 0 !important;">Total Due <span class="currency-sign"></span></th>
+                                    <th class="text-right border-none"
+                                            style="padding: 0 7px 0 0 !important;">
+                                        <input type="text" readonly class="footer-input"
+                                            style="background: white !important" name="due_amount"
+                                            value="2000">
+                                    </th>
+                            </tr>
+
+                        </tfoot>
+                    </table></div></div>
+    </div>
+</section>
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
+<!--/MM-JS--></body></html>

@@ -50,23 +50,12 @@
 
 @section('content')
 
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="widget-box">
-                <div class="widget-header" style="background:#DFE2CD">
-
-
-                    <h4 class="widget-title" style="font-size:20px !important; color:#41B883">@yield('page-header')</h4>
-
-                    <span class="widget-toolbar">
-                        <a href="{{ route('permission-access.create') }}">
-                            <i class="ace-icon fa fa-list-alt"></i> Clear
-                        </a>
-                    </span>
-                </div>
-
-                <div class="widget-body">
-                    <div class="widget-main">
+    <x-mm.styles />
+<x-mm.page class="mm-perm mm-perm-access" title="User role and permissions" description="Link an employee to a login and choose what they can open.">
+    <x-slot name="actions">
+        <a class="mm-button mm-button-secondary" href="{{ route('permission-access.create') }}"> <i class="fa fa-list-alt"></i> Clear </a>
+    </x-slot>
+    <x-mm.panel>
                         <form class="form-horizontal" action="{{ route('permission-access.store') }}" method="POST" role="form">
                             @csrf
 
@@ -566,11 +555,9 @@
                             </div>
 
                         </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+                    
+    </x-mm.panel>
+</x-mm.page>
 
 
     <input type="hidden" id="csrf" value="{{ csrf_token() }}">

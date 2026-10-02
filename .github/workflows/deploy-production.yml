@@ -1,0 +1,138 @@
+# =============================================================================
+# Deploy to PRODUCTION (manual trigger + environment protection).
+#
+# Run it:  Actions -> "Deploy (production)" -> Run workflow -> ref=main.
+# Secrets: docs/DEPLOYMENT.md (PRODUCTION_* block). Add a required reviewer on
+#          Settings -> Environments -> production so every release is approved.
+#
+# Guard: refuses any ref other than main unless 'allow_non_main' is checked.
+# Flow: backup -> artisan down -> rsync (tar fallback) -> cache clear -> up ->
+#       health check -> AUTO-ROLLBACK if health fails.
+# =============================================================================
+name: Deploy (production)
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "Branch / tag / commit to deploy (default: main)"
+        required: true
+        default: main
+      allow_non_main:
+        description: "I know what I am doing — allow a non-main ref"
+        required: false
+        type: boolean
+        default: false
+      skip_backup:
+        description: "Skip the pre-deploy backup on the server"
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Deploy to production
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    environment: production
+    env:
+      SSH_HOST: ${{ secrets.PRODUCTION_SSH_HOST }}
+      SSH_USER: ${{ secrets.PRODUCTION_SSH_USER }}
+      SSH_PORT: ${{ secrets.PRODUCTION_SSH_PORT }}
+      DEPLOY_PATH: ${{ secrets.PRODUCTION_DEPLOY_PATH }}
+      PHP_BIN: ${{ secrets.PRODUCTION_PHP_BIN }}
+      APP_URL: ${{ secrets.PRODUCTION_URL }}
+      SSH_KEY: ${{ secrets.PRODUCTION_SSH_KEY }}
+
+    steps:
+      - name: Guard — production only deploys main
+        run: |
+          if [ "${{ inputs.ref }}" != "main" ] && [ "${{ inputs.allow_non_main }}" != "true" ]; then
+            echo "::error::Refusing to deploy '${{ inputs.ref }}' to production. Merge into main first, or check allow_non_main."
+            exit 1
+          fi
+
+      - name: Preflight — required secrets
+        run: |
+          missing=""
+          for v in SSH_HOST SSH_USER DEPLOY_PATH PHP_BIN APP_URL SSH_KEY; do
+            if [ -z "${!v}" ]; then missing="$missing PRODUCTION_$v"; fi
+          done
+          if [ -n "$missing" ]; then
+            echo "::error::Missing secrets:$missing — see docs/DEPLOYMENT.md"; exit 1
+          fi
+          [ -n "$SSH_PORT" ] || echo "SSH_PORT=22" >> "$GITHUB_ENV"
+
+      - name: Checkout selected ref
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+          fetch-depth: 1
+
+      - name: Setup SSH
+        run: |
+          mkdir -p ~/.ssh && chmod 700 ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/deploy_key && chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -p "$SSH_PORT" -H "$SSH_HOST" >> ~/.ssh/known_hosts 2>/dev/null
+          echo "RSH=ssh -o BatchMode=yes -o StrictHostKeyChecking=yes -p $SSH_PORT -i $HOME/.ssh/deploy_key" >> "$GITHUB_ENV"
+
+      - name: Backup current release on server
+        if: ${{ !inputs.skip_backup }}
+        id: backup
+        run: |
+          $RSH "$SSH_USER@$SSH_HOST" "set -e; cd '$DEPLOY_PATH'; mkdir -p releases-backup; \
+            tar czf releases-backup/pre-${{ github.run_id }}.tgz \
+              --exclude=./releases-backup --exclude=./storage --exclude=./.git . ; \
+            find releases-backup -name 'pre-*.tgz' -mtime +14 -delete | true"
+          echo "created=1" >> "$GITHUB_OUTPUT"
+
+      - name: Maintenance mode
+        run: |
+          $RSH "$SSH_USER@$SSH_HOST" "cd '$DEPLOY_PATH' && ($PHP_BIN artisan down 2>/dev/null || true)"
+
+      - name: Sync code (rsync, or tar fallback)
+        run: |
+          EX='--exclude=.git --exclude=.env --exclude=.env.* --exclude=storage/ --exclude=bootstrap/cache/* --exclude=node_modules --exclude=public/storage --exclude=public/assets/uploads --exclude=releases-backup'
+          if $RSH "$SSH_USER@$SSH_HOST" "command -v rsync >/dev/null 2>&1"; then
+            rsync -az --delete $EX -e "ssh -o BatchMode=yes -StrictHostKeyChecking=yes -p $SSH_PORT -i $HOME/.ssh/deploy_key" \
+              ./ "$SSH_USER@$SSH_HOST:$DEPLOY_PATH/"
+          else
+            echo "rsync not found on host — using tar-over-ssh (no deletion of removed files)"
+            tar czf - --exclude=.git --exclude=node_modules . \
+              | $RSH "$SSH_USER@$SSH_HOST" \
+                  "cat > /tmp/gh-deploy-${{ github.run_id }}.tgz && cd '$DEPLOY_PATH' \
+                   && tar xzf /tmp/gh-deploy-${{ github.run_id }}.tgz \
+                   && rm -f /tmp/gh-deploy-${{ github.run_id }}.tgz"
+          fi
+
+      - name: Refresh caches & lift maintenance
+        run: |
+          $RSH "$SSH_USER@$SSH_HOST" "set -e; cd '$DEPLOY_PATH'; \
+            $PHP_BIN artisan optimize:clear || true; \
+            $PHP_BIN artisan up || true"
+
+      - name: Health check
+        run: |
+          ok=""
+          for i in 1 2 3 4 5 6; do
+            code=$(curl -s -o /dev/null -m 20 -w '%{http_code}' "$APP_URL/login" || echo 000)
+            echo "attempt $i: HTTP $code"
+            if [ "$code" = "200" ]; then ok=1; break; fi
+            sleep 10
+          done
+          if [ -z "$ok" ]; then echo "::error::Production health check failed at $APP_URL/login"; exit 1; fi
+
+      - name: Rollback to backup (health check failed)
+        if: ${{ failure() && steps.backup.outcome == 'success' }}
+        run: |
+          echo "::warning::Restoring releases-backup/pre-${{ github.run_id }}.tgz"
+          $RSH "$SSH_USER@$SSH_HOST" "set -e; cd '$DEPLOY_PATH'; \
+            tar xzf releases-backup/pre-${{ github.run_id }}.tgz; \
+            $PHP_BIN artisan optimize:clear || true; $PHP_BIN artisan up || true"

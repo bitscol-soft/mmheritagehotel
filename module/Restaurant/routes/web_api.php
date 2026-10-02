@@ -9,7 +9,7 @@ use Module\Restaurant\Controllers\Api\InventoryApiController;
 Route::group(['prefix'  => 'api/v1', 'as' => 'api.', 'middleware'   => ['auth:sanctum']],function(){
 
 
-    Route::apiResource('guests',                      GuestController::class);
+    Route::apiResource('guests', GuestController::class)->except(['destroy', 'show', 'update']); // round 3: destroy/show/update not implemented (docs/BUGS.md)
     Route::get('account-types',                       [ApiController::class,          'accountType']);
 
     Route::get('get-guest-details/{guest_id}',        [GuestController::class,         'getGuestDetails']);
@@ -27,7 +27,7 @@ Route::group(['prefix'  => 'api/v1', 'as' => 'api.', 'middleware'   => ['auth:sa
         Route::get('get-products',                    [InventoryApiController::class, 'getProduct']);
         Route::get('get-products-details/{id}',       [InventoryApiController::class, 'getProductDetails']);
 
-        Route::apiResource('sales',                   SaleController::class);
+        Route::apiResource('sales', SaleController::class)->except(['destroy', 'update']); // round 3: destroy/update not implemented (docs/BUGS.md)
 
         Route::get('edit-bar-sale/{sale_id}',         [SaleController::class,         'editBarSale']);
         Route::post('update-bar-sale',                [SaleController::class,         'updateBarSale']);

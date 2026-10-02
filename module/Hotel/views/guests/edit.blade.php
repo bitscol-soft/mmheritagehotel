@@ -8,48 +8,19 @@
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <!-- page specific plugin styles -->
 		<link rel="stylesheet" href="{{ asset('assets/css/dropzone.min.css') }}" />
-    <style>
-       .photo-remove{
-        position: absolute;
-        background-color: red;
-        color: #fff;
-        padding: 10px 15px;
-        border-radius: 7px;
-        top: 0;
-        cursor: pointer;
-        display: none;
-       }
-       .upload_nid .ace-file-input {
-        display: block;
-        }
-        .nid_photo:hover .photo-remove{
-            display: block;
-        }
-    </style>
+
 @stop
 
 @section('content')
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="widget-box">
-                <div class="widget-header">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
-                    <span class="widget-toolbar">
-
-                            <a href="{{ route('guests.index') }}">
-                                <i class="ace-icon fa fa-list-alt"></i> Guests List
-                            </a>
-
-                    </span>
-                </div>
-
-                <div class="widget-body">
-                    <div class="widget-main no-padding">
-
-                        <div style="margin: 20px;">
-                            @include('partials._alert_message')
-                        </div>
-
+    <x-mm.styles />
+    <x-mm.page class="mm-guest-form" title="Edit guest" description="Manage guest details, contact information and identity documents.">
+        <x-slot name="actions">
+            <a href="{{ route('guests.index') }}" class="mm-button mm-button-secondary">
+                <i class="fa fa-arrow-left" aria-hidden="true"></i> Guest directory
+            </a>
+        </x-slot>
+        <x-mm.panel>
+        @include('partials._alert_message')
                         <form class="form-horizontal" id="companyForm" action="{{ route('guests.update',$guests->id) }}" method="post" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
@@ -58,7 +29,7 @@
 
                                     <hr>
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label">Company</label>
+                                        <label for="company_id" class="col-sm-3 control-label">Company</label>
 
                                         <div class="col-xs-12 col-sm-8">
                                             <select name="company_id" class="form-control chosen-select" id="company_id" data-selected="{{ $guests->company_id }}" data-placeholder="--Choose Company--">
@@ -71,38 +42,38 @@
 
 
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label">Guest Name<sup class="text-danger">*</sup></label>
+                                        <label for="guest-guest-name" class="col-sm-3 control-label">Guest Name<sup class="text-danger">*</sup></label>
 
                                         <div class="col-xs-12 col-sm-8">
-                                            <input type="text" class="form-control input-sm" name="guest_name"
+                                            <input id="guest-guest-name" type="text" class="form-control input-sm" name="guest_name"
                                                    value="{{ $guests->name }}" placeholder="Guest Name">
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label">Phone No </label>
+                                        <label for="guest-phone-no" class="col-sm-3 control-label">Phone No </label>
 
                                         <div class="col-xs-12 col-sm-8">
-                                            <input type="number" class="form-control input-sm" name="phone_no"
+                                            <input id="guest-phone-no" type="text" inputmode="tel" class="form-control input-sm" name="phone_no"
                                                    value="{{ $guests->phone_no }}" placeholder="Enter Phone no">
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label">Email </label>
+                                        <label for="guest-email" class="col-sm-3 control-label">Email </label>
 
                                         <div class="col-xs-12 col-sm-8">
-                                            <input type="text" class="form-control input-sm" name="email"
+                                            <input id="guest-email" type="text" class="form-control input-sm" name="email"
                                                    value="{{ $guests->email }}" placeholder="Enter Email">
 
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label">Gender</label>
+                                        <label for="guest-gender" class="col-sm-3 control-label">Gender</label>
 
                                         <div class="col-xs-12 col-sm-8">
-                                            <select name="gender" class="form-control" data-selected="{{ $guests->gender }}">
+                                            <select id="guest-gender" name="gender" class="form-control" data-selected="{{ $guests->gender }}">
                                                 <option value="">Select Gender</option>
                                                 <option value="1">Male</option>
                                                 <option value="2">Female</option>
@@ -112,56 +83,56 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label">Age</label>
+                                        <label for="guest-age" class="col-sm-3 control-label">Age</label>
 
                                         <div class="col-xs-12 col-sm-8">
-                                            <input type="text" class="form-control input-sm" name="age" value="{{ $guests->age }}" placeholder="Age">
+                                            <input id="guest-age" type="text" class="form-control input-sm" name="age" value="{{ $guests->age }}" placeholder="Age">
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label">Profession</label>
+                                        <label for="guest-profession" class="col-sm-3 control-label">Profession</label>
 
                                         <div class="col-xs-12 col-sm-8">
-                                            <input type="text" class="form-control input-sm" name="profession" value="{{ $guests->profession }}" placeholder="Profession Name">
+                                            <input id="guest-profession" type="text" class="form-control input-sm" name="profession" value="{{ $guests->profession }}" placeholder="Profession Name">
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label">Father's Name</label>
+                                        <label for="guest-father-name" class="col-sm-3 control-label">Father's Name</label>
 
                                         <div class="col-xs-12 col-sm-8">
-                                            <input type="text" class="form-control input-sm" name="father_name" value="{{ $guests->father_name }}" placeholder="Father's Name">
+                                            <input id="guest-father-name" type="text" class="form-control input-sm" name="father_name" value="{{ $guests->father_name }}" placeholder="Father's Name">
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label">NID / Passport Number</label>
+                                        <label for="guest-nid-no" class="col-sm-3 control-label">NID / Passport Number</label>
 
                                         <div class="col-xs-12 col-sm-8">
-                                            <input type="text" class="form-control input-sm" name="nid_no"
+                                            <input id="guest-nid-no" type="text" class="form-control input-sm" name="nid_no"
                                                    value="{{ $guests->nid_no }}" placeholder="Enter NID or Passport Number">
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label">Passport Expiry Date</label>
+                                        <label for="guest-passport-expiry-date" class="col-sm-3 control-label">Passport Expiry Date</label>
 
                                         <div class="col-xs-12 col-sm-8">
-                                            <input type="text" class="form-control input-sm date-picker pointer" name="passport_expiry_date"
+                                            <input id="guest-passport-expiry-date" type="text" class="form-control input-sm date-picker pointer" name="passport_expiry_date"
                                                    value="{{ old('passport_expiry_date', $guests->passport_expiry_date) }}" placeholder="Enter Passport expire date">
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label">Spouse Name (Optional)</label>
+                                        <label for="guest-spouse-name" class="col-sm-3 control-label">Spouse Name (Optional)</label>
 
                                         <div class="col-xs-12 col-sm-8">
-                                            <input type="text" class="form-control input-sm" name="spouse_name"
+                                            <input id="guest-spouse-name" type="text" class="form-control input-sm" name="spouse_name"
                                                    value="{{ $guests->spouse_name }}" placeholder="Enter Spouse Name (Optional)">
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label add_asterisk">Country</label>
+                                        <label for="country_id" class="col-sm-3 control-label add_asterisk">Country</label>
 
                                         <div class="col-xs-12 col-sm-8">
                                             <select name="country_id" class="form-control" id="country_id" data-selected="{{ $guests->country_id ?? 18 }}">
@@ -173,40 +144,40 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label">City</label>
+                                        <label for="guest-city-id" class="col-sm-3 control-label">City</label>
 
                                         <div class="col-xs-12 col-sm-8">
-                                            <input type="text" class="form-control input-sm" name="city_id" value="{{ $guests->city_id }}" placeholder="Enter City Name">
+                                            <input id="guest-city-id" type="text" class="form-control input-sm" name="city_id" value="{{ $guests->city_id }}" placeholder="Enter City Name">
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label">Address</label>
+                                        <label for="guest-address" class="col-sm-3 control-label">Address</label>
 
                                         <div class="col-xs-12 col-sm-8">
-                                            <textarea type="text" class="form-control input-sm" name="address"
+                                            <textarea id="guest-address" type="text" class="form-control input-sm" name="address"
                                                 placeholder="Enter guest address">{{ $guests->address }}</textarea>
 
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label">Reference Name</label>
+                                        <label for="guest-reference" class="col-sm-3 control-label">Reference Name</label>
 
                                         <div class="col-xs-12 col-sm-8">
-                                            <textarea type="text" class="form-control input-sm" name="reference"
+                                            <textarea id="guest-reference" type="text" class="form-control input-sm" name="reference"
                                                 placeholder="Reference Name">{{ $guests->reference }}</textarea>
 
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label">Image</label>
+                                        <label for="guest-image" class="col-sm-3 control-label">Image</label>
                                         <div class="col-xs-6 col-sm-4 image-section" style="position: relative">
 
-                                            <input type="file" name="image" class="image">
+                                            <input id="guest-image" type="file" name="image" class="image">
 
                                             @include('guests.include.webcam-modal')
                                             <!-- Button trigger modal -->
-                                            <button type="button" class="btn btn-primary btn-sm webcam-modal-btn" onclick="configure()" style="position: absolute;top:1px;right:14px;border: none;" data-toggle="modal" data-target="#webcam-modal">
+                                            <button type="button" class="btn btn-primary btn-sm webcam-modal-btn" onclick="configure()" style="position: absolute;top:1px;right:14px;border: none;" data-toggle="modal" aria-label="Take guest photo with webcam" data-target="#webcam-modal">
                                                 <i class="fa fa-camera"></i>
                                             </button>
                                             <input type="hidden" name="web_cam" value="0" class="is_web_cam_or_not">
@@ -221,10 +192,10 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label">NID / Passport Photo (Optional)</label>
+                                        <label for="guest-nid-front" class="col-sm-3 control-label">NID / Passport Photo (Optional)</label>
                                         <div class="col-xs-6 col-sm-4 position-relative upload_nid">
 
-                                            <input type="file" name="nid_front" class="id-input-file-3">
+                                            <input id="guest-nid-front" type="file" name="nid_front" class="id-input-file-3">
 
                                             <div class="nid_photo position-relative">
                                                 <img height="200" width="100%" src="{{ asset($guests->nid_front) }}" alt="">
@@ -233,7 +204,7 @@
                                         </div>
 
                                         <div class="col-xs-6 col-sm-4 position-relative upload_nid">
-                                            <input type="file" name="nid_back" class="id-input-file-3">
+                                            <input type="file" aria-label="NID or passport back" name="nid_back" class="id-input-file-3">
 
                                             <div class="nid_photo position-relative">
                                                 <img height="200" width="100%" src="{{ asset($guests->nid_back) }}" alt="">
@@ -242,10 +213,10 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label">Spouse NID / Passport Photo (Optional)</label>
+                                        <label for="guest-spouse-nid-front" class="col-sm-3 control-label">Spouse NID / Passport Photo (Optional)</label>
                                         <div class="col-xs-6 col-sm-4 position-relative upload_nid">
 
-                                            <input type="file" name="spouse_nid_front" class="id-input-file-3">
+                                            <input id="guest-spouse-nid-front" type="file" name="spouse_nid_front" class="id-input-file-3">
 
                                             <div class="nid_photo position-relative">
                                                 <img height="200" width="100%" src="{{ asset($guests->spouse_nid_front) }}" alt="">
@@ -254,7 +225,7 @@
                                         </div>
                                         <div class="col-xs-6 col-sm-4 position-relative upload_nid">
 
-                                            <input type="file" name="spouse_nid_back" class="id-input-file-3">
+                                            <input type="file" aria-label="Spouse NID or passport back" name="spouse_nid_back" class="id-input-file-3">
 
                                             <div class="nid_photo position-relative">
                                                 <img height="200" width="100%" src="{{ asset($guests->spouse_nid_back) }}" alt="">
@@ -267,24 +238,18 @@
 
 
                             <div class="form-actions center" style="text-align: right !important;">
-                                <button type="submit" class=" btn-sm btn-outline-success">
+                                <button type="submit" class="mm-button">
                                     <i class="fa fa-save"></i>
                                     Save
                                 </button>
 
-                                <a href="{{ route('guests.index') }}" class="btn-sm btn btn-default">
+                                <a href="{{ route('guests.index') }}" class="mm-button mm-button-secondary">
                                     <i class="fa fa-backward"></i> Back List
                                 </a>
                             </div>
                         </form>
-
-                    </div>
-                </div>
-            </div>
-
-
-        </div>
-    </div>
+        </x-mm.panel>
+    </x-mm.page>
 @endsection
 
 @section('js')

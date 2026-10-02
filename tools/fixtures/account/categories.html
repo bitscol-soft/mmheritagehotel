@@ -1,0 +1,86 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">    <link rel="stylesheet" href="/assets/css/chosen.min.css"/>
+    <link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css"/>
+<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+<section class="mm-ui mm-report mm-acc mm-rst mm-rst-inv">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Category List</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Product categories.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button mm-button-secondary" href="http://localhost/acc/categories"><i class="fa fa-refresh"></i> Refresh Data</a>
+                    <a class="mm-button" href="http://localhost/acc/categories/create"><i class="fa fa-plus"></i> Create New</a></div>        </header>
+        <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><!-- LIST -->
+        <div class="row" style="width: 100%; margin: 0 !important;">
+            <div class="col-sm-12 px-4">
+                <div class="mm-table-scroll" role="region" aria-label="Category List" tabindex="0"><table id="data-table" class="table table-bordered table-striped">
+                        <thead>
+                            <tr class="table-header-bg">
+                                <th class="text-center" style="color: white !important;" width="8%">Sl</th>
+                                <th class="pl-3" style="color: white !important;" >Name</th>
+                                <th class="text-center" style="color: white !important;" width="15%">Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                                                            <tr>
+                                    <td class="text-center">1</td>
+                                    <td class="pl-3">Beverage &lt;b&gt;x&lt;/b&gt;</td>
+                                    <td class="text-center">
+                                        <div class="btn-group btn-corner">
+                                            <span class="btn btn-info btn-xs popover-success"
+      data-rel="popover"
+      data-placement="top"
+      data-trigger="hover"
+      data-original-title="<i class='ace-icon fa fa-info-circle green'></i> Log Information"
+      data-content="<p>Created By: .</p> <p> Created At :  </p>
+
+       <hr/>
+       <p>Updated By: .</p> <p> Updated At :  </p>">
+    <i class="fa fa-info-circle" style="color: #000000 !important"></i>
+</span>
+
+                                                                                            <a href="http://localhost/acc/categories/edit/1" class="btn btn-primary btn-xs"><i class="fa fa-pencil-square"></i></a>
+                                            
+                                                                                            <a href="#" onclick="delete_item('http://localhost/acc/categories/destroy/1')" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i></a>
+                                                                                    </div>
+                                    </td>
+                                </tr>
+                                                    </tbody>
+                    </table></div>
+            </div>
+        </div></div>
+    </div>
+</section>
+
+    <!-- delete form -->
+    <form action="" id="deleteItemForm" method="POST">
+        <input type="hidden" name="_token" value="fixture-csrf-token"> <input type="hidden" name="_method" value="DELETE">    </form>
+
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
+    <script src="/assets/js/chosen.jquery.min.js"></script>
+    <script src="/assets/js/bootstrap-datepicker.min.js"></script>
+
+
+    <script src="/assets/custom_js/confirm_delete_dialog.js"></script>
+    <script src="/assets/js/jquery.dataTables.min.js"></script>
+    <script src="/assets/js/jquery.dataTables.bootstrap.min.js"></script>
+
+
+    <script type="text/javascript">
+        jQuery(function($) {
+            $('#data-table').DataTable({
+                "ordering": false,
+                "bPaginate": true,
+                "lengthChange": false,
+                "info": false,
+                "pageLength": 25
+            });
+        })
+    </script>
+
+<!--/MM-JS--></body></html>

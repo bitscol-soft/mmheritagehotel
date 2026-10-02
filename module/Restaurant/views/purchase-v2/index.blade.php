@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title', 'Purchase')
-@section('page-header')
-    <i class="fa fa-list"></i> Purchase List
-@stop
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/jquery-ui.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
@@ -16,77 +13,56 @@
 
 @section('content')
 
-    <div class="page-header">
-
-        @if (hasPermission('rst.purchase.create', $slugs))
-            <a class="btn btn-xs btn-info" href="{{ route('rst.purchases.create') }}" style="float: right; margin: 0 2px;"> <i
-                    class="fa fa-plus"></i> Add @yield('title') </a>
-        @endif
-        <h1>
-            @yield('page-header')
-        </h1>
-    </div>
+<x-mm.styles />
+<x-mm.page class="mm-report mm-rst mm-rst-purchase" title="Purchase list" description="Restaurant purchases with required and received quantities.">
+    @if (hasPermission('resturant.purchases.create', $slugs))
+        <x-slot name="actions">
+            <a class="mm-button" href="{{ route('rst.purchases.create') }}">
+                <i class="fa fa-plus" aria-hidden="true"></i> Add Purchase
+            </a>
+        </x-slot>
+    @endif
 
     @include('partials._alert_message')
 
-    <div class="row">
-        <form class="form-horizontal" action="{{ route('rst.purchases.index') }}" method="get">
+    <x-mm.panel class="mm-report-filter">
+        <form class="form-horizontal mm-setup-filter mm-report-form" action="{{ route('rst.purchases.index') }}" method="get">
             @csrf
-            <div class="col-sm-12">
-                <table class="table table-bordered">
+            <div class="mm-report-field">
+                <select name="company_id" class="form-control chosen-select" aria-label="Company">
+                    <option selected value="">- Select Company -</option>
+                    @foreach ($companies as $id => $name)
+                        <option value="{{ $id }}"
+                            {{ request()->company_id == $id ? 'selected' : '' }}>
+                            {{ $name }}</option>
+                    @endforeach
+                </select>
+            </div>
 
-                    <tr>
-                        <th class="bg-dark">Company</th>
-                        <th class="bg-dark text-center">From - To</th>
-                        <th class="bg-dark">Purchase Number</th>
-                        <th class="bg-dark text-center">Action</th>
-                    </tr>
+            <div class="input-group">
+                <input type="text" class="form-control input-sm date-picker" name="from_date"
+                    value="{{ request('from_date') }}" autocomplete="off" aria-label="From date">
+                <span class="input-group-addon">From|To</span>
+                <input type="text" class="form-control input-sm date-picker" name="to_date"
+                    value="{{ request('to_date') }}" autocomplete="off" aria-label="To date">
+            </div>
 
-                    <tr>
-                        <td>
-                            <select name="company_id" class="form-control chosen-select">
-                                <option selected value="">- Select Company -</option>
-                                @foreach ($companies as $id => $name)
-                                    <option value="{{ $id }}"
-                                        {{ request()->company_id == $id ? 'selected' : '' }}>
-                                        {{ $name }}</option>
-                                @endforeach
-                            </select>
-                        </td>
-                        <td>
-                            <div class="input-group">
-                                <input type="text" class="form-control input-sm date-picker" name="from_date"
-                                    value="{{ request('from_date') }}" autocomplete="off">
-                                <span class="input-group-addon">From|To</span>
-                                <input type="text" class="form-control input-sm date-picker" name="to_date"
-                                    value="{{ request('to_date') }}" autocomplete="off">
-                            </div>
-                        </td>
+            <div class="mm-report-field">
+                <input name="purchase_number" class="form-control input-sm"
+                    placeholder="Search by purchase number" value="{{ request('purchase_number') }}">
+            </div>
+            {{-- @dd($purchases); --}}
 
-                        <td>
-                            <input name="purchase_number" class="form-control input-sm"
-                                placeholder="Search by purchase number" value="{{ request('purchase_number') }}">
-                        </td>
-                        {{-- @dd($purchases); --}}
-
-                        <td colspan="2" class="text-right">
-                            <div class="btn-group btn-corner">
-                                <button class="btn btn-xs btn-primary"><i class="fa fa-search"></i> Search</button>
-                                <a href="{{ route('purchases.index') }}" class="btn btn-xs btn-pink"><i
-                                        class="fa fa-refresh"></i> Refresh</a>
-                            </div>
-                        </td>
-                    </tr>
-
-                </table>
+            <div class="btn-group" style="display: flex">
+                <button class="mm-button"><i class="fa fa-search"></i> Search</button>
+                <a href="{{ route('rst.purchases.index') }}" class="mm-button mm-button-secondary"><i
+                        class="fa fa-refresh"></i> Refresh</a>
             </div>
         </form>
-    </div>
+    </x-mm.panel>
 
-
-
-    <div class="row">
-        <div class="col-xs-12">
+    <x-mm.panel>
+        <x-mm.table-scroll label="Purchases">
             <table class="table table-striped table-bordered table-hover">
                 <thead>
                     <tr style="background: #C9DAF8 !important; color:black !important">
@@ -113,7 +89,7 @@
                             {{-- <td>{{ $purchase->purchase_reference }}</td> --}}
                             <td>{{ $purchase->company->name }}</td>
                             <td>{{ $purchase->purchase_details->sum('quantity') }}</td>
-                            <td>{{ $purchase->purchase_details->sum('quantity') }}</td>
+                            <td>{{ $purchase->is_approved ? $purchase->purchase_details->sum('quantity') : 0 }}</td>
 
                             <td style="text-align: center">
                                 <div class="btn-group btn-corner">
@@ -155,7 +131,7 @@
                                         <a href="{{ route('rst.unapprove.purchase', $purchase->id) }}"
                                             class="btn btn-xs btn-success" title="Unapprove Purchase"
                                             id="approveBtn{{ $purchase->id }}">
-                                            <i class="fas fa-thumbs-down"></i>
+                                            <i class="fa fa-thumbs-down"></i>
                                         </a>
                                     @endif --}}
 
@@ -170,7 +146,7 @@
                                     @if (hasPermission('rst.purchase.delete', $slugs) && $purchase->is_approved == 0)
                                         <button type="button" onclick="delete_check({{ $purchase->id }})"
                                             class="btn btn-xs btn-danger" title="Delete Purchase">
-                                            <i class="fa fa-trash"></i>
+                                            <i class="fa fa-trash-o"></i>
                                         </button>
                                     @endif
 
@@ -194,36 +170,36 @@
                     @endif
                 </tbody>
             </table>
+        </x-mm.table-scroll>
 
-            @if (count($purchases) > 0)
-                @include('partials._paginate', ['data' => $purchases])
+        @if (count($purchases) > 0)
+            @include('partials._paginate', ['data' => $purchases])
 
-                {{-- <div class="pull-left" style="margin-top:10px; margin-left:10px">
-                    <span onclick="exportData('{{ url('export-gs-as-excel') }}')"
-                        style="margin-right: 5px; cursor: pointer;">
-                        <img src="{{ asset('assets/images/export-icons/excel-icon.png') }}">
-                    </span>
-                    <span onclick="exportData('{{ url('export-gs-as-pdf') }}')"
-                        style="margin-right: 5px; cursor: pointer;">
-                        <img src="{{ asset('assets/images/export-icons/pdf-icon.png') }}">
-                    </span>
-                </div> --}}
+            {{-- <div class="pull-left" style="margin-top:10px; margin-left:10px">
+                <span onclick="exportData('{{ url('export-gs-as-excel') }}')"
+                    style="margin-right: 5px; cursor: pointer;">
+                    <img src="{{ asset('assets/images/export-icons/excel-icon.png') }}">
+                </span>
+                <span onclick="exportData('{{ url('export-gs-as-pdf') }}')"
+                    style="margin-right: 5px; cursor: pointer;">
+                    <img src="{{ asset('assets/images/export-icons/pdf-icon.png') }}">
+                </span>
+            </div> --}}
 
-                <form class="exportForm" method="POST">
-                    @csrf
+            <form class="exportForm" method="POST">
+                @csrf
 
-                    <input type="hidden" name="model" value="Purchase List">
-                    <input type="hidden" name="company_id" value="{{ request('company_id') }}">
-                    <input type="hidden" name="purchase_number" value="{{ request('purchase_number') }}">
-                    <input type="hidden" name="from_date" value="{{ request('from_date') }}">
-                    <input type="hidden" name="to_date" value="{{ request('to_date') }}">
-                </form>
-            @endif
-
-        </div>
-    </div>
+                <input type="hidden" name="model" value="Purchase List">
+                <input type="hidden" name="company_id" value="{{ request('company_id') }}">
+                <input type="hidden" name="purchase_number" value="{{ request('purchase_number') }}">
+                <input type="hidden" name="from_date" value="{{ request('from_date') }}">
+                <input type="hidden" name="to_date" value="{{ request('to_date') }}">
+            </form>
+        @endif
+    </x-mm.panel>
 
     <input type="hidden" id="csrf" value="{{ csrf_token() }}">
+</x-mm.page>
 
 @endsection
 

@@ -12,62 +12,43 @@
 @stop
 
 @section('content')
-    <div class="page-header">
-        <div class="page-header">
-            <a class="btn btn-xs btn-info" href="{{ route('banquet.hall-rooms.create') }}"
-                style="float: right; margin: 0 2px;"> <i class="fa fa-plus"></i> Add New Room</a>
-            <h1>
-                <i class="fa fa-info-circle green"></i> Hall List
-            </h1>
-        </div>
-    </div>
+    <x-mm.styles />
+    <x-mm.page class="mm-banquet mm-room-inventory mm-hotel-setup" title="Halls" description="Find halls by name or hall number.">
+        <x-slot name="actions">
+            <a class="mm-button" href="{{ route('banquet.hall-rooms.create') }}">
+                <i class="fa fa-plus" aria-hidden="true"></i> Add New Room
+            </a>
+        </x-slot>
 
-    <x-alert-message />
+        <x-alert-message />
 
+        <x-mm.panel class="mm-setup-filter tw-mb-4">
+            <form action="" class="tw-flex tw-flex-wrap tw-gap-3 tw-items-center">
+                <div class="input-group">
+                    <span class="input-group-addon">Name</span>
+                    <input type="text" name="name" class="form-control" placeholder="Room Name">
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">Hall No</span>
+                    <input type="text" name="room_number" class="form-control" placeholder="Hall No.">
+                </div>
+                {{-- <div class="input-group">
+                    <span class="input-group-addon">Card No</span>
+                    <input type="text" name="f_r_id_card" class="form-control" placeholder="Card No.">
+                </div> --}}
+                <div class="tw-flex tw-gap-2">
+                    <button class="mm-button">
+                        <i class="fa fa-search" aria-hidden="true"></i> Search
+                    </button>
+                    <a href="{{ request()->url() }}" class="mm-button mm-button-secondary">
+                        <i class="fa fa-refresh" aria-hidden="true"></i> Clear
+                    </a>
+                </div>
+            </form>
+        </x-mm.panel>
 
-
-    <div class="row">
-        <div class="col-xs-12">
-
-            <!-- SEARCHING -->
-            <div class="row">
-                <form action="">
-                    <table class="table table-bordered">
-                        <tr>
-                            <td>
-                                <div class="input-group">
-                                    <span class="input-group-addon">Name</span>
-                                    <input type="text" name="name" class="form-control" placeholder="Room Name">
-                                </div>
-                            </td>
-                            <td>
-                                <div class="input-group">
-                                    <span class="input-group-addon">Hall No</span>
-                                    <input type="text" name="room_number" class="form-control" placeholder="Hall No.">
-                                </div>
-                            </td>
-                            {{-- <td>
-                                <div class="input-group">
-                                    <span class="input-group-addon">Card No</span>
-                                    <input type="text" name="f_r_id_card" class="form-control" placeholder="Card No.">
-                                </div>
-                            </td> --}}
-                            <td style="width: 10%">
-                                <div class="btn-group">
-                                    <button class="btn btn-xs btn-info">
-                                        <i class="fa fa-search"></i>
-                                    </button>
-                                    <a href="{{ request()->url() }}" class="btn btn-xs btn-default">
-                                        <i class="fa fa-refresh"></i>
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
-                </form>
-            </div>
-
-            <div class="table-responsive" style="border: 1px #cdd9e8 solid;">
+        <x-mm.panel class="tw-p-4">
+            <x-mm.table-scroll label="Hall list">
                 <table id="data-table" class="table table-striped table-bordered table-hover">
                     <thead>
                         <tr>
@@ -112,7 +93,7 @@
                                         </a>
                                         <button type="button" onclick="delete_check({{ $data->id }})"
                                             class="btn btn-xs btn-sm btn-danger" title="Delete">
-                                            <i class="fa fa-trash"></i>
+                                            <i class="fa fa-trash-o"></i>
                                         </button>
                                     </div>
 
@@ -126,10 +107,9 @@
                         @endforeach
                     </tbody>
                 </table>
-            </div>
-        </div>
-
-    </div>
+            </x-mm.table-scroll>
+        </x-mm.panel>
+    </x-mm.page>
 @endsection
 
 @section('js')

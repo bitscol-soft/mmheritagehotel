@@ -111,10 +111,10 @@
                             <div class="col-sm-6 col-sm-offset-4">
                                 <div class="btn-group">
                                     <button class="btn btn-success btn-sm" type="button" onclick="submitAttendanceSyncData()">
-                                        <i class="far fa-refresh"></i> Sync
+                                        <i class="fa fa-refresh"></i> Sync
                                     </button>
                                     <button class="btn btn-danger btn-sm" type="reset" onclick="submitAttendanceSyncData(1)">
-                                        <i class="far fa-refresh"></i> Fresh Sync
+                                        <i class="fa fa-refresh"></i> Fresh Sync
                                     </button>
                                 </div>
                             </div>
@@ -161,7 +161,7 @@
                                 <div class="col-sm-6 col-sm-offset-4" style="padding-left:50px">
                                     <div class="btn-group">
                                         <button class="btn btn-success btn-sm">
-                                            <i class="far fa-refresh"></i> Sync
+                                            <i class="fa fa-refresh"></i> Sync
                                         </button>
                                     </div>
                                 </div>
@@ -226,10 +226,10 @@
                                 <div class="col-sm-6 col-sm-offset-4">
                                     <div class="btn-group">
                                         <button class="btn btn-success btn-sm">
-                                            <i class="far fa-refresh"></i> Sync
+                                            <i class="fa fa-refresh"></i> Sync
                                         </button>
                                         <button class="btn btn-danger btn-sm" type="Reset">
-                                            <i class="far fa-refresh"></i> Fresh Sync
+                                            <i class="fa fa-refresh"></i> Fresh Sync
                                         </button>
                                     </div>
                                 </div>

@@ -19,88 +19,74 @@
 
 
 @section('content')
-    <div class="row">
 
-        @include('bar.inventory.units.create-modal')
+<x-mm.styles />
+@include('bar.inventory.units.create-modal')
+<x-mm.page class="mm-hotel-setup mm-bar mm-rst mm-rst-inv" title="Units" description="Measurement units for bar products.">
+    <x-slot name="actions">
+        @if (hasPermission('pharmacy.view', $slugs))
+                <a class="mm-button" href="#modal-dialog" data-toggle="modal">
+                    <i class="fa fa-plus-circle"></i> Add New Unit
+                </a>
+        @endif
+    </x-slot>
+    <x-mm.panel class="tw-p-4">
+        <x-alert-message />
 
+        <div class="row">
+            <div class="col-sm-12">
+                <x-mm.table-scroll label="Units">
+                    <table id="data-table" class="table table-striped table-bordered nowrap" width="100%">
+                        <thead>
+                            <tr>
+                                <th width="5%">Sl</th>
+                                <th>Name</th>
+                                <th>Type</th>
+                                <th width="10%">Status</th>
+                                <th width="10%" class="text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($units as $item)
+                                <tr class="odd gradeX">
+                                    <td>{{ $loop->iteration }}</td>
+                                    <td>{{ $item->name }}</td>
+                                    <td>{{ $item->type == 'retail' ? 'Big Unit' : 'Small Unit' }}</td>
+                                    <td>{{ status($item->status) }}</td>
+                                    <td class="text-center">
 
-
-        <div class="col-sm-12">
-            <div class="widget-box">
-                <div class="widget-header">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
-                    @if (hasPermission('pharmacy.view', $slugs))
-                        <span class="widget-toolbar">
-                            <a href="#modal-dialog" data-toggle="modal">
-                                <i class="fa fa-plus-circle"></i> Add New Unit
-                            </a>
-                        </span>
-                    @endif
-
-                </div>
-                <div class="widget-body">
-                    <div class="widget-main">
-
-                        <x-alert-message />
-
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <table id="data-table" class="table table-striped table-bordered nowrap" width="100%">
-                                    <thead>
-                                        <tr>
-                                            <th width="5%">Sl</th>
-                                            <th>Name</th>
-                                            <th>Type</th>
-                                            <th width="10%">Status</th>
-                                            <th width="10%" class="text-center">Action</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($units as $item)
-                                            <tr class="odd gradeX">
-                                                <td>{{ $loop->iteration }}</td>
-                                                <td>{{ $item->name }}</td>
-                                                <td>{{ $item->type == 'retail' ? 'Big Unit' : 'Small Unit' }}</td>
-                                                <td>{{ status($item->status) }}</td>
-                                                <td class="text-center">
-
-                                                    <div class="btn-group btn-corner">
+                                        <div class="btn-group btn-corner">
 
 
-                                                        @if (hasPermission('pharmacy.edit', $slugs))
-                                                            <a href="#modal-dialog{{ $item->id }}" data-toggle="modal"
-                                                                class="btn btn-sm btn-success" title="Edit">
-                                                                <i class="fa fa-pencil-square-o"></i>
-                                                            </a>
-                                                        @endif
+                                            @if (hasPermission('pharmacy.edit', $slugs))
+                                                <a href="#modal-dialog{{ $item->id }}" data-toggle="modal"
+                                                    class="btn btn-sm btn-success" title="Edit">
+                                                    <i class="fa fa-pencil-square-o"></i>
+                                                </a>
+                                            @endif
 
 
-                                                        @if (hasPermission('pharmacy.delete', $slugs))
-                                                            <button type="button"
-                                                                onclick="delete_item(`{{ route('bar.product-units.destroy', $item->id) }}`)"
-                                                                class="btn btn-sm btn-danger" title="Delete">
-                                                                <i class="fa fa-trash"></i>
-                                                            </button>
-                                                        @endif
+                                            @if (hasPermission('pharmacy.delete', $slugs))
+                                                <button type="button"
+                                                    onclick="delete_item(`{{ route('bar.product-units.destroy', $item->id) }}`)"
+                                                    class="btn btn-sm btn-danger" title="Delete">
+                                                    <i class="fa fa-trash-o"></i>
+                                                </button>
+                                            @endif
 
-                                                    </div>
-                                                </td>
+                                        </div>
+                                    </td>
 
-                                            </tr>
-                                            @include('bar.inventory.units.edit-modal')
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                                </tr>
+                                @include('bar.inventory.units.edit-modal')
+                            @endforeach
+                        </tbody>
+                    </table>
+                </x-mm.table-scroll>
             </div>
-
-
         </div>
-    </div>
-
+    </x-mm.panel>
+</x-mm.page>
 
 @endsection
 

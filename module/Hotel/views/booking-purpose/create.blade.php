@@ -1,7 +1,7 @@
 @extends('layouts.master')
 @section('title', 'Add New Booking Purpose')
 @section('page-header')
-    <i class="fad fa-plus-circle"></i> Add New Booking @if (request('type') == 'purpose') Purpose @else Platform @endif
+    <i class="fa fa-plus-circle"></i> Add New Booking @if (request('type') == 'purpose') Purpose @else Platform @endif
 @stop
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
@@ -11,28 +11,12 @@
 @stop
 
 @section('content')
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="widget-box">
-                <div class="widget-header">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
-                    <span class="widget-toolbar">
-
-                        <a href="{{ route('booking-purpose.index') }}?type={{ request('type') == 'purpose' ? 'purpose' : 'platform' }}">
-                            <i class="ace-icon fa fa-list-alt"></i> List
-                        </a>
-
-                    </span>
-                </div>
-
-                <div class="widget-body">
-                    <div class="widget-main no-padding">
-
-                        <div style="margin: 20px;">
-                            @include('partials._alert_message')
-                        </div>
-
-                        <form class="form-horizontal" id="companyForm" action="{{ route('booking-purpose.store') }}" method="post" enctype="multipart/form-data">
+<x-mm.styles />
+<x-mm.page :title="request('type') == 'purpose' ? 'Add booking purpose' : 'Add booking platform'" description="Maintain booking classification labels." class="mm-booking-setup">
+<x-slot name="actions"><a class="mm-button mm-button-secondary" href="{{ route('booking-purpose.index') }}?type={{ request('type') == 'purpose' ? 'purpose' : 'platform' }}">Back to list</a></x-slot>
+@include('partials._alert_message')
+<x-mm.panel class="tw-p-5">
+<form class="form-horizontal" id="companyForm" action="{{ route('booking-purpose.store') }}" method="post" enctype="multipart/form-data">
                             @csrf
 
                             @if (request('type') == 'purpose')
@@ -44,9 +28,9 @@
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label"> @if (request('type') == 'purpose') Purpose @else Platform @endif <sup class="text-danger">*</sup></label>
+                                        <label for="booking-setup-name" class="col-sm-3 control-label"> @if (request('type') == 'purpose') Purpose @else Platform @endif <sup class="text-danger">*</sup></label>
                                         <div class="col-xs-12 col-sm-8">
-                                            <input type="text" class="form-control input-sm" name="name"
+                                            <input type="text" class="form-control input-sm" name="name" id="booking-setup-name"
                                                 value="{{ old('name') }}" placeholder="@if (request('type') == 'purpose') Purpose @else Platform @endif" required>
                                         </div>
                                     </div>
@@ -58,18 +42,14 @@
                                     <i class="ace-icon fa fa-save icon-on-right bigger-110"></i>
                                     Save
                                 </button>
-                                <a href="{{ route('company.index') }}" class="btn btn-sm btn-info">
+                                <a href="{{ route('booking-purpose.index') }}?type={{ request('type') == 'purpose' ? 'purpose' : 'platform' }}" class="btn btn-sm btn-info">
                                     <i class="fa fa-backward"></i> Back List
                                 </a>
                             </div>
-                        </form>
-
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
+                        @error('name')<p class="tw-text-sm" role="alert">{{ $message }}</p>@enderror
+</form>
+</x-mm.panel>
+</x-mm.page>
 @endsection
 
 @section('js')

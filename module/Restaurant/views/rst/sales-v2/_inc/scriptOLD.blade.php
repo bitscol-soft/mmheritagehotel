@@ -515,7 +515,7 @@
         }
         inputQuantity += `<div class="input-group-btn">
                                 <button class="btn btn-info btn-sm" id="add-product" type="button">
-                                    <i class="fas fa-plus-square"></i>
+                                    <i class="fa fa-plus-square"></i>
                                 </button>
                             </div>`
         $('#input-quantity-group').html(inputQuantity)

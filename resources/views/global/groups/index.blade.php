@@ -68,7 +68,7 @@
 
                                         @if (hasPermission("groups.delete", $slugs))
                                             <button type="button" onclick="delete_check({{ $group->id }})" class="btn btn-sm btn-danger" title="Delete">
-                                                <i class="fa fa-trash"></i>
+                                                <i class="fa fa-trash-o"></i>
                                             </button>
                                         @endif
 

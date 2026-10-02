@@ -2,8 +2,7 @@
     .room-details-tbody tr:first-child td .btn-danger {
         pointer-events: none;
     }
-</style>
-<style>
+
     .input-group-addon {
         background: transparent;
     }
@@ -151,4 +150,22 @@
     .show-category-room-modal .select2-container--default .select2-selection {
         border: 3px solid #4492C9 !important;
     }
+</style>
+<style>
+    /* round-5: booking view readonly field rows */
+    .booking-view .input-group > input[readonly] {
+        border: none;
+        background: transparent;
+        box-shadow: none;
+        font-weight: 600;
+        color: #37536a;
+        padding: 2px 4px;
+        width: auto;
+        height: auto;
+    }
+    .booking-view .guest-info .info-title .title {
+        font-weight: 600;
+        color: #37536a;
+    }
+
 </style>

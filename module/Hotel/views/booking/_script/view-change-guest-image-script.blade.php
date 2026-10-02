@@ -112,7 +112,7 @@
                                 <button onclick="closesImagesModal()" class="btn btn-sm btn-outline-danger" data-dismiss="modal"><i
                                         class="ace-icon fa fa-times"></i>Cancel</button>
                                 <button class="btn btn-sm btn-outline-success" form="updateGuestImage${data.id}" type="submit">
-                                    <i class="ace-icon fa fa-pen-square"></i>Save
+                                    <i class="ace-icon fa fa-pencil-square"></i>Save
                                 </button>
                             </div>`;
 

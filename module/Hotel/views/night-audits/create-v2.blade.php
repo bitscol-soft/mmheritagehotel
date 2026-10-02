@@ -9,233 +9,122 @@
 
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datetimepicker.min.css') }}">
-    <style>
-        .widget-header {
-            background-color: #EAF4FA !important;
-            background-image: none !important;
-        }
-
-
-        table thead th {
-            background-color: #4d8cb3;
-            color: #fff;
-        }
-
-        .border-none {
-            border: none !important;
-        }
-
-        .header-input {
-            background: white !important;
-            border: none !important;
-            font-size: 18px !important;
-            font-weight: bold !important;
-            padding: 0 !important;
-            color: black !important;
-            width: 100% !important;
-        }
-
-        .footer-input {
-            background: white !important;
-            border: none !important;
-            text-align: right !important;
-            font-size: 18px !important;
-            font-weight: bold !important;
-            padding: 0 !important;
-            color: black !important;
-            width: 100% !important;
-        }
-    </style>
 @endpush
 
 
 @section('content')
 
-    <div class="row">
+    <x-mm.styles />
+    <x-mm.page class="mm-night-audit" title="Generate night audit" description="Pick the audit period, review the day's reservations, collections and dues, then generate the audit.">
+        <x-slot name="actions">
+            <a class="mm-button mm-button-secondary" href="{{ route('night-audits.index') }}">
+                <i class="fa fa-list-alt" aria-hidden="true"></i> Audit List
+            </a>
+        </x-slot>
+        <x-alert-message />
 
-        <div class="col-sm-12">
-            <div class="widget-box">
-                <div class="widget-header">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
-
-                    <span class="widget-toolbar">
-                        <a href="{{ route('night-audits.index') }}">
-                            <i class="ace-icon fa fa-list-alt"></i> List
-                        </a>
-                    </span>
-                </div>
-
-
-
-                <div class="widget-body">
-
-                    <x-alert-message />
-
-                    <div class="widget-main">
-
-                        <div class="row mb-2 hidden-print">
-                            <form action="" method="GET">
-                                <div class="col-sm-8 col-sm-offset-2">
-                                    <table class="table table-bordered">
-                                        <tr>
-                                            <td>
-                                                <div class="input-group">
-                                                    <label class="input-group-addon"><i class="fa fa-calendar"></i></label>
-                                                    <input type="text" class="date-picker-v2 form-control text-center"
+        <x-mm.panel class="mm-co-card hidden-print">
+            <h2 class="mm-co-title">Audit period</h2>
+            <form action="" method="GET">
+                <div class="mm-pc-search">
+                    <div class="mm-co-field" role="group" aria-labelledby="mm-na-from">
+                        <span id="mm-na-from" class="mm-co-label">From</span>
+                        <div class="input-group">
+                            <label class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></label>
+                            <input type="text" class="date-picker-v2 form-control text-center"
                                                         autocomplete="off" name="from_date"
                                                         value="{{ request('from_date', today_from_system()) }}">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="input-group">
-                                                    <label class="input-group-addon"><i class="fa fa-calendar"></i></label>
-                                                    <input type="text" class="date-picker-v2 form-control text-center"
+                        </div>
+                    </div>
+                    <div class="mm-co-field" role="group" aria-labelledby="mm-na-to">
+                        <span id="mm-na-to" class="mm-co-label">To</span>
+                        <div class="input-group">
+                            <label class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></label>
+                            <input type="text" class="date-picker-v2 form-control text-center"
                                                         autocomplete="off" name="to_date"
                                                         value="{{ request('to_date', today_from_system()) }}">
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="btn-group">
-                                                    <button type="submit" class="btn btn-sm btn-primary">
-                                                        <i class="fa fa-search"></i> Search
-                                                    </button>
-                                                    <a href="{{ request()->url() }}" class="btn btn-sm btn-default">
-                                                        <i class="fa fa-refresh"></i>
-                                                    </a>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </form>
                         </div>
+                    </div>
+                    <div class="mm-pc-search-actions">
+                        <button type="submit" class="mm-button">
+                            <i class="fa fa-search" aria-hidden="true"></i> Search
+                        </button>
+                        <a href="{{ request()->url() }}" class="mm-button mm-button-secondary" aria-label="Reset">
+                            <i class="fa fa-refresh" aria-hidden="true"></i> Reset
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </x-mm.panel>
 
-                        @if (request('from_date'))
-                            {{-- @if (count($transactions ?? []) == 0)
-                                <div class="text-center">
-                                    <strong style="font-size: 18px" class="text-danger">
-                                        No data found under Booking or Services
-                                    </strong>
-                                </div>
-                            @else --}}
-                            <form action="{{ route('night-audits.store') }}" method="post" id="formSubmit">
-                                @csrf
+        @if (request('from_date'))
+            <form action="{{ route('night-audits.store') }}" method="post" id="formSubmit">
+                @csrf
 
-
-                                <div class="row">
-                                    <h3 class="text-center">
-                                        <strong>Generate Date</strong> :
-                                        <span>
-                                            <input type="text" name="date" class="input-sm date-picker bs-tooltip"
+                <section class="mm-panel mm-co-card" aria-labelledby="mm-na-day">
+                    <h2 id="mm-na-day" class="mm-co-title">Generate date</h2>
+                    <div class="mm-na-date">
+                        <input type="text" name="date" class="input-sm date-picker bs-tooltip"
                                                 value="{{ request('date', fdate($from_date, 'Y-m-d')) }}"
                                                 title="Generate Date"
                                                 style="border: none; font-size:20px;font-weight:bold;color:rgb(216, 64, 18)">
-                                        </span>
-                                    </h3>
-                                    <hr>
-
-                                    <div class="col-sm-9 col-sm-offset-2">
-                                        <table class="table" style="border: none">
-
-                                            <tr style="border-bottom:none !important">
-                                                <th class="text-right border-none"
-                                                    style="padding: 0 7px 0 0 !important; width: 20%">Total Reservation
-                                                    : </th>
-                                                <th class="border-none" style="padding: 0 7px 0 0 !important;">
-                                                    <input type="text" readonly class="header-input"
+                    </div>
+                    <div class="mm-na-stats">
+                        <label class="mm-na-stat"><span class="mm-sum-label">Total Reservation</span>
+                            <input type="text" readonly class="header-input"
                                                         style="background: white !important" name="total_reservation"
                                                         value="{{ $total_reservation }}">
-                                                </th>
-
-
-                                                <th style="border: none"></th>
-                                                <th class="text-right border-none" style="padding: 0 7px 0 0 !important;">
-                                                    Total Booked :
-                                                </th>
-                                                <th class="border-none" style="padding: 0 7px 0 0 !important;">
-                                                    <input type="text" readonly class="header-input"
+                        </label>
+                        <label class="mm-na-stat"><span class="mm-sum-label">Total Booked</span>
+                            <input type="text" readonly class="header-input"
                                                         style="background: white !important" name="total_booked_room"
                                                         value="{{ $total_booked_room }}">
-                                                </th>
-                                            </tr>
-                                            <tr style="border-bottom:none !important">
-                                                <th class="text-right border-none"
-                                                    style="padding: 0 7px 0 0 !important; width: 20%">Total Check In :
-                                                </th>
-                                                <th class="border-none" style="padding: 0 7px 0 0 !important;">
-                                                    <input type="text" readonly class="header-input"
+                        </label>
+                        <label class="mm-na-stat"><span class="mm-sum-label">Total Check In</span>
+                            <input type="text" readonly class="header-input"
                                                         style="background: white !important" name="total_check_in"
                                                         value="{{ $total_check_in }}">
-                                                </th>
-                                                <th style="border: none"></th>
-                                                <th class="text-right border-none" style="padding: 0 7px 0 0 !important;">
-                                                    Total
-                                                    Check Out : </th>
-                                                <th class="border-none" style="padding: 0 7px 0 0 !important;">
-                                                    <input type="text" readonly class="header-input"
+                        </label>
+                        <label class="mm-na-stat"><span class="mm-sum-label">Total Check Out</span>
+                            <input type="text" readonly class="header-input"
                                                         style="background: white !important" name="total_check_out"
                                                         value="{{ $total_check_out }}">
-                                                </th>
-
-                                            </tr>
-                                            <tr style="border-bottom:none !important">
-                                                <th class="text-right border-none" style="padding: 0 7px 0 0 !important;">
-                                                    Total Room :
-                                                </th>
-                                                <th class="border-none" style="padding: 0 7px 0 0 !important;">
-                                                    <input type="text" readonly class="header-input"
+                        </label>
+                        <label class="mm-na-stat"><span class="mm-sum-label">Total Room</span>
+                            <input type="text" readonly class="header-input"
                                                         style="background: white !important" name="total_room"
                                                         value="{{ $total_room }}">
-                                                </th>
-
-                                                <th style="border: none"></th>
-                                                <th class="text-right border-none" style="padding: 0 7px 0 0 !important;">
-                                                    Total
-                                                    Cancelled : </th>
-                                                <th class="border-none" style="padding: 0 7px 0 0 !important;">
-                                                    <input type="text" readonly class="header-input"
+                        </label>
+                        <label class="mm-na-stat"><span class="mm-sum-label">Total Cancelled</span>
+                            <input type="text" readonly class="header-input"
                                                         style="background: white !important" name="total_cancelled"
                                                         value="{{ $total_cancel }}">
-                                                </th>
-                                            </tr>
-                                            <tr style="border-bottom:none !important">
-                                                <th class="text-right border-none" style="padding: 0 7px 0 0 !important;">
-                                                    Total Dirty Room :
-                                                </th>
-                                                <th class="border-none" style="padding: 0 7px 0 0 !important;">
-                                                    <input type="text" readonly class="header-input"
+                        </label>
+                        <label class="mm-na-stat"><span class="mm-sum-label">Total Dirty Room</span>
+                            <input type="text" readonly class="header-input"
                                                         style="background: white !important" name="total_dirty_room"
                                                         value="{{ $total_dirty_room }}">
-                                                </th>
-
-                                                <th style="border: none"></th>
-                                                <th class="text-right border-none" style="padding: 0 7px 0 0 !important;">
-                                                    Total Maintainance Room :
-                                                </th>
-                                                <th class="border-none" style="padding: 0 7px 0 0 !important;">
-                                                    <input type="text" readonly class="header-input"
+                        </label>
+                        <label class="mm-na-stat"><span class="mm-sum-label">Total Maintenance Room</span>
+                            <input type="text" readonly class="header-input"
                                                         style="background: white !important" name="total_room_maintenance"
                                                         value="{{ $total_maintenance_room }}">
-                                                </th>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                    @php
+                        </label>
+                    </div>
+                </section>
+
+                @php
                                         $grand_total_amount = $grand_total_collection = $grand_total_due = 0;
 
                                         foreach ($accountTypes as $id => $name) {
                                             $$name = 0;
                                         }
                                     @endphp
-                                    @foreach ($transactions as $key => $collections)
-                                        <div class="col-md-12">
-                                            <h6 style="width: 100%;text-align: center" class="mb-2">
-                                                <b
-                                                    style="padding: 10px 20px; border-radius: 10px; color: #000; border:1px solid #ddd;">
-                                                    {{ $key }}
-                                                </b>
-                                            </h6>
-                                            <table class="table table-bordered table-striped table-hover"
+                @foreach ($transactions as $key => $collections)
+                    <section class="mm-panel mm-co-charges">
+                        <h2 class="mm-co-title">{{ $key }}</h2>
+                        <x-mm.table-scroll :label="$key . ' transactions'">
+                            <table class="table table-bordered table-striped table-hover"
                                                 style="border: none">
 
                                                 <thead>
@@ -388,103 +277,46 @@
 
                                                 </tfoot>
                                             </table>
-                                        </div>
-                                        @php
+                        </x-mm.table-scroll>
+                    </section>
+                    @php
                                             $grand_total_amount += $sub_total_amount;
                                             $grand_total_collection += $total_collection;
                                             $grand_total_due += $total_due_amount - $total_discount;
 
                                         @endphp
-                                    @endforeach
+                @endforeach
 
-                                </div>
-
-                                <div class="row mt-3">
-                                    <table class="table table-borderedless">
-                                        <thead>
-                                            <tr>
-                                                <h6 style="width: 100%;text-align: center" class="mb-2">
-                                                    <b
-                                                        style="padding: 10px 20px; border-radius: 10px; color: #000; border:1px solid #ddd;">
-                                                        SUMMARY
-                                                    </b>
-                                                </h6>
-                                            </tr>
-                                        </thead>
-                                        <tr style="border-bottom:none !important">
-                                            <th class="text-right border-none">
-                                                Total Amount:
-                                            </th>
-                                            <th class="text-right border-none"
-                                                style="padding: 3px 7px 0px 0px !important;">
-                                                <input type="text" readonly class="footer-input"
+                <section class="mm-panel mm-co-summary" aria-labelledby="mm-na-summary">
+                    <h2 id="mm-na-summary" class="mm-co-title">Summary</h2>
+                    <label class="mm-sum-row is-strong"><span class="mm-sum-label">Total Amount</span>
+                        <input type="text" readonly class="footer-input"
                                                     style="background: white !important; padding: 0 !important"
                                                     name="total_amount" value="{{ $grand_total_amount }}">
-                                            </th>
-                                        </tr>
-                                        <tr style="border-bottom:none !important">
-                                            <th class="text-right border-none">
-                                                Total Collection:
-                                            </th>
-                                            <th class="text-right border-none"
-                                                style="padding: 3px 7px 0px 0px !important;">
-                                                <input type="text" readonly class="footer-input"
+                    </label>
+                    <label class="mm-sum-row is-strong"><span class="mm-sum-label">Total Collection</span>
+                        <input type="text" readonly class="footer-input"
                                                     style="background: white !important; padding: 0 !important"
                                                     name="collection" value="{{ $grand_total_collection }}">
-                                            </th>
-                                        </tr>
-
-                                        {{-- @foreach ($accountTypes as $id => $name)
-                                            <tr style="border-bottom:none !important">
-                                                <th class="text-right border-none">
-                                                    {{ $name }}:
-                                                </th>
-                                                <th class="text-right border-none"
-                                                    style="padding: 3px 7px 0px 0px !important;">
-                                                    <input type="text" readonly class="footer-input"
-                                                        style="background: white !important; padding: 0 !important"
-                                                        name="payment_way[{{ $name }}]"
-                                                        value="{{ $$name }}">
-                                                </th>
-                                            </tr>
-                                        @endforeach --}}
-
-                                        <tr style="border-bottom:none !important">
-                                            <th class="text-right border-none" style="padding: 0 7px 0 0 !important;">
-                                                Total Due:</th>
-                                            <th class="text-right border-none" style="padding: 0 7px 0 0 !important;">
-                                                <input type="text" readonly class="footer-input"
+                    </label>
+                    <label class="mm-sum-row is-due"><span class="mm-sum-label">Total Due</span>
+                        <input type="text" readonly class="footer-input"
                                                     style="background: white !important" name="due_amount"
                                                     value="{{ $grand_total_due }}">
-                                            </th>
-                                        </tr>
-                                    </table>
-                                </div>
-
-                                <div class="row">
-                                    <div class="col-sm-4 pull-right text-right">
-                                        <div class="btn-group btn-corner">
-                                            <button class="btn-outline-danger btn-sm">
+                    </label>
+                    <div class="mm-form-actions">
+                        <button class="mm-button mm-button-secondary">
                                                 <i class="fa fa-refresh"></i> Close
                                             </button>
-                                            <button type="button" class="btn-sm btn-outline-success save-btn">
-                                                <i class="fal fa-check-double"></i>
+                        <button type="button" class="mm-button save-btn">
+                                                <i class="fa fa-check-circle"></i>
                                                 Generate
                                             </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                            {{-- @endif --}}
-
-                        @endif
-
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
+                </section>
+            </form>
+        @endif
+    </x-mm.page>
 
 @endsection
 
@@ -541,7 +373,7 @@
                 previous: 'fa fa-chevron-left',
                 next: 'fa fa-chevron-right',
                 today: 'fa fa-arrows ',
-                clear: 'fa fa-trash',
+                clear: 'fa fa-trash-o',
                 close: 'fa fa-times'
             }
         }).next().on(ace.click_event, function() {

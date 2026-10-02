@@ -30,14 +30,18 @@ Route::group(['prefix'  => 'bar', 'as' => 'bar.'], function () {
 
     Route::prefix('inventory')->group(function () {
         Route::resources([
-            'product-categories'    => ProductCategoryController::class,
-            'product-units'         => ProductUnitController::class,
             'products'              => ProductController::class,
-            'suppliers'             => SupplierController::class,
             'inventory-report'      => InventoryController::class,
             'product-uploads'       => ProductUploadController::class,
-            'packages'              => ProductPackageController::class,
         ]);
+                // round 3 (docs/BUGS.md): ProductCategoryController does not implement create/edit/show; the routes would 500
+                Route::resource('product-categories', ProductCategoryController::class)->except(['create', 'edit', 'show']);
+                // round 3 (docs/BUGS.md): ProductUnitController does not implement create/edit/show; the routes would 500
+                Route::resource('product-units', ProductUnitController::class)->except(['create', 'edit', 'show']);
+                // round 3 (docs/BUGS.md): SupplierController does not implement edit/show/update; the routes would 500
+                Route::resource('suppliers', SupplierController::class)->except(['edit', 'show', 'update']);
+                // round 3 (docs/BUGS.md): ProductPackageController does not implement edit/show/update; the routes would 500
+                Route::resource('packages', ProductPackageController::class)->except(['edit', 'show', 'update']);
 
 
         /**
@@ -76,13 +80,14 @@ Route::group(['prefix'  => 'bar', 'as' => 'bar.'], function () {
 
 
     Route::resources([
-        'table-manages'             => TableManageController::class,
         'sales'                     => SaleController::class,
         'sales-v2'                  => SaleV2Controller::class,
         'purchases'                 => PurchaseController::class,
         'sale-returns'              => SaleReturnController::class,
         'sale-exchanges'            => SaleExchangeController::class,
     ]);
+            // round 3 (docs/BUGS.md): TableManageController does not implement create/edit/show; the routes would 500
+            Route::resource('table-manages', TableManageController::class)->except(['create', 'edit', 'show']);
 
 
 

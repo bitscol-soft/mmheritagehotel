@@ -61,8 +61,19 @@
             $check_btn = '';
             $route = '';
 
-            if ($to_day_checkout->check_out_date == date('Y-m-d')) {
+            if (optional($to_day_checkout)->check_out_date == date('Y-m-d')) {
                 $bgcolor = '#1e6b99';
+            }
+
+            // round-9: compact state caption on the tile itself
+            $tile_tag = 'In-house';
+            if ($room->is_reservation > 0) {
+                $tile_tag = 'Reserved';
+            } elseif ($room->is_booked > 0) {
+                $tile_tag = 'Booked';
+            }
+            if (optional($to_day_checkout)->check_out_date == date('Y-m-d')) {
+                $tile_tag = 'Due today';
             }
 
             if ($booking->status == 0 || $booking->status == 2) {
@@ -79,7 +90,7 @@
             // }
         @endphp
 
-        <div class="booked-room-info" style="padding-top: 18px; background: {{ $bgcolor }}; color: white;">
+        <div class="booked-room-info board-booked-tile" style="padding-top: 18px; background: {{ $bgcolor }}; color: white;">
             <span class="popover-success" data-rel="popover" data-placement="top" data-trigger="click"
                 data-original-title="<i class='fa fa-info-circle green'></i> Guest Information"
                 data-content="<p class='tool-pen'>Name: {{ $guestInfo->name }}.</p> <p class='tool-pen'> Phone No : {{ $guestInfo->phone_no }}</p>
@@ -90,7 +101,7 @@
                 @if ($check_btn != '')
                 <div class='btn-group'>
                     <button class='btn btn-minier btn-danger' type='button' onclick='checkOut(`{{ $route }}`, `{{ $check_btn }}`, `{{ $booking->id }}`)'>
-                        <i class='fa fa-clock'></i> {{ $check_btn }}
+                        <i class='fa fa-clock-o'></i> {{ $check_btn }}
                     </button>
                     <a class='btn btn-minier btn-inverse' href='{{ route('booking-adjusts.create', ['booking_id' => $booking->id, 'room_id' => $room->id, 'type' => 'migrate']) }}' target='_blank'>
                         <i class='fa fa-adjust'></i> Migrate
@@ -102,40 +113,38 @@
 
 
             </span>
-
+            <span class="board-booked-tag">{{ $tile_tag }}</span>
         </div>
     @else
-        <div class="booked-room-info" style="padding-top: 18px; background: {{ $bgcolor }}; color: white;">
+        <div class="booked-room-info board-booked-tile" style="padding-top: 18px; background: {{ $bgcolor }}; color: white;">
             <span class="popover-success">
                 {{ $room->room_number }}
             </span>
+            <span class="board-booked-tag">{{ $room->is_booked > 0 ? 'Booked' : ($room->is_reservation > 0 ? 'Reserved' : 'In-house') }}</span>
         </div>
     @endif
 @else
     <div class="room-status-ui">
-        <span class="room-heading-right" onclick="updateStatus(`{{ $room->id }}`,`{{ $status_val }}`, this)">
-            <i class="fal fa-arrows-alt"></i>
+        <span class="room-heading-right" onclick="updateStatus(`{{ $room->id }}`,`{{ $status_val }}`, this)"
+            title="Change housekeeping status">
+            <i class="fa fa-exchange"></i>
         </span>
-        <div class="room-info {{ $status }} room-price">
+        <div class="room-info {{ $status }} room-price" role="button" tabindex="0"
+            data-rate="{{ $room->rent }}" data-room-number="{{ $room->room_number }}"
+            title="{{ $status === 'store' ? 'Already in the booking cart' : 'Click to select this room for the booking' }}">
             <input type="hidden" id="category_id" value="{{ $category->id }}">
             <input type="hidden" id="room_id" value="{{ $room->id }}">
             <p>
                 {{ $room->room_number }}
-                <span class="badge badge-info px-1">
-                    <i style="color: rgb(236, 214, 14)" class="fa fa-bed fa-0">
-                    </i>
-                </span>
-                @if (setting('room_wise_pricing_booking') == 1)
-                    <span class="label label-xs reservation arrowed arrowed-right">
-                        <i style="color: rgb(20, 1, 4)" class="fa fa-bed fa-0">
-                            {{ $room->beds }} <br>
-
-                            {{ $room->rent }}
-                        </i>
-
-                    </span>
-                @endif
+                <span class="tile-tick" aria-hidden="true"><i class="fa fa-check"></i></span>
             </p>
+            <span class="room-meta">
+                <i class="fa fa-bed"></i>&nbsp;{{ (int) $room->beds }}
+                @if (setting('room_wise_pricing_booking') == 1 && $room->rent)
+                    <span class="room-meta-dot">&middot;</span>
+                    <span class="room-meta-rate">{{ number_format($room->rent) }}</span>
+                @endif
+            </span>
         </div>
     </div>
 @endif

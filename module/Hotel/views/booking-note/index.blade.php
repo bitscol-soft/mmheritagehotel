@@ -5,14 +5,8 @@
 @stop
 
 @section('content')
-    <div class="page-header">
-        {{-- <a class="btn btn-xs btn-info" href="{{ route('guests.create') }}" style="float: right; margin: 0 2px;"> <i
-                class="fa fa-plus"></i> Add New Guests </a> --}}
-        <h1>
-            <i class="fa fa-info-circle green"></i> Booking Note List
-        </h1>
-    </div>
-
+    <x-mm.styles />
+    <x-mm.page title="Booking notes" description="Review existing note titles and their active status." class="mm-booking-setup mm-booking-notes">
     @include('partials._alert_message')
 
     <div class="row">
@@ -20,13 +14,13 @@
 
             @include('booking-note.include.filter')
             <div>
-                <table class="table table-striped table-bordered table-hover">
+                <x-mm.table-scroll label="Booking notes"><table class="table table-striped table-bordered table-hover">
                     <thead>
                         <tr>
-                            <th width="5%">SL</th>
-                            <th width="70%">Title</th>
-                            <th width="10%" class="text-center">Status</th>
-                            <th width="10%" class="center">Action</th>
+                            <th scope="col" width="5%">SL</th>
+                            <th scope="col" width="70%">Title</th>
+                            <th scope="col" width="10%" class="text-center">Status</th>
+                            <th scope="col" width="10%" class="center">Action</th>
                         </tr>
                     </thead>
 
@@ -40,7 +34,7 @@
                                 </td>
                                 <td width="10%" class="center">
                                     <div class="btn-group">
-                                        <a class="btn btn-sm btn-success" href="{{ route('booking-note.edit', $item->id) }}">
+                                        <a aria-label="Edit booking note" class="btn btn-sm btn-success" href="{{ route('booking-note.edit', $item->id) }}">
                                             <i class="fa fa-edit"></i>
                                         </a>
                                     </div>
@@ -48,10 +42,11 @@
                             </tr>
                         @endforeach
                     </tbody>
-                </table>
+                </table></x-mm.table-scroll>
             </div>
         </div>
     </div>
+    </x-mm.page>
 @endsection
 @section('script')
     <script>

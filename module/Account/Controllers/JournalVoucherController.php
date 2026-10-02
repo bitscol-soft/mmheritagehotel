@@ -158,6 +158,29 @@ class JournalVoucherController extends Controller
      | SHOW/DETAIL METHOD
      |--------------------------------------------------------------------------
     */
+    /*
+     |--------------------------------------------------------------------------
+     | EDIT (unsupported flow)
+     |--------------------------------------------------------------------------
+     | The shipped edit view posts to a `vouchers.update` route that has never
+     | existed in this codebase (and no update service for journals exists
+     | either), so it could not complete a save even when the files were
+     | present. Render the approved voucher instead of the previous 500.
+    */
+    public function edit($id)
+    {
+        $this->hasAccess("voucher-journals.edit");
+
+        $voucher = Voucher::find($id);
+        if (!$voucher) {
+            return redirect()->route('voucher-journals.index')->with('error', 'Journal voucher not found.');
+        }
+
+        return redirect()->route('voucher-journals.show', $voucher->id)
+            ->with('warning', 'Direct editing of journal vouchers is not supported in this build. Review the voucher and create a new one to make corrections.');
+    }
+
+
     public function show($id)
     {
         $this->hasAccess("voucher-journals.view");

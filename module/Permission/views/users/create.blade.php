@@ -5,45 +5,16 @@
 @section('title', 'User Create')
 
 
-@push('style')
-    <style>
-  
-
-        thead>tr>th {
-            background: #4d8cb3;
-            color: white;
-            padding: 10px 5px 10px 5px !important;
-        }
-    </style>
-@endpush
 
 
 
 @section('content')
-<div class="row">
-
-    <div class="col-sm-10 col-sm-offset-1 mt-2">
-        <div class="widget-box">
-
-
-            <!-- header -->
-            <div class="widget-header">
-                <h4 class="widget-title"> 
-                    <i class="fa fa-plus-circle"></i> Add New User
-                </h4>
-
-                <span class="widget-toolbar">
-                    <a href="{{ route('permitted.users') }}" title="Add New User">
-                        <i class="ace-icon fa fa-list-alt"></i> 
-                        User List
-                    </a>
-                </span>
-            </div>
-
-
-            <div class="widget-body">
-                <div class="widget-main">
-
+<x-mm.styles />
+<x-mm.page class="mm-perm mm-perm-user" title="Add new user" description="Create a login for staff who are not linked to an employee record.">
+    <x-slot name="actions">
+        <a class="mm-button mm-button-secondary" href="{{ route('permitted.users') }}" title="Add New User"> <i class="fa fa-list-alt"></i> User List </a>
+    </x-slot>
+    <x-mm.panel>
                     <form action="{{ route('settings.store-user') }}" method="POST">
                         @csrf
 
@@ -145,7 +116,7 @@
                                 <div class="form-group row">
                                     <div class="col-sm-11 text-right">
                                         <div class="btn-group">
-                                            <a acrion="{{ route('permitted.users') }}" class="btn btn-sm btn-danger p-2"><i class="fa fa-times"></i> Close</a>                                            
+                                            <a href="{{ route('permitted.users') }}" class="btn btn-sm btn-danger p-2"><i class="fa fa-times"></i> Close</a>                                            
                                             <button type="submit" class="btn btn-sm btn-primary p-2"><i class="fa fa-save"></i> Save</button>                                             
                                         </div>
                                     </div>
@@ -153,10 +124,9 @@
                             </div>
                         </div>
                     </form>
-                </div>
-            </div>
-        </div>
-    </div>
+                
+    </x-mm.panel>
+</x-mm.page>
 
 @endsection
 

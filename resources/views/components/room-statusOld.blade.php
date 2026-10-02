@@ -54,7 +54,7 @@
                 {!! $booking->check_in_note ? "<p class='tool-pen'>Note: $booking->check_in_note </p>" : '' !!}
                 @if($check_btn != '')<div class='btn-group'>
                     <button class='btn btn-minier btn-danger' type='button' onclick='checkOut(`{{ $route }}`, `{{ $check_btn }}`, `{{ $booking->id }}`)'>
-                        <i class='fa fa-clock'></i> {{ $check_btn }}
+                        <i class='fa fa-clock-o'></i> {{ $check_btn }}
                     </button>
                     <a class='btn btn-minier btn-inverse' href='{{ route('booking-adjusts.create', ['booking_id' => $booking->id, 'room_id' => $room->id, 'type'=> 'migrate']) }}' target='_blank'>
                         <i class='fa fa-adjust'></i> Migrate
@@ -76,7 +76,7 @@
 @else
     <div class="room-status-ui">
         <span class="room-heading-right" onclick="updateStatus(`{{ $room->id }}`,`{{ $status_val }}`, this)">
-            <i class="fal fa-arrows-alt"></i>
+            <i class="fa fa-arrows-alt"></i>
         </span>
         <div class="room-info {{ $status }}">
             <input type="hidden" id="category_id" value="{{ $category->id }}">

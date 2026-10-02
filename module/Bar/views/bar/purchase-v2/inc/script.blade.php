@@ -187,13 +187,13 @@
             <div class="input-group">
                 <div class="input-group-btn">
                     <button type="button" class="btn spinbox-down btn-minier btn-danger" onclick="quantityManage(this, 'decrement')">
-                        <i class="fas fa-minus"></i>
+                        <i class="fa fa-minus"></i>
                     </button>
                 </div>
                 <input type="text" name="quantity[]" value="1" class="spinbox-input form-control text-center small-label-box quantities">
                 <div class="input-group-btn">
                     <button type="button" class="btn spinbox-up btn-minier btn-success" onclick="quantityManage(this, 'increment')">
-                        <i class="fas fa-plus "></i>
+                        <i class="fa fa-plus "></i>
                     </button>
                 </div>
             </div>
@@ -210,7 +210,7 @@
             <input value="${data.unit_price}" name="total_price[]" type="number"class="form-control small-label-box total-line-prices" readonly>
         </td>
         <td>
-            <button type="button" class="btn btn-minier btn-warning" onclick="removeItem(this)"><i class="fas fa-trash"></i></button>
+            <button type="button" class="btn btn-minier btn-warning" onclick="removeItem(this)"><i class="fa fa-trash-o"></i></button>
         </td>
     </tr>`
         $('#products').append(html)

@@ -41,10 +41,10 @@
                         <div class="modal-action modal-footer">
                             <div class="hide-modal modal-btn btn-sm btn-outline-danger"
                                 onclick="closeExtraChargeModal()">
-                                <i class="fas fa-times hide-product-view" aria-hidden="true"></i> Close
+                                <i class="fa fa-times hide-product-view" aria-hidden="true"></i> Close
                             </div>
                             <button class="modal-btn btn-sm btn-outline-success" type="submit">
-                                <i class="fas fa-pen-square"></i> Submit
+                                <i class="fa fa-pencil-square"></i> Submit
                             </button>
                         </div>
 

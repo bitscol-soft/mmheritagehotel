@@ -7,10 +7,10 @@
     <div class="row">
         <div class="col-12">
             <div class="breadcrumbs ace-save-state" id="breadcrumbs">
-                <h4 class="pl-2"><i class="far fa-edit"></i> @yield('title')</h4>
+                <h4 class="pl-2"><i class="fa fa-edit"></i> @yield('title')</h4>
 
                 <ul class="breadcrumb mb-1">
-                    <li><a href="{{ route('home') }}"><i class="ace-icon far fa-home-lg-alt"></i></a></li>
+                    <li><a href="{{ route('home') }}"><i class="ace-icon fa fa-home"></i></a></li>
                     <li><a class="text-muted" href="{{ route('inv.purchases.index') }}">Purchase</a></li>
                     <li>{{ $purchase->invoice_no }}</li>
                 </ul>
@@ -138,7 +138,7 @@
                                                         </th>
                                                         <th width="5%">
                                                             @if ($isExists == true)
-                                                            <button type="button" class="btn btn-sm btn-danger" title="Delete" onclick="delete_item('{{ route('inv.purchases.items.destroy', old('purchase_detail_id')[$key]) }}')" {{ $loop->first ? 'disabled' : '' }}><i class="fa fa-trash"></i></button>
+                                                            <button type="button" class="btn btn-sm btn-danger" title="Delete" onclick="delete_item('{{ route('inv.purchases.items.destroy', old('purchase_detail_id')[$key]) }}')" {{ $loop->first ? 'disabled' : '' }}><i class="fa fa-trash-o"></i></button>
                                                             @else
                                                                 <button type="button" class="btn btn-sm btn-danger remove-row" title="Remove" {{ $loop->first ? 'disabled' : '' }}><i class="fa fa-times"></i></button>
                                                             @endif
@@ -179,7 +179,7 @@
                                                             <input type="text" name="special_comment[]" id="special_comment" class="form-control special_comment" value="{{ $purchaseDetail->special_comment }}" autocomplete="off">
                                                         </th>
                                                         <th width="5%">
-                                                            <button type="button" class="btn btn-sm btn-danger" title="Delete" onclick="delete_item('{{ route('inv.purchases.items.destroy', $purchaseDetail->id) }}')" {{ $loop->first ? 'disabled' : '' }}><i class="fa fa-trash"></i></button>
+                                                            <button type="button" class="btn btn-sm btn-danger" title="Delete" onclick="delete_item('{{ route('inv.purchases.items.destroy', $purchaseDetail->id) }}')" {{ $loop->first ? 'disabled' : '' }}><i class="fa fa-trash-o"></i></button>
                                                         </th>
                                                     </tr>
                                                 @endforeach
@@ -189,7 +189,7 @@
                                             <tr>
                                                 <td colspan="9" class="text-center">
                                                     {{-- <a href="javascript:void(0)" type="button" class="btn btn-xs btn-block btn-light" style="color: #0084db !important" id="addrow">
-                                                        <i class="fas fa-plus-circle"></i> ADD MORE
+                                                        <i class="fa fa-plus-circle"></i> ADD MORE
                                                     </a> --}}
                                                 </td>
                                             </tr>
@@ -201,7 +201,7 @@
 
 
                         <div class="btn-group" style="float: right">
-                            <button class="btn btn-sm btn-success"> <i class="far fa-edit"></i> UPDATE </button>
+                            <button class="btn btn-sm btn-success"> <i class="fa fa-edit"></i> UPDATE </button>
                             <a class="btn btn-sm btn-info" href="{{ route('inv.purchases.index') }}"> <i class="fa fa-bars"></i> LIST </a>
                         </div>
                     </form>

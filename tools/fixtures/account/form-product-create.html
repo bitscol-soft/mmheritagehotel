@@ -1,0 +1,134 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">    <link rel="stylesheet" href="/assets/css/chosen.min.css"/>
+    <link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css"/>
+    <link rel="stylesheet" href="/assets/custom_css/chosen-required.css"/>
+
+<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+<section class="mm-ui mm-acc mm-rst mm-rst-inv mm-rst-form">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Product Create</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Add a product.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button" href="http://localhost/acc/products/index"><i class="fa fa-list"></i> List</a></div>        </header>
+        <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><!-- INPUTS -->
+                        <form action="http://localhost/acc/products/store" method="post">
+                            <input type="hidden" name="_token" value="fixture-csrf-token">                            <div class="row" style="width: 100%; margin: 0 0 20px !important;">
+                                <div class="col-sm-12 px-4">
+                                    <!-- Name -->
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 control-label" for="name">
+                                            <b>Name <sup class="text-danger">*</sup></b>
+                                        </label>
+
+                                        <div class="col-sm-9">
+                                            <input id="name" name="name" type="text" required class="form-control input-sm" placeholder="Name" value="">
+                                        </div>
+                                    </div>
+
+
+
+                                    <!-- DESCRIPTION -->
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 control-label" for="description">
+                                            <b>Description</b>
+                                        </label>
+
+                                        <div class="col-sm-9">
+                                            <textarea name="description" class="form-control input-sm"></textarea>
+                                        </div>
+                                    </div>
+
+                                    <!-- Category -->
+                                    <div class="form-group row">
+                                        <label class="control-label col-sm-2" for="category_id">
+                                            <b>Category<sup class="text-danger"> *</sup></b>
+                                        </label>
+
+                                        <div class="col-sm-9">
+
+                                            <select id="category_id" name="category_id" required class="chosen-select-100-percent form-control required"
+                                                    data-placeholder="- Select Category -">
+                                                <option value=""></option>
+
+                                                                                                    <option value="1" >Beverage &lt;b&gt;x&lt;/b&gt;</option>
+                                                                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <!-- Unit -->
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <label class="control-label col-sm-2" for="category_id">
+                                                <b>Unit<sup class="text-danger"> *</sup></b>
+                                            </label>
+                                            <div class="col-sm-9">
+                                                <select id="category_id" name="unit_id" required class="chosen-select-100-percent form-control required"
+                                                        data-placeholder="- Select Category -">
+                                                    <option value=""></option>
+                                                                                                            <option value="1" >Litre</option>
+                                                                                                    </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <!-- Purchase Price -->
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 control-label" for="name">
+                                            <b>Purchase Price</b>
+                                        </label>
+
+                                        <div class="col-sm-9">
+                                            <input id="purchase_price" name="purchase_price" onkeypress="return event.charCode >= 46 && event.charCode <= 57" type="text" class="form-control input-sm" placeholder="Product Purchase Price" value="">
+                                        </div>
+                                    </div>
+
+                                    <!-- Sale Price -->
+                                    <div class="form-group row">
+                                        <label class="col-sm-2 control-label" for="name">
+                                            <b>Sale Price </b>
+                                        </label>
+
+                                        <div class="col-sm-9">
+                                            <input id="selling_price" name="selling_price" onkeypress="return event.charCode >= 46 && event.charCode <= 57" type="text" class="form-control input-sm" placeholder="Product Sale Price" value="">
+                                        </div>
+                                    </div>                                    
+                                    
+
+
+                                    <!-- Opening Qty -->
+        
+        
+        
+        
+
+        
+        
+        
+        
+
+                                    <!-- Submit -->
+                                    <div class="row">
+                                        <div class="col-sm-11">
+                                            <button class="btn btn-primary btn-sm pull-right"><i class="fa fa-save"></i> Save</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form></div>
+    </div>
+</section>
+
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
+    <script src="/assets/js/chosen.jquery.min.js"></script>
+
+
+    <script src="/assets/custom_js/chosen-box.js"></script>
+
+<!--/MM-JS--></body></html>

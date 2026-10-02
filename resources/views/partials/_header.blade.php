@@ -22,7 +22,8 @@
         font-size: 34px
     }
 
-    .topbar-text-color {
+    .topbar-text-color,
+    .mm-shell #navbar .hotel-title-name {
         color: {{ $text_color }};
     }
     .navbar .navbar-brand {
@@ -89,7 +90,7 @@
 
 <div id="navbar" class="navbar navbar-default ace-save-state navbar-fixed-top">
     <div class="navbar-container ace-save-state" id="navbar-container">
-        <button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler" data-target="#sidebar">
+        <button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler" data-target="#sidebar" aria-controls="sidebar" @if ($mmShell ?? false) aria-expanded="false" @endif>
             <span class="sr-only">Toggle sidebar</span>
 
             <span class="icon-bar"></span>
@@ -118,6 +119,10 @@
         <div class="navbar-buttons navbar-header pull-right" role="navigation">
             <ul class="nav ace-nav">
 
+                @if ($mmShell ?? false)
+                    @include('layouts.shell.header-tools')
+                @endif
+
                 <!-- Booking -->
                 {{-- <li class="light-10 dropdown-modal" title="Booking">
                     <a href="{{ route('rst.sales-v2.create') }}">
@@ -130,7 +135,7 @@
                     <!-- Rst Sale -->
                     <li class="light-10 colorful-border" title="Rst Sale">
                         <a href="{{ route('rst.sales-v2.create') }}">
-                            <i class="fa fa-2x fas fa-utensils dark" style="margin-top: 7px;">
+                            <i class="fa fa-2x fa fa-cutlery dark" style="margin-top: 7px;">
                                 RST
                             </i>
                         </a>
@@ -139,7 +144,7 @@
                     <!-- Bar Sale -->
                     <li class="light-10 colorful-border" title="Bar Sale">
                         <a href="{{ route('bar.sales-v2.create') }}">
-                            <i class="fa-2x fas fa-glass-cheers dark" style="margin-top: 7px;">
+                            <i class="fa-2x fa fa-glass dark" style="margin-top: 7px;">
                                 BAR
                             </i>
                         </a>
@@ -148,14 +153,14 @@
                 {{-- <li style="padding-left: 10px"></li> --}}
                 <!-- optimizeClear -->
                 <li class="light-10 dropdown-modal" title="Optimize Clear">
-                    <a data-toggle="dropdown" class="dropdown-toggle" href="javascript:void(0)" onclick="optimizeClear()">
+                    <a data-toggle="dropdown" class="dropdown-toggle" href="javascript:void(0)" onclick="optimizeClear()" aria-label="Clear application cache">
                        <i class="fa fa-2x fa-refresh dark" style="margin-top: 10px;"></i>
                    </a>
                 </li>
 
 
                 <li class="light-10 dropdown-modal notification-dropdown" title="Recommend Notifications">
-                    <a data-toggle="dropdown" class="dropdown-toggle" href="#">
+                    <a data-toggle="dropdown" class="dropdown-toggle" href="#" aria-label="Notifications">
                         <i class="fa fa-2x fa-bell dark" style="margin-top: 10px;"></i>
                         @if (optional($notificationService)->totalNotificationCount > 0)
                             <sup style="color: white;font-size: 12px;margin-left: -16px;background-color: red;padding: 2px;border-radius: 50%;">
@@ -365,7 +370,7 @@
                         style="width: 350x"
                     @endif
                 >
-                    <a data-toggle="dropdown" href="#" class="dropdown-toggle dark">
+                    <a data-toggle="dropdown" href="#" class="dropdown-toggle dark" aria-label="Account menu">
                         @if (optional(auth()->user())->employee)
                             @if (auth()->user()->employee->image != 'default.png')
                                 <img class="nav-user-photo" style="height:40px; width:40px" src="{{ asset(auth()->user()->employee->image) }}" alt="User Photo" />

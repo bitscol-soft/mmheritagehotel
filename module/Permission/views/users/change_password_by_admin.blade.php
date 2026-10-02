@@ -12,22 +12,12 @@
 
 
 
-    <div class="row" style="margin-top:50px !important">
-        <div class="col-xs-8 col-xs-offset-2">
-            <div class="widget-box">
-                <div class="widget-header">
-                    <h4 class="widget-title"> Change User Password </h4>
-
-                    <span class="widget-toolbar">
-                        <a href="{{ route('permitted.users') }}">
-                            <i class="ace-icon fa fa-list-alt"></i> Permitted User List
-                        </a>
-                    </span>
-
-                </div>
-
-                <div class="widget-body">
-                    <div class="widget-main">
+    <x-mm.styles />
+<x-mm.page class="mm-perm mm-perm-password" title="Change user password" description="Set a new password for another user.">
+    <x-slot name="actions">
+        <a class="mm-button mm-button-secondary" href="{{ route('permitted.users') }}"> <i class="fa fa-list-alt"></i> Permitted User List </a>
+    </x-slot>
+    <x-mm.panel>
                         <form class="form-search" action="{{ route('admin.update.password') }}" method="POST">
                             @csrf
                             <div class="row">
@@ -92,11 +82,9 @@
                                 </div>
                             </div>
                         </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+                    
+    </x-mm.panel>
+</x-mm.page>
 @endsection
 
 @section('js')

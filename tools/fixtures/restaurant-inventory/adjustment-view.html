@@ -1,0 +1,81 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css"><!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+<section class="mm-ui mm-rst mm-rst-inv mm-rst-form mm-rst-adjust">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Stock adjustment</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Review the adjusted products and quantities.</p>            </div>
+                    </header>
+        <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><div style="text-align:center;" class="row">
+                        <h3>Stock Adjustment</h3>
+                        <p>Invoice :SA-1 </p>
+                    </div>
+
+        
+
+        <div style="" class="row">
+            <div class="col-lg-6">
+                <h4>Supplier : 1</h4>
+                <p>Date : 2026-10-01</p>
+                <p>Approved Date : </p>
+
+            </div>
+
+            <div class="btn-group" style="float: right">
+                <a class="btn btn-sm btn-info btn-outline-warning"> <i class="fa fa-check-circle"></i>
+                    Pending </a>
+            </div>
+            
+
+        </div>
+
+        <!-- PURCHASE TABLE -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="table-responsive">
+                    <div class="mm-table-scroll" role="region" aria-label="Stock adjustment items" tabindex="0"><table class="table table-bordered" id="purchaseTable">
+                            <thead>
+                                <tr class="table-header-bg">
+                                    <th width="25%">Product</th>
+                                    <th width="10%">Adjust Quantity</th>
+                                    <th width="10%">Adjust Reason</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                                                    <tr>
+                                        <input type="hidden" name="stock_transfer_detail_id[]"
+                                            value="5">
+                                        <th width="25%">
+                                            Basmati &lt;b&gt;rice&lt;/b&gt;
+                                        </th>
+
+                                        <th width="10%">
+                                            2.00
+                                        </th>
+                                        <th width="10%">
+                                            Spoiled &lt;b&gt;stock&lt;/b&gt;
+                                        </th>
+
+                                    </tr>
+                                
+                            </tbody>
+
+                        </table></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="btn-group" style="float: right">
+            <a class="btn btn-sm btn-info" href="http://localhost/rst/stock-adjustment/index"> <i
+                    class="fa fa-bars"></i> LIST </a>
+        </div></div>
+    </div>
+</section>
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
+<!--/MM-JS--></body></html>

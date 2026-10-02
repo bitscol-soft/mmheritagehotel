@@ -46,7 +46,7 @@
                                         {{--</td>--}}
                                         <td>
                                             <a href="{{route('pharmacy-sales.destroy', $payment->id)}}" class="btn btn-xs btn-danger deletable" >
-                                                <i class="fa fa-trash"></i>
+                                                <i class="fa fa-trash-o"></i>
                                             </a>
                                         </td>
                                     </tr>

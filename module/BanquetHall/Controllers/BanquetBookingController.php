@@ -14,6 +14,7 @@ use Illuminate\Validation\Rule;
 use App\Traits\SendNotification;
 use Illuminate\Support\Facades\DB;
 use Module\CRM\Models\CRMCustomer;
+use Module\Hotel\Models\Booking; // round-8: getInvoice() referenced Booking without import -> 500 on /BanquetHall/invoice/{id}
 use App\Http\Controllers\Controller;
 use Module\Hotel\Models\AccountType;
 use Module\Hotel\Models\BookingNote;

@@ -23,7 +23,8 @@
 
         body {
             width: 816px;
-            height: 1056px;
+            /* round-8: was a fixed height — invoices longer than one A4 page were clipped; min-height keeps the sheet look but lets it flow */
+            min-height: 1056px;
             margin: 0px auto;
             background: rgb(224, 224, 224)
         }
@@ -406,11 +407,62 @@
                 margin-left: 1px;
             }
         }
+
+        /* Screen-only action bar (round-9). Hidden when printing, so the printed sheet is unchanged. */
+        .inv-screen-bar {
+            width: 816px;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+        }
+
+        .inv-screen-bar a,
+        .inv-screen-bar button {
+            display: inline-block;
+            min-height: 40px;
+            padding: 9px 16px;
+            border: 1px solid #2f63a8;
+            border-radius: 6px;
+            background: #fff;
+            color: #2f63a8;
+            font: inherit;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .inv-screen-bar button {
+            background: #2f63a8;
+            color: #fff;
+        }
+
+        .inv-screen-bar a:focus-visible,
+        .inv-screen-bar button:focus-visible {
+            outline: 3px solid #f2b705;
+            outline-offset: 2px;
+        }
+
+        @media print {
+            .inv-screen-bar {
+                display: none !important;
+            }
+        }
     </style>
 
 </head>
 
 <body>
+
+    <nav class="inv-screen-bar" aria-label="Invoice actions">
+        <a href="{{ route('booking.index') }}">&larr; Booking List</a>
+        <button type="button" onclick="window.print()">Print again</button>
+    </nav>
 
     @php
         $chunk = 13;

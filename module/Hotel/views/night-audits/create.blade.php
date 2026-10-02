@@ -386,7 +386,7 @@
                                                     <i class="fa fa-refresh"></i> Close
                                                 </button>
                                                 <button type="button" class="btn-sm btn-outline-success save-btn">
-                                                    <i class="fal fa-check-double"></i>
+                                                    <i class="fa fa-check-circle"></i>
                                                     Generate
                                                 </button>
                                             </div>

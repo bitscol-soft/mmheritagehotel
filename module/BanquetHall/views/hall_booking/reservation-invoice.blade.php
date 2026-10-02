@@ -352,6 +352,9 @@
             .main-print-body {
                 height: 985px;
             }
+            .main-print-body table tr {
+                page-break-inside: avoid;
+            }
 
             #print_body {
                 /* page-break-after: auto;
@@ -388,7 +391,10 @@
             }
         }
     </style>
+
+    @include('booking._css.invoice-sheet')
 @stop
+
 
 @section('content')
 

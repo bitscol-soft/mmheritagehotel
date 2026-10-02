@@ -96,7 +96,7 @@
                             @if ($data->status == 0)
                                 <a href="#check-in{{ $data->id }}" role="button"
                                     data-toggle="modal" class="btn btn-xs btn-pink" title="Check IN">
-                                    {{-- <i class="far fa-check-square"></i> --}}
+                                    {{-- <i class="fa fa-check-square"></i> --}}
                                     <i class="fa  fa-check-square"></i>
                                 </a>
 
@@ -145,7 +145,7 @@
                         {{-- @if ($data->status == 3) --}}
                             <a href="{{ route('generate.invoice-v2', $data->id) }}" target="_blank"
                                 class="btn btn-xs btn-success" title="Print Invoice">
-                                <i class="far fa-print"></i>
+                                <i class="fa fa-print"></i>
                             </a>
                         {{-- @endif --}}
 
@@ -153,7 +153,7 @@
                         <!------- RESERVATION INVOICE ------->
                         <a href="{{ route('generate.reservation-invoice', $data->id) }}"
                             class="btn btn-xs btn-success" title="Print Invoice" target="_blank">
-                            <i class="far fa-receipt"></i>
+                            <i class="fa fa-file-text-o"></i>
                         </a>
 
 
@@ -182,7 +182,7 @@
                             <button type="button"
                                 onclick="delete_item(`{{ route('booking.destroy', $data->id) }}`)"
                                 class="btn btn-xs btn-danger" title="Delete">
-                                <i class="far fa-trash-alt"></i>
+                                <i class="fa fa-trash-o"></i>
                             </button>
                         @endif
                     </div>

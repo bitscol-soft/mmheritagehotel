@@ -12,15 +12,9 @@
 
 
          
-    <div class="row" style="margin-top:50px !important">
-        <div class="col-xs-8 col-xs-offset-2">
-            <div class="widget-box">
-                <div class="widget-header widget-header-small">
-                    <h4><i class="fa fa-lock"></i>  Change Password</h4>
-                </div>
-
-                <div class="widget-body">
-                    <div class="widget-main">
+    <x-mm.styles />
+<x-mm.page class="mm-perm mm-perm-password" title="Change password" description="Update the password for your own account.">
+    <x-mm.panel>
                         <form class="form-search" action="{{ route('user.password.update') }}" method="POST">
                             @csrf
                             <div class="row">
@@ -85,11 +79,9 @@
                                 </div>
                             </div>
                         </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+                    
+    </x-mm.panel>
+</x-mm.page>
 @endsection
 
 @section('js')

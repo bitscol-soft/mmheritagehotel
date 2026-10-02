@@ -46,26 +46,30 @@ Route::group(['prefix'  => 'restaurant', 'as' => 'rst.'], function () {
 
     Route::prefix('inventory')->group(function () {
         Route::resources([
-            'product-categories'    => ProductCategoryController::class,
-            'product-units'         => ProductUnitController::class,
             'products'              => ProductController::class,
-            'suppliers'             => SupplierController::class,
             'inventory-report'      => InventoryController::class,
             'product-uploads'       => ProductUploadController::class,
             'stock-adjustment'      => StockAdjustmentController::class,
-            'material-unit'         => RestMaterialUnitController::class,
             'material'              => RestMaterialController::class,
             'mat-products'          => MatrialProductController::class,
             'purchase'              => RstPurchaseController::class,
             'production'            => RstProductionController::class,
         ]);
+                // round 3 (docs/BUGS.md): ProductCategoryController does not implement create/edit/show; the routes would 500
+                Route::resource('product-categories', ProductCategoryController::class)->except(['create', 'edit', 'show']);
+                // round 3 (docs/BUGS.md): ProductUnitController does not implement create/edit/show; the routes would 500
+                Route::resource('product-units', ProductUnitController::class)->except(['create', 'edit', 'show']);
+                // round 3 (docs/BUGS.md): SupplierController does not implement edit/show/update; the routes would 500
+                Route::resource('suppliers', SupplierController::class)->except(['edit', 'show', 'update']);
+                // round 3 (docs/BUGS.md): RestMaterialUnitController does not implement show; the routes would 500
+                Route::resource('material-unit', RestMaterialUnitController::class)->except(['show']);
         Route::get('adjustment-delete/{id}',                [StockAdjustmentController::class, 'delete'])->name('stock-adjustment.delete');
 
 
 
         Route::get('get-all-product',                       [ProductController::class, 'getAllProduct'])->name('get-all-product');
         Route::get('getItemList',                           [RstPurchaseController::class, 'getItemList'])->name('getItemList');
-        Route::get('get-item-details/approve',              [RstPurchaseController::class, 'getItemDetailsForApprove']);
+        // removed (docs/BUGS.md round 3): method never existed; UI calls the generalstore ajax endpoint
 
 
          /**
@@ -156,9 +160,11 @@ Route::group(['prefix'  => 'restaurant', 'as' => 'rst.'], function () {
         'purchases'                 => PurchaseController::class,
         'sale-returns'              => SaleReturnController::class,
         'sale-exchanges'            => SaleExchangeController::class,
-        'table-manages'             => TableManageController::class,
-        'night-audits'              => RestaurantNightAuditController::class,
     ]);
+            // round 3 (docs/BUGS.md): TableManageController does not implement create/edit/show; the routes would 500
+            Route::resource('table-manages', TableManageController::class)->except(['create', 'edit', 'show']);
+            // round 3 (docs/BUGS.md): RestaurantNightAuditController does not implement destroy/edit/update; the routes would 500
+            Route::resource('night-audits', RestaurantNightAuditController::class)->except(['destroy', 'edit', 'update']);
 
 
 
@@ -237,7 +243,7 @@ Route::group(['prefix'  => 'kitchen', 'as' => 'kit.'], function () {
         'kitchen'    => KitchenController::class,
     ]);
     Route::post('update-status/{id}',                  [KitchenOrderController::class, 'status'])->name('update-status');
-    Route::get('details',                              [KitchenOrderController::class, 'details'])->name('orders.details');
+    // removed (docs/BUGS.md round 3): KitchenOrderController::details never existed; screen is kit.orders.show
 });
 
 

@@ -68,137 +68,112 @@
 {{-- @dd($invoice) --}}
 @section('content')
 
-    @php
+<x-mm.styles />
+<x-mm.page class="mm-invoice-page mm-rst" title="Order details" description="Kitchen copy of the order. Printing outputs the document only.">
+    @if (hasPermission('service.view', $slugs))
+        <x-slot name="actions">
+            <a href="#" class="mm-button" onclick="printPage('print_body'); return false;">
+                <i class="fa fa-print" aria-hidden="true"></i> Print
+            </a>
+        </x-slot>
+    @endif
 
-    @endphp
-
-
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="widget-box">
-                <div class="widget-header hidden-print">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
-                    @if (hasPermission('service.view', $slugs))
-                        <span class="widget-toolbar">
-                            {{-- <a href="{{ route('hotelservice.service-sales.create') }}">
-                                <i class="fa fa-plus"></i>
-                                Create New
-                            </a>
-                            <a href="{{ route('hotelservice.service-sales.index') }}">
-                                <i class="fa fa-list"></i>
-                                All Sales
-                            </a> --}}
-                            <a href="#" onclick="printPage('print_body')">
-                                <i class="fa fa-print"></i>
-                                Print
-                            </a>
-                        </span>
-                    @endif
-
-                </div>
-                <div class="widget-body">
-                    <div class="widget-main">
-
-                        <div class="row">
-                            <div id="print_body">
-                                <div id="customer_info" style="padding: 0 10px; margin-bottom: 15px">
-                                    <div class="row">
-                                        <div class="customerInfo" style="width: 60%;float: left; ">
+    <x-mm.panel class="tw-p-4">
+        <div class="row">
+            <div id="print_body">
+                <div id="customer_info" style="padding: 0 10px; margin-bottom: 15px">
+                    <div class="row">
+                        <div class="customerInfo" style="width: 60%;float: left; ">
 
 
-                                            <p><b>Name : {{ $orders->customer_name ?? '' }}</b>&nbsp;
+                            <p><b>Name : {{ $orders->customer_name ?? '' }}</b>&nbsp;
 
-                                            </p>
-                                            <p class=""><b>Table No : </b>
-                                                <b>{{ $orders->table_no }}</b>
-                                            </p>
-                                        </div>
-                                        <div class="invoiceInfo" style="width: 40%;float: left;margin-top: 5px;">
-                                            <table class="table table-bordered" style="border: none !important;">
-                                                <tr>
-                                                    <th width="50%" style="border: none !important; "> Invoice No : </th>
-                                                    <th style="border: none !important; ">
-                                                        {{ $orders->invoice_no }}
-                                                    </th>
-                                                </tr>
-                                                <tr>
-                                                    <td style="border: none !important; "> Invoice Date : </td>
-                                                    <td style="border: none !important; ">
-                                                        {{ $orders->date }}
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="invoice-content">
-                                    <div class="table-responsive">
-                                        <table class="table table-bordered" style="border: none !important;" align="center">
-                                            <thead>
-                                                <tr>
-                                                    <th width="5%">SL</th>
-                                                    <th>Product Name</th>
-                                                    {{-- <th>Price</th> --}}
-                                                    <th>QTY</th>
-                                                    {{-- <th style="text-align: right">Total (&#x09F3;)</th> --}}
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @php
-                                                    $total_amount = 0;
-                                                @endphp
-                                                {{-- orders
-                                                order_items --}}
-                                                @foreach ($orders->order_items as $key => $item)
-                                                    @php
-                                                        $total_amount = +$item->price;
-                                                    @endphp
-                                                    <tr>
-                                                        <td>{{ ++$loop->index }}</td>
-                                                        <td>{{ optional($item->product)->name }}</td>
-                                                        {{-- &#x09F3; for taka symbol --}}
-                                                        {{-- <td>{{ number_format($item->price, 2) }}</td> --}}
-                                                        <td class="text-left">{{ $item->qty }}</td>
-                                                        {{-- <td class="text-right">
-                                                            {{ number_format($item->price * $item->qty, 2) }} &#x09F3;
-                                                        </td> --}}
-                                                    </tr>
-                                                @endforeach
-
-
-                                            </tbody>
-                                            {{-- <tr>
-                                                <td colspan="4" style="text-align: right; border: none !important;">
-                                                    <strong>Total</strong> :
-                                                </td>
-                                                <th style="text-align: right; border: none !important;">
-                                                    {{ number_format($orders->total_amount, 2) }}
-                                                    &#x09F3;</th>
-                                            </tr> --}}
-                                        </table>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-md-12">
-
-                                            <h5 style="font-weight: 700;">Status :
-                                                <span class="label label-sm label-primary">
-                                                    {{ $orders->order_status }}
-                                                </span>
-                                            </h5>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
+                            </p>
+                            <p class=""><b>Table No : </b>
+                                <b>{{ $orders->table_no }}</b>
+                            </p>
+                        </div>
+                        <div class="invoiceInfo" style="width: 40%;float: left;margin-top: 5px;">
+                            <table class="table table-bordered" style="border: none !important;">
+                                <tr>
+                                    <th width="50%" style="border: none !important; "> Invoice No : </th>
+                                    <th style="border: none !important; ">
+                                        {{ $orders->invoice_no }}
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <td style="border: none !important; "> Invoice Date : </td>
+                                    <td style="border: none !important; ">
+                                        {{ $orders->date }}
+                                    </td>
+                                </tr>
+                            </table>
                         </div>
                     </div>
                 </div>
+
+                <div class="invoice-content">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" style="border: none !important;" align="center">
+                            <thead>
+                                <tr>
+                                    <th width="5%">SL</th>
+                                    <th>Product Name</th>
+                                    {{-- <th>Price</th> --}}
+                                    <th>QTY</th>
+                                    {{-- <th style="text-align: right">Total (&#x09F3;)</th> --}}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @php
+                                    $total_amount = 0;
+                                @endphp
+                                {{-- orders
+                                order_items --}}
+                                @foreach ($orders->order_items as $key => $item)
+                                    @php
+                                        $total_amount = +$item->price;
+                                    @endphp
+                                    <tr>
+                                        <td>{{ ++$loop->index }}</td>
+                                        <td>{{ optional($item->product)->name }}</td>
+                                        {{-- &#x09F3; for taka symbol --}}
+                                        {{-- <td>{{ number_format($item->price, 2) }}</td> --}}
+                                        <td class="text-left">{{ $item->qty }}</td>
+                                        {{-- <td class="text-right">
+                                            {{ number_format($item->price * $item->qty, 2) }} &#x09F3;
+                                        </td> --}}
+                                    </tr>
+                                @endforeach
+
+
+                            </tbody>
+                            {{-- <tr>
+                                <td colspan="4" style="text-align: right; border: none !important;">
+                                    <strong>Total</strong> :
+                                </td>
+                                <th style="text-align: right; border: none !important;">
+                                    {{ number_format($orders->total_amount, 2) }}
+                                    &#x09F3;</th>
+                            </tr> --}}
+                        </table>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <h5 style="font-weight: 700;">Status :
+                                <span class="label label-sm label-primary">
+                                    {{ $orders->order_status }}
+                                </span>
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-
-
         </div>
-    </div>
+    </x-mm.panel>
+</x-mm.page>
 @endsection
 
 @section('js')

@@ -23,7 +23,32 @@
                 StoreBooking(cat_id, room_id, date, booking);
             }
 
+            updateSelectionSummary();
+
         });
+
+        // round-3 UI pass: keyboard access for the room tiles (Enter/Space select)
+        $(document).on('keydown', '.room-info', function (e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                $(this).trigger('click');
+            }
+        });
+
+        function updateSelectionSummary() {
+            var $summary = $('.selection-summary');
+            if (!$summary.length) return;
+            var count = 0, total = 0;
+            $('.room-info.active').each(function () {
+                count++;
+                var rate = parseFloat($(this).attr('data-rate'));
+                if (!isNaN(rate)) total += rate;
+            });
+            $summary.find('.sel-count').text(count);
+            $summary.find('.sel-total').text(total.toLocaleString());
+            $summary.toggleClass('hidden', count === 0);
+        }
+        updateSelectionSummary();
 
         function StoreBooking(category, room, date, obj) {
             let url = '/hotel/add_booking';
@@ -69,6 +94,9 @@
                 },
                 success: function(data) {
                     toastr.warning(data.data);
+                },
+                complete: function() {
+                    updateSelectionSummary();
                 }
             });
         }
@@ -87,17 +115,24 @@
 
     $(function() {
 
-        $('input[name="booking_date"]').daterangepicker({
+        var $stayRange = $('input[name="booking_date"]');
+        if (window.MMStayRange) {
+            // custom_js/stay-range.js: blocks past check-in, enforces one night, validates typed text
+            $stayRange.each(function() { MMStayRange.init(this); });
+            return;
+        }
+
+        $stayRange.daterangepicker({
             autoUpdateInput: true,
         });
 
-        $('input[name="booking_date"]').on('apply.daterangepicker', function(ev, picker) {
+        $stayRange.on('apply.daterangepicker', function(ev, picker) {
             $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format(
                 'MM/DD/YYYY'));
             $('form#searchForm').submit();
         });
 
-        $('input[name="booking_date"]').on('cancel.daterangepicker', function(ev, picker) {
+        $stayRange.on('cancel.daterangepicker', function(ev, picker) {
             $(this).val('');
         });
 

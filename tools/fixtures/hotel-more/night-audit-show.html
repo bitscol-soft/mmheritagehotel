@@ -1,0 +1,115 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">    <style>
+        @media  print {
+            @page  { size: A4 portrait !important; }
+        }
+    </style>
+<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY--><section class="mm-ui mm-audit-show">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Night audit detail</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Audit totals and the transactions closed for the day.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a href="http://localhost/hotel/night-audits" class="mm-button mm-button-secondary">
+            <i class="fa fa-list-alt" aria-hidden="true"></i> List
+        </a>
+        <a href="javascript:void(0)" onclick="print()" class="mm-button">
+            <i class="fa fa-print" aria-hidden="true"></i> Print
+        </a></div>        </header>
+        <div class="mm-panel tw-p-4 sm:tw-p-6"><h2 class="mm-audit-date">
+            <strong>Generate Date</strong> :
+            <span>2026-09-30</span>
+        </h2>
+
+        <dl class="mm-audit-summary">
+            <div><dt>Total Check In</dt><dd>3</dd></div>
+            <div><dt>Total Reservation</dt><dd>2</dd></div>
+            <div><dt>Total Check Out</dt><dd>1</dd></div>
+            <div><dt>Total Cancelled</dt><dd>0</dd></div>
+            <div><dt>Total Room</dt><dd>32</dd></div>
+            <div><dt>Total Dirty</dt><dd>4</dd></div>
+        </dl>
+
+        <div class="mm-table-scroll" role="region" aria-label="Night audit transactions" tabindex="0"><table class="table table-bordered table-striped table-hover">
+
+                <thead>
+                    <tr>
+                        <th class="text-center th-txt-size">SL</th>
+                        <th class="text-center th-txt-size">Type</th>
+                        <th class="text-center th-txt-size">Invoice No</th>
+                        <th class="text-center th-txt-size">Payment Type</th>
+                        <th class="text-center th-txt-size">Room No.</th>
+                        <th class="text-right th-txt-size">Total Amount (৳)</th>
+                        <th class="text-right th-txt-size">Paid Amount (৳)</th>
+                        <th class="text-right th-txt-size" style="width: 14% !important">Due Amount (৳)</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    
+                                            
+
+                        <tr>
+                            <td class="text-center td-font-size">1</td>
+                            <td class="text-center td-font-size">Booking</td>
+                            <td class="text-center td-font-size">INV-0007</td>
+                            <td class="text-center td-font-size">
+                                
+                                Cash
+                            </td>
+                            <td class="text-center td-font-size">
+                                                                                                    <label class="label label-success">101</label>
+                                                                    <label class="label label-success">102</label>
+                                                            </td>
+                            <td style="text-align: right;" class="td-font-size">
+                                <span class="item-total">7,300.00</span>
+                            </td>
+                            <td style="text-align: right;" class="td-font-size">5,300.00</td>
+                            <td class="text-right td-font-size">2,000.00</td>
+                        </tr>
+                                            
+
+                        <tr>
+                            <td class="text-center td-font-size">2</td>
+                            <td class="text-center td-font-size">Booking</td>
+                            <td class="text-center td-font-size">INV-0008</td>
+                            <td class="text-center td-font-size">
+                                
+                                Cash
+                            </td>
+                            <td class="text-center td-font-size">
+                                                                                                    <label class="label label-success">101</label>
+                                                            </td>
+                            <td style="text-align: right;" class="td-font-size">
+                                <span class="item-total">2,000.00</span>
+                            </td>
+                            <td style="text-align: right;" class="td-font-size">2,000.00</td>
+                            <td class="text-right td-font-size">0.00</td>
+                        </tr>
+                                    </tbody>
+
+
+                <tfoot>
+                    <tr style="border-bottom:none !important">
+                        <th colspan="7" class="text-right" style="border: none !important">Total Collection</th>
+                        <th class="text-right" style="padding: 3px 7px 0px 0px !important; border: none !important">
+                            7300
+                        </th>
+                    </tr>
+                    <tr style="border-bottom:none !important">
+                        <th colspan="7" class="text-right" style="padding: 0 7px 0 0 !important; border: none !important">Total Due</th>
+                        <th class="text-right" style="padding: 0 7px 0 0 !important; border: none !important">
+                            2000
+                        </th>
+                    </tr>
+                </tfoot>
+                </table></div></div>
+    </div>
+</section>
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
+
+<!--/MM-JS--></body></html>

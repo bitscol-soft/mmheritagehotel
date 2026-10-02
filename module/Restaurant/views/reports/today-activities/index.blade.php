@@ -19,74 +19,41 @@
 
 
 @section('content')
-    <div class="row">
 
+<x-mm.styles />
+<x-mm.page class="mm-report mm-rst" title="Today's activities" description="Transactions recorded for the selected invoice and date.">
+    @include('partials._alert_message')
+    <x-mm.panel class="mm-report-filter">
+        <form class="mm-setup-filter mm-report-form">
 
-        <div class="col-sm-12">
-            <div class="widget-box">
-                <div class="widget-header">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
-                </div>
-
-                <div class="widget-body">
-                    <div class="widget-main">
-                        @include('partials._alert_message')
-
-                        <!-- Search -->
-                        <div class="row">
-                            <div class="col-sm-10 col-sm-offset-1">
-                                <form>
-                                    <table class="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <th>
-                                                    Invoice No
-                                                </th>
-                                                <th>Date</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-
-                                                <td>
-                                                    <input type="text" name="invoice_no"
-                                                        value="{{ request('invoice_no') }}" class="form-control"
-                                                        placeholder="Invoice No">
-                                                </td>
-                                                <td><x-widget.date-filter /></td>
-                                                <td>
-                                                    <div class="btn-group btn-corner">
-                                                        <button class="btn btn-sm btn-success" type="submit">
-                                                            <i class="fa fa-search"></i> Search
-                                                        </button>
-                                                        <a href="{{ request()->url() }}" class="btn btn-sm">
-                                                            <i class="fa fa-refresh"></i>
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </form>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-sm-12 px-2">
-                                @include('reports.today-activities.export.excel')
-                                {{-- <x-paginate :data="$transactions" /> --}}
-                            </div>
-                            <x-export-button :pdf=1 :excel=1 />
-                        </div>
-
-                    </div>
-                </div>
+            <div class="input-group">
+                <span class="input-group-addon">Invoice</span>
+                <input type="text" name="invoice_no"
+                    value="{{ request('invoice_no') }}" class="form-control"
+                    placeholder="Invoice No">
             </div>
 
+            <div class="mm-report-field"><x-widget.date-filter /></div>
 
-        </div>
-    </div>
+            <div class="btn-group" style="display: flex">
+                <button class="mm-button" type="submit">
+                    <i class="fa fa-search"></i> Search
+                </button>
+                <a href="{{ request()->url() }}" class="mm-button mm-button-secondary" aria-label="Reset">
+                    <i class="fa fa-refresh"></i>
+                </a>
+            </div>
+        </form>
+    </x-mm.panel>
+    <x-mm.panel>
+        <x-mm.table-scroll label="Today's activities">
+            @include('reports.today-activities.export.excel')
+            {{-- <x-paginate :data="$transactions" /> --}}
+        </x-mm.table-scroll>
 
+        <x-export-button :pdf=1 :excel=1 />
+    </x-mm.panel>
+</x-mm.page>
 
 @endsection
 

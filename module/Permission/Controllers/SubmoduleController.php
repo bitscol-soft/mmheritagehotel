@@ -21,6 +21,15 @@ class SubmoduleController extends Controller
     }
 
 
+    public function create()
+    {
+        $modules    = Module::orderBy('name')->pluck('name', 'id');
+        $submodules = Submodule::with('module')->orderByDesc('id')->paginate(30);
+
+        return view('submodule', compact('modules', 'submodules'));
+    }
+
+
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -43,7 +52,7 @@ class SubmoduleController extends Controller
     {
         $modules    = Module::orderBy('name')->pluck('name', 'id');
         $submodules = Submodule::with('module')->orderBy('name')->paginate(30);
-        return view('setting.submodule', compact('modules', 'submodules', 'submodule'));
+        return view('submodule', compact('modules', 'submodules', 'submodule'));
     }
 
 

@@ -27,12 +27,17 @@ Route::group(['prefix' => 'hotel'], function () {
 
     Route::group(['prefix' => 'room-management'], function () {
         Route::resources([
-            'hotel-categories'  => RoomCategoryController::class,
-            'aminities'         => AminitiesController::class,
-            'rooms'             => RoomsController::class,
-            'vat'               => vatController::class,
-            'account-type'      => AccountTypeController::class,
         ]);
+                // round 3 (docs/BUGS.md): RoomCategoryController does not implement show; the routes would 500
+                Route::resource('hotel-categories', RoomCategoryController::class)->except(['show']);
+                // round 3 (docs/BUGS.md): AminitiesController does not implement show; the routes would 500
+                Route::resource('aminities', AminitiesController::class)->except(['show']);
+                // round 3 (docs/BUGS.md): RoomsController does not implement show; the routes would 500
+                Route::resource('rooms', RoomsController::class)->except(['show']);
+        // vatController only implements index/update (inline form on the index page)
+        Route::resource('vat', vatController::class)->only(['index', 'update']);
+        // AccountTypeController has no create/show views
+        Route::resource('account-type', AccountTypeController::class)->except(['create', 'show']);
     });
 
 
@@ -50,18 +55,38 @@ Route::group(['prefix' => 'hotel'], function () {
 
 
 
+    // static booking/* routes must be registered BEFORE the booking resource,
+    // otherwise booking/{booking} (show) swallows e.g. /booking/booking-adjusts -> find('booking-adjusts') -> 500
+    Route::group(['prefix' => 'booking'], function () {
+
+
+        Route::resource('booking-adjusts',     BookingAdjustController::class);
+
+        Route::get('invoice/{id}',             [BookingController::class, 'getInvoice'])->name('generate.invoice');
+        Route::get('invoice-v2/{id}',          [BookingController::class, 'getInvoiceV2'])->name('generate.invoice-v2');
+        Route::get('reservation-invoice/{id}', [BookingController::class, 'reservationInvoice'])->name('generate.reservation-invoice');
+        Route::get('rest-sale-invoice/{id}',   [BookingController::class, 'restSaleInvoice'])->name('generate.rest-sale-invoice');
+    });
+
+
     //--------------------- RESOURCES ---------------------//
     Route::resources([
-        'guests'                    => GuestController::class,
         'guest-uploads'             => GuestUploadController::class,
         'booking'                   => BookingController::class,
-        'booking-purpose'           => BookingPurposeController::class,
-        'booking-note'              => BookingNoteController::class,
-        'guest-registration-terms'  => GuestRegistrationTermsController::class,
-        'night-audits'              => NightAuditSummaryController::class,
-        'currency-conversions'      => CurrencyConversionController::class,
 
     ]);
+            // round 3 (docs/BUGS.md): GuestController does not implement show; the routes would 500
+            Route::resource('guests', GuestController::class)->except(['show']);
+            // round 3 (docs/BUGS.md): BookingPurposeController does not implement show; the routes would 500
+            Route::resource('booking-purpose', BookingPurposeController::class)->except(['show']);
+            // round 3 (docs/BUGS.md): BookingNoteController does not implement show; the routes would 500
+            Route::resource('booking-note', BookingNoteController::class)->except(['show']);
+            // round 3 (docs/BUGS.md): GuestRegistrationTermsController does not implement show; the routes would 500
+            Route::resource('guest-registration-terms', GuestRegistrationTermsController::class)->except(['show']);
+            // round 3 (docs/BUGS.md): NightAuditSummaryController does not implement edit/update; the routes would 500
+            Route::resource('night-audits', NightAuditSummaryController::class)->except(['edit', 'update']);
+            // round 3 (docs/BUGS.md): CurrencyConversionController does not implement show; the routes would 500
+            Route::resource('currency-conversions', CurrencyConversionController::class)->except(['show']);
 
     //--------------- CUSTOM ROUTE FOR REFERRED BOOKING ---------------//
     Route::get('referred-booking',                  [BookingController::class, 'index'])->name('booking.referred-booking');
@@ -73,16 +98,7 @@ Route::group(['prefix' => 'hotel'], function () {
     Route::post('guest-image-update',            [GuestController::class, 'guestImageUpdate'])->name('guest-image-update');
 
 
-    Route::group(['prefix' => 'booking'], function () {
 
-
-        Route::resource('booking-adjusts',     BookingAdjustController::class);
-
-        Route::get('invoice/{id}',             [BookingController::class, 'getInvoice'])->name('generate.invoice');
-        Route::get('invoice-v2/{id}',          [BookingController::class, 'getInvoiceV2'])->name('generate.invoice-v2');
-        Route::get('reservation-invoice/{id}', [BookingController::class, 'reservationInvoice'])->name('generate.reservation-invoice');
-        Route::get('rest-sale-invoice/{id}',   [BookingController::class, 'restSaleInvoice'])->name('generate.rest-sale-invoice');
-    });
 
 
 
@@ -100,7 +116,7 @@ Route::group(['prefix' => 'hotel'], function () {
     Route::get('booking-collection',                [BookingController::class, 'BookingCollection'])->name('booking-collection');
     Route::post('store-collection',                 [BookingController::class, 'StoreCollect'])->name('store-payment-collection');
     Route::post('booking-extra-charge',             [BookingController::class, 'extraCharge'])->name('booking.extra-charge');
-    Route::get('delete-all-booking-by-query',       [BookingController::class, 'deleteAllBooking'])->name('delete-all-booking-by-query');
+    Route::get('delete-all-booking-by-query',       [BookingController::class, 'deleteAllBooking'])->middleware('super-admin')->name('delete-all-booking-by-query');
     Route::get('check-room-availability',           [BookingController::class, 'checkRoomAvailability'])->name('check-room-availability');
     Route::post('extend-checkout-date/{id}',        [BookingController::class, 'extendCheckoutDate'])->name('booking.extend-checkout-date');
 

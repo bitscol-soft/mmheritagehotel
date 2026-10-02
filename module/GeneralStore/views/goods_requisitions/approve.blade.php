@@ -20,250 +20,235 @@
 
 @section('content')
 
-    <div class="row">
+<x-mm.styles />
+<x-mm.page class="mm-gs mm-rst mm-rst-inv mm-rst-form" title="Approve goods requisition" description="Check the requested quantities and approve the requisition.">
+    <x-slot name="actions">
+        <a href="{{ route('goods-requisitions.index') }}" class="mm-button"><i class="ace-icon fa fa-list-alt"></i> Requisition List</a>
+    </x-slot>
+    <x-mm.panel class="tw-p-4">
+        <form class="form-horizontal" action="{{ route('approve.goods.requisition', $goodsRequisition->id) }}" method="post" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
 
-        <div class="col-sm-12">
-            <div class="widget-box">
-                <div class="widget-header">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
 
-                    <span class="widget-toolbar">
-                    <a href="{{ route('goods-requisitions.index') }}">
-                        <i class="ace-icon fa fa-list-alt"></i> Requisition List
-                    </a>
-                </span>
+            @if ($errors->any())
+                <div class="alert alert-danger error">
+                    <button type="button" class="close" data-dismiss="alert">
+                        <i class="ace-icon fa fa-times"></i>
+                    </button>
 
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            @if ($error != "The company id field is required." )
+                                <li>Fillup all items and required quantity</li>
+                                @php
+                                    break;
+                                @endphp
+                            @endif
+
+                        @endforeach
+                    </ul>
                 </div>
+            @elseif (session()->get('message'))
+                @include('partials._alert_message')
+            @endif
 
-                <div class="widget-body">
-                    <div class="widget-main">
-                        <form class="form-horizontal" action="{{ route('approve.goods.requisition', $goodsRequisition->id) }}" method="post" enctype="multipart/form-data">
-                            @csrf
-                            @method('PUT')
+            @if (session()->get('error'))
+            <div class="alert alert-danger error">
+                    <button type="button" class="close" data-dismiss="alert">
+                        <i class="ace-icon fa fa-times"></i>
+                    </button>
 
-
-                            @if ($errors->any())
-                                <div class="alert alert-danger error">
-                                    <button type="button" class="close" data-dismiss="alert">
-                                        <i class="ace-icon fa fa-times"></i>
-                                    </button>
-
-                                    <ul>
-                                        @foreach ($errors->all() as $error)
-                                            @if ($error != "The company id field is required." )
-                                                <li>Fillup all items and required quantity</li>
-                                                @php
-                                                    break;
-                                                @endphp
-                                            @endif
-
-                                        @endforeach
-                                    </ul>
-                                </div>
-                            @elseif (session()->get('message'))
-                                @include('partials._alert_message')
-                            @endif
-
-                            @if (session()->get('error'))
-                            <div class="alert alert-danger error">
-                                    <button type="button" class="close" data-dismiss="alert">
-                                        <i class="ace-icon fa fa-times"></i>
-                                    </button>
-
-                                    <ul>
-                                        <li>{{ session()->get('error') }}</li>
-                                    </ul>
-                                </div>
-                            @endif
+                    <ul>
+                        <li>{{ session()->get('error') }}</li>
+                    </ul>
+                </div>
+            @endif
 
 
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label" for="form-field-1-1"> Company </label>
-                                <div class="col-xs-12 col-sm-8 @error('company_id') has-error @enderror">
-                                    <select name="company_id" class="form-control company_id" id="company_id" onchange="load_items(this)">
-                                        <option value="" selected>select</option>
-                                        @foreach($companies as $id => $company)
-                                            <option value="{{ $id }}" {{ old('company_id') == $id || $goodsRequisition->company_id == $id ? 'selected' : '' }}>{{ $company }}</option>
-                                        @endforeach
-                                    </select>
+            <div class="form-group">
+                <label class="col-sm-3 control-label" for="form-field-1-1"> Company </label>
+                <div class="col-xs-12 col-sm-8 @error('company_id') has-error @enderror">
+                    <select name="company_id" class="form-control company_id" id="company_id" onchange="load_items(this)">
+                        <option value="" selected>select</option>
+                        @foreach($companies as $id => $company)
+                            <option value="{{ $id }}" {{ old('company_id') == $id || $goodsRequisition->company_id == $id ? 'selected' : '' }}>{{ $company }}</option>
+                        @endforeach
+                    </select>
 
-                                    @error('company_id')
-                                    <span class="text-danger">{{ $message }}</span>
-                                    @enderror
+                    @error('company_id')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
 
-                                </div>
-                            </div>
-
-
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label" for="form-field-1-1"> Department </label>
-                                <div class="col-xs-12 col-sm-8 @error('department_id') has-error @enderror">
-
-                                    <select name="department_id" class="form-control chosen-select" onchange="load_items(this)">
-                                        <option value="0">select</option>
-                                        @foreach($departments as $id => $department)
-                                            <option value="{{ $id }}" {{ $goodsRequisition->department_id == $id ? 'selected' : '' }}>{{ $department }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('department_id')
-                                    <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-
-
-
-                            <div class="form-group col-">
-                                <label for="inputError" class="col-xs-12 col-sm-3 col-md-3 control-label"> Date </label>
-                                <div  class="col-xs-12 col-sm-8 @error('goods_requisition_date') has-error @enderror">
-                                    <div class="input-group">
-                                        <input class="form-control date-picker" name="goods_requisition_date" id="id-date-picker-1" value="{{ old('goods_requisition_date') ?? $goodsRequisition->goods_requisition_date }}" type="text" data-date-format="yyyy-mm-dd"/>
-                                        <span class="input-group-addon">
-                                        <i class="fa fa-calendar bigger-110"></i>
-                                    </span>
-                                    </div>
-
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label" for="form-field-1-1"> Reference </label>
-                                <div class="col-xs-12 col-sm-8 @error('goods_requisition_reference') has-error @enderror">
-                                    <input type="number" step="0.01" class="form-control" name="goods_requisition_reference" value="{{ old('goods_requisition_reference') ?? $goodsRequisition->goods_requisition_reference }}" placeholder="Reference">
-                                    @error('goods_requisition_reference')
-                                    <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <!-- repeater -->
-
-                            <div class="row">
-                                <div class="col-sm-10 col-sm-offset-1">
-                                    <h3 class="header smaller lighter blue">Goods Requisition</h3>
-                                    <table id="goods_requisition_table" class="table table-bordered edu1 container">
-                                        <thead>
-                                            <tr>
-                                                <td width="40%">Item</td>
-                                                <td>Unit</td>
-                                                <td>Stock</td>
-                                                <td>Quantity</td>
-                                                <td>Remarks</td>
-                                                <td>Action</td>
-                                            </tr>
-                                        </thead>
-
-                                        <tbody class="">
-
-                                            @if (old('item_id'))
-                                                @foreach(old('item_id') as $key => $value)
-                                                    <tr >
-                                                        <td>
-                                                            <select name="item_id[]" class="form-control item item'+ item_row + ' chosen-select" onchange="load_item_stock(this)">
-                                                                <option value="">select</option>
-                                                                @foreach($items as $i => $item)
-                                                                    @if($item->company_id == old('company_id'))
-                                                                        <option value="{{ $item->id }}" {{ old('item_id')[$key] == $item->id ? 'selected' : '' }}>{{ $item->name }}</option>')
-                                                                    @endif
-                                                                @endforeach
-                                                            </select>
-                                                        </td>
-                                                        <td>
-                                                            <input type="text" value="{{ old('item_unit_id')[$key] }}" name="item_unit_id[]" class="form-control item_unit" readonly="readonly" />
-                                                        </td>
-                                                        <td>
-                                                            <input type="text" value="{{ old('current_stock')[$key] }}" name="current_stock[]" class="form-control current_stock item_stock" readonly="readonly" />
-                                                        </td>
-                                                        <td>
-                                                            <input type="text" onkeyup="checkQtyLimit(this)" onkeypress='return event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' value="{{ old('quantity')[$key] }}" name="quantity[]" class="form-control quantity" />
-                                                        </td>
-                                                        <td>
-                                                            <input type="text" class="form-control" name="remarks[]" value="{{ old('remarks')[$key] }}">
-                                                        </td>
-
-                                                        <td><button type="button" class="ibtnDel btn btn-sm btn-danger delete_row" onclick="removeRow(this)"><i class="fa fa-times-circle"></i></button></td>
-                                                    </tr>
-                                                @endforeach
-                                            @else
-                                                @foreach($goodsRequisition->goods_requisition_details as $key=>$detail)
-
-                                                    <tr>
-                                                        <td>
-                                                            <select name="item_id[]" class="form-control item chosen-select" onchange="load_item_stock(this)" id="select20">
-                                                                <option value="" disabled selected>select</option>
-                                                                @foreach($items as $key => $item)
-                                                                    @if($item->company_id == $goodsRequisition->company_id)
-                                                                        <option value="{{ $item->id }}" {{ $item->id == $detail->item_id ? 'selected' : '' }}>{{ $item->name }}</option>
-                                                                    @endif
-                                                                @endforeach
-                                                            </select>
-                                                        </td>
-                                                        <td>
-                                                            <input type="text" value="{{ $detail->item->item_unit->name }}" name="item_unit_id[]" class="form-control item_unit" readonly="readonly" />
-                                                        </td>
-                                                        <td>
-                                                            <input type="text" value="{{ $detail->item->current_stock }}" name="current_stock[]" id="current_stock0" class="form-control current_stock item_stock" readonly="readonly" />
-                                                        </td>
-                                                        <td>
-                                                            <input type="text" onkeyup="checkQtyLimit(this)" onkeypress='return event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' id="q0" value="{{ $detail->quantity }}" name="quantity[]" class="form-control quantity" />
-                                                        </td>
-                                                        <td>
-                                                            <input type="text" class="form-control" name="remarks[]" value="{{ $detail->remarks }}">
-                                                        </td>
-                                                        <td><button type="button" class="ibtnDel btn btn-sm btn-danger delete_row" onclick="removeRow(this)"><i class="fa fa-times-circle"></i></button></td>
-                                                    </tr>
-                                                @endforeach
-                                            @endif
-
-                                            <tr id="addr1"></tr>
-                                            <tr>
-                                                <td colspan="7" style="text-align: right;">
-                                                    <button type="button" onclick="insert_Row(this)" class="btn btn-xs btn-inverse add_row r-btnAdd">
-                                                        + Add New
-                                                    </button>
-                                                </td>
-                                            </tr>
-
-                                        </tbody>
-                                    </table>
-
-                                </div>
-                            </div>
-
-                            <input type="hidden" id="total" value="0" name="total">
-
-                            <div class="container">
-                                <div class="row">
-                                    <div class="form-group">
-                                        <span class="text-danger">
-                                            @if ($previous_unapprove)
-                                                Please approve previous requisition
-                                                <a href="{{ route('approve.goods.requisition.show', $previous_unapprove->id) }}">Approve Now</a>
-                                            @endif
-                                        </span>
-                                        <div class="pull-right" style="padding-right: 80px !important;">
-                                            
-                                            @if(hasPermission('create.requisitions.approve', $slugs) && !$previous_unapprove)
-                                                <button class="btn btn-success btn-sm"> <i class="fa fa-save"></i> Approve </button>
-                                            @endif
-                                            <button class="btn btn-gray btn-sm" type="Reset"> <i class="fa fa-refresh"></i> Reset </button>
-                                            @if(hasPermission('create.requisitions.view', $slugs))
-                                                <a href="{{ route('goods-requisitions.index') }}" class="btn btn-info btn-sm"> <i class="fa fa-list"></i> List </a>
-                                            @endif
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </form>
-                    </div>
                 </div>
             </div>
 
 
-        </div>
-    </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label" for="form-field-1-1"> Department </label>
+                <div class="col-xs-12 col-sm-8 @error('department_id') has-error @enderror">
 
+                    <select name="department_id" class="form-control chosen-select" onchange="load_items(this)">
+                        <option value="0">select</option>
+                        @foreach($departments as $id => $department)
+                            <option value="{{ $id }}" {{ $goodsRequisition->department_id == $id ? 'selected' : '' }}>{{ $department }}</option>
+                        @endforeach
+                    </select>
+                    @error('department_id')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
+
+
+
+            <div class="form-group col-">
+                <label for="inputError" class="col-xs-12 col-sm-3 col-md-3 control-label"> Date </label>
+                <div  class="col-xs-12 col-sm-8 @error('goods_requisition_date') has-error @enderror">
+                    <div class="input-group">
+                        <input class="form-control date-picker" name="goods_requisition_date" id="id-date-picker-1" value="{{ old('goods_requisition_date') ?? $goodsRequisition->goods_requisition_date }}" type="text" data-date-format="yyyy-mm-dd"/>
+                        <span class="input-group-addon">
+                        <i class="fa fa-calendar bigger-110"></i>
+                    </span>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label" for="form-field-1-1"> Reference </label>
+                <div class="col-xs-12 col-sm-8 @error('goods_requisition_reference') has-error @enderror">
+                    <input type="number" step="0.01" class="form-control" name="goods_requisition_reference" value="{{ old('goods_requisition_reference') ?? $goodsRequisition->goods_requisition_reference }}" placeholder="Reference">
+                    @error('goods_requisition_reference')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
+
+            <!-- repeater -->
+
+            <div class="row">
+                <div class="col-sm-10 col-sm-offset-1">
+                    <h3 class="header smaller lighter blue">Goods Requisition</h3>
+                    <x-mm.table-scroll label="Requisition items">
+                        <table id="goods_requisition_table" class="table table-bordered edu1 container">
+                            <thead>
+                                <tr>
+                                    <td width="40%">Item</td>
+                                    <td>Unit</td>
+                                    <td>Stock</td>
+                                    <td>Quantity</td>
+                                    <td>Remarks</td>
+                                    <td>Action</td>
+                                </tr>
+                            </thead>
+
+                            <tbody class="">
+
+                                @if (old('item_id'))
+                                    @foreach(old('item_id') as $key => $value)
+                                        <tr >
+                                            <td>
+                                                <select name="item_id[]" class="form-control item item'+ item_row + ' chosen-select" onchange="load_item_stock(this)">
+                                                    <option value="">select</option>
+                                                    @foreach($items as $i => $item)
+                                                        @if($item->company_id == old('company_id'))
+                                                            <option value="{{ $item->id }}" {{ old('item_id')[$key] == $item->id ? 'selected' : '' }}>{{ $item->name }}</option>')
+                                                        @endif
+                                                    @endforeach
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <input type="text" value="{{ old('item_unit_id')[$key] }}" name="item_unit_id[]" class="form-control item_unit" readonly="readonly" />
+                                            </td>
+                                            <td>
+                                                <input type="text" value="{{ old('current_stock')[$key] }}" name="current_stock[]" class="form-control current_stock item_stock" readonly="readonly" />
+                                            </td>
+                                            <td>
+                                                <input type="text" onkeyup="checkQtyLimit(this)" onkeypress='return event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' value="{{ old('quantity')[$key] }}" name="quantity[]" class="form-control quantity" />
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control" name="remarks[]" value="{{ old('remarks')[$key] }}">
+                                            </td>
+
+                                            <td><button type="button" class="ibtnDel btn btn-sm btn-danger delete_row" onclick="removeRow(this)"><i class="fa fa-times-circle"></i></button></td>
+                                        </tr>
+                                    @endforeach
+                                @else
+                                    @foreach($goodsRequisition->goods_requisition_details as $key=>$detail)
+
+                                        <tr>
+                                            <td>
+                                                <select name="item_id[]" class="form-control item chosen-select" onchange="load_item_stock(this)" id="select20">
+                                                    <option value="" disabled selected>select</option>
+                                                    @foreach($items as $key => $item)
+                                                        @if($item->company_id == $goodsRequisition->company_id)
+                                                            <option value="{{ $item->id }}" {{ $item->id == $detail->item_id ? 'selected' : '' }}>{{ $item->name }}</option>
+                                                        @endif
+                                                    @endforeach
+                                                </select>
+                                            </td>
+                                            <td>
+                                                <input type="text" value="{{ $detail->item->item_unit->name }}" name="item_unit_id[]" class="form-control item_unit" readonly="readonly" />
+                                            </td>
+                                            <td>
+                                                <input type="text" value="{{ $detail->item->current_stock }}" name="current_stock[]" id="current_stock0" class="form-control current_stock item_stock" readonly="readonly" />
+                                            </td>
+                                            <td>
+                                                <input type="text" onkeyup="checkQtyLimit(this)" onkeypress='return event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57' id="q0" value="{{ $detail->quantity }}" name="quantity[]" class="form-control quantity" />
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control" name="remarks[]" value="{{ $detail->remarks }}">
+                                            </td>
+                                            <td><button type="button" class="ibtnDel btn btn-sm btn-danger delete_row" onclick="removeRow(this)"><i class="fa fa-times-circle"></i></button></td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+
+                                <tr id="addr1"></tr>
+                                <tr>
+                                    <td colspan="7" style="text-align: right;">
+                                        <button type="button" onclick="insert_Row(this)" class="btn btn-xs btn-inverse add_row r-btnAdd">
+                                            + Add New
+                                        </button>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </x-mm.table-scroll>
+
+                </div>
+            </div>
+
+            <input type="hidden" id="total" value="0" name="total">
+
+            <div class="container">
+                <div class="row">
+                    <div class="form-group">
+                        <span class="text-danger">
+                            @if ($previous_unapprove)
+                                Please approve previous requisition
+                                <a href="{{ route('approve.goods.requisition.show', $previous_unapprove->id) }}">Approve Now</a>
+                            @endif
+                        </span>
+                        <div class="pull-right" style="padding-right: 80px !important;">
+
+                            @if(hasPermission('create.requisitions.approve', $slugs) && !$previous_unapprove)
+                                <button class="btn btn-success btn-sm"> <i class="fa fa-save"></i> Approve </button>
+                            @endif
+                            <button class="btn btn-gray btn-sm" type="Reset"> <i class="fa fa-refresh"></i> Reset </button>
+                            @if(hasPermission('create.requisitions.view', $slugs))
+                                <a href="{{ route('goods-requisitions.index') }}" class="btn btn-info btn-sm"> <i class="fa fa-list"></i> List </a>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </x-mm.panel>
+</x-mm.page>
 
 @endsection
 

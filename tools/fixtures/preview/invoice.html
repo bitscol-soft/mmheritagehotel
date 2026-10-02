@@ -1,0 +1,494 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">    <link rel="stylesheet" href="/assets/css/chosen.min.css" />
+    <link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css" />
+    <style>
+        #print_body {
+            background-color: #fff;
+            padding: 10px 20px;
+            overflow: hidden;
+        }
+
+        .company-info {
+            color: #000;
+        }
+
+        .company-info h3 {
+            font-weight: bold;
+            margin-bottom: 0;
+        }
+
+        .company-info p {
+            margin-bottom: 2px;
+        }
+
+        .table {
+            box-shadow: none !important;
+        }
+
+        .table-bordered>thead>tr>th,
+        .table-bordered>tbody>tr>th,
+        .table-bordered>tfoot>tr>th,
+        .table-bordered>thead>tr>td,
+        .table-bordered>tbody>tr>td,
+        .table-bordered>tfoot>tr>td {
+            border: .4px solid #fff;
+            padding: 4.5px;
+        }
+
+        th {
+            background: #efefef;
+            box-shadow: none;
+        }
+
+        .patient {
+            margin: 3px;
+        }
+
+        @media  print {
+            .company-info h4 {
+                font-weight: bold;
+                margin-bottom: 0;
+            }
+
+            .company-info p {
+                margin-bottom: 2px;
+            }
+
+        }
+    </style>
+
+    <style>
+    .invoice-doc {
+        max-width: 840px;
+        margin: 0 auto;
+        background: #fff;
+        color: #1f2a33;
+        font-size: 13px;
+        padding: 26px 32px 22px;
+        border: 1px solid #e4ebf3;
+        border-radius: 4px;
+    }
+
+    .invoice-doc .inv-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 20px;
+        border-bottom: 2px solid #2f63a8;
+        padding-bottom: 14px;
+    }
+
+    .invoice-doc .inv-brand h3 {
+        margin: 0 0 4px;
+        font-weight: 700;
+        font-size: 20px;
+        color: #2f4d6b;
+    }
+
+    .invoice-doc .inv-brand p {
+        margin: 0 0 2px;
+        color: #5c6f7f;
+        font-size: 12px;
+    }
+
+    .invoice-doc .inv-doctitle {
+        text-align: right;
+        min-width: 190px;
+    }
+
+    .invoice-doc .inv-doctitle .inv-kind {
+        font-size: 22px;
+        font-weight: 800;
+        letter-spacing: 3px;
+        color: #2f63a8;
+        margin: 0 0 6px;
+        text-transform: uppercase;
+    }
+
+    .invoice-doc .inv-doctitle .inv-no {
+        font-size: 14px;
+        font-weight: 700;
+        color: #1f2a33;
+        margin-bottom: 2px;
+    }
+
+    .invoice-doc .inv-doctitle .inv-printed {
+        font-size: 11px;
+        color: #8a9bab;
+    }
+
+    .invoice-doc .inv-panels {
+        display: flex;
+        gap: 16px;
+        margin: 16px 0 6px;
+    }
+
+    .invoice-doc .inv-panel {
+        flex: 1;
+        background: #f7fafd;
+        border: 1px solid #e4ebf3;
+        border-radius: 4px;
+        padding: 10px 14px;
+    }
+
+    .invoice-doc .inv-panel-title {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #2f63a8;
+        font-weight: 700;
+        margin: 0 0 8px;
+    }
+
+    .invoice-doc .inv-defrow {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        margin-bottom: 3px;
+        font-size: 12.5px;
+    }
+
+    .invoice-doc .inv-defrow > span:first-child {
+        color: #7a8a99;
+        white-space: nowrap;
+    }
+
+    .invoice-doc .inv-defrow > span:last-child {
+        text-align: right;
+        font-weight: 600;
+        color: #22364a;
+    }
+
+    .invoice-doc .inv-lines {
+        width: 100%;
+        margin-top: 14px;
+        border-collapse: collapse;
+    }
+
+    .invoice-doc .inv-lines > thead > tr > th {
+        background: #f0f5fa;
+        border: none;
+        border-bottom: 2px solid #2f63a8;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: .4px;
+        color: #37536a;
+        padding: 7px 10px;
+    }
+
+    .invoice-doc .inv-lines > tbody > tr > td {
+        border: none;
+        border-bottom: 1px solid #eef2f6;
+        padding: 7px 10px;
+    }
+
+    .invoice-doc .inv-lines > tbody > tr.inv-sumrow > td,
+    .invoice-doc .inv-lines > tbody > tr.inv-sumrow > th {
+        border: none;
+        text-align: right;
+        padding: 4px 10px;
+        background: transparent !important;
+        color: #37536a;
+        font-size: 12.5px;
+    }
+
+    .invoice-doc .inv-lines > tbody > tr.inv-sumrow > th {
+        font-weight: 600;
+    }
+
+    .invoice-doc .inv-lines > tbody > tr.inv-grand > td,
+    .invoice-doc .inv-lines > tbody > tr.inv-grand > th {
+        border-top: 2px solid #2f63a8 !important;
+        font-size: 14.5px;
+        font-weight: 800;
+        color: #1f2a33;
+    }
+
+    .invoice-doc .inv-lines > tbody > tr.inv-due th {
+        color: #c24a48;
+    }
+
+    .invoice-doc .inv-paidline {
+        display: none; /* replaced by totals block */
+    }
+
+    .invoice-doc .inv-sign {
+        margin-top: 52px;
+        display: flex;
+        justify-content: space-between;
+        gap: 18px;
+        padding: 0 6px;
+    }
+
+    .invoice-doc .inv-sign .sig {
+        width: 200px;
+        text-align: center;
+        font-size: 12px;
+        border-top: 1px solid #333;
+        padding-top: 6px;
+        color: #37536a;
+    }
+
+    .invoice-doc .inv-foot {
+        margin-top: 20px;
+        border-top: 1px dashed #dbe5f1;
+        padding-top: 8px;
+        font-size: 11px;
+        color: #8a9bab;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    @media  print {
+        .invoice-doc {
+            border: 0;
+            border-radius: 0;
+            max-width: none;
+            padding: 0;
+        }
+        .invoice-doc .inv-panel,
+        .invoice-doc .inv-lines > thead > tr > th {
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+        .invoice-doc .inv-lines tr {
+            page-break-inside: avoid;
+        }
+        .widget-header,
+        .page-title,
+        .breadcrumb,
+        .ace-nav,
+        .left-menu,
+        .navbar,
+        .footer {
+            display: none !important;
+        }
+    }
+</style>
+<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+    
+
+        <section class="mm-ui mm-invoice-page">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Booking invoice</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Review the invoice and print it. Printing outputs the document only.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button mm-button-secondary" href="http://localhost/hotel/booking">
+                <i class="fa fa-list-alt" aria-hidden="true"></i> Booking List
+            </a>
+                            <a href="#" class="mm-button" onclick="printPage('print_body'); return false;">
+                    <i class="fa fa-print" aria-hidden="true"></i> Print
+                </a></div>        </header>
+        <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><div id="print_body" class="invoice-doc">
+                                <div class="inv-head">
+                                    <div class="inv-brand">
+                                        <h3>MM Heritage Hotel</h3>
+                                        <p>Melaka</p>
+                                        <p>0600000000, info@example.com</p>
+                                    </div>
+                                    <div class="inv-doctitle">
+                                        <div class="inv-kind">Invoice</div>
+                                        <div class="inv-no">BK-0007</div>
+                                        <div class="inv-printed">Printed 01 Oct 2026, 09:00 AM</div>
+                                    </div>
+                                </div>
+
+                                <div class="inv-panels">
+                                    <div class="inv-panel">
+                                        <p class="inv-panel-title">Guest</p>
+                                        <p class="inv-defrow"><span>Name</span><span>Aisha &lt;b&gt;O&#039;Neil&lt;/b&gt;</span></p>
+                                        <p class="inv-defrow"><span>Address</span><span>Dhaka</span></p>
+                                        <p class="inv-defrow"><span>Mobile</span><span>01700000000</span></p>
+                                        <p class="inv-defrow"><span>Nationality</span><span>Bangladesh</span></p>
+                                        <p class="inv-defrow"><span>Room</span><span>Deluxe - 101</span></p>
+                                    </div>
+                                    <div class="inv-panel">
+                                        <p class="inv-panel-title">Booking</p>
+                                        <p class="inv-defrow"><span>Booking No</span><span>BK-0007</span></p>
+                                        <p class="inv-defrow"><span>Booking Date</span><span>2026-09-28</span></p>
+                                        <p class="inv-defrow"><span>Check In</span><span>2026-10-01</span></p>
+                                        <p class="inv-defrow"><span>Check Out</span><span>2026-10-03</span></p>
+                                        <p class="inv-defrow"><span>Payment Type</span><span>Cash</span></p>
+                                        <p class="inv-defrow"><span>Service Charge</span><span>400.00 &#x09F3;</span></p>
+                                        <p class="inv-defrow"><span>VAT Number</span><span>VAT-0042</span></p>
+                                    </div>
+                                </div>
+
+                                <div class="invoice-content">
+                                    <div class="table-responsive">
+                                        <table class="table inv-lines">
+                                            <thead>
+                                                <tr>
+                                                    <th width="5%" class="text-center">SL</th>
+                                                    <th>Service/Category</th>
+                                                    <th class="text-center">Room/Booking Number</th>
+                                                    <th class="text-right">Total Amount (&#x09F3;)</th>
+                                                    <th class="text-right">Paid Amount (&#x09F3;)</th>
+                                                    <th class="text-right">Due Amount (&#x09F3;)</th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                
+
+                                                
+                                                
+                                                    
+                                                    <tr style="background: #fbeeec">
+                                                        <td class="text-center">
+                                                            1
+                                                            <input type="hidden" name="item_ids[]"
+                                                                value="7">
+                                                            <input type="hidden" name="item_types[]" value="Booking">
+                                                            <input type="hidden" name="item_amount[]"
+                                                                value="3500">
+                                                        </td>
+
+                                                        <td>Deluxe</td>
+                                                        <td class="text-center">
+                                                            101
+                                                        </td>
+                                                        <td class="text-right">
+                                                            4,000.00
+                                                        </td>
+                                                        <td class="text-right">
+                                                            1,500.00</td>
+                                                        <td class="text-right">
+                                                            3,500.00</td>
+                                                    </tr>
+                                                
+                                                    
+                                                    <tr style="background: #fbeeec">
+                                                        <td class="text-center">
+                                                            2
+                                                            <input type="hidden" name="item_ids[]"
+                                                                value="7">
+                                                            <input type="hidden" name="item_types[]" value="Booking">
+                                                            <input type="hidden" name="item_amount[]"
+                                                                value="3500">
+                                                        </td>
+
+                                                        <td>Deluxe</td>
+                                                        <td class="text-center">
+                                                            102
+                                                        </td>
+                                                        <td class="text-right">
+                                                            4,000.00
+                                                        </td>
+                                                        <td class="text-right">
+                                                            1,500.00</td>
+                                                        <td class="text-right">
+                                                            3,500.00</td>
+                                                    </tr>
+                                                
+
+
+
+
+
+                                                
+                                                
+
+
+
+
+                                                
+                                                
+
+                                                
+                                                
+                                                <tr class="inv-sumrow">
+                                                    <td colspan="5"
+                                                        style="text-align: right; border: none !important;">
+                                                        Subtotal </td>
+                                                    <th style="text-align: right; border: none !important;">
+                                                        6,800.00
+                                                        &#x09F3;</th>
+                                                </tr>
+
+                                                <tr class="inv-sumrow">
+                                                    <td colspan="5"
+                                                        style="text-align: right; border: none !important;">
+                                                        Service Charge </td>
+                                                    <th style="text-align: right; border: none !important;">
+                                                        400.00
+                                                        &#x09F3;</th>
+                                                </tr>
+
+                                                <tr class="inv-sumrow">
+                                                    <td colspan="5"
+                                                        style="text-align: right; border: none !important;">
+                                                        Vat(10%) </td>
+                                                    <th style="text-align: right; border: none !important;">
+                                                        800.00
+                                                        &#x09F3;</th>
+                                                </tr>
+
+                                                <tr class="inv-sumrow inv-grand">
+                                                    <td colspan="5"
+                                                        style="text-align: right; border: none !important;">
+                                                        Total </td>
+                                                    <th style="text-align: right; border: none !important;">
+                                                        8,000.00
+                                                        &#x09F3;</th>
+                                                </tr>
+                                                <tr class="inv-sumrow">
+                                                    <td colspan="5"
+                                                        style="text-align: right; border: none !important;">
+                                                        Discount </td>
+                                                    <th style="text-align: right; border: none !important;">
+                                                        0.00
+                                                        &#x09F3;</th>
+                                                </tr>
+                                                <tr class="inv-sumrow">
+                                                    <td colspan="5"
+                                                        style="text-align: right; border: none !important;">
+                                                        Paid</td>
+                                                    <th style="text-align: right; border: none !important;">
+                                                        1,500.00 &#x09F3;</th>
+                                                </tr>
+                                                <tr class="inv-sumrow inv-grand inv-due">
+                                                    <td colspan="5"
+                                                        style="text-align: right; border: none !important;">Due
+                                                    </td>
+                                                    <th style="text-align: right; border: none !important;">
+                                                        3,500.00
+                                                        &#x09F3;</th>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+</div>
+
+                                <div class="inv-sign">
+                                    <div class="sig">Received By</div>
+                                    <div class="sig">Authorized By</div>
+                                    <div class="sig">Prepared By<br>Front Desk</div>
+                                </div>
+                                <div class="inv-foot">
+                                    <span>Thank you for staying with us.</span>
+                                    <span>MM Heritage Hotel</span>
+                                </div>
+                            </div></div>
+    </div>
+</section>
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
+    <script src="/assets/custom_js/printThis.js"></script>
+    <script type="text/javascript">
+        function printPage(id) {
+            $('#' + id).printThis({
+                importStyle: true
+            });
+        };
+        // round-6: print-on-open kept, but fired after load (old version ran at parse time
+        // against a non-existent window.onreadystatechange event)
+        window.addEventListener('load', function () {
+            setTimeout(function () { $('#print_body').printThis({ importStyle: true }); }, 400);
+        });
+    </script>
+<!--/MM-JS--></body></html>

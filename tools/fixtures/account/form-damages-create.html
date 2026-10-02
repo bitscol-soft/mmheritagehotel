@@ -1,0 +1,328 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">    <link rel="stylesheet" href="/assets/css/chosen.min.css" />
+    <link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css" />
+    <link rel="stylesheet" href="/assets/custom_css/chosen-required.css" />
+
+
+    <style>
+        .borderRemove {
+            border-top: none;
+        }
+
+        body {
+            counter-reset: section;
+        }
+
+        .count:before {
+            counter-increment: section;
+            content: counter(section);
+        }
+
+        select:invalid {
+            height: 0px !important;
+            opacity: 0 !important;
+            position: absolute !important;
+            display: flex !important;
+        }
+
+        select:invalid[multiple] {
+            margin-top: 15px !important;
+        }
+    </style>
+<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+<section class="mm-ui mm-acc mm-rst mm-rst-inv mm-rst-form">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Damage Create</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Record damaged products.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button" href="http://localhost/acc/damages/index"><i class="fa fa-list-alt"></i> List</a></div>        </header>
+        <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><!-- body -->
+                <form class="form-horizontal" action="http://localhost/acc/damages/store" method="post" enctype="multipart/form-data">
+
+                    <input type="hidden" name="_token" value="fixture-csrf-token">                    
+
+                    <input hidden name="account_id" value="9">
+
+
+                    <div class="row">
+
+
+
+
+
+
+
+                        <!-- Companies -->
+                        <div class="col-sm-4 my-1">
+                            <div class="input-group">
+                                <span class="input-group-addon">Company</span>
+
+                                <select required name="company_id" class="chosen-select-100-percent select-company" data-placeholder="- Select Company -">
+                                    <option></option>
+
+                                    
+                                                                                    <option value="1" selected>MM &lt;b&gt;Heritage&lt;/b&gt;</option>
+                                                                                                            </select>
+                            </div>
+                        </div>
+
+
+
+
+
+                        <!-- Date -->
+                        <div class="col-sm-3 my-1">
+                            <div class="input-group">
+                                <span class="input-group-addon input-sm">
+                                    Date<span class="text-danger">*</span>
+                                </span>
+                                <input name="date" class="form-control date-picker" id="id-date-picker-1" type="text" value=" 2026-10-01" data-date-format="yyyy-mm-dd">
+                            </div>
+                        </div>
+
+
+
+
+
+
+                        <!-- PRODUCT EXCHANGE INFORMATION -->
+                        <div class="col-sm-12 mt-3">
+
+
+
+                           <div class="row">
+                                <!-- Product -->
+                                <div class="col-sm-4 my-1">
+                                    <div class="input-group">
+                                        <span class="input-group-addon input-sm">
+                                            Product
+                                        </span>
+                                        <select class="form-control chosen-select-100-percent select-product" >
+                                            <option></option>
+                                                                                            <option value="1" data-unit="bag" data-price="40">Rice &lt;b&gt;50kg&lt;/b&gt;</option>
+                                                                                            <option value="2" data-unit="ltr" data-price="10">Oil</option>
+                                                                                    </select>
+                                    </div>
+                                </div>
+
+
+
+                                <!-- Product -->
+                                <div class="col-sm-3 my-1">
+                                    <div class="input-group">
+                                        <span class="input-group-addon input-sm">
+                                            Price
+                                        </span>
+                                        <input class="form-control only-number text-center input-price" placeholder="Purchase Price">
+                                    </div>
+                                </div>
+
+
+                                <!-- Product -->
+                                <div class="col-sm-3 my-1">
+                                    <div class="input-group">
+                                        <span class="input-group-addon input-sm">
+                                            Quantity
+                                        </span>
+                                        <input class="form-control only-number text-center input-qty" placeholder="Exchange Quantity">
+                                    </div>
+                                </div>
+
+
+
+                                <!-- ACTION -->
+                                <div class="col-sm-2 my-1">
+                                    <button type="button" class="btn btn-sm btn-primary add-product-btn">
+                                        <i class="fa fa-plus"></i> Add
+                                    </button>
+                                </div>
+                           </div>
+
+
+                            <div class="mm-table-scroll" role="region" aria-label="Damage Create" tabindex="0"><table id="myTable" class="table table-bordered order-list">
+
+                                    <!-- head -->
+                                    <thead>
+                                        <tr>
+                                            <td width="40px;">SL.</td>
+                                            <td style="width: 25%">Product Name</td>
+                                            <td class="text-center" width="120px;">Unit</td>
+                                            <td class="text-center" width="120px;">Price</td>
+                                            <td class="text-center" width="120px;">Quantity</td>
+                                            <td class="text-center" width="120px;">Subtotal</td>
+                                            <td style="width: 5%"></td>
+                                        </tr>
+                                    </thead>
+
+
+
+                                    <!-- body -->
+                                    <tbody class="exchange-product-details">
+
+
+                                    </tbody>
+
+
+
+
+                                    <!-- footer -->
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="4" class="text-right">Total</td>
+                                            <td>
+                                                <input readonly name="total_qty" value="" class="total-qty text-center form-control">
+                                            </td>
+                                            <td>
+                                                <input readonly name="total_amount" value="" class="total-amount text-center form-control">
+                                            </td>
+                                            <td></td>
+                                        </tr>
+                                    </tfoot>
+                                </table></div>
+                        </div>
+
+
+
+
+
+
+                        <!-- Action -->
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="pull-right px-1">
+                                    <button type="submit" class="btn btn-sm btn-success save-btn">
+                                        <i class="fa fa fa-save"></i>
+                                        Save
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form></div>
+    </div>
+</section>
+
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
+    <script src="/assets/js/chosen.jquery.min.js"></script>
+    <script src="/assets/js/bootstrap-datepicker.min.js"></script>
+    <script src="/assets/custom_js/chosen-box.js"></script>
+    <script src="/assets/custom_js/date-picker.js"></script>
+
+
+    <script>
+
+
+
+
+        $(document).on('change', '.select-product', setProductPrice)
+
+        $(document).on('click', '.add-product-btn', addExchangeProduct)
+
+        $(document).on('click', '.remove-product-btn', removeExchangeItem)
+
+
+
+
+        function setProductPrice()
+        {
+            let product = $(this).find('option:selected')
+
+            $('.input-price').val(product.data('price'))
+
+            $('.input-qty').focus()
+        }
+
+
+        function removeExchangeItem()
+        {
+            $(this).closest('tr').remove()
+            calculateExchangeTotal()
+        }
+
+
+        function addExchangeProduct()
+        {
+            let product_id      = $('.select-product').val()
+            let product_name    = $('.select-product').find('option:selected').text()
+            let unit            = $('.select-product').find('option:selected').data('unit')
+
+            let price           = Number($('.input-price').val())
+            let quantity        = Number($('.input-qty').val())
+
+            if(product_id == '' || $('.input-price').val() == '' || $('.input-qty') == '')
+            {
+                alert('Please fill all fields')
+                return false
+            }
+
+            let product_row = `
+                <tr>
+                    <td class="serial"></td>
+                    <td>
+                        ${product_name}
+                    </td>
+                    <td class="text-center">
+                        ${unit}
+                    </td>
+                    <td>
+                        <input type="text" readonly name="prices[${product_id}]" value="${price}" class="form-control text-center exchange-product-price only-number">
+                    </td>
+                    <td>
+                        <input type="text" readonly name="quantities[${product_id}]" value="${quantity}" class="form-control text-center exchange-product-qty only-number">
+                    </td>
+                    <td>
+                        <input type="text" readonly name="subtotals[${product_id}]" value="${price * quantity}" class="form-control text-center exchange-product-subtotal only-number">
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-sm btn-danger remove-product-btn">
+                            <i class="fa fa-trash-o"></i>
+                        </button>
+                    </td>
+                </tr>
+            `
+
+            $('.exchange-product-details').append(product_row)
+
+            calculateExchangeTotal()
+
+            $('.select-product').val('').trigger('chosen:updated')
+        }
+
+
+
+
+
+        function calculateExchangeTotal()
+        {
+            let subtotal        = 0
+            let total_qty       = 0
+            let total_amount    = 0
+
+            $('div').find('.serial').each(function(index) {
+
+                $(this).text(Number(index) + 1)
+
+                let quantity  = Number($(this).closest('tr').find('.exchange-product-qty').val())
+                let price    = Number($(this).closest('tr').find('.exchange-product-price').val())
+
+                subtotal        += quantity * price
+                total_qty       += quantity
+                total_amount    += subtotal
+
+                $(this).closest('tr').find('.exchange-product-subtotal').val(subtotal)
+            })
+
+
+            $('.total-qty').val(total_qty)
+            $('.total-amount').val(total_amount)
+
+        }
+
+    </script>
+
+<!--/MM-JS--></body></html>

@@ -5,10 +5,10 @@
     <div class="row">
         <div class="col-12">
             <div class="breadcrumbs ace-save-state" id="breadcrumbs">
-                <h4 class="pl-2"><i class="far fa-receipt"></i> @yield('title')</h4>
+                <h4 class="pl-2"><i class="fa fa-file-text-o"></i> @yield('title')</h4>
 
                 <ul class="breadcrumb mb-1">
-                    <li><a href="{{ route('home') }}"><i class="ace-icon far fa-home-lg-alt"></i></a></li>
+                    <li><a href="{{ route('home') }}"><i class="ace-icon fa fa-home"></i></a></li>
                     <li><a class="text-muted" href="{{ route('inv.purchases.index') }}">Purchase</a></li>
                     <li>{{ $stockAdjustment->invoice_no }}</li>
                 </ul>
@@ -124,7 +124,7 @@
 
 
                                 <div class="btn-group width-100">
-                                    <button class="btn btn-sm btn-success" style="width: 70%"> <i class="fad fa-thumbs-up"></i> APPROVE</button>
+                                    <button class="btn btn-sm btn-success" style="width: 70%"> <i class="fa fa-thumbs-up"></i> APPROVE</button>
                                     <a class="btn btn-sm btn-info" style="width: 29%" href="{{ route('inv.purchases.index') }}"> <i class="fa fa-bars"></i> LIST </a>
                                 </div>
                             </div>

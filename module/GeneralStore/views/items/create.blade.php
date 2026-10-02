@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title','Add New Item')
-@section('page-header')
-    <i class="fa fa-gear"></i> Add New Item
-@stop
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
@@ -18,123 +15,107 @@
 
 @section('content')
 
-    <div class="row">
+<x-mm.styles />
+<x-mm.page class="mm-gs mm-rst mm-rst-inv mm-rst-form" title="Add item" description="Create an item with its unit and opening balance.">
+    <x-slot name="actions">
+        @if(hasPermission('items.view', $slugs))
+        <a href="{{ route('items.index') }}" class="mm-button"><i class="ace-icon fa fa-list-alt"></i> Item List</a>
+        @endif
+    </x-slot>
+    <x-mm.panel class="tw-p-4">
+        <form class="form-horizontal" action="{{ route('items.store') }}" method="post" enctype="multipart/form-data">
+        @csrf
 
-        <div class="col-sm-8 col-sm-offset-2">
-            <div class="widget-box">
-                <div class="widget-header">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
-                    @if(hasPermission('items.view', $slugs))
-                        <span class="widget-toolbar">
-                            <a href="{{ route('items.index') }}"><i class="ace-icon fa fa-list-alt"></i> Item List</a>
-                        </span>
-                    @endif
+            @include('partials._alert_message')
 
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label" for="form-field-1-1"> Company Name </label>
+                <div class="col-xs-12 col-sm-8 @error('item_unit') has-error @enderror">
+                    <select name="company_id" class="form-control chosen-select" id="company_id">
+                        <option value="" selected disabled> Select </option>
+                        @foreach($companies as $id => $company)
+                            <option {{ old('company_id') ? $id == old('company_id') ? 'selected':'':'' }} value="{{ $id }}">{{ $company }}</option>
+                        @endforeach
+                    </select>
+
+                    @error('company_id')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
+            </div>
 
-                <div class="widget-body">
-                    <div class="widget-main">
-                        <form class="form-horizontal" action="{{ route('items.store') }}" method="post" enctype="multipart/form-data">
-                        @csrf
+            <div class="form-group">
+                <label class="col-sm-3 control-label" for="form-field-1-1"> Item Description </label>
+                <div class="col-xs-12 col-sm-8 @error('name') has-error @enderror">
+                    <input type="text" class="form-control" name="name" value="{{ old('name') }}" placeholder="Item Description">
 
-                            @include('partials._alert_message')
-
-
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label" for="form-field-1-1"> Company Name </label>
-                                <div class="col-xs-12 col-sm-8 @error('item_unit') has-error @enderror">
-                                    <select name="company_id" class="form-control chosen-select" id="company_id">
-                                        <option value="" selected disabled> Select </option>
-                                        @foreach($companies as $id => $company)
-                                            <option {{ old('company_id') ? $id == old('company_id') ? 'selected':'':'' }} value="{{ $id }}">{{ $company }}</option>
-                                        @endforeach
-                                    </select>
-
-                                    @error('company_id')
-                                    <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label" for="form-field-1-1"> Item Description </label>
-                                <div class="col-xs-12 col-sm-8 @error('name') has-error @enderror">
-                                    <input type="text" class="form-control" name="name" value="{{ old('name') }}" placeholder="Item Description">
-
-                                    @error('name')
-                                    <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-
-
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label" for="form-field-1-1"> Item Unit </label>
-                                <div class="col-xs-12 col-sm-8 @error('item_unit') has-error @enderror">
-                                    <select name="item_unit_id" class="form-control chosen-select" id="item_unit_id">
-                                        <option value="" selected disabled> Select </option>
-                                        @foreach($item_units as $id => $item_unit)
-                                            <option {{ old('item_unit_id') ? $id == old('item_unit_id') ? 'selected':'':'' }} value="{{ $id }}">{{ $item_unit }}</option>
-                                        @endforeach
-                                    </select>
-
-                                    @error('item_unit_id')
-                                    <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-
-                            </div>
-
-
-
-
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label" for="form-field-1-1"> Opening Balance </label>
-                                <div class="col-xs-12 col-sm-8 @error('opening_balance') has-error @enderror">
-                                    <input type="number" step="0.01" class="form-control opening_balance"  name="opening_balance" value="{{ old('opening_balance') }}" placeholder="Opening Balance">
-
-                                    @error('opening_balance')
-                                    <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label" for="form-field-1-1"> Assume Rate(Unit) </label>
-                                <div class="col-xs-12 col-sm-8 @error('rate') has-error @enderror">
-                                    <input type="number" step="0.01" class="form-control" name="rate" value="{{ old('rate') }}" placeholder="Rate">
-
-                                    @error('rate')
-                                    <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-
-
-                            <div class="form-group">
-                                <div class="pull-right" style="padding-right: 85px !important;">
-                                    @if(hasPermission('items.create', $slugs))
-                                        <button class="btn btn-success btn-sm"> <i class="fa fa-save"></i> Save</button>
-                                    @endif
-                                    <button class="btn btn-gray btn-sm" type="Reset"> <i class="fa fa-refresh"></i> Reset</button>
-                                    @if(hasPermission('items.view', $slugs))
-                                        <a href="{{ route('items.index') }}" class="btn btn-info btn-sm"> <i class="fa fa-list"></i> List</a>
-                                    @endif
-
-                                </div>
-                            </div>
-
-                        </form>
-                    </div>
+                    @error('name')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
             </div>
 
 
-        </div>
-    </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label" for="form-field-1-1"> Item Unit </label>
+                <div class="col-xs-12 col-sm-8 @error('item_unit') has-error @enderror">
+                    <select name="item_unit_id" class="form-control chosen-select" id="item_unit_id">
+                        <option value="" selected disabled> Select </option>
+                        @foreach($item_units as $id => $item_unit)
+                            <option {{ old('item_unit_id') ? $id == old('item_unit_id') ? 'selected':'':'' }} value="{{ $id }}">{{ $item_unit }}</option>
+                        @endforeach
+                    </select>
+
+                    @error('item_unit_id')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+
+            </div>
 
 
 
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label" for="form-field-1-1"> Opening Balance </label>
+                <div class="col-xs-12 col-sm-8 @error('opening_balance') has-error @enderror">
+                    <input type="number" step="0.01" class="form-control opening_balance"  name="opening_balance" value="{{ old('opening_balance') }}" placeholder="Opening Balance">
+
+                    @error('opening_balance')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label" for="form-field-1-1"> Assume Rate(Unit) </label>
+                <div class="col-xs-12 col-sm-8 @error('rate') has-error @enderror">
+                    <input type="number" step="0.01" class="form-control" name="rate" value="{{ old('rate') }}" placeholder="Rate">
+
+                    @error('rate')
+                    <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <div class="pull-right" style="padding-right: 85px !important;">
+                    @if(hasPermission('items.create', $slugs))
+                        <button class="btn btn-success btn-sm"> <i class="fa fa-save"></i> Save</button>
+                    @endif
+                    <button class="btn btn-gray btn-sm" type="Reset"> <i class="fa fa-refresh"></i> Reset</button>
+                    @if(hasPermission('items.view', $slugs))
+                        <a href="{{ route('items.index') }}" class="btn btn-info btn-sm"> <i class="fa fa-list"></i> List</a>
+                    @endif
+
+                </div>
+            </div>
+
+        </form>
+    </x-mm.panel>
+</x-mm.page>
 
 @endsection
 

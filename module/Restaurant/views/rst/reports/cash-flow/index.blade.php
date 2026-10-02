@@ -19,83 +19,52 @@
 
 
 @section('content')
-    <div class="row">
 
+<x-mm.styles />
+<x-mm.page class="mm-report mm-rst" title="Cash flow" description="Cash received and paid out for the selected invoice and dates.">
+    @include('partials._alert_message')
+    <x-mm.panel class="mm-report-filter">
+        <form class="mm-setup-filter mm-report-form">
 
-        <div class="col-sm-12">
-            <div class="widget-box">
-                <div class="widget-header">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
-
-                </div>
-                <div class="widget-body">
-                    <div class="widget-main">
-
-                        @include('partials._alert_message')
-
-                        <!-- Search -->
-                        <div class="row">
-                            <div class="col-sm-8 col-sm-offset-2">
-                                <form>
-                                    <table class="table table-bordered">
-                                        <thead>
-                                            <tr>
-                                                <td>Invoice No</td>
-                                                <td class="text-right">From</td>
-                                                <td>To</td>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-
-                                                <td>
-                                                    <input type="text" name="invoice_no"
-                                                        value="{{ request('invoice_no') }}" class="form-control"
-                                                        placeholder="Invoice No">
-                                                </td>
-                                                <td>
-                                                    <input type="text" name="from_date" value="{{ request('from_date') }}"
-                                                        class="form-control date-picker">
-                                                </td>
-                                                <td>
-                                                    <input type="text" name="to_date" value="{{ request('to_date') }}"
-                                                        class="form-control date-picker">
-                                                </td>
-                                                <td>
-                                                    <div class="btn-group btn-corner">
-                                                        <button class="btn btn-sm btn-success" type="submit">
-                                                            <i class="fa fa-search"></i> Search
-                                                        </button>
-                                                        <a href="{{ request()->url() }}" class="btn btn-sm">
-                                                            <i class="fa fa-refresh"></i>
-                                                        </a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-
-                                </form>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12 px-2">
-                                @include('bar/reports/cash-flow/export/excel')
-
-                                <x-paginate :data="$cashFlows" />
-
-                                <x-export-button :pdf=1 :excel=1 />
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
+            <div class="input-group">
+                <span class="input-group-addon">Invoice</span>
+                <input type="text" name="invoice_no"
+                    value="{{ request('invoice_no') }}" class="form-control"
+                    placeholder="Invoice No">
             </div>
 
+            <div class="input-group">
+                <span class="input-group-addon">From</span>
+                <input type="text" name="from_date" value="{{ request('from_date') }}"
+                    class="form-control date-picker">
+            </div>
 
-        </div>
-    </div>
+            <div class="input-group">
+                <span class="input-group-addon">To</span>
+                <input type="text" name="to_date" value="{{ request('to_date') }}"
+                    class="form-control date-picker">
+            </div>
 
+            <div class="btn-group" style="display: flex">
+                <button class="mm-button" type="submit">
+                    <i class="fa fa-search"></i> Search
+                </button>
+                <a href="{{ request()->url() }}" class="mm-button mm-button-secondary" aria-label="Reset">
+                    <i class="fa fa-refresh"></i>
+                </a>
+            </div>
+        </form>
+    </x-mm.panel>
+    <x-mm.panel>
+        <x-mm.table-scroll label="Cash flow">
+            @include('bar/reports/cash-flow/export/excel')
+        </x-mm.table-scroll>
+
+        <x-paginate :data="$cashFlows" />
+
+        <x-export-button :pdf=1 :excel=1 />
+    </x-mm.panel>
+</x-mm.page>
 
 @endsection
 

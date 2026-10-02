@@ -2,74 +2,68 @@
 @section('title', 'Guest List')
 @section('page-header') <i class="fa fa-info-circle"></i> Guest List @stop
 
-@section('css')
-    @include('guests.include.css')
-@endsection
-
-
 @section('content')
-    <div class="page-header">
-
-
-        <a class="btn btn-xs btn-info" href="{{ route('guests.create', ['type' => 'upload']) }}" style="float: right; margin: 0 2px;">
-            <i class="fa fa-upload"></i> Upload Guests
-        </a>
-        <a class="btn btn-xs btn-info" href="{{ route('guests.create') }}" style="float: right; margin: 0 2px;"> <i
-                class="fa fa-plus"></i> Add New Guests </a>
-        <h1>
-            <i class="fa fa-info-circle green"></i> Guest User List
-        </h1>
-    </div>
+    <x-mm.styles />
+    <x-mm.page title="Guest directory" description="Find guest details, manage records and stay in touch.">
+        <x-slot name="actions">
+            <a class="mm-button mm-button-secondary" href="{{ route('guests.create', ['type' => 'upload']) }}">
+                <i class="fa fa-upload" aria-hidden="true"></i> Upload Guests
+            </a>
+            <a class="mm-button" href="{{ route('guests.create') }}">
+                <i class="fa fa-plus" aria-hidden="true"></i> Add New Guests
+            </a>
+        </x-slot>
+        <x-mm.badge>Total: {{ $guests->total() }}</x-mm.badge>
 
     @include('partials._alert_message')
 
-    <div class="row">
-        <div class="col-xs-12">
+    <div class="tw-space-y-4">
 
             @include('guests/include/filter')
 
+            <div class="mm-panel tw-overflow-hidden">
             <form id="submitSendSmsForm" action="{{ route('guests.send-sms') }}" method="GET">
                 @csrf
 
                 <input type="hidden" id="isAllSelected" name="isAllSelected" value="0">
                 <input type="hidden" name="isFromGuestList" value="1">
 
-                <div class="form-actions center" style="text-align: right !important; margin: 0; padding: 8px 8px; border-left: 1px solid #ddd; border-right: 1px solid #ddd;">
-                    <a onclick="selectEveryone()" id="selectEveryone" class="btn btn-sm btn-info send-sms-btn" style="transition: 300ms; background-color: #4F99C6 !important; color: white !important; border-color: #4F99C6 !important;">
-                        &#10003; Select All
-                    </a>
-                    <button type="submit" class="btn btn-sm btn-success send-sms-btn" style="transition: 300ms; background-color: #87B87F !important; color: white !important;">
-                        <i class="far fa-paper-plane"></i> Send SMS
+                <div class="tw-flex tw-flex-wrap tw-justify-end tw-gap-2 tw-p-4 mm-no-print">
+                    <button type="button" onclick="selectEveryone()" id="selectEveryone" class="mm-button mm-button-secondary send-sms-btn">
+                        <i class="fa fa-check" aria-hidden="true"></i> Select All
+                    </button>
+                    <button type="submit" class="mm-button send-sms-btn">
+                        <i class="fa fa-paper-plane" aria-hidden="true"></i> Send SMS
                     </button>
                 </div>
 
-                <div>
+                <x-mm.table-scroll label="Guest directory records">
                     <table class="table table-striped table-bordered table-hover">
                         <thead>
                             <tr>
-                                <th class="text-center">
+                                <th scope="col" class="text-center">
                                     <label class="inline">
-                                        <input type="checkbox" id="selectAll" class="ace">
+                                        <input type="checkbox" id="selectAll" class="ace" aria-label="Select all visible guests">
                                         <span class="lbl"></span>
                                     </label>
                                 </th>
-                                <th>SL</th>
-                                <th class="center">Name</th>
-                                <th class="center">Phone</th>
-                                <th class="center">Gender</th>
-                                <th class="center">Email</th>
-                                <th class="center">NID / Passport</th>
-                                <th class="center">Country</th>
-                                <th class="center">Action</th>
+                                <th scope="col">SL</th>
+                                <th scope="col" class="center">Name</th>
+                                <th scope="col" class="center">Phone</th>
+                                <th scope="col" class="center">Gender</th>
+                                <th scope="col" class="center">Email</th>
+                                <th scope="col" class="center">NID / Passport</th>
+                                <th scope="col" class="center">Country</th>
+                                <th scope="col" class="center">Action</th>
                             </tr>
                         </thead>
 
                         <tbody>
-                            @foreach ($guests as $item)
+                            @forelse ($guests as $item)
                                 <tr>
                                     <td class="text-center">
                                         <label class="inline">
-                                            <input type="checkbox" name="guest_id[]" value="{{ $item->id }}" class="ace">
+                                            <input type="checkbox" name="guest_id[]" value="{{ $item->id }}" class="ace" aria-label="Select {{ $item->name }}">
                                             <span class="lbl">&nbsp;</span>
                                         </label>
                                     </td>
@@ -90,32 +84,39 @@
                                     <td>{{ optional($item->country)->name }}</td>
                                     <td class="center">
                                         <div class="btn-group">
-                                            <a class="btn btn-sm btn-success" href="{{ route('guests.edit', $item->id) }}">
+                                            <a class="btn btn-sm btn-success" href="{{ route('guests.edit', $item->id) }}" title="Edit guest">
                                                 <i class="fa fa-edit"></i>
                                             </a>
 
-                                            <a class="btn btn-sm btn-info" href="{{ route('guests.invoice', $item->id) }}" target="_blank">
-                                                <i class="fas fa-print"></i>
+                                            <a class="btn btn-sm btn-info" href="{{ route('guests.invoice', $item->id) }}" target="_blank" title="Guest invoice">
+                                                <i class="fa fa-print"></i>
                                             </a>
 
                                             <button type="button"
                                                 onclick="delete_item(`{{ route('guests.destroy', $item->id) }}`)"
                                                 class="btn btn-sm btn-danger" title="Delete">
-                                                <i class="fas fa-trash"></i>
+                                                <i class="fa fa-trash-o"></i>
                                             </button>
                                         </div>
                                     </td>
                                 </tr>
-                            @endforeach
+                            @empty
+                                <tr>
+                                    <td colspan="9" class="text-center tw-p-6">
+                                        <strong class="text-danger"><i class="fa fa-exclamation-triangle"></i> No guests found{{ request()->hasAny(['name','phone_no','nid_no']) ? ' for this search' : '' }}.</strong>
+                                    </td>
+                                </tr>
+                            @endforelse
                         </tbody>
                     </table>
-                </div>
+                </x-mm.table-scroll>
 
             </form>
+            </div>
             @include('partials._paginate', ['data' => $guests])
 
-        </div>
     </div>
+    </x-mm.page>
 @endsection
 
 

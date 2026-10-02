@@ -12,18 +12,9 @@
 
 @section('content')
 
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="widget-box">
-                <div class="widget-header" style="background:#DFE2CD">
-
-                    <span class="widget-toolbar pull-left" style="font-size:20px !important; color:#41B883">
-                       @yield('page-header')
-                    </span>
-                </div>
-
-                <div class="widget-body">
-                    <div class="widget-main">
+    <x-mm.styles />
+<x-mm.page class="mm-perm mm-perm-access" title="Edit user permissions" description="Change what this user can open.">
+    <x-mm.panel>
                         <form class="form-horizontal" action="{{ route('update.permission.access', $user->id) }}" method="post" role="form">
                             @csrf  @method('put')
 
@@ -469,13 +460,9 @@
 
 
                         </form>
-                    </div>
-                </div>
-            </div>
-
-
-        </div>
-    </div>
+                    
+    </x-mm.panel>
+</x-mm.page>
 
     @if (!(\Route::has('selected_employee')))
         <input type="hidden" id="route-exist" value="no">

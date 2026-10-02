@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'gs'], function () {
 
-    Route::resource('item-units', 'ItemUnitController');
+    Route::resource('item-units', 'ItemUnitController')->except(['show']); // round 3: show not implemented (docs/BUGS.md)
 
     Route::resource('items', 'ItemController');
 
@@ -26,7 +26,7 @@ Route::group(['prefix' => 'gs'], function () {
 
 
     Route::get('print-gin-list-details/{goodsRequisition}', 'GoodsRequisitionController@printGin')->name('print.gin-details');
-    Route::resource('goods-requisitions', 'GoodsRequisitionController');
+    Route::resource('goods-requisitions', 'GoodsRequisitionController')->except(['show']); // round 3: show not implemented (docs/BUGS.md)
     Route::get('gin-list', 'GoodsRequisitionController@GINList')->name('gin.list');
     Route::get('gin-list/{goodsRequisition}', 'GoodsRequisitionController@GINListShow')->name('gin.list.show');
     Route::get('goods-requisition/approve/{goodsRequisition}', 'GoodsRequisitionController@approveGoodsRequisitionShow')->name('approve.goods.requisition.show');
@@ -69,7 +69,7 @@ Route::group(['prefix' => 'generalstore'], function () {
 
 
 
-    Route::resource('suppliers', 'SupplierController');
+    Route::resource('suppliers', 'SupplierController')->except(['show']); // round 3: show not implemented (docs/BUGS.md)
     Route::resource('supplier-types', 'SupplierTypeController');
 
     /*

@@ -1,0 +1,96 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">
+    <link rel="stylesheet" href="/assets/css/chosen.min.css" />
+<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+    <section class="mm-ui mm-hotel-setup mm-perm mm-perm-narrow">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Edit permission</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Change the parent permission, name or description.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button mm-button-secondary" href="http://localhost/setting/permissions"> <i class="fa fa-list-alt"></i> Permission List </a></div>        </header>
+        <div class="mm-panel tw-p-4 sm:tw-p-6"><form class="form-horizontal" action="http://localhost/setting/permissions/11" method="post" >
+                        <input type="hidden" name="_token" value="fixture-csrf-token">                        <input type="hidden" name="_method" value="PUT">
+                            
+
+
+
+
+                            <div class="form-group col-sm-12">
+                                <label class="col-sm-3 control-label" for="form-field-1-1"> Sub Module </label>
+                                <div class="col-xs-12 col-sm-8 ">
+                                    <select name="parent_permission_id" id="form-field-select-3" style="with:100% !important" data-placeholder="Select" class="form-control chosen-select">
+                                        <option value="">-Select-</option>
+                                                                                <option value="7" selected>Room list</option>
+                                          
+                                    </select>
+
+                                                                    </div>
+                            </div>
+                            
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="form-field-1-1">Name </label>
+                                <div class="col-xs-12 col-sm-8 ">
+                                    <input type="text" class="form-control" name="name"
+                                           value="View rooms" placeholder="Permission Name">
+
+                                                                    </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="form-field-1-1">Slug </label>
+                                <div class="col-xs-12 col-sm-8 ">
+                                    <input type="text"  class="form-control" name="slug"
+                                           value="rooms.view" placeholder="Permission Slug">
+
+                                                                    </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label" for="form-field-1-1">Parent </label>
+                                <div class="col-xs-12 col-sm-8">
+                                    <textarea name="description" rows="3" class="form-control" placeholder="Permission Description">See rooms</textarea>
+                                </div>
+                            </div>
+
+
+
+
+                            <div class="form-group">
+                                <label for="inputError" class="col-xs-12 col-sm-3 col-md-3 control-label"></label>
+                                <div class="col-xs-12 col-sm-6">
+                                    <button class="btn btn-success"> <i class="fa fa-save"></i> Update</button>
+                                    <a href="http://localhost/setting/permissions" class="btn btn-info"> <i class="fa fa-list"></i> List </a>
+                                </div>
+                            </div>
+
+                        </form></div>
+    </div>
+</section>
+
+
+
+
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
+
+    <script src="/assets/js/chosen.jquery.min.js"></script>
+    <script src="/assets/js/jquery.maskedinput.min.js"></script>
+    
+
+
+    <!--  Select Box Search-->
+    <script type="text/javascript">
+        jQuery(function($){
+            if(!ace.vars['touch']) {
+                $('.chosen-select').chosen({allow_single_deselect:true});
+            }
+        });
+    </script>
+
+   
+<!--/MM-JS--></body></html>

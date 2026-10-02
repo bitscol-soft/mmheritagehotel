@@ -78,7 +78,8 @@
         <div class="input-group width-100">
             <span class="border-none input-group-addon width-27" style="text-align: left"> Check In Date <span
                     style="color: red">*</span></span>
-            <input class="form-control date-picker check-in-date" value="{{ old('check_in_date', date('Y-m-d')) }}"
+            <input class="form-control date-picker check-in-date" value="{{ old('check_in_date', $booking->check_in_date) }}"
+                data-business-date="{{ today_from_system() }}" data-allow-past="1" autocomplete="off"
                 name="check_in_date" type="text" required>
             <span class="input-group-addon">
                 <i class="fa fa-calendar bigger-110"></i>
@@ -97,7 +98,7 @@
             <span class="border-none input-group-addon width-27" style="text-align: left"> Check Out Date <span
                     style="color: red">*</span></span>
             <input class="form-control checkOut check-out-date-picker" value="{{ $booking->check_out_date }}"
-                name="check_out" type="text" data-date-format="dd-mm-yyyy">
+                name="check_out" type="text" data-date-format="yyyy-mm-dd" autocomplete="off">
             <input type="hidden" class="expectedCheckoutDate"
                 value="{{ date('Y-m-d', strtotime('+1 day', strtotime($booking->check_out_date))) }}">
             <input type="hidden" class="previousCheckoutDate" value="{{ $booking->check_out_date }}">

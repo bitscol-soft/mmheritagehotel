@@ -1,37 +1,15 @@
-<div class="row">
-    <form action="">
-        <table class="table table-striped table-bordered table-hover">
-            <tr>
-                <td>
-                    <div class="input-group">
-                        <span class="input-group-addon">Name</span>
-                        <input type="text" name="name" class="form-control" value="{{ request('name') }}">
-                    </div>
-                </td>
-                <td>
-                    <div class="input-group">
-                        <span class="input-group-addon">Mobile</span>
-                        <input type="text" name="phone_no" class="form-control" value="{{ request('phone_no') }}">
-                    </div>
-                </td>
-                </td>
-                <td>
-                    <div class="input-group">
-                        <span class="input-group-addon">NID</span>
-                        <input type="text" name="nid_no" class="form-control" value="{{ request('nid_no') }}">
-                    </div>
-                </td>
-                <td>
-                    <div class="btn-group btn-corner">
-                        <button type="submit" class="btn btn-sm btn-success">
-                            <i class="fa fa-search"></i> Search
-                        </button>
-                        <a href="{{ request()->url() }}" class="btn btn-sm btn-default">
-                            <i class="fa fa-refresh"></i>
-                        </a>
-                    </div>
-                </td>
-            </tr>
-        </table>
+<x-mm.panel class="guest-filter-panel">
+    <form action="" method="get" class="tw-grid tw-gap-4 sm:tw-grid-cols-2 lg:tw-grid-cols-4 tw-items-end">
+        <x-mm.field label="Name" id="guest-filter-name" name="name" :value="request('name')" />
+        <x-mm.field label="Mobile" id="guest-filter-phone" name="phone_no" :value="request('phone_no')" />
+        <x-mm.field label="NID / Passport" id="guest-filter-nid" name="nid_no" :value="request('nid_no')" />
+        <div class="tw-flex tw-flex-wrap tw-gap-2">
+            <button type="submit" class="mm-button">
+                <i class="fa fa-search" aria-hidden="true"></i> Search
+            </button>
+            <a href="{{ request()->url() }}" class="mm-button mm-button-secondary" aria-label="Clear guest filters">
+                <i class="fa fa-refresh" aria-hidden="true"></i> Clear
+            </a>
+        </div>
     </form>
-</div>
+</x-mm.panel>

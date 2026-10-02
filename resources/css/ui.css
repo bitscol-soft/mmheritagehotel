@@ -1,0 +1,848 @@
+/* No @tailwind base: even Tailwind's universal variable reset is deliberately
+   excluded. Bootstrap/Ace owns legacy elements; these rules are opt-in only. */
+@tailwind components;
+@tailwind utilities;
+
+.mm-ui {
+    --mm-brand: #2f63a8;
+    --mm-ink: #1f2a33;
+    --mm-muted: #526578;
+    --mm-line: #dbe5f1;
+    --mm-bg: #f7fafd;
+    --mm-surface: #ffffff;
+    color: var(--mm-ink);
+    font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    min-width: 0;
+}
+.mm-ui *, .mm-ui *::before, .mm-ui *::after { box-sizing: border-box; }
+.mm-ui .mm-panel { border: 1px solid var(--mm-line); border-radius: 10px; background: var(--mm-surface); }
+.mm-ui .mm-button {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+    min-height: 40px; padding: 8px 16px; border: 1px solid var(--mm-brand);
+    border-radius: 6px; background: var(--mm-brand); color: white;
+    font: inherit; font-weight: 600; text-decoration: none; cursor: pointer;
+}
+.mm-ui .mm-button:hover { background: #275188; border-color: #275188; color: white; }
+.mm-ui .mm-button-secondary { background: white; color: var(--mm-brand); border-color: var(--mm-line); }
+.mm-ui .mm-button-secondary:hover { background: #eef3f9; color: var(--mm-brand); }
+.mm-ui :focus-visible { outline: 3px solid var(--mm-brand); outline-offset: 3px; }
+.mm-ui .mm-input {
+    display: block; width: 100%; min-height: 40px; padding: 8px 12px;
+    border: 1px solid #aab9ca; border-radius: 6px; color: var(--mm-ink);
+    background: white; font: inherit;
+}
+.mm-ui .mm-table-scroll { width: 100%; overflow-x: auto; }
+.mm-ui .mm-table-scroll table { width: 100%; margin: 0; border-collapse: collapse; font-size: 14px; }
+.mm-ui .mm-table-scroll thead th { background: var(--mm-bg); color: var(--mm-muted); font-size: 12px; white-space: nowrap; }
+.mm-ui .mm-table-scroll th, .mm-ui .mm-table-scroll td { padding: 12px; border: 0; border-bottom: 1px solid var(--mm-line); vertical-align: middle; }
+.mm-ui .mm-table-scroll tbody tr:hover { background: #f0f5fa; }
+.mm-ui .mm-table-scroll .btn-group { white-space: nowrap; display: inline-flex; }
+.mm-ui .mm-badge { display: inline-flex; padding: 4px 12px; border-radius: 9999px; background: #eef3f9; color: #275188; font-size: 12px; font-weight: 600; }
+@media (prefers-reduced-motion: reduce) {
+    .mm-ui *, .mm-ui *::before, .mm-ui *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+}
+@media print {
+    .mm-ui .mm-no-print { display: none !important; }
+    .mm-ui .mm-table-scroll { overflow: visible; }
+}
+
+/* Booking page compatibility rules, moved intact out of its Blade view. */
+.mm-ui.mm-bookings ul li {
+            list-style: none;
+        }
+.mm-ui.mm-bookings .total-room-amount input[readonly] {
+            background-color: white !important;
+        }
+.mm-ui.mm-bookings .total-night-count input[readonly] {
+            background-color: white !important;
+        }
+.mm-ui.mm-bookings .apprearence-none {
+            appearance: none;
+        }
+.mm-ui.mm-bookings table thead th {
+            background-color: #4d8cb3;
+            color: #fff;
+        }
+.mm-ui.mm-bookings .transactions p {
+            margin-bottom: 0 !important;
+        }
+.mm-ui.mm-bookings .action-button-td {
+            padding: 5px 3px !important;
+        }
+.mm-ui.mm-bookings .action-button {
+            width: 105px;
+            margin: 0 auto;
+        }
+.mm-ui.mm-bookings .action-button a,
+.mm-ui.mm-bookings .action-button button {
+            padding: 0px !important;
+            border-width: 2px !important;
+            margin-bottom: 3px;
+            width: 22px;
+            height: 22px;
+            line-height: 20px;
+            text-align: center;
+            align-items: center;
+        }
+.mm-ui.mm-bookings .action-button a i,
+.mm-ui.mm-bookings .action-button button i {
+            font-size: 12px;
+        }
+
+.mm-ui.mm-bookings .middle-col {
+            position: relative;
+        }
+.mm-ui.mm-bookings .middle-col::after {
+            content: '';
+            position: absolute;
+            top: -5px;
+            left: -8px;
+            height: 34px;
+            width: 1.7px;
+            background: #ccc;
+        }
+.mm-ui.mm-bookings .booking-filter-panel {
+            background: #f7fafd;
+            border: 1px solid #e4ebf3;
+            border-radius: 4px;
+            padding: 12px 6px 8px;
+        }
+.mm-ui.mm-bookings .booking-filter-panel .chosen-container {
+            min-height: 32px;
+        }
+.mm-ui.mm-bookings .booking-filter-panel .input-group {
+            margin-bottom: 4px;
+        }
+.mm-ui.mm-bookings .middle-col::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            right: -7px;
+            height: 34px;
+            width: 1.7px;
+            background: #ccc;
+        }
+
+/* Scoped plugin adapters: keep Chosen/date-picker classes and their JS intact. */
+.mm-ui.mm-bookings .mm-booking-filter { padding: 20px; border-radius: 10px; }
+.mm-ui.mm-bookings .mm-booking-filter .input-group { width: 100%; margin: 0; }
+.mm-ui.mm-bookings .mm-booking-filter .form-control { min-height: 40px; font-size: 14px; }
+.mm-ui.mm-bookings .mm-booking-filter .chosen-container { width: 100% !important; min-width: 0; }
+.mm-ui.mm-bookings .mm-booking-filter .chosen-single { min-height: 40px; line-height: 38px; border-radius: 6px; background: white; }
+.mm-ui.mm-bookings .mm-booking-filter .chosen-single div b { background-position-y: 10px; }
+.mm-ui.mm-bookings .mm-booking-filter .chosen-drop { border-color: var(--mm-line); }
+/* Override former compact action rules only in the results region, not modals. */
+.mm-ui.mm-bookings .mm-table-scroll thead th { background: var(--mm-bg); color: var(--mm-muted); }
+.mm-ui.mm-bookings .mm-table-scroll .action-button { width: 132px; }
+.mm-ui.mm-bookings .mm-table-scroll .action-button a,
+.mm-ui.mm-bookings .mm-table-scroll .action-button button { width: 30px; height: 30px; line-height: 26px; }
+
+/* Guest form adapter. The original Bootstrap/plugin nodes and hooks remain. */
+.mm-ui.mm-guest-form .form-horizontal > .row { margin: 0; }
+.mm-ui.mm-guest-form .form-horizontal > .row > .col-sm-12 { padding: 0; }
+.mm-ui.mm-guest-form .form-group { margin: 0 0 24px; }
+.mm-ui.mm-guest-form .form-group > .control-label { color: var(--mm-ink); font-weight: 600; padding-top: 10px; }
+.mm-ui.mm-guest-form .form-control { min-height: 40px; border-radius: 6px; font-size: 14px; }
+.mm-ui.mm-guest-form textarea.form-control { min-height: 80px; }
+.mm-ui.mm-guest-form .chosen-container,
+.mm-ui.mm-guest-form .select2-container { width: 100% !important; max-width: 100%; }
+.mm-ui.mm-guest-form .chosen-single { min-height: 40px; line-height: 38px; background: white; border-radius: 6px; }
+.mm-ui.mm-guest-form .form-actions { margin: 24px 0 0; padding: 16px; border-top: 1px solid var(--mm-line); background: var(--mm-bg); }
+.mm-ui.mm-guest-form .form-actions .mm-button { margin: 4px; }
+.mm-ui.mm-guest-form #results img,
+.mm-ui.mm-guest-form #my_camera img,
+.mm-ui.mm-guest-form #my_camera video { max-width: 100%; height: auto; }
+.mm-ui.mm-guest-form #my_camera { max-width: 100%; }
+.mm-ui.mm-guest-form .upload_nid .ace-file-input { display: block; }
+.mm-ui.mm-guest-form .photo-remove { position: absolute; background: #a12b29; color: white; padding: 10px 15px; border-radius: 6px; top: 0; cursor: pointer; display: none; }
+.mm-ui.mm-guest-form .nid_photo:hover .photo-remove { display: block; }
+@media (max-width: 767px) {
+    .mm-ui.mm-guest-form .form-group > [class*="col-"] { width: 100%; float: none; padding-left: 0; padding-right: 0; }
+    .mm-ui.mm-guest-form .form-group > .control-label { display: block; text-align: left; margin-bottom: 8px; padding-top: 0; }
+    .mm-ui.mm-guest-form .form-group > .col-xs-6 { margin-bottom: 12px; }
+    .mm-ui.mm-guest-form .form-actions { text-align: left !important; }
+}
+
+/* Room board shell only: tile/status/grid/selection styles remain legacy-owned. */
+.mm-ui.mm-booking-board-page .table { margin-bottom: 0 !important; }
+.mm-ui.mm-booking-board-page .board-stay-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0 0 24px;
+}
+.mm-ui.mm-booking-board-page .board-stay-strip .stay-chip {
+    margin: 0;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    color: var(--mm-ink);
+    background: var(--mm-bg);
+    border-color: var(--mm-line);
+}
+.mm-ui.mm-booking-board-page .board-stay-strip .stay-chip b { color: var(--mm-brand); }
+@media (max-width: 479px) {
+    .mm-ui.mm-booking-board-page .board-stay-strip .stay-chip { flex: 1 1 140px; }
+}
+
+/* DataTables adapters confined to migrated room-management pages. */
+.mm-ui.mm-room-inventory .dataTables_wrapper > .row { margin-left: 0; margin-right: 0; }
+.mm-ui.mm-room-inventory .dataTables_filter input,
+.mm-ui.mm-room-inventory .dataTables_length select { min-height: 36px; border-radius: 6px; }
+.mm-ui.mm-room-inventory .mm-table-scroll .btn-group .btn { min-width: 36px; min-height: 36px; line-height: 28px; }
+.mm-ui.mm-room-inventory .mm-table-scroll img { max-width: 120px; object-fit: contain; }
+@media (max-width: 767px) {
+    .mm-ui.mm-room-inventory .dataTables_filter { text-align: left; }
+    .mm-ui.mm-room-inventory .dataTables_filter input { max-width: 180px; }
+}
+
+/* Room forms retain the shared .row ancestry used by duplicate-number checks. */
+.mm-ui.mm-room-form .form-horizontal > .row { margin: 0; }
+.mm-ui.mm-room-form .form-horizontal > .row > .col-sm-12 { padding: 0; }
+.mm-ui.mm-room-form .form-group { margin: 0 0 24px; }
+.mm-ui.mm-room-form .control-label { color: var(--mm-ink); font-weight: 600; }
+.mm-ui.mm-room-form .form-control { min-height: 40px; border-radius: 6px; font-size: 14px; }
+.mm-ui.mm-room-form .chosen-container { width: 100% !important; max-width: 100%; }
+.mm-ui.mm-room-form .chosen-single { min-height: 40px; line-height: 38px; background: white; border-radius: 6px; }
+.mm-ui.mm-room-form .mm-room-form-actions { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: 8px; margin: 24px 0 0; padding: 16px; background: var(--mm-bg); border-top: 1px solid var(--mm-line); }
+.mm-ui.mm-room-form .chosen-container-active .chosen-single { outline: 3px solid var(--mm-brand); outline-offset: 2px; }
+@media (max-width: 767px) {
+    .mm-ui.mm-room-form .form-group > [class*="col-"] { width: 100%; float: none; padding-left: 0; padding-right: 0; }
+    .mm-ui.mm-room-form .control-label { display: block; text-align: left; margin-bottom: 8px; padding-top: 0; }
+    .mm-ui.mm-room-form .mm-room-form-actions .mm-button { width: 100%; }
+}
+
+/* Dashboard-only legacy chart/room-price adapters. */
+.mm-ui.mm-dashboard .infobox {
+
+            height: 90px !important;
+            width: fit-content !important;
+        }
+.mm-ui.mm-dashboard .infobox-content {
+            white-space: nowrap;
+        }
+.mm-ui.mm-dashboard .infobox-small {
+            width: 100% !important;
+        }
+.mm-ui.mm-dashboard .new-employee-table>tbody>tr>td,
+.mm-ui.mm-dashboard .table>tbody>tr>th,
+.mm-ui.mm-dashboard .table>tfoot>tr>td,
+.mm-ui.mm-dashboard .table>tfoot>tr>th,
+.mm-ui.mm-dashboard .table>thead>tr>td,
+.mm-ui.mm-dashboard .table>thead>tr>th {
+            padding: 4px;
+        }
+.mm-ui.mm-dashboard .chosen-container>.chosen-single,
+.mm-ui.mm-dashboard [class*=chosen-container]>.chosen-single {
+            line-height: 24px !important;
+            height: 25px !important;
+        }
+.mm-ui.mm-dashboard .chosen-container-single {
+            width: 164px !important;
+        }
+.mm-ui.mm-dashboard .top-sheet>.chosen-container-single .chosen-single {
+            background: #a3cc8d !important;
+        }
+.mm-ui.mm-dashboard .dept-wise-attnd>.chosen-container-single .chosen-single {
+            background: #d495c3 !important;
+        }
+.mm-ui.mm-dashboard .shift-wise-attnd>.chosen-container-single .chosen-single {
+            background: #bdb0b0 !important;
+        }
+.mm-ui.mm-dashboard .fc-month-view>td,
+.mm-ui.mm-dashboard th {
+            height: 20px !important;
+            width: 20px !important;
+        }
+.mm-ui.mm-dashboard .room-price .label.label-xs.arrowed {
+            padding: 12px 8px;
+        }
+.mm-ui.mm-dashboard .room-price .label.label-xs.arrowed i {
+            margin-top: -12px;
+        }
+.mm-ui.mm-dashboard .room-price span.label.label-xs.arrowed::before,
+.mm-ui.mm-dashboard .room-price span.label.label-xs.arrowed::after {
+            border-width: 12px 6px !important;
+        }
+
+.mm-ui .mm-dashboard-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.mm-ui .mm-dashboard-stat { min-width: 0; border: 1px solid var(--mm-line); border-top: 3px solid var(--mm-brand); border-radius: 10px; background: var(--mm-surface); padding: 20px; }
+.mm-ui .mm-dashboard-stat h2 { margin: 0; font-size: 14px; line-height: 20px; font-weight: 600; color: var(--mm-muted); }
+.mm-ui .mm-dashboard-value { margin: 16px 0; font-size: 32px; font-weight: 700; line-height: 1.2; overflow-wrap: anywhere; }
+.mm-ui .mm-dashboard-value span { display: block; margin-top: 4px; font-size: 12px; font-weight: 400; color: var(--mm-muted); }
+.mm-ui .mm-dashboard-stat dl { margin: 0; border-top: 1px solid var(--mm-line); padding-top: 12px; }
+.mm-ui .mm-dashboard-stat dl > div { display: flex; justify-content: space-between; gap: 12px; margin-top: 6px; }
+.mm-ui .mm-dashboard-stat dt { font-size: 12px; font-weight: 400; color: var(--mm-muted); }
+.mm-ui .mm-dashboard-stat dd { margin: 0; font-weight: 600; overflow-wrap: anywhere; }
+.mm-ui .mm-dashboard-rooms { border-top-color: #387b69; }
+.mm-ui .mm-dashboard-board { border-top: 1px solid var(--mm-line); padding-top: 24px; }
+.mm-ui.mm-dashboard .mm-dashboard-board > .row { margin: 0; }
+@media (max-width: 1199px) { .mm-ui .mm-dashboard-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 575px) { .mm-ui .mm-dashboard-grid { grid-template-columns: minmax(0, 1fr); } }
+
+/* Housekeeping layout only: status colours and AJAX logic stay with legacy code. */
+.mm-ui.mm-housekeeping { counter-reset: section; }
+.mm-ui.mm-housekeeping .table { margin-bottom: 0 !important; }
+.mm-ui.mm-housekeeping .count:before { counter-increment: section; content: counter(section); }
+.mm-ui.mm-housekeeping select:invalid { height: 0px !important; opacity: 0 !important; position: absolute !important; display: flex !important; }
+.mm-ui.mm-housekeeping select:invalid[multiple] { margin-top: 15px !important; }
+.mm-ui .mm-housekeeping-help { padding: 20px; background: #edf4fb; border: 1px solid var(--mm-line); border-radius: 10px; }
+.mm-ui .mm-housekeeping-help p { margin: 8px 0 0; color: var(--mm-muted); }
+.mm-ui .mm-housekeeping-board { padding: 20px; }
+.mm-ui.mm-housekeeping .col-sm-9.col-sm-offset-3 { width: 100%; margin-left: 0; float: none; padding: 0; }
+.mm-ui.mm-housekeeping .col-sm-9 > p { display: flex; flex-wrap: wrap; gap: 12px; margin: 0 0 20px; }
+.mm-ui.mm-housekeeping .search-results { margin-top: 0 !important; }
+.mm-ui.mm-housekeeping .room-search-list { padding: 20px 0; border-top: 1px solid var(--mm-line); }
+.mm-ui.mm-housekeeping .room-list > .row { display: flex; flex-wrap: wrap; gap: 12px; margin: 0; }
+.mm-ui.mm-housekeeping .room-list > .row > .col-md-1 { float: none; flex: 0 0 100px; width: 100px; padding: 0; }
+.mm-ui.mm-housekeeping .room-list > .row > .col-md-5 { width: 100%; }
+.mm-ui.mm-housekeeping .room-status-ui, .mm-ui.mm-housekeeping .booked-room-info { min-height: 80px; }
+@media (max-width: 575px) {
+    .mm-ui .mm-housekeeping-board { padding: 12px; }
+    .mm-ui.mm-housekeeping .room-list > .row > .col-md-1 { flex-basis: calc(50% - 6px); width: calc(50% - 6px); }
+}
+
+.mm-ui .mm-setup-filter { display: flex; flex-wrap: wrap; align-items: end; gap: 12px; }
+.mm-ui:is(.mm-booking-setup, .mm-hotel-setup) .form-horizontal .form-group { margin: 0 0 20px; }
+.mm-ui:is(.mm-booking-setup, .mm-hotel-setup) .form-horizontal .control-label { text-align: left; margin-bottom: 8px; }
+.mm-ui:is(.mm-booking-setup, .mm-hotel-setup) .form-horizontal input[type=text] { min-height: 40px; border: 1px solid var(--mm-line); border-radius: 6px; }
+.mm-ui:is(.mm-booking-setup, .mm-hotel-setup) .form-actions { margin: 16px 0 0; padding: 16px; background: var(--mm-bg); }
+.mm-ui:is(.mm-booking-setup, .mm-hotel-setup) table { margin: 0; }
+.mm-ui:is(.mm-booking-setup, .mm-hotel-setup) th, .mm-ui:is(.mm-booking-setup, .mm-hotel-setup) td { padding: 12px; }
+@media (max-width: 575px) { .mm-ui .mm-setup-filter > :first-of-type { flex-basis: 100%; } }
+
+.mm-ui.mm-booking-notes textarea { width: 100%; min-height: 180px; resize: vertical; border: 1px solid var(--mm-line); border-radius: 6px; padding: 12px; }
+.mm-ui.mm-booking-notes textarea:focus { outline: 2px solid var(--mm-brand); outline-offset: 2px; }
+
+.mm-ui.mm-category-form .form-horizontal > .row { margin: 0; }
+.mm-ui.mm-category-form .form-horizontal .row > [class*="col-md-"] { padding-left: 0; padding-right: 0; }
+.mm-ui.mm-category-form .checkbox label { display: inline-flex; margin: 0 16px 8px 0; }
+.mm-ui.mm-category-form .category-images img { max-width: 100%; border: 1px solid var(--mm-line); border-radius: 6px; margin-bottom: 8px; }
+.mm-ui.mm-category-form .guest-wise-price-div { padding: 0; }
+.mm-ui.mm-category-form .price-entry > [class*="col-sm-"] { padding-left: 0; padding-right: 12px; }
+.mm-ui.mm-category-form .input-group-addon { white-space: normal; }
+.mm-ui.mm-category-form .category-form-actions { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: 8px; margin: 24px 0 0; padding: 16px; background: var(--mm-bg); border-top: 1px solid var(--mm-line); }
+.mm-ui.mm-category-form .category-form-actions::before, .mm-ui.mm-category-form .category-form-actions::after { display: none; }
+.mm-ui.mm-category-form .text-right { width: 100%; }
+@media (max-width: 767px) {
+    .mm-ui.mm-category-form .price-entry > [class*="col-sm-"] { width: 100%; padding-right: 0; }
+    .mm-ui.mm-category-form .category-form-actions .mm-button { width: 100%; }
+}
+
+.mm-ui .mm-dashboard-date { display: inline-flex; align-items: center; gap: 8px; min-height: 36px; padding: 0 12px; border: 1px solid var(--mm-line); border-radius: 999px; background: var(--mm-surface); color: var(--mm-ink); font-size: 13px; font-weight: 600; }
+.mm-ui.mm-dashboard .mm-dashboard-board-panel { overflow: visible; }
+.mm-ui.mm-dashboard .room-booking-board .board-toolbar > .board-actions .btn,
+.mm-ui.mm-dashboard .room-booking-board .board-toolbar > .board-report .btn { min-height: 36px; }
+@media (max-width: 575px) {
+    .mm-ui.mm-dashboard header .mm-button { flex: 1 1 calc(50% - 8px); justify-content: center; text-align: center; }
+    .mm-ui.mm-dashboard .mm-dashboard-board-panel { padding: 12px; }
+}
+
+/* ---------- Dashboard room board: groups, cards, drawer ---------- */
+.mm-ui.mm-dashboard .mmb { --mmb-available: #4f8a3c; --mmb-reserved: #7c9a1d; --mmb-booked: #b04fc0; --mmb-inhouse: #c94b36; --mmb-due: #1e6b99; --mmb-dirty: #1f1b2d; --mmb-maintenance: #7b68ae; --mmb-cart: #254683; --mmb-selected: #2f63a8; }
+.mm-ui.mm-dashboard .mmb-sr { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+.mm-ui.mm-dashboard .mmb-toolbar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.mm-ui.mm-dashboard .mmb-date { position: relative; flex: 1 1 280px; min-width: 240px; max-width: 420px; }
+.mm-ui.mm-dashboard .mmb-date .form-control { padding-left: 38px; min-height: 36px; border-radius: 6px; }
+.mm-ui.mm-dashboard .mmb-date-icon { position: absolute; left: 12px; top: 0; bottom: 0; z-index: 2; display: flex; align-items: center; color: var(--mm-muted); }
+.mm-ui.mm-dashboard .mmb-quick { display: flex; flex-wrap: wrap; gap: 6px; }
+.mm-ui.mm-dashboard .mmb-pill { min-height: 32px; padding: 0 12px; border: 1px solid var(--mm-line); border-radius: 999px; background: var(--mm-surface); color: var(--mm-ink); font-size: 12px; cursor: pointer; }
+.mm-ui.mm-dashboard .mmb-pill:hover { border-color: var(--mm-brand); color: var(--mm-brand); }
+.mm-ui.mm-dashboard .mmb-legend { display: flex; flex-wrap: wrap; gap: 6px 8px; margin: 14px 0 6px; padding-bottom: 12px; border-bottom: 1px dashed var(--mm-line); }
+.mm-ui.mm-dashboard .mmb-chip { display: inline-flex; align-items: center; gap: 6px; max-width: 100%; padding: 2px 9px 2px 7px; border-radius: 999px; background: #f1f5f9; color: #334155; font-size: 11.5px; font-weight: 600; line-height: 18px; white-space: nowrap; }
+.mm-ui.mm-dashboard .mmb-chip-dot { width: 8px; height: 8px; flex: 0 0 8px; border-radius: 50%; background: var(--mmb-dot, #94a3b8); }
+.mm-ui.mm-dashboard [data-state="available"] { --mmb-dot: var(--mmb-available); }
+.mm-ui.mm-dashboard [data-state="reserved"] { --mmb-dot: var(--mmb-reserved); }
+.mm-ui.mm-dashboard [data-state="booked"] { --mmb-dot: var(--mmb-booked); }
+.mm-ui.mm-dashboard [data-state="inhouse"] { --mmb-dot: var(--mmb-inhouse); }
+.mm-ui.mm-dashboard [data-state="due"] { --mmb-dot: var(--mmb-due); }
+.mm-ui.mm-dashboard [data-state="dirty"] { --mmb-dot: var(--mmb-dirty); }
+.mm-ui.mm-dashboard [data-state="maintenance"] { --mmb-dot: var(--mmb-maintenance); }
+.mm-ui.mm-dashboard [data-state="cart"] { --mmb-dot: var(--mmb-cart); }
+.mm-ui.mm-dashboard [data-state="selected"] { --mmb-dot: var(--mmb-selected); }
+.mm-ui.mm-dashboard .mmb-group-tools { display: flex; gap: 14px; margin-left: auto; }
+.mm-ui.mm-dashboard .mmb-link { border: 0; background: transparent; color: var(--mm-brand); font-size: 12.5px; font-weight: 600; padding: 4px 0; cursor: pointer; }
+.mm-ui.mm-dashboard .mmb-group { margin: 0 0 12px; border: 1px solid var(--mm-line); border-radius: 10px; background: var(--mm-surface); overflow: hidden; }
+.mm-ui.mm-dashboard .mmb-group-heading { margin: 0; font-size: inherit; }
+.mm-ui.mm-dashboard .mmb-group-toggle { display: flex; width: 100%; align-items: center; flex-wrap: wrap; gap: 8px 12px; padding: 12px 16px; border: 0; background: #f7fafc; color: var(--mm-ink); text-align: left; cursor: pointer; }
+.mm-ui.mm-dashboard .mmb-group-toggle:hover { background: #eef4fa; }
+.mm-ui.mm-dashboard .mmb-group-toggle:focus-visible, .mm-ui.mm-dashboard .mmb-card:focus-visible, .mm-ui.mm-dashboard .mmb-btn:focus-visible, .mm-ui.mm-dashboard .mmb-drawer-close:focus-visible { outline: 3px solid var(--mm-brand); outline-offset: 2px; }
+.mm-ui.mm-dashboard .mmb-chevron { width: 14px; color: var(--mm-muted); transition: transform .15s ease; }
+.mm-ui.mm-dashboard .is-collapsed .mmb-chevron { transform: rotate(-90deg); }
+.mm-ui.mm-dashboard .mmb-group-name { font-size: 16px; font-weight: 700; }
+.mm-ui.mm-dashboard .mmb-group-price { padding: 1px 8px; border-radius: 999px; background: #e8eef5; color: #4b5d70; font-size: 12px; }
+.mm-ui.mm-dashboard .mmb-group-counts { display: flex; flex-wrap: wrap; gap: 6px; margin-left: auto; }
+.mm-ui.mm-dashboard .mmb-count { padding: 2px 9px; border-radius: 999px; background: #e8eef5; color: #4b5d70; font-size: 11.5px; font-weight: 600; }
+.mm-ui.mm-dashboard .mmb-count-free { background: #e3f0dc; color: #3b6c2b; }
+.mm-ui.mm-dashboard .mmb-count-occ { background: #fdf0dc; color: #8a5a14; }
+.mm-ui.mm-dashboard .mmb-group-body { padding: 14px 16px 6px; }
+.mm-ui.mm-dashboard .mmb-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); gap: 12px; }
+.mm-ui.mm-dashboard .mmb-tile { min-width: 0; }
+.mm-ui.mm-dashboard .mmb-card { position: relative; display: flex; width: 100%; min-height: 128px; flex-direction: column; align-items: flex-start; gap: 6px; padding: 12px 12px 10px; border: 1px solid var(--mm-line); border-top: 4px solid var(--mmb-dot, #94a3b8); border-radius: 10px; background: var(--mm-surface); color: var(--mm-ink); text-align: left; cursor: pointer; transition: box-shadow .12s ease, border-color .12s ease; }
+.mm-ui.mm-dashboard .mmb-card:hover { box-shadow: 0 6px 16px rgba(47, 99, 168, .15); border-color: #b9d2e8; border-top-color: var(--mmb-dot, #94a3b8); }
+.mm-ui.mm-dashboard .mmb-card.is-selected { background: #eef5fd; border-color: var(--mmb-selected); border-top-color: var(--mmb-selected); box-shadow: 0 0 0 2px var(--mmb-selected) inset; }
+.mm-ui.mm-dashboard .mmb-card[data-state="dirty"], .mm-ui.mm-dashboard .mmb-card[data-state="maintenance"] { background-image: repeating-linear-gradient(135deg, rgba(0, 0, 0, .035) 0 8px, transparent 8px 16px); }
+.mm-ui.mm-dashboard .mmb-card-top { display: flex; width: 100%; align-items: center; justify-content: space-between; }
+.mm-ui.mm-dashboard .mmb-number { font-size: 22px; font-weight: 700; line-height: 1.1; }
+.mm-ui.mm-dashboard .mmb-tick { display: none; width: 22px; height: 22px; align-items: center; justify-content: center; border-radius: 50%; background: var(--mmb-selected); color: #fff; font-size: 12px; }
+.mm-ui.mm-dashboard .is-selected .mmb-tick { display: inline-flex; }
+.mm-ui.mm-dashboard .mmb-bed { display: flex; min-height: 22px; align-items: center; gap: 4px; color: #526578; }
+.mm-ui.mm-dashboard .mmb-bed-icon { height: 20px; width: auto; max-width: 100%; }
+.mm-ui.mm-dashboard .mmb-bed-icon-generic { font-size: 18px; }
+.mm-ui.mm-dashboard .mmb-bed-count { font-size: 12px; font-weight: 700; }
+.mm-ui.mm-dashboard .mmb-bed-label { font-size: 12px; color: var(--mm-muted); line-height: 1.2; }
+.mm-ui.mm-dashboard .mmb-rate { margin-top: auto; font-size: 13px; font-weight: 700; color: #3b6c2b; }
+.mm-ui.mm-dashboard .mmb-proxy, .mm-ui.mm-dashboard .mmb-proxy-trigger { display: none !important; }
+.mm-ui.mm-dashboard .mmb-empty { padding: 20px; color: var(--mm-muted); text-align: center; }
+.mm-ui.mm-dashboard .mmb-footer { position: sticky; bottom: var(--mm-footer-h, 0px); z-index: 20; display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 10px; margin-top: 12px; padding: 10px 12px; border: 1px solid var(--mm-line); border-radius: 10px; background: var(--mm-surface); box-shadow: 0 -6px 18px rgba(20, 40, 70, .12); }
+.mm-ui.mm-dashboard .mmb-hint { margin-right: auto; color: var(--mm-muted); font-size: 12px; }
+.mm-ui.mm-dashboard .mmb-selection { margin-right: auto; font-size: 13px; color: #37536a; }
+.mm-ui.mm-dashboard .mmb-selection[hidden], .mm-ui.mm-dashboard .mmb-sel-total-wrap[hidden] { display: none; }
+.mm-ui.mm-dashboard .mmb-footer-buttons { display: flex; flex-wrap: wrap; gap: 6px; }
+.mm-ui.mm-dashboard .mmb-footer-buttons .btn { min-height: 44px; }
+/* Drawer */
+.mm-ui.mm-dashboard .mmb-backdrop { position: fixed; inset: 0; z-index: 1045; background: rgba(15, 23, 42, .45); }
+.mm-ui.mm-dashboard .mmb-backdrop[hidden] { display: none; }
+.mm-ui.mm-dashboard .mmb-drawer { position: fixed; top: 0; right: 0; bottom: 0; z-index: 1050; display: flex; width: min(420px, 100vw); flex-direction: column; background: var(--mm-surface); box-shadow: -12px 0 32px rgba(15, 23, 42, .2); transform: translateX(100%); visibility: hidden; transition: transform .2s ease, visibility 0s linear .2s; outline: 0; }
+.mm-ui.mm-dashboard .mmb-drawer.is-open { transform: none; visibility: visible; transition: transform .2s ease; }
+.mm-ui.mm-dashboard .mmb-drawer.is-busy { cursor: progress; }
+.mm-ui.mm-dashboard .mmb-drawer.is-busy .mmb-drawer-actions { opacity: .6; pointer-events: none; }
+.mm-ui.mm-dashboard .mmb-drawer-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 18px 20px 14px; border-bottom: 1px solid var(--mm-line); }
+.mm-ui.mm-dashboard .mmb-drawer-eyebrow { margin: 0 0 2px; color: var(--mm-muted); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
+.mm-ui.mm-dashboard .mmb-drawer-title { margin: 0; font-size: 24px; font-weight: 700; }
+.mm-ui.mm-dashboard .mmb-drawer-close { width: 44px; height: 44px; border: 1px solid var(--mm-line); border-radius: 8px; background: var(--mm-surface); color: var(--mm-ink); cursor: pointer; }
+.mm-ui.mm-dashboard .mmb-drawer-body { flex: 1; overflow-y: auto; padding: 16px 20px; }
+.mm-ui.mm-dashboard .mmb-drawer-state { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 0 0 14px; }
+.mm-ui.mm-dashboard .mmb-drawer-hk { font-size: 12px; color: var(--mm-muted); }
+.mm-ui.mm-dashboard .mmb-drawer-bed { display: flex; align-items: center; gap: 12px; padding: 12px 14px; margin-bottom: 14px; border: 1px solid var(--mm-line); border-radius: 10px; background: #f7fafc; color: #37536a; }
+.mm-ui.mm-dashboard .mmb-drawer-bed .mmb-bed-icon { height: 26px; }
+.mm-ui.mm-dashboard .mmb-drawer-list { display: grid; grid-template-columns: minmax(110px, 38%) 1fr; gap: 8px 12px; margin: 0 0 14px; }
+.mm-ui.mm-dashboard .mmb-drawer-list dt { color: var(--mm-muted); font-size: 12.5px; font-weight: 500; }
+.mm-ui.mm-dashboard .mmb-drawer-list dd { margin: 0; overflow-wrap: anywhere; font-weight: 600; }
+.mm-ui.mm-dashboard .mmb-drawer-list dd.mmb-muted { grid-column: 1 / -1; }
+.mm-ui.mm-dashboard .mmb-drawer-description { margin: 0 0 14px; color: #475569; line-height: 1.5; }
+.mm-ui.mm-dashboard .mmb-drawer-guest { padding-top: 12px; border-top: 1px solid var(--mm-line); }
+.mm-ui.mm-dashboard .mmb-drawer-guest h4 { margin: 0 0 10px; font-size: 14px; font-weight: 700; }
+.mm-ui.mm-dashboard .mmb-drawer-stay, .mm-ui.mm-dashboard .mmb-muted { color: var(--mm-muted); font-size: 13px; }
+.mm-ui.mm-dashboard .mmb-drawer-actions { display: flex; flex-direction: column; gap: 8px; padding: 14px 20px 18px; border-top: 1px solid var(--mm-line); background: #f7fafc; }
+.mm-ui.mm-dashboard .mmb-btn { display: inline-flex; min-height: 44px; min-width: 44px; align-items: center; justify-content: center; gap: 6px; padding: 0 14px; border: 1px solid var(--mm-line); border-radius: 8px; background: var(--mm-surface); color: var(--mm-ink); font-size: 14px; font-weight: 600; text-decoration: none; cursor: pointer; }
+.mm-ui.mm-dashboard .mmb-btn:hover { border-color: var(--mm-brand); color: var(--mm-brand); text-decoration: none; }
+.mm-ui.mm-dashboard .mmb-btn-primary { border-color: var(--mm-brand); background: var(--mm-brand); color: #fff; }
+.mm-ui.mm-dashboard .mmb-btn-primary:hover { color: #fff; filter: brightness(1.08); }
+.mm-ui.mm-dashboard .mmb-btn-quiet { border-color: transparent; background: transparent; color: var(--mm-muted); }
+@media (max-width: 575px) {
+    .mm-ui.mm-dashboard .mmb-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .mm-ui.mm-dashboard .mmb-group-body { padding: 12px 10px 4px; }
+    .mm-ui.mm-dashboard .mmb-group-counts { margin-left: 0; }
+    .mm-ui.mm-dashboard .mmb-drawer { width: 100vw; }
+    .mm-ui.mm-dashboard .mmb-footer-buttons { width: 100%; flex-wrap: nowrap; }
+    .mm-ui.mm-dashboard .mmb-footer-buttons .btn { flex: 1 1 0; min-height: 44px; }
+}
+@media (min-width: 768px) {
+    .mm-ui.mm-dashboard .mmb-search { position: sticky; top: var(--mmb-sticky-top, 72px); z-index: 20; margin: 0 -4px; padding: 8px 4px; background: var(--mm-surface); border-bottom: 1px solid var(--mm-line); }
+}
+@media (prefers-reduced-motion: reduce) {
+    .mm-ui.mm-dashboard .mmb-drawer, .mm-ui.mm-dashboard .mmb-chevron { transition: none; }
+}
+@media print { .mm-ui.mm-dashboard .mmb-drawer, .mm-ui.mm-dashboard .mmb-backdrop { display: none !important; } }
+
+/* Booking lifecycle: new-booking progress and stay summary */
+.mm-ui .mm-visually-hidden { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.mm-ui .mm-steps ol { display: flex; flex-wrap: wrap; gap: 8px 24px; margin: 0; padding: 0; list-style: none; }
+.mm-ui .mm-steps li { display: flex; align-items: center; gap: 8px; color: var(--mm-muted); font-weight: 600; }
+.mm-ui .mm-steps li.is-current { color: var(--mm-ink); }
+.mm-ui .mm-step-mark { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border: 2px solid var(--mm-line); border-radius: 9999px; background: var(--mm-surface); font-size: 12px; }
+.mm-ui .mm-steps li.is-done .mm-step-mark { background: #1f7a4d; border-color: #1f7a4d; color: #fff; }
+.mm-ui .mm-steps li.is-current .mm-step-mark { background: var(--mm-brand); border-color: var(--mm-brand); color: #fff; }
+.mm-ui .mm-stay-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; margin: 0; }
+.mm-ui .mm-stay-summary > div { padding: 8px 12px; border: 1px solid var(--mm-line); border-radius: 6px; background: var(--mm-bg); }
+.mm-ui .mm-stay-summary dt { color: var(--mm-muted); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
+.mm-ui .mm-stay-summary dd { margin: 0; color: var(--mm-ink); font-size: 16px; font-weight: 600; overflow-wrap: anywhere; }
+.mm-ui.mm-booking-next .mm-form-actions { position: sticky; bottom: var(--mm-footer-h, 0px); z-index: 5; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; margin-top: 16px; padding: 12px 16px; border: 1px solid var(--mm-line); border-radius: 10px; background: var(--mm-surface); box-shadow: 0 -4px 12px rgba(31, 42, 51, .08); }
+.mm-ui.mm-booking-next .col-lg-5 { margin-left: 0 !important; }
+.mm-ui.mm-booking-next h3.header { margin: 24px 0 12px; padding-bottom: 8px; border-bottom: 1px solid var(--mm-line); color: var(--mm-ink); font-size: 18px; font-weight: 600; }
+.mm-ui .mm-date-error { display: block; margin: 4px 0 0; font-size: 13px; font-weight: 600; }
+
+/* Booking lifecycle: checkout and payment */
+.mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-co-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-top: 16px; }
+.mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-co-card, .mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-co-charges, .mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-co-summary { padding: 16px; margin-top: 16px; }
+.mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-co-grid .mm-co-card { margin-top: 0; }
+.mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-co-title { margin: 0 0 12px; font-size: 16px; font-weight: 600; color: var(--mm-ink); }
+.mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-co-list { margin: 0 0 12px; }
+.mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-co-list > div { display: flex; justify-content: space-between; gap: 12px; padding: 6px 0; border-bottom: 1px solid var(--mm-line); }
+.mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-co-list dt { color: var(--mm-muted); font-weight: 600; }
+.mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-co-list dd { margin: 0; text-align: right; overflow-wrap: anywhere; }
+.mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-co-field { margin-top: 12px; }
+.mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-co-field > label, .mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-co-label { display: block; margin-bottom: 4px; color: var(--mm-muted); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; }
+.mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-co-field .form-control { min-height: 40px; }
+.mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-co-field .chosen-container { width: 100% !important; }
+.mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .guest-detail-table .night-count { min-width: 44px; text-align: center; }
+.mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .guest-detail-table .btn { min-width: 28px; min-height: 28px; }
+.mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-co-summary { margin-left: auto; width: 100%; max-width: 460px; }
+.mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-sum-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--mm-line); }
+.mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-sum-row p { margin: 0; text-align: right; }
+.mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-sum-label { color: var(--mm-muted); font-weight: 600; margin: 0; }
+.mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-sum-row.is-strong .mm-sum-label, .mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-sum-row.is-due .mm-sum-label { color: var(--mm-ink); }
+.mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-sum-row.is-due { border-bottom: 0; padding-top: 12px; font-size: 18px; }
+.mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-sum-row input[type="text"] { width: 150px; min-height: 40px; padding: 8px 12px; border: 1px solid #aab9ca; border-radius: 6px; text-align: right; }
+.mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-sum-full { display: flex; align-items: center; gap: 8px; padding: 8px 0; }
+.mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-sum-full label { margin: 0; font-weight: 600; }
+.mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-co-summary .mm-form-actions { position: static; margin-top: 12px; padding: 0; border: 0; box-shadow: none; background: transparent; }
+.mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-co-summary .mm-form-actions .mm-button { width: 100%; min-height: 44px; }
+.mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .stay-chip { max-width: 100%; overflow-wrap: anywhere; white-space: normal; }
+@media (max-width: 575px) {
+    .mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-co-summary { max-width: none; }
+    .mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .mm-sum-row input[type="text"] { width: 120px; }
+}
+
+/* Payment collection */
+.mm-ui:is(.mm-payment-collection, .mm-night-audit) .mm-pc-search { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 12px 16px; align-items: end; }
+.mm-ui:is(.mm-payment-collection, .mm-night-audit) .mm-pc-search .mm-co-field { margin-top: 0; }
+.mm-ui:is(.mm-payment-collection, .mm-night-audit) .mm-pc-search-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.mm-ui.mm-payment-collection .mm-pc-empty { margin: 0; color: var(--mm-muted); text-align: center; padding: 16px 0; }
+.mm-ui:is(.mm-payment-collection, .mm-night-audit) label.mm-sum-row { cursor: pointer; }
+.mm-ui.mm-payment-collection .mm-pc-info { margin-bottom: 0; }
+.mm-ui:is(.mm-payment-collection, .mm-night-audit) .guest-detail-table .text-right { text-align: right; }
+
+/* Night audit */
+.mm-ui.mm-night-audit #data-table th, .mm-ui.mm-night-audit #data-table td { padding-inline: 8px; }
+.mm-ui.mm-night-audit .mm-na-date { margin-bottom: 12px; }
+.mm-ui.mm-night-audit .mm-na-date input { min-height: 44px; font-size: 20px; font-weight: 700; color: #b8400f; border: 1px solid #aab9ca !important; border-radius: 6px; padding: 6px 12px; max-width: 100%; }
+.mm-ui.mm-night-audit .mm-na-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 8px 16px; }
+.mm-ui.mm-night-audit .mm-na-stat { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin: 0; padding: 8px 0; border-bottom: 1px solid var(--mm-line); }
+.mm-ui.mm-night-audit .mm-na-stat input.header-input { width: 72px; text-align: right; font-size: 16px; font-weight: 700; background: transparent !important; border: 0 !important; padding: 0 !important; }
+.mm-ui.mm-night-audit .mm-sum-row input.footer-input { width: 180px; min-height: 0; text-align: right; font-size: 18px; font-weight: 700; background: transparent !important; border: 0 !important; padding: 0 !important; }
+.mm-ui.mm-night-audit .mm-form-actions { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
+.mm-ui.mm-night-audit .mm-co-summary .mm-form-actions .mm-button { width: auto; flex: 1 1 140px; }
+.mm-ui.mm-night-audit input.header-input, .mm-ui.mm-night-audit input.footer-input { color: var(--mm-ink) !important; -webkit-text-fill-color: var(--mm-ink); opacity: 1; }
+.mm-ui.mm-night-audit .mm-co-charges table th, .mm-ui.mm-night-audit .mm-co-charges table td { vertical-align: middle; }
+
+/* Booking invoices: on narrow screens keep the A4-style sheet at a readable width and scroll it sideways (the printed output is unaffected). */
+.mm-ui.mm-invoice-page .mm-panel { overflow-x: auto; }
+@media (max-width: 760px) {
+    .mm-ui.mm-invoice-page .invoice-doc, .mm-ui.mm-invoice-page .print-body { min-width: 680px; }
+}
+
+/* Hotel setup screens (amenities, account types, VAT, currency conversions, registration terms) */
+.mm-ui.mm-hotel-setup .mm-setup-split { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 20px; align-items: start; }
+.mm-ui.mm-hotel-setup .mm-setup-stack { display: grid; grid-template-columns: minmax(0, 1fr); gap: 20px; min-width: 0; }
+.mm-ui.mm-hotel-setup .mm-setup-narrow { max-width: 760px; width: 100%; margin-inline: auto; }
+.mm-ui.mm-hotel-setup .mm-setup-title { margin: 0 0 16px; font-size: 18px; font-weight: 700; color: var(--mm-ink); }
+.mm-ui.mm-hotel-setup .mm-setup-panel-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 16px; }
+.mm-ui.mm-hotel-setup .mm-setup-panel-head .mm-setup-title { margin: 0; }
+.mm-ui.mm-hotel-setup .mm-setup-filter .input-group { display: flex; width: auto; flex: 1 1 200px; min-width: 0; max-width: 100%; }
+.mm-ui.mm-hotel-setup .mm-setup-filter .input-group .form-control { flex: 1 1 auto; min-width: 0; width: 100%; float: none; }
+.mm-ui.mm-hotel-setup .mm-setup-filter .input-group-addon { width: auto; display: flex; align-items: center; white-space: nowrap; }
+.mm-ui.mm-hotel-setup .mm-setup-split > * { min-width: 0; }
+.mm-ui.mm-hotel-setup .mm-setup-filter .input-group .form-control { min-height: 40px; }
+.mm-ui.mm-hotel-setup .form-horizontal .form-group { margin: 0 0 20px; }
+.mm-ui.mm-hotel-setup .form-horizontal .form-group::after { content: ""; display: table; clear: both; }
+.mm-ui.mm-hotel-setup .form-horizontal .control-label { text-align: left; margin-bottom: 8px; padding-top: 0; }
+.mm-ui.mm-hotel-setup .form-horizontal .col-sm-3.control-label, .mm-ui.mm-hotel-setup .form-horizontal .col-sm-4.control-label { width: 100%; float: none; }
+.mm-ui.mm-hotel-setup .form-horizontal .form-group > :is(.col-sm-7, .col-sm-8) { width: 100%; float: none; }
+.mm-ui.mm-hotel-setup .form-horizontal :is(input[type=text], input[type=number], select, textarea) { width: 100%; min-height: 40px; border: 1px solid var(--mm-line); border-radius: 6px; }
+.mm-ui.mm-hotel-setup .form-horizontal textarea { min-height: 180px; }
+.mm-ui.mm-hotel-setup .form-horizontal :is(input[type=text], input[type=number], select, textarea) { color: var(--mm-ink); }
+.mm-ui.mm-hotel-setup .form-horizontal .form-group > .col-sm-8[style*=background] { padding: 8px 12px; width: 100%; }
+.mm-ui.mm-hotel-setup .form-horizontal .input-group { width: 100%; }
+.mm-ui.mm-hotel-setup .form-horizontal input[type=radio] { width: auto; min-height: 0; margin-right: 6px; }
+.mm-ui.mm-hotel-setup .form-actions { margin: 16px 0 0; padding: 16px; background: var(--mm-bg); text-align: right !important; display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
+.mm-ui.mm-hotel-setup table { margin: 0; }
+.mm-ui.mm-hotel-setup th, .mm-ui.mm-hotel-setup td { padding: 12px; vertical-align: middle; }
+.mm-ui.mm-hotel-setup td img { max-width: 40px; height: auto; }
+.mm-ui.mm-hotel-setup .btn-group form { display: inline; }
+@media (max-width: 991px) { .mm-ui.mm-hotel-setup .mm-setup-split { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 575px) { .mm-ui.mm-hotel-setup .form-actions .mm-button { flex: 1 1 100%; } }
+
+/* Compact page title: title and subtitle share a line when there is room */
+.mm-ui .mm-page-title { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0 12px; min-width: 0; }
+.mm-ui .mm-page-title h1 { font-size: 20px; line-height: 1.25; }
+.mm-ui .mm-page-title p { font-size: 13px; line-height: 1.35; }
+
+/* Hotel reports (hotel/reports/*): filter bar, results panel and the legacy export tables, scoped to .mm-report */
+.mm-ui.mm-report .mm-report-form { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 12px; }
+.mm-ui.mm-report .mm-report-form .mm-report-field { flex: 1 1 220px; min-width: 0; max-width: 360px; }
+.mm-ui.mm-report .mm-report-form > .input-group, .mm-ui.mm-report .mm-report-form .mm-report-field > .input-group { display: flex; width: auto; flex: 1 1 260px; min-width: 0; max-width: 100%; }
+.mm-ui.mm-report .mm-report-form .mm-report-field > .input-group { width: 100%; max-width: none; }
+.mm-ui.mm-report .mm-report-form .input-group .form-control { flex: 1 1 0; min-width: 0; width: 100%; float: none; min-height: 40px; border-radius: 0; }
+.mm-ui.mm-report .mm-report-form .input-group-addon { width: auto; display: flex; align-items: center; white-space: nowrap; min-height: 40px; }
+.mm-ui.mm-report .mm-report-form .chosen-container { min-width: 160px; }
+.mm-ui.mm-report .mm-report-form .btn-group { display: flex; gap: 8px; }
+.mm-ui.mm-report .mm-report-form .btn-group .mm-button { min-height: 40px; }
+.mm-ui.mm-report .mm-panel { display: flow-root; }
+.mm-ui.mm-report .mm-table-scroll table { margin: 0; width: 100%; }
+.mm-ui.mm-report .mm-table-scroll thead th { background: var(--mm-bg); color: var(--mm-ink); font-weight: 600; white-space: nowrap; }
+.mm-ui.mm-report .mm-table-scroll th, .mm-ui.mm-report .mm-table-scroll td { padding: 10px 12px; vertical-align: middle; }
+.mm-ui.mm-report .header-input, .mm-ui.mm-report .footer-input { background: transparent !important; border: 0 !important; padding: 0 !important; font-size: 18px !important; font-weight: 700 !important; color: var(--mm-ink) !important; width: 100% !important; box-shadow: none !important; }
+.mm-ui.mm-report .footer-input { text-align: right !important; }
+.mm-ui.mm-report .border-none { border: 0 !important; }
+.mm-ui.mm-report th.border-none { white-space: nowrap; }
+.mm-ui.mm-report .pagination { margin: 10px 0 0; }
+@media (max-width: 575px) { .mm-ui.mm-report .mm-report-form .mm-report-field, .mm-ui.mm-report .mm-report-form > .input-group { flex-basis: 100%; max-width: none; } .mm-ui.mm-report .mm-report-form .btn-group .mm-button { flex: 1 1 auto; } }
+@media print { .mm-ui.mm-report .mm-panel { border: 0; box-shadow: none; padding: 0; } }
+
+/* Guest SMS (guests/sms/index): number tags, message box and balance panel */
+.mm-ui.mm-hotel-sms .mm-sms-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 5fr) minmax(220px, 2fr); gap: 16px; align-items: start; }
+.mm-ui.mm-hotel-sms .mm-sms-title { margin: 0 0 12px; font-size: 14px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--mm-muted); }
+.mm-ui.mm-hotel-sms .textarea { width: 100%; min-height: 260px; padding: 10px 12px; border: 1px solid var(--mm-line); border-radius: 6px; background: var(--mm-surface); color: var(--mm-ink); font: inherit; resize: vertical; }
+.mm-ui.mm-hotel-sms .textarea:focus { outline: 3px solid var(--mm-brand); outline-offset: 1px; }
+.mm-ui.mm-hotel-sms .inline, .mm-ui.mm-hotel-sms .inline .tags { width: 100% !important; display: block; }
+.mm-ui.mm-hotel-sms .inline .tags { min-height: 260px; max-height: 40vh; overflow-y: auto; padding: 6px; border: 1px solid var(--mm-line); border-radius: 6px; background: var(--mm-surface); }
+.mm-ui.mm-hotel-sms .inline .tags .tag { margin: 2px; background: var(--mm-bg); color: var(--mm-ink); padding: 4px 18px 5px 6px !important; }
+.mm-ui.mm-hotel-sms .inline .tags .tag .close { color: #c0392b; }
+.mm-ui.mm-hotel-sms .inline .tags .tag .close:hover { color: #fff; background: #c0392b; }
+.mm-ui.mm-hotel-sms .tags input { color: var(--mm-ink); background: transparent; }
+.mm-ui.mm-hotel-sms .mm-sms-stats { display: grid; grid-template-columns: auto 1fr; gap: 8px 16px; margin: 0; }
+.mm-ui.mm-hotel-sms .mm-sms-stats dt { font-weight: 600; color: var(--mm-muted); }
+.mm-ui.mm-hotel-sms .mm-sms-stats dd { margin: 0; font-weight: 700; text-align: right; }
+.mm-ui.mm-hotel-sms .mm-sms-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; margin-top: 16px; }
+@media (max-width: 991px) { .mm-ui.mm-hotel-sms .mm-sms-grid { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 575px) { .mm-ui.mm-hotel-sms .mm-sms-actions .mm-button { flex: 1 1 100%; } }
+
+/* Night audit detail (night-audits/show): summary grid, table and print */
+.mm-ui.mm-audit-show .mm-audit-date { margin: 0 0 16px; font-size: 18px; text-align: center; }
+.mm-ui.mm-audit-show .mm-audit-summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin: 0 0 20px; }
+.mm-ui.mm-audit-show .mm-audit-summary > div { padding: 10px 14px; border: 1px solid var(--mm-line); border-radius: 8px; background: var(--mm-bg); }
+.mm-ui.mm-audit-show .mm-audit-summary dt { font-size: 12px; font-weight: 600; color: var(--mm-muted); }
+.mm-ui.mm-audit-show .mm-audit-summary dd { margin: 2px 0 0; font-size: 20px; font-weight: 700; }
+.mm-ui.mm-audit-show table { margin: 0; }
+.mm-ui.mm-audit-show thead th { background: var(--mm-bg); color: var(--mm-ink); white-space: nowrap; }
+@media print {
+    .mm-ui.mm-audit-show .mm-panel { border: 0; box-shadow: none; padding: 0; }
+    .mm-ui.mm-audit-show .th-txt-size, .mm-ui.mm-audit-show .td-font-size { font-size: 10px !important; }
+}
+
+/* Booking migration (booking/adjust/create): info grid, room picks, date row, available rooms and the room table */
+.mm-ui.mm-booking-adjust form { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
+.mm-ui.mm-booking-adjust .mm-adjust-title { margin: 0 0 12px; font-size: 14px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--mm-muted); }
+.mm-ui.mm-booking-adjust .mm-adjust-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; }
+.mm-ui.mm-booking-adjust .mm-adjust-info p { margin: 0 0 6px; }
+.mm-ui.mm-booking-adjust .mm-adjust-info p b { display: inline-block; min-width: 90px; }
+.mm-ui.mm-booking-adjust .mm-adjust-booking { margin: 0; }
+.mm-ui.mm-booking-adjust .mm-adjust-booking th, .mm-ui.mm-booking-adjust .mm-adjust-booking td { padding: 6px 8px; border: 0; }
+.mm-ui.mm-booking-adjust .mm-adjust-room-picks { display: flex; flex-wrap: wrap; gap: 8px 24px; margin-bottom: 16px; }
+.mm-ui.mm-booking-adjust .mm-adjust-dates { max-width: 720px; margin-bottom: 16px; }
+.mm-ui.mm-booking-adjust .mm-adjust-dates .input-group { display: flex; flex-wrap: wrap; width: 100%; }
+.mm-ui.mm-booking-adjust .mm-adjust-dates .input-group > * { float: none; width: auto; }
+.mm-ui.mm-booking-adjust .mm-adjust-dates .input-group .form-control { flex: 1 1 140px; min-width: 0; min-height: 40px; }
+.mm-ui.mm-booking-adjust .mm-adjust-dates .input-group-addon { display: flex; align-items: center; white-space: nowrap; }
+.mm-ui.mm-booking-adjust .mm-adjust-dates .input-group-btn { display: flex; padding-left: 8px; font-size: 14px; }
+.mm-ui.mm-booking-adjust .available-rooms .main-row { display: flex; flex-wrap: wrap; gap: 10px; padding: 0; margin: 0 0 20px; }
+.mm-ui.mm-booking-adjust .available-rooms .main-row .category-item { flex: 0 0 100%; margin: 0 0 12px; }
+.mm-ui.mm-booking-adjust .available-rooms .main-row > [class*="col-"] { width: 108px; float: none; padding: 0; }
+.mm-ui.mm-booking-adjust .available-rooms .main-row > .col-md-12 { width: 100%; }
+.mm-ui.mm-booking-adjust .room-item { border-color: var(--mm-brand); background: var(--mm-surface); color: var(--mm-ink); }
+.mm-ui.mm-booking-adjust .room-item.active { background-color: var(--mm-brand) !important; color: #fff; }
+.mm-ui.mm-booking-adjust .room-list { margin: 0; }
+.mm-ui.mm-booking-adjust .room-list thead th { background: var(--mm-bg); color: var(--mm-ink); }
+.mm-ui.mm-booking-adjust .mm-adjust-actions { display: flex; justify-content: flex-end; margin-top: 16px; }
+@media (max-width: 575px) { .mm-ui.mm-booking-adjust .mm-adjust-actions .mm-button { width: 100%; } .mm-ui.mm-booking-adjust .mm-adjust-dates .input-group-btn { width: 100%; padding: 8px 0 0; } .mm-ui.mm-booking-adjust .mm-adjust-dates .input-group-btn .mm-button { width: 100%; } }
+
+/* Monthly room calendar (hotel/reports/monthly/*) */
+.mm-ui.mm-report-monthly .mm-report-legend { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 14px; }
+.mm-ui.mm-report-monthly table .bg-dark { background-color: var(--mm-bg); color: var(--mm-ink); vertical-align: middle; }
+.mm-ui.mm-report-monthly table .bg-0 { background: #D15B47; }
+.mm-ui.mm-report-monthly table .bg-2 { background: #ff8000; }
+.mm-ui.mm-report-monthly select.required:invalid { height: 0; opacity: 0; position: absolute; display: flex; }
+
+/* Hotel service screens: sales list filter, new-sale form and invoice frame. */
+.mm-ui:is(.mm-hotel-service, .mm-rst-sale) .mm-hs-filter-form { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 12px; }
+.mm-ui:is(.mm-hotel-service, .mm-rst-sale) .mm-hs-filter-field { flex: 1 1 200px; min-width: 0; max-width: 320px; }
+.mm-ui:is(.mm-hotel-service, .mm-rst-sale) .mm-hs-filter-field label, .mm-ui:is(.mm-hotel-service, .mm-rst-sale) .form-horizontal .control-label { display: block; margin: 0 0 6px; padding-top: 0; text-align: left; font-weight: 600; color: var(--mm-ink); }
+.mm-ui:is(.mm-hotel-service, .mm-rst-sale) .mm-hs-filter-field .form-control, .mm-ui:is(.mm-hotel-service, .mm-rst-sale) form .form-control { width: 100%; min-height: 40px; border: 1px solid var(--mm-line); border-radius: 6px; color: var(--mm-ink); }
+.mm-ui:is(.mm-hotel-service, .mm-rst-sale) .mm-hs-filter-actions .btn { min-height: 40px; display: inline-flex; align-items: center; justify-content: center; }
+.mm-ui:is(.mm-hotel-service, .mm-rst-sale) .form-horizontal .form-group { margin: 0; }
+.mm-ui:is(.mm-hotel-service, .mm-rst-sale) .form-horizontal .form-group::after { content: ""; display: table; clear: both; }
+.mm-ui:is(.mm-hotel-service, .mm-rst-sale) .mm-hs-hidden { display: none; }
+.mm-ui:is(.mm-hotel-service, .mm-rst-sale) :is(#invForm, .sales-form) { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
+.mm-ui:is(.mm-hotel-service, .mm-rst-sale) .mm-setup-title { margin: 0 0 16px; font-size: 18px; font-weight: 700; color: var(--mm-ink); }
+.mm-ui:is(.mm-hotel-service, .mm-rst-sale) .mm-hs-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 16px; }
+.mm-ui:is(.mm-hotel-service, .mm-rst-sale) .mm-hs-info .form-group { min-width: 0; }
+.mm-ui:is(.mm-hotel-service, .mm-rst-sale) table { margin: 0; }
+.mm-ui:is(.mm-hotel-service, .mm-rst-sale) th, .mm-ui:is(.mm-hotel-service, .mm-rst-sale) td { padding: 10px; vertical-align: middle; }
+.mm-ui:is(.mm-hotel-service, .mm-rst-sale) #table_auto { min-width: 640px; }
+.mm-ui:is(.mm-hotel-service, .mm-rst-sale) .mm-hs-totals .form-inlines { display: grid; gap: 14px; width: 100%; max-width: 420px; margin-left: auto; }
+.mm-ui:is(.mm-hotel-service, .mm-rst-sale) .mm-hs-totals .input-group { display: flex; width: 100%; }
+.mm-ui:is(.mm-hotel-service, .mm-rst-sale) .mm-hs-totals .input-group .form-control { flex: 1 1 auto; min-width: 0; float: none; border-radius: 0 6px 6px 0; }
+.mm-ui:is(.mm-hotel-service, .mm-rst-sale) .mm-hs-totals .input-group-addon { display: flex; align-items: center; width: auto; min-width: 44px; justify-content: center; }
+.mm-ui:is(.mm-hotel-service, .mm-rst-sale) .mm-hs-confirm { width: 100%; }
+@media (max-width: 767px) { .mm-ui:is(.mm-hotel-service, .mm-rst-sale) .mm-hs-totals .form-inlines { max-width: none; margin-left: 0; } }
+
+/* Permission screens: module/sub module/parent permission lists, permissions, users, passwords and the access matrices. */
+.mm-ui.mm-perm .mm-setup-title { margin: 0 0 16px; font-size: 18px; font-weight: 700; color: var(--mm-ink); }
+.mm-ui.mm-perm.mm-perm-narrow { max-width: 760px; width: 100%; margin-inline: auto; }
+.mm-ui.mm-perm table { margin: 0; }
+.mm-ui.mm-perm th, .mm-ui.mm-perm td { padding: 12px; vertical-align: middle; }
+.mm-ui.mm-perm .btn-group form { display: inline; }
+.mm-ui.mm-perm .form-horizontal .form-group > .col-sm-6 { width: 100%; float: none; }
+.mm-ui.mm-perm .form-horizontal .form-group.col-sm-12 { width: 100%; }
+.mm-ui.mm-perm .form-horizontal label.control-label:empty { display: none; }
+.mm-ui.mm-perm .form-horizontal .form-group > .col-sm-6 .btn { margin: 0 6px 6px 0; }
+.mm-ui.mm-perm .form-horizontal .form-group > .col-sm-8 label { margin: 0 14px 6px 0; }
+.mm-ui.mm-perm .form-horizontal .chosen-container { width: 100% !important; }
+/* New user form: label and field on one row from tablet width, stacked below. */
+.mm-ui.mm-perm-user .row, .mm-ui.mm-perm-user [class*="col-"] { float: none; width: auto; margin-left: 0; margin-right: 0; padding-left: 0; padding-right: 0; }
+.mm-ui.mm-perm-user .form-group.row { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 6px 16px; align-items: center; margin: 0 0 16px; }
+.mm-ui.mm-perm-user .control-label { text-align: left; padding-top: 0; font-weight: 600; color: var(--mm-ink); }
+.mm-ui.mm-perm-user .form-control { width: 100%; min-height: 40px; border: 1px solid var(--mm-line); border-radius: 6px; color: var(--mm-ink); }
+.mm-ui.mm-perm-user .text-right > .btn-group { display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
+.mm-ui.mm-perm-user .text-right { grid-column: 1 / -1; }
+@media (max-width: 767px) { .mm-ui.mm-perm-user .form-group.row { grid-template-columns: minmax(0, 1fr); } }
+/* Password forms keep their lock-labelled input groups and fit narrow screens. */
+.mm-ui.mm-perm-password form { max-width: 640px; margin-inline: auto; }
+.mm-ui.mm-perm-password .row, .mm-ui.mm-perm-password [class*="col-xs-"] { float: none; width: auto; margin-left: 0; margin-right: 0; padding-left: 0; padding-right: 0; }
+.mm-ui.mm-perm-password .input-group { display: flex; width: 100% !important; margin-bottom: 4px; }
+.mm-ui.mm-perm-password .input-group-btn { display: block; width: auto !important; flex: 0 0 auto; font-size: 14px; }
+.mm-ui.mm-perm-password .input-group-btn .btn { font-size: 14px; min-height: 40px; }
+.mm-ui.mm-perm-password .input-group .form-control { flex: 1 1 auto; min-width: 0; width: 100%; float: none; min-height: 40px; border-radius: 0 6px 6px 0; color: var(--mm-ink); }
+.mm-ui.mm-perm-password .hr { margin: 12px 0; }
+@media (max-width: 575px) {
+    .mm-ui.mm-perm-password .input-group { flex-direction: column; }
+    .mm-ui.mm-perm-password .input-group-btn, .mm-ui.mm-perm-password .input-group-btn .btn { width: 100% !important; }
+    .mm-ui.mm-perm-password .input-group .form-control { border-radius: 0 0 6px 6px; }
+}
+/* Access matrices: the employee block, module list and accordions keep their markup; wide checkbox tables scroll inside their panel. */
+.mm-ui.mm-perm-access form { min-width: 0; }
+.mm-ui.mm-perm-access .row::after { content: ""; display: table; clear: both; }
+.mm-ui.mm-perm-access .input-group { display: flex; }
+.mm-ui.mm-perm-access .input-group .form-control, .mm-ui.mm-perm-access .input-group .chosen-container { flex: 1 1 auto; min-width: 0; float: none; }
+.mm-ui.mm-perm-access .input-group-addon { display: flex; align-items: center; max-width: 45%; white-space: normal; }
+.mm-ui.mm-perm-access .panel-body { overflow-x: auto; }
+.mm-ui.mm-perm-access .list-group-item { background: transparent; border-color: var(--mm-line); }
+.mm-ui.mm-perm-access .panel-default > .panel-heading { background: var(--mm-bg); color: var(--mm-ink); }
+.mm-ui.mm-perm-access table td label { white-space: nowrap; }
+@media (max-width: 991px) { .mm-ui.mm-perm-access [class*="col-md-4"] { margin-bottom: 8px; } }
+.mm-ui.mm-perm .mm-panel { display: flow-root; }
+.mm-ui.mm-perm-user .form-group.row::before, .mm-ui.mm-perm-user .form-group.row::after { display: none; content: none; }
+.mm-ui.mm-perm-access .input-group-btn { display: block; width: auto; flex: 0 0 auto; font-size: 14px; }
+@media (max-width: 991px) { .mm-ui.mm-perm-access .row > [class*="col-md-4"] { float: none !important; width: 100%; } }
+
+/* Restaurant (module/Restaurant/views): report filters, the shared Bar inventory filter, the kitchen board; scoped to .mm-rst */
+.mm-ui.mm-rst .mm-report-check { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; margin: 0; }
+.mm-ui.mm-rst .mm-report-check .lbl { padding-left: 4px; }
+.mm-ui.mm-rst .mm-report-field .form-control { min-height: 40px; }
+.mm-ui.mm-rst-inventory .mm-report-filter > .col-sm-12 { float: none; width: 100%; margin: 0; padding: 0; }
+.mm-ui.mm-rst-inventory .mm-report-filter .row { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 12px; margin: 0; }
+.mm-ui.mm-rst-inventory .mm-report-filter .row::before, .mm-ui.mm-rst-inventory .mm-report-filter .row::after { display: none; }
+.mm-ui.mm-rst-inventory .mm-report-filter .row > [class*="col-"] { float: none; width: auto; flex: 1 1 220px; max-width: 360px; min-width: 0; padding: 0; margin: 0; }
+.mm-ui.mm-rst-inventory .mm-report-filter .input-group { display: flex; width: 100%; }
+.mm-ui.mm-rst-inventory .mm-report-filter .input-group .form-control { flex: 1 1 0; min-width: 0; width: 100%; float: none; min-height: 40px; border-radius: 0; }
+.mm-ui.mm-rst-inventory .mm-report-filter .input-group-addon { width: auto; display: flex; align-items: center; white-space: nowrap; min-height: 40px; }
+.mm-ui.mm-rst-inventory .mm-report-filter .chosen-container { min-width: 160px; }
+.mm-ui.mm-rst-inventory .mm-report-filter .btn { min-height: 40px; }
+.mm-ui.mm-rst-board .mm-board-layout { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+.mm-ui.mm-rst-board .mm-board-orders { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; min-width: 0; }
+.mm-ui.mm-rst-board .mm-board-list { min-width: 0; }
+.mm-ui.mm-rst-board .mm-board-card { display: flex; flex-direction: column; min-width: 0; background: var(--mm-surface); border: 1px solid var(--mm-line); border-radius: 8px; overflow: hidden; }
+.mm-ui.mm-rst-board .mm-board-card-head { padding: 10px 14px; background: var(--mm-bg); border-bottom: 1px solid var(--mm-line); }
+.mm-ui.mm-rst-board .mm-board-card-head h6 { margin: 0; font-size: 14px; font-weight: 700; color: var(--mm-ink); }
+.mm-ui.mm-rst-board .mm-board-card-body { flex: 1 1 auto; padding: 12px 14px; }
+.mm-ui.mm-rst-board .mm-board-card-body .alert { margin: 0; overflow-wrap: anywhere; }
+.mm-ui.mm-rst-board .mm-board-card-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 14px; border-top: 1px solid var(--mm-line); }
+.mm-ui.mm-rst-board .mm-board-card-foot form { margin: 0; }
+.mm-ui.mm-rst-board .mm-board-card-foot .btn { float: none !important; min-height: 32px; }
+@media (max-width: 991px) { .mm-ui.mm-rst-board .mm-board-layout { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 575px) { .mm-ui.mm-rst .mm-report-check { flex-basis: 100%; } .mm-ui.mm-rst-inventory .mm-report-filter .row > [class*="col-"] { flex-basis: 100%; max-width: none; } }
+.mm-ui.mm-rst .mm-setup-title { margin: 0 0 16px; font-size: 18px; font-weight: 700; color: var(--mm-ink); }
+
+.mm-ui.mm-rst-sale .mm-rst-product-search { margin-top: 16px; max-width: 640px; }
+.mm-ui.mm-rst-sale .mm-rst-product-search .input-group { display: flex; width: 100%; }
+.mm-ui.mm-rst-sale .mm-rst-product-search .input-group .form-control { flex: 1 1 auto; min-width: 0; width: 100%; float: none; }
+.mm-ui.mm-rst-sale .mm-rst-product-search .input-group-addon { width: auto; display: flex; align-items: center; }
+.mm-ui.mm-rst-sale .mm-rst-payment-way { display: flex; flex-wrap: wrap; gap: 8px 16px; }
+.mm-ui.mm-rst-sale .mm-rst-payment-way label { margin: 0; display: inline-flex; align-items: center; gap: 6px; }
+.mm-ui:is(.mm-hotel-service, .mm-rst-sale) .mm-hs-totals #payment { display: grid; gap: 14px; }
+
+/* Restaurant purchases (purchase-v2): approve form and create frame. */
+.mm-ui.mm-rst-purchase .form-horizontal .form-group { margin: 0 0 16px; }
+.mm-ui.mm-rst-purchase .form-horizontal .form-group::after { content: ""; display: table; clear: both; }
+.mm-ui.mm-rst-purchase .form-horizontal .control-label { display: block; width: 100%; float: none; padding: 0; margin: 0 0 6px; text-align: left; font-weight: 600; color: var(--mm-ink); }
+.mm-ui.mm-rst-purchase .form-horizontal .form-group > [class*="col-"] { width: 100%; float: none; padding-left: 0; padding-right: 0; }
+.mm-ui.mm-rst-purchase form .form-control { min-height: 40px; border: 1px solid var(--mm-line); border-radius: 6px; color: var(--mm-ink); }
+.mm-ui.mm-rst-purchase .form-horizontal .input-group { width: 100%; }
+.mm-ui.mm-rst-purchase .mm-rst-purchase-items table.container { width: 100%; max-width: none; padding: 0; margin: 0; }
+.mm-ui.mm-rst-purchase .mm-rst-purchase-items table { min-width: 640px; }
+.mm-ui.mm-rst-purchase .mm-rst-purchase-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; margin-top: 16px; }
+.mm-ui.mm-rst-purchase-create .mm-rst-purchase-lines { overflow-x: auto; }
+.mm-ui.mm-rst-purchase-create .mm-rst-purchase-lines table { min-width: 720px; }
+.mm-ui.mm-rst-purchase-create .row.mb-3 { margin-bottom: 16px; }
+.mm-ui.mm-rst-purchase-create .btn-sm { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 6px 12px; border-radius: 6px; }
+.mm-ui.mm-rst-purchase-create :is(.btn-outline-danger, .btn-outline-success) { background: #fff; border: 1px solid var(--mm-line); box-shadow: none; font-weight: 600; cursor: pointer; }
+.mm-ui.mm-rst-purchase-create .btn-outline-danger { color: #b42318; }
+.mm-ui.mm-rst-purchase-create .btn-outline-success { color: var(--mm-brand, #2f5fa7); }
+
+/* Restaurant inventory (module/Restaurant/views/inventory): setup lists, report-style lists and forms; scoped to .mm-rst-inv */
+.mm-ui.mm-rst-inv .mm-panel .row { margin-left: 0; margin-right: 0; }
+.mm-ui.mm-rst-inv .mm-panel .row::before, .mm-ui.mm-rst-inv .mm-panel .row::after { display: none; }
+.mm-ui.mm-rst-inv .mm-panel .container { width: 100%; max-width: none; padding-left: 0; padding-right: 0; }
+.mm-ui.mm-rst-inv .mm-rst-count { margin: 0 0 12px; color: var(--mm-muted, #5b6b7b); font-size: 13px; }
+.mm-ui.mm-rst-inv .mm-rst-count b { color: var(--mm-ink); }
+.mm-ui.mm-rst-inv .mm-report-form .btn-group { display: inline-flex; gap: 8px; align-items: center; }
+.mm-ui.mm-rst-inv .mm-report-form .btn-group .mm-button { min-height: 40px; }
+.mm-ui.mm-rst-inv .mm-actions-form { display: inline; }
+.mm-ui.mm-rst-form .form-group { margin: 0 0 16px; }
+.mm-ui.mm-rst-form .form-group::after { content: ""; display: table; clear: both; }
+.mm-ui.mm-rst-form .form-horizontal .control-label, .mm-ui.mm-rst-form .control-label { display: block; width: 100%; float: none; padding: 0; margin: 0 0 6px; text-align: left; font-weight: 600; color: var(--mm-ink); }
+.mm-ui.mm-rst-form .form-group > [class*="col-"] { padding-left: 8px; padding-right: 8px; }
+.mm-ui.mm-rst-form [class*="col-md-offset-"], .mm-ui.mm-rst-form [class*="col-sm-offset-"] { margin-left: 0; }
+.mm-ui.mm-rst-form .form-group .form-control:not(textarea) { min-height: 40px; border: 1px solid var(--mm-line); border-radius: 6px; color: var(--mm-ink); }
+.mm-ui.mm-rst-form .form-group textarea.form-control { border: 1px solid var(--mm-line); border-radius: 6px; }
+.mm-ui.mm-rst-form .input-group { width: 100%; }
+.mm-ui.mm-rst-form .chosen-container { max-width: 100%; }
+.mm-ui.mm-rst-form [class*="col-"]:has(> table), .mm-ui.mm-rst-form [class*="col-"]:has(> .table-responsive) { overflow-x: auto; }
+.mm-ui.mm-rst-form [class*="col-"] > table.table { min-width: 640px; }
+.mm-ui.mm-rst-form :is(.btn-outline-danger, .btn-outline-success) { background: #fff; border: 1px solid var(--mm-line); box-shadow: none; font-weight: 600; cursor: pointer; }
+.mm-ui.mm-rst-form .btn-outline-danger { color: #b42318; }
+.mm-ui.mm-rst-form .btn-outline-success { color: var(--mm-brand, #2f63a8); }
+.mm-ui.mm-rst-form .btn-sm { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 6px 12px; border-radius: 6px; }
+.mm-ui.mm-rst-inv .mm-panel { display: flow-root; }
+.mm-ui.mm-rst-inv .mm-panel [class*="col-"] { min-width: 0; }
+.mm-ui.mm-rst-inv .mm-report-filter [class*="ml-"] { margin-left: 0; }
+.mm-ui.mm-rst-inv .mm-panel table.container { width: 100%; max-width: none; }
+/* General Store forms (module/GeneralStore/views) reuse the inventory scope; two-column rows must contain their floats and fields use the full column */
+.mm-ui.mm-gs .mm-panel .row { display: flow-root; }
+.mm-ui.mm-gs.mm-rst-form .form-group > [class*="col-"] { float: none; width: 100%; }
+/* Ace checkboxes are absolutely positioned; contain them so a scrolling filter table never widens the page */
+.mm-ui.mm-gs .mm-table-scroll { position: relative; }
+/* legacy filter tables: let fixed-width date ranges shrink so the Search button stays on screen */
+.mm-ui.mm-gs.mm-report .mm-table-scroll .table-bordered td .input-group { width: auto !important; max-width: 100%; }
+.mm-ui.mm-gs.mm-report .mm-table-scroll .table-bordered td .input-group .form-control { min-width: 90px; }
+.mm-ui.mm-gs.mm-report .mm-table-scroll th, .mm-ui.mm-gs.mm-report .mm-table-scroll td { padding: 8px 6px; }
+.mm-ui.mm-gs.mm-report .mm-table-scroll td.text-center[style*="min-width"] { min-width: 0 !important; white-space: nowrap; }
+.mm-ui.mm-gs.mm-report .mm-table-scroll .btn-minier, .mm-ui.mm-gs.mm-report .mm-table-scroll .btn-xs { margin: 0 1px; }
+.mm-ui.mm-gs.mm-report .mm-table-scroll .table-bordered td .input-group .input-group-addon { padding: 6px 8px; }
+.mm-ui.mm-bar .mm-panel .row { display: flow-root; }
+.mm-ui.mm-bar.mm-rst-form .form-group > [class*="col-"] { float: none; width: 100%; }
+.mm-ui.mm-bar .mm-table-scroll { position: relative; }
+.mm-ui.mm-bar.mm-report .mm-table-scroll .table-bordered td .input-group { width: auto !important; max-width: 100%; }
+.mm-ui.mm-bar.mm-report .mm-table-scroll .table-bordered td .input-group .form-control { min-width: 90px; }
+.mm-ui.mm-bar.mm-report .mm-table-scroll th, .mm-ui.mm-bar.mm-report .mm-table-scroll td { padding: 8px 6px; }
+.mm-ui.mm-bar.mm-report .mm-table-scroll td.text-center[style*="min-width"] { min-width: 0 !important; white-space: nowrap; }
+.mm-ui.mm-bar.mm-report .mm-table-scroll .btn-minier, .mm-ui.mm-bar.mm-report .mm-table-scroll .btn-xs { margin: 0 1px; }
+.mm-ui.mm-bar.mm-report .mm-table-scroll .table-bordered td .input-group .input-group-addon { padding: 6px 8px; }
+.mm-ui.mm-bar .mm-panel.mm-report-filter .row { display: flex; }
+.mm-ui.mm-acc .mm-panel .row { display: flow-root; }
+.mm-ui.mm-acc.mm-rst-form .form-group > [class*="col-"] { float: none; width: 100%; }
+.mm-ui.mm-acc .mm-table-scroll { position: relative; }
+.mm-ui.mm-acc.mm-report .mm-table-scroll .table-bordered td .input-group { width: auto !important; max-width: 100%; }
+.mm-ui.mm-acc.mm-report .mm-table-scroll .table-bordered td .input-group .form-control { min-width: 90px; }
+.mm-ui.mm-acc.mm-report .mm-table-scroll th, .mm-ui.mm-acc.mm-report .mm-table-scroll td { padding: 8px 6px; }
+.mm-ui.mm-acc.mm-report .mm-table-scroll td.text-center[style*="min-width"] { min-width: 0 !important; white-space: nowrap; }
+.mm-ui.mm-acc.mm-report .mm-table-scroll .btn-minier, .mm-ui.mm-acc.mm-report .mm-table-scroll .btn-xs { margin: 0 1px; }
+.mm-ui.mm-acc.mm-report .mm-table-scroll .table-bordered td .input-group .input-group-addon { padding: 6px 8px; }
+.mm-ui.mm-acc .mm-panel.mm-report-filter .row { display: flex; }
+.mm-ui.mm-acc .table-header-bg { background: #7592a5; }
+.mm-ui.mm-acc .mm-table-scroll thead tr.table-header-bg th, .mm-ui.mm-acc thead tr.table-header-bg th { background: transparent; color: #fff; }
+.mm-ui.mm-acc.mm-report .mm-panel > .row > .col-sm-12.px-4 { padding-left: 0 !important; padding-right: 0 !important; }
+.mm-ui.mm-acc .mm-panel.mm-report-filter .row { flex-wrap: wrap; }
+.mm-ui.mm-acc .mm-panel.mm-report-filter .chosen-container { max-width: 100%; }
+@media (max-width: 767px) {
+    .mm-ui.mm-acc .mm-panel.mm-report-filter .row > [class*="col-"] { flex: 0 0 100%; max-width: 100%; width: 100%; }
+}
+.mm-ui.mm-acc .mm-panel.mm-report-filter .row .input-group { display: flex; flex-wrap: nowrap; width: 100%; max-width: 100%; }
+.mm-ui.mm-acc .mm-panel.mm-report-filter .row .input-group-addon { width: auto; display: flex; align-items: center; white-space: nowrap; min-height: 40px; }
+.mm-ui.mm-acc .mm-panel.mm-report-filter .row .input-group .form-control { flex: 1 1 0; min-width: 0; width: 100%; float: none; min-height: 40px; }
+.mm-ui.mm-acc .mm-panel.mm-report-filter .row .input-group .chosen-container { flex: 1 1 0; min-width: 0; width: auto !important; }
+.mm-ui.mm-web .mm-web-narrow { max-width: 760px; }

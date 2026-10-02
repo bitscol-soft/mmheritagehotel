@@ -6,84 +6,7 @@
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
 
-    <style>
-        ul li {
-            list-style: none;
-        }
 
-        .total-room-amount input[readonly] {
-            background-color: white !important;
-        }
-
-        .total-night-count input[readonly] {
-            background-color: white !important;
-        }
-
-        .apprearence-none {
-            appearance: none;
-        }
-
-        table thead th {
-            background-color: #4d8cb3;
-            color: #fff;
-        }
-
-        .transactions p {
-            margin-bottom: 0 !important;
-        }
-
-        .action-button-td {
-            padding: 5px 3px !important;
-        }
-
-        .action-button {
-            width: 105px;
-            margin: 0 auto;
-        }
-
-        .action-button a,
-        .action-button button {
-            padding: 0px !important;
-            border-width: 2px !important;
-            margin-bottom: 3px;
-            width: 22px;
-            height: 22px;
-            line-height: 20px;
-            text-align: center;
-            align-items: center;
-        }
-
-        .action-button a i,
-        .action-button button i {
-            font-size: 12px;
-        }
-
-        .filter-booking .guest-info {}
-
-        .middle-col {
-            position: relative;
-        }
-
-        .middle-col::after {
-            content: '';
-            position: absolute;
-            top: -5px;
-            left: -8px;
-            height: 34px;
-            width: 1.7px;
-            background: #ccc;
-        }
-
-        .middle-col::before {
-            content: '';
-            position: absolute;
-            top: -5px;
-            right: -7px;
-            height: 34px;
-            width: 1.7px;
-            background: #ccc;
-        }
-    </style>
 
 
     <!----- INCLUDING EXTRA CHARGE MODAL CSS ----->
@@ -94,21 +17,20 @@
 
 @section('content')
 
-    <div class="page-header">
-        <a class="btn-xs btn-info no-border" href="{{ route('booking.create') }}" style="float: right; margin: 0 2px;">
-            <i class="fa fa-plus-circle"></i> New Booking </a>
-        <h1>
-            <i class="fa fa-info-circle"></i> Booking List
-            <span class="badge badge-info">Total: {{ $booking->total() }}</span>
-        </h1>
-    </div>
-
+    <x-mm.styles />
+    <x-mm.page class="mm-bookings" title="Reservations" description="Search bookings, review stays and manage front-desk activity.">
+        <x-slot name="actions">
+            <a class="mm-button" href="{{ route('booking.create') }}">
+                <i class="fa fa-plus-circle" aria-hidden="true"></i> New Booking
+            </a>
+        </x-slot>
+        <x-mm.badge>Total: {{ $booking->total() }}</x-mm.badge>
 
     <!----------------- INCLUDING SEARCH FILTER ----------------->
     @include('booking._inc._filter')
 
 
-    <hr style="margin: 5px 0 10px 0 !important;">
+
 
 
     <!----------------- INCLUDING CUTOMER INFO FOR SEARCH ----------------->
@@ -119,14 +41,19 @@
 
     {{-- <x-alert-message /> --}}
 
-    <div class="row">
-        <div class="col-xs-12">
-            <div class="table-responsive" style="border: 1px #cdd9e8 solid;">
+    <div class="mm-panel">
+        <div class="tw-p-4">
+            <div>
                 <!----------- INCLUDING PAY MODAL ---------->
                 <x-multi-account-pay-modal-booking />
 
                 <!----------- INCLUDING BOOKING TABLE ---------->
-                @include('booking._inc._booking-table')
+                <x-mm.table-scroll label="Booking results">
+                    @include('booking._inc._booking-table')
+                </x-mm.table-scroll>
+                @if ($booking->isEmpty())
+                    <p class="tw-p-6 tw-text-center tw-text-muted" role="status">No bookings found. Try changing or clearing your filters.</p>
+                @endif
 
 
                 <form action="" id="cancelBookingForm" method="POST">
@@ -161,6 +88,7 @@
 
     <!--------------- INCLUDING EXTRA CHARGE MODAL --------------->
     @include('booking._modal.extra-charge-modal')
+    </x-mm.page>
 
 @endsection
 

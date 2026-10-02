@@ -2,7 +2,7 @@
 @extends('layouts.master')
 @section('title','Add New Guest')
 @section('page-header')
-    <i class="fad fa-plus-circle"></i> Add New Guest
+    <i class="fa fa-plus-circle"></i> Add New Guest
 @stop
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />

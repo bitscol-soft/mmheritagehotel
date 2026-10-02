@@ -211,7 +211,7 @@ class UserPermissionController extends Controller
 
 
 
-        Schema::hasTable('employees')
+        (class_exists(\Module\HRM\Models\Employee\Employee::class) && Schema::hasTable('employees'))
             ? $data['employee_ids'] = \Module\HRM\Models\Employee\Employee::whereDoesntHave('user')
             ->select('employee_full_id', 'email', 'company_id', 'department_id', 'designation_id', 'id', 'name')
             ->with('department:name,id', 'designation:name,id')
@@ -219,7 +219,7 @@ class UserPermissionController extends Controller
             : $data['employee_ids'] = [];
 
 
-            Schema::hasTable('employees')
+            (class_exists(\Module\HRM\Models\Employee\Employee::class) && Schema::hasTable('employees'))
             ? $data['existing_employee']  = \Module\HRM\Models\Employee\Employee::whereHas('user', function ($q) {
                 $q->where('status', 1);
             })
@@ -570,16 +570,15 @@ class UserPermissionController extends Controller
     */
     public function employee_list(Request $request)
     {
-        Schema::hasTable('employees')
-            ? $employees_info = \Module\HRM\Models\Employee\Employee::with(['company', 'department', 'designation', 'bank_information'])
-            ->where('id', $request->id)
-            ->orWhere('employee_full_id', $request->id)
-            ->where('status', 1)->first()
-            : $employees_info = \Module\HRM\Models\Employee\Employee::with(['company', 'bank_information'])
+        // the previous ternary called HRM in BOTH branches -> fatal without the module
+        if (! class_exists(\Module\HRM\Models\Employee\Employee::class) || ! Schema::hasTable('employees')) {
+            return response()->json(null);
+        }
+
+        $employees_info = \Module\HRM\Models\Employee\Employee::with(['company', 'department', 'designation', 'bank_information'])
             ->where('id', $request->id)
             ->orWhere('employee_full_id', $request->id)
             ->where('status', 1)->first();
-
 
         return response()->json($employees_info);
     }
@@ -605,20 +604,16 @@ class UserPermissionController extends Controller
     */
     public function permittedEmployeeList()
     {
-        class_exists('Module\HRM\Models\Employee')
-            ? $employees = \Module\HRM\Models\Employee\Employee::whereStatus(1)
-            ->whereIn('company_id', Company::userCompanyId())
-            ->whereIn('department_id', \Module\HRM\Models\Department::userDepartmentId())
-            ->whereIn('designation_id', \Module\HRM\Models\Designation::userDesignationId())
-            ->orderBy('name')
-            ->select('employee_full_id', 'name')
-            ->get()
-            : $employees = \Module\HRM\Models\Employee\Employee::with(['company', 'bank_information'])
+        // HRM must exist AND provide its models, otherwise return an empty list
+        if (! class_exists(\Module\HRM\Models\Employee\Employee::class) || ! Schema::hasTable('employees')) {
+            return response()->json([]);
+        }
+
+        $employees = \Module\HRM\Models\Employee\Employee::whereStatus(1)
             ->whereIn('company_id', Company::userCompanyId())
             ->orderBy('name')
             ->select('employee_full_id', 'name')
             ->get();
-
 
         return response()->json($employees);
     }

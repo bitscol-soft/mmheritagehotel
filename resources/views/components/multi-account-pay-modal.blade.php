@@ -49,7 +49,7 @@
                                             <th width="7%">
                                                 <button type="button" class="remove-row"
                                                     style="background-color: transparent;border: none;" title="Remove"
-                                                    disabled=""><i class="far fa-times-circle fa-lg text-danger"></i>
+                                                    disabled=""><i class="fa fa-times-circle fa-lg text-danger"></i>
                                                 </button>
                                             </th>
                                         </tr>
@@ -77,7 +77,7 @@
                                         <th width="7%">
                                             <button type="button" class="remove-row"
                                                 style="background-color: transparent;border: none;" title="Remove"
-                                                disabled=""><i class="far fa-times-circle fa-lg text-danger"></i>
+                                                disabled=""><i class="fa fa-times-circle fa-lg text-danger"></i>
                                             </button>
                                         </th>
                                     </tr>

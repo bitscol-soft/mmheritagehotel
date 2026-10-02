@@ -1,0 +1,799 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">
+    <link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css" />
+    <link rel="stylesheet" href="/assets/css/chosen.min.css" />
+
+
+    <!----- INCLUDING EXTRA CHARGE MODAL CSS ----->
+    <style>
+    .md-modal {
+        position: fixed;
+        top: 40%;
+        left: 50%;
+        width: 50%;
+        max-width: 500px;
+        min-width: 300px;
+        height: auto;
+        z-index: 99999;
+        visibility: hidden;
+        -webkit-backface-visibility: hidden;
+        -moz-backface-visibility: hidden;
+        backface-visibility: hidden;
+        -webkit-transform: translateX(-50%) translateY(-50%);
+        -moz-transform: translateX(-50%) translateY(-50%);
+        -ms-transform: translateX(-50%) translateY(-50%);
+        transform: translateX(-50%) translateY(-50%);
+    }
+    .md-show {
+        visibility: visible;
+    }
+    .md-overlay {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        visibility: hidden;
+        top: 0;
+        left: 0;
+        z-index: 9999;
+        opacity: 0;
+        background: rgba(40, 43, 49, 0.8);
+        -webkit-transition: all 0.3s;
+        transition: all 0.3s;
+    }
+    .md-show ~ .md-overlay {
+        opacity: 1;
+        visibility: visible;
+    }
+    .md-content {
+        color: #333;
+        background: #fff;
+    }
+    .md-effect .md-content {
+        -webkit-transform: scale(0.7);
+        -ms-transform: scale(0.7);
+        transform: scale(0.7);
+        opacity: 0;
+        -webkit-transition: all 0.3s;
+        transition: all 0.3s;
+    }
+    .md-show.md-effect .md-content {
+        -webkit-transform: scale(1);
+        -ms-transform: scale(1);
+        transform: scale(1);
+        opacity: 1;
+    }
+    .extra-charge .main-body{
+        border: 4px solid #f1f1f1;
+    }
+    .extra-charge .modal-action {
+        display: flex;
+        align-items: center;
+        justify-content: end;
+        padding-top: 9px;
+        padding-bottom: 5px;
+    }
+    .extra-charge .modal-header{
+        padding: 10px;
+        text-transform: uppercase;
+        font-size: 20px;
+    }
+    .extra-charge .modal-action .modal-btn {
+        border-width: 2px;
+        font-size: 13px;
+        padding: 4px 9px;
+        line-height: 1.38;
+        border-radius: 3px;
+        margin-left: 5px
+    }
+    .extra-charge .modal-action .hide-modal {
+        border: 2px solid;
+        background: #f1f1f1;
+        cursor: pointer;
+    }
+    .extra-charge .modal-action .hide-modal:hover{
+        border: 2px solid;
+        background: #dc3545;
+        border-color: #dc3545;
+    }
+    .extra-charge .charge-amount {
+        padding-left: 10px;
+        margin-bottom: 15px;
+    }
+    .extra-charge .charge-reason{
+
+    }
+</style>
+
+
+<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+        <section class="mm-ui mm-banquet mm-bookings">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Banquet bookings</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Search hall bookings, review events and collect dues.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button" href="http://localhost/bq/banquet/booking/create">
+                <i class="fa fa-plus-circle" aria-hidden="true"></i> New Booking
+            </a></div>        </header>
+        <span class="mm-badge">Total: 1</span>
+
+    <!----------------- INCLUDING SEARCH FILTER ----------------->
+    <form action="" method="get" class="booking-filter-panel mm-booking-filter">
+    <div class="tw-grid tw-gap-4 sm:tw-grid-cols-2 lg:tw-grid-cols-4 tw-items-end">
+
+        
+        <!----------- GUEST NAME ----------->
+        <div class="tw-min-w-0">
+            <label for="customer_id" class="tw-block tw-mb-2 tw-text-sm tw-font-semibold">Guest</label>
+            <div class="input-group" style="width:100%">
+                <select name="customer_id" class="form-control chosen-select" id="customer_id"
+                    data-selected="" data-placeholder="--Choose Guest--">
+                    <option></option>
+                                            <option value="1">
+                            Rahim &lt;b&gt;Uddin&lt;/b&gt; - 017
+                        </option>
+                                    </select>
+            </div>
+        </div>
+
+
+
+        <!----------- ROOM CATEGORY ----------->
+        
+
+
+
+        <!----------- ROOM NUMBER ----------->
+        
+
+
+
+        <!----------- BOOKING DATE ----------->
+                <div class="tw-min-w-0">
+            <div class="input-group">
+                <input type="text" class="form-control date-picker input-sm" value="" aria-label="Booked from"
+                    name="booking_from_date" data-date-format="dd-mm-yyyy" placeholder="Booking From" autocomplete="off">
+                <span class="input-group-addon">
+                    <i class="fa fa-calendar bigger-110"></i>
+                </span>
+                <input type="text" class="form-control date-picker input-sm" value="" aria-label="Booked to"
+                    name="booking_to_date" data-date-format="dd-mm-yyyy" placeholder="Booking To" autocomplete="off">
+            </div>
+        </div>
+        
+
+
+
+        <!----------- BOOKING NUMBER ----------->
+        <div class="tw-min-w-0">
+            <div class="input-group">
+                <input class="form-control input-sm" value="" aria-label="Booking number" name="booking_number"
+                    type="text" placeholder="Booking Id" autocomplete="off">
+                <span class="input-group-addon">
+                    <i class="fa fa-file-text-o bigger-110"></i>
+                </span>
+            </div>
+        </div>
+
+
+
+
+
+
+
+        <!--------------- STATUS --------------->
+                    <div class="tw-min-w-0">
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        Status
+                    </span>
+                    <select aria-label="Status" name="status" class="form-control chosen-select-100-percent" data-placeholder="--Status--" data-selected="">
+                        <option value=""></option>
+                                                                            <option value="0">Reservation</option>
+                                                    <option value="1">Check In</option>
+                                                    <option value="3">Check Out</option>
+                                                    <option value="4">Cancelled</option>
+                                            </select>
+                </div>
+            </div>
+        
+
+
+
+
+
+
+
+
+
+        <!----------- ACTION BUTTONS ----------->
+        <div class="tw-min-w-0">
+            <div class="tw-flex tw-gap-2">
+                <button type="submit" class="mm-button">
+                    <i class="fa fa-search"></i> Search
+                </button>
+                <a href="http://localhost/bq/booking/booking" class="mm-button mm-button-secondary" aria-label="Clear booking filters">
+                    <i class="fa fa-refresh"></i>
+                </a>
+            </div>
+        </div>
+
+
+    </div>
+</form>
+
+
+    <!----------------- INCLUDING CUTOMER INFO FOR SEARCH ----------------->
+    
+
+    
+
+    <div class="mm-panel">
+        <div class="tw-p-4">
+            <div>
+
+                <!----------- INCLUDING BOOKING TABLE ---------->
+                <div class="mm-table-scroll" role="region" aria-label="Booking results" tabindex="0"><table id="data-table" class="table table-striped table-bordered table-hover">
+    <thead>
+        <tr>
+            <th style="width: 9%" class="text-center">Booking ID</th>
+                        <th class="text-center">Customer</th>
+            <th class="text-center">Date</th>
+            <th class="text-center">Booked Time</th>
+            
+            <th class="text-center" style="width:12%">Hall Room</th>
+            <th class="text-center">Booking From</th>
+            <th class="text-right">Transaction</th>
+            <th class="text-center">Status</th>
+            <th class="text-center" style="width: 10%">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+
+                    
+            
+            <tr>
+                <td class="text-center">
+
+                    <strong>BQ-0007</strong>
+                </td>
+                                <td>
+                    <p>Rahim &lt;b&gt;Uddin&lt;/b&gt;</p>
+                    <p>017</p>
+                </td>
+                <td class="text-center">2026-10-01</td>
+                <td class="text-center">
+                    <p><b>09:30</b></p>
+                </td>
+                
+                <td class="text-center">
+                <span class="label label-xs label-primary arrowed arrowed-right" style="margin-bottom: 3px">
+                                            H-1
+                                    </span>
+                </td>
+                <td class="text-center">
+                    
+                                            Front Desk
+                                    </td>
+
+                <td class="text-right transactions">
+                    <p><b>Subtotal:</b> <span style="font-size: 15px">
+                            1,000.00
+                            <span class="currency-sign"></span></span>
+                    </p>
+                                        <p><b>Paid:</b> <span class="green" style="font-size: 15px">
+                            400.00
+                            <span class="currency-sign"></span></span>
+                    </p>
+                    <p><b>Due:</b> <span class="red" style="font-size: 15px">
+                            600.00
+                            <span class="currency-sign"></span></span>
+                    </p>
+
+                </td>
+
+                <td class="text-center">
+
+                                            <span class="label label-xs reservation arrowed arrowed-right">Reservation</span>
+                                    </td>
+
+                <td class="text-center action-button-td">
+                    <div class="action-button">
+                        <!------- CHECK IN + BOOKING EDIT + BOOKING CANCEL ------->
+                                                                                    <a href="#check-in7" role="button" data-toggle="modal"
+                                    class="btn btn-xs btn-pink" title="Check IN">
+                                    
+                                    <i class="fa fa-check-square"></i>
+                                </a>
+
+                                <a href="http://localhost/bq/banquet/booking/edit/7" class="btn btn-xs btn-success"
+                                    title="Edit">
+                                    <i class="fa fa-pencil-square-o"></i>
+                                </a>
+
+                                                                    <button type="button"
+                                        onclick="cancelBooking(`http://localhost/bq/cancel-booking/7`)"
+                                        class="btn btn-xs btn-warning" title="Cancel Reservation">
+                                        <i class="fa fa-ban"></i>
+                                    </button>
+                                                            
+                                                        
+                        
+
+                        <!------- PROJECT DETAILS ------->
+                        <a href="#project-details7" role="button" data-toggle="modal"
+                            class="btn btn-xs btn-purple" title="View Details">
+                            <i class="fa fa-eye"></i>
+                        </a>
+
+
+
+
+                        <!------- BOOKING INVOICE ------->
+                        
+                        <a href="http://localhost/bq/banquet/generate/invoice-v2/7" target="_blank"
+                            class="btn btn-xs btn-success" title="Invoice">
+                            <i class="fa fa-print"></i>
+                        </a>
+                        
+
+
+                        <!------- RESERVATION INVOICE ------->
+                        <a href="http://localhost/bq/banquet/generate/reservation-invoice/7"
+                            class="btn btn-xs btn-success" title="Reservation Confirmation" target="_blank">
+                            <i class="fa fa-file-text-o"></i>
+                        </a>
+
+
+
+
+
+                        <!------- DUE COLLECTION ------->
+                                                <button type="button"
+                                onclick="dueCollection(`http://localhost/bq/banquet/due-collection/7`, this, `600`)"
+                                class="btn btn-xs btn-info" title="Due Collection">
+                                <i class="fa fa-dollar"></i>
+                            </button>
+                        
+
+                        <!------- EXTRA CHARGE ------->
+                        
+
+                        <!------- BOOKING DELETE ------->
+                                                    <button type="button"
+                                onclick="delete_item(`http://localhost/bq/banquet/booking/destroy/7`)"
+                                class="btn btn-xs btn-danger" title="Delete">
+                                <i class="fa fa-trash-o"></i>
+                            </button>
+                                            </div>
+                </td>
+            </tr>
+
+                            
+            
+            </tbody>
+</table></div>
+                
+
+                <form action="" id="cancelBookingForm" method="POST">
+                    <input type="hidden" name="_token" value="fixture-csrf-token">
+                </form>
+
+                <span class="pull-right"><ul class="pagination"><li class=" disabled"><a class="" href="#">← First</a></li><li class="active"><span>1</span></li><li><a href="#">2</a></li><li><a class="" href="#">Last →</a></li></ul></span>
+
+                <div class="pull-left hidden-print"><a href="/rst/export?export_type=excel"><img src="/assets/images/export-icons/excel-icon.png"></a></div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-------- INCLUDING BOOKING DETAILS & CHECK IN MODAL -------->
+            <div id="project-details7" class="modal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="blue bigger"><i class="fa fa-eye"></i> Booking Details</h4>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <dl id="dt-list-1" class="dl-horizontal">
+                            <table class="table table-bordered">
+                                <tr>
+                                    <th>SL</th>
+                                    <th>Room Number</th>
+                                    <th>Total Guest</th>
+                                    <th>Booked Date</th>
+                                    <th>Booked Time</th>
+                                    <th>Discount Amount<span class="currency-sign"></span></th>
+                                    <th class="text-right">Total Amount<span class="currency-sign"></span></th>
+                                </tr>
+                                                                                                <tr>
+                                    <td colspan="6" class="text-right">Extra Charge</td>
+                                    <td class="text-right">
+                                        0.00
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="6" class="text-right">Total Amount</td>
+                                    <td class="text-right">0.00</td>
+                                </tr>
+                            </table>
+
+                        </dl>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn btn-sm" data-dismiss="modal">
+                    <i class="ace-icon fa fa-times"></i>
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+        
+        <div id="check-in7" class="modal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+
+
+        <!-- Form -->
+        <form action="http://localhost/bq/banquet/check/in/update/7" method="post">
+            <input type="hidden" name="_token" value="fixture-csrf-token">            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="blue bigger"><i class="fa fa-check-square"></i> Check IN Information</h4>
+                </div>
+
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+
+
+                            <!-- Check In Time -->
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">Check In Time</label>
+                                <div class="col-xs-12 col-sm-8 ">
+                                    <div class="input-group">
+                                        <input class="form-control date-picker"
+                                            value="2026-10-01" name="check_in_time"
+                                            type="text">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-calendar bigger-110"></i>
+                                        </span>
+
+                                                                            </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12">
+
+                            <!-- Check In Note -->
+                            <div class="form-group mt-2">
+
+                                <label class="col-sm-3 control-label">
+                                    Check In Note
+                                </label>
+                                <div class="col-xs-12 col-sm-8">
+                                    <textarea name="check_in_note" class="form-control" cols="10" rows="5"></textarea>
+
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <div class="btn-group btn-corner">
+                        <button type="submit" class="btn btn-sm btn-success">
+                            <i class="ace-icon fa fa-save icon-on-right bigger-110"></i>
+                            Save
+                        </button>
+                        <button class="btn btn-sm" data-dismiss="modal">
+                            <i class="ace-icon fa fa-times"></i>
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+    
+
+    <div id="member-detail-show-modal" class="modal" tabindex="-1">
+    <div class="modal-dialog modal-lg" style="width: 80%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close member_details_close" data-dismiss="modal">&times;</button>
+                <h4 class="bigger" style="display: inline-block"><i class="fa fa-info-circle "></i> Member Details</h4>
+                <a href="javascript:void(0)" onclick="memberDetails('member_details')" class="btn btn-warning btn-xs float-right"><i class="fa fa-print "></i></a>
+            </div>
+
+
+            <div class="modal-body" id="member_details">
+
+                <div class="row">
+                    <div class="col-sm-12 member-detail-body">
+
+
+
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+            <div class="modal-footer" style="text-align: right !important;">
+                <div class="btn-group btn-corner">
+                    <button class="btn btn-sm member_details_close" data-dismiss="modal">
+                        <i class="ace-icon fa fa-times"></i>
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!--------------- INCLUDING EXTRA CHARGE MODAL --------------->
+    <div class="extra-charge">
+
+    <div class="md-modal md-effect close-modal" id="extraChargeModal">
+
+        <div class="md-content" style="border-radius: 4px;">
+            <div class="main-body" style="position: relative">
+
+                <div class="down">
+
+                    <!------------- MODAL HEADER ------------>
+                    <div class="text-center modal-header">
+                        <p style="margin: 0">Add Extra Charge<span class="currency-sign"></span> For <strong
+                                class="text-primary bookingNumber"></strong></p>
+                    </div>
+
+                    <form action="http://localhost/bq/booking/extra-charge" method="POST">
+                        <input type="hidden" name="_token" value="fixture-csrf-token">                        <input type="hidden" name="booking_id" id="bookingId" value="">
+
+
+                        <!------------- MODAL BODY ------------>
+                        <div class="modal-body">
+                            
+                            <input name="extra_amount" id="extraAmount" type="text"
+                                class="form-control charge-amount" placeholder="Enter Amount...">
+                            <textarea name="reason" id="reason" class="form-control charge-reason" cols="30" rows="5"
+                                placeholder="Extra Charge Reason"></textarea>
+                        </div>
+
+
+                        <!------------- MODAL FOOTER ------------>
+                        <div class="modal-action modal-footer">
+                            <div class="hide-modal modal-btn btn-sm btn-outline-danger"
+                                onclick="closeExtraChargeModal()">
+                                <i class="fa fa-times hide-product-view" aria-hidden="true"></i> Close
+                            </div>
+                            <button class="modal-btn btn-sm btn-outline-success" type="submit">
+                                <i class="fa fa-pencil-square"></i> Submit
+                            </button>
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="md-overlay"></div>
+</div>
+    </div>
+</section>
+
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
+
+
+    <script>
+        $('.adjustBtn').click(function() {
+            toastr.warning('You are not eligible to migrate anymore!')
+        });
+
+
+
+        $('.member_details_close').click(function() {
+            $('#member-detail-show-modal').modal('hide');
+        });
+
+
+        // Print Member List Of a Booking
+        function memberDetails(divName) {
+            var printContents = document.getElementById(divName).innerHTML;
+            $('#member-detail-show-modal').modal('hide');
+            var originalContents = document.body.innerHTML;
+            document.body.innerHTML = printContents;
+            window.print(printContents);
+            document.body.innerHTML = originalContents;
+            window.location.reload();
+        }
+    </script>
+
+
+
+    <script>
+        let fromBookingStore = ``;
+
+        if (fromBookingStore == 'Yes') {
+
+            let bookingId = ``;
+            let baseUrl = `http://localhost`;
+
+            let url = baseUrl + '/BanquetHall/invoice-v2/' + bookingId
+
+            window.open(url, '_blank');
+
+        }
+    </script>
+
+
+
+    <script src="/assets/js/jquery.maskedinput.min.js"></script>
+    <script src="/assets/js/bootstrap-datepicker.min.js"></script>
+
+
+
+    <!--------------- INCLUDING EXTRA CHARGE SCRIPT -------------->
+    
+
+
+
+    <script>
+        function loadMemberDetail(booking_id) {
+            $.get(`http://localhost/bq/get-booking-member-details`, {
+
+                booking_id: booking_id
+
+            }, function(data) {
+                $('.member-detail-body').html(data);
+            });
+        }
+
+
+
+        function showGuestInfo(object) {
+            $(object).closest('tr').find('.guest-details-tr').toggle()
+        };
+
+
+
+        $('.show-details-btn').on('click', function(e) {
+            e.preventDefault();
+            $(this).closest('tr').next().toggleClass('open');
+            $(this).find(ace.vars['.icon']).toggleClass('fa-angle-double-down').toggleClass('fa-angle-double-up');
+        });
+    </script>
+
+
+
+    <script>
+        $(document).on('change', '.category', function() {
+            var category_id = $(this).val();
+            var get_url = $('#base_url').val();
+            $.ajax({
+                type: 'get',
+                url: '/hotel/room_by_search_category/' + category_id,
+                async: true,
+                beforeSend: function() {
+                    $("body").css("cursor", "progress");
+                },
+                success: function(data) {
+                    $('.room_number').html(data).trigger('chosen:updated');
+                },
+                complete: function(data) {
+                    $("body").css("cursor", "default");
+                }
+            });
+        });
+
+
+
+        function cancelBooking(url) {
+            $('#cancelBookingForm').attr('action', url).submit();
+        }
+
+
+
+        function dueCollection(url, e, amount = 0) {
+            let _this = $(e);
+
+            let html =
+                `<label class="choose-payment-method" style="margin: 5px 8px 5px 0px !important; cursor:pointer;"><input type="radio" id="payment_type" name="payment_type" value="1"><span style="margin-left: 2px">Cash</span></label>`
+            html += `<input type="hidden" id="getPaymentMethodID" value="">`;
+            html += `<div style='margin: 10px 0'></div>`;
+            html +=
+                `<div class="input-group"><span class="input-group-addon">Due Amount<span class="currency-sign"></span></span><input type="number" class="form-control" style="font-size:22px" id="swal-amount" placeholder="Enter Amount" /></div>`;
+            html += `<div class="checkbox">
+                        <label class="block">
+                            <input id="full-due-amount" type="checkbox" class="ace input-lg">
+                            <span class="lbl bigger-120"> Full Amount</span>
+                        </label>
+                    </div>`;
+
+            let confirmButtonText = 'Save';
+
+            $('#getPaymentMethodID').val($('input[name=payment_type]:checked').val());
+
+            Swal.fire({
+                title: 'Due Collection ?',
+                html: html,
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: confirmButtonText,
+                width: 400,
+            }).then((result) => {
+
+                if (result.value) {
+
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        data: {
+                            _method: 'POST',
+                            _token: 'fixture-csrf-token',
+                            amount: $('#swal-amount').val(),
+                            payment_type: $('#getPaymentMethodID').val(),
+                            from_booking_due_collection: 1,
+                        },
+                        success: function(response) {
+                            toastr.success('Due Collected Succesfully!');
+                            location.reload();
+                        }
+                    });
+                }
+            })
+
+            $('.currency-sign').text(`$`)
+
+            $('#full-due-amount').on('click', function() {
+                if ($(this).is(':checked')) {
+                    $('#swal-amount').val(Number(amount).toFixed(2))
+                } else {
+                    $('#swal-amount').val(0)
+                }
+            })
+
+            $('input[name=payment_type]').on('click', function() {
+                $('#getPaymentMethodID').val($(this).val());
+            })
+        }
+
+    </script>
+
+    
+
+
+    <!--------------- INCLUDING EXTEND DATE SCRIPT --------------->
+    
+
+
+    
+
+
+<!--/MM-JS--></body></html>

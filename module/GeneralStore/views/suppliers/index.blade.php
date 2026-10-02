@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title', ' Supplier')
-@section('page-header')
-    <i class="fa fa-list"></i> Suppliers
-@stop
 @section('css')
 
 @stop
@@ -10,22 +7,20 @@
 
 @section('content')
 
-    <div class="page-header">
+<x-mm.styles />
+<x-mm.page class="mm-gs mm-rst mm-rst-inv" title="Suppliers" description="Suppliers, their contact details and types.">
+    <x-slot name="actions">
         @if (hasPermission('suppliers.view', $slugs))
-            <a class="btn btn-xs btn-info" href="{{ route('suppliers.create') }}" style="float: right; margin: 0 2px;"> <i
+            <a class="mm-button" href="{{ route('suppliers.create') }}"> <i
                     class="fa fa-plus"></i> Add @yield('title') </a>
         @endif
-        <h1>
-            @yield('page-header')
-        </h1>
-    </div>
+    </x-slot>
 
     @include('partials._alert_message')
 
-    <div class="row">
-        <div class="col-xs-12">
-
-            <div class="table-responsive" style="border: 1px #cdd9e8 solid;">
+    <x-mm.panel>
+        <div class="table-responsive" style="border: 1px #cdd9e8 solid;">
+            <x-mm.table-scroll label="Suppliers">
                 <table id="data-table" class="table table-striped table-bordered table-hover">
                     <thead>
                         <tr>
@@ -63,7 +58,7 @@
                                         @if (hasPermission('suppliers.delete', $slugs))
                                             <button type="button" onclick="delete_check({{ $supplier->id }})"
                                                 class="btn btn-sm btn-danger" title="Delete">
-                                                <i class="fa fa-trash"></i>
+                                                <i class="fa fa-trash-o"></i>
                                             </button>
                                         @endif
                                     </div>
@@ -79,19 +74,18 @@
                         @endforeach
                     </tbody>
                 </table>
-
-            </div>
+            </x-mm.table-scroll>
+        </div>
             {{-- export/print/save --}}
-            {{-- <div class="pull-right" style="margin-top:-20px">
+        {{-- <div class="pull-right" style="margin-top:-20px">
                 <a href="" style="margin-right: 5px"><img src="{{ asset('assets/images/export-icons/excel-icon.png') }}" alt="excel"></a>
                 <a href="" style="margin-right: 5px"><img src="{{ asset('assets/images/export-icons/pdf-icon.png') }}" alt="pdf"></a>
                 <a href="" style="margin-right: 5px"><img src="{{ asset('assets/images/export-icons/word-icon.png') }}" alt="word"></a>
                 <a class="btnPrint" href="{{ route('print.suppliers') }}" style="margin-right: 5px"><img src="{{ asset('assets/images/export-icons/printer-icon.png') }}" alt="print"></a>
             </div> --}}
 
-        </div>
-    </div>
-
+    </x-mm.panel>
+</x-mm.page>
 
     @foreach ($suppliers as $supplier)
 

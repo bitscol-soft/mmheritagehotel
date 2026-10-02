@@ -37,39 +37,39 @@
 
                         <!------------------ Pickup ------------------>
                         <div class="input-field">
-                            <i class="fas fa-truck-pickup"></i>
+                            <i class="fa fa-truck"></i>
                             <input id="pickup" type="text" name="pickup" placeholder="&nbsp;" autocomplete="off" />
                             <label for="pickup">Pickup</label>
                         </div>
 
                         <!------------------ Drop ------------------>
                         <div class="input-field">
-                            <i class="fas fa-map-marker-alt"></i>
+                            <i class="fa fa-map-marker"></i>
                             <input id="drop" type="text" name="drop" placeholder="&nbsp;" autocomplete="off" />
                             <label for="drop">Drop</label>
                         </div>
 
                         <!------------------ PHONE ------------------>
                         <div class="input-field">
-                            <i class="fas fa-plane-arrival"></i>
+                            <i class="fa fa-plane"></i>
                             <input id="pickup_flight" type="text" name="pickup_flight" placeholder="&nbsp;" autocomplete="off" />
                             <label for="pickup_flight">Pickup Flight No</label>
                         </div>
                         <!------------------ PHONE ------------------>
                         <div class="input-field">
-                            <i class="fas fa-plane-departure"></i>
+                            <i class="fa fa-plane"></i>
                             <input id="drop_flight" type="text" name="drop_flight" placeholder="&nbsp;" autocomplete="off" />
                             <label for="drop_flight">Drop Flight No</label>
                         </div>
                         <!------------------ PHONE ------------------>
                         <div class="input-field">
-                            <i class="fas fa-user-plus"></i>
+                            <i class="fa fa-user-plus"></i>
                             <input id="reference" type="text" name="reference" placeholder="&nbsp;" autocomplete="off" />
                             <label for="reference">Reference Name</label>
                         </div>
                         <!------------------ PHONE ------------------>
                         <div class="input-field">
-                            <i class="fas fa-hotel"></i>
+                            <i class="fa fa-home"></i>
                             <select name="book_type" class="form-control">
                                 <option value="">Booking Type</option>
                                 <option value="1">FIT</option>
@@ -79,7 +79,7 @@
                         </div>
                         <!------------------ PHONE ------------------>
                         <div class="input-field">
-                            <i class="fas fa-bullseye-arrow"></i>
+                            <i class="fa fa-bullseye"></i>
                             <select name="purpose" class="form-control">
                                 <option value="">Booking Purpose</option>
                                 <option value="1">Travel</option>

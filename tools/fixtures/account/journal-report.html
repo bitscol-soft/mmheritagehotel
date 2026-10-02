@@ -1,0 +1,201 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">
+    <link rel="stylesheet" href="/assets/css/chosen.min.css" />
+    <link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css" />
+
+    <style type="text/css">
+        table,
+        th,
+        td,
+        tr {
+            border: none !important;
+        }
+
+
+        @media  print {
+
+            .no-print,
+            .no-print * {
+                display: none !important;
+            }
+
+            .d-print {
+                display: block !important;
+            }
+
+            tr {
+                page-break-after: avoid !important;
+            }
+
+            thead {
+                page-break-before: avoid !important;
+            }
+
+            .widget-box {
+                border: none !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                width: 100% !important;
+            }
+
+            .px-4 {
+                padding: 0 !important;
+            }
+        }
+
+        @page  {
+            margin: 0.5in;
+            /*size: landscape;*/
+        }
+
+        .d-print {
+            display: none;
+        }
+
+
+        .header-bg {
+            background: #bce4e5 !important;
+            padding: 10px !important;
+        }
+
+        .odd-bg {
+            background: #cecece42 !important;
+        }
+
+        .even-bg {
+            background: #dadada !important;
+        }
+
+    </style>
+<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+<section class="mm-ui mm-report mm-acc mm-rst mm-rst-inv">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Ledger Journal</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Journal entries for the period.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button mm-button-secondary" href="http://localhost/acc/report/journal-report"><i class="fa fa-refresh"></i> Refresh</a>
+        <a class="mm-button" href="#" style="cursor: pointer" onclick="print()"><i class="fa fa-plus"></i> Print</a></div>        </header>
+        <div class="mm-panel tw-p-4 sm:tw-p-6 mm-report-filter"><form class="mm-setup-filter mm-report-form" action="" method="get">
+
+                <div class="input-group">
+                    <label class="input-group-addon">Company</label>
+                    <select class="form-control chosen-select-100-percent" name="company_id" data-placeholder="-Select Company-">
+                        <option></option>
+                                                    <option value="1" >MM &lt;b&gt;Heritage&lt;/b&gt;</option>
+                                            </select>
+                </div>
+
+                <div class="input-daterange input-group">
+    <span class="input-group-addon" style="border-left: 1px solid #ccc;">
+        Date
+            </span>
+
+    <input type="text"
+           name="from"
+           class="input-sm form-control date-picker"
+           value="2026-10-01"
+           autocomplete="off"
+           placeholder="From"
+           style="cursor: pointer"
+        readonly
+        
+    >
+
+    <span class="input-group-addon">
+        <i class="fa fa-exchange"></i>
+    </span>
+
+    <input type="text"
+           name="to"
+           class="input-sm form-control date-picker"
+           value="2026-10-01"
+           autocomplete="off"
+           placeholder="To"
+           style="cursor: pointer"
+        readonly
+        
+    >
+</div>
+
+                <div class="btn-group btn-corner">
+                    <button type="submit" class="btn btn-primary btn-sm">
+                        <i class="fa fa-search"></i>
+                        Search
+                    </button>
+                </div>
+        </form></div>
+    <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><!-- filter -->
+
+
+
+
+
+        <!-- LIST -->
+        <div class="row" style="width: 100%; margin: 0 !important; padding: 0 !important;">
+            <div class="col-sm-12">
+
+
+                <div class="mm-table-scroll" role="region" aria-label="Ledger Journal" tabindex="0"><table class="table" style="margin-bottom: 0; width: 100% !important;">
+
+
+                        <!-- table header -->
+                        <thead>
+                            <tr style="color: black !important; font-weight: bolder; font-size: 15px">
+                                <th class="header-bg text-center" colspan="4">SL</th>
+                                <th class="header-bg text">Account</th>
+                                <th class="header-bg text">Description</th>
+                                <th class="header-bg text-right pr-1">Dr.</th>
+                                <th class="header-bg text-right pr-1">Cr.</th>
+                            </tr>
+                        </thead>
+
+
+
+                        <!-- body -->
+                        <tbody>
+
+                            
+
+                                                            <tr>
+                                    <td colspan="30" style="font-size: 16px" class="text-center text-danger">
+                                        NO RECORDS FOUND!
+                                    </td>
+                                </tr>
+                                                    </tbody>
+
+
+
+                        <!-- table footer -->
+                        
+                    </table></div>
+
+
+                <br>
+
+                
+
+
+                <!-- EXCEL BUTTON -->
+                <a class="hidden-print" href="http://localhost/acc/report/journal-report?export_type=excel&" target="_blank" style="margin: 18px 0 0 20px; display: inline-block;">
+                    <img src="/assets/images/export-icons/excel-icon.png">
+                </a>
+
+            </div>
+        </div></div>
+    </div>
+</section>
+
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
+    <script src="/assets/js/chosen.jquery.min.js"></script>
+    <script src="/assets/js/bootstrap-datepicker.min.js"></script>
+
+
+    <script src="/assets/custom_js/chosen-box.js"></script>
+    <script src="/assets/custom_js/date-picker.js"></script>
+
+<!--/MM-JS--></body></html>

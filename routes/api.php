@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\LogController;
 use App\Http\Controllers\Api\Auth\LoginController;
+use App\Http\Controllers\Api\ApiDashboardController;
 
 
 
@@ -24,10 +25,10 @@ Route::group(['middleware' => ['auth:sanctum']],function () {
 });
 Route::group(['middleware' => ['api.token.verify']], function () {
 
-    Route::post('dashboard', 'Api\ApiDashboardController@index');
+    Route::post('dashboard', [ApiDashboardController::class, 'index']);
 
 
-    Route::post('all-users', 'Api\ApiDashboardController@allUserList');
+    Route::post('all-users', [ApiDashboardController::class, 'allUserList']);
 
 
 });

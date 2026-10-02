@@ -1,0 +1,209 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">    <style>
+        @media  print {
+
+            .widget-box {
+                border: none !important
+            }
+
+            .no-border {
+                border-left: 1px solid white !important;
+                border-bottom: 1px solid white !important;
+                text-align: right;
+            }
+        }
+
+        .no-border {
+            border-left: 1px solid white !important;
+            border-bottom: 1px solid white !important;
+            text-align: right;
+        }
+    </style>
+<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+<section class="mm-ui mm-invoice-page mm-bar mm-rst">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Sale return details</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Items returned against a bar invoice.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button" href="http://localhost/x/bar/sales/create">
+                    <i class="fa fa-plus-circle"></i> Create
+                </a>
+                <a class="mm-button mm-button-secondary" href="http://localhost/x/bar/sale-returns/index">
+                    <i class="fa fa-list-alt"></i> Return List
+                </a>
+                <a class="mm-button mm-button-secondary" href="javascript:void(0)" onclick="printPage('print_body')">
+                    <i class="fa fa-print"></i>
+                    Print
+                </a></div>        </header>
+        <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><!-- Alert Message -->
+        
+
+        <div class="row">
+
+            <!-- Print This area -->
+            <div id="print_body" class="col-lg-12">
+
+
+
+                <!-- Invoice Header -->
+                <div id="customer_info" style="padding: 0 10px;margin-bottom:20px">
+                    <div class="row">
+
+                        <!-- Company Info -->
+                        <div class="company-info text-center">
+                            <h4>MM Heritage</h4>
+                            <p>Dhaka</p>
+                            <p>029,
+                                a@example.com</p>
+                        </div>
+
+                        <!-- panel title -->
+                        <h6 style="width: 100%;text-align: center;margin-top: 15px;">
+                            <b
+                                style="padding: 10px 20px; border-radius: 10px; color: #000; border:1px solid #ddd;">
+                                Sale Return Invoice
+                            </b>
+                        </h6>
+
+
+
+                        <hr>
+
+
+                        <!-- Customer Info Right side -->
+                        <div class="customerInfo" style="width: 50%;float: left;">
+
+                            <p class="patient"><b>Invoice No : </b>
+                                RET-1
+                            </p>
+
+                            <p class="patient"><b>Name : </b>
+                                Aisha
+                            </p>
+                            <p class="patient"><b>Mobile : </b>
+                                017
+                            </p>
+
+
+                            <p class="patient">
+                                <b>Sales By : </b>
+                                Rahim
+                            </p>
+                        </div>
+
+                        <!-- Customer Info Left side -->
+                        <div class="customerInfo" style="width: 50%; float: right;">
+                            <p class="pull-right"><b> Date : </b>
+                                01-10-2026</p>
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+                <!-- Invoice Content -->
+                <div class="invoice-content">
+                    <div class="table-responsive">
+
+
+
+                        <!-- Table -->
+                        <div class="mm-table-scroll" role="region" aria-label="Sale return" tabindex="0"><table class="table table-bordered">
+
+                                <!-- Table Header -->
+                                <thead>
+                                    <tr>
+                                        <th width="1%">SL</th>
+                                        <th width="50%">Product Name</th>
+                                        <th class="text-center">Price</th>
+                                        <th class="text-center">Quantity</th>
+                                        <th width="25%" style="text-align:right">Total</th>
+                                    </tr>
+                                </thead>
+
+                                <!-- Table Body -->
+                                <tbody>
+                                    
+                                                                            <tr>
+                                            <td>1</td>
+                                            <td>Lassi</td>
+                                            <td class="text-center">
+                                                100.00
+                                            </td>
+                                            <td class="text-center">1</td>
+                                            <td class="text-right">
+                                                100.00
+                                                &#x09F3;
+                                            </td>
+                                        </tr>
+                                    
+                                    <tr>
+                                        <td colspan="4" class="no-border">
+                                            Discount :</td>
+                                        <td style="text-align: right">0.00
+                                            &#x09F3;</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4" class="no-border">
+                                            Total : </td>
+                                        <td style="text-align: right">
+                                            500.00
+                                            &#x09F3;
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="4" class="no-border">
+                                            Return :
+                                        </td>
+                                        <td style="text-align: right">
+                                            400.00
+                                            &#x09F3;
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td colspan="4" class="no-border">Due
+                                            :</td>
+                                        <td style="text-align: right">
+                                            100.00
+                                            &#x09F3;
+                                        </td>
+                                    </tr>
+                                </tbody>
+
+                            </table></div>
+                        <br>
+                        <br>
+
+                        <div class="print-footer"
+                            style="margin-top: 40px;overflow: hidden;width: 100%;padding: 0 10px;">
+
+                            <div class="copyright" style="padding: 0px !important;">
+                                <br>
+                                <div class="copyright-section">
+                                    <p class="pull-left">NB: This is system generated report.</p>
+                                    <p class="design_band pull-right">Powered By: <a href="#"> Smart
+                                            Software LTD.</a>
+                                    </p>
+                                </div>
+                            </div>
+                            <br>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div></div>
+    </div>
+</section>
+
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
+<!--/MM-JS--></body></html>

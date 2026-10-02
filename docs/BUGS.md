@@ -1,0 +1,113 @@
+# Bug Register — MM Heritage Hotel ERP
+
+Branch `arena/01a0f37d-mmheritagehotel` (PR #4). Every bug below was reproduced from the full
+crawl of the live app (251 screens) and traced to a concrete cause in this repository.
+**Fixed** = patched on this branch (commit `bug-fixes`); **Open** = needs a decision, deploy, or a feature
+from the modernization plan.
+
+Legend — Severity: 🔴 breaks a core flow · 🟠 breaks a secondary page/action · 🟡 cosmetic/hardening · 🔵 security.
+
+## A. Fixed on this branch
+
+| # | Sev | Route / Screen | Symptom | Root cause | Fix |
+|---|-----|----------------|---------|------------|-----|
+| 1 | 🔴 | `/hotel/booking/create`, `booking/next-step`, `booking-collection`, `/hotel/guests/create`, `guests/{id}/edit`, `booking-note/create`, `guest-registration-terms/create`, `booking-adjusts`, `remove_booking_next`, banquet/restaurant sale screens | HTTP 500 `Class "Module\CRM\Models\CRMCustomer" not found` | `module/CRM` shipped only as an empty submodule gitlink; `Guest`, `BookingController`, `AjaxController`, `BanquetBookingController`, restaurant `SaleController` and `HelperMethods` all import it | Added `module/CRM` with `CRMCustomer`, `CrmCustomer`, `CrmBillGenerate`, `MailTemplate`, `ProjectBillingService` (no-op), seeder stub — tables `c_r_m_customers` / `mail_templates` exist in the schema |
+| 2 | 🔴 | Booking success / invoice PDFs | 500 when a booking's `company_id` is null or has no CRM row | `getCrmCompany()` / `getCrmCompanyAddress()` dereferenced `find()` result | `optional()` + null-id guard in `app/Helpers/HelperMethods.php` |
+| 3 | 🟠 | `/setting/parent-permissions/create`, `/{id}/edit` | 500 (method missing; edit pointed at non-existent `setting.parent_permission` view) | `ParentPermissionController` lacked `create()`, wrong view namespace | Added `create()`; `edit()` now renders `parent_permission` (form is `isset($model)`-driven in the shared view) |
+| 4 | 🟠 | `/setting/submodules/create`, `/{id}/edit` | same as #3 | same pattern in `SubmoduleController` | Same fix (`submodule` view) |
+| 5 | 🟠 | `/setting/permission-access` | 500 `ArgumentCountError` — resource `index` mapped to `index($id)` (needs a user id) | route/controller arity mismatch | Resource `->except(['index','show','destroy'])`; plain URL now redirects to `permitted.users` grid; deep-link `permission-access/create/{id}` unchanged |
+| 6 | 🟠 | `/setting/select/employee/list`, `/setting/permitted/employee/list` | 500 `Method … does not exist` (AJAX select2 sources) | routes pointed to methods `UserPermissionController` never had | Implemented `getEmployeeList` / `getPermittedEmployeeList`, select2 JSON shape, hard-guarded with `class_exists(\Module\HRM\Models\Employee::class)` → empty result when HRM absent |
+| 7 | 🟠 | `/setup/account-setups` | 500 `View [setup.account-setups.index] not found` | view file never committed | Added `module/Account/views/setup/account-setups/index.blade.php` (status table) |
+| 8 | 🟠 | `/setup/account-opening-balances` (+ index/show/edit routes) | 500 when resource routes hit missing methods | controller implements only `create()/store()` | Resource restricted to `->only(['create','store'])` |
+| 9 | 🟠 | `/sale/acc_collections/create|edit`, `/purchase/acc-payments/create|edit` | 500: `create()` pointed at wrong namespace (`purchase.collections.create`) and none of those views exist | stub controllers | `create/edit` redirect to index with an explanatory flash (flows are recorded via the voucher module); marked TODO with real tables `acc_collections`/`acc_payments` noted for full implementation |
+| 10 | 🔴 | `/reports/revenue-analysis`, `/reports/ratio-analysis`, `/reports/nominal-account-ledger`, `/reports/received-payment-statement` | 500 `Method …does not exist` — routes reference 4 controller methods that were never implemented | half-ported report suite | Implemented all 4 in `AccountReportController` (revenue analysis mirrors expense-analysis over group 4/Credit; nominal ledger = combined revenue+expense ledger with debit/credit totals; ratio analysis from period group totals; received payments from `acc_collections`) + 4 new views with date filter, print link, pagination |
+| 11 | 🟠 | `/hotel/booking-search-by-date` | 500 `Undefined variable $account_types` | `getSearch()` rendered `booking/index` but omitted vars that `index()` provides | Passes `account_types` now |
+| 12 | 🟠 | `/sale/acc-returnable-sale-items`, `/purchase/acc-returnable-purchase-items` | 500 `Attempt to read property "details" on null` when id missing/invalid | no guard before `->render()` of view that dereferences `$sale->details` | Guard: render `response('')` when record missing |
+| 13 | 🟠 | `/gs/item-export` | 500 `Class ExportItemCSV not found` (no import, no class anywhere) | export class deleted/never committed | Added `Module\GeneralStore\Services\Export\ExportItemCSV` (FromQuery+headings over real `items` columns) + import in `ItemController` |
+| 14 | 🟡 | Public room-category page (`/search-room`, `room-category/{id}`) | amenities list always empty; invalid category id → 500 | `array_push($aminities, $name[0])` (indexing an Eloquent model → null) + `if ($name != null \|\| $name != '')` always true + missing `abort` | Push the model itself; `if ($name !== null)`; `abort_if(..., 404)` |
+| 15 | 🟡 | Public `/room/{url_slug}` | 500 instead of 404 on unknown slug | `viewRoom()` dereferenced possibly-null `$room` | `abort_if` 404 + null-safe explode |
+| 16 | 🔵 | `GET /optimize-clear` | **Unauthenticated** cache flush (DoS-ish, breaks perf-cached deploys) | route defined outside the auth group with no middleware | `->middleware(['auth','super-admin'])` |
+| 17 | 🔵 | `GET /update-debug` | toggles `APP_DEBUG` with only `super-admin` but **no `auth`** (middleware chain aborted on null user) | missing middleware | `->middleware(['auth','super-admin'])` |
+| 18 | 🔵 | `/db-backup`, `/db-backup-to-drive` | any logged-in staff could dump the full DB (spatie dumper, download + Google Drive) | auth group but no role gate | `->middleware('super-admin')` |
+| 19 | 🔵 | `GET /hotel/delete-all-booking-by-query` | destructive mass-delete of bookings by date range, GET-accessible to every hotel user | dev helper left in routes | `->middleware('super-admin')` (GET kept for compatibility; convert to POST when UI updated) |
+| 20 | 🟡 | `/hotel/room-management/vat/create|show…`, `/account-type/create|show`, `/hotel_service/services/create|edit|show` | 500 on routes the resources auto-registered but controllers don't implement | over-broad `Route::resource`/`Route::resources` | vat → `only(['index','update'])`; account-type → `except(['create','show'])`; HotelService `services` → `only(['index','store','update','destroy'])` |
+| 21 | 🟠 | `/sync-data`, `/sync-data-v2`, `/sync-data-process` (global settings) | 500 `Class Module\HRM\… not found` (HRM module absent) | unconditional HRM imports at call sites | clean `abort(404,'HRM module is not installed.')` guard |
+| 22 | 🟡 | repo hygiene | no `.gitignore` (vendor, `.env`, backups, node_modules all at risk) | — | added standard Laravel `.gitignore` (tracked files untouched) |
+
+## A2. Found & fixed during local runtime verification (round 2)
+
+These only surfaced by actually booting the app (PHP-WASM + SQLite copy of the committed
+dump, request-level harness). Same environment, same 31-URL suite, all green.
+
+| # | Sev | Route / Screen | Symptom (runtime-discovered) | Root cause | Fix |
+|---|-----|----------------|------------------------------|------------|-----|
+| 33 | 🔴 | `/hotel/booking/booking-adjusts` (and any `booking/<word>` GET) | 500 `Attempt to read property "check_out_date" on null` at `BookingController.php:321` | `booking/{booking}` (resource `show`) was registered **before** the static `booking/booking-adjusts` routes, so the word "booking-adjusts" was bound as a booking **id** → `find()` null → fatal | Moved the static `booking` prefix group ahead of `Route::resources([...])`; `BookingAdjustController::index()` (empty `# code...` stub returning null) now redirects to the bookings list with an info flash |
+| 34 | 🟠 | `/hotel/guest-registration-terms/create`, `/hotel/booking-note/create` | 500 `Undefined variable $companies` | both `create()` methods rendered `guests.create` (copy-paste) which needs `$companies`; their own views exist and only need `$countries` | Return the correct views (`booking-note.create`, `guest-registration-terms.create`) |
+| 35 | 🟠 | `/setting/select/employee/list`, `/setting/permitted/employee/list` | 500 `Class Module\HRM\...Employee not found` even with guard attempts | pre-existing ternaries call HRM in **both** branches; `Schema::hasTable('employees')` can be true while the module is absent | Replaced with `class_exists(\Module\HRM\Models\Employee\Employee::class) && Schema::hasTable('employees')` short-circuits returning `null`/`[]` JSON |
+| 36 | 🟡 | Permission-access create page + permitted-users grid | Same HRM fatal risk when `employees` table exists but module doesn't | two more `Schema::hasTable('employees') ? HRM : []` ternaries | Same class_exists conjunct added |
+| 37 | 🟠 | `/purchase/acc-payments/create|edit` | Fix #9 redirect threw `Route [acc_payments.index] not defined` | payments resource is named `acc-payments`, not `acc_payments` | Corrected route names in the redirect |
+| 38 | 🟠 | new `/reports/received-payment-statement` | 500 `no such table: collections` | `Module\Account\Models\Collection` had no `$table`, defaulting to `collections` | Pinned `protected $table = 'acc_collections'` (the real table in the schema) |
+
+| 39 | 🟡 | Public `/` (and `/terms-&-condition`, `/privacy-&-policy`) | 500 `Attempt to read property "about_heading" on null` whenever the website-settings tables (`about_sections`, `hotel_features`, `our_services`, `privacy_policies`) are empty — e.g. a fresh install before the admin fills them in | `HomePageController` passed `Model::first()` straight into the view, which dereferences it unconditionally | `?? new Model()` fallbacks for all five lookups — the sections render blank until configured, the page never 500s. Verified 200 in the sandbox runtime |
+
+## A3. Found & fixed during the round-3 full-route sweep (deep verification)
+
+Round 3 booted the app again and this time checked **every one of the 994 registered routes** by
+reflection (route name → controller method existence) plus a 525-URL authenticated GET sweep,
+then pruned/hardened. Route count after the pass: **876** — every remaining route resolves to a
+real method (`0 broken`, verified by `zz-controllers` probe in the sandbox).
+
+| # | Sev | Route / Screen | Symptom (runtime-discovered) | Root cause | Fix |
+|---|-----|----------------|------------------------------|------------|-----|
+| 40 | 🔵 | 5 form views: `gs/goods_requisitions` create+edit, `gs/purchases/approve`, `restaurant/inventory/production/goods_requisitions/edit`, `hotel-website` `hotel_feature/create` | Re-reflected user input was echoed **raw**: `{!! old('…') !!}` inside table cells → reflected XSS on validation-failure redisplay | `{!! !!}` unescape on `old()` data | Replaced with `{{ old(…)[$key] ?? '' }}` (escaped, null-safe) |
+| 41 | 🟠 | `/bar/sale-exchanges*`, `/restaurant/sale-exchanges*` | 500 `Class …SaleExchangeController not found` — both modules route & menu-link a controller that was never committed | half-vendored exchange module (models/views exist, controller absent) | Added `Module/{Bar,Restaurant}/Controllers/SaleExchangeController` stubs: full resource surface redirects to the module's sale grid with a warning flash (“not installed in this build”). Real flow stays in PLAN-FEATURES (see B-48) |
+| 42 | 🟠 | `/hotel-website/settings`, `about-us/create`, `privacy-policy/create`, feature screens | 500 `Attempt to read property … on null` whenever the settings tables are empty (fresh installs), and `feature-lists.store` was missing entirely | `Model::first()` fed straight into property access; `HotelFeatureController::store()` never existed | `firstOrNew()` flows in `WebsiteSetting/About/PrivacyPolicy` controllers + implemented `store()`; the `privacy_poilicy` name-typo kept intentionally (views use it) |
+| 43 | 🟡 | `/sync-attendance-fallback`, `/sync-monthly-summery`, `/setting/modules/{id}/edit`, `/reports/expense-analysis` | HRM-class fatal (same family as #21); `View [setting.module] not found`; `Undefined variable $transactions` | unguarded `new AttendanceService`; `edit()` pointed at a nonexistent view (the grid view *is* the isset($module) form, cf. #3/#4); controller variable renamed | `class_exists(AttendanceService)` → `abort(404,'HRM module is not installed.')` guards; `edit()` renders `module` view; expense-analysis now passes `transactions` = the paginated set the view groups/paginates on. All 200/404-verified |
+| 44 | 🟡 | `/remove-to-cart`, `/check/available/room`, `/hotel/check-avaiable`, `/pages/{slug}` | 500 on deep-link/empty-state: `array_column()` on null cart, null dates, `explode` offset on missing range, `$page->title` on null | no guards on cookie/session-backed AJAX endpoints | `?: []` cart default, `?? now()/+1 day` date defaults, `$booking_date` fallback for `<x-room-manage>`, `firstOrFail()` for unknown slug (404 not 500) |
+| 45 | 🟠 | `/voucher/journals/{id}/edit` | 500 `Method JournalVoucherController::edit does not exist` — grid row still links it | edit flow for journal vouchers was never ported | `edit()` redirects to the journals grid with a flash (full edit = feature work, see B-49); `->except(['update'])` dropped the dead PUT route |
+| 46 | 🔴 | `POST /api/dashboard`, `POST /api/all-users` | 500 `Target class Api\ApiDashboardController does not exist` — controllers exist but were unreachable | `Route::post('dashboard', 'Api\ApiDashboardController@index')` string syntax relies on the removed `namespace` route-group property (Laravel 8 defaults it to null) | Converted to `[ApiDashboardController::class, 'index']` (+ import); `ApiDashboardController` now returns a JSON 400 instead of fataling when the HRM employee is missing. Closes the repo-side half of B-23 |
+| 47 | 🟠 | module-wide **route hygiene** (Account, Bar, GeneralStore, Hotel, HotelWebsite, Permission, Restaurant, core) | 118 routes whose verb the controller never implements: every one was a 500 on click (e.g. `products/{id}/edit`, `hotel/guests/{guest}`, `system-setting/edit`, night-audit `edit`) | blanket `Route::resource(...)`/`Route::resources([...])` over half-implemented controllers | Narrowed 60 declarations with `->except([…])` (array entries split out to standalone resources), removed 3 dead custom routes (`hotel/remove_booking` → flow uses `remove_booking_next`; restaurant `get-item-details/approve` → generalstore AJAX; `kitchen/orders/details`); **policy**: only verbs with zero references in views/controllers/JS (comments excluded) were dropped — `acc-sales.destroy`, `guests.destroy/update`, `sales.destroy` grid buttons etc. were verified *referenced* and had their controllers checked instead; final assertion: 0 referenced route names lost, all 876 routes bind to existing methods |
+
+## B. Open — needs deploy / decision / feature work
+
+| # | Sev | Item | Notes & recommendation |
+|---|-----|------|------------------------|
+| 23 | 🔴 | **Live deploy is behind the repo** | Several live 500s (`/api/dashboard`, `/reports/expense-analysis`, permitted-users grid) come from files present in repo but absent in the live build. The repo side is now fixed too (#46/#43) — **Action: deploy this branch (after review) to staging and re-verify.** |
+| 48 | 🟠 | Sale-exchange is a redirect stub (#41) | Stub keeps Bar/Restaurant grids crash-free, but real exchange create/edit flow needs the module's JS + stock-move logic. Feature work — track in PLAN-FEATURES. |
+| 49 | 🟠 | Voucher edit/update gaps | `receives/payments/contras` edit+update routes pruned; `journal` edit redirects (#45). The screens need the ledger re-entry UX from PLAN-MODERNIZATION before un-pruning. |
+| 50 | 🟡 | Invoice views assume configured company/settings | `sale/acc-sales/{id}`, `voucher/*/…` invoice templates fatal (`property "company" on null`) when the demo DB has no company/settings row — data-dependent; seed `settings`/company before enabling these screens in fresh installs (round-3 sweep finding, not route-related). |
+| 24 | 🔵 | **Secrets committed** | `.env` (APP_KEY + DB credentials) and a full production SQL dump (`database/mmheritagehotel_db.sql`, 172 tables incl. user hashes) are tracked in git. Files are now covered by `.gitignore` but history still exposes them. **Action: rotate DB/APP_KEY/Google-drive creds, purge history (`git filter-repo`) or treat repo as internal-only.** |
+| 25 | 🟠 | Collections/Payments are stubs | `CollectionController::store()` only redirects (no `acc_collections` write). Full receipt flow = planned feature (see PLAN-FEATURES.md §Payments). |
+| 26 | 🟠 | HRM module missing but referenced | menus, `smart-soft-alerts`, `UpdateEmployeeIdFromSmartSoft` artisan command, employee-permission tabs all assume it. Either vendor the module in or hide its surfaces (menus/commands). |
+| 27 | 🟠 | CRM module UI absent | We restored the **models** to stop the 500 cascade; the CRM is active in `modules` table (rank 11) but has no sidebar/routes in this repo. Rebuild minimal CRM UI or deactivate the module (DB flag). |
+| 28 | 🟠 | `.gitmodules` still points `module/CRM` at a submodule | We committed real files; a fresh `git submodule update --init` could clobber them. **Action: remove the gitlink/.gitmodules entry at merge time** (kept here to avoid rewriting gitlinks in this PR). |
+| 29 | 🟡 | `/reports/expense-analysis` relies on permission slug `account.expense.analysis.reports` | Users without that row get a denial; super admin unaffected. Seed the slug for role 2 alongside the new reports if the menus are opened up. |
+| 30 | 🟡 | Booking flow still trusts the `booking_info` cookie cart (1000-min, client-mutable) | Addressed in PLAN-MODERNIZATION (server-side cart) — not fixed here. |
+| 31 | 🟡 | Laravel 8 + PHP 8.1 are EOL, `vendor/` committed | Upgrade path in PLAN-MODERNIZATION §1. |
+
+## C. Verification
+
+1. **Static:** every changed PHP file passes a real PHP-7 grammar parse (`php-parser` AST); only pre-existing
+   unparseable constructs (unrelated to these fixes) remain.
+- All route/controller pairs in section A were traced from the live 500 page titles to code in this repo.
+2. **Runtime:** deploy this branch to staging, then run `tools/verify_fixes.sh`
+   (`BASE=… EMAIL=… PASS=… ./tools/verify_fixes.sh`). It logs in, re-checks all 30 previously-broken
+   URLs, asserts the intentionally-removed routes now 404 (not 500), and verifies the unauthenticated
+   security routes are locked. Exit code 0 = all good; it refuses to run against the live production
+   host unless `ALLOW_LIVE=1`.
+3. **Logs:** while clicking the fixed screens, watch `storage/logs/laravel.log` — it should stay
+   silent. After deploy run `php artisan optimize:clear` once (config/route caches are the #1 cause of
+   "the fix is not working" reports).
+4. **DONE — sandbox runtime run (this branch, `c5e5604b`+round-2):** booted the actual app on PHP 8.1.34
+   with the committed DB dump translated to SQLite, logged in as the admin user and executed the 31-check
+   suite request-by-request through the full Laravel kernel (middleware, views, DB, permissions):
+   **30 PASS / 1 artifact** (the artifact is the harness executing `/db-backup` while authenticated —
+   `mysqldump` doesn't exist in the sandbox; the real unauthenticated check passed over HTTP:
+   `/optimize-clear`, `/update-debug`, `/db-backup` all `302 → /login`). Round-2 fixes (#33–#38) were
+   found by exactly this run. Booking create/next-step/guests, all four new reports, CSV export,
+   permission pages and every intentionally-narrowed route (now 404/405, never 500) render clean.
+5. **DONE — round-3 deep verification (this branch, pre-`round3` commit):** reflection probe over **all 994**
+   routes → 136 broken (missing methods), reproduced each in-request; after #40–#47: **0 broken of 876**,
+   authenticated GET sweep of 525 safe URLs (362 × 200; 404s are the pruned/locked routes as designed; the
+   remaining 500 family is the documented data-dependent #50), re-swept green after the round-3 guards
+   (#43/#44). Referenced-route-name safety assertion (comments excluded): 0 names lost by the pruning.

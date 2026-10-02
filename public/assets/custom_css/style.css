@@ -435,3 +435,509 @@
 .sidebar.sidebar-fixed {
     overflow-y: hidden !important;
 }
+/* ── Booking board (shared x-room-manage component) — added in round 4 UI pass ── */
+.room-booking-board .board-toolbar {
+    margin-bottom: 2px;
+}
+.room-booking-board .board-date-group .input-group-addon {
+    background: #eef3f9;
+    color: #4d8cb3;
+}
+.room-booking-board .board-date-group {
+    max-width: 360px;
+}
+.room-booking-board .board-actions {
+    padding-top: 1px;
+}
+.room-booking-board .board-legend {
+    margin: 8px 0 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed #dfe6ee;
+}
+.room-booking-board .board-legend .label {
+    margin-right: 6px;
+}
+.room-booking-board .board-free {
+    background-color: #82af6f !important;
+    color: #fff;
+}
+.room-booking-board .board-selected {
+    background-color: #2f63a8 !important;
+    color: #fff;
+}
+.room-booking-board .room-search-list.panel {
+    box-shadow: none;
+    border-color: #dbe5f1;
+    margin-bottom: 14px;
+}
+.room-booking-board .room-search-list .panel-heading {
+    background: #f7fafd;
+    padding: 10px 14px;
+}
+.room-booking-board .category-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #37536a;
+}
+.room-booking-board .category-price {
+    margin-left: 8px;
+    font-size: 13px;
+    color: #7a8a99;
+}
+.room-booking-board .category-count .badge {
+    font-weight: 400;
+}
+.room-booking-board .category-count .badge-success {
+    background: #82af6f;
+}
+.room-booking-board .room-list .row {
+    margin: 6px -4px 0;
+}
+.room-booking-board .room-tile-col {
+    padding-left: 4px;
+    padding-right: 4px;
+}
+.room-booking-board .room-info {
+    position: relative;
+    border-radius: 6px;
+    height: 74px;
+    margin-bottom: 12px;
+    transition: box-shadow .12s ease, transform .12s ease;
+}
+.room-booking-board .room-info:hover {
+    box-shadow: 0 3px 9px rgba(47, 99, 168, .18);
+    transform: translateY(-1px);
+}
+.room-booking-board .room-info:focus-visible {
+    outline: 2px solid #4f99c9;
+    outline-offset: 2px;
+}
+.room-booking-board .room-info p {
+    font-size: 17px;
+    padding-top: 12px;
+    margin-bottom: 0;
+}
+.room-booking-board .room-meta {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 7px;
+    font-size: 10.5px;
+    color: #7a8a99;
+    text-transform: none;
+}
+.room-booking-board .room-info.active .room-meta,
+.room-booking-board .room-info.active p {
+    color: #fff;
+}
+.room-booking-board .room-info.active {
+    box-shadow: 0 0 0 2px #4f99c9 inset;
+}
+.room-booking-board .room-meta-rate {
+    font-weight: 600;
+    color: #5b7b3a;
+}
+.room-booking-board .room-info.active .room-meta-rate {
+    color: #dff0d8;
+}
+.room-booking-board .tile-tick {
+    display: none;
+    position: absolute;
+    top: 4px;
+    right: 6px;
+    color: #fff;
+    font-size: 13px;
+}
+.room-booking-board .room-info.active .tile-tick {
+    display: inline-block;
+}
+.room-booking-board .room-heading-right {
+    cursor: pointer;
+    color: #9bb1c4;
+}
+.room-booking-board .room-heading-right:hover {
+    color: #4d8cb3;
+}
+.room-booking-board .board-empty {
+    padding: 14px;
+    color: #8a9bab;
+    background: #f8fafc;
+    border: 1px dashed #dbe5f1;
+    border-radius: 4px;
+}
+.room-booking-board .board-footer {
+    position: sticky;
+    bottom: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    background: #fff;
+    border-top: 1px solid #dbe5f1;
+    padding: 10px 4px 2px;
+    margin-top: 6px;
+}
+.room-booking-board .board-footer .footer-buttons .btn {
+    margin-left: 6px;
+}
+.room-booking-board .selection-summary {
+    font-size: 12.5px;
+    color: #37536a;
+    margin-right: 10px;
+}
+.room-booking-board .selection-summary .sel-count {
+    color: #2f63a8;
+}
+@media (max-width: 767px) {
+    .room-booking-board .board-footer {
+        flex-wrap: wrap;
+    }
+    .room-booking-board .board-date-group {
+        max-width: none;
+    }
+}
+
+/* ── booking "at a glance" strip + board polish — round 5 ── */
+.board-stay-strip {
+    margin: 4px 0 14px;
+}
+.board-stay-strip .stay-chip {
+    display: inline-block;
+    background: #f4f7fb;
+    border: 1px solid #dbe5f1;
+    border-radius: 4px;
+    padding: 6px 14px;
+    margin: 0 8px 6px 0;
+    font-size: 12.5px;
+    color: #37536a;
+    white-space: nowrap;
+}
+.board-stay-strip .stay-chip b {
+    color: #2f63a8;
+    font-weight: 600;
+}
+.board-stay-strip .ctx-dim {
+    color: #8a9bab;
+}
+.board-stay-strip .ctx-due {
+    color: #c24a48;
+    font-weight: 600;
+    margin-left: 4px;
+}
+.board-stay-strip .ctx-paid {
+    color: #5b7b3a;
+    font-weight: 600;
+    margin-left: 4px;
+}
+.booking-context {
+    display: flex;
+    flex-wrap: wrap;
+}
+/* room tables on assaign/edit: tighter, aligned header cells */
+.room-config-table {
+    border: 1px solid #dbe5f1;
+    border-radius: 4px;
+}
+.room-config-table thead > tr > th {
+    background: #f0f5fa;
+    color: #37536a;
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    padding: 7px 8px;
+    border-bottom: 2px solid #dbe5f1 !important;
+    vertical-align: middle;
+}
+.room-config-table thead > tr > th.text-right {
+    text-align: right;
+}
+.room-config-table tbody > tr > td {
+    padding: 6px;
+    vertical-align: middle;
+}
+.room-config-table tfoot tr td {
+    border: none !important;
+}
+@media (max-width: 991px) {
+    .room-config-table {
+        overflow-x: auto;
+        display: block;
+        width: 100%;
+    }
+}
+
+/* ── round 9: booking board modernization (grid tiles, flex toolbar, booked-tile cards, mobile) ── */
+.room-booking-board .board-toolbar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 0 0 4px;
+}
+.room-booking-board .board-toolbar > div {
+    margin: 0;
+}
+.room-booking-board .board-date-wrap {
+    flex: 1 1 280px;
+    min-width: 240px;
+    max-width: 440px;
+}
+.room-booking-board .board-date-group {
+    max-width: none;
+}
+.room-booking-board .board-date-group .form-control {
+    border-radius: 0 6px 6px 0;
+}
+.room-booking-board .board-date-group .input-group-addon {
+    border-radius: 6px 0 0 6px;
+}
+.room-booking-board .board-quick-dates {
+    display: flex;
+    gap: 6px;
+}
+.room-booking-board .board-quick-dates .btn {
+    border-radius: 999px;
+    padding: 5px 13px;
+    font-size: 12px;
+    line-height: 1.4;
+    color: #4d6b8a;
+    background: #fff;
+    border: 1px solid #dbe5f1;
+    box-shadow: none;
+}
+.room-booking-board .board-quick-dates .btn:hover,
+.room-booking-board .board-quick-dates .btn:focus {
+    border-color: #4d8cb3;
+    color: #2f63a8;
+    background: #f2f8fd;
+}
+.room-booking-board .board-report {
+    margin-left: auto;
+}
+.room-booking-board .board-legend {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px 6px;
+}
+.room-booking-board .room-search-list .panel-heading {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 10px 14px;
+}
+.room-booking-board .panel-heading .category-name {
+    font-size: 15.5px;
+    letter-spacing: .1px;
+}
+.room-booking-board .category-price {
+    background: #f2f6fb;
+    border: 1px solid #e2eaf4;
+    border-radius: 999px;
+    padding: 2px 10px;
+    margin-left: 0;
+    color: #5a7188;
+}
+.room-booking-board .category-count {
+    margin-left: auto;
+    white-space: nowrap;
+}
+.room-booking-board .category-count .badge {
+    border-radius: 999px;
+    font-size: 10.5px;
+    padding: 4px 9px;
+    background: #eef2f7;
+    color: #5a7188;
+}
+.room-booking-board .category-count .badge-success {
+    background: #82af6f;
+    color: #fff;
+}
+.room-booking-board .category-count .badge-occ {
+    background: #fdf3e3;
+    color: #a06a1f;
+}
+.room-booking-board .search-results .panel-body.room-list {
+    padding: 10px 12px 4px;
+}
+@supports (display: grid) {
+    .room-booking-board .room-list .row {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(106px, 1fr));
+        gap: 10px 8px;
+        margin: 0;
+    }
+    .room-booking-board .room-tile-col {
+        width: auto;
+        float: none;
+        padding: 0;
+    }
+}
+.room-booking-board .room-info {
+    position: relative;
+    height: auto;
+    min-height: 78px;
+    margin-bottom: 0;
+    background: #fff;
+    border: 1px solid #dbe5f1;
+    border-radius: 8px;
+    box-shadow: 0 1px 2px rgba(51, 71, 92, .05);
+    transition: box-shadow .12s ease, transform .12s ease, border-color .12s ease;
+}
+.room-booking-board .room-info:hover {
+    border-color: #b9d2e8;
+    box-shadow: 0 4px 12px rgba(47, 99, 168, .16);
+    transform: translateY(-1px);
+}
+.room-booking-board .room-info.booked,
+.room-booking-board .room-info.reservation,
+.room-booking-board .room-info.orange,
+.room-booking-board .room-info.inverse,
+.room-booking-board .room-info.store,
+.room-booking-board .room-info.today-checkout {
+    border-color: rgba(0, 0, 0, .1);
+}
+.room-booking-board .room-info p {
+    padding-top: 12px;
+    font-size: 16.5px;
+    font-weight: 600;
+    letter-spacing: .2px;
+}
+.room-booking-board .booked-room-info.board-booked-tile {
+    position: relative;
+    height: auto;
+    min-height: 78px;
+    margin-bottom: 0;
+    padding: 0 !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(0, 0, 0, .12) !important;
+    border-radius: 8px;
+    box-shadow: 0 1px 2px rgba(51, 71, 92, .07);
+    transition: filter .12s ease, box-shadow .12s ease;
+    overflow: hidden;
+}
+.room-booking-board .booked-room-info.board-booked-tile:hover {
+    filter: brightness(1.05);
+    box-shadow: 0 4px 12px rgba(47, 99, 168, .18);
+}
+.room-booking-board .booked-room-info .popover-success {
+    display: inline-block;
+    width: 100%;
+    padding: 12px 6px 14px;
+    font-size: 16.5px;
+    font-weight: 600;
+    letter-spacing: .2px;
+}
+.room-booking-board .booked-room-info .popover-success[onclick],
+.room-booking-board .booked-room-info [data-rel="popover"] {
+    cursor: pointer;
+}
+.room-booking-board .board-booked-tag {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 4px;
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+    opacity: .85;
+    pointer-events: none;
+}
+.room-booking-board .board-footer {
+    justify-content: space-between;
+    gap: 8px;
+    padding: 10px 6px 4px;
+}
+.room-booking-board .board-hint {
+    font-size: 11.5px;
+    color: #9bb1c4;
+}
+.room-booking-board .board-empty .fa {
+    margin-right: 4px;
+}
+@media (max-width: 991px) {
+    .room-booking-board .board-report {
+        margin-left: 0;
+    }
+}
+@media (max-width: 767px) {
+    .room-booking-board .board-date-wrap {
+        flex: 1 1 100%;
+        max-width: none;
+    }
+    .room-booking-board .board-actions .btn,
+    .room-booking-board .board-report .btn {
+        width: 100%;
+    }
+    .room-booking-board .board-quick-dates {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        -webkit-overflow-scrolling: touch;
+        padding-bottom: 2px;
+    }
+    .room-booking-board .board-quick-dates .btn {
+        flex: 0 0 auto;
+    }
+    .room-booking-board .footer-buttons {
+        display: flex;
+        gap: 8px;
+        flex: 1;
+    }
+    .room-booking-board .footer-buttons .btn {
+        flex: 1;
+        margin-left: 0 !important;
+    }
+    .room-booking-board .category-count {
+        margin-left: 0;
+    }
+}
+@media (max-width: 480px) {
+    @supports (display: grid) {
+        .room-booking-board .room-list .row {
+            grid-template-columns: repeat(auto-fill, minmax(88px, 1fr));
+        }
+    }
+    .room-booking-board .room-info p,
+    .room-booking-board .booked-room-info .popover-success {
+        font-size: 15px;
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .room-booking-board .room-info,
+    .room-booking-board .booked-room-info.board-booked-tile {
+        transition: none;
+    }
+    .room-booking-board .room-info:hover,
+    .room-booking-board .booked-room-info.board-booked-tile:hover {
+        transform: none;
+    }
+}
+@media (min-width: 768px) {
+    .board-stay-strip .stay-chip-right {
+        float: right;
+        margin-left: 8px;
+    }
+}
+
+/* Bootstrap clearfix pseudo-elements become empty grid items inside the room tile grid. */
+.room-booking-board .room-list .row::before,
+.room-booking-board .room-list .row::after {
+    display: none;
+    content: none;
+}
+
+/* Dirty, maintenance, cart and booked tiles lost their colours to the white tile rule above. */
+.room-booking-board .room-info.inverse { background: #090613; color: #fff; }
+.room-booking-board .room-info.orange { background: #9585BF; color: #fff !important; }
+.room-booking-board .room-info.store { background: rgb(37, 70, 131); color: #fff; }
+.room-booking-board .room-info.booked { background: #d15b47; color: #fff; }
+.room-booking-board .room-info.inverse .room-meta,
+.room-booking-board .room-info.orange .room-meta,
+.room-booking-board .room-info.store .room-meta,
+.room-booking-board .room-info.booked .room-meta { color: rgba(255, 255, 255, .85); }

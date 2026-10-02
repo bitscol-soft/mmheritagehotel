@@ -75,7 +75,7 @@
                                                 </a>
                                                 <a href="{{ route('rst.purchases.destroy', $purchase->id) }}"
                                                     class="btn btn-xs btn-danger deletable">
-                                                    <i class="fa fa-trash"></i>
+                                                    <i class="fa fa-trash-o"></i>
                                                 </a>
 
                                             </div>

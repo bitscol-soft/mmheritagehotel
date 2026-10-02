@@ -1,0 +1,249 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">    <style>
+        @media (max-width:575px) {
+            select.chosen-select.form-control.required:invalid {
+                height: 100% !important;
+                opacity: 1 !important;
+                position: unset !important;
+                display: unset !important;
+            }
+        }
+    </style>
+<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+<section class="mm-ui mm-rst mm-rst-inv mm-rst-form">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Add material product</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Create a product built from materials.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a href="http://localhost/rst/mat-products/index" class="mm-button mm-button-secondary">
+                <i class="ace-icon fa fa-list-alt"></i>
+                Product List
+            </a></div>        </header>
+        <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><form method="POST" action="http://localhost/rst/mat-products/store" class="form-horizontal" data-parsley-validate>
+    <input type="hidden" name="_token" value="fixture-csrf-token">
+
+    <input type="hidden" name="bar_or_restaurant" value="0">
+
+    <!-- Name -->
+    <div class="form-group">
+        <div class="col-md-6 col-md-offset-1">
+            <label class="control-label" for="specification">Name <sup class="text-danger">*</sup> :</label>
+            <input class="form-control" type="text" id="product_name" name="name" placeholder="Product Name"
+                value="" data-parsley-required="true" autocomplete="off" />
+        </div>
+    </div>
+
+
+    <!-- Barcode -->
+    <div class="form-group">
+        <div class="col-md-6 col-md-offset-1">
+            <label class="control-label" for="specification">Barcode <sup class="text-danger">*</sup> :</label>
+            <input class="form-control" type="text" id="product_barcode" name="barcode" placeholder="Product Barcode"
+                value="" data-parsley-required="true" autocomplete="off" required />
+        </div>
+    </div>
+
+
+
+    <div class="form-group">
+
+        <!-- Category -->
+        <div class="col-md-3 col-md-offset-1">
+            <label class="control-label" for="specification">Category <sup class="text-danger">*</sup> :</label>
+            <select class="chosen-select form-control required" required="required" name="category_id"
+                data-placeholder="--Select--">
+                <option></option>
+                                    <option value="1"
+                        >Rice &lt;b&gt;dishes&lt;/b&gt;
+                    </option>
+                                                </select>
+        </div>
+
+        <!-- Unit -->
+        <div class="col-md-3 ">
+            <label class="control-label" for="specification">Unit <sup class="text-danger">*</sup> :</label>
+            <select class="chosen-select form-control required" required="required" name="unit_id"
+                data-placeholder="--Select--">
+                <option value=""></option>
+                                    <option value="1" >
+                        Plate</option>
+                                    <option value="2" >
+                        Kg</option>
+                            </select>
+        </div>
+
+
+
+
+    </div>
+
+
+
+    <div class="form-group">
+
+
+        <!-- Generic Name -->
+        <div class="col-md-6 col-md-offset-1">
+
+            <label class="control-label" for="specification">Supplier :</label>
+
+            <select class="chosen-select form-control" name="supplier_id" data-placeholder="-Select Supplier-">
+                <option value=""></option>
+                                    <option value="1" >
+                        Sarker &lt;b&gt;Traders&lt;/b&gt;
+                    </option>
+                            </select>
+
+        </div>
+
+
+
+
+    </div>
+
+
+    <div class="form-group">
+
+
+
+        <!-- Unit Cost -->
+        <div class="col-md-3 col-md-offset-1">
+            <label class="control-label" for="unit_cost">Purchase Price :</label>
+            <input class="form-control only-number" value="0" type="text" id="unit_cost"
+                min="0" name="unit_cost" placeholder="Unit Cost" />
+
+        </div>
+
+
+
+
+
+
+        <!-- Sale Price -->
+        <div class="col-md-3">
+            <label class="control-label" for="sale_price">Sale Price :</label>
+            <input class="form-control" value="0" type="number" id="sale_price"
+                min="0" name="sale_price" placeholder="Sale price" />
+
+        </div>
+
+
+
+
+    </div>
+
+    <div class="form-group">
+
+        <!-- Alert Quantity -->
+        <div class="col-md-3 col-md-offset-1">
+            <label class="control-label" for="stock_limitation">
+                Alert Quantity :
+            </label>
+            <input class="form-control" value="0" type="number" id="stock_limitation"
+                min="0" name="stock_limitation" placeholder="Stock Limitation" data-parsley-required="true" />
+        </div>
+
+
+
+
+
+
+        <!-- Opening Quantity -->
+
+        <div class="col-md-3">
+            <label class="control-label" for="opening_quantity">
+                Opening Quantity :
+            </label>
+
+            <input class="form-control" value="0" type="number" id="opening_quantity"
+                min="0" name="opening_quantity" placeholder="Opening Qty" data-parsley-required="true" />
+
+        </div>
+
+
+    </div>
+
+
+
+
+
+    <div class="form-group">
+        <!-- VAT -->
+        <div class="col-md-3 col-md-offset-1">
+
+            <label class="control-label" for="specification">Vat :</label>
+
+            <div class="input-group">
+                <span class="input-group-addon">৳</span>
+                <div class="input-group">
+                    <input type="text" name="vat_amount" class="form-control only-number">
+                    <span class="input-group-addon">%</span>
+                    <input type="text" name="vat_percent" class="form-control only-number">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <input type="hidden" name="is_matrial" value="1">
+
+    <!-- Status -->
+    <div class="form-group">
+
+        <div class="col-md-6 col-sm-offset-1">
+            <label class="control-label" for="status">Status <sup class="text-danger">*</sup> :</label>
+            <select class="form-control chosen-select" id="status" name="status" data-placeholder="-Select-">
+                <option value=""></option>
+                <option value="1" selected>Active</option>
+                <option value="0">Inactive</option>
+            </select>
+        </div>
+    </div>
+
+
+
+
+    <!-- Submit Button -->
+    <div class="form-group">
+
+        <div class="col-md-6 col-sm-offset-3">
+            <button type="submit" id="submit" class="btn btn-primary">
+                <i class="fa fa-plus-circle"></i> Add Product
+            </button>
+        </div>
+
+    </div>
+
+
+
+
+</form></div>
+    </div>
+</section>
+
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<script src="/assets/js/jquery-ui.min.js"></script><script src="/assets/custom_js/loadDetails.js"></script><script src="/assets/custom_js/reference_filter.js"></script><!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
+
+    
+    <script>
+        $('#pack_size, #unit_cost, #sale_price').keyup(function(e) {
+            let unitCost = parseFloat($('#unit_cost').val())
+            let packSize = parseFloat($('#pack_size').val())
+            let salesPrice = parseFloat($('#sale_price').val())
+            let perPiecePrice = '';
+
+            if (packSize <= 0) {
+                alert('Enter Pack Size!');
+            } else {
+                $('#retail_unit_cost').val((unitCost / packSize).toFixed(2));
+                $('#retail_sales_price').val((salesPrice / packSize).toFixed(2));
+            }
+
+        })
+    </script>
+
+<!--/MM-JS--></body></html>

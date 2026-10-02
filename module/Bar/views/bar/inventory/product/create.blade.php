@@ -17,65 +17,39 @@
 @endsection
 
 @section('content')
-    <div class="row">
 
-        <div class="col-sm-12">
-            <div class="widget-box">
+<x-mm.styles />
+<x-mm.page class="mm-bar mm-rst mm-rst-inv mm-rst-form" title="Add product" description="Create a bar product, or upload several from a file.">
+    <x-slot name="actions">
+        @if (request()->filled('type'))
+            <a class="mm-button" href="{{ route('bar.product-uploads.index') }}">
+                <i class="ace-icon fa fa-list-alt"></i>
+                Upload List
+            </a>
+        @else
+            <a class="mm-button mm-button-secondary" href="{{ route('bar.products.index') }}">
+                <i class="ace-icon fa fa-list-alt"></i>
+                Product List
+            </a>
+        @endif
+    </x-slot>
+    <x-mm.panel class="tw-p-4">
+        @include('partials._alert_message')
 
+        <div class="row">
+            <div class="col-sm-11 col-sm-offset-1">
 
+                @if (request()->filled('type'))
+                    @include('bar.inventory.product.create.upload')
+                @else
+                    @include('bar.inventory.product.create.create')
+                @endif
 
-                <!-- Header -->
-                <div class="widget-header">
-                    <h4 class="widget-title">
-                        <i class="fa fa-plus-circle"></i> Add New Product
-                    </h4>
-
-                    <span class="widget-toolbar">
-
-                        @if (request()->filled('type'))
-                            <a href="{{ route('bar.product-uploads.index') }}">
-                                <i class="ace-icon fa fa-list-alt"></i>
-                                Upload List
-                            </a>
-                        @else
-                            <a href="{{ route('bar.products.index') }}">
-                                <i class="ace-icon fa fa-list-alt"></i>
-                                Product List
-                            </a>
-                        @endif
-
-                    </span>
-                </div>
-
-
-
-
-
-
-                <!-- Body -->
-                <div class="widget-body">
-                    <div class="widget-main">
-
-                        @include('partials._alert_message')
-
-                        <div class="row">
-                            <div class="col-sm-11 col-sm-offset-1">
-
-                                @if (request()->filled('type'))
-                                    @include('bar.inventory.product.create.upload')
-                                @else
-                                    @include('bar.inventory.product.create.create')
-                                @endif
-
-                            </div>
-                        </div>
-
-
-                    </div>
-                </div>
             </div>
         </div>
-    </div>
+    </x-mm.panel>
+</x-mm.page>
+
 @endsection
 
 

@@ -12,16 +12,9 @@
 
 @section('content')
 
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="widget-box">
-                <div class="widget-header" style="background:#DFE2CD">
-
-                    <span class="widget-toolbar pull-left" style="font-size:20px !important; color:#41B883">
-                        Edit User Permission
-                    </span>
-                </div>
-
+    <x-mm.styles />
+<x-mm.page class="mm-perm mm-perm-access" title="Employee permissions" description="Choose what this employee can open.">
+    <x-mm.panel>
                 <form class="form-horizontal" action="{{ route('permission-access.employee.store') }}" method="post" role="form">
                     @csrf
 
@@ -99,9 +92,9 @@
                     </div>
 
                 </form>
-            </div>
-        </div>
-    </div>
+            
+    </x-mm.panel>
+</x-mm.page>
 
     @if (!(\Route::has('selected_employee')))
         <input type="hidden" id="route-exist" value="no">

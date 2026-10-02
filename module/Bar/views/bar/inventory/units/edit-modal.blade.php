@@ -12,7 +12,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                     <h4 class="modal-title">
-                        <i class="fa fa-pencil-circle"></i> Edit Unit
+                        <i class="fa fa-pencil"></i> Edit Unit
                     </h4>
                 </div>
 
@@ -85,7 +85,7 @@
                     <!-- Submit -->
                     <div class="btn-group btn-corner">
                         <button type="submit" class="btn btn-sm btn-success">
-                            <i class="fa fa-pencil-sqaure-o"></i>
+                            <i class="fa fa-pencil-square-o"></i>
                             Update
                         </button>
                         <a href="javascript:;" class="btn btn-sm btn-danger" data-dismiss="modal">

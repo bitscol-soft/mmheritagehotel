@@ -8,7 +8,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                     <h4 class="modal-title">
-                        <i class="fa fa-pencil-circle"></i> Edit Supplier
+                        <i class="fa fa-pencil"></i> Edit Supplier
                     </h4>
                 </div>
 

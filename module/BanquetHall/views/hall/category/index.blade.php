@@ -5,22 +5,23 @@
 @stop
 
 @section('content')
-    <div class="page-header">
-        <a class="btn btn-xs btn-info" href="{{ route('banquet.hall-categories.create') }}"
-            style="float: right; margin: 0 2px;"> <i class="fa fa-plus"></i> Add New Category </a>
-        <h1>
-            <i class="fa fa-info-circle green"></i> Banquet Hall Categories List
-        </h1>
-    </div>
+    <x-mm.styles />
+    <x-mm.page class="mm-banquet mm-room-inventory" title="Hall categories" description="Hall types and their guest capacity.">
+        <x-slot name="actions">
+            <a class="mm-button" href="{{ route('banquet.hall-categories.create') }}">
+                <i class="fa fa-plus" aria-hidden="true"></i> Add New Category
+            </a>
+        </x-slot>
 
-    <x-alert-message />
+        <x-alert-message />
 
-    <div class="row">
+        <div class="row">
         <div class="col-xs-12">
             <div class="clearfix">
                 <div class="pull-right tableTools-container"></div>
             </div>
-            <div>
+            <div class="mm-panel tw-p-4">
+                <x-mm.table-scroll label="Hall categories">
                 <table id="dynamic-table" class="table table-striped table-bordered table-hover">
                     <thead>
                         <tr>
@@ -59,7 +60,7 @@
                                         <button type="button"
                                             onclick="delete_item(`{{ route('banquet.hall-categories.destroy', $item->id) }}`)"
                                             class="btn btn-xs btn-sm btn-danger" title="Delete">
-                                            <i class="fa fa-trash"></i>
+                                            <i class="fa fa-trash-o"></i>
                                         </button>
                                     </div>
                                 </td>
@@ -67,9 +68,11 @@
                         @endforeach
                     </tbody>
                 </table>
+                </x-mm.table-scroll>
             </div>
         </div>
     </div>
+    </x-mm.page>
 @endsection
 
 @section('js')

@@ -3,9 +3,6 @@
 
 @section('title', 'Edit Supplier')
 
-@section('page-header')
-    <i class="fa fa-gear"></i> Edit Supplier
-@stop
 
 
 @section('css')
@@ -22,241 +19,230 @@
 
 @section('content')
 
-    <div class="row">
+<x-mm.styles />
+<x-mm.page class="mm-gs mm-rst mm-rst-inv mm-rst-form" title="Edit supplier" description="Update the supplier details and type.">
+    <x-slot name="actions">
+        @if (hasPermission("suppliers.view", $slugs))
+        <a href="{{ route('suppliers.index') }}" class="mm-button">
+            <i class="ace-icon fa fa-list-alt"></i> Supplier List
+        </a>
+        @endif
+    </x-slot>
+    <x-mm.panel class="tw-p-4">
+        <form class="form-horizontal" action="{{ route('suppliers.update', $Supplier->id) }}" method="post">
+            @csrf
+            @method('PUT')
+            @include('partials._alert_message')
 
-        <div class="col-sm-12">
-            <div class="widget-box">
-                <div class="widget-header">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
 
-                    @if (hasPermission("suppliers.view", $slugs))
-                        <span class="widget-toolbar">
-                            <a href="{{ route('suppliers.index') }}">
-                                <i class="ace-icon fa fa-list-alt"></i> Supplier List
-                            </a>
-                        </span>
-                    @endif
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="form-field-1-1"> Name </label>
 
+                        <div class="col-xs-12 col-sm-8 @error('name') has-error @enderror">
+                            <input type="text" class="form-control" name="name" value="{{ old('name') ?: $Supplier->name }}" placeholder="Supplier Name">
+
+                            @error('name')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
                 </div>
 
-                <div class="widget-body">
-                    <div class="widget-main">
-                        <form class="form-horizontal" action="{{ route('suppliers.update', $Supplier->id) }}" method="post">
-                            @csrf
-                            @method('PUT')
-                            @include('partials._alert_message')
 
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label" for="form-field-1-1"> Attention </label>
 
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label" for="form-field-1-1"> Name </label>
-
-                                        <div class="col-xs-12 col-sm-8 @error('name') has-error @enderror">
-                                            <input type="text" class="form-control" name="name" value="{{ old('name') ?: $Supplier->name }}" placeholder="Supplier Name">
-
-                                            @error('name')
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-
-
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label" for="form-field-1-1"> Attention </label>
-
-                                        <div class="col-xs-12 col-sm-8">
-                                            <input type="text" class="form-control" name="attention" value="{{ old('attention', $Supplier->attention) }}" placeholder="Supplier Attention">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label add_asterisk" for="form-field-1-1"> Type </label>
-
-                                        <div class="col-xs-12 col-sm-8 @error('name') has-error @enderror">
-                                            <select name="supplier_type_id" class="form-control" id="supplier_type_id">
-                                                @foreach($supplier_types as $id => $name)
-                                                    <option value="{{ $id }}" {{ $id == $Supplier->supplier_type_id ? 'selected' : '' }}>{{ $name }}</option>
-                                                @endforeach
-                                            </select>
-
-                                            @error('supplier_type_id')
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label add_asterisk" for="form-field-1-1"> Country </label>
-
-                                        <div class="col-xs-12 col-sm-8 @error('country_id') has-error @enderror">
-                                            <select name="country_id" class="form-control" id="country_id">
-                                                @foreach($countries as $id => $name)
-                                                    <option value="{{ $id }}" {{ $id == $Supplier->country_id ? 'selected':'' }}>{{ $name }}</option>
-                                                @endforeach
-                                            </select>
-
-                                            @error('country_id')
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label">Phone</label>
-
-                                        <div class="col-xs-12 col-sm-8 @error('phone') has-error @enderror">
-                                            <input type="number" class="form-control" name="phone" value="{{ old('phone') ?: $Supplier->phone }}" placeholder="Phone">
-
-                                            @error('phone')
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label">Email</label>
-
-                                        <div class="col-xs-12 col-sm-8 @error('email') has-error @enderror">
-                                            <input type="email" class="form-control" name="email" placeholder="Email" value="{{ old('email') ?: $Supplier->email }}">
-
-                                            @error('email')
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label">Website</label>
-
-                                        <div class="col-xs-12 col-sm-8 @error('website') has-error @enderror">
-                                            <input type="text" class="form-control" name="website" placeholder="Website" value="{{ $Supplier->website }}">
-
-                                            @error('website')
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label">Fax</label>
-
-                                        <div class="col-xs-12 col-sm-8 @error('fax') has-error @enderror">
-                                            <input type="fax" class="form-control" name="fax" placeholder="Fax" value="{{ $Supplier->fax }}">
-
-                                            @error('fax')
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label">Address</label>
-
-                                        <div class="col-xs-12 col-sm-8 @error('address') has-error @enderror">
-                                            <textarea name="address" class="form-control">{{ old('address') ?: $Supplier->address }}
-                                            </textarea>
-
-                                            @error('address')
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-md-6">
-
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label">Head Office</label>
-
-                                        <div class="col-xs-12 col-sm-8 @error('head_office') has-error @enderror">
-                                            <textarea name="head_office" class="form-control">{{ $Supplier->head_office }}</textarea>
-
-                                            @error('head_office')
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label">Factory 1</label>
-
-                                        <div class="col-xs-12 col-sm-8 @error('factory_1') has-error @enderror">
-
-                                            <textarea name="factory_1" class="form-control">{{ $Supplier->factory_1 }}</textarea>
-
-                                            @error('factory_1')
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label">Factory 2</label>
-
-                                        <div class="col-xs-12 col-sm-8 @error('email') has-error @enderror">
-                                            <textarea name="factory_2" class="form-control">{{ $Supplier->factory_2 }}</textarea>
-
-                                            @error('factory_2')
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div class="form-group">
-                                <label for="inputError" class="col-xs-12 col-sm-3 col-md-3 control-label"></label>
-
-                                <div class="col-xs-12 col-sm-6">
-
-                                    <button class="btn btn-success"> <i class="fa fa-save"></i> Save</button>
-                                    <button class="btn btn-gray" type="Reset"> <i class="fa fa-refresh"></i> Reset</button>
-                                    @if (hasPermission("suppliers.view", $slugs))
-                                        <a href="{{ route('suppliers.index') }}" class="btn btn-info"> <i class="fa fa-list"></i> List</a>
-                                    @endif
-                                </div>
-                            </div>
-                        </form>
+                        <div class="col-xs-12 col-sm-8">
+                            <input type="text" class="form-control" name="attention" value="{{ old('attention', $Supplier->attention) }}" placeholder="Supplier Attention">
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label add_asterisk" for="form-field-1-1"> Type </label>
+
+                        <div class="col-xs-12 col-sm-8 @error('name') has-error @enderror">
+                            <select name="supplier_type_id" class="form-control" id="supplier_type_id">
+                                @foreach($supplier_types as $id => $name)
+                                    <option value="{{ $id }}" {{ $id == $Supplier->supplier_type_id ? 'selected' : '' }}>{{ $name }}</option>
+                                @endforeach
+                            </select>
+
+                            @error('supplier_type_id')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label add_asterisk" for="form-field-1-1"> Country </label>
+
+                        <div class="col-xs-12 col-sm-8 @error('country_id') has-error @enderror">
+                            <select name="country_id" class="form-control" id="country_id">
+                                @foreach($countries as $id => $name)
+                                    <option value="{{ $id }}" {{ $id == $Supplier->country_id ? 'selected':'' }}>{{ $name }}</option>
+                                @endforeach
+                            </select>
+
+                            @error('country_id')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Phone</label>
+
+                        <div class="col-xs-12 col-sm-8 @error('phone') has-error @enderror">
+                            <input type="number" class="form-control" name="phone" value="{{ old('phone') ?: $Supplier->phone }}" placeholder="Phone">
+
+                            @error('phone')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Email</label>
+
+                        <div class="col-xs-12 col-sm-8 @error('email') has-error @enderror">
+                            <input type="email" class="form-control" name="email" placeholder="Email" value="{{ old('email') ?: $Supplier->email }}">
+
+                            @error('email')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Website</label>
+
+                        <div class="col-xs-12 col-sm-8 @error('website') has-error @enderror">
+                            <input type="text" class="form-control" name="website" placeholder="Website" value="{{ $Supplier->website }}">
+
+                            @error('website')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Fax</label>
+
+                        <div class="col-xs-12 col-sm-8 @error('fax') has-error @enderror">
+                            <input type="fax" class="form-control" name="fax" placeholder="Fax" value="{{ $Supplier->fax }}">
+
+                            @error('fax')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Address</label>
+
+                        <div class="col-xs-12 col-sm-8 @error('address') has-error @enderror">
+                            <textarea name="address" class="form-control">{{ old('address') ?: $Supplier->address }}
+                            </textarea>
+
+                            @error('address')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Head Office</label>
+
+                        <div class="col-xs-12 col-sm-8 @error('head_office') has-error @enderror">
+                            <textarea name="head_office" class="form-control">{{ $Supplier->head_office }}</textarea>
+
+                            @error('head_office')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Factory 1</label>
+
+                        <div class="col-xs-12 col-sm-8 @error('factory_1') has-error @enderror">
+
+                            <textarea name="factory_1" class="form-control">{{ $Supplier->factory_1 }}</textarea>
+
+                            @error('factory_1')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">Factory 2</label>
+
+                        <div class="col-xs-12 col-sm-8 @error('email') has-error @enderror">
+                            <textarea name="factory_2" class="form-control">{{ $Supplier->factory_2 }}</textarea>
+
+                            @error('factory_2')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label for="inputError" class="col-xs-12 col-sm-3 col-md-3 control-label"></label>
+
+                <div class="col-xs-12 col-sm-6">
+
+                    <button class="btn btn-success"> <i class="fa fa-save"></i> Save</button>
+                    <button class="btn btn-gray" type="Reset"> <i class="fa fa-refresh"></i> Reset</button>
+                    @if (hasPermission("suppliers.view", $slugs))
+                        <a href="{{ route('suppliers.index') }}" class="btn btn-info"> <i class="fa fa-list"></i> List</a>
+                    @endif
+                </div>
+            </div>
+        </form>
+    </x-mm.panel>
+</x-mm.page>
+
 @endsection
 
 @section('js')
