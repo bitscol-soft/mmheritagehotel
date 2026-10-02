@@ -695,3 +695,12 @@ Reviewed legacy bugs in `module/Restaurant/views/purchase-v2/`, all view-level (
 - `index` Received Qty repeated Required Qty. `rst_purchases` has no receive record (approval is what adds stock), so it now shows the quantity once approved and 0 before.
 - Add/List links are shown only when the destination route's own guard would allow them (`resturant.purchases.create`; `resturant.purchases.index` and `rst.purchase.view`). Both slug families exist in the permission seed and the controller mixes them (`index` requires both), so the controller guards were **left unchanged**; choosing one canonical family is a product decision.
 - Not a bug: `show` reads `$purchases`, which is what the controller passes (the `$purchase` seen earlier was only in a commented line).
+
+## Thirty-fifth increment: General Store G1
+
+`module/GeneralStore/views/{item-units,items,suppliers,supplier-types}` now use `x-mm.page` / `x-mm.panel` (classes `mm-gs mm-rst mm-rst-inv [mm-rst-form]`, so the Restaurant inventory styles apply; the `mm-gs` scope only adds two rules for two-column supplier rows and full-width form fields).
+
+- Item units and the item list were derived from the migrated Restaurant production views (they are near copies); item create/edit/upload and the supplier screens were wrapped from the General Store originals so every expression and script stays byte-identical. `tools/ui-check.cjs` compares them with `ce4089f9` (the commit before G1).
+- Item unit list: the empty-link export icons and the print link to `gs-setup/print-item-unit` (no such route) are commented out, as in the Restaurant material units.
+- Item list: the Add button says "Add Item" (it printed "Add Item List").
+- Fixtures: `tools/fixtures/general-store/*`, previews `/preview/gs-*`, spec `tools/browser/general-store.spec.cjs`.

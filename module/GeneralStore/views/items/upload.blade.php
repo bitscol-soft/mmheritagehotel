@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title','Upload Items')
-@section('page-header')
-    <i class="fa fa-upload"></i> Upload Items
-@stop
 @section('css')
 
 @stop
@@ -10,62 +7,47 @@
 
 @section('content')
 
+<x-mm.styles />
+<x-mm.page class="mm-gs mm-rst mm-rst-inv mm-rst-form" title="Upload items" description="Import items from a CSV file.">
+    <x-slot name="actions">
+        <a href="{{ route('items.index') }}" class="mm-button">
+            <i class="ace-icon fa fa-list"></i> Item List
+        </a>
+    </x-slot>
+    <x-mm.panel class="tw-p-4">
+        <form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
+            @csrf
 
-    <div class="row">
+            @include('partials._alert_message')
 
-        <div class="col-sm-8 col-sm-offset-2">
-            <div class="widget-box">
-                <div class="widget-header">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
+            <div class="form-group">
+                <label for="inputError" class="col-xs-12 col-sm-3 col-md-3 control-label"> Select CSV File</label>
 
-                    <span class="widget-toolbar no-border">
-                        <a href="{{ route('items.index') }}">
-                            <i class="ace-icon fa fa-list"></i> Item List
-                        </a>
-                    </span>
+                <div class="col-xs-12 col-sm-6">
+                    <input type="file" id="id-input-file-3" name="item_csv_file" accept=".csv"/>
                 </div>
 
-                <div class="widget-body">
-                    <div class="widget-main">
-                        <form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
-                            @csrf
-
-                            @include('partials._alert_message')
-
-                            <div class="form-group">
-                                <label for="inputError" class="col-xs-12 col-sm-3 col-md-3 control-label"> Select CSV File</label>
-
-                                <div class="col-xs-12 col-sm-6">
-                                    <input type="file" id="id-input-file-3" name="item_csv_file" accept=".csv"/>
-                                </div>
-
-                                <div class="col-sm-3">
-                                    <a href="{{ asset('assets/item-sample-csv.csv') }}"><i class="fa fa-download"></i> Download CSV Demo File</a>
-                                </div>
-
-                            </div>
-
-
-                            <div class="form-group">
-                                <label for="inputError" class="col-xs-12 col-sm-3 col-md-3 control-label"></label>
-
-                                <div class="col-xs-12 col-sm-9">
-
-                                    <button class="btn btn-xs btn-success" type="submit"> <i class="fa fa-save"></i> Save</button>
-                                    <button class="btn btn-xs btn-gray" type="Reset"> <i class="fa fa-refresh"></i> Reset</button>
-
-                                </div>
-                            </div>
-
-                        </form>
-                    </div>
+                <div class="col-sm-3">
+                    <a href="{{ asset('assets/item-sample-csv.csv') }}"><i class="fa fa-download"></i> Download CSV Demo File</a>
                 </div>
+
             </div>
 
 
-        </div>
-    </div>
+            <div class="form-group">
+                <label for="inputError" class="col-xs-12 col-sm-3 col-md-3 control-label"></label>
 
+                <div class="col-xs-12 col-sm-9">
+
+                    <button class="btn btn-xs btn-success" type="submit"> <i class="fa fa-save"></i> Save</button>
+                    <button class="btn btn-xs btn-gray" type="Reset"> <i class="fa fa-refresh"></i> Reset</button>
+
+                </div>
+            </div>
+
+        </form>
+    </x-mm.panel>
+</x-mm.page>
 
 @endsection
 

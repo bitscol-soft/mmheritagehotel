@@ -892,8 +892,8 @@ if (!function_exists('mm_words')) { function mm_words($amount) { return 'Words o
 if (!function_exists('mm_mount')) { function mm_mount($a = null, $b = null, $c = null) { return 0; } }
 $rsExport = '<div class="pull-left hidden-print"><a href="/rst/export?export_type=excel"><img src="/assets/images/export-icons/excel-icon.png"></a></div>';
 $rsStub = '<table class="table table-striped table-bordered"><thead><tr><th>SL</th><th>Invoice</th><th>Total</th></tr></thead><tbody><tr><td>1</td><td>RST-0101</td><td>1,250.00</td></tr></tbody></table>';
-$rsSubst = function ($file) use ($root, $rpNoRecord, $rpPaginate, $rsExport) {
-    $source = file_get_contents($root . '/module/Restaurant/views/' . $file . '.blade.php');
+$rsSubst = function ($file, $rsModule = 'Restaurant') use ($root, $rpNoRecord, $rpPaginate, $rsExport) {
+    $source = file_get_contents($root . '/module/' . $rsModule . '/views/' . $file . '.blade.php');
     $source = str_replace(["@extends('layouts.master')", '<x-alert-message />', "@include('partials._alert_message')", '<x-export-button pdf="1" excel="1" />', '<x-export-button :pdf=1 :excel=1 />', '<x-paginate :data="$nightaudits" />', '<x-paginate :data="$cashFlows" />', '<x-paginate :data="$sales" />', '<x-paginate :data="$products" />', '<x-no-table-record />', 'calculateCurrencyAmount(', 'today_from_system()', "@include('currency-conversions.inc.script')", "@include('kitchen.inc.script')", '<x-widget.date-filter />', '{{ $sales->links() }}', '<x-company-info :company="$sale->company" />', 'convert_number(', "@include('sales/_inc/guest-modal')", "@include('sales/_inc/script')", "date('Y-m-d')", 'csrf_token()'],
         ["@extends('mm-checkout-layout')", '', '', $rsExport, $rsExport, $rpPaginate, $rpPaginate, $rpPaginate, $rpPaginate, $rpNoRecord, 'mm_cur(', "'2026-10-01'", '', '', '<div class="input-group"><input type="text" name="from_date" class="form-control date-picker"><input type="text" name="to_date" class="form-control date-picker"></div>', $rpPaginate, '<div class="company-info"><h3>MM Heritage</h3></div>', 'mm_words(', "@include('rs.sales._inc.guest-modal')", "@include('rs.sales._inc.script')", "'2026-10-01'", "'fixture-csrf-token'"], $source);
     $source = preg_replace('/<x-paginate :data="[^"]*" \/>/', $rpPaginate, $source);
@@ -1143,3 +1143,61 @@ foreach ($riCases as $riName => [$riViewName, $riUrl, $riData, $riMarkers, $riAb
     if (file_get_contents($riFile) !== $riHtml) throw new RuntimeException($riFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
 }
 echo "PASS restaurant inventory screens render: setup lists, catalog, production, purchase and stock adjustment\n";
+
+// ---- General Store G1: items, item units, suppliers, supplier types (module/GeneralStore/views, same helper substitutions as the Restaurant views) ----
+$gsViews = ['item-units/index', 'item-units/create', 'item-units/edit', 'items/index', 'items/create', 'items/edit', 'items/upload', 'suppliers/index', 'suppliers/create', 'suppliers/edit', 'supplier-types/index'];
+foreach ($gsViews as $gsView) {
+    $gsSource = $rsSubst($gsView, 'GeneralStore');
+    $gsSource = preg_replace("/@include\\('partials\\._paginate', \\['data' => [^\\]]*\\]\\)/", $rpPaginate, $gsSource);
+    $gsSource = str_replace(['Auth::user()', "\\Carbon\\Carbon::parse(", 'Carbon\\Carbon::parse('], ['mm_auth_user()', 'mm_gs_date(', 'mm_gs_date('], $gsSource);
+    @mkdir(dirname($coViews . '/gs/' . $gsView), 0777, true);
+    file_put_contents($coViews . '/gs/' . $gsView . '.blade.php', $gsSource);
+}
+if (!function_exists('mm_gs_date')) { function mm_gs_date($value) { return new class($value) { private $v; public function __construct($v) { $this->v = $v; } public function format($f) { return '2026-10-01 (' . $this->v . ')'; } }; } }
+$gsSeen = [];
+foreach ($gsViews as $gsView) {
+    preg_match_all("/route\\('([\\w.-]+)'/", file_get_contents($coViews . '/gs/' . $gsView . '.blade.php'), $gsMatch);
+    foreach ($gsMatch[1] as $gsRoute) {
+        if (isset($gsSeen[$gsRoute]) || $rsRoutes->getByName($gsRoute)) continue;
+        $gsSeen[$gsRoute] = true;
+        $rsRoutes->add((new Illuminate\Routing\Route(['GET', 'POST'], 'gs/' . str_replace('.', '/', $gsRoute) . '/{id?}', function () {}))->name($gsRoute));
+    }
+}
+$gsType = function ($id, $name) use ($riRow) { return $riRow(['id' => $id, 'name' => $name]); };
+$gsSupplier = $riRow(['id' => 1, 'name' => 'Sarker <b>Traders</b>', 'mobile' => '017', 'phone' => '018', 'email' => 's@example.com', 'address' => 'Dhaka <i>1</i>', 'attention' => 'Mr Sarker', 'fax' => '', 'website' => '', 'head_office' => '', 'factory_' => '', 'country_id' => 18, 'supplier_type_id' => 1, 'created_at' => '2026-09-30', 'updated_at' => '2026-10-01', 'supplier_type' => $riRow(['name' => 'Local <b>x</b>']), 'group' => $riRow(['name' => 'Main'])]);
+$gsCases = [
+    'item-units' => ['gs.item-units.index', '/gs/item-units', ['item_units' => $riList([$riRow(['id' => 1, 'name' => 'Sack <b>x</b>', 'conversion' => 25, 'status' => 1]), $riRow(['id' => 2, 'name' => 'Box', 'conversion' => 12, 'status' => 0])])],
+        ['mm-gs', 'id="dynamic-table"', 'delete_check(1)', 'Sack &lt;b&gt;x&lt;/b&gt;', 'class="pagination"'], ['Sack <b>x</b>', 'btnPrint']],
+    'form-item-unit-create' => ['gs.item-units.create', '/gs/item-units/create', [], ['mm-gs', 'mm-rst-form', 'name="name"', 'name="conversion"', 'name="status"'], ['group_id']],
+    'form-item-unit-edit' => ['gs.item-units.edit', '/gs/item-units/1/edit', ['itemUnit' => $riRow(['id' => 1, 'name' => 'Sack <b>x</b>', 'conversion' => 25, 'status' => 1])], ['mm-gs', 'name="_method" value="PUT"', 'Sack &lt;b&gt;x&lt;/b&gt;'], ['Sack <b>x</b>']],
+    'items' => ['gs.items.index', '/gs/items?name=1', ['items' => $riList([$riRow(['id' => 1, 'name' => 'Basmati <b>rice</b>', 'opening_balance' => 10, 'rate' => 120, 'purchase_detail_count' => 0, 'goods_requisition_count' => 0, 'created_at' => '2026-09-30', 'updated_at' => '2026-10-01', 'company' => $riRow(['name' => 'MM Heritage']), 'item_unit' => $riRow(['name' => 'Kg']), 'created_user' => $riRow(['name' => 'Rahim']), 'updated_user' => $riRow(['name' => 'Karim'])])]), 'companies' => [1 => 'MM Heritage'], 'item_ids' => [1 => 'Basmati <b>rice</b>']],
+        ['mm-gs', 'mm-report-filter', 'Basmati &lt;b&gt;rice&lt;/b&gt;', 'gs/item/upload', 'gs/item/export', 'Records Found'], ['Basmati <b>rice</b></td>']],
+    'form-item-create' => ['gs.items.create', '/gs/items/create', ['companies' => [1 => 'MM <b>Heritage</b>'], 'item_units' => [1 => 'Sack'], 'message' => ''], ['mm-gs', 'mm-rst-form', 'name="company_id"', 'name="name"', 'MM &lt;b&gt;Heritage&lt;/b&gt;'], ['MM <b>Heritage</b>']],
+    'form-item-edit' => ['gs.items.edit', '/gs/items/1/edit', ['companies' => [1 => 'MM Heritage'], 'item_units' => [1 => 'Sack'], 'message' => '', 'item' => $riRow(['id' => 1, 'name' => 'Basmati <b>rice</b>', 'company_id' => 1, 'item_unit_id' => 1, 'opening_balance' => 4, 'rate' => 120, 'purchase_detail_count' => 0, 'goods_requisition_count' => 0])], ['mm-gs', 'name="_method" value="PUT"', 'Basmati &lt;b&gt;rice&lt;/b&gt;'], ['Basmati <b>rice</b>']],
+    'form-item-upload' => ['gs.items.upload', '/gs/item-upload', [], ['mm-gs', 'mm-rst-form', 'name="item_csv_file"', 'item-sample-csv.csv'], []],
+    'suppliers' => ['gs.suppliers.index', '/generalstore/suppliers', ['suppliers' => $riList([$gsSupplier])],
+        ['mm-gs', 'id="data-table"', 'href="#view-details1"', 'id="view-details1"', 'delete_check(1)', 'Sarker &lt;b&gt;Traders&lt;/b&gt;', 'Local &lt;b&gt;x&lt;/b&gt;'], ['Sarker <b>Traders</b>', 'Local <b>x</b>']],
+    'form-supplier-create' => ['gs.suppliers.create', '/generalstore/suppliers/create', ['supplier_types' => [1 => 'Local <b>x</b>'], 'countries' => [18 => 'Bangladesh', 19 => 'India']], ['mm-gs', 'mm-rst-form', 'name="group_id"', 'name="name"', 'name="supplier_type_id"', 'name="country_id"', 'Local &lt;b&gt;x&lt;/b&gt;'], ['Local <b>x</b>']],
+    'form-supplier-edit' => ['gs.suppliers.edit', '/generalstore/suppliers/1/edit', ['Supplier' => $gsSupplier, 'supplier_types' => [1 => 'Local <b>x</b>'], 'countries' => [18 => 'Bangladesh']], ['mm-gs', 'mm-rst-form', 'name="_method" value="PUT"', 'Sarker &lt;b&gt;Traders&lt;/b&gt;'], ['Sarker <b>Traders</b>']],
+    'supplier-types' => ['gs.supplier-types.index', '/generalstore/supplier-types?name=1', ['supplierTypes' => $riList([$riRow(['id' => 1, 'name' => 'Local <b>x</b>']), $riRow(['id' => 2, 'name' => 'Import'])])],
+        ['mm-gs', 'id="myTable"', 'name="name[]"', 'href="#edit1"', 'id="edit1"', 'delete_check(1)', 'Local &lt;b&gt;x&lt;/b&gt;', 'Total : 2', 'class="pagination"'], ['Local <b>x</b>']],
+];
+@mkdir(__DIR__ . '/fixtures/general-store', 0777, true);
+foreach ($gsCases as $gsName => [$gsViewName, $gsUrl, $gsData, $gsMarkers, $gsAbsent]) {
+    $gsRequest = Illuminate\Http\Request::create($gsUrl);
+    $gsRequest->setLaravelSession(new Illuminate\Session\Store('mm', new Illuminate\Session\ArraySessionHandler(10)));
+    $app->instance('request', $gsRequest);
+    $app->instance('url', new Illuminate\Routing\UrlGenerator($rsRoutes, $gsRequest));
+    try { $gsHtml = $app->make('view')->make($gsViewName, array_merge(['errors' => new Illuminate\Support\ViewErrorBag(), 'slugs' => []], $gsData))->render(); }
+    catch (Throwable $e) { throw new RuntimeException('General Store screen ' . $gsName . ' failed to render: ' . $e->getMessage(), 0, $e); }
+    $gsHtml = preg_replace('/(name="_token" value=")[A-Za-z0-9]+"/', '$1fixture-csrf-token"', str_replace('http://localhost/assets', '/assets', $gsHtml));
+    $gsMissing = [];
+    foreach (array_merge(['mm-panel', 'mm-page-title'], $gsMarkers) as $gsMarker) { if (strpos($gsHtml, $gsMarker) === false) $gsMissing[] = $gsMarker; }
+    if ($gsMissing) throw new RuntimeException('General Store screen ' . $gsName . ' missing ' . implode(' | ', $gsMissing));
+    foreach (array_merge(['widget-box', 'widget-main', 'widget-header', 'class="page-header"'], $gsAbsent) as $gsMarker) { if (strpos($gsHtml, $gsMarker) !== false) throw new RuntimeException('General Store screen ' . $gsName . ' still contains ' . $gsMarker); }
+    if (strpos($gsHtml, '<b>Warning</b>') !== false || strpos($gsHtml, '<b>Notice</b>') !== false) throw new RuntimeException('General Store screen ' . $gsName . ' sample data is incomplete (PHP warning in output)');
+    $gsFile = __DIR__ . '/fixtures/general-store/' . $gsName . '.html';
+    if (getenv('MM_WRITE_FIXTURE')) { file_put_contents($gsFile, $gsHtml); file_put_contents($previewDir . '/gs-' . $gsName . '.html', $gsHtml); }
+    if (file_get_contents($gsFile) !== $gsHtml) throw new RuntimeException($gsFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
+}
+echo "PASS general store screens render: items, item units, suppliers and supplier types\n";

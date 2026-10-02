@@ -97,6 +97,17 @@ const pages={
  '/preview/night-audit-generate':{file:'preview/night-audit-create.html',title:'Generate night audit',crumbs:['Hotel','Night audit','Generate']},
  '/preview/payment-collection':{file:'preview/payment-collection.html',title:'Payment collection',crumbs:['Hotel','Booking','Payment collection']},
  '/preview/invoice':{file:'preview/invoice.html',title:'Booking invoice',crumbs:['Hotel','Booking','Invoice']},
+ '/preview/gs-item-units':{file:'preview/gs-item-units.html',title:'Item units',crumbs:['General Store','Item units']},
+ '/preview/gs-form-item-unit-create':{file:'preview/gs-form-item-unit-create.html',title:'Add item unit',crumbs:['General Store','Add item unit']},
+ '/preview/gs-form-item-unit-edit':{file:'preview/gs-form-item-unit-edit.html',title:'Edit item unit',crumbs:['General Store','Edit item unit']},
+ '/preview/gs-items':{file:'preview/gs-items.html',title:'Item list',crumbs:['General Store','Item list']},
+ '/preview/gs-form-item-create':{file:'preview/gs-form-item-create.html',title:'Add item',crumbs:['General Store','Add item']},
+ '/preview/gs-form-item-edit':{file:'preview/gs-form-item-edit.html',title:'Edit item',crumbs:['General Store','Edit item']},
+ '/preview/gs-form-item-upload':{file:'preview/gs-form-item-upload.html',title:'Upload items',crumbs:['General Store','Upload items']},
+ '/preview/gs-suppliers':{file:'preview/gs-suppliers.html',title:'Suppliers',crumbs:['General Store','Suppliers']},
+ '/preview/gs-form-supplier-create':{file:'preview/gs-form-supplier-create.html',title:'Add supplier',crumbs:['General Store','Add supplier']},
+ '/preview/gs-form-supplier-edit':{file:'preview/gs-form-supplier-edit.html',title:'Edit supplier',crumbs:['General Store','Edit supplier']},
+ '/preview/gs-supplier-types':{file:'preview/gs-supplier-types.html',title:'Supplier types',crumbs:['General Store','Supplier types']},
  '/preview/category-create':{file:'preview/category-create.html',title:'Add a room category',crumbs:['Hotel','Category','Create']},
 };
 const between=(h,a,b)=>{const i=h.indexOf(a);return h.slice(i+a.length,h.indexOf(b,i+a.length));};

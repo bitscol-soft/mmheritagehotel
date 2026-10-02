@@ -120,3 +120,12 @@ only). Staging acceptance pending.
 ### Booking lifecycle (in progress)
 New-booking form (`booking_next`), `create` and `edit` frames, sticky actions and single-date rules done; checkout, invoices,
 payment collection and night audit pending. See `docs/BOOKING-LIFECYCLE-PLAN.md`.
+
+## General Store (module/GeneralStore)
+
+| Group | Status | Verification |
+|---|---|---|
+| G1: item units, items (list, add, edit, CSV upload), suppliers (list with detail modals, add, edit), supplier types | Migrated; fields, expressions, directives and scripts unchanged; the dead export/print icon row of the item unit list is commented out | Render fixtures + Playwright; staging pending |
+| G2: purchases (list, show, approve, create, edit), purchase receives and GRN | Not started | n/a |
+| G3: goods requisitions, GIN list, reports (item ledger, stock in hand, weekly movement issue), exports | Not started | n/a |
+| `reports/print_item_details`, `reports/print_items_stock` | Only reached by controller methods that have no route (dead code); not migrated | n/a |

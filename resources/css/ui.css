@@ -801,3 +801,6 @@
 .mm-ui.mm-rst-inv .mm-panel [class*="col-"] { min-width: 0; }
 .mm-ui.mm-rst-inv .mm-report-filter [class*="ml-"] { margin-left: 0; }
 .mm-ui.mm-rst-inv .mm-panel table.container { width: 100%; max-width: none; }
+/* General Store forms (module/GeneralStore/views) reuse the inventory scope; two-column rows must contain their floats and fields use the full column */
+.mm-ui.mm-gs .mm-panel .row { display: flow-root; }
+.mm-ui.mm-gs.mm-rst-form .form-group > [class*="col-"] { float: none; width: 100%; }

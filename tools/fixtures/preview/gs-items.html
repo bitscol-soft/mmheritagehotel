@@ -1,0 +1,210 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">
+    <link rel="stylesheet" href="/assets/css/jquery-ui.min.css" />
+    <link rel="stylesheet" href="/assets/css/chosen.min.css" />
+
+    <style>
+        .bg-dark{
+            background-color: #ededed;
+        }
+    </style>
+
+<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+<section class="mm-ui mm-report mm-gs mm-rst mm-rst-inv">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Item list</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Items, units and opening balances.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button" href="http://localhost/gs/items/create"> <i class="fa fa-plus"></i> Add Item </a>
+                            <a href="http://localhost/rst/gs/item/upload" class="mm-button mm-button-secondary"><i class="fa fa-upload"></i> Upload CSV</a>
+            <a href="http://localhost/rst/gs/item/export" class="mm-button"><i class="fa fa-download"></i> Export Items</a></div>        </header>
+        <div class="mm-panel tw-p-4 sm:tw-p-6 mm-report-filter"><form class="form-horizontal mm-setup-filter mm-report-form" action="" method="get">
+            <div class="mm-report-field">
+                <select aria-label="Company" name="company_id" class="form-control chosen-select">
+                    <option selected value="">- select Company -</option>
+                                            <option value="1" >MM Heritage</option>
+                                    </select>
+
+            </div>
+
+            <div class="mm-report-field">
+                <div class="input-group">
+                    <input type="text" class="form-control input-sm date-picker" name="from_date" value="" autocomplete="off">
+                    <span class="input-group-addon">From|To</span>
+                    <input type="text" class="form-control input-sm date-picker" name="to_date" value="" autocomplete="off">
+                </div>
+
+            </div>
+
+            <div class="mm-report-field">
+                <select aria-label="Item Name" name="item_id" class="form-control chosen-select">
+                    <option selected value="">- select Items -</option>
+                                            <option value="1" >Basmati &lt;b&gt;rice&lt;/b&gt;</option>
+                                    </select>
+
+            </div>
+
+            <div class="btn-group btn-corner">
+                <button class="mm-button"><i class="fa fa-search"></i> Search</button>
+                <a href="http://localhost/rst/items/index" class="mm-button mm-button-secondary"><i class="fa fa-refresh"></i> Refresh</a>
+            </div>
+
+        </form></div>
+
+    <div class="mm-panel tw-p-4 sm:tw-p-6"><p class="mm-rst-count"><span>(<b>1 </b>Records Found, page <b>1</b> of <b>1</b>, Data Show per page <b>15</b> ) </span></p>
+
+                    <div class="mm-table-scroll" role="region" aria-label="Items" tabindex="0"><table class="table table-striped table-bordered table-hover" >
+                            <thead>
+                                <tr style="background: #C9DAF8 !important; color:black !important">
+                                    <th>SL</th>
+                                    <th>Company</th>
+                                    <th>Item Name</th>
+                                    <th>Unit </th>
+                                    <th>Rate</th>
+                                    <th>Opening</th>
+                                    <th>Created By</th>
+                                    <th>Updated By</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                                                    <tr>
+                                        <td>1</td>
+                                        <td>MM Heritage</td>
+                                        <td>Basmati &lt;b&gt;rice&lt;/b&gt;</td>
+                                        <td>Kg</td>
+                                        <td>120</td>
+                                        <td>10</td>
+                                        <td >
+                                            <p title="Create Time : 2026-09-30">Rahim</p>
+                                            <p style="margin-top:-10px !important; font-size: 10px !important;">2026-10-01 (2026-09-30)</p>
+                                        </td>
+                                        <td>
+                                            <p title="Update Time : 2026-10-01">Karim</p>
+                                            <p style="margin-top:-10px !important; font-size: 10px !important;">2026-10-01 (2026-10-01)</p>
+                                        </td>
+                                        <td class="text-center">
+                                            <div class="btn-group btn-corner">
+
+                                                                                                    <a href="http://localhost/gs/items/edit/1" class="btn btn-sm btn-success" title="Edit">
+                                                        <i class="fa fa-pencil-square-o"></i>
+                                                    </a>
+                                                                                                                                                    
+                                                    <button type="button" onclick="delete_check(1)" class="btn btn-sm btn-danger" title="Delete">
+                                                        <i class="fa fa-trash-o"></i>
+                                                    </button>
+                                                                                                                                                </div>
+
+                                            <form action="http://localhost/gs/items/destroy/1" id="deleteCheck_1" method="POST">
+                                                <input type="hidden" name="_token" value="fixture-csrf-token">                                                <input type="hidden" name="_method" value="DELETE">                                            </form>
+
+                                        </td>
+                                    </tr>
+                                
+                                                            </tbody>
+                        </table></div>
+
+                                            <span class="pull-right"><ul class="pagination"><li class=" disabled"><a class="" href="#">← First</a></li><li class="active"><span>1</span></li><li><a href="#">2</a></li><li><a class="" href="#">Last →</a></li></ul></span>
+                        <div class="pull-left" style="margin-top:10px; margin-left:10px">
+                            <span onclick="exportData('http://localhost/export-gs-as-excel')" style="margin-right: 5px; cursor: pointer;">
+                                <img src="/assets/images/export-icons/excel-icon.png">
+                            </span>
+                            <span onclick="exportData('http://localhost/export-gs-as-pdf')" style="margin-right: 5px; cursor: pointer;">
+                                <img src="/assets/images/export-icons/pdf-icon.png">
+                            </span>
+                        </div>
+
+                        <form class="exportForm" method="POST">
+                            <input type="hidden" name="_token" value="fixture-csrf-token">                            <input type="hidden" name="model" value="Item List">
+                            <input type="hidden" name="company_id" value="">
+                            <input type="hidden" name="name" value="1">
+                            <input type="hidden" name="from_date" value="">
+                            <input type="hidden" name="to_date" value="">
+                        </form></div>
+    </div>
+</section>
+
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
+    <link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css" />
+
+    <script src="/assets/js/bootstrap-datepicker.min.js"></script>
+
+    <script src="/assets/js/chosen.jquery.min.js"></script>
+
+    <script type="text/javascript">
+        function exportData(url)
+        {
+            $('.exportForm').attr('action', url).submit();
+        }
+    </script>
+
+    <!--  Select Box Search-->
+    <script type="text/javascript">
+
+        jQuery(function($){
+
+            if(!ace.vars['touch']) {
+                $('.chosen-select').chosen({allow_single_deselect:true});
+                //resize the chosen on window resize
+
+                $(window)
+                    .off('resize.chosen')
+                    .on('resize.chosen', function() {
+                        $('.chosen-select').each(function() {
+                            var $this = $(this);
+                            $this.next().css({'width': '220px'});
+                        })
+                    }).trigger('resize.chosen');
+                //resize chosen on sidebar collapse/expand
+                $(document).on('settings.ace.chosen', function(e, event_name, event_val) {
+                    if(event_name != 'sidebar_collapsed') return;
+                    $('.chosen-select').each(function() {
+                        var $this = $(this);
+                        $this.next().css({'width': '220px'});
+                    })
+                });
+            }
+        })
+    </script>
+
+    <!-- inline scripts related to this page -->
+    <script type="text/javascript">
+
+        function delete_check(id)
+        {
+            Swal.fire({
+                title: 'Are you sure ?',
+                html: "<b>You want to delete permanently !</b>",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!',
+                width:400,
+            }).then((result) =>{
+                if(result.value){
+                    $('#deleteCheck_'+id).submit();
+                }
+            })
+
+        }
+
+    </script>
+
+    <script type="text/javascript">
+
+        // data picker
+        $('.date-picker').datepicker({
+            autoclose: true,
+            todayHighlight: true,
+            format:'yyyy-mm-dd',
+        });
+    </script>
+<!--/MM-JS--></body></html>
