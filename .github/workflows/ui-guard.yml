@@ -1,0 +1,63 @@
+# =============================================================================
+# UI guard — diff tripwires for Blade / JS / CSS UI changes (W0.4).
+#
+# Runs tools/ui-guard.sh on every push and PR. Two tripwires (per
+# docs/FRONTEND-DEV-PLAN.md W0.4):
+#   1. money-line change: any added/removed line in resources/views/**/*.blade.php
+#      or module/*/views/**/*.blade.php that touches invoice/payment context plus
+#      an amount keyword. Override with <!-- money-travel-on: <reason> -->.
+#   2. nested style include: any @include/@yield/@stack directive inside a
+#      <style>…</style> block in a Blade file (round-10 defect class).
+#
+# The script exits 1 when any tripwire triggers, which fails this workflow.
+# =============================================================================
+name: UI guard
+
+on:
+  push:
+    branches:
+      - 'arena/**'
+    paths:
+      - 'resources/views/**/*.blade.php'
+      - 'module/**/views/**/*.blade.php'
+      - 'tools/ui-guard.sh'
+      - '.github/workflows/ui-guard.yml'
+  pull_request:
+    paths:
+      - 'resources/views/**/*.blade.php'
+      - 'module/**/views/**/*.blade.php'
+      - 'tools/ui-guard.sh'
+      - '.github/workflows/ui-guard.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  guard:
+    name: Diff tripwires (money-line, nested-style)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up the merge base
+        id: base
+        run: |
+            # Default to origin/main for push events on a branch ref, and to
+            # the PR base for pull_request events. The script takes --base=<ref>
+            # and computes the diff against HEAD on that branch.
+            if [ "${{ github.event_name }}" = "pull_request" ]; then
+              echo "ref=${{ github.event.pull_request.base.ref }}" >> "$GITHUB_OUTPUT"
+            else
+              echo "ref=${{ github.event.repository.default_branch }}" >> "$GITHUB_OUTPUT"
+            fi
+            echo "Branch HEAD: $(git rev-parse --short HEAD)"
+            echo "Base ref:    ${{ steps.base.outputs.ref }}"
+
+      - name: Fetch the base branch
+        run: git fetch origin "${{ steps.base.outputs.ref }}"
+
+      - name: Run the diff tripwires
+        run: ./tools/ui-guard.sh --base="origin/${{ steps.base.outputs.ref }}"
