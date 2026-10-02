@@ -5,306 +5,277 @@
 
 
 @section('content')
-    <div class="row">
 
-        <div class="col-sm-12">
-            <div class="widget-box">
+<x-mm.styles />
+<x-mm.page class="mm-bar mm-rst mm-rst-inv mm-rst-form" title="Edit product" description="Update the product details.">
+    <x-slot name="actions">
+        <a class="mm-button" href="{{ route('bar.products.index') }}">
+            <i class="ace-icon fa fa-list-alt"></i>
+            Product List
+        </a>
+    </x-slot>
+    <x-mm.panel class="tw-p-4">
+        <div class="row">
+            <div class="col-sm-11 col-sm-offset-1">
+
+                <form method="POST" action="{{ route('bar.products.update', $product->id) }}"
+                    class="form-horizontal" data-parsley-validate novalidate>
+                    @csrf
+                    @method('PUT')
+
+
+                    <!-- Name -->
+                    <div class="form-group">
+                        <div class="col-md-6 col-md-offset-1">
+                            <label class="control-label" for="specification">Name <sup
+                                    class="text-danger">*</sup> :</label>
+                            <input class="form-control" type="text" id="product_name" name="name"
+                                placeholder="Product Name" value="{{ old('name', $product->name) }}"
+                                data-parsley-required="true" autocomplete="off" />
+                        </div>
+                    </div>
+
+
+
+
+                    <!-- Barcode -->
+                    <div class="form-group">
+                        <div class="col-md-6 col-md-offset-1">
+                            <label class="control-label" for="specification">Barcode <sup
+                                    class="text-danger">*</sup> :</label>
+                            <input class="form-control" type="text" id="product_barcode" name="barcode"
+                                placeholder="Product Barcode"
+                                value="{{ old('barcode', $product->barcode) }}" data-parsley-required="true"
+                                autocomplete="off" required />
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group">
+
+                        <!-- Category -->
+                        <div class="col-md-3 col-md-offset-1">
+                            <label class="control-label" for="specification">Category <sup
+                                    class="text-danger">*</sup> :</label>
+                            <select class="chosen-select form-control required" required="required"
+                                name="category_id" data-placeholder="--Select--" data-selected="{{ $product->category_id }}">
+                                <option></option>
+                                @foreach ($categories ?? [] as $parentCategory)
+                                    <option value="{{ $parentCategory->id }}" {{ optional($product->category)->id == $parentCategory->id ? 'selected' : '' }}>{{ $parentCategory->name }}</option>
+                                        @foreach ($parentCategory->childCategories ?? [] as $childCategory)
+                                            <option value="{{ $childCategory->id }}"
+                                                {{ optional($product->category)->id == $childCategory->id ? 'selected' : '' }}>
+                                                &nbsp;&raquo;&nbsp;{{ $childCategory->name }}
+                                            </option>
+                                            @include('inventory.categories.inc._create-options', ['childCategory' => $childCategory, 'space' => 1])
+                                        @endforeach
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <!-- Supplier -->
+                        <div class="col-md-3 ">
+                            <label class="control-label" for="specification">Supplier :</label>
+
+                            <select class="chosen-select form-control" name="supplier_id"
+                                data-placeholder="-Select Supplier-">
+                                <option value=""></option>
+                                @foreach ($suppliers as $id => $name)
+                                    <option value="{{ $id }}"
+                                        {{ old('supplier_id', $product->supplier_id) == $id ? 'selected' : '' }}>
+                                        {{ $name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                    </div>
+
+
+                    <!-- Pack -->
+                    <div class="form-group">
+
+
+                        <!-- Pack Size -->
+                        <div class="col-md-3 col-md-offset-1">
+                            <label class="control-label" for="pack_size">Pack Size :</label>
+                            <input class="form-control" value="{{ old('pack_size', $product->pack_size) }}" type="number"
+                                id="pack_size" min="0" name="pack_size" placeholder="Pack size" />
+                        </div>
+
+
+
 
+                        <!-- Small Unit -->
+                        <div class="col-md-3">
+                            <label class="control-label" for="pack_unit_id">Pack Unit <sup
+                                    class="text-danger">*</sup> :</label>
+                            <select class="form-control chosen-select" id="pack_unit_id" name="pack_unit_id"
+                                data-placeholder="-Select Pack Unit-" required>
+                                <option value=""></option>
 
+                                @foreach ($units->where('type', 'pack') as $unit)
+                                    <option value="{{ $unit->id }}"
+                                        {{ old('pack_unit_id', $product->pack_unit_id) == $unit->id ? 'selected' : '' }}>
+                                        {{ $unit->name }}
+                                    </option>
+                                @endforeach
 
-                <!-- Header -->
-                <div class="widget-header">
-                    <h4 class="widget-title">
-                        <i class="fa fa-plus-circle"></i> Edit Product
-                    </h4>
+                            </select>
+                        </div>
 
-                    <span class="widget-toolbar">
-                        <a href="{{ route('bar.products.index') }}">
-                            <i class="ace-icon fa fa-list-alt"></i>
-                            Product List
-                        </a>
-                    </span>
-                </div>
 
 
 
+                        <!-- Middle Equal(=) -->
+                        <div class="col-md-1" style="width: 4%">
+                            <h1 class="mt-20">=</h1>
+                        </div>
 
 
 
-                <!-- Body -->
-                <div class="widget-body">
-                    <div class="widget-main">
+                        <!-- Big Unit -->
+                        <div class="col-md-3">
+                            <label class="control-label" for="unit_id">Big Unit <sup
+                                    class="text-danger">*</sup> :</label>
+                            <select class="form-control chosen-select" id="unit_id" name="unit_id"
+                                required data-placeholder="-Select Unit-">
+                                <option value=""></option>
 
+                                @foreach ($units->where('type', 'retail') as $unit)
+                                    <option value="{{ $unit->id }}"
+                                        {{ old('unit_id', $product->unit_id) == $unit->id ? 'selected' : '' }}>
+                                        {{ $unit->name }}
+                                    </option>
+                                @endforeach
 
+                            </select>
+                        </div>
 
-                        <div class="row">
-                            <div class="col-sm-11 col-sm-offset-1">
 
-                                <form method="POST" action="{{ route('bar.products.update', $product->id) }}"
-                                    class="form-horizontal" data-parsley-validate novalidate>
-                                    @csrf
-                                    @method('PUT')
+                    </div>
 
 
-                                    <!-- Name -->
-                                    <div class="form-group">
-                                        <div class="col-md-6 col-md-offset-1">
-                                            <label class="control-label" for="specification">Name <sup
-                                                    class="text-danger">*</sup> :</label>
-                                            <input class="form-control" type="text" id="product_name" name="name"
-                                                placeholder="Product Name" value="{{ old('name', $product->name) }}"
-                                                data-parsley-required="true" autocomplete="off" />
-                                        </div>
-                                    </div>
+                    <div class="form-group">
 
 
-
-
-                                    <!-- Barcode -->
-                                    <div class="form-group">
-                                        <div class="col-md-6 col-md-offset-1">
-                                            <label class="control-label" for="specification">Barcode <sup
-                                                    class="text-danger">*</sup> :</label>
-                                            <input class="form-control" type="text" id="product_barcode" name="barcode"
-                                                placeholder="Product Barcode"
-                                                value="{{ old('barcode', $product->barcode) }}" data-parsley-required="true"
-                                                autocomplete="off" required />
-                                        </div>
-                                    </div>
-
-
-
-                                    <div class="form-group">
-
-                                        <!-- Category -->
-                                        <div class="col-md-3 col-md-offset-1">
-                                            <label class="control-label" for="specification">Category <sup
-                                                    class="text-danger">*</sup> :</label>
-                                            <select class="chosen-select form-control required" required="required"
-                                                name="category_id" data-placeholder="--Select--" data-selected="{{ $product->category_id }}">
-                                                <option></option>
-                                                @foreach ($categories ?? [] as $parentCategory)
-                                                    <option value="{{ $parentCategory->id }}" {{ optional($product->category)->id == $parentCategory->id ? 'selected' : '' }}>{{ $parentCategory->name }}</option>
-                                                        @foreach ($parentCategory->childCategories ?? [] as $childCategory)
-                                                            <option value="{{ $childCategory->id }}"
-                                                                {{ optional($product->category)->id == $childCategory->id ? 'selected' : '' }}>
-                                                                &nbsp;&raquo;&nbsp;{{ $childCategory->name }}
-                                                            </option>
-                                                            @include('inventory.categories.inc._create-options', ['childCategory' => $childCategory, 'space' => 1])
-                                                        @endforeach
-                                                @endforeach
-                                            </select>
-                                        </div>
-
-                                        <!-- Supplier -->
-                                        <div class="col-md-3 ">
-                                            <label class="control-label" for="specification">Supplier :</label>
-
-                                            <select class="chosen-select form-control" name="supplier_id"
-                                                data-placeholder="-Select Supplier-">
-                                                <option value=""></option>
-                                                @foreach ($suppliers as $id => $name)
-                                                    <option value="{{ $id }}"
-                                                        {{ old('supplier_id', $product->supplier_id) == $id ? 'selected' : '' }}>
-                                                        {{ $name }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-
-                                    </div>
-
-
-                                    <!-- Pack -->
-                                    <div class="form-group">
-
-
-                                        <!-- Pack Size -->
-                                        <div class="col-md-3 col-md-offset-1">
-                                            <label class="control-label" for="pack_size">Pack Size :</label>
-                                            <input class="form-control" value="{{ old('pack_size', $product->pack_size) }}" type="number"
-                                                id="pack_size" min="0" name="pack_size" placeholder="Pack size" />
-                                        </div>
-
-
-
-
-                                        <!-- Small Unit -->
-                                        <div class="col-md-3">
-                                            <label class="control-label" for="pack_unit_id">Pack Unit <sup
-                                                    class="text-danger">*</sup> :</label>
-                                            <select class="form-control chosen-select" id="pack_unit_id" name="pack_unit_id"
-                                                data-placeholder="-Select Pack Unit-" required>
-                                                <option value=""></option>
-
-                                                @foreach ($units->where('type', 'pack') as $unit)
-                                                    <option value="{{ $unit->id }}"
-                                                        {{ old('pack_unit_id', $product->pack_unit_id) == $unit->id ? 'selected' : '' }}>
-                                                        {{ $unit->name }}
-                                                    </option>
-                                                @endforeach
-
-                                            </select>
-                                        </div>
-
-
-
-
-                                        <!-- Middle Equal(=) -->
-                                        <div class="col-md-1" style="width: 4%">
-                                            <h1 class="mt-20">=</h1>
-                                        </div>
-
-
-
-                                        <!-- Big Unit -->
-                                        <div class="col-md-3">
-                                            <label class="control-label" for="unit_id">Big Unit <sup
-                                                    class="text-danger">*</sup> :</label>
-                                            <select class="form-control chosen-select" id="unit_id" name="unit_id"
-                                                required data-placeholder="-Select Unit-">
-                                                <option value=""></option>
-
-                                                @foreach ($units->where('type', 'retail') as $unit)
-                                                    <option value="{{ $unit->id }}"
-                                                        {{ old('unit_id', $product->unit_id) == $unit->id ? 'selected' : '' }}>
-                                                        {{ $unit->name }}
-                                                    </option>
-                                                @endforeach
-
-                                            </select>
-                                        </div>
-
-
-                                    </div>
-
-
-                                    <div class="form-group">
-
-
-                                        <!-- Unit Cost -->
-                                        <div class="col-md-3 col-md-offset-1">
-                                            <label class="control-label" for="unit_cost">Purchase Price <sup
-                                                    class="text-danger">*</sup> :</label>
-                                            <input class="form-control"
-                                                value="{{ old('unit_cost', $product->unit_cost) }}" type="number"
-                                                id="unit_cost" min="0" name="unit_cost" placeholder="Unit Cost"
-                                                data-parsley-required="true" />
-                                        </div>
-
-
-
-
-
-
-                                        <!-- Sale Price -->
-                                        <div class="col-md-3">
-                                            <label class="control-label" for="sale_price">Sale Price <sup
-                                                    class="text-danger">*</sup> :</label>
-                                            <input class="form-control"
-                                                value="{{ old('sale_price', $product->sale_price) }}" type="number"
-                                                id="sale_price" min="0" name="sale_price"
-                                                placeholder="Sale price" data-parsley-required="true" />
-                                        </div>
-
-
-
-
-                                    </div>
-
-                                    <div class="form-group">
-
-                                        <!-- Alert Quantity -->
-                                        <div class="col-md-3 col-md-offset-1">
-                                            <label class="control-label" for="stock_limit">
-                                                Alert Quantity :
-                                            </label>
-                                            <input class="form-control"
-                                                value="{{ old('stock_limit', $product->stock_limit) }}" type="number"
-                                                id="stock_limit" min="0" name="stock_limit"
-                                                placeholder="Stock Limitation" data-parsley-required="true" />
-                                        </div>
-
-                                    </div>
-
-
-                                    <div class="form-group">
-                                        <!-- VAT -->
-                                        <div class="col-md-3 col-md-offset-1">
-
-                                            <label class="control-label" for="specification">Vat :</label>
-
-                                            <div class="input-group">
-                                                <span class="input-group-addon">৳</span>
-                                                <div class="input-group">
-                                                    <input type="text" name="vat_amount"
-                                                        class="form-control only-number"
-                                                        value="{{ $product->vat_amount }}">
-                                                    <span class="input-group-addon">%</span>
-                                                    <input type="text" name="vat_percent"
-                                                        class="form-control only-number"
-                                                        value="{{ getPercentOfXAmount($product->sale_price, $product->vat_amount) }}">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-
-
-                                    <div class="form-group">
-                                        <!-- Status  -->
-
-                                        <div class="col-md-6 col-md-offset-1">
-                                            <label class="control-label">
-                                                Status<sup class="text-danger">*</sup> :
-                                            </label>
-
-                                            <select class="form-control chosen-select" id="status" name="status"
-                                                data-placeholder="-Select-">
-                                                <option value=""></option>
-                                                <option value="1" {{ $product->status ? 'selected' : '' }}>Active
-                                                </option>
-                                                <option value="0" {{ $product->status == 0 ? 'selected' : '' }}>
-                                                    Inactive
-                                                </option>
-                                            </select>
-                                        </div>
-
-
-                                    </div>
-
-
-
-
-
-                                    <!-- Submit Button -->
-                                    <div class="form-group">
-
-                                        <div class="col-md-6 col-sm-offset-3">
-                                            <button type="submit" id="submit" class="btn btn-primary">
-                                                <i class="fa fa-edit"></i> Edit Product
-                                            </button>
-                                        </div>
-
-                                    </div>
-
-
-
-
-                                </form>
-
-                            </div>
+                        <!-- Unit Cost -->
+                        <div class="col-md-3 col-md-offset-1">
+                            <label class="control-label" for="unit_cost">Purchase Price <sup
+                                    class="text-danger">*</sup> :</label>
+                            <input class="form-control"
+                                value="{{ old('unit_cost', $product->unit_cost) }}" type="number"
+                                id="unit_cost" min="0" name="unit_cost" placeholder="Unit Cost"
+                                data-parsley-required="true" />
                         </div>
 
 
 
 
 
+
+                        <!-- Sale Price -->
+                        <div class="col-md-3">
+                            <label class="control-label" for="sale_price">Sale Price <sup
+                                    class="text-danger">*</sup> :</label>
+                            <input class="form-control"
+                                value="{{ old('sale_price', $product->sale_price) }}" type="number"
+                                id="sale_price" min="0" name="sale_price"
+                                placeholder="Sale price" data-parsley-required="true" />
+                        </div>
+
+
+
+
                     </div>
-                </div>
+
+                    <div class="form-group">
+
+                        <!-- Alert Quantity -->
+                        <div class="col-md-3 col-md-offset-1">
+                            <label class="control-label" for="stock_limit">
+                                Alert Quantity :
+                            </label>
+                            <input class="form-control"
+                                value="{{ old('stock_limit', $product->stock_limit) }}" type="number"
+                                id="stock_limit" min="0" name="stock_limit"
+                                placeholder="Stock Limitation" data-parsley-required="true" />
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group">
+                        <!-- VAT -->
+                        <div class="col-md-3 col-md-offset-1">
+
+                            <label class="control-label" for="specification">Vat :</label>
+
+                            <div class="input-group">
+                                <span class="input-group-addon">৳</span>
+                                <div class="input-group">
+                                    <input type="text" name="vat_amount"
+                                        class="form-control only-number"
+                                        value="{{ $product->vat_amount }}">
+                                    <span class="input-group-addon">%</span>
+                                    <input type="text" name="vat_percent"
+                                        class="form-control only-number"
+                                        value="{{ getPercentOfXAmount($product->sale_price, $product->vat_amount) }}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group">
+                        <!-- Status  -->
+
+                        <div class="col-md-6 col-md-offset-1">
+                            <label class="control-label">
+                                Status<sup class="text-danger">*</sup> :
+                            </label>
+
+                            <select class="form-control chosen-select" id="status" name="status"
+                                data-placeholder="-Select-">
+                                <option value=""></option>
+                                <option value="1" {{ $product->status ? 'selected' : '' }}>Active
+                                </option>
+                                <option value="0" {{ $product->status == 0 ? 'selected' : '' }}>
+                                    Inactive
+                                </option>
+                            </select>
+                        </div>
+
+
+                    </div>
+
+
+
+
+
+                    <!-- Submit Button -->
+                    <div class="form-group">
+
+                        <div class="col-md-6 col-sm-offset-3">
+                            <button type="submit" id="submit" class="btn btn-primary">
+                                <i class="fa fa-edit"></i> Edit Product
+                            </button>
+                        </div>
+
+                    </div>
+
+
+
+
+                </form>
+
             </div>
         </div>
-    </div>
+    </x-mm.panel>
+</x-mm.page>
+
 @endsection
 
 

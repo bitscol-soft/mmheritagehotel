@@ -129,3 +129,11 @@ payment collection and night audit pending. See `docs/BOOKING-LIFECYCLE-PLAN.md`
 | G2: purchases (list, show, approve, create, edit), purchase receive create, GRN list, purchase receive list | Migrated; expressions, controls, forms, directives and scripts unchanged (compared with `3ed5211b`). `purchase_receives/print-receive` stays a standalone print document. Visible changes: the "Purchase List" link on purchase create is now shown (it carried `only-print`), the printer image on the purchase form became a Print button | Render fixtures + Playwright; staging pending |
 | G3: goods requisitions (list, create, edit, approve), GIN list, weekly movement, stock in hand, item ledger | Migrated; expressions, controls, forms, directives and scripts unchanged (compared with `3ed5211b`). `print-gin-details`, `print_item_details`, `print_items_stock`, `gs-paginate` and the exports are untouched. Two reviewed fixes: the create screen's "Goods Requisition List" link pointed at `purchases.index`; three hidden inputs on the edit screen read `old()[$key]` without a default (a warning that Laravel turns into an error on PHP 8) | Render fixtures + Playwright; staging pending |
 | `reports/print_item_details`, `reports/print_items_stock` | Only reached by controller methods that have no route (dead code); not migrated | n/a |
+
+## Bar (module/Bar)
+
+| Group | Status | Verification |
+|---|---|---|
+| B1: product categories, units, manufacturers, suppliers, products (list, add, edit), product inventory report, packages, tables, purchases, sales (list, create, show), sale returns, sales / cash flow / inventory / today-activities reports, night audit list and generate | Migrated; expressions, controls, forms, directives and scripts unchanged (compared with `df1b849e`). Filters rebuilt as inline fields. The manufacturer edit modal now posts to the Bar route instead of the Restaurant one | Render fixtures + Playwright (`bar.spec.cjs`); staging pending |
+| POS (`sales-v2/create`), `sales-v2/show`, `pos-print`, `bar-night-audits/invoice`, `frontend.bar-menu`, unreachable views | Not migrated (POS and print documents, deprioritised) | n/a |
+

@@ -27,58 +27,43 @@
 
 
 @section('content')
-    <div class="row">
-        <div class="col-md-12">
-            <div class="widget-box">
-                <div class="widget-header">
 
-                    <h4 class="widget-title"> <i class="fa fa-plus-circle"></i>  @yield('page-header')</h4>
-
-                    @if (hasPermission('bar.purchases.index', $slugs))
-                        <span class="widget-toolbar">
-                            <a href="{{ route('bar.purchases.index') }}">
-                                <i class="ace-icon fa fa-list-alt"></i> List
-                            </a>
-                        </span>
-                    @endif
-                </div>
-                <div class="widget-body">
-
-                    <div class="widget-main">
+<x-mm.styles />
+<x-mm.page class="mm-bar mm-rst mm-rst-inv mm-rst-form mm-rst-purchase mm-rst-purchase-create" title="Purchase create" description="Choose the supplier and account, add products and submit the purchase.">
+    <x-slot name="actions">
+        @if (hasPermission('bar.purchases.index', $slugs))
+                <a class="mm-button" href="{{ route('bar.purchases.index') }}">
+                    <i class="ace-icon fa fa-list-alt"></i> List
+                </a>
+        @endif
+    </x-slot>
+    <x-mm.panel class="tw-p-4">
+        <x-alert-message />
 
 
-                        <x-alert-message />
+        <div class="row">
+            <form method="POST" action="{{ route('bar.purchases.store') }}" id="purchase-form">
+                @csrf
 
+                <div class="col-md-12">
+                    @include('bar.purchase-v2.inc.common')
+                    <div class="row">
+                        <div class="col-md-9">
 
-                        <div class="row">
-                            <form method="POST" action="{{ route('bar.purchases.store') }}" id="purchase-form">
-                                @csrf
+                            @include('bar.purchase-v2.create.left-side')
 
-                                <div class="col-md-12">
-                                    @include('bar.purchase-v2.inc.common')
-                                    <div class="row">
-                                        <div class="col-md-9">
+                        </div>
+                        <div class="col-md-3">
 
-                                            @include('bar.purchase-v2.create.left-side')
+                            @include('bar.purchase-v2.create.right-side')
 
-                                        </div>
-                                        <div class="col-md-3">
-
-                                            @include('bar.purchase-v2.create.right-side')
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
                         </div>
                     </div>
-
-
                 </div>
-
-            </div>
+            </form>
         </div>
-    </div>
+    </x-mm.panel>
+</x-mm.page>
 
 @endsection
 

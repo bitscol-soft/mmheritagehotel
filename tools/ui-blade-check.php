@@ -1239,3 +1239,90 @@ foreach ($gsCases as $gsName => [$gsViewName, $gsUrl, $gsData, $gsMarkers, $gsAb
     if (file_get_contents($gsFile) !== $gsHtml) throw new RuntimeException($gsFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
 }
 echo "PASS general store screens render: items, item units, suppliers, supplier types, purchases, receives, GRN list, requisitions, GIN and reports\n";
+
+// ---- Bar B1: inventory, tables, purchases, sales, returns, reports and night audit lists (module/Bar/views, same helper substitutions as the Restaurant views) ----
+$brMigrated = ['bar/inventory/categories/index', 'bar/inventory/units/index', 'bar/inventory/manufacturers/index', 'bar/inventory/supplier/index', 'bar/inventory/product/create', 'bar/inventory/product/edit', 'bar/inventory/product/index', 'bar/inventory/inventory-report', 'bar/inventory/product/uploads/edit', 'bar/inventory/product/package/index', 'bar/inventory/product/package/create', 'bar/tables/index', 'bar/purchase/index', 'bar/sales/index', 'bar/sales/return/index', 'bar/sales-v2/index', 'bar/reports/sales/index', 'bar/reports/cash-flow/index', 'bar/reports/inventory/index', 'bar/reports/today-activities/index', 'bar-night-audits/index', 'bar-night-audits/create-v2', 'bar/sales/create', 'bar/sales/return/create', 'bar/purchase/show', 'bar/sales/show', 'bar/sales/return/show', 'bar/purchase-v2/create', 'bar/inventory/product/uploads/index'];
+foreach ($brMigrated as $brFile) { $compiler->compileString(file_get_contents($root . '/module/Bar/views/' . $brFile . '.blade.php')); token_get_all($compiler->compileString(file_get_contents($root . '/module/Bar/views/' . $brFile . '.blade.php')), TOKEN_PARSE); }
+echo "PASS compile bar views\n";
+$brViews = array_merge($brMigrated, ['bar/inventory/categories/create-modal', 'bar/inventory/categories/edit-modal', 'bar/inventory/units/create-modal', 'bar/inventory/units/edit-modal', 'bar/inventory/manufacturers/create-modal', 'bar/inventory/manufacturers/edit-modal', 'bar/inventory/manufacturers/create-supplier-modal', 'bar/inventory/supplier/create-modal', 'bar/inventory/supplier/edit-modal', 'bar/tables/create-modal', 'bar/tables/edit-modal', 'bar/inventory/product/_inc/filter', 'bar/inventory/product/_inc/script', 'bar/inventory/product/create/create', 'bar/inventory/product/create/upload', 'bar/sales-v2/_inc/style', 'bar/sales/_inc/create-script', 'bar/sales/_inc/booking-filter-script']);
+foreach ($brViews as $brView) {
+    $brSource = $rsSubst($brView, 'Bar');
+    $brSource = str_replace(["@include('inventory.categories.inc._create-options'", "@include('inventory/product/_inc/script')", "@include('bar.inventory.includes.filter')", "\Carbon\Carbon::parse(", 'Carbon\Carbon::parse(', 'Auth::user()', 'DNS1D::getBarcodeHTML(', '<x-company-info :company="$purchases->company" />', '<x-company-info :company="optional($sale->company)" />'], ["@include('ri.inventory.categories.inc._create-options'", "@include('bar/inventory/product/_inc/script')", "@include('rs-filter')", 'mm_gs_date(', 'mm_gs_date(', 'mm_auth_user()', 'mm_barcode(', '<div class="company-info"><h3>MM Heritage</h3></div>', '<div class="company-info"><h3>MM Heritage</h3></div>'], $brSource);
+    $brSource = preg_replace("/@include\\('(?:bar[.\\/]reports[.\\/][\\w.\\/-]*export[.\\/]excel|bar-night-audits[.\\/]export[.\\/]excel|bar-night-audits[.\\/]details|reports\\.today-activities\\.export\\.excel)'\\)/", "@include('rs-stub')", $brSource);
+    $brSource = preg_replace('/getTotalPaymentTypeInvoice\\([^)]*\\)/', '0', $brSource);
+    @mkdir(dirname($coViews . '/' . $brView), 0777, true);
+    file_put_contents($coViews . '/' . $brView . '.blade.php', $brSource);
+}
+$brSeen = [];
+foreach ($brViews as $brView) {
+    preg_match_all("/route\('([\w.-]+)'/", file_get_contents($coViews . '/' . $brView . '.blade.php'), $brMatch);
+    foreach ($brMatch[1] as $brRoute) {
+        if (isset($brSeen[$brRoute]) || $rsRoutes->getByName($brRoute)) continue;
+        $brSeen[$brRoute] = true;
+        $rsRoutes->add((new Illuminate\Routing\Route(['GET', 'POST'], 'x/' . str_replace('.', '/', $brRoute) . '/{id?}', function () {}))->name($brRoute));
+    }
+}
+$brPurchase = function ($id, $challan) { return (object) ['id' => $id, 'challan_id' => $challan, 'date' => '2026-10-01', 'subtotal' => 1000, 'discount' => 50, 'total_vat' => 20, 'payable_amount' => 970, 'paid_amount' => 500, 'due_amount' => 470, 'supplier' => (object) ['id' => 1, 'name' => 'Sarker <b>Traders</b>', 'email' => 's@example.com', 'phone' => '017'], 'company' => (object) ['name' => 'MM Heritage <i>Ltd</i>'], 'user' => (object) ['name' => 'Karim'], 'purchase_details' => collect([(object) ['quantity' => 5, 'item_price' => 200, 'subtotal' => 1000, 'product' => (object) ['name' => 'Black <b>Label</b>', 'pack_unit' => (object) ['name' => 'Bottle']]]])]; };
+$brSale = function () { return (object) ['id' => 1, 'date' => '2026-10-01', 'invoice_no' => 'B-0101', 'guest_name' => 'Aisha <b>x</b>', 'payable_amount' => 1200, 'discount' => 50, 'paid_amount' => 1200, 'vat_amount' => 10, 'service_amount' => 5, 'change_amount' => 0, 'company' => null, 'user' => (object) ['name' => 'Rahim'], 'transaction_ledgers' => collect([(object) ['amount' => 1200, 'account' => (object) ['name' => 'Cash']]]), 'items' => collect([(object) ['quantity' => 2, 'sales_price' => 600, 'item_price' => 600, 'item_discount' => 0, 'product' => (object) ['name' => 'Whisky <i>hot</i>'], 'unit' => (object) ['name' => 'Peg'], 'account' => (object) ['name' => 'Cash']]])]; };
+$brCatalog = $riCatalog; $brCatalog['units'] = collect([(object) ['id' => 1, 'name' => 'Bottle', 'type' => 'pack'], (object) ['id' => 2, 'name' => 'Peg', 'type' => 'retail']]);
+$brCases = [
+    'bar-categories' => ['bar.inventory.categories.index', '/bar/inventory/product-categories', ['categories' => $riList([$riCategory(1, 'Spirits <b>x</b>'), $riCategory(2, 'Beer', 0)])],
+        ['mm-hotel-setup', 'mm-bar', 'id="data-table"', 'href="#modal-dialog"', 'Spirits &lt;b&gt;x&lt;/b&gt;'], ['Spirits <b>x</b>']],
+    'bar-units' => ['bar.inventory.units.index', '/bar/inventory/product-units', ['units' => $riList([$riRow(['id' => 1, 'name' => 'Peg <b>x</b>', 'status' => 1]), $riRow(['id' => 2, 'name' => 'Bottle', 'status' => 0])])],
+        ['mm-hotel-setup', 'mm-bar', 'id="data-table"', 'Peg &lt;b&gt;x&lt;/b&gt;'], ['Peg <b>x</b>']],
+    'bar-manufacturers' => ['bar.inventory.manufacturers.index', '/bar/inventory/manufacturers', ['manufacturers' => $riList([$riRow(['id' => 1, 'name' => 'Distillers <b>Co</b>', 'status' => 1])])],
+        ['mm-hotel-setup', 'mm-bar', 'id="data-table"', 'Distillers &lt;b&gt;Co&lt;/b&gt;'], ['Distillers <b>Co</b>']],
+    'bar-suppliers' => ['bar.inventory.supplier.index', '/bar/inventory/suppliers', ['suppliers' => $riList([$riRow(['id' => 1, 'name' => 'Sarker <b>Traders</b>', 'phone' => '017', 'status' => 1])])],
+        ['mm-hotel-setup', 'mm-bar', 'id="data-table"', 'Sarker &lt;b&gt;Traders&lt;/b&gt;'], ['Sarker <b>Traders</b>']],
+    'bar-products' => ['bar.inventory.product.index', '/bar/inventory/products?name=1', ['products' => $riList([$riProduct(1, 'Black <b>Label</b>'), $riProduct(2, 'Lager')]), 'categories' => collect([$riRow(['id' => 1, 'name' => 'Spirits']), $riRow(['id' => 2, 'name' => 'Beer'])])],
+        ['mm-report', 'mm-bar', 'mm-rst-inventory', 'mm-report-filter', 'id="datatable"', 'Black &lt;b&gt;Label&lt;/b&gt;', 'class="pagination"'], ['Black <b>Label</b>', 'col-sm-offset']],
+    'bar-tables' => ['bar.tables.index', '/bar/table-manages', ['table_manages' => $riList([$riRow(['id' => 1, 'name' => 'Bar <b>1</b>', 'table_no' => 'T1', 'status' => 1])])],
+        ['mm-hotel-setup', 'mm-bar', 'id="data-table"', 'Bar &lt;b&gt;1&lt;/b&gt;'], ['Bar <b>1</b>']],
+    'bar-purchase-list' => ['bar.purchase.index', '/bar/purchases?purchase_number=1', ['companies' => [1 => 'MM Heritage'], 'purchases' => $riList([$brPurchase(1, 'P-0001'), $brPurchase(2, 'P-0002')])],
+        ['mm-report', 'mm-bar', 'mm-rst-purchase', 'P-0002'], ['col-sm-offset']],
+    'bar-purchase-show' => ['bar.purchase.show', '/bar/purchases/1', ['purchases' => $brPurchase(1, 'P-0001')],
+        ['mm-invoice-page', 'mm-bar', 'P-0001', 'Black &lt;b&gt;Label&lt;/b&gt;', 'Sarker &lt;b&gt;Traders&lt;/b&gt;'], ['Black <b>Label</b>']],
+    'bar-sales-list' => ['bar.sales.index', '/bar/sales?invoice_no=1', ['sales' => $riList([$rsSaleRow(1, 'R-0101', 1200, 1200), $rsSaleRow(2, 'R-0102', 800, 300)])],
+        ['mm-report', 'mm-bar', 'mm-report-filter', 'name="invoice_no"', 'id="datatable"', 'class="pagination"'], ['col-sm-offset']],
+    'bar-sales-show' => ['bar.sales.show', '/bar/sales/1', ['sale' => $brSale(), 'account_types' => collect([(object) ['id' => 1, 'name' => 'Cash']])],
+        ['mm-invoice-page', 'mm-bar', 'B-0101', 'Whisky &lt;i&gt;hot&lt;/i&gt;'], ['Whisky <i>hot</i>']],
+    'bar-return-list' => ['bar.sales.return.index', '/bar/sale-returns', ['sales' => $riList([$rsReturnRow(1, 'RET-1'), $rsReturnRow(2, 'RET-2')])],
+        ['mm-report', 'mm-bar', 'mm-report-filter', 'name="invoice_no"', 'id="datatable"', 'class="pagination"'], ['col-sm-offset']],
+    'bar-return-show' => ['bar.sales.return.show', '/bar/sale-returns/1', ['sale' => $rsReturnRow(1, 'RET-1')],
+        ['mm-invoice-page', 'mm-bar', 'RET-1'], []],
+    'bar-sales-create' => ['bar.sales.create', '/bar/sales/create', ['invoice_id' => 'B-0105', 'vat_percent' => 5, 'account_types' => collect([(object) ['id' => 1, 'name' => 'Cash'], (object) ['id' => 2, 'name' => 'Card']])],
+        ['mm-rst-sale', 'mm-bar', 'name="invoice_no"', 'name="date"', 'id="product-details"', 'name="payment_way"', 'name="subtotal"', 'name="payable_amount"', 'name="draft"'], []],
+    'bar-return-create' => ['bar.sales.return.create', '/bar/sale-returns/create', [],
+        ['mm-rst-sale', 'mm-bar', 'class="form-horizontal sales-form"', 'name="invoice_no"', 'id="table_auto"', 'name="return_amount"'], []],
+    'bar-report-cash-flow' => ['bar.reports.cash-flow.index', '/bar/reports/cash-flow?invoice_no=1', ['cashFlows' => collect([])], ['mm-report', 'mm-bar', 'mm-report-filter', 'name="invoice_no"', 'name="from_date"'], ['col-sm-offset']],
+    'bar-report-sales' => ['bar.reports.sales.index', '/bar/reports/sales?invoice_no=1', ['sales' => collect([])], ['mm-report', 'mm-bar', 'name="invoice_no"', 'name="guest_name"', 'mm-report-filter'], ['col-sm-offset']],
+    'bar-report-today' => ['bar.reports.today-activities.index', '/bar/reports/today-activities', [], ['mm-report', 'mm-bar', 'mm-report-filter', 'name="from_date"'], ['col-sm-offset']],
+    'bar-report-inventory' => ['bar.reports.inventory.index', '/bar/reports/inventory', ['products' => collect([])], ['mm-rst-inventory', 'mm-bar', 'name="category_id"'], []],
+    'bar-audit-list' => ['bar-night-audits.index', '/bar/night-audit?from_date=2026-09-29', ['nightaudits' => collect([$rsAuditDay('2026-09-30', 1000, 0), $rsAuditDay('2026-09-29', 500, 200)]), 'account_types' => collect([1 => 'Cash'])],
+        ['mm-bar', 'mm-report-filter', 'name="from_date"', 'name="to_date"'], []],
+    'bar-audit-generate' => ['bar-night-audits.create-v2', '/bar/night-audits/create?from_date=2026-10-01&to_date=2026-10-01', ['from_date' => '2026-10-01', 'to_date' => '2026-10-01', 'accountTypes' => collect([1 => 'Cash', 2 => 'Card']), 'total_reservation' => 3, 'total_booked_room' => 7, 'total_check_in' => 2, 'total_check_out' => 1, 'total_room' => 32, 'total_cancel' => 0, 'total_dirty_room' => 4, 'total_maintenance_room' => 1, 'transactions' => collect(['Bar Sale' => collect([$rsTx(21, 'B-0101', 800, 800), $rsTx(22, 'B-0102', 600, 100)])])],
+        ['mm-night-audit', 'mm-bar', 'id="formSubmit"', 'name="date"', 'name="transaction_ids[21]"', 'name="payment_way[Cash]"', 'name="total_amount"'], []],
+    'bar-product-create' => ['bar.inventory.product.create', '/bar/inventory/products/create', $brCatalog, ['mm-bar', 'mm-rst-form', 'data-parsley-validate', 'name="name"', 'name="barcode"', 'name="category_id"', 'name="unit_id"', 'name="supplier_id"', 'Rice &lt;b&gt;dishes&lt;/b&gt;'], ['Rice <b>dishes</b>']],
+    'bar-product-edit' => ['bar.inventory.product.edit', '/bar/inventory/products/1/edit', $brCatalog + ['product' => (object) ['id' => 1, 'name' => 'Black <b>Label</b>', 'barcode' => 'B-1', 'category' => (object) ['name' => 'Spirits'], 'category_id' => 1, 'pack_size' => 12, 'pack_unit_id' => 1, 'sale_price' => 250, 'status' => 1, 'stock_limit' => 5, 'unit_cost' => 100, 'supplier_id' => 1, 'unit_id' => 2, 'vat_amount' => 5]], ['mm-bar', 'mm-rst-form', 'name="_method" value="PUT"', 'name="name"', 'Black &lt;b&gt;Label&lt;/b&gt;'], ['Black <b>Label</b>']],
+    'bar-inventory-report' => ['bar.inventory.inventory-report', '/bar/inventory/inventory-report?category_id=1', ['products' => $riList([$riProduct(1, 'Black <b>Label</b>')])], ['mm-bar', 'mm-rst-inventory', 'Black &lt;b&gt;Label&lt;/b&gt;'], ['Black <b>Label</b>']],
+];
+@mkdir(__DIR__ . '/fixtures/bar', 0777, true);
+foreach ($brCases as $brName => [$brViewName, $brUrl, $brData, $brMarkers, $brAbsent]) {
+    $brRequest = Illuminate\Http\Request::create($brUrl);
+    $brRequest->setLaravelSession(new Illuminate\Session\Store('mm', new Illuminate\Session\ArraySessionHandler(10)));
+    $app->instance('request', $brRequest);
+    $app->instance('url', new Illuminate\Routing\UrlGenerator($rsRoutes, $brRequest));
+    try { $brHtml = $app->make('view')->make($brViewName, array_merge(['errors' => new Illuminate\Support\ViewErrorBag(), 'slugs' => []], $brData))->render(); }
+    catch (Throwable $e) { throw new RuntimeException('Bar screen ' . $brName . ' failed to render: ' . $e->getMessage(), 0, $e); }
+    $brHtml = preg_replace('/(name="_token" value=")[A-Za-z0-9]+"/', '$1fixture-csrf-token"', str_replace('http://localhost/assets', '/assets', $brHtml));
+    $brMissing = [];
+    foreach (array_merge(['mm-panel', 'mm-page-title'], $brMarkers) as $brMarker) { if (strpos($brHtml, $brMarker) === false) $brMissing[] = $brMarker; }
+    if ($brMissing) throw new RuntimeException('Bar screen ' . $brName . ' missing ' . implode(' | ', $brMissing));
+    if (preg_match('/class="[^"]*\\b(?:widget-box|widget-main|widget-header|page-header)\\b/', $brHtml)) throw new RuntimeException('Bar screen ' . $brName . ' still contains the legacy frame');
+    foreach ($brAbsent as $brMarker) { if (strpos($brHtml, $brMarker) !== false) throw new RuntimeException('Bar screen ' . $brName . ' still contains ' . $brMarker); }
+    if (strpos($brHtml, '<b>Warning</b>') !== false || strpos($brHtml, '<b>Notice</b>') !== false) throw new RuntimeException('Bar screen ' . $brName . ' sample data is incomplete (PHP warning in output)');
+    $brFile = __DIR__ . '/fixtures/bar/' . substr($brName, 4) . '.html';
+    if (getenv('MM_WRITE_FIXTURE')) { file_put_contents($brFile, $brHtml); file_put_contents($previewDir . '/' . $brName . '.html', $brHtml); }
+    if (file_get_contents($brFile) !== $brHtml) throw new RuntimeException($brFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
+}
+echo "PASS bar screens render: setup, catalog, purchases, sales, returns, reports and night audit\n";

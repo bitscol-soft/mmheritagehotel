@@ -813,3 +813,13 @@
 .mm-ui.mm-gs.mm-report .mm-table-scroll td.text-center[style*="min-width"] { min-width: 0 !important; white-space: nowrap; }
 .mm-ui.mm-gs.mm-report .mm-table-scroll .btn-minier, .mm-ui.mm-gs.mm-report .mm-table-scroll .btn-xs { margin: 0 1px; }
 .mm-ui.mm-gs.mm-report .mm-table-scroll .table-bordered td .input-group .input-group-addon { padding: 6px 8px; }
+.mm-ui.mm-bar .mm-panel .row { display: flow-root; }
+.mm-ui.mm-bar.mm-rst-form .form-group > [class*="col-"] { float: none; width: 100%; }
+.mm-ui.mm-bar .mm-table-scroll { position: relative; }
+.mm-ui.mm-bar.mm-report .mm-table-scroll .table-bordered td .input-group { width: auto !important; max-width: 100%; }
+.mm-ui.mm-bar.mm-report .mm-table-scroll .table-bordered td .input-group .form-control { min-width: 90px; }
+.mm-ui.mm-bar.mm-report .mm-table-scroll th, .mm-ui.mm-bar.mm-report .mm-table-scroll td { padding: 8px 6px; }
+.mm-ui.mm-bar.mm-report .mm-table-scroll td.text-center[style*="min-width"] { min-width: 0 !important; white-space: nowrap; }
+.mm-ui.mm-bar.mm-report .mm-table-scroll .btn-minier, .mm-ui.mm-bar.mm-report .mm-table-scroll .btn-xs { margin: 0 1px; }
+.mm-ui.mm-bar.mm-report .mm-table-scroll .table-bordered td .input-group .input-group-addon { padding: 6px 8px; }
+.mm-ui.mm-bar .mm-panel.mm-report-filter .row { display: flex; }

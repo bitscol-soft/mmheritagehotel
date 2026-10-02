@@ -726,3 +726,14 @@ Reviewed legacy bugs in `module/Restaurant/views/purchase-v2/`, all view-level (
 - CSS (`mm-gs` scope): `.mm-table-scroll` is a positioning context (Ace checkboxes are absolutely positioned and widened the page), fixed-width date ranges in legacy filter tables may shrink, and report tables use tighter cell padding so row actions stay visible.
 - Stock in hand keeps its "Records Found" line (moved into the panel).
 - Fixtures `tools/fixtures/general-store/*`, previews `/preview/gs-*`, spec `tools/browser/general-store.spec.cjs`.
+
+## Thirty-eighth increment: Bar B1
+
+29 views under `module/Bar/views` use `x-mm.page` / `x-mm.panel` (classes `mm-bar mm-rst mm-rst-inv`, plus `mm-rst-form` on forms, `mm-report` on lists, `mm-invoice-page` on invoices, `mm-night-audit` on the generate screen): product categories, units, manufacturers, suppliers, products (list, add, edit, upload edit), product inventory report, product packages, tables, purchases (list, show, create), sales (list, create, show), sale returns (list, create, show), the four reports (sales, cash flow, inventory, today activities) and the night audit list and generate screens.
+
+- Every view was wrapped from the Bar original with a script (`widget-box` frame to `x-mm.page`, tables inside `x-mm.table-scroll`, modals untouched), so expressions, controls, forms, directives and scripts are unchanged. `tools/ui-check.cjs` compares them with `df1b849e`, ignoring whitespace and quotes, and also checks that Bar controllers, routes and models are untouched.
+- Legacy bordered filter tables on the sale, return, cash flow, sales report, today activities and night audit lists, and the product list and product inventory filter partials, were rebuilt as inline filter fields in a `mm-report-filter` panel (same field names, `x-widget.*` components kept). CSS: the `mm-gs` rules were copied for `mm-bar`, with one override so filter rows stay flex.
+- Fix: the manufacturer list included `inventory.manufacturers.edit-modal`, which resolves to the Restaurant partial and posted edits to `rst.manufacturers.update`. It now includes `bar.inventory.manufacturers.edit-modal` (posts to `bar.manufacturers.update`).
+- Left as they were: the POS (`sales-v2/create`), `sales-v2/show`, `pos-print`, `bar-night-audits/invoice` (print documents), the POS and export partials, `frontend.bar-menu` and unreachable views.
+- The record-count badge in the old `page-header` of the night audit list is gone, as in the other modules.
+- Fixtures `tools/fixtures/bar/*`, previews `/preview/bar-*`, spec `tools/browser/bar.spec.cjs`.

@@ -18,48 +18,33 @@
 
 
 @section('content')
-    <div id="content" class="content">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="widget-box">
-                    <div class="widget-header">
 
-                        <h4 class="widget-title"><i class="fa fa-info-circle"></i> Product Inventory </h4>
-
-                    </div>
-
-                    <div class="widget-body">
-                        <div class="widget-main">
-                            <x-alert-message />
-
-                            <div class="my-2">
-                                @include('bar.inventory.includes.filter')
-                            </div>
+<x-mm.styles />
+<x-mm.page class="mm-report mm-bar mm-rst mm-rst-inv mm-rst-inventory" title="Product inventory" description="Stock on hand for the selected product filters.">
+    <x-mm.panel class="mm-report-filter">
+        @include('bar.inventory.includes.filter')
+    </x-mm.panel>
+    <x-mm.panel class="tw-p-4">
+        <x-alert-message />
 
 
-                            <div class="json_table mt-2">
+        <div class="json_table mt-2">
 
-                                <div class="row">
-                                    <div class="col-xs-12">
-                                        @include('bar/reports/inventory/export/excel')
+            <div class="row">
+                <div class="col-xs-12">
+                    @include('bar/reports/inventory/export/excel')
 
-                                        <x-paginate :data="$products" />
+                    <x-paginate :data="$products" />
 
-                                        <x-export-button pdf="1" excel="1" />
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-                    </div>
+                    <x-export-button pdf="1" excel="1" />
 
                 </div>
+
             </div>
+
         </div>
-    </div>
+    </x-mm.panel>
+</x-mm.page>
 
 @endsection
 

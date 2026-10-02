@@ -1,0 +1,1621 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">    <link rel="stylesheet" href="/assets/custom_css/floating-input.css">
+    <style>
+    :root {
+        --header: rgb(143, 143, 218);
+    }
+
+    .widget-header {
+        border-bottom: 2px solid var(--header) !important;
+    }
+
+    .card {
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+
+    }
+
+    .card-header {
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+        color: white;
+
+    }
+
+    .card-title {
+        padding: 5px;
+        padding-top: 0;
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+
+    .card-body {
+        padding: 0;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+    .card-bg {
+        background: #ced5e4;
+    }
+
+    th {
+        background: #eaf4fa !important;
+        color: black;
+    }
+
+
+    .tableContainer {
+        max-height: 230px;
+        overflow-y: scroll;
+    }
+
+    .invoiceTableContainer {
+        max-height: 250px;
+        overflow-y: scroll;
+    }
+
+    table {
+        width: 100%;
+    }
+
+    thead {
+        position: sticky;
+        top: 0px;
+        background-color: white;
+    }
+
+    .tableContainer>.table>tbody>tr>td {
+        padding: 2px;
+    }
+
+    .invoiceTableContainer>.table>tbody>tr>td {
+        padding: 2px;
+    }
+
+    .tableContainer tfoot {
+        position: sticky;
+        bottom: 0px;
+        background-color: #d1e6f8;
+        font-weight: bold;
+        font-size: 16px;
+    }
+
+    .invoiceTableContainer tfoot {
+        position: sticky;
+        bottom: 0px;
+        background-color: #bbdcf8;
+
+    }
+
+    #navbar {
+        border-bottom: 2px solid var(--header)
+    }
+
+    .product .card-overlay {
+        position: absolute;
+        top: 35px;
+        /* left: 0; */
+        width: 97%;
+        /* height: 100%; */
+        border-radius: 5px;
+        background-color: #efefef;
+        text-align: center;
+        color: #000000;
+        opacity: 0;
+        -webkit-transition: all 800ms;
+        -moz-transition: all 800ms;
+        -ms-transition: all 800ms;
+        -o-transition: all 800ms;
+        transition: all 800ms;
+    }
+
+    .product:hover .card-overlay {
+        opacity: 0.8;
+    }
+    .calc-total-amount > span {
+        font-size: 18px;
+        font-weight: 500;
+        margin-top: 8px;
+        display: inline-block;
+    }
+    .paid-by-payment-method {
+        color: #000;
+        font-size: 14px;
+        font-weight: 500;
+    }
+    .tableContainer tfoot {
+        z-index: 99;
+    }
+    .tableContainer thead {
+        z-index: 99;
+    }
+    .invoice-table{
+        margin-bottom: 0 !important
+    }
+
+    /*------------ MEDIA QUERY ------------*/
+    @media (min-width: 768px){
+        #add-product{
+            display: block;
+        }
+    }
+    @media (min-width: 992px){
+        #add-product{
+            display: none;
+        }
+    }
+    @media (max-width:575px){
+        .col-m-10{
+            width: 10%
+        }
+        .col-m-20{
+            width: 20%
+        }
+        .col-m-30{
+            width: 30%
+        }
+        .col-m-40{
+            width: 40%
+        }
+        .col-m-50{
+            width: 50%
+        }
+        .d-m-flex{
+            display: flex
+        }
+        .row .margin-bottom-10{
+            margin-bottom: 10px !important;
+        }
+        .margin-bottom-0{
+            margin-bottom: 0 !important
+        }
+        .padding-m-none{
+            padding: 0;
+        }
+        .border-m-right-none {
+            border-right: 0 !important;
+        }
+        .padding-m-left-none{
+            padding-left: 0
+        }
+        .card-date {
+            margin: 0px 0 0 0;
+            display: block;
+            padding-top: 10px;
+        }
+        .card-header.widget-header{
+            min-height: 29px;
+        }
+        .invoice-list-title {
+            margin: 5px 0 0 0;
+            font-size: 18px;
+        }
+        .card-time{
+            font-size: 32px !important
+        }
+        .print-action-btn {
+            width: 80px;
+            border-width: 2px !important;
+            padding: 2px 0 !important;
+            font-size: 12px !important;
+        }
+        .footer-td{
+            padding: 5px 5px !important;
+        }
+        .invoice-table{
+            margin-bottom: 0 !important
+        }
+        .m-b-none{
+            margin-bottom: 0
+        }
+        .row.d-m-flex.m-b-none{
+            margin-bottom: 0 !important
+        }
+        .calc-total-amount {
+            font-size: 16px;
+            font-weight: 500;
+            margin-top: 6px;
+            margin-bottom: 20px;
+        }
+        .invoice-table thead tr th {
+            padding: 3px 5px;
+            font-size: 12px;
+        }
+
+        .tableContainer thead tr th {
+            padding: 3px 5px;
+            font-size: 12px;
+        }
+        .sales-price-th{
+            width: 22% !important
+        }
+        .sales-quantity-th{
+            width: 18%
+        }
+        .margin-top-40{
+            margin-top: 40px
+        }
+        #add-product{
+            display: block;
+        }
+        .tableContainer tfoot {
+            z-index: 99;
+        }
+        .tableContainer thead {
+            top: -1px;
+            z-index: 99;
+        }
+        .custom-addon-width{
+            padding: 3px 5px;
+            font-size: 11px;
+        }
+        .width-40px{
+            width: 40px;
+        }
+        .width-50px{
+            width: 50px;
+        }
+        .width-60px{
+            width: 60px;
+        }
+        .width-70px{
+            width: 70px;
+        }
+        .width-80px{
+            width: 80px;
+        }
+        .width-90px{
+            width: 90px;
+        }
+        .width-100px{
+            width: 100px;
+        }
+        .padding-right-18px{
+            padding-right: 18px !important;
+        }
+        .padding-right-41px{
+            padding-right: 41px !important;
+        }
+        .table-qty-decrease-btn {
+            /* padding: 3px 4px !important; */
+            /* line-height: 14px; */
+            border-width: 2px !important;
+        }
+        .tableContainer table{
+            margin-bottom: 0
+        }
+        .margin-bottom-none{
+            margin-bottom: 0
+        }
+        .margin-bottom-10px{
+            margin-bottom: 10px
+        }
+        .padding-bottom-15px{
+            padding-bottom: 15px
+        }
+        .text-m-center{
+            text-align: center;
+        }
+    }
+    @media (min-width:576px) and (max-width:767px){
+        .col-m-10{
+            width: 10%
+        }
+        .col-m-20{
+            width: 20%
+        }
+        .col-m-30{
+            width: 30%
+        }
+        .col-m-40{
+            width: 40%
+        }
+        .col-m-50{
+            width: 50%
+        }
+        .width-50-per{
+            width: 50%;
+        }
+        .tab-d-flex{
+            display: flex;
+            flex-wrap: wrap;
+        }
+        .tab-inline-block{
+            display: inline-block;
+        }
+        .d-m-flex{
+            display: flex
+        }
+        .row .margin-bottom-10{
+            margin-bottom: 10px !important;
+        }
+        .margin-bottom-0{
+            margin-bottom: 0 !important
+        }
+        .padding-m-none{
+            padding: 0;
+        }
+        .border-m-right-none {
+            border-right: 0 !important;
+        }
+        .padding-m-left-none{
+            padding-left: 0
+        }
+        .card-date {
+            margin: 0px 0 0 0;
+            display: block;
+            padding-top: 10px;
+        }
+        .card-header.widget-header{
+            min-height: 29px;
+        }
+        .invoice-list-title {
+            margin: 5px 0 0 0;
+            font-size: 18px;
+        }
+        .card-time{
+            font-size: 32px !important
+        }
+        .print-action-btn {
+            width: 80px;
+            border-width: 2px !important;
+            padding: 2px 0 !important;
+            font-size: 12px !important;
+        }
+        .footer-td{
+            padding: 5px 5px !important;
+        }
+        .invoice-table{
+            margin-bottom: 0 !important
+        }
+        .m-b-none{
+            margin-bottom: 0
+        }
+        .row.d-m-flex.m-b-none{
+            margin-bottom: 0 !important
+        }
+        .calc-total-amount {
+            font-size: 16px;
+            font-weight: 500;
+            margin-top: 6px;
+            margin-bottom: 20px;
+        }
+        .invoice-table thead tr th {
+            padding: 3px 5px;
+            font-size: 12px;
+        }
+
+        .tableContainer thead tr th {
+            padding: 3px 5px;
+            font-size: 12px;
+        }
+        .sales-price-th{
+            width: 22% !important
+        }
+        .sales-quantity-th{
+            width: 18%
+        }
+        .margin-top-40{
+            margin-top: 40px
+        }
+        #add-product{
+            display: block;
+        }
+        .tableContainer tfoot {
+            z-index: 99;
+        }
+        .tableContainer thead {
+            top: -1px;
+            z-index: 99;
+        }
+        .custom-addon-width{
+            padding: 3px 5px;
+            font-size: 11px;
+        }
+        .width-40px{
+            width: 40px;
+        }
+        .width-50px{
+            width: 50px;
+        }
+        .width-60px{
+            width: 60px;
+        }
+        .width-70px{
+            width: 70px;
+        }
+        .width-80px{
+            width: 80px;
+        }
+        .width-90px{
+            width: 90px;
+        }
+        .width-100px{
+            width: 100px;
+        }
+        .padding-right-18px{
+            padding-right: 18px !important;
+        }
+        .padding-right-41px{
+            padding-right: 41px !important;
+        }
+        .table-qty-decrease-btn {
+            /* padding: 3px 4px !important; */
+            /* line-height: 14px; */
+            border-width: 2px !important;
+        }
+        .tableContainer table{
+            margin-bottom: 0
+        }
+        .margin-bottom-none{
+            margin-bottom: 0
+        }
+        .margin-bottom-10px{
+            margin-bottom: 10px
+        }
+        .padding-bottom-15px{
+            padding-bottom: 15px
+        }
+        .text-m-center{
+            text-align: center;
+        }
+        .tab-product-units{
+            margin-top: 0 !important;
+        }
+    }
+    @media (min-width:768px) and (max-width:991px){
+        #add-product{
+            display: block;
+        }
+    }
+    @media (min-width:992px) and (max-width:1199px){
+        #add-product{
+            display: none;
+        }
+    }
+    @media (min-width:1200px){
+
+    }
+    /*------------ / MEDIA QUERY ------------*/
+
+
+
+</style>
+<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+<div class="modal fade" id="add-guest-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="POST" action="" class="form-horizontal" role="form">
+                <input type="hidden" name="_token" value="fixture-csrf-token">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title"><i class="fa fa-plus-circle"></i> Add Guest</h4>
+                </div>
+
+                <!-- Modal Body -->
+                <div class="modal-body">
+
+                    <!-- Guest Name -->
+                    <div class="form-group">
+                        <label class="control-label col-md-4 col-sm-4">Guest Name <sup
+                                class="text-danger">*</sup>:</label>
+                        <div class="col-md-8 col-sm-8">
+                            <input type="text" class="form-control" name="guest_name" value=""
+                                placeholder="Enter Guest">
+                        </div>
+                    </div>
+
+                    <!-- Guest Mobile -->
+                    <div class="form-group">
+                        <label class="control-label col-md-4 col-sm-4">Guest Mobile <sup
+                                class="text-danger">*</sup>:</label>
+                        <div class="col-md-8 col-sm-8">
+                            <input type="text" class="form-control" name="guest_mobile" value="+880"
+                                placeholder="Enter Mobile">
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <!-- Modal Footer -->
+                <div class="modal-footer">
+
+                    <!-- Submit -->
+                    <div class="btn-group btn-corner">
+                        <button type="button" class="btn btn-sm btn-success save-guest">
+                            <i class="fa fa-save"></i>
+                            Save
+                        </button>
+                        <a href="javascript:void(0);" class="btn btn-sm btn-danger" data-dismiss="modal">
+                            <i class="fa fa-times"></i> Close
+                        </a>
+                    </div>
+
+
+                </div>
+
+
+            </form>
+        </div>
+    </div>
+</div>
+<section class="mm-ui mm-bar mm-rst mm-rst-inv mm-rst-form mm-rst-sale">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">New sale</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Pick the guest, add the drinks sold and confirm the invoice.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button" href="http://localhost/x/bar/sales/index">
+            <i class="ace-icon fa fa-list-alt"></i>
+            Sale List
+        </a></div>        </header>
+        <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><!-- Form -->
+        <form method="POST" action="http://localhost/x/bar/sales/store" accept-charset="UTF-8"
+            class="form-horizontal sales-form sales-create-form" role="form" data-parsley-validate
+            novalidate>
+
+            <input type="hidden" name="_token" value="fixture-csrf-token">
+
+            <div class="col-md-12">
+                <div class='row'>
+
+                    
+
+                    <!-- Search Guest Name -->
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label class="control-label">Guest:</label>
+
+                            
+
+                            <div class="input-group" style="width: 100%;">
+                                
+                                <input type="text" name="guest_name" placeholder="Enter Name"
+                                    class="form-control" required>
+                                <!-- <span class="input-group-addon pointer" data-toggle="modal" data-target="#add-guest-modal">
+                                            <i class="fa fa-users"></i>
+                                        </span> -->
+                            </div>
+                        </div>
+                    </div>
+
+
+                    
+                    
+
+
+                    
+                    
+
+
+
+                    <!-- Sale Invoice ID -->
+                    <div class="col-md-3 ml-1">
+                        <div class="form-group">
+                            <label class="control-label">Invoice ID #</label>
+                            <input type="text" tabindex="-1" class="form-control" id="invoice_id"
+                                placeholder="Invoice ID" name="invoice_no" value="B-0105"
+                                readonly>
+                        </div>
+                    </div>
+
+
+
+
+                    <!-- Sale Date -->
+                    <div class="col-md-3 ml-1">
+                        <div class="form-group">
+                            <label class="control-label">Date :</label>
+                            <input type="text" name="date" value="2026-10-01"
+                                class="form-control date-picker" autocomplete="off">
+                        </div>
+                    </div>
+
+                </div>
+
+
+
+                <div class="row">
+
+                    <!-- Product Name -->
+                    <div class="col-md-5 col-sm-12 mb-2 margin-bottom-10 width-50-per"
+                        style="padding-left: 0; padding-right: 0">
+                        <div class="input-group">
+    <span class="input-group-addon">Product</span>
+    <select name="product_search" id="product-search" class="form-control select2"
+        data-placeholder="--Choose Product--">
+        <option value=""></option>
+    </select>
+</div>
+                    </div>
+
+                    <div
+                        class="col-md-3 col-sm-6 mb-2 margin-bottom-10 margin-top-40 width-50-per tab-inline-block tab-product-units">
+                        <div class="input-group margin-bottom-0" id="input-quantity-group">
+
+                            <input type="text" class="form-control only-number" id="input-big-unit-id">
+                            <span class="input-group-addon" id="input-unit-id"></span>
+
+                            <input type="text" class="form-control only-number" id="input-small-qty">
+                            <span class="input-group-addon" id="input-pack-unit-id"></span>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- transition -->
+
+
+            <div class='row'>
+                <div class='col-md-8'>
+
+
+                    <!-- Sale Item -->
+                    <div class="mm-table-scroll" role="region" aria-label="Sale" tabindex="0"><table class="table table-bordered table-hover table-responsive">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+                                    <th>Code</th>
+                                    <th width="24%" class="sales-quantity-th">Quantity</th>
+                                    <th width="10%" class="sales-price-th">Price</th>
+                                    <th width="10%">Vat</th>
+                                    <th width="10%">Total</th>
+                                    <th width="1%"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="product-details">
+                                
+                            </tbody>
+                        </table></div>
+
+
+                </div>
+
+
+                <div class='col-md-4' style="padding-right: 20px;">
+
+
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Payment Way:</label>
+                        <div class="col-md-8">
+                                                            <label>
+                                    <input name="payment_way" value="1"
+                                        class="checked-reference" type="radio">
+                                    Cash
+                                </label>&nbsp;&nbsp;
+                                                            <label>
+                                    <input name="payment_way" value="2"
+                                        class="checked-reference" type="radio">
+                                    Card
+                                </label>&nbsp;&nbsp;
+                                                    </div>
+                    </div>
+
+                    <!-- Sub Total -->
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Sub Total :</label>
+                        <div class="input-group col-md-8">
+                            <div class="input-group-addon currency">৳</div>
+                            <input value="0" type="number" name="subtotal" class="form-control"
+                                id="subTotal" ondrop="return false;" onpaste="return false;"
+                                readonly="">
+                        </div>
+                    </div>
+
+
+
+                    <!-- Discount -->
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Discount :</label>
+                        <div class="input-group col-md-8">
+                            <div class="input-group-addon currency">৳</div>
+                            <input value="0" type="number" min="0" step="any"
+                                class="form-control changesNo discount" name="discount" id="discount"
+                                placeholder="Discount" ondrop="return false;" tabindex="-1">
+                        </div>
+                    </div>
+
+
+                    <!-- Vat -->
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Vat :</label>
+                        <div class="input-group col-md-8">
+                            <div class="input-group-addon currency">৳</div>
+                            <input value="0" type="number" class="form-control vat" name="vat"
+                                id="vat" ondrop="return false;" readonly>
+                        </div>
+                    </div>
+
+
+
+                    <!-- Service Charge -->
+                    <div class="form-group">
+                        <label class="col-md-4 control-label">Service Charge:</label>
+                        <div class="input-group col-md-8">
+                            <div class="input-group-addon currency">৳</div>
+                            <input value="0" type="number" class="form-control service_charge"
+                                name="service_charge" id="service_charge" placeholder="Service Charge"
+                                ondrop="return false;">
+                        </div>
+                    </div>
+
+
+
+                    <!-- Grand Total -->
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" style="padding-left: 0">Payable
+                            Amount:</label>
+                        <div class="input-group col-md-8">
+                            <div class="input-group-addon currency">৳</div>
+                            <input value="0" type="number"
+                                name="payable_amount"class="form-control" id="grandTotal"
+                                ondrop="return false;" onpaste="return false;" readonly>
+                        </div>
+                    </div>
+
+
+                    <div id="payment">
+                        <!-- Paid Amount -->
+
+
+                        <div class="form-group aside_system">
+                            <label class="col-md-4 control-label">Paid Amount :</label>
+                            <div class="input-group col-md-8">
+                                <div class="input-group-addon currency">৳</div>
+                                <input value="0" type="number" name="paid_amount"
+                                    class="form-control" id="paid_amount" ondrop="return false;"
+                                    onpaste="return false;">
+                            </div>
+                        </div>
+
+
+                        <!-- Change Amount -->
+                        <div class="form-group aside_system">
+                            <label class="col-md-4 control-label">Change :</label>
+                            <div class="input-group col-md-8">
+                                <div class="input-group-addon currency">৳</div>
+                                <input tabindex="-1" type="number" min="0" step="any"
+                                    class="form-control change" name="change_amount" id="change"
+                                    value="0" ondrop="return false;" onpaste="return false;"
+                                    readonly>
+                            </div>
+                        </div>
+
+
+
+
+
+
+
+                        <!-- Due Amount -->
+                        <div class="form-group aside_system">
+                            <label class="col-md-4 control-label">Amount Due :</label>
+                            <div class="input-group col-md-8">
+                                <div class="input-group-addon currency">৳</div>
+                                <input tabindex="-1" type="number" min="0" step="any"
+                                    class="form-control amountDue only-number" name="due_amount"
+                                    value="0" id="amountDue" ondrop="return false;"
+                                    onpaste="return false;" readonly>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </form>
+        <!-- End Form -->
+
+        <div class="row">
+            <div class="col-lg-9 col-md-9 col-sm-9"></div>
+            <!-- Submit Button -->
+            <div class="col-md-3 col-sm-3 pull-right">
+                <div class="form-group" style="display: flex; justify-content: end;">
+                    <button type="button" name="draft" class="btn btn-primary" style="width: 93%;"
+                        onclick="saveSaleData()">
+                        Confirm
+                    </button>
+                </div>
+            </div>
+
+        </div></div>
+    </div>
+</section>
+
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
+
+    <script src="/assets/custom_js/guest_filter.js"></script>
+
+    <script>
+    const saveGuestBtn  = $('.save-guest')
+    const guestName     = $('[name=guest_name]')
+    const guestMobile   = $('[name=guest_mobile]')
+    const guestSaveRoute = 'http://localhost/rst/save-guest-data'
+
+
+    $(document).on('click', '.save-guest', saveGuest);
+
+    function saveGuest() {
+
+        if (guestName.val() == '') {
+            warning('toster', 'Please enter name');
+            return;
+        }
+
+        if (guestMobile.val() == '') {
+            warning('toster', 'Please enter mobile');
+            return;
+        }
+
+        $.post(guestSaveRoute, {
+            _token: 'fixture-csrf-token',
+            guest_name  : guestName.val(),
+            guest_mobile: guestMobile.val(),
+            is_stuff    : $('[name="is_stuff"]:checked').val(),
+        }, function(response) {
+            console.log(response);
+            if (response.status) {
+                $('#add-guest-modal').modal('hide')
+                $('#guest_name').val(response.data.name)
+                $('#hotel_guest_id').val(response.data.id)
+                $('#is_stuff').val(response.data.is_stuff)
+
+
+                $('#guest_name').append(`<option value="${ response?.data?.id}" selected>${response?.data?.name}</option>`)
+
+            }
+
+        })
+    }
+</script>
+
+    <script>
+        const vat_percent = "5"
+    </script>
+
+    <!-- Get Info By Guest -->
+<script>
+    $(document).on('click', '.ui-menu-item', function() {
+        let guest_id = $('#hotel_guest_id').val();
+        getGuestInfo(guest_id)
+    });
+
+    function getGuestInfo(guest_id) {
+
+        $.ajax({
+            type: 'get',
+            url: '/hotelservice/guest-d-by-name/' + guest_id,
+            async: true,
+
+            beforeSend: function() {
+                $("body").css("cursor", "progress");
+            },
+            success: function(data) {
+                // console.log(data);
+
+                if (data['status'] != 0) {
+                    $('#room_number').val(data.room_number);
+                    $('#booking_number').val(data.booking_number);
+                    $('#guest_name').val(data.guest_name);
+                    $('#hotel_guest_id').val(data.guest_id);
+                }
+
+            },
+            complete: function(data) {
+                $("body").css("cursor", "default");
+            }
+        });
+    }
+</script>
+
+
+
+<!-- Get Room Number -->
+<script>
+    $(document).on('focus', '#room_number', function() {
+        $(this).autocomplete({
+            source: function(request, response) {
+                $.getJSON('/hotelservice/get-room-list', {
+                        name: request.term
+                    },
+                    function(data) {
+                        response($.map(data, function(items) {
+                            return {
+                                value: items.available_quantity,
+                                label: `${items.room_number}`,
+                                data: items,
+                            }
+                        }))
+                    }
+                )
+            },
+            select: function(event, ui) {
+                let rooms_id = ui.item.data.id;
+
+                GetInfoRoom(rooms_id);
+
+            },
+            search: function(event, ui) {},
+            minLength: 1,
+            autoFocus: true
+        })
+    })
+</script>
+
+
+
+<!-- Get Booking Number -->
+<script>
+    $(document).on('focus', '#booking_number', function() {
+        $(this).autocomplete({
+            source: function(request, response) {
+                $.getJSON('/hotelservice/get-booking-number', {
+                        name: request.term
+                    },
+                    function(data) {
+                        response($.map(data, function(items) {
+                            return {
+                                value: items.available_quantity,
+                                label: `${items.booking_number}`,
+                                data: items,
+                            }
+                        }))
+                    }
+                )
+            },
+            select: function(event, ui) {
+                let booking_id = ui.item.data.id;
+                getInfoByBooking(booking_id);
+
+            },
+            search: function(event, ui) {},
+            minLength: 1,
+            autoFocus: true
+        })
+    })
+</script>
+
+
+
+<!-- Get Info By Booking -->
+<script>
+    function getInfoByBooking(booking_id) {
+
+        $.ajax({
+            type: 'get',
+            url: '/hotelservice/guest-by-booking/' + booking_id,
+            async: true,
+
+            beforeSend: function() {
+                $("body").css("cursor", "progress");
+            },
+            success: function(data) {
+                $('#guest_name').val(data['guest_name']);
+                $('#room_number').val(data['room_number']);
+                $('#hotel_booking_id').val(booking_id);
+                $('#hotel_guest_id').val(data['guest_id']);
+            },
+            complete: function(data) {
+                $("body").css("cursor", "default");
+            }
+        });
+    }
+</script>
+
+
+
+<!-- Get Info By Room -->
+<script>
+    function GetInfoRoom(rooms_id) {
+
+        $.ajax({
+            type: 'get',
+            url: '/hotelservice/guest-by-rooms/' + rooms_id,
+            async: true,
+
+            beforeSend: function() {
+                $("body").css("cursor", "progress");
+            },
+            success: function(data) {
+
+                $('#guest_name').val(data['guest_name']);
+                $('#booking_number').val(data['booking_number']);
+                $('#hotel_booking_id').val(data['booking_id']);
+                $('#hotel_guest_id').val(data['guest_id']);
+
+            },
+            complete: function(data) {
+                $("body").css("cursor", "default");
+            }
+        });
+
+    }
+</script>
+
+
+
+<script>
+    function requestUrl(urlParts) {
+        urlParts = $.extend({
+            basePath: 'http://localhost/',
+            path: '',
+            param: ''
+        }, urlParts);
+        return urlParts.basePath + urlParts.path + urlParts.param;
+    }
+
+
+    function patientFilter() {
+        patientWithIndoor('indoor');
+
+    }
+</script>
+
+    <script>
+
+    $(document).on('change', '.select-unit', loadUnitWisePrice)
+
+
+    function productRow(data) {
+        console.log(data);
+        let big_unit_price = Number($('#input-big-unit-id').val())
+        let small_unit_price = Number($('#input-small-qty').val())
+        let row = $('.product-row').length;
+
+        let bar_unit = `<input type="number" value="${small_unit_price}" name="small_qty[]" step="1" class="form-control small-unit-qty input-sm" autocomplete="off" onpaste="return false;" readonly>
+                        <span class="input-group-addon custom-addon-width">${data.pack_unit}</span>`
+
+
+        let html = `<tr class="product-row row-${row} tr-product-${data.id}" >
+                <td>
+                    <span class="product_name">${data.name}</span>
+                    <input type="hidden" value="${data.id}" name="product_ids[]" class="productId">
+                </td>
+
+                <td>
+                    <span class="product_barcode">${data.barcode}</span>
+                    <input type="hidden" value="${data.total_qty}"
+                        name="available_qty[]" class="form-control input-sm available_qty" readonly>
+                    <input type="hidden" value="${data.total_qty}" name="old_available_qty[]" class="old_available_qty">
+                    <input type="hidden" value="${data.unit_id}" name="unit_id[]">
+                    <input type="hidden" value="${data.pack_unit_id}" name="small_unit_id[]">
+                </td>
+
+                <td>
+                    <div class="input-group">
+                                                    <div class="spinbox-buttons input-group-btn">
+                                <button type="button" class="btn table-qty-decrease-btn spinbox-down btn-xs btn-danger qty-decrease" onclick="manageQty('decrease', this)">
+                                    <i class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                        
+                        ${ (data.pack_unit != null && data.unit != data.pack_unit) ? bar_unit : '' }
+                        <input type="number" value="${big_unit_price}" data-pack-size=${data.pack_size} name="sales_qty[]" max="${data.total_qty}" class="form-control big-unit-qty input-sm" autocomplete="off"placeholder="Quantity" readonly>
+                        <span class="input-group-addon custom-addon-width">${data.unit}</span>
+                                                    <div class="spinbox-buttons input-group-btn">
+                                <button type="button" class="btn table-qty-decrease-btn spinbox-down btn-xs btn-success qty-increase" onclick="manageQty('increase', this)">
+                                    <i class="fa fa-plus"></i>
+                                </button>
+                            </div>
+                                            </div>
+                </td>
+
+                <td>
+                    <input tabindex="-1" type="text" value="${parseFloat(data.sale_price).toFixed(2)}" name="sales_price[]" class="form-control sales-price input-sm width-80px" readonly>
+                </td>
+                <td>
+                    <input tabindex="-1" type="text" value="${ data.vat_amount }" data-vat-percent="${ data.vat_percent}" name="item_vat_amounts[]" class="form-control item-vat-amount input-sm width-60px" readonly>
+                </td>
+                <td>
+                    <input tabindex="-1" type="number" min="0" value="${parseFloat(data.sale_price * big_unit_price).toFixed(2)}" name="item_price[]" class="form-control total-line-price input-sm width-70px" readonly="readonly">
+                </td>
+                <td>
+                    <button class="delete" tabindex="-1" type="button"><i class="fa fa-times text-danger"></i></button>
+                </td>
+                </tr>`
+
+
+        if ($('.product-row').length == 0) {
+            $('#product-details').empty();
+        }
+
+
+        $('#product-details').append(html)
+        calculate()
+    }
+
+
+    function loadUnitWisePrice() {
+
+        let price = Number($(this).find('option:selected').data('unit-price')).toFixed(2)
+        let qty = Number($(this).closest('tr').find('.sales-qty').val())
+
+        let vat_percent = Number($(this).closest('tr').find('.item-vat-amount').data('vat-percent'))
+
+        let vat_amount = Number(price / 100 * vat_percent);
+
+        $(this).closest('tr').find('.item-vat-amount').val(vat_amount.toFixed(2));
+        $(this).closest('tr').find('.sales-price').val(price);
+
+
+        vatCalculate()
+        calculate()
+
+    }
+
+</script>
+
+<script>
+    const paymentBtn = $('.payment-btn')
+    const paymentStatus = $('.sale-payment-status')
+    const saveSaleRoute = `http://localhost/x/bar/sales-v2/store`
+    let is_print = 0;
+
+    $(document).on('click', '.save-sale', saveSaleData)
+    $(document).on('click', '.save-only', saveSaleWithoutPrint)
+
+    $(document).on('click', '.payment-btn', saveSaleDataWithPayment)
+
+    $(document).on('click', '.sale-payment-status', function() {
+        if ($(this).val() == 'Paid') {
+            $('#paid_amount').val($('#grandTotal').val())
+        } else {
+            $('#paid_amount').val(0)
+        }
+    })
+
+    function saveSaleWithoutPrint() {
+        is_print = 0;
+        if ($('#guest_name').val() == '') {
+            warning('toster', 'Please select Guest')
+            return;
+        }
+
+        if ($('.product-row').length == 0) {
+            warning('toster', 'Please add some product.')
+            return;
+        }
+
+    }
+
+    function saveSaleData() {
+
+        if ($('#hotel_guest_id').val() == '') {
+            toastr.error('Please Select a Customer!');
+            return;
+        }
+
+        let tableRowCount = $('#product-details tr').length;
+
+        if (tableRowCount == 0) {
+            toastr.error('Please Choose Some Products!');
+            return;
+        }
+
+        $('.sales-create-form').submit();
+
+    }
+
+
+    function saveSaleDataWithPayment() {
+
+        // manually check the paid option
+        paymentStatus.val('Paid').attr('checked', true);
+        $('#paid_amount').val($('#grandTotal').val())
+
+        let status = $('.sale-payment-status:checked').val()
+
+        if ($('#guest_name').val() == '') {
+            warning('toster', 'Please select Guest')
+            return;
+        }
+
+        if ($('#hotel_table_no_id').val() == '') {
+            warning('toster', 'Please select Table')
+            return;
+        }
+
+        if ($('.product-row').length == 0) {
+            warning('toster', 'Please add some product.')
+            return;
+        }
+
+
+        if (status != 'Paid') {
+            warning('toster', 'Please select Paid as Payment status !')
+            return;
+        }
+
+    }
+
+
+    function saleItemDelete(url, obj) {
+        let _this = $(obj);
+
+        Swal.fire({
+            title: 'Are you sure ?',
+            html: "<div style='margin: 10px 0'><b>You will delete this record permanently !</b></div>",
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
+            width: 400,
+        }).then((result) => {
+            if (result.value) {
+                $.ajax({
+                    url: url,
+                    method: 'delete',
+                    data: {
+                        _token: 'fixture-csrf-token'
+                    },
+                    success: function(data) {
+                        if (data.status) {
+
+                            _this.closest('tr').remove();
+                            vatCalculate()
+                            calculate()
+
+                            success('toster', 'data have been deleted.');
+
+                        } else {
+                            warning('toster', 'Something wrong in this sale.');
+                        }
+                    }
+                });
+            }
+        })
+
+    }
+
+
+
+    $(document).on('click', '.delete', function(e) {
+        linePrice();
+        $(this).parents('tr').remove();
+
+
+        var rowCount = $('#product-details tr').length;
+
+        if (rowCount == 0) {
+            $('#subTotal').val(0);
+            $('#discount').val(0);
+
+            $('#vat').prop('readonly', false);
+            $('#vat').val(0);
+            $('#vat').prop('readonly', true);
+
+            $('#service_charge').val(0);
+
+            $('#grandTotal').prop('readonly', false);
+            $('#grandTotal').val(0);
+            $('#grandTotal').prop('readonly', true);
+
+            $('#paid_amount').val(0);
+
+            $('#change').prop('readonly', false);
+            $('#change').val(0);
+            $('#change').prop('readonly', true);
+
+            $('#amountDue').prop('readonly', false);
+            $('#amountDue').val(0);
+            $('#amountDue').prop('readonly', true);
+
+        }
+
+        calculate()
+    })
+
+    function saleData(id, e) {
+
+        $('.sale-data').removeClass('tr-bg')
+
+        $(e).addClass('tr-bg')
+        $.LoadingOverlay("show")
+
+        let url = `http://localhost/x/bar/sales-v2/edit/:id`;
+        url = url.replace(":id", id);
+        $.ajax({
+            url: url,
+            method: 'get',
+            success: function(data) {
+                $('#sale-form-data').html(data)
+                $.LoadingOverlay("hide")
+                $('.select2').select2()
+                loadSelect2DOM()
+            },
+            error: function() {
+                $.LoadingOverlay("hide")
+            }
+        });
+    }
+
+
+
+    function manageQty(type, obj) {
+        let _this           = $(obj).closest('tr').find('.big-unit-qty')
+        let small_unit_qty  = Number($(obj).closest('tr').find('.small-unit-qty').val())
+        let qty             = Number(_this.val());
+
+        let pack_size       = _this.data('pack-size')
+        if (type == 'decrease') {
+            if(qty > 1){
+                qty -=1;
+            }
+        }else{
+            qty                 +=1;
+        }
+        small_unit_qty      = qty * pack_size
+
+       _this.val(qty)
+       $(obj).closest('tr').find('.small-unit-qty').val(small_unit_qty)
+       vatCalculate()
+       calculate()
+    }
+
+</script>
+
+<script>
+    const saleRoute = `http://localhost/x/bar/get-sale-data`
+    let product_data;
+
+    var getDateSystemSetting = `0`;
+
+    $(document).ready(function(){
+        if (getDateSystemSetting == 0) {
+            $('.sale-list-date').hide();
+        }
+    });
+
+
+
+
+    onkeydown = (e) => {
+        if (e.ctrlKey && e.keyCode == 'S'.charCodeAt(0)) {
+            e.preventDefault()
+
+            $('#is_soft_save').val(1);
+
+        }
+    }
+
+
+
+    $(function(){
+        loadSelect2DOM()
+    })
+
+    function loadSelect2DOM() {
+        loadSelect2({
+            url: "/bar/inventory/get-products",
+            select: '#product-search',
+            templateResult: formatProduct,
+            templateSelection: formatSelection
+        })
+    }
+
+
+
+    $('#guest_name').on('change', function() {
+
+        $('#hotel_guest_id').val($(this).val())
+    })
+
+
+    function appendProductRow(data) {
+
+        if ($('.tr-product-' + data.id).length > 0) {
+            let small_unit_qty = $('.tr-product-' + data.id).find('.small-unit-qty');
+            let big_unit_qty = $('.tr-product-' + data.id).find('.big-unit-qty');
+
+            small_unit_qty.val(Number(small_unit_qty.val()) + Number($('#input-small-qty').val()))
+            big_unit_qty.val(Number(big_unit_qty.val()) + Number($('#input-big-unit-id').val()))
+
+        } else {
+            productRow(data)
+        }
+        $('#input-big-unit-id, #input-small-qty').val('')
+        loadSelect2DOM()
+        vatCalculate()
+        calculate()
+    }
+
+    $(document).on('select2:select', '#product-search', function(e){
+        var data = e.params.data;
+
+        product_data =  data
+        let inputQuantity = `<input type="text" class="form-control only-number" id="input-big-unit-id">
+                            <span class="input-group-addon" id="input-unit-id">${data.unit}</span>`
+        if (data.pack_unit != null && data.unit != data.pack_unit) {
+            inputQuantity += `<input type="text" class="form-control only-number" id="input-small-qty">
+                            <span class="input-group-addon" id="input-pack-unit-id">${data.pack_unit}</span>`
+        }
+        inputQuantity   += `<div class="input-group-btn">
+                                <button class="btn btn-info btn-sm" id="add-product" type="button">
+                                    <i class="fa fa-plus-square"></i>
+                                </button>
+                            </div>`
+        $('#input-quantity-group').html(inputQuantity)
+
+        $(document).find('#input-big-unit-id').focus();
+    })
+
+
+    $(document).on('keypress', '#input-big-unit-id', function(e){
+        if(e.keyCode == 13 ||e.which == 13){
+            if($('#input-small-qty').length > 0){
+                $('#input-small-qty').focus();
+                measureCalc()
+            }else{
+                appendProductRow(product_data)
+            }
+        }
+
+    })
+
+    $(document).on('keypress', '#input-small-qty', function(e){
+        if(e.keyCode == 13 ||e.which == 13){
+
+            appendProductRow(product_data)
+        }
+    })
+
+
+    $(document).on('click', '#add-product', function(){
+        measureCalc()
+        appendProductRow(product_data)
+    })
+
+    function measureCalc() {
+
+        let big_qty = $('#input-big-unit-id').val();
+        // let small_qty = $('#input-small-qty').val();
+        let small_qty = Number(big_qty * product_data.pack_size)
+
+        $('#input-small-qty').val(small_qty.toFixed(2));
+
+    }
+
+    function calculate() {
+        let total = 0;
+        // $('.total-line-price').map(function(item) {
+
+        $('.sales-price').map(function(item) {
+            let sale_price = Number($(this).val());
+            let quantity = Number($(this).closest('tr').find('.big-unit-qty').val())
+            let linetotal = sale_price * quantity
+            $(this).closest('tr').find('.total-line-price').val(linetotal)
+            total += linetotal
+        })
+
+        let discount = Number($('#discount').val())
+        let charge = Number($('#service_charge').val())
+        let vat = Number($('#vat').val())
+
+        let payable_amount = (total + vat + charge) - discount
+
+        $('#subTotal').val(total)
+        $('#grandTotal').val(payable_amount)
+        $('#grand-total').text(total)
+
+        changeAndDueAmount()
+
+        return total;
+    }
+
+    function vatCalculate() {
+        let total_amount = calculate()
+        let vat_amount = (total_amount * vat_percent) / 100
+        $('#vat').val(vat_amount)
+        return Number(vat_amount)
+    }
+
+
+
+
+    $(document).on('keyup', '#vat, #discount, #service_charge, #amountPaid', function(e) {
+        calculate(e)
+    });
+
+    $(document).on('keyup', '.sales-qty', linePrice);
+    $(document).on('change', '.sale-date', function(){
+        $.ajax({
+            url: '/restaurant/inventory/get-date',
+            method: 'get',
+            data:{
+                date: $(this).val()
+            },
+            success: function(data) {
+            },
+        });
+    })
+
+
+
+
+
+    function linePrice() {
+        var rows = $('.product-row')
+        totalDrugPrice = 0, amount = 0
+
+        $.each(rows, function(index, row) {
+
+            let available_qty = $(row).find('.old_available_qty').val()
+            var quantity = $(row).find('.sales-qty').val(),
+                salesPrice = $(row).find('.sales-price').val(),
+                vatAmount = $(row).find('.item-vat-amount').val(),
+                totalDrugPrice = (quantity * salesPrice) + Number(vatAmount)
+
+
+            now_available_qty = available_qty - quantity
+
+            $(row).find('.available_qty').val(now_available_qty)
+
+            if (!quantity || !salesPrice) quantity = 0, salesPrice = 0
+            $(row).find('.total-line-price').val(Math.round(totalDrugPrice).toFixed(2))
+            amount += totalDrugPrice
+        });
+
+        $('#subTotal').val(Math.round(amount).toFixed(2))
+        $('#grandTotal').text(Math.round(amount).toFixed(2))
+        return Math.round(amount).toFixed(2)
+    }
+
+
+
+
+    function discount() {
+        var discount = Number($('#discount').val()),
+            subTotal = Number($('#subTotal').val());
+        if (discount > subTotal) {
+            $('#discount').val(0)
+            discount = subTotal.toFixed(2)
+            warning('toster', 'You can\'t pay more than grand total.');
+        }
+        $('#discount').val(discount)
+        calculate()
+    }
+
+</script>
+
+<script>
+    $(document).on('keyup', '#paid_amount', changeAndDueAmount);
+
+    function changeAndDueAmount(){
+
+        let totalPaidAmount     = $('#paid_amount').val();
+        let totalPaybleAmount   = $('#grandTotal').val();
+
+        var bigAmount = Math.max(totalPaidAmount, totalPaybleAmount);
+
+    console.log('totalPaidAmount '+totalPaidAmount, 'totalPaybleAmount '+totalPaybleAmount);
+
+        if (bigAmount == totalPaidAmount) {
+            let totalChangeAmount = totalPaidAmount - totalPaybleAmount;
+            $('#amountDue').val(0);
+            $('#change').val(totalChangeAmount);
+            console.log('totalChangeAmount '+totalChangeAmount)
+        }
+        else{
+            let totalDueAmount = totalPaybleAmount - totalPaidAmount;
+            $('#change').val(0);
+            $('#amountDue').val(totalDueAmount);
+            console.log('totalDueAmount '+totalDueAmount)
+        }
+
+    }
+</script>
+
+<!--/MM-JS--></body></html>
