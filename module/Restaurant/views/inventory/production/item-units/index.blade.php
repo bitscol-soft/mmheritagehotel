@@ -13,32 +13,27 @@ $canDelete = in_array('items.delete', $isPermitted);
 
 @extends('layouts.master')
 @section('title', 'Material Unit')
-@section('page-header')
-    <i class="fa fa-list"></i> Material Units
-@stop
 @section('css')
 
 @stop
 
-
 @section('content')
 
-    <div class="page-header">
+<x-mm.styles />
+<x-mm.page class="mm-report mm-rst mm-rst-inv" title="Material units" description="Units and conversions for material items.">
+    <x-slot name="actions">
         @if ($canCreate || $admin_id == 1)
-            <a class="btn btn-xs btn-info" href="{{ route('rst.material-unit.create') }}" style="float: right; margin: 0 2px;"> <i
+            <a class="mm-button" href="{{ route('rst.material-unit.create') }}"> <i
                     class="fa fa-plus"></i> Add @yield('title') </a>
         @endif
-        <h1>
-            @yield('page-header')
-        </h1>
-    </div>
 
+    </x-slot>
     @include('partials._alert_message')
 
-    <div class="row">
-        <div class="col-xs-12 clear-fix">
+    <x-mm.panel>
 
-            <div class="table-responsive" style="border: 1px #cdd9e8 solid;">
+        <div class="table-responsive" style="border: 1px #cdd9e8 solid;">
+            <x-mm.table-scroll label="Material units">
                 <table id="dynamic-table" class="table table-striped table-bordered table-hover">
                     <thead>
                         <tr>
@@ -83,24 +78,25 @@ $canDelete = in_array('items.delete', $isPermitted);
                         @endforeach
                     </tbody>
                 </table>
+            </x-mm.table-scroll>
 
-                @include('partials._paginate', ['data' => $item_units])
-            </div>
-
-            {{-- export/print/save --}}
-            {{-- <div class="pull-right" style="margin-top:20px">
-                <a href="" style="margin-right: 5px"><img src="{{ asset('assets/images/export-icons/excel-icon.png') }}"
-                        alt="excel"></a>
-                <a href="" style="margin-right: 5px"><img src="{{ asset('assets/images/export-icons/pdf-icon.png') }}"
-                        alt="pdf"></a>
-                <a href="" style="margin-right: 5px"><img src="{{ asset('assets/images/export-icons/word-icon.png') }}"
-                        alt="word"></a>
-                <a class="btnPrint" href="{{ URL::to('gs-setup/print-item-unit') }}" style="margin-right: 5px"><img
-                        src="{{ asset('assets/images/export-icons/printer-icon.png') }}" alt="print"></a>
-            </div> --}}
+            @include('partials._paginate', ['data' => $item_units])
         </div>
-    </div>
 
+        {{-- export/print/save --}}
+        {{-- <div class="pull-right" style="margin-top:20px">
+            <a href="" style="margin-right: 5px"><img src="{{ asset('assets/images/export-icons/excel-icon.png') }}"
+                    alt="excel"></a>
+            <a href="" style="margin-right: 5px"><img src="{{ asset('assets/images/export-icons/pdf-icon.png') }}"
+                    alt="pdf"></a>
+            <a href="" style="margin-right: 5px"><img src="{{ asset('assets/images/export-icons/word-icon.png') }}"
+                    alt="word"></a>
+            <a class="btnPrint" href="{{ URL::to('gs-setup/print-item-unit') }}" style="margin-right: 5px"><img
+                    src="{{ asset('assets/images/export-icons/printer-icon.png') }}" alt="print"></a>
+        </div> --}}
+
+    </x-mm.panel>
+</x-mm.page>
 
 @endsection
 
@@ -108,8 +104,6 @@ $canDelete = in_array('items.delete', $isPermitted);
 
     <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('assets/js/jquery.dataTables.bootstrap.min.js') }}"></script>
-
-
 
     <!-- inline scripts related to this page -->
     <script type="text/javascript">
@@ -131,7 +125,6 @@ $canDelete = in_array('items.delete', $isPermitted);
 
         }
     </script>
-
 
     <script type="text/javascript">
         jQuery(function($) {

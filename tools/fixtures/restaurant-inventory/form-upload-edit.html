@@ -1,0 +1,232 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css"><!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+<section class="mm-ui mm-rst mm-rst-inv mm-rst-form">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Edit uploaded product</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Review the uploaded product before confirming it.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a href="http://localhost/rst/products/index" class="mm-button">
+            <i class="ace-icon fa fa-list-alt"></i>
+            Product List
+        </a></div>        </header>
+        <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><form method="POST" action="http://localhost/rst/product-uploads/update/1"
+            class="form-horizontal" data-parsley-validate novalidate>
+            <input type="hidden" name="_token" value="fixture-csrf-token">            <input type="hidden" name="_method" value="PUT">
+            <!-- Name -->
+            <div class="form-group">
+                <div class="col-md-6 col-md-offset-1">
+                    <label class="control-label" for="specification">Name <sup
+                            class="text-danger">*</sup> :</label>
+                    <input class="form-control" type="text" id="product_name" name="name"
+                        placeholder="Product Name" value="Chicken &lt;b&gt;Biryani&lt;/b&gt;"
+                        data-parsley-required="true" autocomplete="off" />
+                </div>
+            </div>
+
+            
+
+            <div class="form-group">
+
+                <!-- Medicine Type -->
+                <div class="col-md-3 col-md-offset-1">
+                    <label class="control-label" for="specification">Medicine Type <sup
+                            class="text-danger">*</sup> :</label>
+
+                    <input class="form-control" type="text" id="medicine_type"
+                        name="medicine_type" placeholder="Product Name"
+                        value=""
+                        data-parsley-required="true" autocomplete="off" />
+
+                </div>
+
+                <!-- Category -->
+                <div class="col-md-3">
+                    <label class="control-label" for="specification">Category <sup
+                            class="text-danger">*</sup> :</label>
+                    <input class="form-control" type="text" id="category" name="category"
+                        placeholder="Category Name"
+                        value=""
+                        data-parsley-required="true" autocomplete="off" />
+                </div>
+
+            </div>
+
+            <div class="form-group">
+
+                <!-- Generic Name -->
+                <div class="col-md-3 col-md-offset-1">
+                    <label class="control-label" for="specification">Generic Name <sup
+                            class="text-danger">*</sup> :</label>
+
+                    <input class="form-control" type="text" id="generic" name="generic"
+                        placeholder="Generic Name" value=""
+                        data-parsley-required="true" autocomplete="off" />
+
+                </div>
+
+                <!-- Supplier Name -->
+                <div class="col-md-3">
+                    <label class="control-label" for="specification">Supplier :</label>
+
+                    <input class="form-control" type="text" id="supplier" name="supplier"
+                        placeholder="Supplier Name"
+                        value=""
+                        data-parsley-required="true" autocomplete="off" />
+
+                </div>
+
+            </div>
+
+            <!-- Pack -->
+            <div class="form-group">
+
+                <!-- Pack Size -->
+                <div class="col-md-3 col-md-offset-1">
+                    <label class="control-label" for="pack_size">Pack Size :</label>
+                    <input class="form-control"
+                        value="" type="number"
+                        id="pack_size" min="0" name="pack_size" placeholder="Pack size" />
+                </div>
+
+                <!-- Small Unit -->
+                <div class="col-md-3">
+                    <label class="control-label" for="retail_unit_id">Small Unit <sup
+                            class="text-danger">*</sup> :</label>
+                    <input class="form-control"
+                        value="" type="number"
+                        id="small_unit" min="0" name="small_unit" placeholder="Pack size" />
+                </div>
+
+                <!-- Middle Equal(=) -->
+                <div class="col-md-1" style="width: 4%">
+                    <h1 class="mt-20">=</h1>
+                </div>
+
+                <!-- Big Unit -->
+                <div class="col-md-3">
+                    <label class="control-label" for="wholesale_unit_id">Big Unit <sup
+                            class="text-danger">*</sup> :</label>
+                    <input class="form-control"
+                        value="" type="number"
+                        id="big_unit" min="0" name="big_unit" placeholder="Pack size" />
+                </div>
+
+            </div>
+
+            <div class="form-group">
+
+                <!-- Unit Cost -->
+                <div class="col-md-3 col-md-offset-1">
+                    <label class="control-label" for="unit_cost">Purchase Price <sup
+                            class="text-danger">*</sup> :</label>
+                    <input class="form-control"
+                        value=""
+                        type="number" id="unit_cost" min="0" name="purchase_price"
+                        placeholder="Unit Cost" data-parsley-required="true" />
+
+                </div>
+
+                <!-- Sale Price -->
+                <div class="col-md-3">
+                    <label class="control-label" for="sale_price">Sale Price <sup
+                            class="text-danger">*</sup> :</label>
+                    <input class="form-control"
+                        value="250" type="number"
+                        id="sale_price" min="0" name="sale_price" placeholder="Sale price"
+                        data-parsley-required="true" />
+
+                </div>
+
+            </div>
+
+            <div class="form-group">
+
+                <!-- Unit Cost -->
+                <div class="col-md-3 col-md-offset-1">
+                    <label class="control-label" for="unit_cost">Retail Purchase Price <sup
+                            class="text-danger">*</sup> :</label>
+                    <input class="form-control"
+                        value=""
+                        type="number" id="retail_purchase_price" min="0"
+                        name="retail_purchase_price" placeholder="Unit Cost"
+                        data-parsley-required="true" />
+
+                </div>
+
+                <!-- Sale Price -->
+                <div class="col-md-3">
+                    <label class="control-label" for="retail_sale_price">Retail Sale Price <sup
+                            class="text-danger">*</sup> :</label>
+                    <input class="form-control"
+                        value=""
+                        type="number" id="retail_sale_price" min="0" name="retail_sale_price"
+                        placeholder="Sale price" data-parsley-required="true" />
+                </div>
+
+            </div>
+
+            <div class="form-group">
+
+                <!-- Alert Quantity -->
+                <div class="col-md-3 col-md-offset-1">
+                    <label class="control-label" for="stock_limitation">
+                        Alert Quantity <sup class="text-danger">*</sup> :
+                    </label>
+                    <input class="form-control"
+                        value=""
+                        type="number" id="stock_limitation" min="0" name="stock_limitation"
+                        placeholder="Stock Limitation" data-parsley-required="true" />
+                </div>
+
+                <div class="col-md-3">
+                    <label class="control-label" for="status">Batch :</label>
+                    <input value="" type="text"
+                        id="batch_number" class="form-control small-label-box" name="batch_number">
+                </div>
+
+            </div>
+
+            <div class="form-group">
+
+                <!-- Alert Quantity -->
+                <div class="col-md-3 col-md-offset-1">
+                    <label class="control-label" for="big_quantity">
+                        Big Quantity <sup class="text-danger">*</sup> :
+                    </label>
+                    <input class="form-control"
+                        value="" type="number"
+                        id="big_quantity" min="0" name="big_quantity" placeholder="Stock Limitation"
+                        data-parsley-required="true" />
+                </div>
+
+                <div class="col-md-3">
+                    <label class="control-label" for="status">Small Qty :</label>
+                    <input value=""
+                        type="text" id="small_quantity" class="form-control small-label-box"
+                        name="small_quantity">
+                </div>
+
+            </div>
+
+            <!-- Submit Button -->
+            <div class="form-group">
+
+                <div class="col-md-6 col-sm-offset-3">
+                    <button type="submit" id="submit" class="btn btn-primary">
+                        <i class="fa fa-save"></i> Edit Product
+                    </button>
+                </div>
+
+            </div>
+
+        </form></div>
+    </div>
+</section>
+
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<script src="/assets/js/jquery-ui.min.js"></script><script src="/assets/custom_js/loadDetails.js"></script><script src="/assets/custom_js/reference_filter.js"></script><!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
+<!--/MM-JS--></body></html>

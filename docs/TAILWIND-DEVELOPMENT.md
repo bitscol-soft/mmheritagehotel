@@ -656,3 +656,31 @@ Six views move to `x-mm.page` / `x-mm.panel`: `sales/index`, `sales/show`, `sale
 - **Left alone on purpose:** the POS workspace (`rst/sales-v2/create` with its `_inc` partials, 781-line script) is a purpose-built two-column screen that does not use the legacy frame; the POS/office print documents (`sales-v2/show`, `pos-print`, `pos-office-print`) auto-print and close. Unreachable: `sales/bck_show`, `sales/exchange/*`, `sales/return/create-copy`, `sales/auto_sale`, `payments/*`, `sales-v2/show-old`.
 
 Checks: six more render fixtures (`tools/fixtures/restaurant/sales-*.html`, `return-*.html`; previews `/preview/rst-sales-*`, `/preview/rst-return-*`), browser tests in `restaurant.spec.cjs`, and the preservation guard now includes the six views. The create fixtures add the layout's global scripts (jquery-ui, `loadDetails.js`, `reference_filter.js`) that the stub layout lacks. Not verified: product search, totals maths and save against a real backend.
+
+## Thirty-second increment: Restaurant module, group R3 (purchase-v2)
+
+Four reachable views move to `x-mm.page` / `x-mm.panel`: `purchase-v2/index`, `purchase-v2/show`, `purchase-v2/approve`, `purchase-v2/create`.
+
+- **List** (`.mm-report .mm-rst .mm-rst-purchase`): one filter panel (company, from/to, purchase number) and the unchanged table, log popover, view/delete actions and paginator in a scroll region.
+- **Requisition** (`purchase-v2/show`, `mm-invoice-page`): Add / List / Print are page actions (the print icon image became a Print button that still calls `printForm()`); the printable document markup is unchanged inside one panel.
+- **Approve** (`purchase-v2/approve`): the form-horizontal rows stack label over field, the read-only item lines sit in a scroll region, and Approve / Reset / List are one action row. Field names, ids and the script are unchanged.
+- **Create** (`purchase-v2/create`): only the frame changed. The form body still comes from the shared **Bar** partials (`bar.purchase-v2.inc.common`, `create.left-side`, `create.right-side`, `inc/script`), which are not edited; CSS makes the lines table scroll and styles their Cancel / Submit buttons.
+
+Legacy behaviour kept and worth knowing:
+- `purchase-v2/create` includes the **Bar** partials, whose script loads products with `get-products?bar=1` and prices by pack size. The Restaurant copies in `module/Restaurant/views/purchase-v2/{create,inc}/*` use `bar=0`, but nothing includes them. This looks like a copy-paste slip; changing it alters behaviour, so it was left for a decision.
+- The approve form's "List" button links to `rst.purchase.index` (the inventory purchase list), not `rst.purchases.index`. The list's approve, edit and receive buttons are commented out, so the approve screen is only reachable by URL.
+- `purchase-v2/edit` is empty and `purchase/*` (legacy) is unreachable; neither was migrated.
+
+Checks: four render fixtures (`tools/fixtures/restaurant/purchase-*.html`; previews `/preview/rst-purchase-*`; the Bar partials render for real with the date made fixed), browser tests in `restaurant.spec.cjs`, and a preservation guard in `tools/ui-check.cjs` (base `059fb625`) covering expressions, controls, forms, directives, scripts and the Bar includes.
+
+## Thirty-third increment: Restaurant module, group R4 (inventory)
+
+30 reachable views under `module/Restaurant/views/inventory/` moved into `x-mm.page` / `x-mm.panel`; all keep `.mm-rst .mm-rst-inv`:
+- **Setup lists** (`categories`, `units`, `manufacturers`, `supplier`; `.mm-hotel-setup`): the create/edit modals are hoisted above the page, the toolbar link is a page action.
+- **Report-style lists** (`product`, `mat_product`, `inventory-report`, `product/uploads`, `production/{items,item-units,goods_requisitions,purchases}`, `adjustment-v2`; `.mm-report`): the filter sits in its own `mm-report-filter` panel above a scroll-wrapped table. `product/_inc/filter` and `mat_product/_inc/filter` were rewritten to the shared `col > form > .row > .col-md-*` filter markup with every control kept (guarded by `ui:check`).
+- **Forms** (`.mm-rst-form`): product, material product, uploaded product, items, material units, goods requisition, purchase approve/edit/create, stock adjustment create/edit. Labels stack over fields, `col-*-offset-*` is neutralised, wide line tables scroll inside `x-mm.table-scroll`.
+- **Documents**: `production/purchases/show` (Print is a page action calling `printForm()`), `adjustment-v2/view|edit` (the ace breadcrumb is replaced by the page header).
+
+Left alone: the script partials (`product/_inc/script`, `mat_script`, `purchase-v2/inc/*`, `adjustment-v2/inc/*`), the create/edit modals and unreachable views (`mat_product/uploads/*`, `goods_requisitions/{approve,edit}`, `items/upload`, `purchases/create`, `stock-adjustment/*`, `product-stock`, `gin_list`). Controllers and routes are unchanged.
+
+Checks: 31 render fixtures (`tools/fixtures/restaurant-inventory/*.html`, previews `/preview/rsi-*`; missing sample fields fall back to `MmRiAny`, routes are registered on the fly), 41 browser tests in `tools/browser/restaurant-inventory.spec.cjs` (frame, no page overflow at 1280/768/390, filters, forms, print), and a `ui:check` guard on expressions, controls, forms, directives and scripts against `059fb625` (inventory views were untouched by R3).

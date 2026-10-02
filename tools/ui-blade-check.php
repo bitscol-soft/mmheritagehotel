@@ -904,13 +904,22 @@ if (!function_exists('mm_fdate')) { function mm_fdate($date, $format = 'Y-m-d') 
 file_put_contents($coViews . '/rs-stub.blade.php', $rsStub);
 // Stand-in for the shared Bar inventory filter (not changed): same wrapper classes, a product, a category and a date input.
 file_put_contents($coViews . '/rs-filter.blade.php', '<div class="col-sm-12 mb-2 ml-4"><form method="get"><div class="row"><div class="col-md-4"><div class="input-group"><div class="input-group-addon"><label class="input-group-text">Product</label></div><input type="text" name="id" class="form-control"></div></div><div class="col-md-3"><div class="input-group"><div class="input-group-addon"><label class="input-group-text">Category</label></div><select name="category_id" class="form-control"><option>All</option></select></div></div><div class="col-md-3"><div class="input-group"><div class="input-group-addon"><label class="input-group-text">From</label></div><input type="text" name="from_date" class="form-control date-picker"></div></div><div class="col-md-2"><button type="submit" class="btn btn-sm btn-primary">Search</button></div></div></form><script>function loadSelect2() {} function formatProduct() {} function formatSelection() {} // the product-select widget defines this in the real filter</script></div>');
-$rsViews = ['rst/tables/index', 'rst/tables/create-modal', 'rst/tables/edit-modal', 'kitchen/index', 'kitchen/create', 'kitchen/show', 'restaurant-night-audits/index', 'restaurant-night-audits/export/excel', 'restaurant-night-audits/details', 'restaurant-night-audits/create-v2', 'rst-payment-collection/index', 'sales/index', 'sales/show', 'sales/create', 'sales/_inc/guest-modal', 'sales/_inc/script', 'sales/return/index', 'sales/return/show', 'sales/return/create', 'rst/reports/cash-flow/index', 'rst/reports/sales/index', 'reports/today-activities/index', 'reports/inventory/index', 'reports/inventory-ledger/index'];
+$rsViews = ['rst/tables/index', 'rst/tables/create-modal', 'rst/tables/edit-modal', 'kitchen/index', 'kitchen/create', 'kitchen/show', 'restaurant-night-audits/index', 'restaurant-night-audits/export/excel', 'restaurant-night-audits/details', 'restaurant-night-audits/create-v2', 'rst-payment-collection/index', 'sales/index', 'sales/show', 'sales/create', 'sales/_inc/guest-modal', 'sales/_inc/script', 'sales/return/index', 'sales/return/show', 'sales/return/create', 'rst/reports/cash-flow/index', 'rst/reports/sales/index', 'reports/today-activities/index', 'reports/inventory/index', 'reports/inventory-ledger/index', 'purchase-v2/index', 'purchase-v2/show', 'purchase-v2/approve', 'purchase-v2/create'];
 foreach ($rsViews as $rsView) {
     @mkdir(dirname($coViews . '/rs/' . $rsView), 0777, true);
     file_put_contents($coViews . '/rs/' . $rsView . '.blade.php', $rsSubst($rsView));
 }
+// purchase-v2/create includes the Bar purchase partials (shared, not changed): render them for real with the date made deterministic.
+foreach (['inc/common', 'create/left-side', 'create/right-side'] as $rsPart) {
+    @mkdir(dirname($coViews . '/rs/bar/purchase-v2/' . $rsPart), 0777, true);
+    file_put_contents($coViews . '/rs/bar/purchase-v2/' . $rsPart . '.blade.php', str_replace("date('Y-m-d')", "'2026-10-01'", file_get_contents($root . '/module/Bar/views/bar/purchase-v2/' . $rsPart . '.blade.php')));
+}
+$rsCreate = file_get_contents($coViews . '/rs/purchase-v2/create.blade.php');
+file_put_contents($coViews . '/rs/purchase-v2/create.blade.php', str_replace(["@include('bar.purchase-v2.", "@include('bar.purchase-v2/inc/script')"], ["@include('rs.bar.purchase-v2.", ''], $rsCreate));
+$rsIndex = file_get_contents($coViews . '/rs/purchase-v2/index.blade.php');
+file_put_contents($coViews . '/rs/purchase-v2/index.blade.php', str_replace('@include(\'partials._paginate\', [\'data\' => $purchases])', $rpPaginate, $rsIndex));
 $rsRoutes = new Illuminate\Routing\RouteCollection();
-foreach (['rst.table-manages.update' => 'PUT rst/table-manages/{id}', 'rst.table-manages.store' => 'POST rst/table-manages', 'rst.table-manages.destroy' => 'DELETE rst/table-manages/{id}', 'kit.kitchen.show' => 'GET kitchen/kitchen/{id}', 'kit.update-status' => 'POST kitchen/update-status/{id}', 'rst.night-audits.index' => 'GET rst/night-audit', 'rst.sales.index' => 'GET rst/sales', 'rst.sales.create' => 'GET rst/sales/create', 'rst.sales.store' => 'POST rst/sales', 'rst.sales.show' => 'GET rst/sales/{id}', 'rst.sales.destroy' => 'DELETE rst/sales/{id}', 'rst.sales-v2.create' => 'GET rst/sales-v2/create', 'rst.sales-v2.show' => 'GET rst/sales-v2/{id}', 'rst.sale-returns.create' => 'GET rst/sale-returns/create', 'rst.sale-returns.store' => 'POST rst/sale-returns', 'rst.sale-returns.show' => 'GET rst/sale-returns/{id}', 'rst.sale-returns.destroy' => 'DELETE rst/sale-returns/{id}', 'rst.save-guest-data' => 'POST rst/save-guest-data', 'rst.night-audits.create' => 'GET rst/night-audits/create', 'rst.night-audits.store' => 'POST rst/night-audits', 'rst.night-audits.show' => 'GET rst/night-audit-show/{id}', 'night-audits.index' => 'GET hotel/night-audit', 'night-audits.destroy' => 'DELETE hotel/night-audits/{id}', 'rst.sales.store-payment-collection' => 'POST rst/store-payment-collection'] as $rsName => $rsDef) {
+foreach (['rst.table-manages.update' => 'PUT rst/table-manages/{id}', 'rst.table-manages.store' => 'POST rst/table-manages', 'rst.table-manages.destroy' => 'DELETE rst/table-manages/{id}', 'kit.kitchen.show' => 'GET kitchen/kitchen/{id}', 'kit.update-status' => 'POST kitchen/update-status/{id}', 'rst.night-audits.index' => 'GET rst/night-audit', 'rst.sales.index' => 'GET rst/sales', 'rst.sales.create' => 'GET rst/sales/create', 'rst.sales.store' => 'POST rst/sales', 'rst.sales.show' => 'GET rst/sales/{id}', 'rst.sales.destroy' => 'DELETE rst/sales/{id}', 'rst.sales-v2.create' => 'GET rst/sales-v2/create', 'rst.sales-v2.show' => 'GET rst/sales-v2/{id}', 'rst.sale-returns.create' => 'GET rst/sale-returns/create', 'rst.sale-returns.store' => 'POST rst/sale-returns', 'rst.sale-returns.show' => 'GET rst/sale-returns/{id}', 'rst.sale-returns.destroy' => 'DELETE rst/sale-returns/{id}', 'rst.save-guest-data' => 'POST rst/save-guest-data', 'rst.night-audits.create' => 'GET rst/night-audits/create', 'rst.night-audits.store' => 'POST rst/night-audits', 'rst.night-audits.show' => 'GET rst/night-audit-show/{id}', 'night-audits.index' => 'GET hotel/night-audit', 'night-audits.destroy' => 'DELETE hotel/night-audits/{id}', 'rst.sales.store-payment-collection' => 'POST rst/store-payment-collection', 'rst.purchases.index' => 'GET rst/purchases', 'rst.purchases.create' => 'GET rst/purchases/create', 'rst.purchases.store' => 'POST rst/purchases', 'rst.purchases.show' => 'GET rst/purchases/{id}', 'rst.purchases.destroy' => 'DELETE rst/purchases/{id}', 'purchases.index' => 'GET purchases', 'rst.approvePurchase' => 'PUT rst/purchase-approve/{id}', 'rst.purchase.index' => 'GET rst/inventory/purchase'] as $rsName => $rsDef) {
     [$rsMethod, $rsUri] = explode(' ', $rsDef);
     $rsRoutes->add((new Illuminate\Routing\Route($rsMethod, $rsUri, function () {}))->name($rsName));
 }
@@ -927,7 +936,18 @@ $rsSaleRow = function ($id, $invoice, $total, $paid) { return (object) ['id' => 
     'items' => collect([(object) ['product' => (object) ['name' => 'Biryani <i>hot</i>'], 'sales_price' => 250, 'quantity' => 2, 'item_price' => 500]])]; };
 $rsReturnRow = function ($id, $invoice) { return (object) ['id' => $id, 'date' => new MmRsDate('2026-10-01'), 'subtotal' => 500, 'invoice_no' => $invoice, 'guest_name' => 'Aisha <b>x</b>', 'guest' => (object) ['name' => 'Aisha', 'mobile_number' => '017'], 'company' => (object) ['name' => 'MM Heritage', 'head_office' => 'Dhaka', 'phone_number' => '029', 'email' => 'a@example.com'], 'user' => (object) ['name' => 'Rahim'], 'discount' => 0, 'payable_amount' => 500, 'total_amount' => 500, 'return_amount' => 400, 'due_amount' => 100, 'paid_amount' => 400,
     'items' => collect([(object) ['product' => (object) ['name' => 'Lassi'], 'sales_price' => 100, 'quantity' => 1, 'item_price' => 100]])]; };
+$rsPurchaseUser = (object) ['name' => 'Rahim <b>x</b>', 'employee' => (object) ['designation' => (object) ['name' => 'Manager']]];
+$rsPurchase = function ($id, $challan, $approved) use ($rsPurchaseUser) { return (object) ['id' => $id, 'date' => '2026-10-01', 'challan_id' => $challan, 'company_id' => 1, 'is_approved' => $approved, 'company' => (object) ['name' => 'MM Heritage <i>Ltd</i>'], 'created_user' => $rsPurchaseUser, 'updated_user' => $rsPurchaseUser, 'created_at' => '2026-10-01 09:00:00', 'updated_at' => '2026-10-01 10:00:00',
+    'purchase_details' => collect([(object) ['quantity' => 3, 'item_price' => 120, 'product' => (object) ['id' => 7, 'name' => 'Basmati <b>rice</b>', 'sale_price' => 130, 'available_quantity' => 12, 'unit' => (object) ['id' => 2, 'name' => 'Kg'], 'rstStock' => (object) ['available_quantity' => 12]]]])]; };
 $rsCases = [
+    'purchase-list' => ['rs.purchase-v2.index', '/rst/purchases?purchase_number=1', ['companies' => [1 => 'MM Heritage'], 'purchases' => new MmHsPage([$rsPurchase(1, 'P-0001', 0), $rsPurchase(2, 'P-0002', 1)])],
+        ['mm-report', 'mm-rst', 'mm-rst-purchase', 'class="form-horizontal mm-setup-filter mm-report-form"', 'name="company_id"', 'name="from_date"', 'name="to_date"', 'name="purchase_number"', 'rst/purchases/create', 'rst/purchases/1', 'id="deleteCheck_1"', 'onclick="delete_check(1)"', 'id="csrf"', 'class="pagination"', 'P-0002', 'MM Heritage'], ['widget-box', 'widget-main', 'widget-header', 'page-header', 'col-sm-offset']],
+    'purchase-show' => ['rs.purchase-v2.show', '/rst/purchases/1', ['purchases' => $rsPurchase(1, 'P-0001', 1)],
+        ['mm-invoice-page', 'mm-rst', 'onclick="printForm()"', 'border-print-none', 'P-0001', 'MM Heritage &lt;i&gt;Ltd&lt;/i&gt;', 'Basmati &lt;b&gt;rice&lt;/b&gt;', 'Purchase Form No:', 'Created By:', 'Approved By:'], ['widget-box', 'widget-main', 'widget-header', 'page-header', 'Basmati <b>rice</b>']],
+    'purchase-approve' => ['rs.purchase-v2.approve', '/rst/purchase-approve/1', ['purchase' => $rsPurchase(1, 'P-0001', 0), 'companies' => [1 => 'MM Heritage', 2 => 'Other']],
+        ['mm-rst-purchase', 'class="form-horizontal"', 'action="http://localhost/rst/purchase-approve/1"', 'name="_method" value="PUT"', 'name="company_id"', 'name="purchase_date"', 'id="purchase_table"', 'name="purchase_id"', 'name="product_id[]"', 'name="item_unit_id[]"', 'name="item_price[]"', 'name="quantity[]"', 'name="available_quantity[]"', 'name="total"', 'Approve', 'Basmati &lt;b&gt;rice&lt;/b&gt;'], ['widget-box', 'widget-main', 'widget-header', 'page-header', 'Basmati <b>rice</b>', 'col-sm-offset']],
+    'purchase-create' => ['rs.purchase-v2.create', '/rst/purchases/create', ['challan_id' => 'P-0003', 'suppliers' => collect([(object) ['id' => 1, 'name' => 'Fresh <b>Co</b>']]), 'accounts' => collect([(object) ['id' => 1, 'name' => 'Cash']])],
+        ['mm-rst-purchase-create', 'id="purchase-form"', 'action="http://localhost/rst/purchases"', 'name="supplier_id"', 'name="account_id"', 'name="challan_id"', 'name="date"', 'id="product-search"', 'id="products"', 'name="subtotal"', 'name="discount"', 'name="total_vat"', 'name="grand_total"', 'name="paid_amount"', 'name="due_amount"', 'save-purchase', 'P-0003'], ['widget-box', 'widget-main', 'widget-header', 'page-header', 'Fresh <b>Co</b>']],
     'tables' => ['rs.rst.tables.index', '/rst/table-manages', ['table_manages' => new MmHsPage([new MmRsModel(['id' => 1, 'name' => 'Terrace <b>1</b>', 'table_no' => 'T1', 'status' => 1]), new MmRsModel(['id' => 2, 'name' => 'Hall', 'table_no' => 'T2', 'status' => 2])]), 'slugs' => []],
         ['mm-hotel-setup', 'mm-rst', 'id="data-table"', 'href="#modal-dialog"', 'data-toggle="modal"', 'onclick="editTable(', 'delete_item(', 'function editTable(', 'Terrace &lt;b&gt;1&lt;/b&gt;'], ['widget-box', 'widget-main', 'widget-header', 'Terrace <b>1</b>']],
     'kitchen-list' => ['rs.kitchen.index', '/kitchen/kitchen', ['orders' => $rsOrders],
@@ -981,3 +1001,142 @@ foreach ($rsCases as $rsName => [$rsViewName, $rsUrl, $rsData, $rsMarkers, $rsAb
     if (file_get_contents($rsFile) !== $rsHtml) throw new RuntimeException($rsFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
 }
 echo "PASS restaurant screens render: tables, kitchen board/list/ticket, night audit list and generate, payment collection and reports\n";
+
+// Render the Restaurant inventory screens (group R4): setup lists, product / material / production lists, forms, purchase and stock adjustment.
+// Same substitutions as the other Restaurant screens ($rsSubst); script partials are not rendered (they are not changed). Missing sample fields fall back to MmRiAny.
+if (!class_exists('MmRiAny')) {
+    class MmRiAny implements ArrayAccess, IteratorAggregate, Countable {
+        public function __get($k) { return new MmRiAny(); }
+        public function __isset($k) { return false; }
+        public function __call($m, $a) { return new MmRiAny(); }
+        public function __toString() { return ''; }
+        public function offsetExists($o): bool { return false; }
+        public function offsetGet($o): mixed { return new MmRiAny(); }
+        public function offsetSet($o, $v): void {}
+        public function offsetUnset($o): void {}
+        public function getIterator(): Iterator { return new ArrayIterator([]); }
+        public function count(): int { return 0; }
+    }
+    class MmRiRow extends MmRiAny {
+        public function __construct($fields) { foreach ($fields as $k => $v) $this->$k = $v; }
+        public function __isset($k) { return isset($this->$k); }
+    }
+    class MmRiList extends MmRiAny {
+        private $items;
+        public function __construct($items) { $this->items = array_values($items); }
+        public function count(): int { return count($this->items); }
+        public function getIterator(): Iterator { return new ArrayIterator($this->items); }
+        public function firstItem() { return count($this->items) ? 1 : null; }
+        public function total() { return count($this->items); }
+        public function links() { return ''; }
+        public function lastPage() { return 1; }
+        public function perPage() { return 15; }
+        public function currentPage() { return 1; }
+        public function lastItem() { return count($this->items); }
+        public function hasPages() { return false; }
+        public function appends($q) { return $this; }
+        public function first() { return $this->items[0] ?? null; }
+        public function sum($k = null) { return 0; }
+        public function pluck($k = null) { return collect([]); }
+        public function isEmpty() { return !count($this->items); }
+    }
+}
+if (!function_exists('mm_barcode')) { function mm_barcode($code, $type = null) { return '<div class="mm-barcode-sample">|||| ||| ||</div>'; } }
+if (!function_exists('mm_auth_user')) { function mm_auth_user() { return new class { public $id = 1; public $name = 'Rahim'; public function permissions() { return collect([(object) ['slug' => 'items.create'], (object) ['slug' => 'items.edit'], (object) ['slug' => 'items.delete']]); } }; } }
+$riRow = function (array $f) { return new MmRiRow($f); };
+$riList = function (array $rows) { return new MmRiList($rows); };
+$riViews = ['categories/index', 'categories/create-modal', 'categories/edit-modal', 'units/index', 'units/create-modal', 'units/edit-modal', 'manufacturers/index', 'manufacturers/create-modal', 'manufacturers/edit-modal', 'supplier/index', 'supplier/create-modal', 'supplier/edit-modal',
+    'product/index', 'product/_inc/filter', 'mat_product/index', 'mat_product/_inc/filter', 'inventory-report', 'includes/filter', 'product/uploads/index', 'product/uploads/edit',
+    'product/create', 'product/create/create', 'product/create/upload', 'product/edit', 'mat_product/create', 'mat_product/create/create', 'mat_product/create/upload', 'mat_product/edit', 'categories/inc/_create-options',
+    'production/items/index', 'production/items/create', 'production/items/edit', 'production/item-units/index', 'production/item-units/create', 'production/item-units/edit',
+    'production/goods_requisitions/index', 'production/goods_requisitions/create', 'production/purchases/index', 'production/purchases/show', 'production/purchases/approve', 'production/purchases/edit',
+    'production/purchase-v2/create', 'production/purchase-v2/inc/common', 'production/purchase-v2/create/left-side', 'production/purchase-v2/create/right-side',
+    'adjustment-v2/index', 'adjustment-v2/create', 'adjustment-v2/view', 'adjustment-v2/edit', 'adjustment-v2/inc/common', 'adjustment-v2/create/left-side', 'adjustment-v2/create/right-side'];
+foreach ($riViews as $riView) {
+    $riSource = $rsSubst('inventory/' . $riView);
+    $riSource = preg_replace(["/@include\\('inventory([.\\/])/", "/@include\\('rs\\.inventory[.\\/][\\w.\\/-]*script'\\)/", "/@include\\('partials\\._paginate', \\['data' => [^\\]]*\\]\\)/"], ["@include('ri.inventory$1", '', $rpPaginate], $riSource);
+    $riSource = preg_replace("/@include\\('ri\\.inventory[.\\/][\\w.\\/-]*script'\\)/", '', $riSource);
+    $riSource = str_replace(['DNS1D::getBarcodeHTML(', 'Auth::user()'], ['mm_barcode(', 'mm_auth_user()'], $riSource);
+    @mkdir(dirname($coViews . '/ri/inventory/' . $riView), 0777, true);
+    file_put_contents($coViews . '/ri/inventory/' . $riView . '.blade.php', $riSource);
+}
+// Route names used by the inventory views are registered on the fly (the real route file needs the whole application); optional {id?} takes a scalar argument.
+$riSeen = [];
+foreach ($riViews as $riView) {
+    preg_match_all("/route\('([\w.-]+)'/", file_get_contents($coViews . '/ri/inventory/' . $riView . '.blade.php'), $riMatch);
+    foreach ($riMatch[1] as $riRoute) {
+        if (isset($riSeen[$riRoute]) || $rsRoutes->getByName($riRoute)) continue;
+        $riSeen[$riRoute] = true;
+        $rsRoutes->add((new Illuminate\Routing\Route(['GET', 'POST'], (strpos($riRoute, 'rst.') === 0 ? '' : 'rst/') . str_replace('.', '/', $riRoute) . '/{id?}', function () {}))->name($riRoute));
+    }
+}
+$riProduct = function ($id, $name) use ($riRow) { return $riRow(['id' => $id, 'name' => $name, 'barcode' => 'B-' . $id, 'is_bar' => 0, 'is_matrial' => 1, 'stock_limit' => 5, 'unit_cost' => 100, 'supplier_id' => 1, 'unit_id' => 1, 'category_id' => 1, 'sale_price' => 250, 'status' => 1, 'vat_amount' => 5, 'opening_quantity' => 3, 'available_quantity' => 8, 'purchased_quantity' => 5, 'sold_quantity' => 2, 'return_quantity' => 0, 'category' => $riRow(['name' => 'Rice dishes']), 'unit' => $riRow(['name' => 'Plate']), 'supplier' => $riRow(['name' => 'Sarker Traders'])]); };
+$riCategory = function ($id, $name, $status = 1) use ($riRow) { return $riRow(['id' => $id, 'name' => $name, 'status' => $status, 'is_bar' => 0, 'parent_id' => null]); };
+$riCatalog = ['categories' => collect([$riRow(['id' => 1, 'name' => 'Rice <b>dishes</b>', 'childCategories' => $riList([])])]), 'suppliers' => [1 => 'Sarker <b>Traders</b>'], 'units' => [1 => 'Plate', 2 => 'Kg']];
+$riAdjust = ['stockAdjustment' => $riRow(['id' => 1, 'invoice_no' => 'SA-1', 'date' => '2026-10-01', 'approve_date' => '', 'supplier_id' => 1, 'current_status' => 'Pending']), 'Adjustment' => $riRow(['adjustment_details' => $riList([$riRow(['id' => 5, 'quantity' => 2, 'stock_type' => 'Decrease', 'adjustment_reason' => 'Spoiled <b>stock</b>', 'product' => $riRow(['name' => 'Basmati <b>rice</b>'])])])])];
+$riCases = [
+    'categories' => ['ri.inventory.categories.index', '/rst/categories', ['categories' => $riList([$riCategory(1, 'Rice <b>dishes</b>'), $riCategory(2, 'Drinks', 0)])],
+        ['mm-hotel-setup', 'id="data-table"', 'href="#modal-dialog"', 'data-toggle="modal"', 'Rice &lt;b&gt;dishes&lt;/b&gt;', 'delete_item('], ['Rice <b>dishes</b>']],
+    'units' => ['ri.inventory.units.index', '/rst/units', ['units' => $riList([$riRow(['id' => 1, 'name' => 'Kg <b>x</b>', 'status' => 1]), $riRow(['id' => 2, 'name' => 'Litre', 'status' => 0])])],
+        ['mm-hotel-setup', 'id="data-table"', 'data-toggle="modal"', 'Kg &lt;b&gt;x&lt;/b&gt;'], ['Kg <b>x</b>']],
+    'manufacturers' => ['ri.inventory.manufacturers.index', '/rst/manufacturers', ['manufacturers' => $riList([$riRow(['id' => 1, 'name' => 'Fresh <b>Co</b>', 'status' => 1])])],
+        ['mm-hotel-setup', 'id="data-table"', 'data-toggle="modal"', 'Fresh &lt;b&gt;Co&lt;/b&gt;'], ['Fresh <b>Co</b>']],
+    'suppliers' => ['ri.inventory.supplier.index', '/rst/suppliers', ['suppliers' => $riList([$riRow(['id' => 1, 'name' => 'Sarker <b>Traders</b>', 'phone' => '017', 'status' => 1])])],
+        ['mm-hotel-setup', 'id="data-table"', 'data-toggle="modal"', 'Sarker &lt;b&gt;Traders&lt;/b&gt;'], ['Sarker <b>Traders</b>']],
+    'products' => ['ri.inventory.product.index', '/rst/products?name=1', ['products' => $riList([$riProduct(1, 'Chicken <b>Biryani</b>'), $riProduct(2, 'Lassi')]), 'categories' => collect([$riRow(['id' => 1, 'name' => 'Rice dishes']), $riRow(['id' => 2, 'name' => 'Drinks'])])],
+        ['mm-report', 'mm-rst-inventory', 'mm-report-filter', 'id="datatable"', 'rst/products/create?type=upload', 'Chicken &lt;b&gt;Biryani&lt;/b&gt;', 'class="pagination"'], ['Chicken <b>Biryani</b>', 'col-sm-offset']],
+    'mat-products' => ['ri.inventory.mat_product.index', '/rst/mat-products?name=1', ['products' => $riList([$riProduct(1, 'Basmati <b>rice</b>'), $riProduct(2, 'Mustard oil')]), 'categories' => collect([$riRow(['id' => 1, 'name' => 'Dry goods'])])],
+        ['mm-report', 'mm-rst-inventory', 'mm-report-filter', 'Basmati &lt;b&gt;rice&lt;/b&gt;', 'class="pagination"'], ['Basmati <b>rice</b>', 'col-sm-offset']],
+    'inventory-report' => ['ri.inventory.inventory-report', '/rst/inventory-report?category_id=1', ['products' => $riList([$riProduct(1, 'Chicken <b>Biryani</b>')])],
+        ['mm-report', 'mm-rst-inventory', 'mm-report-filter', 'Chicken &lt;b&gt;Biryani&lt;/b&gt;'], ['Chicken <b>Biryani</b>']],
+    'product-uploads' => ['ri.inventory.product.uploads.index', '/rst/product-uploads', ['products' => $riList([$riProduct(1, 'Chicken <b>Biryani</b>')])],
+        ['mm-report', 'id="datatable"', 'mm-rst-count', 'delete_item(', 'rst/product/add-confirm-list', 'Chicken &lt;b&gt;Biryani&lt;/b&gt;'], ['Chicken <b>Biryani</b>', 'float: right']],
+    'production-items' => ['ri.inventory.production.items.index', '/rst/production/items?name=1', ['items' => $riList([$riRow(['id' => 1, 'name' => 'Basmati <b>rice</b>', 'opening_balance' => 10, 'rate' => 120, 'purchase_detail_count' => 0, 'goods_requisition_count' => 0, 'company' => $riRow(['name' => 'MM Heritage'])])]), 'companies' => [1 => 'MM Heritage'], 'item_ids' => [1 => 'Basmati <b>rice</b>']],
+        ['mm-report', 'mm-rst-inv', 'Basmati &lt;b&gt;rice&lt;/b&gt;'], ['Basmati <b>rice</b></td>']],
+    'production-item-units' => ['ri.inventory.production.item-units.index', '/rst/production/item-units', ['item_units' => $riList([$riRow(['id' => 1, 'name' => 'Sack <b>x</b>', 'conversion' => 25, 'status' => 1])])],
+        ['mm-report', 'Sack &lt;b&gt;x&lt;/b&gt;'], ['Sack <b>x</b>']],
+    'production-requisitions' => ['ri.inventory.production.goods_requisitions.index', '/rst/production/goods-requisitions', ['productions' => $riList([$riRow(['id' => 1, 'challan_no' => 'GR-1', 'date' => '2026-10-01', 'remarks' => 'Lunch <b>batch</b>', 'is_approved' => 1, 'fgood_details' => $riList([$riRow(['quantity' => 20, 'product' => $riRow(['name' => 'Fried <b>rice</b>'])])]), 'metrial_details' => $riList([$riRow(['quantity' => 5, 'product' => $riRow(['name' => 'Basmati'])])])])])],
+        ['mm-report', 'GR-1', 'Lunch &lt;b&gt;batch&lt;/b&gt;'], ['Lunch <b>batch</b>']],
+    'production-purchases' => ['ri.inventory.production.purchases.index', '/rst/production/purchases?company_id=1', ['purchases' => $riList([$riRow(['id' => 1, 'challan_id' => 'P-1', 'date' => '2026-10-01', 'is_approved' => 1, 'company' => $riRow(['name' => 'MM <b>Heritage</b>'])])]), 'companies' => [1 => 'MM Heritage']],
+        ['mm-report', 'P-1', 'MM &lt;b&gt;Heritage&lt;/b&gt;'], ['MM <b>Heritage</b>']],
+    'adjustments' => ['ri.inventory.adjustment-v2.index', '/rst/stock-adjustment', ['stock_adjustment' => $riList([$riRow(['id' => 1, 'invoice_no' => 'SA-1', 'date' => '2026-10-01', 'total_amount' => 500, 'total_qty' => 5, 'current_status' => 'Pending', 'adjustment_details' => $riList([$riRow(['stock_type' => 'Decrease', 'adjustment_reason' => 'Spoiled <b>stock</b>'])])])])],
+        ['mm-report', 'SA-1', 'rst/stock-adjustment/create', 'Spoiled &lt;b&gt;stock&lt;/b&gt;'], ['Spoiled <b>stock</b>']],
+    'form-product-create' => ['ri.inventory.product.create', '/rst/products/create', $riCatalog, ['mm-rst-form', 'action="http://localhost/rst/products/store"', 'data-parsley-validate', 'name="name"', 'name="barcode"', 'name="category_id"', 'name="unit_id"', 'name="supplier_id"', 'name="sale_price"', 'id="product_name"', 'Rice &lt;b&gt;dishes&lt;/b&gt;', 'rst/products/index'], ['Rice <b>dishes</b>']],
+    'form-product-upload' => ['ri.inventory.product.create', '/rst/products/create?type=upload', $riCatalog, ['mm-rst-form', 'type="file"', 'rst/product-uploads'], []],
+    'form-product-edit' => ['ri.inventory.product.edit', '/rst/products/1/edit', $riCatalog + ['product' => $riProduct(1, 'Chicken <b>Biryani</b>') ], ['mm-rst-form', 'name="_method" value="PUT"', 'action="http://localhost/rst/products/update/1"', 'name="name"', 'name="barcode"', 'Chicken &lt;b&gt;Biryani&lt;/b&gt;'], ['Chicken <b>Biryani</b>']],
+    'form-mat-create' => ['ri.inventory.mat_product.create', '/rst/mat-products/create', $riCatalog, ['mm-rst-form', 'name="name"', 'name="category_id"', 'name="unit_id"'], ['Rice <b>dishes</b>']],
+    'form-mat-edit' => ['ri.inventory.mat_product.edit', '/rst/mat-products/1/edit', $riCatalog + ['product' => $riProduct(1, 'Basmati <b>rice</b>')], ['mm-rst-form', 'name="_method" value="PUT"', 'name="name"', 'Basmati &lt;b&gt;rice&lt;/b&gt;'], ['Basmati <b>rice</b>']],
+    'form-upload-edit' => ['ri.inventory.product.uploads.edit', '/rst/product-uploads/1/edit', ['product' => $riProduct(1, 'Chicken <b>Biryani</b>')], ['mm-rst-form', 'name="name"', 'Chicken &lt;b&gt;Biryani&lt;/b&gt;'], ['Chicken <b>Biryani</b>']],
+    'form-item-create' => ['ri.inventory.production.items.create', '/rst/production/items/create', ['companies' => [1 => 'MM <b>Heritage</b>'], 'item_units' => [1 => 'Sack'], 'message' => ''], ['mm-rst-form', 'name="company_id"', 'name="name"', 'MM &lt;b&gt;Heritage&lt;/b&gt;'], ['MM <b>Heritage</b>']],
+    'form-item-edit' => ['ri.inventory.production.items.edit', '/rst/production/items/1/edit', ['companies' => [1 => 'MM Heritage'], 'item_units' => [1 => 'Sack'], 'message' => '', 'item' => $riRow(['id' => 1, 'name' => 'Basmati <b>rice</b>', 'company_id' => 1, 'item_unit_id' => 1, 'opening_balance' => 4, 'rate' => 120, 'purchase_detail_count' => 0, 'goods_requisition_count' => 0])], ['mm-rst-form', 'name="_method" value="PUT"', 'Basmati &lt;b&gt;rice&lt;/b&gt;'], ['Basmati <b>rice</b>']],
+    'form-item-unit-create' => ['ri.inventory.production.item-units.create', '/rst/production/item-units/create', ['message' => ''], ['mm-rst-form', 'name="name"', 'name="conversion"'], []],
+    'form-item-unit-edit' => ['ri.inventory.production.item-units.edit', '/rst/production/item-units/1/edit', ['message' => '', 'itemUnit' => $riRow(['id' => 1, 'name' => 'Sack <b>x</b>', 'conversion' => 25, 'status' => 1])], ['mm-rst-form', 'name="_method" value="PUT"', 'Sack &lt;b&gt;x&lt;/b&gt;'], ['Sack <b>x</b>']],
+    'form-requisition-create' => ['ri.inventory.production.goods_requisitions.create', '/rst/production/goods-requisitions/create', ['message' => '', 'challan_id' => 'GR-2', 'companies' => [1 => 'MM Heritage'], 'departments' => [1 => 'Kitchen']], ['mm-rst-form', 'GR-2', 'name="challan_id"', 'name="date"'], []],
+    'form-purchase-approve' => ['ri.inventory.production.purchases.approve', '/rst/production/purchases/1/approve', ['message' => '', 'companies' => [1 => 'MM Heritage'], 'purchase' => $riRow(['id' => 1, 'company_id' => 1, 'date' => '2026-10-01', 'purchase_reference' => 'REF-1', 'purchase_details' => $riList([$riRow(['quantity' => 3, 'item_price' => 120, 'product' => $riRow(['id' => 7, 'name' => 'Basmati <b>rice</b>', 'available_quantity' => 12, 'unit' => $riRow(['id' => 2, 'name' => 'Kg'])])])])])], ['mm-rst-form', 'Basmati &lt;b&gt;rice&lt;/b&gt;', 'name="purchase_id"'], ['Basmati <b>rice</b>']],
+    'form-purchase-edit' => ['ri.inventory.production.purchases.edit', '/rst/production/purchases/1/edit', ['message' => '', 'companies' => [1 => 'MM Heritage'], 'systemSetting' => $riRow(['value' => 'Reference']), 'items' => $riList([$riRow(['id' => 3, 'name' => 'Basmati <b>rice</b>', 'company_id' => 1])]), 'purchase' => $riRow(['id' => 1, 'company_id' => 1, 'purchase_reference' => 'REF-1', 'purchase_details' => $riList([$riRow(['item_id' => 3, 'quantity' => 3, 'item' => $riRow(['current_stock' => 5, 'item_unit' => $riRow(['name' => 'Kg'])])])])])], ['mm-rst-form', 'Basmati &lt;b&gt;rice&lt;/b&gt;'], ['Basmati <b>rice</b>']],
+    'form-purchase-create' => ['ri.inventory.production.purchase-v2.create', '/rst/purchase/create', ['challan_id' => 'P-0003', 'suppliers' => collect([$riRow(['id' => 1, 'name' => 'Fresh <b>Co</b>'])]), 'accounts' => collect([$riRow(['id' => 1, 'name' => 'Cash'])])], ['mm-rst-purchase-create', 'mm-rst-form', 'id="purchase-form"', 'name="supplier_id"', 'name="account_id"', 'name="challan_id"'], []],
+    'form-adjustment-create' => ['ri.inventory.adjustment-v2.create', '/rst/stock-adjustment/create', ['challan_id' => 'SA-3', 'suppliers' => collect([$riRow(['id' => 1, 'name' => 'Fresh <b>Co</b>'])]), 'accounts' => collect([$riRow(['id' => 1, 'name' => 'Cash'])])], ['mm-rst-form', 'id="purchase-form"', 'name="supplier_id"'], []],
+    'purchase-show' => ['ri.inventory.production.purchases.show', '/rst/production/purchases/1', ['purchase' => $riRow(['id' => 1, 'challan_id' => 'P-1', 'date' => '2026-10-01', 'is_approved' => 1, 'created_at' => '2026-10-01', 'updated_at' => '2026-10-01', 'company' => $riRow(['name' => 'MM <b>Heritage</b>']), 'created_user' => $riRow(['name' => 'Rahim <b>x</b>']), 'updated_user' => $riRow(['name' => 'Karim']), 'purchase_details' => $riList([$riRow(['quantity' => 3, 'product' => $riRow(['name' => 'Basmati <b>rice</b>', 'available_quantity' => 12, 'unit_cost' => 120, 'unit' => $riRow(['name' => 'Kg'])])])])])], ['mm-invoice-page', 'printForm(', 'Basmati &lt;b&gt;rice&lt;/b&gt;', 'P-1'], ['Basmati <b>rice</b>', 'Rahim <b>x</b>']],
+    'adjustment-view' => ['ri.inventory.adjustment-v2.view', '/rst/stock-adjustment/1', $riAdjust, ['mm-rst-adjust', 'SA-1', 'Spoiled &lt;b&gt;stock&lt;/b&gt;'], ['Spoiled <b>stock</b>']],
+    'form-adjustment-edit' => ['ri.inventory.adjustment-v2.edit', '/rst/stock-adjustment/1/edit', $riAdjust, ['mm-rst-adjust', 'mm-rst-form', 'SA-1', 'Spoiled &lt;b&gt;stock&lt;/b&gt;', 'action="http://localhost/rst/stock-adjustment/update/1"'], ['Spoiled <b>stock</b>']],
+];
+@mkdir(__DIR__ . '/fixtures/restaurant-inventory', 0777, true);
+foreach ($riCases as $riName => [$riViewName, $riUrl, $riData, $riMarkers, $riAbsent]) {
+    $riRequest = Illuminate\Http\Request::create($riUrl);
+    $riRequest->setLaravelSession(new Illuminate\Session\Store('mm', new Illuminate\Session\ArraySessionHandler(10)));
+    $app->instance('request', $riRequest);
+    $app->instance('url', new Illuminate\Routing\UrlGenerator($rsRoutes, $riRequest));
+    try { $riHtml = $app->make('view')->make($riViewName, array_merge(['errors' => new Illuminate\Support\ViewErrorBag(), 'slugs' => []], $riData))->render(); }
+    catch (Throwable $e) { throw new RuntimeException('Restaurant inventory screen ' . $riName . ' failed to render: ' . $e->getMessage(), 0, $e); }
+    $riHtml = preg_replace('/(name="_token" value=")[A-Za-z0-9]+"/', '$1fixture-csrf-token"', str_replace('http://localhost/assets', '/assets', $riHtml));
+    if (strpos($riName, 'form-') === 0) $riHtml = str_replace('<!--MM-JS-->', '<script src="/assets/js/jquery-ui.min.js"></script><script src="/assets/custom_js/loadDetails.js"></script><script src="/assets/custom_js/reference_filter.js"></script><!--MM-JS-->', $riHtml);
+    $riMissing = [];
+    foreach (array_merge(['mm-panel', 'mm-page-title', 'mm-rst-inv'], $riMarkers) as $riMarker) { if (strpos($riHtml, $riMarker) === false) $riMissing[] = $riMarker; }
+    if ($riMissing) throw new RuntimeException('Restaurant inventory screen ' . $riName . ' missing ' . implode(' | ', $riMissing));
+    foreach (array_merge(['widget-box', 'widget-main', 'widget-header', 'class="page-header"'], $riAbsent) as $riMarker) { if (strpos($riHtml, $riMarker) !== false) throw new RuntimeException('Restaurant inventory screen ' . $riName . ' still contains ' . $riMarker); }
+    if (strpos($riHtml, '<b>Warning</b>') !== false || strpos($riHtml, '<b>Notice</b>') !== false) throw new RuntimeException('Restaurant inventory screen ' . $riName . ' sample data is incomplete (PHP warning in output)');
+    $riFile = __DIR__ . '/fixtures/restaurant-inventory/' . $riName . '.html';
+    if (getenv('MM_WRITE_FIXTURE')) { file_put_contents($riFile, $riHtml); file_put_contents($previewDir . '/rsi-' . $riName . '.html', $riHtml); }
+    if (file_get_contents($riFile) !== $riHtml) throw new RuntimeException($riFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
+}
+echo "PASS restaurant inventory screens render: setup lists, catalog, production, purchase and stock adjustment\n";

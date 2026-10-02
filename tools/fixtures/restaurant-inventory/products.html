@@ -1,0 +1,213 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">    <link rel="stylesheet" href="/assets/css/chosen.min.css" />
+    <link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css" />
+    <style>
+        .file {
+            visibility: hidden;
+            position: absolute;
+        }
+
+    </style>
+<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+<section class="mm-ui mm-report mm-rst mm-rst-inventory mm-rst-inv">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Products</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Restaurant products with stock type, price and status.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a href="http://localhost/rst/products/create?type=upload" class="mm-button">
+                    <i class="fa fa-upload"></i> Upload Product
+                </a>
+                <a href="http://localhost/rst/products/create" class="mm-button mm-button-secondary">
+                    <i class="fa fa-plus-circle"></i> Add New Product
+                </a></div>        </header>
+        <div class="mm-panel tw-p-4 sm:tw-p-6 mm-report-filter"><div class="col-sm-12">
+    <form action="">
+        <div class="row">
+            <div class="col-md-4">
+                
+                <div class="input-group">
+    <label class="input-group-addon">Products </label>
+    <select class="form-control chosen-select-100-percent" name="id" id="id" data-placeholder="Choose One" data-selected="">
+        <option value=""></option>
+                    <option value="1">
+                Chicken &lt;b&gt;Biryani&lt;/b&gt;             </option>
+                    <option value="2">
+                Lassi             </option>
+            </select>
+</div>
+
+            </div>
+
+            <div class="col-md-3">
+                <div class="input-group ">
+    <label class="input-group-addon padding-right-18px">
+        Barcode
+            </label>
+    <input type="text" class="form-control " name="barcode" id="barcode" value="" placeholder="Type Barcode"  autocomplete="off">
+</div>
+
+
+            </div>
+
+            <div class="col-md-3">
+                <div class="input-group">
+    <label class="input-group-addon">Category </label>
+    <select class="form-control chosen-select-100-percent" name="category_id" id="category_id" data-placeholder="Choose One" data-selected="">
+        <option value=""></option>
+                    <option value="1">
+                Rice dishes             </option>
+                    <option value="2">
+                Drinks             </option>
+            </select>
+</div>
+
+            </div>
+
+            <div class="col-md-2">
+                <div class="btn-group">
+                    <a href="http://localhost/rst/products" class="btn btn-danger btn-sm" aria-label="Reset">
+                        <i class="fa fa-refresh"></i>
+                    </a>
+                    <button class="btn-outline-success btn-sm" aria-label="Search">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div></div>
+
+    <div class="mm-panel tw-p-4 sm:tw-p-6"><div class="row">
+            <div class="mm-table-scroll" role="region" aria-label="Products" tabindex="0"><table id="datatable" class="table table-striped table-bordered nowrap" width="100%">
+                    <thead>
+                        <tr>
+                            <th class="text-center" width="3%">SL</th>
+                            <th class="text-center">Product ID</th>
+                            <th class="text-center">Name</th>
+                            <th class="text-center">Barcode</th>
+                            <th class="text-center">Category</th>
+                            <th class="text-center">Supplier</th>
+                            <th class="text-center">Unit</th>
+                            <th class="text-center">Sale Price</th>
+                            <th class="text-center">Vat</th>
+                            <th class="text-center" width="3%">Status</th>
+                            <th width="7%" class="text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                                                    <tr class="odd gradeX">
+                                <td class="text-center">
+                                    1
+                                </td>
+                                <td class="text-center">
+                                    
+                                </td>
+                                <td class="text-center">
+                                    Chicken &lt;b&gt;Biryani&lt;/b&gt;
+                                </td>
+                                <td class="text-left">
+                                                                            <div class="mm-barcode-sample">|||| ||| ||</div>
+                                                                        <strong>B-1</strong>
+                                </td>
+
+                                <td class="text-center">
+                                    Rice dishes
+                                </td>
+                                <td class="text-center">
+                                    Sarker Traders
+                                </td>
+                                <td class="text-center">
+                                    Plate
+                                </td>
+                                <td class="text-center">
+                                    250
+                                </td>
+                                <td class="text-center">
+                                    ৳ 5.00
+                                </td>
+                                <td class="text-center">
+                                    Active
+                                </td>
+
+                                <td class="text-center">
+
+                                    <div class="btn-group btn-corner">
+                                        <a href="http://localhost/rst/products/edit/1"
+                                            class="btn btn-xs btn-success">
+                                            <i class="fa fa-pencil-square-o"></i>
+                                        </a>
+                                        <a class="btn btn-danger btn-xs" href="#"
+                                            onclick="delete_item(`http://localhost/rst/products/destroy/1`)">
+                                            <i class="fa fa-trash-o"></i>
+                                        </a>
+
+                                    </div>
+
+                                </td>
+                            </tr>
+                                                    <tr class="odd gradeX">
+                                <td class="text-center">
+                                    2
+                                </td>
+                                <td class="text-center">
+                                    
+                                </td>
+                                <td class="text-center">
+                                    Lassi
+                                </td>
+                                <td class="text-left">
+                                                                            <div class="mm-barcode-sample">|||| ||| ||</div>
+                                                                        <strong>B-2</strong>
+                                </td>
+
+                                <td class="text-center">
+                                    Rice dishes
+                                </td>
+                                <td class="text-center">
+                                    Sarker Traders
+                                </td>
+                                <td class="text-center">
+                                    Plate
+                                </td>
+                                <td class="text-center">
+                                    250
+                                </td>
+                                <td class="text-center">
+                                    ৳ 5.00
+                                </td>
+                                <td class="text-center">
+                                    Active
+                                </td>
+
+                                <td class="text-center">
+
+                                    <div class="btn-group btn-corner">
+                                        <a href="http://localhost/rst/products/edit/2"
+                                            class="btn btn-xs btn-success">
+                                            <i class="fa fa-pencil-square-o"></i>
+                                        </a>
+                                        <a class="btn btn-danger btn-xs" href="#"
+                                            onclick="delete_item(`http://localhost/rst/products/destroy/2`)">
+                                            <i class="fa fa-trash-o"></i>
+                                        </a>
+
+                                    </div>
+
+                                </td>
+                            </tr>
+                        
+                    </tbody>
+                </table></div>
+
+            <span class="pull-right"><ul class="pagination"><li class=" disabled"><a class="" href="#">← First</a></li><li class="active"><span>1</span></li><li><a href="#">2</a></li><li><a class="" href="#">Last →</a></li></ul></span>
+        </div></div>
+    </div>
+</section>
+
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
+<!--/MM-JS--></body></html>

@@ -650,3 +650,78 @@ console.log('PASS: note list/edit expressions, forms and status scripts; legacy 
  assert(fs.readFileSync(`${dir}rst-payment-collection/index.blade.php`,'utf8').includes("route('rst.sales.store-payment-collection')"),'payment collection must post to rst.sales.store-payment-collection');
  console.log('PASS: restaurant screens (R1 and sales/returns) keep fields, expressions, directives and scripts; controllers, routes, Bar views and export partials untouched');
 }
+
+{
+ // Restaurant purchases (purchase-v2: list, create frame, requisition document, approve form): fields, expressions, directives and scripts stay as they were.
+ const base='059fb625';
+ const nc=s=>s.replace(/\{\{--[\s\S]*?--\}\}/g,'');
+ const ex=s=>(nc(s).match(/\{\{[\s\S]*?\}\}|\{!![\s\S]*?!!\}/g)||[]).map(x=>x.replace(/\s+/g,' '));
+ const added=/ (?:aria-label="[^"]*"|style="[^"]*"|class="[^"]*")/g;
+ const ctl=s=>(nc(s).replace(/\{\{[\s\S]*?\}\}/g,'{{}}').match(/<(input|select|textarea|button)\b[^>]*>/g)||[]).map(x=>x.replace(/\s+/g,' ').replace(added,''));
+ const forms=s=>(nc(s).match(/<form[^>]*>/g)||[]).map(x=>x.replace(/\s+/g,' ').replace(/ class="[^"]*"/,''));
+ const directives=s=>(nc(s).match(/@(?:if|elseif|else|endif|foreach|endforeach|forelse|empty|endforelse|include|isset|endisset|can|endcan|error|enderror|csrf|method)\b/g)||[]);
+ const only=(l,m)=>{const c={};l.forEach(x=>c[x]=(c[x]||0)+1);m.forEach(x=>c[x]=(c[x]||0)-1);return Object.entries(c).filter(([,n])=>n).map(([k,n])=>`${n>0?'-':'+'}${Math.abs(n)} ${k}`).sort();};
+ const scripts=s=>(nc(s).match(/<script[\s\S]*?<\/script>/g)||[]).map(t=>t.replace(/\s+/g,' ')).join('|');
+ const dir='module/Restaurant/views/';
+ // Known, reviewed difference: the requisition's print icon image became a Print button with a font icon.
+ const droppedExpr={'purchase-v2/show':["-1 {{ asset('assets/images/export-icons/printer-icon.png') }}"]};
+ for(const f of ['purchase-v2/index','purchase-v2/show','purchase-v2/approve','purchase-v2/create']){
+  const p=`${dir}${f}.blade.php`,after=fs.readFileSync(p,'utf8'),before=execFileSync('git',['show',`${base}:${p}`],{encoding:'utf8'});
+  assert.deepEqual(only(ex(before),ex(after)),droppedExpr[f]||[],`${f}: Blade expressions changed`);
+  assert.deepEqual(only(ctl(before),ctl(after)),[],`${f}: form controls changed`);
+  assert.deepEqual(only(forms(before),forms(after)),[],`${f}: form tags changed`);
+  assert.deepEqual(only(directives(before),directives(after)),[],`${f}: Blade directives changed`);
+  assert.equal(scripts(after),scripts(before),`${f}: scripts changed`);
+  assert(after.includes('<x-mm.page'),`${f}: shared layout expected`);
+  assert(!after.includes('widget-box')&&!after.includes('widget-main')&&!after.includes('widget-header')&&!after.includes('page-header'),`${f}: legacy frame should be gone`);
+ }
+ // the create screen keeps including the shared Bar partials (see docs: it posts through the Bar product list)
+ const create=fs.readFileSync(`${dir}purchase-v2/create.blade.php`,'utf8');
+ for(const inc of ["bar.purchase-v2.inc.common","bar.purchase-v2.create.left-side","bar.purchase-v2.create.right-side","bar.purchase-v2/inc/script"]) assert(create.includes(inc),`purchase create must keep including ${inc}`);
+ const untouched=execFileSync('git',['diff','--name-only',base,'--','module/Restaurant/Controllers','module/Restaurant/routes','module/Bar/views','module/Restaurant/views/purchase-v2/inc','module/Restaurant/views/purchase-v2/create'],{encoding:'utf8'}).trim();
+ assert.equal(untouched,'','Restaurant controllers, routes, Bar views and the unused purchase-v2 partials must stay unchanged');
+ console.log('PASS: restaurant purchases (purchase-v2) keep fields, expressions, directives and scripts; controllers, routes and shared Bar partials untouched');
+}
+
+{
+ // Restaurant inventory (group R4: setup lists, catalog, production, purchase, stock adjustment): fields, expressions, directives and scripts stay as they were.
+ const base='059fb625';
+ const nc=s=>s.replace(/\{\{--[\s\S]*?--\}\}/g,'');
+ const ex=s=>(nc(s).match(/\{\{[\s\S]*?\}\}|\{!![\s\S]*?!!\}/g)||[]).map(x=>x.replace(/\s+/g,' '));
+ const added=/ (?:aria-label="[^"]*"|style="[^"]*"|class="[^"]*")/g;
+ const ctl=s=>(nc(s).replace(/\{\{[\s\S]*?\}\}/g,'{{}}').match(/<(input|select|textarea|button)\b[^>]*>/g)||[]).map(x=>x.replace(/\s+/g,' ').replace(added,''));
+ const forms=s=>(nc(s).match(/<form[^>]*>/g)||[]).map(x=>x.replace(/\s+/g,' ').replace(/ class="[^"]*"/,''));
+ const directives=s=>(nc(s).match(/@(?:if|elseif|else|endif|foreach|endforeach|forelse|empty|endforelse|include|isset|endisset|can|endcan|error|enderror|csrf|method)\b/g)||[]);
+ const only=(l,m)=>{const c={};l.forEach(x=>c[x]=(c[x]||0)+1);m.forEach(x=>c[x]=(c[x]||0)-1);return Object.entries(c).filter(([,n])=>n).map(([k,n])=>`${n>0?'-':'+'}${Math.abs(n)} ${k}`).sort();};
+ const scripts=s=>(nc(s).match(/<script[\s\S]*?<\/script>/g)||[]).map(t=>t.replace(/\s+/g,' ')).join('|');
+ const dir='module/Restaurant/views/inventory/';
+ const pages=['categories/index','units/index','manufacturers/index','supplier/index','product/index','mat_product/index','inventory-report','product/uploads/index','product/uploads/edit','product/create','product/edit','mat_product/create','mat_product/edit','production/items/index','production/items/create','production/items/edit','production/item-units/index','production/item-units/create','production/item-units/edit','production/goods_requisitions/index','production/goods_requisitions/create','production/purchases/index','production/purchases/show','production/purchases/approve','production/purchases/edit','production/purchase-v2/create','adjustment-v2/index','adjustment-v2/create','adjustment-v2/view','adjustment-v2/edit'];
+ // Known, reviewed differences: the stock adjustment document pages lost their ace breadcrumb (the shared page header replaces it); the purchase document's print icon image became a Print button.
+ const dropped={
+  'adjustment-v2/view':["-1 {{ $stockAdjustment->invoice_no }}","-1 {{ route('home') }}"],
+  'adjustment-v2/edit':["-1 {{ $stockAdjustment->invoice_no }}","-1 {{ route('home') }}"],
+  'production/purchases/show':["-1 {{ asset('assets/images/export-icons/printer-icon.png') }}"],
+ };
+ for(const f of pages){
+  const p=`${dir}${f}.blade.php`,after=fs.readFileSync(p,'utf8'),before=execFileSync('git',['show',`${base}:${p}`],{encoding:'utf8'});
+  assert.deepEqual(only(ex(before),ex(after)),dropped[f]||[],`${f}: Blade expressions changed`);
+  assert.deepEqual(only(ctl(before),ctl(after)),[],`${f}: form controls changed`);
+  assert.deepEqual(only(forms(before),forms(after)),[],`${f}: form tags changed`);
+  assert.deepEqual(only(directives(before),directives(after)),[],`${f}: Blade directives changed`);
+  assert.equal(scripts(after),scripts(before),`${f}: scripts changed`);
+  assert(after.includes('<x-mm.page'),`${f}: shared layout expected`);
+  assert(!after.includes('widget-box')&&!after.includes('widget-main')&&!after.includes('widget-header')&&!after.includes('class="page-header'),`${f}: legacy frame should be gone`);
+ }
+ // the catalog filters were rewritten to the shared filter markup: every control stays
+ for(const f of ['product/_inc/filter','mat_product/_inc/filter']){
+  const p=`${dir}${f}.blade.php`,after=fs.readFileSync(p,'utf8'),before=execFileSync('git',['show',`${base}:${p}`],{encoding:'utf8'});
+  const comps=s=>(nc(s).match(/<x-widget\.[\w-]+[^>]*>/g)||[]).map(x=>x.replace(/\s+/g,' ')).sort();
+  assert.deepEqual(comps(after),comps(before),`${f}: filter components changed`);
+  assert.deepEqual(only(ctl(before),ctl(after)),[],`${f}: filter controls changed`);
+  assert.deepEqual(only(forms(before),forms(after)),[],`${f}: filter form changed`);
+ }
+ // controllers, routes and the shared partials/scripts stay untouched
+ const untouched=execFileSync('git',['diff','--name-only',base,'--','module/Restaurant/Controllers','module/Restaurant/routes','module/Bar/views','module/Restaurant/views/inventory/product/_inc/script.blade.php','module/Restaurant/views/inventory/production/purchase-v2/inc','module/Restaurant/views/inventory/adjustment-v2/inc','module/Restaurant/views/inventory/adjustment-v2/create','module/Restaurant/views/inventory/production/purchase-v2/create'],{encoding:'utf8'}).trim();
+ assert.equal(untouched,'','Restaurant controllers, routes, Bar views and the inventory script/form partials must stay unchanged');
+ console.log('PASS: restaurant inventory (R4) keeps fields, expressions, directives and scripts; controllers, routes and shared partials untouched');
+}

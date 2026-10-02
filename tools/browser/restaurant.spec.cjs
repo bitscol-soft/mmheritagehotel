@@ -47,6 +47,10 @@ const screens = {
     'report-today': "Today's activities",
     'report-inventory': 'Product inventory',
     'report-ledger': 'Stock ledger',
+    'purchase-list': 'Purchase list',
+    'purchase-show': 'Purchase requisition details',
+    'purchase-approve': 'Purchase approve',
+    'purchase-create': 'Purchase create',
 };
 
 for (const [name, title] of Object.entries(screens)) {
@@ -202,4 +206,56 @@ test('new sale return shows guest and invoice, returned items and totals', async
     await expect(page.locator('input[name="customer_id"]')).toHaveCount(1);
     await expect(page.locator('#table_auto thead th')).toHaveCount(7);
     for (const name of ['subtotal', 'previous_due', 'payable_amount', 'due_amount']) await expect(page.locator(`input[name="${name}"]`)).toHaveCount(1);
+});
+
+test('purchase list keeps the filters, row actions and delete hook', async ({ page }) => {
+    await open(page, 'purchase-list');
+    await expect(page.locator('.mm-report-filter form.mm-report-form')).toHaveCount(1);
+    await expect(page.locator('select[name="company_id"]')).toHaveCount(1);
+    await expect(page.locator('.mm-report-filter input[name="from_date"], .mm-report-filter input[name="to_date"], .mm-report-filter input[name="purchase_number"]')).toHaveCount(3);
+    await expect(page.locator('table tbody tr')).toHaveCount(2);
+    await expect(page.locator('table')).toContainText('MM Heritage');
+    await expect(page.locator('a[href$="/rst/purchases/1"]')).toHaveCount(1);
+    await expect(page.locator('button[onclick="delete_check(1)"]')).toHaveCount(1);
+    await expect(page.locator('button[onclick="delete_check(2)"]')).toHaveCount(0);
+    await expect(page.getByRole('link', { name: 'Add Purchase' })).toBeVisible();
+    const { filter, table } = await page.evaluate(() => ({ filter: document.querySelector('.mm-report-filter').getBoundingClientRect(), table: document.querySelector('table').getBoundingClientRect() }));
+    expect(table.top).toBeGreaterThan(filter.bottom - 1);
+});
+
+test('purchase requisition prints through its own button and escapes data', async ({ page }) => {
+    await open(page, 'purchase-show');
+    await expect(page.locator('.mm-invoice-page .mm-panel')).toContainText('Purchase Form No:');
+    await expect(page.locator('.mm-invoice-page .mm-panel')).toContainText('MM Heritage <i>Ltd</i>');
+    await expect(page.locator('.mm-invoice-page .mm-panel')).toContainText('Basmati <b>rice</b>');
+    await expect(page.locator('.mm-invoice-page .mm-panel b:text-is("rice")')).toHaveCount(0);
+    await page.getByRole('link', { name: 'Print' }).click();
+    expect(await page.evaluate(() => window.printCalls)).toBe(1);
+});
+
+test('purchase approve keeps the readonly item lines and posts the approval', async ({ page }) => {
+    await open(page, 'purchase-approve');
+    await expect(page.locator('form.form-horizontal[action$="/rst/purchase-approve/1"]')).toHaveCount(1);
+    await expect(page.locator('input[name="_method"][value="PUT"]')).toHaveCount(1);
+    await expect(page.locator('#purchase_table tbody tr')).toHaveCount(1);
+    for (const name of ['item_name[]', 'item_unit_name[]', 'available_quantity[]', 'item_price[]', 'quantity[]']) expect(await page.locator(`#purchase_table [name="${name}"]`).getAttribute('readonly')).not.toBeNull();
+    await expect(page.locator('select[name="company_id"]')).toHaveValue('1');
+    await expect(page.getByRole('button', { name: 'Approve' })).toBeVisible();
+    // chosen replaces the company select with its own widget; measure that one
+    const boxes = await page.evaluate(() => [document.querySelector('form .chosen-container') || document.querySelector('[name="company_id"]'), document.querySelector('[name="purchase_date"]')].map(el => { const r = el.getBoundingClientRect(); return { top: Math.round(r.top), width: Math.round(r.width) }; }));
+    expect(boxes[1].top).toBeGreaterThan(boxes[0].top);
+    for (const b of boxes) expect(b.width).toBeGreaterThan(200);
+});
+
+test('purchase create puts the lines and totals side by side on desktop and stacks them on tablets', async ({ page }) => {
+    await open(page, 'purchase-create');
+    await expect(page.locator('form#purchase-form[action$="/rst/purchases"]')).toHaveCount(1);
+    for (const name of ['supplier_id', 'account_id', 'challan_id', 'date', 'subtotal', 'discount', 'total_vat', 'grand_total', 'paid_amount', 'due_amount']) await expect(page.locator(`form#purchase-form [name="${name}"]`)).toHaveCount(1);
+    await expect(page.locator('input[name="challan_id"]')).toHaveValue('P-0003');
+    await expect(page.locator('button.save-purchase')).toHaveCount(1);
+    const wide = await page.evaluate(() => ({ lines: document.querySelector('#products').closest('table').getBoundingClientRect(), total: document.querySelector('[name="subtotal"]').getBoundingClientRect() }));
+    expect(wide.total.left).toBeGreaterThan(wide.lines.left + 200);
+    await page.setViewportSize({ width: 768, height: 900 });
+    const narrow = await page.evaluate(() => ({ lines: document.querySelector('#products').closest('table').getBoundingClientRect(), total: document.querySelector('[name="subtotal"]').getBoundingClientRect() }));
+    expect(narrow.total.top).toBeGreaterThan(narrow.lines.top);
 });

@@ -754,3 +754,50 @@
 .mm-ui.mm-rst-sale .mm-rst-payment-way { display: flex; flex-wrap: wrap; gap: 8px 16px; }
 .mm-ui.mm-rst-sale .mm-rst-payment-way label { margin: 0; display: inline-flex; align-items: center; gap: 6px; }
 .mm-ui:is(.mm-hotel-service, .mm-rst-sale) .mm-hs-totals #payment { display: grid; gap: 14px; }
+
+/* Restaurant purchases (purchase-v2): approve form and create frame. */
+.mm-ui.mm-rst-purchase .form-horizontal .form-group { margin: 0 0 16px; }
+.mm-ui.mm-rst-purchase .form-horizontal .form-group::after { content: ""; display: table; clear: both; }
+.mm-ui.mm-rst-purchase .form-horizontal .control-label { display: block; width: 100%; float: none; padding: 0; margin: 0 0 6px; text-align: left; font-weight: 600; color: var(--mm-ink); }
+.mm-ui.mm-rst-purchase .form-horizontal .form-group > [class*="col-"] { width: 100%; float: none; padding-left: 0; padding-right: 0; }
+.mm-ui.mm-rst-purchase form .form-control { min-height: 40px; border: 1px solid var(--mm-line); border-radius: 6px; color: var(--mm-ink); }
+.mm-ui.mm-rst-purchase .form-horizontal .input-group { width: 100%; }
+.mm-ui.mm-rst-purchase .mm-rst-purchase-items table.container { width: 100%; max-width: none; padding: 0; margin: 0; }
+.mm-ui.mm-rst-purchase .mm-rst-purchase-items table { min-width: 640px; }
+.mm-ui.mm-rst-purchase .mm-rst-purchase-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; margin-top: 16px; }
+.mm-ui.mm-rst-purchase-create .mm-rst-purchase-lines { overflow-x: auto; }
+.mm-ui.mm-rst-purchase-create .mm-rst-purchase-lines table { min-width: 720px; }
+.mm-ui.mm-rst-purchase-create .row.mb-3 { margin-bottom: 16px; }
+.mm-ui.mm-rst-purchase-create .btn-sm { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 6px 12px; border-radius: 6px; }
+.mm-ui.mm-rst-purchase-create :is(.btn-outline-danger, .btn-outline-success) { background: #fff; border: 1px solid var(--mm-line); box-shadow: none; font-weight: 600; cursor: pointer; }
+.mm-ui.mm-rst-purchase-create .btn-outline-danger { color: #b42318; }
+.mm-ui.mm-rst-purchase-create .btn-outline-success { color: var(--mm-brand, #2f5fa7); }
+
+/* Restaurant inventory (module/Restaurant/views/inventory): setup lists, report-style lists and forms; scoped to .mm-rst-inv */
+.mm-ui.mm-rst-inv .mm-panel .row { margin-left: 0; margin-right: 0; }
+.mm-ui.mm-rst-inv .mm-panel .row::before, .mm-ui.mm-rst-inv .mm-panel .row::after { display: none; }
+.mm-ui.mm-rst-inv .mm-panel .container { width: 100%; max-width: none; padding-left: 0; padding-right: 0; }
+.mm-ui.mm-rst-inv .mm-rst-count { margin: 0 0 12px; color: var(--mm-muted, #5b6b7b); font-size: 13px; }
+.mm-ui.mm-rst-inv .mm-rst-count b { color: var(--mm-ink); }
+.mm-ui.mm-rst-inv .mm-report-form .btn-group { display: inline-flex; gap: 8px; align-items: center; }
+.mm-ui.mm-rst-inv .mm-report-form .btn-group .mm-button { min-height: 40px; }
+.mm-ui.mm-rst-inv .mm-actions-form { display: inline; }
+.mm-ui.mm-rst-form .form-group { margin: 0 0 16px; }
+.mm-ui.mm-rst-form .form-group::after { content: ""; display: table; clear: both; }
+.mm-ui.mm-rst-form .form-horizontal .control-label, .mm-ui.mm-rst-form .control-label { display: block; width: 100%; float: none; padding: 0; margin: 0 0 6px; text-align: left; font-weight: 600; color: var(--mm-ink); }
+.mm-ui.mm-rst-form .form-group > [class*="col-"] { padding-left: 8px; padding-right: 8px; }
+.mm-ui.mm-rst-form [class*="col-md-offset-"], .mm-ui.mm-rst-form [class*="col-sm-offset-"] { margin-left: 0; }
+.mm-ui.mm-rst-form .form-group .form-control:not(textarea) { min-height: 40px; border: 1px solid var(--mm-line); border-radius: 6px; color: var(--mm-ink); }
+.mm-ui.mm-rst-form .form-group textarea.form-control { border: 1px solid var(--mm-line); border-radius: 6px; }
+.mm-ui.mm-rst-form .input-group { width: 100%; }
+.mm-ui.mm-rst-form .chosen-container { max-width: 100%; }
+.mm-ui.mm-rst-form [class*="col-"]:has(> table), .mm-ui.mm-rst-form [class*="col-"]:has(> .table-responsive) { overflow-x: auto; }
+.mm-ui.mm-rst-form [class*="col-"] > table.table { min-width: 640px; }
+.mm-ui.mm-rst-form :is(.btn-outline-danger, .btn-outline-success) { background: #fff; border: 1px solid var(--mm-line); box-shadow: none; font-weight: 600; cursor: pointer; }
+.mm-ui.mm-rst-form .btn-outline-danger { color: #b42318; }
+.mm-ui.mm-rst-form .btn-outline-success { color: var(--mm-brand, #2f63a8); }
+.mm-ui.mm-rst-form .btn-sm { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 6px 12px; border-radius: 6px; }
+.mm-ui.mm-rst-inv .mm-panel { display: flow-root; }
+.mm-ui.mm-rst-inv .mm-panel [class*="col-"] { min-width: 0; }
+.mm-ui.mm-rst-inv .mm-report-filter [class*="ml-"] { margin-left: 0; }
+.mm-ui.mm-rst-inv .mm-panel table.container { width: 100%; max-width: none; }

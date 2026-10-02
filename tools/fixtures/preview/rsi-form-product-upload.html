@@ -1,0 +1,92 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">    <style>
+        @media (max-width:575px) {
+            select.chosen-select.form-control.required:invalid {
+                height: 100% !important;
+                opacity: 1 !important;
+                position: unset !important;
+                display: unset !important;
+            }
+        }
+    </style>
+<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+<section class="mm-ui mm-rst mm-rst-inv mm-rst-form">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Add product</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Create a restaurant product, or upload several from a file.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a href="http://localhost/rst/product-uploads/index" class="mm-button">
+                <i class="ace-icon fa fa-list-alt"></i>
+                Upload List
+            </a></div>        </header>
+        <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><form method="POST" action="http://localhost/rst/product-uploads/store" class="form-horizontal"
+    enctype="multipart/form-data">
+    <input type="hidden" name="_token" value="fixture-csrf-token">
+
+    <input type="hidden" name="store_type" value="upload">
+
+    <div class="row">
+        <div class="col-sm-12">
+
+
+
+
+
+            <!-- file upload -->
+            <div class="col-sm-8 col-sm-offset-2">
+                <input type="file" class="form-control ace-file-upload" name="csv_file">
+            </div>
+
+
+
+
+
+            <!-- Action -->
+            <div class="col-sm-8 col-sm-offset-2 text-right">
+                <a href="/assets/product-sample-csv-update.csv" download
+                    class="btn btn-primary btn-sm">
+                    <span class="translate">
+                        Download Sample
+                    </span>
+                    <i class="fa fa-download"></i>
+                </a>
+                <button class="btn btn-inverse btn-sm" type="submit">
+                    <span class="translate">
+                        Import Product
+                    </span>
+                    <i class="fa fa-upload"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</form></div>
+    </div>
+</section>
+
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<script src="/assets/js/jquery-ui.min.js"></script><script src="/assets/custom_js/loadDetails.js"></script><script src="/assets/custom_js/reference_filter.js"></script><!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
+
+    
+    
+    <script>
+        $('#pack_size, #unit_cost, #sale_price').keyup(function(e) {
+            let unitCost = parseFloat($('#unit_cost').val())
+            let packSize = parseFloat($('#pack_size').val())
+            let salesPrice = parseFloat($('#sale_price').val())
+            let perPiecePrice = '';
+
+            if (packSize <= 0) {
+                alert('Enter Pack Size!');
+            } else {
+                $('#retail_unit_cost').val((unitCost / packSize).toFixed(2));
+                $('#retail_sales_price').val((salesPrice / packSize).toFixed(2));
+            }
+
+        })
+    </script>
+
+<!--/MM-JS--></body></html>

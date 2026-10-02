@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title', 'Product Inventory')
-@section('page-header')
-    <i class="fa fa-list"></i> Product Inventory
-@stop
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -15,87 +12,65 @@
 
 @stop
 
-
 @section('content')
-    <div id="content" class="content">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="widget-box">
-                    <div class="widget-header">
 
-                        <h4 class="widget-title"><i class="fa fa-info-circle"></i> Product Inventory </h4>
+<x-mm.styles />
+<x-mm.page class="mm-report mm-rst mm-rst-inventory mm-rst-inv" title="Product inventory" description="Stock on hand for the selected product filters.">
+    <x-mm.panel class="mm-report-filter">
+        @include('inventory.includes.filter')
+    </x-mm.panel>
 
-                    </div>
+    <x-mm.panel>
+        @include('partials._alert_message')
 
-                    <div class="widget-body">
-                        <div class="widget-main">
-                            @include('partials._alert_message')
+        <div class="json_table mt-2">
 
+                    <x-mm.table-scroll label="Product inventory">
+                        <table id="datatable" class="table table-striped table-bordered table-hover mb-2">
+                            <thead>
+                                <tr style="background: #C9DAF8 !important; color:black !important">
+                                    <th>SL</th>
+                                    <th>Product Name</th>
+                                    <th>Category</th>
+                                    <th class="text-right">Opening Qty</th>
+                                    <th class="text-right">Purchase Qty</th>
+                                    <th class="text-right">Sold Qty</th>
+                                    <th class="text-right">Return Qty</th>
+                                    <th class="text-right">Available Qty</th>
+                                </tr>
+                            </thead>
 
-                            <div class="my-2">
-                                @include('inventory.includes.filter')
-                            </div>
+                            <tbody>
 
+                                @forelse ($products as $key => $product)
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $product->name }}</td>
+                                        <td>{{ optional($product->category)->name }}</td>
+                                        <td class="text-right">{{ $product->opening_quantity }}</td>
+                                        <td class="text-right">{{ $product->purchased_quantity }}
+                                        </td>
+                                        <td class="text-right">{{ $product->sold_quantity }}</td>
+                                        <td class="text-right">{{ $product->return_quantity }}</td>
+                                        <td class="text-right">{{ $product->available_quantity }}
+                                        </td>
+                                    </tr>
 
+                                @empty
+                                    <tr>
+                                        <td colspan="30" class="text-center">
+                                            <b class="text-danger">No records found!</b>
+                                        </td>
+                                    </tr>
+                                @endforelse
+                            </tbody>
+                        </table>
+                    </x-mm.table-scroll>
 
-
-                            <div class="json_table mt-2">
-
-                                <div class="row">
-                                    <div class="col-xs-12">
-                                        <table id="datatable" class="table table-striped table-bordered table-hover mb-2">
-                                            <thead>
-                                                <tr style="background: #C9DAF8 !important; color:black !important">
-                                                    <th>SL</th>
-                                                    <th>Product Name</th>
-                                                    <th>Category</th>
-                                                    <th class="text-right">Opening Qty</th>
-                                                    <th class="text-right">Purchase Qty</th>
-                                                    <th class="text-right">Sold Qty</th>
-                                                    <th class="text-right">Return Qty</th>
-                                                    <th class="text-right">Available Qty</th>
-                                                </tr>
-                                            </thead>
-
-                                            <tbody>
-
-                                                @forelse ($products as $key => $product)
-                                                    <tr>
-                                                        <td>{{ $loop->iteration }}</td>
-                                                        <td>{{ $product->name }}</td>
-                                                        <td>{{ optional($product->category)->name }}</td>
-                                                        <td class="text-right">{{ $product->opening_quantity }}</td>
-                                                        <td class="text-right">{{ $product->purchased_quantity }}
-                                                        </td>
-                                                        <td class="text-right">{{ $product->sold_quantity }}</td>
-                                                        <td class="text-right">{{ $product->return_quantity }}</td>
-                                                        <td class="text-right">{{ $product->available_quantity }}
-                                                        </td>
-                                                    </tr>
-
-                                                @empty
-                                                    <tr>
-                                                        <td colspan="30" class="text-center">
-                                                            <b class="text-danger">No records found!</b>
-                                                        </td>
-                                                    </tr>
-                                                @endforelse
-                                            </tbody>
-                                        </table>
-
-                                    </div>
-                                </div>
-
-                            </div>
-                            <input type="hidden" id="csrf" value="{{ csrf_token() }}">
-
-                        </div>
-                    </div>
-
-                </div>
-            </div>
         </div>
-    </div>
+        <input type="hidden" id="csrf" value="{{ csrf_token() }}">
+    </x-mm.panel>
+</x-mm.page>
 
 @endsection
 

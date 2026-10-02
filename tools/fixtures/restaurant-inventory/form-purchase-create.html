@@ -1,0 +1,204 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">    <style>
+        input.form-control.small-box {
+            height: 28px;
+        }
+
+        input.form-control.small-label-box {
+            height: 24px;
+            padding: 1.5px;
+            border: 1px solid rgba(204, 204, 204, 0.51) !important;
+        }
+
+        .table>thead {
+            background: #ddd;
+        }
+    </style>
+<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+<section class="mm-ui mm-rst mm-rst-inv mm-rst-form mm-rst-purchase-create">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Purchase create</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Choose the supplier and account, add products and submit the purchase.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a href="http://localhost/rst/inventory/purchase" class="mm-button">
+                    <i class="ace-icon fa fa-list-alt"></i> List
+                </a></div>        </header>
+        <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><div class="row">
+            <form method="POST" action="http://localhost/rst/purchase/store" id="purchase-form">
+                <input type="hidden" name="_token" value="fixture-csrf-token">
+                <div class="col-md-12">
+
+                    <div class="row mb-3">
+    <div class="col-md-4">
+        <div class="input-group">
+    <label class="input-group-addon">Supplier </label>
+    <select class="form-control chosen-select-100-percent" name="supplier_id" id="supplier_id" data-placeholder="Choose One" data-selected="">
+        <option value=""></option>
+                    <option value="1">
+                Fresh &lt;b&gt;Co&lt;/b&gt;             </option>
+            </select>
+</div>
+
+    </div>
+    <div class="col-md-4">
+        <div class="input-group">
+    <label class="input-group-addon">Account </label>
+    <select class="form-control chosen-select-100-percent" name="account_id" id="account_id" data-placeholder="Choose One" data-selected="">
+        <option value=""></option>
+                    <option value="1">
+                Cash             </option>
+            </select>
+</div>
+
+
+    </div>
+
+    <div class="col-md-2">
+        <div class="input-group ">
+    <label class="input-group-addon padding-right-18px">
+        Challan
+            </label>
+    <input type="text" class="form-control " name="challan_id" id="challan_id" value="P-0003" placeholder="Type Challan"  readonly="readonly"  autocomplete="off">
+</div>
+
+    </div>
+
+
+    <div class="col-md-2">
+        <div class="input-group ">
+    <label class="input-group-addon padding-right-18px">
+        Date
+            </label>
+    <input type="text" class="form-control date-picker" name="date" id="date" value="2026-10-01" placeholder="Type Date"  readonly="readonly"  autocomplete="off">
+</div>
+
+    </div>
+
+</div>
+<div class="row mb-3">
+    <div class="col-md-8">
+        <div class="input-group">
+    <span class="input-group-addon">Product</span>
+    <select name="product_search" id="product-search" class="form-control select2"
+        data-placeholder="--Choose Product--">
+        <option value=""></option>
+    </select>
+</div>
+    </div>
+
+</div>
+                    <div class="row">
+                        <div class="col-md-9">
+
+                            <table class="table table-bordered table-hover">
+    <thead>
+        <th>Product</th>
+        <th width="12%">Unit Cost</th>
+        <th width="12%">Sale Price</th>
+        <th colspan="2" width="15%">Quantity</th>
+        <th width="14%" class="text-center">Vat</th>
+        <th width="10%">Total</th>
+        <th width="5%"></th>
+    </thead>
+
+    <tbody id="products">
+
+    </tbody>
+</table>
+
+                        </div>
+                        <div class="col-md-3">
+
+                            <div class="form-group">
+    <div class="input-group ">
+    <label class="input-group-addon padding-right-18px">
+        Subtotal(৳)
+            </label>
+    <input type="text" class="form-control " name="subtotal" id="subtotal" value="0" placeholder="Type Subtotal(৳)"  readonly="readonly"  autocomplete="off">
+</div>
+
+
+</div>
+
+<div class="form-group">
+    <div class="input-group ">
+    <label class="input-group-addon padding-right-18px">
+        Discount(৳)
+            </label>
+    <input type="text" class="form-control " name="discount" id="discount" value="0" placeholder="Type Discount(৳)"  autocomplete="off">
+</div>
+
+
+</div>
+
+<div class="form-group">
+    <div class="input-group ">
+    <label class="input-group-addon padding-right-18px">
+        Total vat(৳)
+            </label>
+    <input type="text" class="form-control " name="total_vat" id="total_vat" value="0" placeholder="Type Total vat(৳)"  readonly="readonly"  autocomplete="off">
+</div>
+
+
+</div>
+
+<div class="form-group">
+    <div class="input-group ">
+    <label class="input-group-addon padding-right-18px">
+        Grand Total(৳)
+            </label>
+    <input type="text" class="form-control " name="grand_total" id="grand_total" value="0" placeholder="Type Grand Total(৳)"  readonly="readonly"  autocomplete="off">
+</div>
+
+
+</div>
+
+<div class="form-group">
+    <div class="input-group ">
+    <label class="input-group-addon padding-right-18px">
+        Total Paid(৳)
+            </label>
+    <input type="text" class="form-control " name="paid_amount" id="paid_amount" value="0" placeholder="Type Total Paid(৳)"  autocomplete="off">
+</div>
+
+
+</div>
+
+<div class="form-group">
+    <div class="input-group ">
+    <label class="input-group-addon padding-right-18px">
+        Total Due(৳)
+            </label>
+    <input type="text" class="form-control " name="due_amount" id="due_amount" value="0" placeholder="Type Total Due(৳)"  readonly="readonly"  autocomplete="off">
+</div>
+
+</div>
+
+<div class="row">
+    <div class="pull-right mx-3">
+        <div class="form-grouptext-right">
+            <button type="button" class="btn-sm btn-outline-danger">
+                <i class="fa fa-refresh"></i> Cancel
+            </button>
+            <button type="button" class="btn-sm btn-outline-success save-purchase">
+                <i class="fa fa-save"></i> Submit
+            </button>
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div></div>
+    </div>
+</section>
+
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<script src="/assets/js/jquery-ui.min.js"></script><script src="/assets/custom_js/loadDetails.js"></script><script src="/assets/custom_js/reference_filter.js"></script><!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
+<!--/MM-JS--></body></html>

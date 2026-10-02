@@ -1,0 +1,219 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css"><!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+<section class="mm-ui mm-rst mm-rst-inv mm-rst-form">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Edit material product</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Update the product details.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a href="http://localhost/rst/products/index" class="mm-button">
+            <i class="ace-icon fa fa-list-alt"></i>
+            Product List
+        </a></div>        </header>
+        <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><form method="POST" action="http://localhost/rst/products/update/1"
+            class="form-horizontal" data-parsley-validate novalidate>
+            <input type="hidden" name="_token" value="fixture-csrf-token">            <input type="hidden" name="_method" value="PUT">
+            <!-- Name -->
+            <div class="form-group">
+                <div class="col-md-6 col-md-offset-1">
+                    <label class="control-label" for="specification">Name <sup
+                            class="text-danger">*</sup> :</label>
+                    <input class="form-control" type="text" id="product_name" name="name"
+                        placeholder="Product Name" value="Basmati &lt;b&gt;rice&lt;/b&gt;"
+                        data-parsley-required="true" autocomplete="off" />
+                </div>
+            </div>
+
+            <!-- Barcode -->
+            <div class="form-group">
+                <div class="col-md-6 col-md-offset-1">
+                    <label class="control-label" for="specification">Barcode <sup class="text-danger">*</sup> :</label>
+                    <input class="form-control" type="text" id="product_barcode" name="barcode" placeholder="Product Barcode"
+                        value="B-1" data-parsley-required="true" autocomplete="off" required />
+                </div>
+            </div>
+
+            <div class="form-group">
+
+                <!-- Category -->
+                <div class="col-md-3 col-md-offset-1">
+                    <label class="control-label" for="specification">Category <sup
+                            class="text-danger">*</sup> :</label>
+                    <select class="chosen-select form-control required" required="required"
+                        name="category_id" data-placeholder="--Select--">
+                        <option></option>
+                                                    <option value="1" >Rice &lt;b&gt;dishes&lt;/b&gt;</option>
+                                                                            </select>
+                </div>
+
+                <!-- Unit -->
+                <div class="col-md-3 ">
+                    <label class="control-label" for="specification">Unit <sup
+                            class="text-danger">*</sup> :</label>
+                    <select class="chosen-select form-control required" required="required"
+                        name="unit_id" data-placeholder="--Select--">
+                        <option value=""></option>
+                                                    <option value="1"
+                                selected>
+                                Plate</option>
+                                                    <option value="2"
+                                >
+                                Kg</option>
+                                            </select>
+                </div>
+
+            </div>
+
+            <div class="form-group">
+
+                <!-- Supplier Name -->
+                <div class="col-md-6 col-md-offset-1">
+
+                    <label class="control-label" for="specification">Supplier :</label>
+
+                    <select class="chosen-select form-control" name="supplier_id"
+                        data-placeholder="-Select Supplier-">
+                        <option value=""></option>
+                                                    <option value="1"
+                                selected>
+                                Sarker &lt;b&gt;Traders&lt;/b&gt;
+                            </option>
+                                            </select>
+
+                </div>
+
+            </div>
+
+            <div class="form-group">
+
+                <!-- Unit Cost -->
+                <div class="col-md-3 col-md-offset-1">
+                    <label class="control-label" for="unit_cost">Purchase Price :</label>
+                    <input class="form-control"
+                        value="100" type="number"
+                        id="unit_cost" min="0" name="unit_cost" placeholder="Unit Cost"/>
+                </div>
+
+                <!-- Sale Price -->
+                <div class="col-md-3">
+                    <label class="control-label" for="sale_price">Sale Price :</label>
+                    <input class="form-control"
+                        value="250" type="number"
+                        id="sale_price" min="0" name="sale_price" placeholder="Sale price" />
+                </div>
+
+            </div>
+
+            <div class="form-group">
+
+                <!-- Alert Quantity -->
+                <div class="col-md-3 col-md-offset-1">
+                    <label class="control-label" for="stock_limit">
+                        Alert Quantity :
+                    </label>
+                    <input class="form-control"
+                        value="5" type="number"
+                        id="stock_limit" min="0" name="stock_limit" placeholder="Stock Limitation"
+                        data-parsley-required="true" />
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <!-- VAT -->
+                <div class="col-md-3 col-md-offset-1">
+
+                    <label class="control-label" for="specification">Vat :</label>
+
+                    <div class="input-group">
+                        <span class="input-group-addon">৳</span>
+                        <div class="input-group">
+                            <input type="text" name="vat_amount" class="form-control only-number" value="5">
+                            <span class="input-group-addon">%</span>
+                            <input type="text" name="vat_percent" class="form-control only-number" value="2">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <!-- Status  -->
+
+                <div class="col-md-6 col-md-offset-1">
+                    <label class="control-label">
+                        Status<sup class="text-danger">*</sup> :
+                    </label>
+
+                    <select class="form-control chosen-select" id="status" name="status"
+                        data-placeholder="-Select-">
+                        <option value=""></option>
+                        <option value="1" selected>Active
+                        </option>
+                        <option value="0" >
+                            Inactive
+                        </option>
+                    </select>
+                </div>
+
+            </div>
+
+            <!-- Submit Button -->
+            <div class="form-group">
+
+                <div class="col-md-6 col-sm-offset-3">
+                    <button type="submit" id="submit" class="btn btn-primary">
+                        <i class="fa fa-edit"></i> Edit Product
+                    </button>
+                </div>
+
+            </div>
+
+        </form></div>
+    </div>
+</section>
+
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<script src="/assets/js/jquery-ui.min.js"></script><script src="/assets/custom_js/loadDetails.js"></script><script src="/assets/custom_js/reference_filter.js"></script><!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
+
+    
+    <script>
+        // Load Batches
+        $(document).ready(function() {
+            loadDetails({
+                type: 'batchNumber',
+                selector: '#batch-number',
+                url: "/pharmacy/inventory/get-product-batches",
+                select: function(event, ui) {
+                    $('.add-product-id').val(ui.item.data.id);
+                    $('.drug-name').val(ui.item.data.batch_number);
+                },
+            })
+        })
+
+        $('#pack_size, #unit_cost, #sale_price').keyup(function(e) {
+            let unitCost = parseFloat($('#unit_cost').val())
+            let packSize = parseFloat($('#pack_size').val())
+            let salesPrice = parseFloat($('#sale_price').val())
+            let perPiecePrice = '';
+
+            console.log($('#sale_price').val());
+
+            if (packSize <= 0) {
+                alert('Enter Pack Size!');
+            } else {
+                $('#retail_unit_cost').val((unitCost / packSize).toFixed(2));
+                $('#retail_sales_price').val((salesPrice / packSize).toFixed(2));
+            }
+            console.log($('#retail_unit_cost').val(), $('#retail_sales_price').val())
+            // if (perPackQuantity >= 0) {
+            //     perPiecePrice = ((salesPrice / packSize) / perPackQuantity).toFixed(2);
+            //     $('#per_piece_price').val((perPiecePrice));
+            // }
+
+        })
+    </script>
+
+<!--/MM-JS--></body></html>

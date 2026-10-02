@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title', 'Production')
-@section('page-header')
-    <i class="fa fa-gear"></i> Production
-@stop
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -15,265 +12,234 @@
     </style>
 @stop
 
-
 @section('content')
 
-    <div class="row">
+<x-mm.styles />
+<x-mm.page class="mm-rst mm-rst-inv mm-rst-form" title="Goods requisition" description="Pick materials and the finished goods they produce.">
+    <x-slot name="actions">
+        <a href="{{ route('rst.production.index') }}" class="mm-button">
+            <i class="ace-icon fa fa-list-alt"></i> Production List
+        </a>
 
-        <div class="col-sm-12">
-            <div class="widget-box">
-                <div class="widget-header">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
+    </x-slot>
+    <x-mm.panel class="tw-p-4">
+        <form class="form-horizontal" action="{{ route('rst.production.store') }}" method="post">
+            @csrf
 
-                    <span class="widget-toolbar">
-                        <a href="{{ route('rst.production.index') }}">
-                            <i class="ace-icon fa fa-list-alt"></i> Production List
-                        </a>
-                    </span>
+            @include('partials._alert_message')
 
+            <!-- select company -->
+            {{-- <div class="form-group">
+                <label class="col-sm-3 control-label" for="form-field-1-1"> Company </label>
+                <div class="col-xs-12 col-sm-8 @error('purchase_unit') has-error @enderror">
+                    <select name="company_id" class="form-control filter" id="company_id"
+                        onchange="load_items(this)" data-placeholder="-Select Company-">
+                        <option></option>
+                        @foreach ($companies as $id => $company)
+                            <option value="{{ $id }}"
+                                {{ old('company_id') == $id ? 'selected' : '' }}>{{ $company }}
+                            </option>
+                        @endforeach
+                    </select>
+
+                    @error('company_id')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
+            </div> --}}
 
-                <div class="widget-body">
-                    <div class="widget-main">
-                        <form class="form-horizontal" action="{{ route('rst.production.store') }}" method="post">
-                            @csrf
+            <!-- select department -->
+            {{-- <div class="form-group">
+                <label class="control-label col-sm-3">Department</label>
+                <div class="col-xs-12 col-sm-8 @error('department_id') has-error @enderror">
+                    <select name="department_id" class="form-control filter">
+                        <option value="">select</option>
+                        @foreach ($departments as $id => $department)
+                            <option value="{{ $id }}"
+                                {{ old('department_id') == $id ? 'selected' : '' }}>{{ $department }}
+                            </option>
+                        @endforeach
+                    </select>
 
-                            @include('partials._alert_message')
+                    @error('department_id')
+                        <span class="text-danger"> {{ $message }} </span>
+                    @enderror
+                </div>
+            </div> --}}
 
-                            <!-- select company -->
-                            {{-- <div class="form-group">
-                                <label class="col-sm-3 control-label" for="form-field-1-1"> Company </label>
-                                <div class="col-xs-12 col-sm-8 @error('purchase_unit') has-error @enderror">
-                                    <select name="company_id" class="form-control filter" id="company_id"
-                                        onchange="load_items(this)" data-placeholder="-Select Company-">
-                                        <option></option>
-                                        @foreach ($companies as $id => $company)
-                                            <option value="{{ $id }}"
-                                                {{ old('company_id') == $id ? 'selected' : '' }}>{{ $company }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-
-                                    @error('company_id')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div> --}}
-
-                            <!-- select department -->
-                            {{-- <div class="form-group">
-                                <label class="control-label col-sm-3">Department</label>
-                                <div class="col-xs-12 col-sm-8 @error('department_id') has-error @enderror">
-                                    <select name="department_id" class="form-control filter">
-                                        <option value="">select</option>
-                                        @foreach ($departments as $id => $department)
-                                            <option value="{{ $id }}"
-                                                {{ old('department_id') == $id ? 'selected' : '' }}>{{ $department }}
-                                            </option>
-                                        @endforeach
-                                    </select>
-
-                                    @error('department_id')
-                                        <span class="text-danger"> {{ $message }} </span>
-                                    @enderror
-                                </div>
-                            </div> --}}
-
-                            <!-- select date -->
-                            <div class="form-group col-">
-                                <label for="inputError" class="col-xs-12 col-sm-3 col-md-3 control-label"> Date </label>
-                                <div class="col-xs-12 col-sm-8 @error('date') has-error @enderror">
-                                    <div class="input-group">
-                                        <input class="form-control date-picker" name="date" id="id-date-picker-1"
-                                            autocomplete="off" type="text" data-date-format="yyyy-mm-dd"
-                                            value="{{ old('date', date('Y-m-d')) }}" />
-                                        <span class="input-group-addon">
-                                            <i class="fa fa-calendar bigger-110"></i>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- reference -->
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label" for="form-field-1-1"> Reference </label>
-                                <div class="col-xs-12 col-sm-8 @error('challan_id') has-error @enderror">
-                                    <input type="text" class="form-control"
-                                        name="challan_id"
-                                        value="{{ $challan_id }}"
-                                        placeholder="Reference">
-
-                                    @error('challan_id')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-
-
-
-
-                            <!-- Row Matrial Entry form -->
-                            <div class="row text-center">
-                                <div class="col-sm-12">
-                                    <h3 class="header smaller lighter blue">Row Materials</h3>
-                                    <table id="purchase_table" class="table table-bordered edu1 container">
-                                        <!-- title head -->
-                                        <thead>
-                                            <tr>
-                                                <td rowspan="2">Item</td>
-                                                <td rowspan="2">Unit</td>
-                                                <td rowspan="2">Stock</td>
-                                                <td rowspan="2">Quantity</td>
-                                                <td rowspan="2">Remarks</td>
-                                                <td rowspan="2">Action</td>
-                                            </tr>
-                                        </thead>
-
-
-                                        <tbody class="text-left">
-                                                <tr>
-                                                    <td>
-                                                        <select name="material_id[]" class="form-control item chosen-select"
-                                                            onchange="load_item_stock(this)" id="select20">
-                                                            <option value="" disabled selected>select</option>
-                                                        </select>
-                                                    </td>
-                                                    <td>
-                                                        <input type="text" value="" name="material_unit_id[]"
-                                                            class="form-control material_item_unit" readonly="readonly" />
-                                                    </td>
-                                                    <td>
-                                                        <input type="text" value="" name="material_available_quantity[]"
-                                                            id="item_available_quantityq0"
-                                                            class="form-control material_current_stock material-available-qty"
-                                                            readonly="readonly" />
-                                                    </td>
-                                                    <td>
-                                                        <input type="text" id="q0" value="" onkeyup="checkQtyLimit(this)"
-                                                            onkeypress='return event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
-                                                            name="material_quantity[]" class="form-control material_quantity" />
-                                                    </td>
-                                                    <td>
-                                                        <input type="text" class="form-control" name="material_remarks[]" value="">
-                                                    </td>
-
-
-                                                    <td><button type="button"
-                                                            class="ibtnDel btn btn-sm btn-danger delete_row"
-                                                            onclick="removeRow(this)"><i
-                                                                class="fa fa-times-circle"></i></button></td>
-                                                </tr>
-
-                                            <tr>
-                                                <td colspan="7" style="text-align: right;">
-                                                    <button type="button" onclick="insert_Row(this)"
-                                                        class="btn btn-xs btn-inverse add_row r-btnAdd">
-                                                        + Add New
-                                                    </button>
-                                                </td>
-                                            </tr>
-
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-
-
-
-                            <!-- Finish Good Entry form -->
-                            <div class="row text-center">
-                                <div class="col-sm-12">
-                                    <h3 class="header smaller lighter blue">Finish Good</h3>
-                                    <table id="finish_good_table" class="table table-bordered edu1 container">
-                                        <!-- title head -->
-                                        <thead>
-                                            <tr>
-                                                <td rowspan="2">Item</td>
-                                                <td rowspan="2">Unit</td>
-                                                <td rowspan="2">Stock</td>
-                                                <td rowspan="2">Quantity</td>
-                                                <td rowspan="2">Remarks</td>
-                                                <td rowspan="2">Action</td>
-                                            </tr>
-                                        </thead>
-
-
-
-
-                                        <tbody class="text-left">
-
-                                                <tr>
-                                                    <td>
-                                                        <select name="item_id[]" class="form-control item2 chosen-select"
-                                                            onchange="load_product_stock(this)" id="select20">
-                                                            <option value="" disabled selected>select</option>
-                                                        </select>
-                                                    </td>
-                                                    <td>
-                                                        <input type="text" value="" name="item_unit_id[]"
-                                                            class="form-control item_unit" readonly="readonly" />
-                                                    </td>
-                                                    <td>
-                                                        <input type="text" value="" name="item_available_quantity[]"
-                                                            id="item_available_quantityq0"
-                                                            class="form-control item_current_stock item-available-qty"
-                                                            readonly="readonly" />
-                                                    </td>
-                                                    <td>
-                                                        <input type="text" id="q0" value="" onkeyup="checkItemQtyLimit(this)"
-                                                            onkeypress='return event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
-                                                            name="item_quantity[]" class="form-control item_quantity" />
-                                                    </td>
-                                                    <td>
-                                                        <input type="text" class="form-control" name="item_remarks[]" value="">
-                                                    </td>
-
-
-                                                    <td><button type="button"
-                                                            class="ibtnDel-2 btn btn-sm btn-danger delete_row_2"
-                                                            onclick="removeRow_2(this)"><i
-                                                                class="fa fa-times-circle"></i></button></td>
-                                                </tr>
-
-                                            <tr>
-                                                <td colspan="7" style="text-align: right;">
-                                                    <button type="button" onclick="insert_Row_2(this)"
-                                                        class="btn btn-xs btn-inverse add_row_2 r-btnAdd-2">
-                                                        + Add New
-                                                    </button>
-                                                </td>
-                                            </tr>
-
-                                        </tbody>
-                                    </table>
-                                    <div class="form-group">
-                                        <div class="pull-right" style="padding-right: 10px !important;">
-                                            <button class="btn btn-success btn-sm"> <i class="fa fa-save"></i>
-                                                Save</button>
-                                            <button class="btn btn-gray btn-sm" type="Reset"> <i class="fa fa-refresh"></i>
-                                                Reset</button>
-                                            <a href="{{ route('goods-requisitions.index') }}"
-                                                class="btn btn-info btn-sm"> <i class="fa fa-list"></i> List</a>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-
-
-
-                            <input type="hidden" id="total" value="0" name="total">
-
-
-                        </form>
+            <!-- select date -->
+            <div class="form-group col-">
+                <label for="inputError" class="col-xs-12 col-sm-3 col-md-3 control-label"> Date </label>
+                <div class="col-xs-12 col-sm-8 @error('date') has-error @enderror">
+                    <div class="input-group">
+                        <input class="form-control date-picker" name="date" id="id-date-picker-1"
+                            autocomplete="off" type="text" data-date-format="yyyy-mm-dd"
+                            value="{{ old('date', date('Y-m-d')) }}" />
+                        <span class="input-group-addon">
+                            <i class="fa fa-calendar bigger-110"></i>
+                        </span>
                     </div>
                 </div>
             </div>
 
+            <!-- reference -->
+            <div class="form-group">
+                <label class="col-sm-3 control-label" for="form-field-1-1"> Reference </label>
+                <div class="col-xs-12 col-sm-8 @error('challan_id') has-error @enderror">
+                    <input type="text" class="form-control"
+                        name="challan_id"
+                        value="{{ $challan_id }}"
+                        placeholder="Reference">
 
-        </div>
-    </div>
+                    @error('challan_id')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+            </div>
 
+            <!-- Row Matrial Entry form -->
+
+                    <h3 class="header smaller lighter blue">Row Materials</h3>
+                    <x-mm.table-scroll label="Materials">
+                        <table id="purchase_table" class="table table-bordered edu1 container">
+                            <!-- title head -->
+                            <thead>
+                                <tr>
+                                    <td rowspan="2">Item</td>
+                                    <td rowspan="2">Unit</td>
+                                    <td rowspan="2">Stock</td>
+                                    <td rowspan="2">Quantity</td>
+                                    <td rowspan="2">Remarks</td>
+                                    <td rowspan="2">Action</td>
+                                </tr>
+                            </thead>
+    
+                            <tbody class="text-left">
+                                    <tr>
+                                        <td>
+                                            <select name="material_id[]" class="form-control item chosen-select"
+                                                onchange="load_item_stock(this)" id="select20">
+                                                <option value="" disabled selected>select</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="text" value="" name="material_unit_id[]"
+                                                class="form-control material_item_unit" readonly="readonly" />
+                                        </td>
+                                        <td>
+                                            <input type="text" value="" name="material_available_quantity[]"
+                                                id="item_available_quantityq0"
+                                                class="form-control material_current_stock material-available-qty"
+                                                readonly="readonly" />
+                                        </td>
+                                        <td>
+                                            <input type="text" id="q0" value="" onkeyup="checkQtyLimit(this)"
+                                                onkeypress='return event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
+                                                name="material_quantity[]" class="form-control material_quantity" />
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" name="material_remarks[]" value="">
+                                        </td>
+    
+                                        <td><button type="button"
+                                                class="ibtnDel btn btn-sm btn-danger delete_row"
+                                                onclick="removeRow(this)"><i
+                                                    class="fa fa-times-circle"></i></button></td>
+                                    </tr>
+    
+                                <tr>
+                                    <td colspan="7" style="text-align: right;">
+                                        <button type="button" onclick="insert_Row(this)"
+                                            class="btn btn-xs btn-inverse add_row r-btnAdd">
+                                            + Add New
+                                        </button>
+                                    </td>
+                                </tr>
+    
+                            </tbody>
+                        </table>
+                    </x-mm.table-scroll>
+
+            <!-- Finish Good Entry form -->
+
+                    <h3 class="header smaller lighter blue">Finish Good</h3>
+                    <x-mm.table-scroll label="Finished goods">
+                        <table id="finish_good_table" class="table table-bordered edu1 container">
+                            <!-- title head -->
+                            <thead>
+                                <tr>
+                                    <td rowspan="2">Item</td>
+                                    <td rowspan="2">Unit</td>
+                                    <td rowspan="2">Stock</td>
+                                    <td rowspan="2">Quantity</td>
+                                    <td rowspan="2">Remarks</td>
+                                    <td rowspan="2">Action</td>
+                                </tr>
+                            </thead>
+    
+                            <tbody class="text-left">
+    
+                                    <tr>
+                                        <td>
+                                            <select name="item_id[]" class="form-control item2 chosen-select"
+                                                onchange="load_product_stock(this)" id="select20">
+                                                <option value="" disabled selected>select</option>
+                                            </select>
+                                        </td>
+                                        <td>
+                                            <input type="text" value="" name="item_unit_id[]"
+                                                class="form-control item_unit" readonly="readonly" />
+                                        </td>
+                                        <td>
+                                            <input type="text" value="" name="item_available_quantity[]"
+                                                id="item_available_quantityq0"
+                                                class="form-control item_current_stock item-available-qty"
+                                                readonly="readonly" />
+                                        </td>
+                                        <td>
+                                            <input type="text" id="q0" value="" onkeyup="checkItemQtyLimit(this)"
+                                                onkeypress='return event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57'
+                                                name="item_quantity[]" class="form-control item_quantity" />
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" name="item_remarks[]" value="">
+                                        </td>
+    
+                                        <td><button type="button"
+                                                class="ibtnDel-2 btn btn-sm btn-danger delete_row_2"
+                                                onclick="removeRow_2(this)"><i
+                                                    class="fa fa-times-circle"></i></button></td>
+                                    </tr>
+    
+                                <tr>
+                                    <td colspan="7" style="text-align: right;">
+                                        <button type="button" onclick="insert_Row_2(this)"
+                                            class="btn btn-xs btn-inverse add_row_2 r-btnAdd-2">
+                                            + Add New
+                                        </button>
+                                    </td>
+                                </tr>
+    
+                            </tbody>
+                        </table>
+                    </x-mm.table-scroll>
+                    <div class="form-group">
+                        <div class="pull-right" style="padding-right: 10px !important;">
+                            <button class="btn btn-success btn-sm"> <i class="fa fa-save"></i>
+                                Save</button>
+                            <button class="btn btn-gray btn-sm" type="Reset"> <i class="fa fa-refresh"></i>
+                                Reset</button>
+                            <a href="{{ route('goods-requisitions.index') }}"
+                                class="btn btn-info btn-sm"> <i class="fa fa-list"></i> List</a>
+                        </div>
+                    </div>
+
+            <input type="hidden" id="total" value="0" name="total">
+
+        </form>
+
+    </x-mm.panel>
+</x-mm.page>
 
 @endsection
 
@@ -284,11 +250,8 @@
     <script src="{{ asset('assets/js/chosen.jquery.min.js') }}"></script>
     <script src="{{ asset('assets/custom_js/jq_repeater.js') }}"></script>
 
-
     <script src="{{ asset('assets/js/bootstrap-datepicker.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap-timepicker.min.js') }}"></script>
-
-
 
     <!--datepicker plugin-->
     <script type="text/javascript">
@@ -297,17 +260,11 @@
             $('.date-picker').datepicker('hide');
         });
 
-
-
-
         $(document).on('ready', function() {
 
                 load_items();
                 load_products();
         })
-
-
-
 
         jQuery(function($) {
 
@@ -324,8 +281,6 @@
         })
     </script>
 
-
-
     <script>
 
         var item_row = 0;
@@ -334,14 +289,10 @@
         var item_row_2 = 0;
         var items_2 = [];
 
-
-
-
         // insert new row
         function insert_Row(el) {
             // first delete add item
             $(el).parents("tr").remove();
-
 
             // add new item row
             var r = document.getElementById('purchase_table').insertRow();
@@ -352,8 +303,6 @@
             var c4 = r.insertCell(3);
             var c5 = r.insertCell(4);
             var c6 = r.insertCell(5);
-
-
 
             var inputs =
                 '<input type="hidden" name="issue_number[]" class="issue_number_input"><input type="hidden" name="source[]" class="source_input"><input type="hidden" name="issue_rates[]" class="issue_rate_input"><input type="hidden" name="issue_quantities[]" class="issue_quantity_input">';
@@ -376,12 +325,10 @@
             c6.innerHTML =
                 '<button type="button" class="ibtnDel btn btn-sm btn-danger delete_row" onclick="removeRow(this)"><i class="fa fa-times-circle"></i></button>';
 
-
             // again add "+ Add New" Button
             var markup =
                 '<tr><td colspan="11" style="text-align: right;"><button type="button" onclick="insert_Row(this)" class="btn btn-xs btn-inverse add_row r-btnAdd"> + Add New </button></td></tr>';
             $("table#purchase_table tbody").append(markup);
-
 
             $('.item' + item_row).empty();
             $('.item' + item_row).append('<option></option>');
@@ -400,7 +347,6 @@
             // first delete add item
             $(el).parents("tr").remove();
 
-
             // add new item row
             var f = document.getElementById('finish_good_table').insertRow();
 
@@ -410,8 +356,6 @@
             var g4 = f.insertCell(3);
             var g5 = f.insertCell(4);
             var g6 = f.insertCell(5);
-
-
 
             var inputs =
                 '<input type="hidden" name="issue_number[]" class="issue_number_input"><input type="hidden" name="source[]" class="source_input"><input type="hidden" name="issue_rates[]" class="issue_rate_input"><input type="hidden" name="issue_quantities[]" class="issue_quantity_input">';
@@ -434,12 +378,10 @@
             g6.innerHTML =
                 '<button type="button" class="ibtnDel-2 btn btn-sm btn-danger delete_row_2" onclick="removeRow_2(this)"><i class="fa fa-times-circle"></i></button>';
 
-
             // again add "+ Add New" Button
             var markup_2 =
                 '<tr><td colspan="11" style="text-align: right;"><button type="button" onclick="insert_Row_2(this)" class="btn btn-xs btn-inverse add_row_2 r-btnAdd-2"> + Add New </button></td></tr>';
             $("table#finish_good_table tbody").append(markup_2);
-
 
             $('.item2' + item_row_2).empty();
             $('.item2' + item_row_2).append('<option></option>');
@@ -462,7 +404,6 @@
 
         }
 
-
         // delete specific row
         function removeRow_2(el) {
             var item_row_f = $('#finish_good_table tr').length;
@@ -471,9 +412,6 @@
             }
 
         }
-
-
-
 
         // load items to the select box when change company
         function load_items(element) {
@@ -515,7 +453,6 @@
                 }
             });
         }
-
 
         // load item unit and current stock when change item
         function load_item_stock(element) {
@@ -609,7 +546,6 @@
         }
     </script>
 
-
     {{-- chosen select --}}
     <script type="text/javascript">
         $(() => chosenTrigger())
@@ -645,7 +581,6 @@
                     });
                 }
 
-
                 if (!ace.vars['touch']) {
                     $('.chosen-select').chosen({
                         allow_single_deselect: true
@@ -677,9 +612,6 @@
             })
         }
 
-
-
     </script>
-
 
 @stop

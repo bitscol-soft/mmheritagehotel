@@ -1,0 +1,150 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">    <link rel="stylesheet" href="/assets/css/chosen.min.css" />
+    <link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css" />
+
+    <style>
+        .bg-dark {
+            background-color: #C9DAF8;
+        }
+    </style>
+
+<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+<section class="mm-ui mm-report mm-rst mm-rst-inventory mm-rst-inv">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Product inventory</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Stock on hand for the selected product filters.</p>            </div>
+                    </header>
+        <div class="mm-panel tw-p-4 sm:tw-p-6 mm-report-filter"><div class="col-sm-12 mb-2 ml-4">
+    <form method="get">
+
+        <div class="row">
+
+
+
+
+
+
+            <!-- Product Name -->
+            <div class="col-md-5">
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <label class="input-group-text">Product </label>
+                    </div>
+
+                    <input class="form-control" type="text" value="" id="name" name="name"
+                        placeholder="Product Name" autocomplete="off" />
+                </div>
+            </div>
+
+
+
+
+
+            <!-- Category -->
+            <div class="col-md-3">
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <label class="input-group-text">Category </label>
+                    </div>
+
+                    <input class="form-control" type="text" value="" id="name"
+                        name="category_name" placeholder="Category Name" autocomplete="off" />
+                </div>
+            </div>
+
+
+
+
+
+
+
+
+            <!-- Stock Type -->
+            <div class="col-md-2">
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <label class="input-group-text">Type </label>
+                    </div>
+
+                    <select name="is_bar" class="form-control chosen-select-100-percent" data-selected="">
+                        <option value="1">Bar</option>
+                        <option value="0">Restaurant</option>
+                    </select>
+                </div>
+            </div>
+
+
+
+
+
+
+
+            <!-- Action -->
+            <div class="col-md-2">
+                <div class="btn-group">
+                    <a class="btn btn-sm" href="http://localhost/rst/inventory-report/index"><i
+                            class="fa fa-refresh"></i></a>
+                    <button type="submit" class="btn btn-success btn-sm"><i class="fa fa-search"></i> Search</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div></div>
+
+    <div class="mm-panel tw-p-4 sm:tw-p-6"><div class="json_table mt-2">
+
+                    <div class="mm-table-scroll" role="region" aria-label="Product inventory" tabindex="0"><table id="datatable" class="table table-striped table-bordered table-hover mb-2">
+                            <thead>
+                                <tr style="background: #C9DAF8 !important; color:black !important">
+                                    <th>SL</th>
+                                    <th>Product Name</th>
+                                    <th>Category</th>
+                                    <th class="text-right">Opening Qty</th>
+                                    <th class="text-right">Purchase Qty</th>
+                                    <th class="text-right">Sold Qty</th>
+                                    <th class="text-right">Return Qty</th>
+                                    <th class="text-right">Available Qty</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+
+                                                                    <tr>
+                                        <td>1</td>
+                                        <td>Chicken &lt;b&gt;Biryani&lt;/b&gt;</td>
+                                        <td>Rice dishes</td>
+                                        <td class="text-right">3</td>
+                                        <td class="text-right">5
+                                        </td>
+                                        <td class="text-right">2</td>
+                                        <td class="text-right">0</td>
+                                        <td class="text-right">8
+                                        </td>
+                                    </tr>
+
+                                                            </tbody>
+                        </table></div>
+
+        </div>
+        <input type="hidden" id="csrf" value="fixture-csrf-token"></div>
+    </div>
+</section>
+
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
+
+    <script>
+        loadSelect2({
+            url: "/bar/inventory/get-products",
+            select: '#product-search',
+            templateResult: formatProduct,
+            templateSelection: formatSelection
+        })
+    </script>
+
+<!--/MM-JS--></body></html>

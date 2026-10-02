@@ -1,11 +1,6 @@
 @extends('layouts.master')
 @section('title', 'Purchase Create')
 
-@section('page-header')
-    Purchase Create
-@stop
-
-
 @push('style')
     <style>
         input.form-control.small-box {
@@ -24,61 +19,46 @@
     </style>
 @endpush
 
-
 @section('content')
-    <div class="row">
-        <div class="col-md-12">
-            <div class="widget-box">
-                <div class="widget-header">
 
-                    <h4 class="widget-title"> <i class="fa fa-plus-circle"></i> @yield('page-header')</h4>
+<x-mm.styles />
+<x-mm.page class="mm-rst mm-rst-inv mm-rst-form mm-rst-purchase-create" title="Purchase create" description="Choose the supplier and account, add products and submit the purchase.">
+    <x-slot name="actions">
+        @if (hasPermission('rst.purchase.index', $slugs))
+                <a href="{{ route('rst.purchase.index') }}" class="mm-button">
+                    <i class="ace-icon fa fa-list-alt"></i> List
+                </a>
+        @endif
 
-                    @if (hasPermission('rst.purchase.index', $slugs))
-                        <span class="widget-toolbar">
-                            <a href="{{ route('rst.purchase.index') }}">
-                                <i class="ace-icon fa fa-list-alt"></i> List
-                            </a>
-                        </span>
-                    @endif
-                </div>
-                <div class="widget-body">
+    </x-slot>
+    <x-mm.panel class="tw-p-4">
+        <x-alert-message />
 
-                    <div class="widget-main">
+        <div class="row">
+            <form method="POST" action="{{ route('rst.purchase.store') }}" id="purchase-form">
+                @csrf
 
+                <div class="col-md-12">
 
-                        <x-alert-message />
+                    @include('inventory.production.purchase-v2.inc.common')
+                    <div class="row">
+                        <div class="col-md-9">
 
+                            @include('inventory.production.purchase-v2.create.left-side')
 
-                        <div class="row">
-                            <form method="POST" action="{{ route('rst.purchase.store') }}" id="purchase-form">
-                                @csrf
+                        </div>
+                        <div class="col-md-3">
 
-                                <div class="col-md-12">
+                            @include('inventory.production.purchase-v2.create.right-side')
 
-                                    @include('inventory.production.purchase-v2.inc.common')
-                                    <div class="row">
-                                        <div class="col-md-9">
-
-                                            @include('inventory.production.purchase-v2.create.left-side')
-
-                                        </div>
-                                        <div class="col-md-3">
-
-                                            @include('inventory.production.purchase-v2.create.right-side')
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
                         </div>
                     </div>
-
-
                 </div>
-
-            </div>
+            </form>
         </div>
-    </div>
+
+    </x-mm.panel>
+</x-mm.page>
 
 @endsection
 
