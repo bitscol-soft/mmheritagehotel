@@ -1,0 +1,112 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">    <link rel="stylesheet" href="/assets/css/chosen.min.css" />
+    <link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css" />
+    <style>
+        p>span {
+            width: 130px;
+            display: inline-block;
+            font-weight: bold
+        }
+
+        p {
+            margin-bottom: 0 !important;
+        }
+
+    </style>
+<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+<section class="mm-ui mm-invoice-page mm-acc mm-rst mm-rst-inv">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Journal Voucher Details</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Journal voucher details and approval.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button mm-button-secondary" href="http://localhost/acc/voucher-journals/index"><i class="fa fa-list-alt"></i> Refresh Data</a>
+        <a class="mm-button" href="http://localhost/acc/voucher-journals/create"><i class="fa fa-plus"></i> Create New</a></div>        </header>
+        <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><div class="row px-2 pb-3">
+            <div class="col-md-6">
+                <p><span style="width: 100px">Voucher Type</span> Journal</p>
+                <p><span style="width: 100px">Description</span> Rent &lt;b&gt;paid&lt;/b&gt;</p>
+            </div>
+            <div class="col-md-6">
+                <div style="width: 255px; float: right">
+                    <p><span style="width: 85px">Invoice No</span> V-0004</p>
+                    <p><span style="width: 85px">Date</span> 2026-10-01</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- LIST -->
+        <div class="row" style="width: 100%; margin: 0 !important;">
+            <div class="col-sm-12">
+                <div class="mm-table-scroll" role="region" aria-label="Journal Voucher Details" tabindex="0"><table class="table table-bordered table-striped">
+                        <thead>
+                            <tr class="table-header-bg">
+                                <!-- <th class="text-center" style="color: white !important;" width="8%">Sl</th>
+                                            <th class="pl-3" style="color: white !important;" width="60%">Account Name</th>
+                                            <th class="pl-3" style="color: white !important;" width="20%">Balance Type</th>
+                                            <th class="pr-3 text-right" style="color: white !important;">Amount</th> -->
+                                <th class="text-center" style="color: white !important;" width="8%">Sl</th>
+                                <th class="pl-3" style="color: white !important;" width="60%">Account Name
+                                </th>
+                                <th class="pl-3 text-right" style="color: white !important;" width="10%">Debit</th>
+                                <th class="pl-3 text-right" style="color: white !important;" width="10%">Credit</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                                                            <tr>
+                                    <td class="text-center">1</td>
+                                    <td class="pl-3">Rent &lt;b&gt;expense&lt;/b&gt;</td>
+                                    <td class="pl-3 text-right">
+                                                                                    1,500.00
+                                                                            </td>
+                                    <td class="pl-3 text-right">
+                                                                            </td>
+                                </tr>
+                                                            <tr>
+                                    <td class="text-center">2</td>
+                                    <td class="pl-3">Cash</td>
+                                    <td class="pl-3 text-right">
+                                                                            </td>
+                                    <td class="pl-3 text-right">
+                                                                                    1,500.00
+                                                                            </td>
+                                </tr>
+                                                    </tbody>
+
+                        <tfoot>
+                            <tr>
+                                <th colspan="2"><strong class="pull-right">Total</strong></th>
+                                <th class="pl-3 text-right">1,500.00</th>
+                                <th class="pl-3 text-right">1,500.00</th>
+                            </tr>
+                        </tfoot>
+                    </table></div>
+            </div>
+        </div>
+
+                <div class="row" style="width: 100%; margin: 0 !important; padding-bottom: 15px">
+            <div class="col-md-12 text-right">
+                <a href="" target="_blank" class="btn btn-sm btn-primary"><i
+                        class="ace-icon fa fa-print bigger-100"></i> Print</a>
+            </div>
+        </div></div>
+    </div>
+</section>
+
+    <!-- delete form -->
+    <form action="" id="deleteItemForm" method="POST">
+        <input type="hidden" name="_token" value="fixture-csrf-token"> <input type="hidden" name="_method" value="DELETE">    </form>
+
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
+    <script src="/assets/js/chosen.jquery.min.js"></script>
+    <script src="/assets/js/bootstrap-datepicker.min.js"></script>
+    <script src="/assets/custom_js/confirm_delete_dialog.js"></script>
+    <script src="/assets/js/jquery.dataTables.min.js"></script>
+    <script src="/assets/js/jquery.dataTables.bootstrap.min.js"></script>
+
+<!--/MM-JS--></body></html>

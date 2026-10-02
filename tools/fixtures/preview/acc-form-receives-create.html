@@ -1,18 +1,8 @@
-@extends('layouts.master')
-
-
-@section('title', 'Receive Voucher')
-
-
-@section('page-header')
-    <i class="fa fa-plus-circle"></i> Receive Voucher
-@stop
-
-
-@push('style')
-    <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/custom_css/chosen-required.css') }}" />
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">    <link rel="stylesheet" href="/assets/css/chosen.min.css" />
+    <link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css" />
+    <link rel="stylesheet" href="/assets/custom_css/chosen-required.css" />
 
 
     <style>
@@ -42,25 +32,17 @@
         }
 
     </style>
-@endpush
-
-
-
-
-
-@section('content')
-
-<x-mm.styles />
-<x-mm.page class="mm-acc mm-rst mm-rst-inv mm-rst-form" title="Receive Voucher" description="Record a receive voucher.">
-    <x-slot name="actions">
-        <a class="mm-button" href="{{ route('voucher-receives.index') }}"><i class="fa fa-list-alt"></i> List</a>
-    </x-slot>
-    <x-mm.panel class="tw-p-4">
-        @include('partials._alert_message')
-        <!-- Form  -->
-        <form id="form" action="{{ route('voucher-receives.store') }}" method="post" enctype="multipart/form-data">
-            @csrf
-
+<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+<section class="mm-ui mm-acc mm-rst mm-rst-inv mm-rst-form">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Receive Voucher</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Record a receive voucher.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button" href="http://localhost/acc/voucher-receives/index"><i class="fa fa-list-alt"></i> List</a></div>        </header>
+        <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><!-- Form  -->
+        <form id="form" action="http://localhost/acc/voucher-receives/store" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="_token" value="fixture-csrf-token">
 
             <input type="hidden" name="voucher_type" value="Receive">
 
@@ -83,23 +65,12 @@
                                     data-placeholder="- Select Company -">
                                     <option></option>
 
-                                    @foreach ($companies as $id => $name)
-
-                                        @if (count($companies) > 1)
-                                            <option value="{{ $id }}"
-                                                {{ old('company_id') == $id ? 'selected' : '' }}>
-                                                {{ $name }}</option>
-                                        @else
-                                            <option value="{{ $id }}" selected>{{ $name }}
+                                    
+                                                                                    <option value="1" selected>MM &lt;b&gt;Heritage&lt;/b&gt;
                                             </option>
-                                        @endif
-                                    @endforeach
-                                </select>
+                                                                                                            </select>
 
-                                @error('date')
-                                    <span class="text-danger"> {{ $message }}</span>
-                                @enderror
-                            </div>
+                                                            </div>
                         </div>
 
 
@@ -111,7 +82,7 @@
                                 <span class="input-group-addon">
                                     Reference
                                 </span>
-                                <input name="reference" value="{{ old('reference') }}" class="form-control"
+                                <input name="reference" value="" class="form-control"
                                     type="text">
                             </div>
                         </div>
@@ -125,12 +96,9 @@
                                     Date
                                 </span>
                                 <input name="date" class="form-control date-picker text-center" type="text"
-                                    value="{{ old('date', date('Y-m-d')) }}" data-date-format="yyyy-mm-dd">
+                                    value="2026-10-01" data-date-format="yyyy-mm-dd">
 
-                                @error('date')
-                                    <span class="text-danger"> {{ $message }}</span>
-                                @enderror
-                            </div>
+                                                            </div>
                         </div>
                     </div>
 
@@ -144,8 +112,7 @@
                     <!-- Item Detail -->
                     <div class="row mt-2">
                         <div class="col-sm-12">
-                            <x-mm.table-scroll label="Receive Voucher">
-                                <table id="myTable" class="table table-bordered order-list">
+                            <div class="mm-table-scroll" role="region" aria-label="Receive Voucher" tabindex="0"><table id="myTable" class="table table-bordered order-list">
 
                                     <!-- Table Header -->
                                     <thead>
@@ -164,50 +131,7 @@
 
                                     <!-- Item Detail Table Body -->
                                     <tbody>
-                                        @if (old('account_ids'))
-                                            @foreach (old('account_ids') as $key => $value)
-                                                <tr>
-                                                    <td class="count text-center"></td>
-                                                    <td>
-                                                        <div class="col-sm-12">
-                                                            <select required="required" name="account_ids[]"
-                                                                id="account_id" class="chosen-select-100-percent"
-                                                                data-placeholder="- Select Account -">
-                                                                <option></option>
-                                                                @foreach ($accounts as $id => $value)
-                                                                    <option value="{{ $value->id }}">
-                                                                        {{ $value->name }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                            @error('account_ids')
-                                                                <span class="text-danger"> {{ $message }}</span>
-                                                            @enderror
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <input name="debit[]" value="{{ old('debit')[$key] }}"
-                                                            type="text" onclick="enableMe(this)"
-                                                            onkeyup="disabledReverse('input-credit', this)"
-                                                            class="form-control only-number text-right input-debit calculate-total input-sm" />
-                                                        @error('debit')
-                                                            <span class="text-danger"> {{ $message }}</span>
-                                                        @enderror
-                                                    </td>
-                                                    <td>
-                                                        <input name="credit[]" value="{{ old('credit')[$key] }}"
-                                                            type="text" onclick="enableMe(this)"
-                                                            onkeyup="disabledReverse('input-debit', this)"
-                                                            class="form-control only-number text-right input-credit calculate-total input-sm" />
-                                                        @error('credit')
-                                                            <span class="text-danger"> {{ $message }}</span>
-                                                        @enderror
-                                                    </td>
-                                                    <td class="text-center"><a class="btn btn-sm btn-danger"
-                                                            disabled="disabled"><i class="fa fa-trash-o"></i></a></td>
-                                                </tr>
-                                            @endforeach
-                                        @else
-                                            <tr>
+                                                                                    <tr>
                                                 <td class="count text-center"></td>
                                                 <td>
                                                     <div class="col-sm-12">
@@ -215,32 +139,23 @@
                                                             id="account_ids" class="chosen-select-100-percent"
                                                             data-placeholder="- Select Account -">
                                                             <option></option>
-                                                            @foreach ($accounts as $id => $value)
-                                                                <option value="{{ $value->id }}">
-                                                                    {{ $value->name }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                        @error('account_ids')
-                                                            <span class="text-danger"> {{ $message }}</span>
-                                                        @enderror
-                                                    </div>
+                                                                                                                            <option value="1">
+                                                                    Cash &lt;b&gt;in hand&lt;/b&gt;</option>
+                                                                                                                            <option value="2">
+                                                                    Bank</option>
+                                                                                                                    </select>
+                                                                                                            </div>
                                                 </td>
                                                 <td>
                                                     <input name="debit[]" type="text" onclick="enableMe(this)"
                                                         onkeyup="disabledReverse('input-credit', this)"
                                                         class="form-control only-number text-right input-debit calculate-total input-sm" />
-                                                    @error('debit')
-                                                        <span class="text-danger"> {{ $message }}</span>
-                                                    @enderror
-                                                </td>
+                                                                                                    </td>
                                                 <td>
                                                     <input name="credit[]" type="text" onclick="enableMe(this)"
                                                         onkeyup="disabledReverse('input-debit', this)"
                                                         class="form-control only-number text-right input-credit calculate-total input-sm" />
-                                                    @error('credit')
-                                                        <span class="text-danger"> {{ $message }}</span>
-                                                    @enderror
-                                                </td>
+                                                                                                    </td>
                                                 <td class="text-center"><a class="btn btn-sm btn-danger"
                                                         disabled="disabled"><i class="fa fa-trash-o"></i></a></td>
                                             </tr>
@@ -252,37 +167,27 @@
                                                             class="chosen-select-100-percent"
                                                             data-placeholder="- Select Account -">
                                                             <option value=""></option>
-                                                            @foreach ($accounts as $id => $value)
-                                                                <option value="{{ $value->id }}">
-                                                                    {{ $value->name }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                        @error('account_ids')
-                                                            <span class="text-danger"> {{ $message }}</span>
-                                                        @enderror
-                                                    </div>
+                                                                                                                            <option value="1">
+                                                                    Cash &lt;b&gt;in hand&lt;/b&gt;</option>
+                                                                                                                            <option value="2">
+                                                                    Bank</option>
+                                                                                                                    </select>
+                                                                                                            </div>
                                                 </td>
                                                 <td>
                                                     <input name="debit[]" type="text" onclick="enableMe(this)"
                                                         onkeyup="disabledReverse('input-credit', this)"
                                                         class="form-control only-number text-right calculate-total input-debit input-sm" />
-                                                    @error('debit')
-                                                        <span class="text-danger"> {{ $message }}</span>
-                                                    @enderror
-                                                </td>
+                                                                                                    </td>
                                                 <td>
                                                     <input name="credit[]" type="text" onclick="enableMe(this)"
                                                         onkeyup="disabledReverse('input-debit', this)"
                                                         class="form-control only-number text-right input-credit calculate-total input-sm" />
-                                                    @error('credit')
-                                                        <span class="text-danger"> {{ $message }}</span>
-                                                    @enderror
-                                                </td>
+                                                                                                    </td>
                                                 <td class="text-center"><a class="btn btn-sm btn-danger"
                                                         disabled="disabled"><i class="fa fa-trash-o"></i></a></td>
                                             </tr>
-                                        @endif
-                                    </tbody>
+                                                                            </tbody>
 
 
 
@@ -292,13 +197,13 @@
                                             <td></td>
                                             <td class="text-right item-serial">Total</td>
                                             <td>
-                                                <input name="total_debit" readonly value="{{ old('total_debit') }}"
+                                                <input name="total_debit" readonly value=""
                                                     disabled class="total-debit text-right form-control"
                                                     style="border: none;">
                                             </td>
                                             <td>
                                                 <input name="total_credit" readonly disabled
-                                                    value="{{ old('total_credit') }}"
+                                                    value=""
                                                     class="total-credit text-right form-control" style="border: none;">
                                             </td>
                                             <td>
@@ -308,8 +213,7 @@
                                             </td>
                                         </tr>
                                     </tfoot>
-                                </table>
-                            </x-mm.table-scroll>
+                                </table></div>
                         </div>
                     </div>
                 </div>
@@ -330,12 +234,9 @@
                         <div class="input-group " style="width: 100%!important; float: left; ">
                             <label class="input-group-addon">Narration/Description</label>
                             <input type="text" required class="form-control" name="description"
-                                value="{{ old('description') }}" placeholder="Narration / Description">
+                                value="" placeholder="Narration / Description">
 
-                            @error('description')
-                                <span class="text-danger"> {{ $message }}</span>
-                            @enderror
-                        </div>
+                                                    </div>
 
                         <div class="input-group input-group-sm"
                             style="width: 80%!important; height: 40%!important; float: left; margin-top: 10px;">
@@ -366,23 +267,20 @@
                     </div>
                 </div>
             </div>
-        </form>
-    </x-mm.panel>
-</x-mm.page>
+        </form></div>
+    </div>
+</section>
 
-@endsection
-
-
-
-
-
-@section('js')
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
 
 
-    <script src="{{ asset('assets/js/chosen.jquery.min.js') }}"></script>
-    <script src="{{ asset('assets/js/bootstrap-datepicker.min.js') }}"></script>
-    <script src="{{ asset('assets/custom_js/chosen-box.js') }}"></script>
-    <script src="{{ asset('assets/custom_js/date-picker.js') }}"></script>
+    <script src="/assets/js/chosen.jquery.min.js"></script>
+    <script src="/assets/js/bootstrap-datepicker.min.js"></script>
+    <script src="/assets/custom_js/chosen-box.js"></script>
+    <script src="/assets/custom_js/date-picker.js"></script>
 
 
 
@@ -402,27 +300,17 @@
                                 <div class="col-sm-12">
                                     <select id="account_ids" name="account_ids[]" class="chosen-select-100-percent" data-placeholder="- Select Account -">
                                         <option value=""></option>
-                                        @foreach ($accounts as $id => $value)
-                                            <option value="{{ $value->id }}">{{ $value->name }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('account_ids')
-                                        <span class="text-danger"> {{ $message }}</span>
-                                    @enderror
-                                </div>
+                                                                                    <option value="1">Cash &lt;b&gt;in hand&lt;/b&gt;</option>
+                                                                                    <option value="2">Bank</option>
+                                                                            </select>
+                                                                    </div>
                             </td>
                             <td>
                                 <input name="debit[]" type="text" onclick="enableMe(this)" onkeyup="disabledReverse('input-credit', this)" class="form-control only-number text-right calculate-total input-debit input-sm" />
-                                @error('debit')
-                                    <span class="text-danger"> {{ $message }}</span>
-                                @enderror
-                            </td>
+                                                            </td>
                             <td>
                                 <input name="credit[]" type="text" onclick="enableMe(this)" onkeyup="disabledReverse('input-debit', this)" class="form-control only-number text-right input-credit calculate-total input-sm" />
-                                @error('credit')
-                                    <span class="text-danger"> {{ $message }}</span>
-                                @enderror
-                            </td>
+                                                            </td>
                             <td><a class="ibtnDel btn btn-sm btn-danger"><i class="fa fa-trash-o"></i></a></td>
                         </tr>`
 
@@ -521,4 +409,4 @@
         });
     </script>
 
-@endsection
+<!--/MM-JS--></body></html>

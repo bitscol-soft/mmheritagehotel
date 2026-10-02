@@ -748,3 +748,13 @@ Reviewed legacy bugs in `module/Restaurant/views/purchase-v2/`, all view-level (
 - CSS: the `mm-bar` rules were copied for `mm-acc`, and `.table-header-bg` has a fallback background (the real layout also gets it from `bootstrap4.css`).
 - Not in A1 (next groups): fund transfers and vouchers, purchases, sales, returns and damages, the reports. The print/invoice documents and export partials stay as they are.
 - Fixtures `tools/fixtures/account/*`, previews `/preview/acc-*`, spec `tools/browser/account.spec.cjs`.
+
+## Fortieth increment: Account A2
+
+18 views under `module/Account/views/{fund-transfers,voucher}` use `x-mm.page` / `x-mm.panel` (classes `mm-acc mm-rst mm-rst-inv`, plus `mm-rst-form` on forms and `mm-invoice-page` on the voucher detail pages): fund transfers (list, create, edit), and receive, payment, journal and contra vouchers (list, create, show; journals and contras also edit).
+
+- Wrapped from the Account originals by script, so expressions, controls, forms, directives and scripts are unchanged (`tools/ui-check.cjs` compares them with `bc9504ba`). Voucher create/edit forms keep their JS-added line rows inside `x-mm.table-scroll`.
+- The voucher list filters (invoice no, reference, date range) are an inline `mm-report-filter` panel with the same field names. The detail pages' Print `<span onclick>` is now an `mm-button` link with the same handler.
+- Fix (CSS, also repairs the A1 lists): table headers with `table-header-bg` and inline white text showed white on the light generic header colour; the `mm-acc` scope now keeps the header row's own background.
+- Left as they were: the journal and contra detail pages' bottom Print link (empty `href`, no handler), the contra edit page title ("Create Contra Voucher"), the commented-out edit link on the payments list.
+- Fixtures `tools/fixtures/account/*`, previews `/preview/acc-*`, spec `tools/browser/account-vouchers.spec.cjs`.

@@ -834,3 +834,4 @@
 .mm-ui.mm-acc.mm-report .mm-table-scroll .table-bordered td .input-group .input-group-addon { padding: 6px 8px; }
 .mm-ui.mm-acc .mm-panel.mm-report-filter .row { display: flex; }
 .mm-ui.mm-acc .table-header-bg { background: #7592a5; }
+.mm-ui.mm-acc .mm-table-scroll thead tr.table-header-bg th, .mm-ui.mm-acc thead tr.table-header-bg th { background: transparent; color: #fff; }

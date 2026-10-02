@@ -25,80 +25,62 @@
 @endpush
 
 @section('content')
-<div class="row">
-    <div class="col-sm-10 col-sm-offset-1">
 
+<x-mm.styles />
+<x-mm.page class="mm-acc mm-rst mm-rst-inv mm-rst-form" title="Edit Journal Voucher" description="Update the journal voucher.">
+    <x-slot name="actions">
+        <a class="mm-button" href="{{ route('contra.index') }}"><i class="fa fa-list"></i> List</a>
+    </x-slot>
+    <x-mm.panel class="tw-p-4">
         @include('partials._alert_message')
+        <!-- INPUTS -->
+        <form action="{{route('vouchers.update', $voucher->id)}}" method="post" enctype="multipart/form-data">
+            @csrf
+            @method('PUT')
+            <input type="hidden" name="voucher_type" value="Journal">
+            <div class="row">
+                <div class="col-sm-12 px-4">
 
-        <!-- heading -->
-        <div class="widget-box widget-color-white ui-sortable-handle clearfix" id="widget-box-7">
-            <div class="widget-header widget-header-small">
-                <h3 class="widget-title smaller text-primary">
-                    @yield('page-header')
-                </h3>
+                    <div class="row">
+                        <div class="col-md-9" style="padding-left: 0px;">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-xs-4 col-sm-12">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                Reference
+                                            </span>
+                                            <input name="reference" value="{{ old('reference') ?: $voucher->reference }}" class="form-control" type="text">
+                                            @error('reference')
+                                            <span class="text-danger"> {{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-                <div class="widget-toolbar border smaller" style="padding-right: 0 !important">
-                    <div class="pull-right tableTools-container" style="margin: 0 !important">
-                        <div class="dt-buttons btn-overlap btn-group">
-                            <a href="{{ route('contra.index') }}" class="dt-button btn btn-white btn-info btn-bold" title="List" data-toggle="tooltip" tabindex="0" aria-controls="dynamic-table">
-                                <span>
-                                    <i class="fa fa-list bigger-110"></i>
-                                </span>
-                            </a>
+                        <div class="col-md-3" style="padding-right: 0px;">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-xs-4 col-sm-12">
+                                        <div class="input-group">
+                                            <input name="date" class="form-control date-picker" id="id-date-picker-1" type="text" value="{{ old('date') ?: $voucher->date }}" data-date-format="yyyy-mm-dd">
+                                            <span class="input-group-addon">
+                                                Date
+                                            </span>
+                                            @error('date')
+                                            <span class="text-danger"> {{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
-
-            <div class="space"></div>
-
-            <!-- INPUTS -->
-            <form action="{{route('vouchers.update', $voucher->id)}}" method="post" enctype="multipart/form-data">
-                @csrf
-                @method('PUT')
-                <input type="hidden" name="voucher_type" value="Journal">
-                <div class="row">
-                    <div class="col-sm-12 px-4">
-
-                        <div class="row">
-                            <div class="col-md-9" style="padding-left: 0px;">
-                                <div class="form-group">
-                                    <div class="row">
-                                        <div class="col-xs-4 col-sm-12">
-                                            <div class="input-group">
-                                                <span class="input-group-addon">
-                                                    Reference
-                                                </span>
-                                                <input name="reference" value="{{ old('reference') ?: $voucher->reference }}" class="form-control" type="text">
-                                                @error('reference')
-                                                <span class="text-danger"> {{ $message }}</span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-3" style="padding-right: 0px;">
-                                <div class="form-group">
-                                    <div class="row">
-                                        <div class="col-xs-4 col-sm-12">
-                                            <div class="input-group">
-                                                <input name="date" class="form-control date-picker" id="id-date-picker-1" type="text" value="{{ old('date') ?: $voucher->date }}" data-date-format="yyyy-mm-dd">
-                                                <span class="input-group-addon">
-                                                    Date
-                                                </span>
-                                                @error('date')
-                                                <span class="text-danger"> {{ $message }}</span>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12">
+                    <div class="row">
+                        <div class="col-12">
+                            <x-mm.table-scroll label="Edit Journal Voucher">
                                 <table id="myTable" class="table table-bordered order-list">
                                     <thead>
                                         <tr>
@@ -169,63 +151,62 @@
                                         </tr>
                                     </tfoot>
                                 </table>
-                            </div>
+                            </x-mm.table-scroll>
                         </div>
-                        <div class="row">
-                            <div class="input-group " style="width: 100%!important; float: left; ">
-                                <label class="input-group-addon">Narration/Description</label>
-                                <input type="text" required class="form-control" name="description" value="{{ old('description') ?: $voucher->description }}" placeholder="Narration / Description">
-
-                                @error('description')
-                                <span class="text-danger"> {{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="row mt-2">
-                            <div class="col-xs-12 col-sm-7" style="padding-left: 0px;">
-                                <label class="ace-file-input ace-file-multiple">
-                                    <input type="file" name="attachment" id="footer">
-                                    <a class="remove" href="#"><i class=" ace-icon fa fa-times"></i></a>
-                                </label>
-                            </div>
-
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                <div class="col-xs-12 col-sm-12">
-                                        @if($voucher->attachment)
-                                        <label class="ace-file-input ace-file-multiple">
-                                            <a href="{{ asset('http://127.0.0.1:8000/' .$voucher->attachment) }}" target="_blank">
-                                            <img src="{{ asset($voucher->attachment) }}" style="width: 100px" alt="It's A File..."><br>
-                                            <span>Click Here To Preview</span>
-                                        </a>
-                                        </label>
-                                        @else
-                                        <label>No file uploaded!<label>
-                                        @endif
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-2" style="padding-right: 0px;">
-                                <div class="form-group">
-                                    <div class="pull-right mt-5">
-                                        <button type="submit" class="btn btn-sm btn-success save-btn">
-                                            <i class="fa fa fa-save"></i>
-                                            Update
-                                        </button>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Submit -->
                     </div>
-                </div>
-            </form>
+                    <div class="row">
+                        <div class="input-group " style="width: 100%!important; float: left; ">
+                            <label class="input-group-addon">Narration/Description</label>
+                            <input type="text" required class="form-control" name="description" value="{{ old('description') ?: $voucher->description }}" placeholder="Narration / Description">
 
-        </div>
-    </div>
-</div>
+                            @error('description')
+                            <span class="text-danger"> {{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-xs-12 col-sm-7" style="padding-left: 0px;">
+                            <label class="ace-file-input ace-file-multiple">
+                                <input type="file" name="attachment" id="footer">
+                                <a class="remove" href="#"><i class=" ace-icon fa fa-times"></i></a>
+                            </label>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                            <div class="col-xs-12 col-sm-12">
+                                    @if($voucher->attachment)
+                                    <label class="ace-file-input ace-file-multiple">
+                                        <a href="{{ asset('http://127.0.0.1:8000/' .$voucher->attachment) }}" target="_blank">
+                                        <img src="{{ asset($voucher->attachment) }}" style="width: 100px" alt="It's A File..."><br>
+                                        <span>Click Here To Preview</span>
+                                    </a>
+                                    </label>
+                                    @else
+                                    <label>No file uploaded!<label>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2" style="padding-right: 0px;">
+                            <div class="form-group">
+                                <div class="pull-right mt-5">
+                                    <button type="submit" class="btn btn-sm btn-success save-btn">
+                                        <i class="fa fa fa-save"></i>
+                                        Update
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Submit -->
+                </div>
+            </div>
+        </form>
+    </x-mm.panel>
+</x-mm.page>
 
 @endsection
 
@@ -361,4 +342,5 @@
         });
     });
 </script>
+
 @endsection

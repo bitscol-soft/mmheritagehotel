@@ -1,0 +1,238 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">    <link rel="stylesheet" href="/assets/css/chosen.min.css"/>
+    <link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css"/>
+    <link rel="stylesheet" href="/assets/custom_css/chosen-required.css"/>
+    <style>
+        td {
+            padding-bottom: 3px !important;
+            padding-top: 3px !important;
+        }
+    </style>
+<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+<section class="mm-ui mm-acc mm-rst mm-rst-inv mm-rst-form">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Fund Transfer Edit</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Update the fund transfer.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button" href="http://localhost/acc/fund-transfers/index"><i class="fa fa-list"></i> List</a></div>        </header>
+        <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><!-- INPUTS -->
+        <form action="http://localhost/acc/fund-transfers/update/4" method="post">
+            <input type="hidden" name="_token" value="fixture-csrf-token"> <input type="hidden" name="_method" value="PUT">
+            <div class="row" style="width: 100%; margin: 0 0 20px !important;">
+                <div class="col-sm-12 px-4">
+
+
+                <!-- Date -->
+                <div class="form-group row">
+    <label class="col-sm-3 control-label" for="date">
+        <b>Date
+                            <sup class="text-danger">*</sup>
+                    </b>
+    </label>
+
+    <div class="col-sm-9">
+        <input id="date" name="date" required type="text"
+           class="form-control input-sm date-picker" placeholder="yyyy-mm-dd" value="2026-10-01"
+            autocomplete="off">
+    </div>
+</div>
+
+                <!-- From Account -->
+                    <div class="form-group row">
+                        <label class="control-label col-sm-3" for="account_id">
+                            <b>
+                                From Account <sup class="text-danger">*</sup>
+                                <span class="text-success">(<span
+                                        class="from-text-account-balance">0</span>)</span>
+                            </b>
+                        </label>
+
+                        <div class="col-sm-9">
+                            <select id="from_account_id" name="from_account_id"
+                                    class="chosen-select-100-percent" data-placeholder="- Select Account -"
+                                    onchange="onChangeAccountId(this)" required>
+                                <option value=""></option>
+
+                                                                    <option value="1"
+                                            data-balance="0"
+                                        
+                                        selected>
+                                        Cash &lt;b&gt;in hand&lt;/b&gt;
+                                    </option>
+                                                                    <option value="2"
+                                            data-balance="0"
+                                        
+                                        >
+                                        Bank
+                                    </option>
+                                                            </select>
+                        </div>
+                    </div>
+
+                    <!-- To Account -->
+                    <div class="form-group row">
+                        <label class="control-label col-sm-3" for="account_id">
+                            <b>
+                                To Account <sup class="text-danger">*</sup>
+                                <span class="text-success">(<span
+                                        class="to-text-account-balance">0</span>)</span>
+                            </b>
+                        </label>
+
+                        <div class="col-sm-9">
+                            <select id="to_account_id" name="to_account_id"
+                                    class="chosen-select-100-percent" data-placeholder="- Select Account -"
+                                    onchange="onChangeAccountId(this)" required>
+                                <option value=""></option>
+
+                                                                    <option value="1"
+                                            data-balance="0"
+                                        
+                                        >
+                                        Cash &lt;b&gt;in hand&lt;/b&gt;
+                                    </option>
+                                                                    <option value="2"
+                                            data-balance="0"
+                                        
+                                        selected>
+                                        Bank
+                                    </option>
+                                                            </select>
+                        </div>
+                    </div>
+
+
+                    <!-- Description -->
+                <div class="form-group row">
+    <label class="col-sm-3 control-label" for="description">
+        <b>
+            Description
+                            <sup class="text-danger">*</sup>
+                    </b>
+    </label>
+
+    <div class="col-sm-9">
+        <input id="description" name="description" required type="text"
+                      class="form-control input-sm" placeholder="Type Description" value="Rent &lt;b&gt;paid&lt;/b&gt;">
+    </div>
+</div>
+
+                <!-- Reference -->
+                <div class="form-group row">
+    <label class="col-sm-3 control-label" for="reference">
+        <b>
+            Reference
+                    </b>
+    </label>
+
+    <div class="col-sm-9">
+        <input id="reference" name="reference"  type="text"
+                      class="form-control input-sm" placeholder="Type Reference" value="Ref">
+    </div>
+</div>
+
+                <!-- Amount -->
+                <div class="form-group row">
+    <label class="col-sm-3 control-label" for="amount">
+        <b>
+            Amount
+                            <sup class="text-danger">*</sup>
+                    </b>
+    </label>
+
+    <div class="col-sm-9">
+        <input id="amount" name="amount" required type="text"
+                       onkeypress="return onlyNumber(event)"
+                      class="form-control input-sm" placeholder="Type Amount" value="1500">
+    </div>
+</div>
+
+                <!-- Submit -->
+                    <button class="btn btn-primary btn-sm pull-right save-btn" disabled><i
+                            class="fa fa-save"></i> Save
+                    </button>
+                </div>
+            </div>
+        </form></div>
+    </div>
+</section>
+
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
+    <script src="/assets/js/chosen.jquery.min.js"></script>
+    <script src="/assets/js/bootstrap-datepicker.min.js"></script>
+
+
+    <script src="/assets/custom_js/chosen-box.js"></script>
+    <script src="/assets/custom_js/date-picker.js"></script>
+
+    <script>
+        const saveButton = $('.save-btn');
+
+        const fromAccountId = $('#from_account_id');
+        const toAccountId = $('#to_account_id');
+        const amount = $('#amount');
+
+        $(document).ready(function () {
+            fromAccountId.change(function () {
+                let balance = Number($(this).find('option:selected').data('balance'));
+
+                if ($(this).val() == '1')
+                    balance += 1500;
+
+                $('.from-text-account-balance').text(Number(balance).toFixed(2))
+            })
+
+            toAccountId.change(function () {
+                let balance = Number($(this).find('option:selected').data('balance'));
+
+                if ($(this).val() == '1')
+                    balance -= 1500;
+
+                $('.to-text-account-balance').text(Number(balance).toFixed(2))
+            })
+
+            amount.keyup(function () {
+                const fromAccountBalance = Number($('.from-text-account-balance').text());
+
+                if (Number($(this).val()) > fromAccountBalance) {
+                    $(this).val(fromAccountBalance);
+                    showAlertMessage('Insufficient balance!', 3000);
+                }
+            })
+
+            fromAccountId.trigger('change');
+            toAccountId.trigger('change');
+        });
+
+        $('#balance_type').change(checkSaveButton)
+
+        $('#date').change(checkSaveButton)
+
+        $('#description').keyup(checkSaveButton)
+
+        function checkSaveButton() {
+            saveButton.attr('disabled', false)
+
+            if ($('#date').val() == '') {
+                saveButton.attr('disabled', true)
+            }
+
+            if ($('#description').val() == '') {
+                saveButton.attr('disabled', true)
+            }
+        }
+
+        function onChangeAccountId(el) {
+            if (fromAccountId.val() == toAccountId.val() && fromAccountId.val() != '') {
+                showAlertMessage('Select different account!', 3000);
+                $(el).val('').trigger('chosen:updated');
+            }
+        }
+    </script>
+
+<!--/MM-JS--></body></html>

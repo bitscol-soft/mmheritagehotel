@@ -1416,3 +1416,63 @@ foreach ($acCases as $acName => [$acViewName, $acUrl, $acData, $acMarkers, $acAb
     if (file_get_contents($acFile) !== $acHtml) throw new RuntimeException($acFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
 }
 echo "PASS account screens render: setup, party and product\n";
+
+// ---- Account A2: fund transfers and the four voucher types ----
+$a2Migrated = ['fund-transfers/index', 'fund-transfers/create', 'fund-transfers/edit', 'voucher/receives/index', 'voucher/receives/create', 'voucher/receives/show', 'voucher/payments/index', 'voucher/payments/create', 'voucher/payments/show', 'voucher/journals/index', 'voucher/journals/create', 'voucher/journals/edit', 'voucher/journals/show', 'voucher/contras/index', 'voucher/contras/create', 'voucher/contras/edit', 'voucher/contras/show'];
+foreach ($a2Migrated as $a2File) { token_get_all($compiler->compileString(file_get_contents($root . '/module/Account/views/' . $a2File . '.blade.php')), TOKEN_PARSE); }
+echo "PASS compile account voucher views\n";
+foreach ($a2Migrated as $a2View) {
+    $a2Source = $rsSubst($a2View, 'Account');
+    $a2Source = preg_replace("/@include\\('partials\\._paginate', \\['data' => \\$\\w+\\]\\)/", '', $a2Source);
+    $a2Source = str_replace('auth()->user()->company->id', '1', $a2Source);
+    $a2Source = str_replace(["@include('includes.inputs.", "@include('partials._user-log'", 'auth()->user()', 'Auth::user()'], ["@include('acc.includes.inputs.", "@include('acc.partials._user-log'", 'mm_auth_user()', 'mm_auth_user()'], $a2Source);
+    $a2Source = preg_replace('/(?<![\\\\\\w])Str::/', '\\Illuminate\\Support\\Str::', $a2Source);
+    @mkdir(dirname($coViews . '/acc/' . $a2View), 0777, true);
+    file_put_contents($coViews . '/acc/' . $a2View . '.blade.php', $a2Source);
+}
+$a2Seen = [];
+foreach ($a2Migrated as $a2View) {
+    preg_match_all("/route\\('([\\w.-]+)'/", file_get_contents($coViews . '/acc/' . $a2View . '.blade.php'), $a2Match);
+    foreach ($a2Match[1] as $a2Route) {
+        if (isset($a2Seen[$a2Route]) || $rsRoutes->getByName($a2Route)) continue;
+        $a2Seen[$a2Route] = true;
+        $rsRoutes->add((new Illuminate\Routing\Route(['GET', 'POST'], 'acc/' . str_replace('.', '/', $a2Route) . '/{id?}', function () {}))->name($a2Route));
+    }
+}
+$a2Accounts = $acOpt([['id' => 1, 'name' => 'Cash <b>in hand</b>'], ['id' => 2, 'name' => 'Bank']]);
+$a2Voucher = function ($type) use ($riRow, $acOpt) { return $riRow(['id' => 4, 'voucher_type' => $type, 'invoice_no' => 'V-0004', 'date' => '2026-10-01', 'reference' => 'Ref <i>1</i>', 'description' => 'Rent <b>paid</b>', 'amount' => 1500, 'is_approved' => 0, 'company' => $riRow(['name' => 'MM Heritage']), 'attachment' => '', 'details' => $acOpt([['id' => 1, 'account_id' => 1, 'balance_type' => 'Debit', 'amount' => 1500, 'account' => $riRow(['name' => 'Rent <b>expense</b>']), 'note' => 'n'], ['id' => 2, 'account_id' => 2, 'balance_type' => 'Credit', 'amount' => 1500, 'account' => $riRow(['name' => 'Cash']), 'note' => 'n']])]); };
+$a2Index = function ($var) use ($riList, $riRow) { return [$var => $riList([$riRow(['id' => 4, 'invoice_no' => 'V-0004', 'date' => '2026-10-01', 'reference' => 'Ref <i>1</i>', 'amount' => 1500, 'is_approved' => 0, 'description' => 'Rent <b>paid</b>', 'fromAccount' => $riRow(['name' => 'Cash']), 'toAccount' => $riRow(['name' => 'Bank <b>x</b>'])]), $riRow(['id' => 5, 'invoice_no' => 'V-0005', 'date' => '2026-10-01', 'reference' => 'Ref 2', 'amount' => 200, 'is_approved' => 1, 'description' => 'd', 'fromAccount' => $riRow(['name' => 'Cash']), 'toAccount' => $riRow(['name' => 'Bank'])])])]; };
+$a2Create = ['companies' => [1 => 'MM <b>Heritage</b>'], 'company' => [1 => 'MM <b>Heritage</b>'], 'accounts' => $a2Accounts, 'accountGroups' => $acGroup];
+$a2Cases = [
+    'fund-transfers' => ['acc.fund-transfers.index', '/acc/fund-transfers', $a2Index('transfers'), ['mm-acc', 'table-striped', 'Bank &lt;b&gt;x&lt;/b&gt;', 'V-0005'], ['Bank <b>x</b>']],
+    'form-fund-transfer-create' => ['acc.fund-transfers.create', '/acc/fund-transfers/create', $a2Create, ['mm-rst-form', 'name="date"', 'name="amount"', 'name="description"', 'name="reference"'], []],
+    'form-fund-transfer-edit' => ['acc.fund-transfers.edit', '/acc/fund-transfers/4/edit', $a2Create + ['fundTransfer' => $riRow(['id' => 4, 'date' => '2026-10-01', 'amount' => 1500, 'description' => 'Rent <b>paid</b>', 'reference' => 'Ref', 'from_account_id' => 1, 'to_account_id' => 2])], ['mm-rst-form', 'name="_method"', 'name="amount"'], []],
+];
+foreach (['receives' => ['Receive', 'voucher-receives'], 'payments' => ['Payment', 'voucher-payments'], 'journals' => ['Journal', 'voucher-journals'], 'contras' => ['Contra', 'voucher-contras']] as $a2Kind => [$a2Type, $a2Slug]) {
+    $a2Cases[$a2Kind] = ['acc.voucher.' . $a2Kind . '.index', '/acc/' . $a2Slug . '?invoice_no=1', $a2Index('vouchers'), ['mm-acc', 'mm-report-filter', 'name="invoice_no"', 'name="reference"', 'name="from_date"', 'name="to_date"', 'V-0004', 'V-0005', 'Unapproved'], ['Ref <i>1</i>']];
+    $a2Cases['form-' . $a2Kind . '-create'] = ['acc.voucher.' . $a2Kind . '.create', '/acc/' . $a2Slug . '/create', $a2Create, ['mm-rst-form', 'name="company_id"', 'name="voucher_type"'], []];
+    $a2Cases[$a2Kind . '-show'] = ['acc.voucher.' . $a2Kind . '.show', '/acc/' . $a2Slug . '/4', ['voucher' => $a2Voucher($a2Type)], ['mm-invoice-page', 'V-0004', 'Rent &lt;b&gt;expense&lt;/b&gt;'], ['Rent <b>expense</b>']];
+}
+foreach (['journals', 'contras'] as $a2Kind) {
+    $a2Cases['form-' . $a2Kind . '-edit'] = ['acc.voucher.' . $a2Kind . '.edit', '/acc/voucher-' . $a2Kind . '/4/edit', $a2Create + ['voucher' => $a2Voucher($a2Kind)], ['mm-rst-form', 'name="_method"', 'name="date"', 'name="reference"'], []];
+}
+@mkdir(__DIR__ . '/fixtures/account', 0777, true);
+foreach ($a2Cases as $a2Name => [$a2ViewName, $a2Url, $a2Data, $a2Markers, $a2Absent]) {
+    $a2Request = Illuminate\Http\Request::create($a2Url);
+    $a2Request->setLaravelSession(new Illuminate\Session\Store('mm', new Illuminate\Session\ArraySessionHandler(10)));
+    $app->instance('request', $a2Request);
+    $app->instance('url', new Illuminate\Routing\UrlGenerator($rsRoutes, $a2Request));
+    try { $a2Html = $app->make('view')->make($a2ViewName, array_merge(['errors' => new Illuminate\Support\ViewErrorBag(), 'slugs' => []], $a2Data))->render(); }
+    catch (Throwable $e) { throw new RuntimeException('Account screen ' . $a2Name . ' failed to render: ' . $e->getMessage(), 0, $e); }
+    $a2Html = preg_replace('/(name="_token" value=")[A-Za-z0-9]+"/', '$1fixture-csrf-token"', str_replace('http://localhost/assets', '/assets', $a2Html));
+    $a2Missing = [];
+    foreach (array_merge(['mm-panel', 'mm-page-title'], $a2Markers) as $a2Marker) { if (strpos($a2Html, $a2Marker) === false) $a2Missing[] = $a2Marker; }
+    if ($a2Missing) throw new RuntimeException('Account screen ' . $a2Name . ' missing ' . implode(' | ', $a2Missing));
+    if (preg_match('/class="[^"]*\\b(?:widget-box|widget-main|widget-header|page-header)\\b/', $a2Html)) throw new RuntimeException('Account screen ' . $a2Name . ' still contains the legacy frame');
+    foreach ($a2Absent as $a2Marker) { if (strpos($a2Html, $a2Marker) !== false) throw new RuntimeException('Account screen ' . $a2Name . ' still contains ' . $a2Marker); }
+    if (strpos($a2Html, '<b>Warning</b>') !== false || strpos($a2Html, '<b>Notice</b>') !== false) throw new RuntimeException('Account screen ' . $a2Name . ' sample data is incomplete (PHP warning in output)');
+    $a2File = __DIR__ . '/fixtures/account/' . $a2Name . '.html';
+    if (getenv('MM_WRITE_FIXTURE')) { file_put_contents($a2File, $a2Html); file_put_contents($previewDir . '/acc-' . $a2Name . '.html', $a2Html); }
+    if (file_get_contents($a2File) !== $a2Html) throw new RuntimeException($a2File . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
+}
+echo "PASS account voucher screens render\n";

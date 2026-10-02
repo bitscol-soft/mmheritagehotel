@@ -1,0 +1,308 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css"><link rel="stylesheet" href="/assets/css/chosen.min.css" />
+<link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css" />
+<link rel="stylesheet" href="/assets/custom_css/chosen-required.css" />
+<style>
+    td {
+        padding-bottom: 3px !important;
+        padding-top: 3px !important;
+    }
+
+    table {
+        counter-reset: section;
+    }
+
+    .count:before {
+        counter-increment: section;
+        content: counter(section);
+    }
+</style>
+<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+<section class="mm-ui mm-acc mm-rst mm-rst-inv mm-rst-form">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Create Contra Voucher</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Update the contra voucher.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button" href="http://localhost/acc/contra/index"><i class="fa fa-list"></i> List</a></div>        </header>
+        <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><!-- INPUTS -->
+        <form action="http://localhost/acc/vouchers/update/4" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="_token" value="fixture-csrf-token">            <input type="hidden" name="_method" value="PUT">            <input type="hidden" name="voucher_type" value="Contra">
+            <div class="row">
+                <div class="col-sm-12 px-4">
+
+                    <div class="row">
+                        <div class="col-md-9" style="padding-left: 0px;">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-xs-4 col-sm-12">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                Reference
+                                            </span>
+                                            <input name="reference" value="Ref &lt;i&gt;1&lt;/i&gt;" class="form-control" type="text">
+                                                                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3" style="padding-right: 0px;">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-xs-4 col-sm-12">
+                                        <div class="input-group">
+                                            <input name="date" class="form-control date-picker" id="id-date-picker-1" type="text" value="2026-10-01" data-date-format="yyyy-mm-dd">
+                                            <span class="input-group-addon">
+                                                Date
+                                            </span>
+                                                                                    </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="mm-table-scroll" role="region" aria-label="Create Contra Voucher" tabindex="0"><table id="myTable" class="table table-bordered order-list">
+                                    <thead>
+                                        <tr>
+                                            <td width="40px;">SL.</td>
+                                            <td>Account Name</td>
+                                            <td class="text-right" width="150px;">Debit</td>
+                                            <td class="text-right" width="150px;">Credit</td>
+                                            <td width="50px;"></td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                                                                <tr>
+                                            <td class="count"></td>
+                                            <input type="hidden" name="detail_ids[]" value="1">
+                                            <td>
+                                                <div class="col-sm-12">
+                                                    <select name="account_ids[]" value="" id="account_id" class="chosen-select-100-percent" data-placeholder="- Select Account -">
+                                                        <option value=""></option>
+                                                                                                                <option value="1" selected data-balance="0" >Cash &lt;b&gt;in hand&lt;/b&gt;</option>
+                                                                                                                <option value="2"  data-balance="0" >Bank</option>
+                                                                                                            </select>
+                                                                                                    </div>
+                                            </td>
+                                            <td>
+                                                                                            <input name="debit[]" value="1500" type="text" onkeypress="return onlyNumber(event)" onclick="enableMe(this)" onkeyup="disabledReverse('input-credit', this)" class="form-control text-right input-debit calculate-total input-sm" />
+                                                                                                                                        </td>
+                                            <td>
+                                                                                            <input name="credit[]" value="0" type="text" onkeypress="return onlyNumber(event)" onclick="enableMe(this)" onkeyup="disabledReverse('input-debit', this)" class="form-control text-right input-credit calculate-total input-sm" />
+                                                                                        </td>
+                                            <td class="text-center"><a class="ibtnDel btn btn-sm btn-danger"><i class="fa fa-trash-o"></i></a></td>
+                                        </tr>
+                                                                                <tr>
+                                            <td class="count"></td>
+                                            <input type="hidden" name="detail_ids[]" value="2">
+                                            <td>
+                                                <div class="col-sm-12">
+                                                    <select name="account_ids[]" value="" id="account_id" class="chosen-select-100-percent" data-placeholder="- Select Account -">
+                                                        <option value=""></option>
+                                                                                                                <option value="1"  data-balance="0" >Cash &lt;b&gt;in hand&lt;/b&gt;</option>
+                                                                                                                <option value="2" selected data-balance="0" >Bank</option>
+                                                                                                            </select>
+                                                                                                    </div>
+                                            </td>
+                                            <td>
+                                                                                        <input name="debit[]" value="0" type="text" onkeypress="return onlyNumber(event)" onclick="enableMe(this)" onkeyup="disabledReverse('input-credit', this)" class="form-control text-right input-debit calculate-total input-sm" />
+                                                                                        </td>
+                                            <td>
+                                                                                            <input name="credit[]" value="1500" type="text" onkeypress="return onlyNumber(event)" onclick="enableMe(this)" onkeyup="disabledReverse('input-debit', this)" class="form-control text-right input-credit calculate-total input-sm" />
+                                                                                                                                        </td>
+                                            <td class="text-center"><a class="ibtnDel btn btn-sm btn-danger"><i class="fa fa-trash-o"></i></a></td>
+                                        </tr>
+                                                                            </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td></td>
+                                            <td class="text-right item-serial">Total</td>
+                                            <td>
+                                                <input name="total_debit" readonly disabled class="total-debit text-right form-control" style="border: none;">
+                                            </td>
+                                            <td>
+                                                <input name="total_credit" readonly disabled class="total-credit text-right form-control" style="border: none;">
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-sm btn-success" id="addrow">
+                                                    +
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-group " style="width: 100%!important; float: left; ">
+                            <label class="input-group-addon">Narration/Description</label>
+                            <input type="text" required class="form-control" name="description" value="Rent &lt;b&gt;paid&lt;/b&gt;" placeholder="Narration / Description">
+
+                                                    </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-xs-12 col-sm-7" style="padding-left: 0px;">
+                            <label class="ace-file-input ace-file-multiple">
+                                <input type="file" name="attachment" id="footer">
+                                <a class="remove" href="#"><i class=" ace-icon fa fa-times"></i></a>
+                            </label>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <div class="col-xs-12 col-sm-12">
+                                                                        <label>No file uploaded!<label>
+                                                                    </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2" style="padding-right: 0px;">
+                            <div class="form-group">
+                                <div class="pull-right mt-5">
+                                    <button type="submit" class="btn btn-sm btn-success save-btn">
+                                        <i class="fa fa fa-save"></i>
+                                        Update
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Submit -->
+                </div>
+            </div>
+        </form></div>
+    </div>
+</section>
+
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
+<script src="/assets/js/chosen.jquery.min.js"></script>
+<script src="/assets/js/bootstrap-datepicker.min.js"></script>
+<script src="/assets/custom_js/chosen-box.js"></script>
+<script src="/assets/custom_js/date-picker.js"></script>
+
+<script>
+    const saveButton = $('.save-btn')
+    const inputDebit = $('.input-debit')
+    const inputCredit = $('.input-credit')
+
+    const rowItem = `<tr>
+                        <td class="count"></td>
+                        <td>
+                            <div class="col-sm-12">
+                                <select id="account_id" name="account_ids[]" value="" class="chosen-select-100-percent" data-placeholder="- Select Account -">
+                                    <option value=""></option>
+                                                                        <option value="1" data-balance="0" >Cash &lt;b&gt;in hand&lt;/b&gt;</option>
+                                                                        <option value="2" data-balance="0" >Bank</option>
+                                                                    </select>
+                                                            </div>
+                        </td>
+                        <td>
+                            <input name="debit[]" value="" type="text" onkeypress="return onlyNumber(event)" onclick="enableMe(this)" onkeyup="disabledReverse('input-credit', this)" class="form-control text-right calculate-total input-debit input-sm" />
+                                                    </td>
+                        <td>
+                            <input name="credit[]" value="" type="text" onkeypress="return onlyNumber(event)" onclick="enableMe(this)" onkeyup="disabledReverse('input-debit', this)" class="form-control text-right input-credit calculate-total input-sm" />
+                                                    </td>
+                        <td><a class="ibtnDel btn btn-sm btn-danger"><i class="fa fa-trash-o"></i></a></td>
+                    </tr>`
+
+    jQuery(function($) {
+        $('#id-input-file-3').ace_file_input({
+            style: 'well',
+            btn_choose: 'Drop files here or click to choose',
+            btn_change: null,
+            no_icon: 'ace-icon fa fa-cloud-upload',
+            droppable: true,
+            thumbnail: 'small' //large | fit
+
+        }).on('change', function() {
+            //console.log($(this).data('ace_input_files'));
+            //console.log($(this).data('ace_input_method'));
+        });
+
+        // Start header, footer
+        $('#header').ace_file_input({
+            style: 'well',
+            btn_choose: 'Drop files here or click to choose',
+            btn_change: null,
+            no_icon: 'ace-icon fa fa-cloud-upload',
+            droppable: true,
+            thumbnail: 'small' //large | fit
+        });
+        $('#footer').ace_file_input({
+            style: 'well',
+            btn_choose: 'Drop files here or click to choose',
+            btn_change: null,
+            no_icon: 'ace-icon fa fa-cloud-upload',
+            droppable: true,
+            thumbnail: 'small' //large | fit
+        });
+        // End header, footer
+    });
+
+    $(document).ready(function() {
+        calculateAmount()
+        saveButton.attr('disabled', false)
+    });
+
+    $(document).on("keyup", ".calculate-total", function() {
+        calculateAmount()
+    });
+
+    function calculateAmount() {
+        var debitTotal = 0;
+        $(".input-debit").each(function() {
+            debitTotal += Number($(this).val());
+        });
+
+        var creditTotal = 0;
+        $(".input-credit").each(function() {
+            creditTotal += Number($(this).val());
+        });
+
+        $(".total-debit").val(debitTotal);
+        $(".total-credit").val(creditTotal);
+
+        if (debitTotal === creditTotal && debitTotal > 0) {
+            saveButton.attr('disabled', false)
+        }else{
+            saveButton.attr('disabled', true)
+        }
+    }
+
+    function disabledReverse($class_name, object) {
+        let disableItem = $(object).closest('tr').find('.' + $class_name)
+        disableItem.attr('readonly', true).val('0')
+    }
+
+    function enableMe(object) {
+        $(object).attr('readonly', false)
+    }
+</script>
+
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        var i = 0;
+        $("#addrow").on("click", function() {
+            $("table.order-list").append(rowItem)
+            chosenSelectInit()
+            i++;
+        });
+
+        $("table.order-list").on("click", ".ibtnDel", function(event) {
+            $(this).closest("tr").remove();
+            i -= 1
+            calculateAmount()
+        });
+    });
+</script>
+
+<!--/MM-JS--></body></html>

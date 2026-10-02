@@ -142,7 +142,7 @@ payment collection and night audit pending. See `docs/BOOKING-LIFECYCLE-PLAN.md`
 | Group | Status | Verification |
 |---|---|---|
 | A1: account controls, groups, subsidiaries, chart of accounts, opening balances, customers, suppliers, product categories, units, products | Migrated; expressions, controls, forms, directives and scripts unchanged (compared with `3516b9d9`). Opening balances filter is inline; stray `)` and an unclosed div fixed | Render fixtures + Playwright (`account.spec.cjs`); staging pending |
-| A2: fund transfers, receive / payment / journal / contra vouchers | Not migrated | n/a |
+| A2: fund transfers, receive / payment / journal / contra vouchers | Migrated (18 views); expressions, controls, forms, directives and scripts unchanged (compared with `bc9504ba`). Filters are inline; `table-header-bg` header contrast fixed. | Render fixtures, `account-vouchers.spec.cjs` (21 tests: frame, overflow at 1280/768/390, filters, Print, forms); not run against real Laravel / DB |
 | A3: purchases, sales, returns, damages, collections | Not migrated | n/a |
 | A4: reports (ledgers, trial balance, income statement, balance sheet, cash flow, ...) | Not migrated; print and export documents stay legacy | n/a |
 
