@@ -16,7 +16,7 @@
 
 <x-mm.styles />
 <x-mm.page class="mm-rst mm-rst-purchase" title="Purchase approve" description="Check the requested items and approve the purchase.">
-    @if (hasPermission('rst.purchase.view', $slugs))
+    @if (hasPermission('resturant.purchases.index', $slugs) && hasPermission('rst.purchase.view', $slugs))
         <x-slot name="actions">
             <a href="{{ route('rst.purchases.index') }}" class="mm-button mm-button-secondary">
                 <i class="fa fa-list-alt" aria-hidden="true"></i> Purchase List
@@ -190,8 +190,8 @@
                 @endif
                 <button class="mm-button mm-button-secondary" type="Reset"> <i
                         class="fa fa-refresh"></i> Reset </button>
-                @if (hasPermission('rst.purchase.view', $slugs))
-                    <a href="{{ route('rst.purchase.index') }}" class="mm-button mm-button-secondary">
+                @if (hasPermission('resturant.purchases.index', $slugs) && hasPermission('rst.purchase.view', $slugs))
+                    <a href="{{ route('rst.purchases.index') }}" class="mm-button mm-button-secondary">
                         <i class="fa fa-list"></i> List </a>
                 @endif
             </div>

@@ -15,7 +15,7 @@
 
 <x-mm.styles />
 <x-mm.page class="mm-report mm-rst mm-rst-purchase" title="Purchase list" description="Restaurant purchases with required and received quantities.">
-    @if (hasPermission('rst.purchase.create', $slugs))
+    @if (hasPermission('resturant.purchases.create', $slugs))
         <x-slot name="actions">
             <a class="mm-button" href="{{ route('rst.purchases.create') }}">
                 <i class="fa fa-plus" aria-hidden="true"></i> Add Purchase
@@ -55,7 +55,7 @@
 
             <div class="btn-group" style="display: flex">
                 <button class="mm-button"><i class="fa fa-search"></i> Search</button>
-                <a href="{{ route('purchases.index') }}" class="mm-button mm-button-secondary"><i
+                <a href="{{ route('rst.purchases.index') }}" class="mm-button mm-button-secondary"><i
                         class="fa fa-refresh"></i> Refresh</a>
             </div>
         </form>
@@ -89,7 +89,7 @@
                             {{-- <td>{{ $purchase->purchase_reference }}</td> --}}
                             <td>{{ $purchase->company->name }}</td>
                             <td>{{ $purchase->purchase_details->sum('quantity') }}</td>
-                            <td>{{ $purchase->purchase_details->sum('quantity') }}</td>
+                            <td>{{ $purchase->is_approved ? $purchase->purchase_details->sum('quantity') : 0 }}</td>
 
                             <td style="text-align: center">
                                 <div class="btn-group btn-corner">

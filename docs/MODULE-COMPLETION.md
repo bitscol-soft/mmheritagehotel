@@ -56,7 +56,7 @@ acceptance. UI implementation alone is not production completion.
 | Sale list, invoice, new sale; sale return list, details, new return (R2) | Migrated; scripts unchanged | Staging pending |
 | Inventory (R4): categories, units, manufacturers, suppliers, products, material products, uploads, inventory report, production items / units / requisitions / purchases, purchase create, stock adjustment | Migrated (30 pages); script partials, controllers and routes unchanged | Staging pending |
 | POS sale workspace (`rst/sales-v2/create`) and the auto-print POS/office documents | Not changed (already card-based; needs its own design pass) | n/a |
-| Purchase list, requisition, approve, create frame (R3) | Migrated; create still uses the shared Bar partials, unchanged | Staging pending |
+| Purchase list, requisition, approve, create frame (R3) | Migrated; create uses the Restaurant partials (restaurant products); link, Received Qty and permission-gated link fixes applied (see TAILWIND-DEVELOPMENT, thirty-fourth increment) | Staging pending |
 | Inventory screens (R4) | Not started | n/a |
 | Unreachable views (`sales/bck_show`, `sales/exchange/*`, `purchase/{create,index,show}`, `reports/{cash-flow,sales}/index`, `kitchen/edit`, ...) | Not migrated | n/a |
 

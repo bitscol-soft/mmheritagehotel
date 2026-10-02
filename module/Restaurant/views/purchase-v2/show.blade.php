@@ -42,12 +42,12 @@
 {{-- @dd($purchases); --}}
 <x-mm.page class="mm-invoice-page mm-rst" title="Purchase requisition details" description="Printable purchase form. Printing outputs the document only.">
     <x-slot name="actions">
-        @if (hasPermission('rst.purchase.create', $slugs))
+        @if (hasPermission('resturant.purchases.create', $slugs))
             <a class="mm-button mm-button-secondary" href="{{ route('rst.purchases.create') }}">
                 <i class="fa fa-plus" aria-hidden="true"></i> Add Purchase
             </a>
         @endif
-        @if (hasPermission('rst.purchase.view', $slugs))
+        @if (hasPermission('resturant.purchases.index', $slugs) && hasPermission('rst.purchase.view', $slugs))
             <a href="{{ route('rst.purchases.index') }}" class="mm-button mm-button-secondary">
                 <i class="fa fa-list" aria-hidden="true"></i> List
             </a>

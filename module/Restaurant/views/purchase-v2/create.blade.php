@@ -37,16 +37,16 @@
             <form method="POST" action="{{ route('rst.purchases.store') }}" id="purchase-form">
                 @csrf
 
-                @include('bar.purchase-v2.inc.common')
+                @include('purchase-v2.inc.common')
                 <div class="row">
                     <div class="col-md-9 mm-rst-purchase-lines">
 
-                        @include('bar.purchase-v2.create.left-side')
+                        @include('purchase-v2.create.left-side')
 
                     </div>
                     <div class="col-md-3">
 
-                        @include('bar.purchase-v2.create.right-side')
+                        @include('purchase-v2.create.right-side')
 
                     </div>
                 </div>
@@ -57,5 +57,5 @@
 @endsection
 
 @section('script')
-    @include('bar.purchase-v2/inc/script')
+    @include('purchase-v2/inc/script')
 @endsection

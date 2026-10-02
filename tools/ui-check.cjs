@@ -664,7 +664,10 @@ console.log('PASS: note list/edit expressions, forms and status scripts; legacy 
  const scripts=s=>(nc(s).match(/<script[\s\S]*?<\/script>/g)||[]).map(t=>t.replace(/\s+/g,' ')).join('|');
  const dir='module/Restaurant/views/';
  // Known, reviewed difference: the requisition's print icon image became a Print button with a font icon.
- const droppedExpr={'purchase-v2/show':["-1 {{ asset('assets/images/export-icons/printer-icon.png') }}"]};
+ // Reviewed R3 follow-up fixes: the list's Refresh link and the approve form's List button point at rst.purchases.index; Received Qty shows the approved quantity (was a copy of Required Qty).
+ const droppedExpr={'purchase-v2/show':["-1 {{ asset('assets/images/export-icons/printer-icon.png') }}"],
+  'purchase-v2/index':["+1 {{ $purchase->is_approved ? $purchase->purchase_details->sum('quantity') : 0 }}","+1 {{ route('rst.purchases.index') }}","-1 {{ route('purchases.index') }}","-1 {{ $purchase->purchase_details->sum('quantity') }}"].sort(),
+  'purchase-v2/approve':["+1 {{ route('rst.purchases.index') }}","-1 {{ route('rst.purchase.index') }}"]};
  for(const f of ['purchase-v2/index','purchase-v2/show','purchase-v2/approve','purchase-v2/create']){
   const p=`${dir}${f}.blade.php`,after=fs.readFileSync(p,'utf8'),before=execFileSync('git',['show',`${base}:${p}`],{encoding:'utf8'});
   assert.deepEqual(only(ex(before),ex(after)),droppedExpr[f]||[],`${f}: Blade expressions changed`);
@@ -675,9 +678,10 @@ console.log('PASS: note list/edit expressions, forms and status scripts; legacy 
   assert(after.includes('<x-mm.page'),`${f}: shared layout expected`);
   assert(!after.includes('widget-box')&&!after.includes('widget-main')&&!after.includes('widget-header')&&!after.includes('page-header'),`${f}: legacy frame should be gone`);
  }
- // the create screen keeps including the shared Bar partials (see docs: it posts through the Bar product list)
+ // the create screen includes the Restaurant partials (restaurant products, bar=0), not the Bar ones
  const create=fs.readFileSync(`${dir}purchase-v2/create.blade.php`,'utf8');
- for(const inc of ["bar.purchase-v2.inc.common","bar.purchase-v2.create.left-side","bar.purchase-v2.create.right-side","bar.purchase-v2/inc/script"]) assert(create.includes(inc),`purchase create must keep including ${inc}`);
+ for(const inc of ["purchase-v2.inc.common","purchase-v2.create.left-side","purchase-v2.create.right-side","purchase-v2/inc/script"]) assert(create.includes(`@include('${inc}')`),`purchase create must include ${inc}`);
+ assert(!create.includes('bar.purchase-v2'),'purchase create must not include the Bar partials');
  const untouched=execFileSync('git',['diff','--name-only',base,'--','module/Restaurant/Controllers','module/Restaurant/routes','module/Bar/views','module/Restaurant/views/purchase-v2/inc','module/Restaurant/views/purchase-v2/create'],{encoding:'utf8'}).trim();
  assert.equal(untouched,'','Restaurant controllers, routes, Bar views and the unused purchase-v2 partials must stay unchanged');
  console.log('PASS: restaurant purchases (purchase-v2) keep fields, expressions, directives and scripts; controllers, routes and shared Bar partials untouched');

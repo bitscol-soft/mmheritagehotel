@@ -684,3 +684,14 @@ Checks: four render fixtures (`tools/fixtures/restaurant/purchase-*.html`; previ
 Left alone: the script partials (`product/_inc/script`, `mat_script`, `purchase-v2/inc/*`, `adjustment-v2/inc/*`), the create/edit modals and unreachable views (`mat_product/uploads/*`, `goods_requisitions/{approve,edit}`, `items/upload`, `purchases/create`, `stock-adjustment/*`, `product-stock`, `gin_list`). Controllers and routes are unchanged.
 
 Checks: 31 render fixtures (`tools/fixtures/restaurant-inventory/*.html`, previews `/preview/rsi-*`; missing sample fields fall back to `MmRiAny`, routes are registered on the fly), 41 browser tests in `tools/browser/restaurant-inventory.spec.cjs` (frame, no page overflow at 1280/768/390, filters, forms, print), and a `ui:check` guard on expressions, controls, forms, directives and scripts against `059fb625` (inventory views were untouched by R3).
+
+## Thirty-fourth increment: Restaurant purchase fixes
+
+Reviewed legacy bugs in `module/Restaurant/views/purchase-v2/`, all view-level (no controller, route or calculation changed):
+
+- `create` now includes the Restaurant partials (`purchase-v2.inc.common`, `create.left-side`, `create.right-side`, `inc/script`) instead of the Bar copies. The script loads `get-products?bar=0` (restaurant products, `unit_price`) instead of `bar=1` (bar products, `sale_price`/pack size). **Behaviour change, approved by the user.**
+- `index` Refresh pointed at `purchases.index` (General Store); it now points at `rst.purchases.index`.
+- `approve` List button pointed at `rst.purchase.index` (inventory purchases); it now points at `rst.purchases.index`.
+- `index` Received Qty repeated Required Qty. `rst_purchases` has no receive record (approval is what adds stock), so it now shows the quantity once approved and 0 before.
+- Add/List links are shown only when the destination route's own guard would allow them (`resturant.purchases.create`; `resturant.purchases.index` and `rst.purchase.view`). Both slug families exist in the permission seed and the controller mixes them (`index` requires both), so the controller guards were **left unchanged**; choosing one canonical family is a product decision.
+- Not a bug: `show` reads `$purchases`, which is what the controller passes (the `$purchase` seen earlier was only in a commented line).

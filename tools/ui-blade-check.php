@@ -912,13 +912,13 @@ foreach ($rsViews as $rsView) {
     @mkdir(dirname($coViews . '/rs/' . $rsView), 0777, true);
     file_put_contents($coViews . '/rs/' . $rsView . '.blade.php', $rsSubst($rsView));
 }
-// purchase-v2/create includes the Bar purchase partials (shared, not changed): render them for real with the date made deterministic.
-foreach (['inc/common', 'create/left-side', 'create/right-side'] as $rsPart) {
-    @mkdir(dirname($coViews . '/rs/bar/purchase-v2/' . $rsPart), 0777, true);
-    file_put_contents($coViews . '/rs/bar/purchase-v2/' . $rsPart . '.blade.php', str_replace("date('Y-m-d')", "'2026-10-01'", file_get_contents($root . '/module/Bar/views/bar/purchase-v2/' . $rsPart . '.blade.php')));
+// purchase-v2/create includes the Restaurant purchase partials (they load restaurant products, bar=0): render them for real; the script partial is not rendered.
+foreach (['purchase-v2/inc/common', 'purchase-v2/create/left-side', 'purchase-v2/create/right-side'] as $rsPart) {
+    @mkdir(dirname($coViews . '/rs/' . $rsPart), 0777, true);
+    file_put_contents($coViews . '/rs/' . $rsPart . '.blade.php', $rsSubst($rsPart));
 }
 $rsCreate = file_get_contents($coViews . '/rs/purchase-v2/create.blade.php');
-file_put_contents($coViews . '/rs/purchase-v2/create.blade.php', str_replace(["@include('bar.purchase-v2.", "@include('bar.purchase-v2/inc/script')"], ["@include('rs.bar.purchase-v2.", ''], $rsCreate));
+file_put_contents($coViews . '/rs/purchase-v2/create.blade.php', str_replace(["@include('purchase-v2.", "@include('purchase-v2/inc/script')"], ["@include('rs.purchase-v2.", ''], $rsCreate));
 $rsIndex = file_get_contents($coViews . '/rs/purchase-v2/index.blade.php');
 file_put_contents($coViews . '/rs/purchase-v2/index.blade.php', str_replace('@include(\'partials._paginate\', [\'data\' => $purchases])', $rpPaginate, $rsIndex));
 $rsRoutes = new Illuminate\Routing\RouteCollection();

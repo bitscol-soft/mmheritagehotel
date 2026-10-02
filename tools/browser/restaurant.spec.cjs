@@ -219,6 +219,13 @@ test('purchase list keeps the filters, row actions and delete hook', async ({ pa
     await expect(page.locator('button[onclick="delete_check(1)"]')).toHaveCount(1);
     await expect(page.locator('button[onclick="delete_check(2)"]')).toHaveCount(0);
     await expect(page.getByRole('link', { name: 'Add Purchase' })).toBeVisible();
+    // Refresh stays in the Restaurant purchases (it used to open the General Store list)
+    await expect(page.getByRole('link', { name: 'Refresh' })).toHaveAttribute('href', /\/rst\/purchases$/);
+    // Received Qty is the approved quantity: nothing is received until the purchase is approved
+    const qty = await page.locator('table tbody tr').evaluateAll((rows) => rows.map((r) => [r.children[4].textContent.trim(), r.children[5].textContent.trim()]));
+    expect(qty[0][1]).toBe('0');
+    expect(qty[1][1]).toBe(qty[1][0]);
+    expect(qty[0][0]).not.toBe('0');
     const { filter, table } = await page.evaluate(() => ({ filter: document.querySelector('.mm-report-filter').getBoundingClientRect(), table: document.querySelector('table').getBoundingClientRect() }));
     expect(table.top).toBeGreaterThan(filter.bottom - 1);
 });
@@ -241,6 +248,10 @@ test('purchase approve keeps the readonly item lines and posts the approval', as
     for (const name of ['item_name[]', 'item_unit_name[]', 'available_quantity[]', 'item_price[]', 'quantity[]']) expect(await page.locator(`#purchase_table [name="${name}"]`).getAttribute('readonly')).not.toBeNull();
     await expect(page.locator('select[name="company_id"]')).toHaveValue('1');
     await expect(page.getByRole('button', { name: 'Approve' })).toBeVisible();
+    // both List links go to the Restaurant purchases (not the inventory purchase list)
+    const lists = page.locator('a[href$="/rst/purchases"]');
+    expect(await lists.count()).toBe(2);
+    await expect(page.locator('a[href*="/restaurant/inventory/purchase"]')).toHaveCount(0);
     // chosen replaces the company select with its own widget; measure that one
     const boxes = await page.evaluate(() => [document.querySelector('form .chosen-container') || document.querySelector('[name="company_id"]'), document.querySelector('[name="purchase_date"]')].map(el => { const r = el.getBoundingClientRect(); return { top: Math.round(r.top), width: Math.round(r.width) }; }));
     expect(boxes[1].top).toBeGreaterThan(boxes[0].top);
