@@ -146,3 +146,11 @@ payment collection and night audit pending. See `docs/BOOKING-LIFECYCLE-PLAN.md`
 | A3: purchases, sales, purchase / sale returns, damages, supplier payments and collections lists | Migrated (14 views); expressions, controls, forms, directives and scripts unchanged except one removed legacy bug in `sale/sales/edit` (compared with `a53777be`). Invoices, `returnable-items` partials and the unused `show` views stay legacy. | Render fixtures, `account-trading.spec.cjs` (19 tests: frame, overflow at 1280/768/390, rows, filters, forms, line items); not run against real Laravel / DB |
 | A4: reports (ledgers, trial balance, income statement, balance sheet, cash flow, stock, ...) | Migrated (23 index views); expressions, controls, forms, directives and scripts unchanged except a guarded `select-group` partial (compared with `d5393038`). Print and export documents stay legacy | `account-reports.spec.cjs` |
 
+## Banquet Hall (module/BanquetHall)
+
+| Group | Status | Verification |
+|---|---|---|
+| BH1: hall amenities, hall categories, halls (list, add, edit), booking list, new booking | Migrated (11 views plus the booking filter partial); expressions, controls, forms, directives and scripts unchanged except two dropped duplicate alerts and a stated `type="submit"` (compared with `6121c424`) | `banquet.spec.cjs` (21 tests), fixtures `tools/fixtures/banquet/*` |
+| `booking-purpose/*`, `services/*`, `hotel-service-night-audits/*` (20 views) | Not used: the Hotel and Hotel Service copies of the same view names win in `config/view.php`, and both are already migrated | n/a |
+| `hall_booking/{edit,view,assaign,booking_next,booking_ui,adjust}`, invoices, `export/*` | Not migrated: the controller renders the Hotel `booking/edit` and `booking/view`, so these are unreachable; invoices and exports stay as documents | n/a |
+

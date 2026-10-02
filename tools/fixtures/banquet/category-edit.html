@@ -1,10 +1,6 @@
-@extends('layouts.master')
-@section('title', 'Edit Category')
-@section('page-header')
-    <i class="fa fa-edit"></i> Edit Category
-@stop
-@push('style')
-    <link rel="stylesheet" href="{{ asset('assets/css/dropzone.min.css') }}" />
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">    <link rel="stylesheet" href="/assets/css/dropzone.min.css" />
     <style>
         .checkbox label input[type=checkbox].ace+.lbl {
             margin-bottom: 10px;
@@ -31,24 +27,18 @@
             display: block !important;
         }
     </style>
-@endpush
-
-@section('content')
-    <x-mm.styles />
-    <x-mm.page class="mm-banquet mm-room-form mm-category-form" title="Edit hall category" description="Update hall type details, rates, amenities and photos.">
-        @if (hasPermission('banquet.hall-categories.view', $slugs))
-            <x-slot name="actions">
-                <a href="{{ route('banquet.hall-categories.index') }}" class="mm-button mm-button-secondary">
+<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->        <section class="mm-ui mm-banquet mm-room-form mm-category-form">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Edit hall category</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Update hall type details, rates, amenities and photos.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a href="http://localhost/bq/banquet/hall-categories/index" class="mm-button mm-button-secondary">
                     <i class="fa fa-list-alt" aria-hidden="true"></i> List
-                </a>
-            </x-slot>
-        @endif
-        <x-mm.panel class="tw-p-5">
-            <form class="form-horizontal" action="{{ route('banquet.hall-categories.update', $category->id) }}"
+                </a></div>        </header>
+        <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-5"><form class="form-horizontal" action="http://localhost/bq/banquet/hall-categories/update/1"
                 method="post" enctype="multipart/form-data">
-                @csrf
-                @method('PUT')
-                @include('partials._alert_message')
+                <input type="hidden" name="_token" value="fixture-csrf-token">                <input type="hidden" name="_method" value="PUT">                
 
 
                 <div class="row">
@@ -59,7 +49,7 @@
                                     <label class="col-sm-3 control-label" for="cat_name"> Category Name </label>
                                     <div class="col-xs-12 col-sm-8 ">
                                         <input type="text" id="cat_name" name="cat_name"
-                                            value="{{ $category->name }}" placeholder="Enter Category Name"
+                                            value="Wedding &lt;b&gt;hall&lt;/b&gt;" placeholder="Enter Category Name"
                                             class="form-control">
                                     </div>
                                 </div>
@@ -70,7 +60,7 @@
                                     </label>
                                     <div class="col-xs-12 col-sm-8 ">
                                         <input type="number" id="capacity" name="guest_capacity"
-                                            value="{{ $category->guest_capacity }}"
+                                            value="400"
                                             placeholder="Enter Guest Capacity" class="form-control">
                                     </div>
                                 </div>
@@ -78,13 +68,10 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label">Description</label>
-                                    <div class="col-xs-12 col-sm-8 @error('description') has-error @enderror">
-                                        <textarea name="description" rows="5" class="form-control" placeholder="Enter Description">{{ $category->description }}</textarea>
+                                    <div class="col-xs-12 col-sm-8 ">
+                                        <textarea name="description" rows="5" class="form-control" placeholder="Enter Description">Large &lt;i&gt;hall&lt;/i&gt;</textarea>
 
-                                        @error('details')
-                                            <span class="text-danger">{{ $message }}</span>
-                                        @enderror
-                                    </div>
+                                                                            </div>
                                 </div>
                             </div>
 
@@ -99,15 +86,19 @@
                                     <label class="col-sm-3 control-label" for="price">Aminities </label>
                                     <div class="col-xs-12 col-sm-8 ">
                                         <div class="checkbox">
-                                            @foreach ($aminities as $item)
-                                                <label>
-                                                    <input name="aminities[]" value="{{ $item->id }}"
-                                                        {{ in_array($item->id, $aminities_item) ? 'checked' : '' }}
+                                                                                            <label>
+                                                    <input name="aminities[]" value="1"
+                                                        checked
                                                         type="checkbox" class="ace">
-                                                    <span class="lbl">&nbsp;{{ $item->name }}</span>
+                                                    <span class="lbl">&nbsp;Stage &lt;b&gt;lights&lt;/b&gt;</span>
                                                 </label>
-                                            @endforeach
-                                        </div>
+                                                                                            <label>
+                                                    <input name="aminities[]" value="2"
+                                                        
+                                                        type="checkbox" class="ace">
+                                                    <span class="lbl">&nbsp;Sound</span>
+                                                </label>
+                                                                                    </div>
                                     </div>
                                 </div>
                             </div>
@@ -119,16 +110,13 @@
                                 <div class="col-xs-12 col-sm-8">
                                     <select name="status" class="form-control chosen-select" required>
                                         <option></option>
-                                        <option value="1" {{ $category->status == 1 ? 'selected' : '' }}>
+                                        <option value="1" selected>
                                             Active</option>
-                                        <option value="0" {{ $category->status == 0 ? 'selected' : '' }}>
+                                        <option value="0" >
                                             In Active</option>
                                     </select>
 
-                                    @error('status')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
+                                                                    </div>
                             </div>
                         </div>
                     </div>
@@ -144,17 +132,16 @@
                             Reset</button>
                     </div>
                 </div>
-            </form>
-        </x-mm.panel>
-    </x-mm.page>
-@endsection
+            </form></div>
+    </div>
+</section>
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
+    <script src="/assets/js/ace-elements.min.js"></script>
+    <script src="/assets/js/dropzone.min.js"></script>
 
+    
 
-
-@section('js')
-    <script src="{{ asset('assets/js/ace-elements.min.js') }}"></script>
-    <script src="{{ asset('assets/js/dropzone.min.js') }}"></script>
-
-    @include('category.inc.script')
-
-@endsection
+<!--/MM-JS--></body></html>

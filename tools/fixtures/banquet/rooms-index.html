@@ -1,0 +1,130 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">    <link rel="stylesheet" href="/assets/css/chosen.min.css" />
+    <link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css" />
+
+<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->        <section class="mm-ui mm-banquet mm-room-inventory mm-hotel-setup">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Halls</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Find halls by name or hall number.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button" href="http://localhost/bq/banquet/hall-rooms/create">
+                <i class="fa fa-plus" aria-hidden="true"></i> Add New Room
+            </a></div>        </header>
+        <div class="mm-panel tw-p-4 sm:tw-p-6 mm-setup-filter tw-mb-4"><form action="" class="tw-flex tw-flex-wrap tw-gap-3 tw-items-center">
+                <div class="input-group">
+                    <span class="input-group-addon">Name</span>
+                    <input type="text" name="name" class="form-control" placeholder="Room Name">
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">Hall No</span>
+                    <input type="text" name="room_number" class="form-control" placeholder="Hall No.">
+                </div>
+                
+                <div class="tw-flex tw-gap-2">
+                    <button class="mm-button">
+                        <i class="fa fa-search" aria-hidden="true"></i> Search
+                    </button>
+                    <a href="http://localhost/bq/room-management/hall-rooms" class="mm-button mm-button-secondary">
+                        <i class="fa fa-refresh" aria-hidden="true"></i> Clear
+                    </a>
+                </div>
+            </form></div>
+
+        <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><div class="mm-table-scroll" role="region" aria-label="Hall list" tabindex="0"><table id="data-table" class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th width="5%">SL</th>
+                            <th width="25%" class="text-center">Name</th>
+                            <th width="10%" class="text-center">Hall No</th>
+                            <th width="20%" class="text-center">Category</th>
+                            <th width="10%" class="text-center">Price</th>
+                            <th width="10%" class="text-center">Max Guest</th>
+                            <th width="10%" class="text-center">Status</th>
+                            <th width="10%" class="text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                                                    <tr>
+                                <td>1</td>
+                                <td class="text-center">Grand &lt;b&gt;Hall&lt;/b&gt;</td>
+                                <td class="text-center">
+                                    H-1
+                                </td>
+                                <td class="text-center">
+                                    Wedding &lt;i&gt;hall&lt;/i&gt;
+                                </td>
+                                <td class="text-center">50000 </td>
+                                <td class="text-center">300 </td>
+
+                                <td class="text-center">
+                                                                            <span class="label label-sm label-success">Ready</span>
+                                                                    </td>
+                                <td class="text-center">
+                                    <div class="btn-group btn-corner">
+                                        <a href="http://localhost/bq/banquet/hall-rooms/edit/5"
+                                            class="btn btn-xs btn-sm btn-success " title="Edit">
+                                            <i class="fa fa-pencil-square-o"></i>
+                                        </a>
+                                        <button type="button" onclick="delete_check(5)"
+                                            class="btn btn-xs btn-sm btn-danger" title="Delete">
+                                            <i class="fa fa-trash-o"></i>
+                                        </button>
+                                    </div>
+
+                                    <form action="http://localhost/bq/banquet/hall-rooms/destroy/5"
+                                        id="deleteCheck_5" method="POST">
+                                        <input type="hidden" name="_token" value="fixture-csrf-token">                                        <input type="hidden" name="_method" value="DELETE">                                    </form>
+                                </td>
+                            </tr>
+                                            </tbody>
+                </table></div></div>
+    </div>
+</section>
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
+
+    <script src="/assets/js/jquery.dataTables.min.js"></script>
+    <script src="/assets/js/jquery.dataTables.bootstrap.min.js"></script>
+    <script src="/assets/custom_js/date-picker.js"></script>
+
+
+    
+
+
+    <!-- inline scripts related to this page -->
+    <script type="text/javascript">
+        function delete_check(id) {
+            Swal.fire({
+                title: 'Are you sure ?',
+                html: "<b>You want to delete permanently !</b>",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!',
+                width: 400,
+            }).then((result) => {
+                if (result.value) {
+                    $('#deleteCheck_' + id).submit();
+                }
+            })
+
+        }
+    </script>
+
+    <script type="text/javascript">
+        jQuery(function($) {
+            $('#data-table').DataTable({
+                "ordering": false,
+                "bPaginate": true,
+                "lengthChange": false,
+                "info": false,
+                "pageLength": 25
+            });
+        })
+    </script>
+<!--/MM-JS--></body></html>

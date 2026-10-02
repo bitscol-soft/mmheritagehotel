@@ -1003,3 +1003,38 @@ console.log('PASS: note list/edit expressions, forms and status scripts; legacy 
   assert.equal(untouched,'','Account controllers, routes and models must stay unchanged');
   console.log('PASS: account A4 (reports) keeps fields, expressions, directives, components and scripts; print and export documents, controllers and routes untouched');
 }
+
+{
+  // Banquet Hall BH1 (hall setup, bookings): fields, expressions, directives, components and scripts stay as they were.
+  const base='6121c424';
+  const nc=s=>s.replace(/\{\{--[\s\S]*?--\}\}/g,'');
+  const q=x=>x.replace(/\s+/g,'').replace(/"/g,"'");
+  const ex=s=>(nc(s).match(/\{\{[\s\S]*?\}\}|\{!![\s\S]*?!!\}/g)||[]).map(q);
+  const comps=s=>(nc(s).match(/<x-(?!mm\.|slot)[a-z.-]+[^>]*>/g)||[]).map(q);
+  const added=/ (?:aria-label="[^"]*"|style="[^"]*"|class="[^"]*")/g;
+  const ctl=s=>(nc(s).replace(/\{\{[\s\S]*?\}\}/g,'{{}}').match(/<(input|select|textarea|button)\b[^>]*>/g)||[]).map(x=>x.replace(/\s+/g,' ').replace(added,''));
+  const forms=s=>(nc(s).match(/<form[^>]*>/g)||[]).map(x=>q(x.replace(/ class="[^"]*"/,'')));
+  const directives=s=>(nc(s).match(/@(?:if|elseif|else|endif|foreach|endforeach|forelse|empty|endforelse|include|isset|endisset|can|endcan|error|enderror|csrf|method|php|endphp)\b/g)||[]);
+  const only=(l,m)=>{const c={};l.forEach(x=>c[x]=(c[x]||0)+1);m.forEach(x=>c[x]=(c[x]||0)-1);return Object.entries(c).filter(([,n])=>n).map(([k,n])=>`${n>0?'-':'+'}${Math.abs(n)} ${k}`).sort();};
+  const scripts=s=>(nc(s).match(/<script[\s\S]*?<\/script>/g)||[]).map(q).join('|');
+  const dir='module/BanquetHall/views/';
+  const changed={};
+  // the booking filter's search button now states its default type
+  const ctlChanged={'hall_booking/_inc/_filter':['+1 <button type="submit">','-1 <button>']};
+    const dirChanged={'hall/aminities/create':['-1 @include'],'hall/aminities/edit':['-1 @include'],'hall_booking/index':['+1 @endif','+1 @if']};
+  const files=["hall/aminities/index", "hall/aminities/create", "hall/aminities/edit", "hall/category/index", "hall/category/create", "hall/category/edit", "hall/rooms/index", "hall/rooms/create", "hall/rooms/edit", "hall_booking/index", "hall_booking/create", "hall_booking/_inc/_filter"];
+  for(const f of files){
+    const p=`${dir}${f}.blade.php`,after=fs.readFileSync(p,'utf8'),before=execFileSync('git',['show',`${base}:${p}`],{encoding:'utf8'});
+    assert.deepEqual(only(ex(before),ex(after)),changed[f]||[],`${f}: Blade expressions changed`);
+    assert.deepEqual(only(comps(before),comps(after)),[],`${f}: Blade components changed`);
+    assert.deepEqual(only(ctl(before),ctl(after)),ctlChanged[f]||[],`${f}: form controls changed`);
+    assert.deepEqual(only(forms(before),forms(after)),[],`${f}: form tags changed`);
+    assert.deepEqual(only(directives(before),directives(after)),dirChanged[f]||[],`${f}: Blade directives changed`);
+    assert.equal(scripts(after),scripts(before),`${f}: scripts changed`);
+    assert(f.includes('/_inc/')||after.includes('<x-mm.page'),`${f}: shared layout expected`);
+    assert(!/class="[^"]*\b(?:widget-box|widget-main|widget-header|page-header)\b/.test(after),`${f}: legacy frame should be gone`);
+  }
+  const untouched=execFileSync('git',['diff','--name-only',base,'--','module/BanquetHall/Controllers','module/BanquetHall/routes','module/BanquetHall/Models'],{encoding:'utf8'}).trim();
+  assert.equal(untouched,'','Banquet Hall controllers, routes and models must stay unchanged');
+  console.log('PASS: banquet hall BH1 (amenities, categories, halls, booking list and new booking) keeps fields, expressions, directives, components and scripts; controllers and routes untouched');
+}

@@ -1618,3 +1618,75 @@ foreach ($a4Cases as $a4Name => [$a4ViewName, $a4Url, $a4Data, $a4Markers, $a4Ab
     if (file_get_contents($a4File) !== $a4Html) throw new RuntimeException($a4File . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
 }
 echo "PASS account report screens render\n";
+
+// ---- Banquet Hall BH1: hall setup (amenities, categories, halls) and bookings (list, new booking) ----
+$bqMigrated = ['hall/aminities/index', 'hall/aminities/create', 'hall/aminities/edit', 'hall/category/index', 'hall/category/create', 'hall/category/edit', 'hall/rooms/index', 'hall/rooms/create', 'hall/rooms/edit', 'hall_booking/index', 'hall_booking/create'];
+// partials included by the migrated screens (unchanged files except _filter; copied so that includes resolve)
+$bqPartials = ['hall_booking/_inc/_filter', 'hall_booking/_inc/_filter_guest_info', 'hall_booking/_inc/_booking-table', 'hall_booking/_inc/_add-guest-input-info', 'hall_booking/_inc/create-edit-tfoot', 'hall_booking/_inc/_check-sms-and-email', 'hall_booking/_modal/booking_details', 'hall_booking/_modal/booking_check_in_modal', 'hall_booking/_modal/member-detail-show-modal', 'hall_booking/_modal/extra-charge-modal', 'hall_booking/_modal/_guest-details-modal', 'hall_booking/_modal/member-detail-modal', 'hall_booking/_css/extra-charge-modal-css', 'hall_booking/_css/css'];
+foreach (array_merge($bqMigrated, $bqPartials) as $bqFile) { token_get_all($compiler->compileString(file_get_contents($root . '/module/BanquetHall/views/' . $bqFile . '.blade.php')), TOKEN_PARSE); }
+echo "PASS compile banquet hall views\n";
+foreach (array_merge($bqMigrated, $bqPartials) as $bqView) {
+    $bqSource = $rsSubst($bqView, 'BanquetHall');
+    $bqSource = preg_replace("/@include\\('(?:rooms|category)\\.inc\\.script'\\)|@include\\('hall_booking\\._script\\.[\\w-]+'\\)/", '', $bqSource);
+    $bqSource = preg_replace_callback("/@include\\('(hall_booking|partials)([\\/.])([\\w\\/.-]+)'/", function ($m) { return "@include('bq." . $m[1] . '.' . str_replace('/', '.', $m[3]) . "'"; }, $bqSource);
+    $bqSource = str_replace(['currencySign()', 'vatSetting()->hotel_vat'], ["'$'", "'10'"], $bqSource);
+    $bqSource = str_replace(["@include('bq.partials._alert_message')", '@include("bq.partials._alert_message")'], '', $bqSource);
+    @mkdir(dirname($coViews . '/bq/' . $bqView), 0777, true);
+    file_put_contents($coViews . '/bq/' . $bqView . '.blade.php', $bqSource);
+}
+@mkdir($coViews . '/bq/partials/modal', 0777, true);
+file_put_contents($coViews . '/bq/partials/modal/new_guest_modal.blade.php', '<div id="add_guest1" class="modal"></div>');
+file_put_contents($coViews . '/bq/partials/modal/edit_v1_guest_modal.blade.php', '<div id="edit_guest_info" class="modal"></div>');
+$bqSeen = [];
+foreach (array_merge($bqMigrated, $bqPartials) as $bqView) {
+    preg_match_all("/route\\('([\\w.-]+)'/", file_get_contents($coViews . '/bq/' . $bqView . '.blade.php'), $bqMatch);
+    foreach ($bqMatch[1] as $bqRoute) {
+        if (isset($bqSeen[$bqRoute]) || $rsRoutes->getByName($bqRoute)) continue;
+        $bqSeen[$bqRoute] = true;
+        $rsRoutes->add((new Illuminate\Routing\Route(['GET', 'POST'], 'bq/' . str_replace('.', '/', $bqRoute) . '/{id?}', function () {}))->name($bqRoute));
+    }
+}
+$bqOpt = function ($rows) use ($riRow) { return collect(array_map(function ($r) use ($riRow) { return $riRow($r); }, $rows)); };
+$bqAmenity = $bqOpt([['id' => 1, 'name' => 'Stage <b>lights</b>', 'aminities_icon' => 'uploads/a.png', 'status' => 1], ['id' => 2, 'name' => 'Sound', 'aminities_icon' => 'uploads/b.png', 'status' => 0]]);
+$bqHallFields = ['id' => 5, 'name' => 'Grand <b>Hall</b>', 'room_number' => 'H-1', 'hall_category' => 1, 'hall_sqft' => 1200, 'price' => 50000, 'max_guests' => 300, 'status' => 1, 'smoking_status' => 'No', 'category' => $riRow(['name' => 'Wedding <i>hall</i>'])];
+$bqHall = $riRow($bqHallFields);
+$bqBooking = $riRow(['id' => 7, 'booking_number' => 'BQ-0007', 'booking_date' => '2026-10-01', 'booked_time' => '09:30', 'booking_from' => 1, 'booking_type' => 'Single', 'status' => 0, 'reference' => 'Ref <b>x</b>',
+    'guestInfo' => $riRow(['name' => 'Rahim <b>Uddin</b>', 'phone_no' => '017']),
+    'details' => collect([$riRow(['hall' => $riRow(['room_number' => 'H-1', 'name' => 'Grand <b>Hall</b>'])])]),
+    'transection' => $riRow(['total_amount' => 1000, 'collection' => 400, 'discount' => 0])]);
+$bqGuests = $bqOpt([['id' => 1, 'name' => 'Rahim <b>Uddin</b>', 'phone_no' => '017']]);
+$bqCommon = ['guest' => $bqGuests, 'guests' => $bqGuests, 'booking_purpose' => collect([]), 'crmCompanies' => collect([]), 'platforms' => collect([]), 'tomorrow' => '2026-10-02', 'category' => [1 => 'Wedding <i>hall</i>'], 'account_types' => $bqOpt([['id' => 1, 'name' => 'Cash']]), 'rooms' => collect([]), 'room_category' => [1 => 'Wedding <i>hall</i>']];
+$bqCases = [
+    'aminities-index' => ['bq.hall.aminities.index', '/bq/room-management/aminities', ['data' => $bqAmenity], ['mm-banquet', 'mm-hotel-setup', 'id="data-table"', 'Hall amenities', 'Stage &lt;b&gt;lights&lt;/b&gt;', 'deleteCheck_1'], ['Stage <b>lights</b>']],
+    'aminities-create' => ['bq.hall.aminities.create', '/bq/room-management/aminities/create', [], ['mm-banquet', 'name="name"', 'name="aminiti_icon"', 'name="status"', 'enctype="multipart/form-data"', 'Add hall amenity'], []],
+    'aminities-edit' => ['bq.hall.aminities.edit', '/bq/room-management/aminities/1/edit', ['aminities' => $riRow(['id' => 1, 'name' => 'Stage <b>lights</b>', 'status' => 1, 'aminities_icon' => 'uploads/a.png'])], ['mm-banquet', 'name="_method"', 'Stage &lt;b&gt;lights&lt;/b&gt;', 'Edit hall amenity'], ['Stage <b>lights</b>']],
+    'category-index' => ['bq.hall.category.index', '/bq/room-management/hall-categories', ['data' => $bqOpt([['id' => 1, 'name' => 'Wedding <b>hall</b>', 'guest_capacity' => 400, 'status' => 1], ['id' => 2, 'name' => 'Meeting', 'guest_capacity' => 40, 'status' => 0]])], ['mm-banquet', 'mm-room-inventory', 'id="dynamic-table"', 'Hall categories', 'Wedding &lt;b&gt;hall&lt;/b&gt;', '400 Person'], ['Wedding <b>hall</b>']],
+    'category-create' => ['bq.hall.category.create', '/bq/room-management/hall-categories/create', ['aminities' => $bqAmenity], ['mm-banquet', 'mm-room-form', 'mm-category-form', 'name="aminities[]"', 'Stage &lt;b&gt;lights&lt;/b&gt;', 'Add a hall category', 'Category List'], ['Stage <b>lights</b>']],
+    'category-edit' => ['bq.hall.category.edit', '/bq/room-management/hall-categories/1/edit', ['category' => $riRow(['id' => 1, 'name' => 'Wedding <b>hall</b>', 'guest_capacity' => 400, 'description' => 'Large <i>hall</i>', 'status' => 1, 'room_photos' => collect([])]), 'aminities' => $bqAmenity, 'aminities_item' => [1]], ['mm-banquet', 'mm-room-form', 'name="_method"', 'Wedding &lt;b&gt;hall&lt;/b&gt;', 'Large &lt;i&gt;hall&lt;/i&gt;', 'Edit hall category'], ['Wedding <b>hall</b>']],
+    'rooms-index' => ['bq.hall.rooms.index', '/bq/room-management/hall-rooms', ['rooms' => $bqOpt([$bqHallFields])], ['mm-banquet', 'mm-room-inventory', 'mm-setup-filter', 'name="room_number"', 'id="data-table"', 'Grand &lt;b&gt;Hall&lt;/b&gt;', 'Wedding &lt;i&gt;hall&lt;/i&gt;'], ['Grand <b>Hall</b>']],
+    'rooms-create' => ['bq.hall.rooms.create', '/bq/room-management/hall-rooms/create', ['room_category' => [1 => 'Wedding <i>hall</i>'], 'rooms' => collect([])], ['mm-banquet', 'mm-room-form', 'render-class', 'name="hall_category"', 'name="price"', 'name="max_guests"', 'id="submitRoomFormBtn"', 'Add a hall'], ['Wedding <i>hall</i>']],
+    'rooms-edit' => ['bq.hall.rooms.edit', '/bq/room-management/hall-rooms/5/edit', ['room' => $bqHall, 'rooms' => collect([]), 'room_category' => [1 => 'Wedding <i>hall</i>']], ['mm-banquet', 'mm-room-form', 'name="_method"', 'value="Grand &lt;b&gt;Hall&lt;/b&gt;"', 'Edit hall'], ['Grand <b>Hall</b>']],
+    'booking-index' => ['bq.hall_booking.index', '/bq/booking/booking', array_merge($bqCommon, ['booking' => $riList([$bqBooking])]), ['mm-banquet', 'mm-bookings', 'mm-booking-filter', 'name="booking_number"', 'name="customer_id"', 'id="data-table"', 'BQ-0007', 'Rahim &lt;b&gt;Uddin&lt;/b&gt;', 'cancelBookingForm', 'project-details7', 'check-in7'], ['Rahim <b>Uddin</b>']],
+    'booking-index-empty' => ['bq.hall_booking.index', '/bq/booking/booking', array_merge($bqCommon, ['booking' => $riList([])]), ['mm-banquet', 'mm-bookings', 'No bookings found'], []],
+    'booking-create' => ['bq.hall_booking.create', '/bq/booking/booking/create', $bqCommon, ['mm-banquet', 'mm-booking-next', 'id="submitBookingUpdateForm"', 'name="is_from_booking_edit"', 'name="customer_id"', 'name="booking_date"', 'id="addrow"', 'id="addItem"', 'id="addInformation"', 'submitBookingForm()', 'mm-form-actions', 'mm-table-scroll', 'Rahim &lt;b&gt;Uddin&lt;/b&gt;'], ['Rahim <b>Uddin</b>']],
+];
+@mkdir(__DIR__ . '/fixtures/banquet', 0777, true);
+foreach ($bqCases as $bqName => [$bqViewName, $bqUrl, $bqData, $bqMarkers, $bqAbsent]) {
+    $bqRequest = Illuminate\Http\Request::create($bqUrl);
+    $bqRequest->setLaravelSession(new Illuminate\Session\Store('mm', new Illuminate\Session\ArraySessionHandler(10)));
+    $app->instance('request', $bqRequest);
+    $app->instance('url', new Illuminate\Routing\UrlGenerator($rsRoutes, $bqRequest));
+    try { $bqHtml = $app->make('view')->make($bqViewName, array_merge(['errors' => new Illuminate\Support\ViewErrorBag(), 'slugs' => []], $bqData))->render(); }
+    catch (Throwable $e) { if (getenv('MM_DEBUG')) { echo 'FAIL ' . $bqName . ': ' . $e->getMessage() . "\n"; continue; } throw new RuntimeException('Banquet screen ' . $bqName . ' failed to render: ' . $e->getMessage(), 0, $e); }
+    $bqHtml = preg_replace('/(name="_token" value=")[A-Za-z0-9]+"/', '$1fixture-csrf-token"', str_replace('http://localhost/assets', '/assets', $bqHtml));
+    $bqMissing = [];
+    foreach (array_merge(['mm-panel', 'mm-page-title'], $bqMarkers) as $bqMarker) { if (strpos($bqHtml, $bqMarker) === false) $bqMissing[] = $bqMarker; }
+    if ($bqMissing) { if (getenv('MM_DEBUG')) { echo 'MISSING ' . $bqName . ': ' . implode(' | ', $bqMissing) . "\n"; continue; } throw new RuntimeException('Banquet screen ' . $bqName . ' missing ' . implode(' | ', $bqMissing)); }
+    if (preg_match('/class="[^"]*\\b(?:widget-box|widget-main|widget-header|page-header)\\b/', $bqHtml)) throw new RuntimeException('Banquet screen ' . $bqName . ' still contains the legacy frame');
+    foreach ($bqAbsent as $bqMarker) { if (strpos($bqHtml, $bqMarker) !== false) throw new RuntimeException('Banquet screen ' . $bqName . ' still contains ' . $bqMarker); }
+    if (strpos($bqHtml, '<b>Warning</b>') !== false || strpos($bqHtml, '<b>Notice</b>') !== false) throw new RuntimeException('Banquet screen ' . $bqName . ' sample data is incomplete (PHP warning in output)');
+    $bqFile = __DIR__ . '/fixtures/banquet/' . $bqName . '.html';
+    if (getenv('MM_WRITE_FIXTURE')) { file_put_contents($bqFile, $bqHtml); file_put_contents($previewDir . '/bq-' . $bqName . '.html', $bqHtml); }
+    if (!getenv('MM_DEBUG') && file_get_contents($bqFile) !== $bqHtml) throw new RuntimeException($bqFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
+}
+echo "PASS banquet hall screens render\n";

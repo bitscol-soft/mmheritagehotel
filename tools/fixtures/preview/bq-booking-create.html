@@ -1,0 +1,772 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">    <link rel="stylesheet" href="/assets/css/chosen.min.css" />
+    <link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css" />
+    <style>
+        .table {
+            margin-bottom: 0 !important;
+        }
+
+        body {
+            counter-reset: section;
+            /* Set a counter named 'section', and its initial value is 0. */
+        }
+
+        .count:before {
+            counter-increment: section;
+            content: counter(section);
+        }
+
+        select:invalid {
+            height: 0px !important;
+            opacity: 0 !important;
+            position: absolute !important;
+            display: flex !important;
+        }
+
+        select:invalid[multiple] {
+            margin-top: 15px !important;
+        }
+    </style>
+    <style>
+        .page-content {
+            /* overflow-x: hidden; */
+        }
+
+        .ms-1 {
+            margin-left: 5px !important;
+        }
+
+        .me-1 {
+            margin-right: 5px !important;
+        }
+
+        .ms-2 {
+            margin-left: 10px !important;
+        }
+
+        .me-2 {
+            margin-right: 10px !important;
+        }
+
+        .ms-3 {
+            margin-left: 15px !important;
+        }
+
+        .me-3 {
+            margin-right: 15px !important;
+        }
+    </style>
+
+
+    <style>
+    .room-details-tbody tr:first-child td .btn-danger {
+        pointer-events: none;
+    }
+</style>
+<style>
+    .input-group-addon {
+        background: transparent;
+    }
+
+    .chosen-single {
+        background: transparent !important;
+        border-color: #ccc !important;
+    }
+
+    .width-27 {
+        width: 27%;
+    }
+
+    .border-none {
+        border: none;
+    }
+
+    .form-group input[readonly] {
+        background: transparent !important;
+    }
+
+    select {
+        background: transparent !important;
+    }
+</style>
+<style>
+    .did-floating-label-content {
+        position: relative;
+        margin-bottom: 20px;
+    }
+
+    .did-floating-label {
+        color: #1e4c82;
+        font-size: 13px;
+        font-weight: normal;
+        position: absolute;
+        pointer-events: none;
+        left: 15px;
+        top: 11px;
+        padding: 0 5px;
+        background: #fff;
+        transition: 0.2s ease all;
+        -moz-transition: 0.2s ease all;
+        -webkit-transition: 0.2s ease all;
+    }
+
+    .did-floating-input,
+    .did-floating-select {
+        font-size: 12px;
+        display: block;
+        width: 100%;
+        height: 36px;
+        padding: 0 20px;
+        background: #fff;
+        color: #323840;
+        border: 1px solid #3D85D8;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    .did-floating-input:focus,
+    .did-floating-select:focus {
+        outline: none;
+    }
+
+    .did-floating-input:focus~.did-floating-label,
+    .did-floating-select:focus~.did-floating-label {
+        top: -8px;
+        font-size: 13px;
+    }
+
+    select.did-floating-select {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+    }
+
+    select.did-floating-select::-ms-expand {
+        display: none;
+    }
+
+    .did-floating-input:not(:placeholder-shown)~.did-floating-label {
+        top: -8px;
+        font-size: 13px;
+    }
+
+    .did-floating-select:not([value=""]):valid~.did-floating-label {
+        top: -8px;
+        font-size: 13px;
+    }
+
+    .did-floating-select[value=""]:focus~.did-floating-label {
+        top: 11px;
+        font-size: 13px;
+    }
+
+    .did-floating-select:not([multiple]):not([size]) {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='6' viewBox='0 0 8 6'%3E%3Cpath id='Path_1' data-name='Path 1' d='M371,294l4,6,4-6Z' transform='translate(-371 -294)' fill='%23003d71'/%3E%3C/svg%3E%0A");
+        background-position: right 15px top 50%;
+        background-repeat: no-repeat;
+    }
+
+    .did-error-input .did-floating-input,
+    .did-error-input .did-floating-select {
+        border: 2px solid #9d3b3b;
+        color: #9d3b3b;
+    }
+
+    .did-error-input .did-floating-label {
+        font-weight: 600;
+        color: #9d3b3b;
+    }
+
+    .did-error-input .did-floating-select:not([multiple]):not([size]) {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='6' viewBox='0 0 8 6'%3E%3Cpath id='Path_1' data-name='Path 1' d='M371,294l4,6,4-6Z' transform='translate(-371 -294)' fill='%239d3b3b'/%3E%3C/svg%3E%0A");
+    }
+</style>
+
+
+<style>
+    .show-all-room {
+        font-size: 16px;
+        display: inline-block;
+        cursor: pointer;
+    }
+
+    .select2-container .select2-selection--multiple .select2-selection__rendered {
+        margin: 0;
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .show-category-room-modal .modal-dialog.modal-sm {
+        width: 410px !important
+    }
+
+    .show-category-room-modal .select2-container {
+        width: 380px !important
+    }
+
+    .show-category-room-modal .select2-container--default.select2-container--focus .select2-selection {
+        border-width: 3px;
+    }
+
+    .show-category-room-modal .select2-container--default .select2-selection {
+        border: 3px solid #4492C9 !important;
+    }
+</style>
+<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->    
+        <section class="mm-ui mm-banquet mm-booking-next">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">New banquet booking</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Choose the guest and event dates, then add halls, items and payment details.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button mm-button-secondary" href="http://localhost/bq/banquet/booking/index">
+                <i class="ace-icon fa fa-list-alt" aria-hidden="true"></i> Booking List
+            </a></div>        </header>
+        <div class="mm-panel tw-p-4 sm:tw-p-6"><form class="form-horizontal" id="submitBookingUpdateForm" action="http://localhost/bq/banquet/booking/store"
+            method="post" enctype="multipart/form-data">
+            <input type="hidden" name="_token" value="fixture-csrf-token">
+            <input type="hidden" value="0" class="is-booking-edit" name="is_from_booking_edit">
+            <input type="hidden" value="1" name="is_from_booking">
+
+            
+            <div id="guest-information-modal" class="guest-information modal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background: rgb(41, 4, 77)">
+                <button type="button" class="close white" data-dismiss="modal">&times;</button>
+                <h4 class="white bigger"><i class="glyphicon glyphicon-plus "></i> Add Guest Information</h4>
+            </div>
+
+            <div class="modal-body">
+               
+                    <div class="row">
+                        <div class="col-sm-12">
+
+
+                            
+                            <div class="col-sm-9 col-sm-offset-1">
+
+                                <!-- Guest Number Entry Table -->
+
+                                <table class="table table-bordered">
+
+                                    <tbody>
+                                        <tr>
+                                            <td width="60%">
+                                                <div class="input-group">
+                                                    <label class="input-group-addon">
+                                                        Number Of Guest(<small class="text-danger">exclude you</small>)
+                                                    </label>
+                                                    <input type="text" name="number_of_guest" class="modal-number-of-guest text-center form-control input-sm">
+                                                    
+                                                </div>
+                                            </td>
+                                            
+
+                                            <td style="width: 25%">
+                                                <div class="btn-group btn-corner">
+
+                                                    <button type="button" class="btn btn-success btn-sm add-guest-into-table" onclick="addGuest()">
+                                                        <i class="fa fa-check"></i> Add Items
+                                                    </button>
+                                                    <button type="button" class="btn btn-danger btn-sm">
+                                                        <i class="fa fa-undo"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+
+                                </table>
+                            </div>
+
+                            <div class="clearfix" style="margin-bottom: 10px"></div>
+                            <div class="col-sm-12 guest-information-modal-body">
+                                
+                            </div>
+
+
+                        </div>
+                    </div>
+
+
+                    <div class="form-actions center" style="text-align: right !important;">
+                        <div class="btn-group btn-corner">
+                            <button type="button" class="btn btn-sm btn-success save-guest-information">
+                                <i class="ace-icon fa fa-save icon-on-right bigger-110"></i>
+                                Save
+                            </button>
+                            <button class="btn btn-sm" data-dismiss="modal">
+                                <i class="ace-icon fa fa-times"></i>
+                                Cancel
+                            </button>
+                        </div>
+                        
+                    </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+            <!------------ INCLUDE GUEST INPUT FIELDS ------------>
+            <div class="row">
+                <div class="col-lg-5" style="margin-left: 80px">
+
+
+    <!-- BOOKING DATE -->
+    <div class="form-group mb-1">
+        <div class="input-group width-100">
+            <span class="border-none input-group-addon width-27" style="text-align: left"> Booking Date <span
+                    style="color: red">*</span></span>
+            <input type="text" class="form-control date-picker booking-date-picker" name="booking_date"
+                value="2026-10-01">
+            <span class="input-group-addon"><i class="fa fa-calendar bigger-110"></i></span>
+        </div>
+
+    </div>
+
+
+
+
+    <!-- GUEST NAME -->
+    <div class="form-group mb-1">
+        <div class="input-group width-100">
+            <span class="border-none input-group-addon width-27" style="text-align: left"> Guest Name <span
+                    style="color: red">*</span></span>
+            <select class="form-control chosen-select-100-percent bg-transparent"
+                onchange="showCompany(this), editGuestInfo(this)" name="customer_id" id="customer_id"
+                data-placeholder="Choose Guest">
+                <option></option>
+                                    <option value="1">Rahim &lt;b&gt;Uddin&lt;/b&gt; - 017</option>
+                            </select>
+            <span class="input-group-addon add_guest_info">
+                <a href="#add_guest1" title="Add new guest" data-toggle="modal" role="button">
+                    <i class="glyphicon glyphicon-user"></i>
+                </a>
+            </span>
+            <span class="input-group-addon edit_guest_info" style="display: none">
+                <a href="#edit_guest_info" title="Edit Guest" data-toggle="modal" role="button">
+                    <i class="glyphicon glyphicon-edit"></i>
+                </a>
+            </span>
+        </div>
+    </div>
+
+
+
+    <!-- COMPANY -->
+    <div class="form-group mb-1 guest-company">
+        <div class="input-group width-100">
+            <span class="border-none input-group-addon width-27" style="text-align: left"> Company </span>
+            <select class="form-control bg-transparent chosen-select-100-percent" data-placeholder="--Choose Company--"
+                name="company_id" id="company_id">
+                <option value=""></option>
+                
+                            </select>
+        </div>
+    </div>
+
+
+
+
+    <!-- BOOKING PURPOSE -->
+    <div class="form-group mb-1">
+        <div class="input-group width-100">
+            <span class="border-none input-group-addon width-27" style="text-align: left"> Purpose </span>
+            <select class="form-control chosen-select-100-percent bg-transparent" name="purpose_id" id="purpose"
+                data-placeholder="--Choose Purpose--" style="width: 100%">
+                <option></option>
+                            </select>
+        </div>
+    </div>
+
+
+
+
+    <!-- CHECK IN DATE -->
+    <div class="form-group mb-1">
+        <div class="input-group width-100">
+            <span class="border-none input-group-addon width-27" style="text-align: left"> Check In Date <span
+                    style="color: red">*</span></span>
+            <input class="form-control date-picker check-in-date" value="2026-10-01"
+                name="check_in_date" type="text" required>
+            <span class="input-group-addon">
+                <i class="fa fa-calendar bigger-110"></i>
+            </span>
+        </div>
+    </div>
+
+
+
+
+
+    <!-- CHECK OUT DATE -->
+    
+
+
+
+
+    <!-- BOOKING PAX -->
+    
+
+
+    <!-- Check In Now -->
+    <div class="form-group mb-1">
+        <label class="col-sm-3 col-xs-4 control-label" for="form-field-1-1" style="margin-left:-8px"> Booked Now
+        </label>
+        <div class="col-sm-4 col-xs-4">
+            <label style="margin-top: 7px">
+                <input name="status" class="ace ace-switch ace-switch-6" type="checkbox" value="1">
+                <span class="lbl"></span>
+            </label>
+        </div>
+        <style>
+            .bulk-booking.ace.input-lg+.lbl::before {
+                left: 100px !important;
+                top: 6px !important;
+            }
+        </style>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+<div class="col-lg-5" style="margin-left: 30px; margin-right: 60px">
+
+
+    <!-- REFERENCE -->
+    <div class="form-group mb-1">
+        <div class="input-group width-100">
+            <span class="border-none input-group-addon width-27" style="text-align: left"> Reference Name </span>
+            <input type="text" class="form-control" id="referenceName" name="reference"
+                value="" placeholder="Reference Name">
+        </div>
+    </div>
+
+
+    <!-- TYPE -->
+    <div class="form-group mb-1">
+        <div class="input-group width-100">
+            <span class="border-none input-group-addon width-27" style="text-align: left">Booking Platform </span>
+            <select class="form-control chosen-select-100-percent bg-transparent" name="platform_id"
+                data-placeholder="--Choose Booking Platform--" style="width: 100%">
+                <option></option>
+                            </select>
+        </div>
+    </div>
+
+    <!-- Emergency Contact Name -->
+    <div class="form-group mb-1">
+        <div class="input-group width-100">
+            <span class="border-none input-group-addon width-27" style="text-align: left">Emrg.Cont Name</span>
+            <input type="text" class="form-control" name="emergency_cont_name"
+                value="" placeholder="Emergency Contact Name">
+        </div>
+    </div>
+
+    <!-- Emergency Contact Phone -->
+    <div class="form-group mb-1">
+        <div class="input-group width-100">
+            <span class="border-none input-group-addon width-27" style="text-align: left">Emrg.Cont Phone</span>
+            <input type="text" class="form-control" id="emergency_cont_phone" name="emergency_cont_phone"
+                value="" placeholder="Emergency Contact Phone">
+        </div>
+    </div>
+
+
+    <!-- MEMBERS -->
+    
+
+
+
+    
+
+</div>
+            </div>
+
+
+            <!-- Room Information Table -->
+            <div class="row">
+                <div class="col-sm-12 col-sm-offset-0">
+                    <h3 class="header smaller lighter blue">Booked Information</h3>
+
+                    
+                    <div class="mm-table-scroll" role="region" aria-label="Hall booking details" tabindex="0"><table id="myTable" class="table table-bordered order-list">
+                        <thead>
+                            <tr>
+                                
+                                <td class="text-left">Room<span class="text-danger">*</span></td>
+                                <td class="text-center" style="width: 10%">Guest</td>
+                                <td class="text-left" width="15%">Amount <span
+                                        class="currency-sign"></span></td>
+                                <td class="text-center">Booked</td>
+                                <td class="text-right">Discount</td>
+                                
+                                <td class="text-right" width="15%">T. Amount <span
+                                        class="currency-sign"></span></td>
+                                <td class="text-center" style="width: 5%">
+                                    <button type="button" class="btn btn-xs btn-success" id="addrow">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody class="item-details room-details-tbody">
+
+                        </tbody>
+                    </table></div>
+
+                    
+                    <div class="mm-table-scroll" role="region" aria-label="Restaurant items" tabindex="0"><table id="myTable" class="table table-bordered order-list mt-3">
+                        <thead>
+                            <tr>
+                                
+                                <td class="text-left">Restaurant Item<span class="text-danger">*</span></td>
+                                <td class="text-center" width="10%">Qty</td>
+                                <td class="text-left" width="20%">Amount <span
+                                        class="currency-sign"></span></td>
+                                
+                                <td class="text-right" width="20%">Discount</td>
+                                
+                                <td class="text-right" width="20%">T. Amount <span
+                                        class="currency-sign"></span></td>
+                                <td class="text-center" style="width: 5%">
+                                    <button type="button" class="btn btn-xs btn-success" id="addItem">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+
+                                    
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody class="item-details item-details-tbody">
+
+                        </tbody>
+
+                        <!-- TFOOT INCLUDE -->
+                        
+                    </table></div>
+                    
+                    <div class="mm-table-scroll" role="region" aria-label="Other items" tabindex="0"><table id="myTable" class="table table-bordered order-list mt-3">
+                        <thead>
+                            <tr>
+                                
+                                <td class="text-left">Item<span class="text-danger">*</span></td>
+                                <td class="text-center" style="width: 10%">Qty</td>
+                                <td class="text-left" width="20%"">Amount <span
+                                        class="currency-sign"></span></td>
+                                
+                                <td class="text-right" width="20%">Discount</td>
+                                
+                                <td class="text-right" width="20%">T. Amount <span
+                                        class="currency-sign"></span></td>
+                                <td class="text-center" style="width: 5%">
+                                    <button type="button" class="btn btn-xs btn-success" id="addInformation">
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+
+                                    
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody class="item-details info-details-tbody">
+
+                        </tbody>
+
+                        <!-- TFOOT INCLUDE -->
+                        <tfoot style="position: relative;">
+
+    <tr style="position: absolute; left: 3%; top: 3%;">
+    <td colspan="8" class="text-right borderless">Send Sms :</td>
+    <td class="send-sms borderless text-center">
+        <label>
+            <input name="sms" class="ace ace-switch ace-switch-6" type="checkbox">
+            <span class="lbl"></span>
+        </label>
+    </td>
+    <td colspan="8" class="text-right borderless">Send Email :</td>
+    <td class="send-email borderless text-center">
+        <label>
+            <input name="email" class="ace ace-switch ace-switch-6" type="checkbox">
+            <span class="lbl"></span>
+        </label>
+    </td>
+
+    <td colspan="8" class="text-right borderless">Room Number Print :</td>
+    <td class="borderless text-center">
+        <label>
+            <input name="is_room_in_invoice" class="ace ace-switch ace-switch-6" value="1" type="checkbox" checked>
+            <span class="lbl"></span>
+        </label>
+    </td>
+</tr>
+
+
+
+
+    <tr>
+
+        <td class="text-right borderless" colspan="4">Subtotal <span class="currency-sign"></span></td>
+        <td class="borderless">
+            <input class="form-control subtotal-amount text-right"
+                value="0" readonly style="padding-right: 5px;">
+            <input type="hidden" name="line_total" id="line_total">
+        </td>
+
+    </tr>
+
+    <tr>
+        <td class="text-right borderless" colspan="4">Service Charge <span
+                class="currency-sign"></span></td>
+        <td class="borderless">
+            <input name="service_amount" value="0"
+                class="form-control service_amount text-right" readonly style="padding-right: 5px;">
+        </td>
+    </tr>
+    <tr>
+        <td class="text-right borderless" colspan="4">
+            <input type="hidden" name="vat" id="vat" value="10">
+
+            Vat(10%) <span class="currency-sign"></span>
+        </td>
+        <td class="borderless">
+            <input type="text" name="vat_amount"
+                value="0"
+                class="form-control vat-amount text-right only-number" value="" readonly>
+        </td>
+    </tr>
+    
+
+    <tr>
+        <td class="text-right borderless" colspan="4">Grand Total <span class="currency-sign"></span>
+        </td>
+        <td class="borderless">
+            <input name="sub_total" value=""
+                class="form-control grandtotal text-right" readonly style="padding-right: 5px !important;">
+            <input type="hidden" name="line_total" id="line_total">
+        </td>
+
+    </tr>
+
+    
+    <tr>
+        <td class="text-right borderless" colspan="4">Advanced Amount</td>
+        <td class="borderless">
+                        <label class="choose-currency" id="usdCurrency">
+                <input type="radio" name="currency_type" value="141"
+                    >
+                USD ($)
+            </label>
+
+
+            <div class="show-currency-rate" style="display: none; color:rgb(230, 92, 115); text-align:center"></div>
+            <input type="number" name="advanced_amount"
+                value="0"
+                class="form-control adv-amount text-right">
+        </td>
+    </tr>
+
+    
+    <tr>
+
+        <td class="text-right borderless" colspan="4">Due Amount <span class="currency-sign"></span>
+        </td>
+        <td class="borderless">
+            <input type="number" name="due_amount" value=""
+                class="form-control due-amount text-right" readonly>
+        </td>
+    </tr>
+    <tr>
+        <td class="text-right borderless" colspan="4">Payment Method</td>
+        <td class="borderless">
+            <select class="form-control chosen-select payment-type" name="payment_type"
+                data-placeholder="-Choose Payment Type-" data-selected="">
+                <option></option>
+                                    <option value="0" selected>
+                        
+                    </option>
+                            </select>
+        </td>
+    </tr>
+
+</tfoot>
+
+                    </table></div>
+                </div>
+            </div>
+
+
+            <div id="member-detail-modal" class="modal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background: rgb(41, 4, 77)">
+                <button type="button" class="close white" data-dismiss="modal" style="display: flex; align-items: center;"><span style="font-size: 20px; margin-right: 5px;">Close</span> &times;</button>
+                <h4 class="white bigger"><i class="glyphicon glyphicon-plus "></i> Add Member Details</h4>
+            </div>
+
+
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-sm-12 member-detail-body">
+
+
+
+                    </div>
+
+
+                    <div class="text-center col-sm-10 col-sm-offset-1" style="background: #abbac3; padding: 10px; border-radius: 8px; cursor: pointer" onclick="addMemberDetialItem()">
+                        <i class="fa fa-plus fa-2x"></i>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+            <div class="modal-footer" style="text-align: right !important;">
+                <div class="btn-group btn-corner">
+                    <button class="btn btn-sm" data-dismiss="modal">
+                        <i class="ace-icon fa fa-edit"></i>
+                        Save
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+        </form>
+
+            <!-- ACTION/SUBMIT FORM -->
+            <div class="mm-form-actions">
+                <button type="button" name="type" value="reserve" onclick="submitBookingForm()"
+                    class="updateBookingBtn next-step-btn mm-button mm-button-secondary">
+                    <i class="fa fa-bookmark" aria-hidden="true"></i> Reserve
+                </button>
+                <button type="button" name="type" value="book" onclick="submitBookingForm()"
+                    class="updateBookingBtn next-step-btn mm-button">
+                    <i class="fa fa-paper-plane" aria-hidden="true"></i> Book Now
+                </button>
+                <button class="mm-button mm-button-secondary" type="Reset">
+                    <i class="fa fa-refresh" aria-hidden="true"></i> Reset
+                </button>
+            </div></div>
+    </div>
+</section>
+    <div id="add_guest1" class="modal"></div>    <div id="edit_guest_info" class="modal"></div>
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
+<!--/MM-JS--></body></html>

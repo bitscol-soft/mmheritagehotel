@@ -779,3 +779,14 @@ Reviewed legacy bugs in `module/Restaurant/views/purchase-v2/`, all view-level (
 - CSS: filter rows in `mm-acc` wrap, selects and date ranges shrink to the column, and columns go full width below 768px (three filters overflowed at 390px).
 - Left as they were: every `print`, `export/*`, `index-old`, `index-[WITHOUT-FILTER]`, `profit-loss` and singular `inventory-report` view, the legacy income-statement partials (`details-view`, `expense-details-view`, `sort-view`), the "Voucer Reports" title typo, and the invalid hidden-input rows inside the item ledger table (kept so the query string does not change).
 - Fixtures `tools/fixtures/account/*`, previews `/preview/acc-*`, spec `tools/browser/account-reports.spec.cjs`.
+
+## Forty-third increment: Banquet Hall BH1
+
+11 views under `module/BanquetHall/views/{hall,hall_booking}` use `x-mm.page` / `x-mm.panel` with the existing Hotel scopes plus an `mm-banquet` marker: hall amenities (`mm-hotel-setup`), hall categories and halls (`mm-room-inventory` lists, `mm-room-form` forms), the booking list (`mm-bookings`) and the new-booking form (`mm-booking-next`). No new CSS was needed.
+
+- Reachability: Banquet is last in `config/view.php`, so `booking-purpose/*`, `services/*` and `hotel-service-night-audits/*` in this module are shadowed by the Hotel and Hotel Service views of the same names (already migrated). `BanquetBookingController` also renders the Hotel `booking/edit`, `booking/view` and `booking/checkout_invoice`. Those Banquet copies were left alone.
+- Wrapped by script and by hand from the Banquet originals, so expressions, controls, forms, directives and scripts are unchanged (`tools/ui-check.cjs` compares them with `6121c424`). The two exceptions: the amenity create and edit pages printed `partials._alert_message` twice (one is gone), and the booking list gained an empty-state message.
+- The booking list drops its inline `<style>` block (it had unscoped `table thead th` and `ul li` rules); the same rules live in the `mm-bookings` scope. The booking filter and the three new-booking item tables follow the Hotel layout.
+- Left as they were: the category create page gates its List link on `suppliers.view` (copied from Suppliers), the `rooms.inc.script` and `category.inc.script` includes resolve to the Hotel copies (identical files), and the hall booking list's Edit link opens the Hotel booking edit view.
+- Fixtures `tools/fixtures/banquet/*`, previews `/preview/bq-*`, spec `tools/browser/banquet.spec.cjs`.
+
