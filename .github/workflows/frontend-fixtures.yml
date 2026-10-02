@@ -136,6 +136,9 @@ jobs:
             php artisan key:generate --force
             rm -f bootstrap/cache/*.php
 
+      - name: Render fixtures (dry run)
+        run: php artisan mm:render-public-fixtures --dry-run
+
       - name: Render fixtures (check mode)
         run: php artisan mm:render-public-fixtures --check || echo "::warning::Fixtures are stale; re-running in regenerate mode"
 

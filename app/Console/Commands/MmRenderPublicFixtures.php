@@ -14,17 +14,20 @@ use Illuminate\Http\Request;
  * `getBanner()`, `websiteInfo()`).
  *
  * Usage:
- *   php artisan mm:render-public-fixtures [--check]
+ *   php artisan mm:render-public-fixtures [--check] [--dry-run]
  *
- *   --check  : if the rendered HTML differs from the on-disk fixture, exit with code 1. The CI
- *              workflow uses --check to surface a "regenerate fixtures" failure; the dev runs
- *              without --check to actually update tools/fixtures/frontend/*.html and commit.
+ *   --check   : if the rendered HTML differs from the on-disk fixture, exit with code 1. The CI
+ *               workflow uses --check to surface a "regenerate fixtures" failure; the dev runs
+ *               without --check to actually update tools/fixtures/frontend/*.html and commit.
+ *   --dry-run : render the views against the seeded DB and print a summary (byte counts, view
+ *               name, URL) without writing any files. Useful for sanity-checking the setup before
+ *               committing fixture changes.
  *
  * This command is intentionally idempotent — it does not mutate the database.
  */
 class MmRenderPublicFixtures extends Command
 {
-    protected $signature = 'mm:render-public-fixtures {--check : Exit non-zero if fixtures are stale}';
+    protected $signature = 'mm:render-public-fixtures {--check : Exit non-zero if fixtures are stale} {--dry-run : Print a summary of what would be rendered without writing fixture files}';
 
     protected $description = 'Render the migrated public-site views and write tools/fixtures/frontend/*.html';
 
@@ -106,7 +109,14 @@ class MmRenderPublicFixtures extends Command
         }
 
         $checkOnly = (bool) $this->option('check');
+        $dryRun = (bool) $this->option('dry-run');
         $stale = [];
+
+        if ($dryRun) {
+            $this->info('Dry run: rendering the 10 migrated public-site views against the seeded DB.');
+            $this->info('No files will be written.');
+            $this->newLine();
+        }
 
         foreach ($this->cases() as $name => $case) {
             $req = Request::create($case['url'], 'GET');
@@ -143,6 +153,12 @@ class MmRenderPublicFixtures extends Command
             $file = $fixtureDir . '/' . $name . '.html';
             $existing = is_file($file) ? file_get_contents($file) : false;
 
+            if ($dryRun) {
+                $existingByteSize = $existing === false ? 0 : strlen($existing);
+                $this->line(sprintf('  %-22s view=%-32s url=%-30s bytes=%6d vs committed=%6d', $name, $case['view'], $case['url'], strlen($html), $existingByteSize));
+                continue;
+            }
+
             if ($existing === $html) {
                 $this->line(sprintf('  ok    %s', $name));
                 continue;
@@ -156,6 +172,12 @@ class MmRenderPublicFixtures extends Command
 
             file_put_contents($file, $html);
             $this->info(sprintf('  wrote %s', $name));
+        }
+
+        if ($dryRun) {
+            $this->newLine();
+            $this->info('Dry run finished. Re-run without --dry-run to actually write the fixtures.');
+            return self::SUCCESS;
         }
 
         if ($checkOnly && $stale) {
