@@ -16,3 +16,4 @@ yarn-error.log
 
 /test-results
 /playwright-report
+tools/.mig/
