@@ -737,3 +737,14 @@ Reviewed legacy bugs in `module/Restaurant/views/purchase-v2/`, all view-level (
 - Left as they were: the POS (`sales-v2/create`), `sales-v2/show`, `pos-print`, `bar-night-audits/invoice` (print documents), the POS and export partials, `frontend.bar-menu` and unreachable views.
 - The record-count badge in the old `page-header` of the night audit list is gone, as in the other modules.
 - Fixtures `tools/fixtures/bar/*`, previews `/preview/bar-*`, spec `tools/browser/bar.spec.cjs`.
+
+## Thirty-ninth increment: Account A1
+
+26 views under `module/Account/views/{setup,party,product}` use `x-mm.page` / `x-mm.panel` (classes `mm-acc mm-rst mm-rst-inv`, plus `mm-rst-form` on forms and `mm-report` on lists): account controls, groups, subsidiaries, chart of accounts, opening balances, customers, suppliers, product categories, units and products.
+
+- Wrapped from the Account originals by script (outer `row`/`col-sm-*` and `widget-box` frame removed, toolbar links turned into `mm-button`s in the page header, tables inside `x-mm.table-scroll`), so expressions, controls, forms, directives and scripts are unchanged. `tools/ui-check.cjs` compares them with `3516b9d9` (the commit before A1) and checks that Account controllers, routes and models are untouched.
+- Account opening balances: the three selects and the Get Data button are an inline `mm-report-filter` panel; the stray `)` printed after the Refresh button (a `hasPermission(...)))` typo) is fixed.
+- Account controls list: an unclosed `btn-group` div sat half inside a Blade comment; it is closed now.
+- CSS: the `mm-bar` rules were copied for `mm-acc`, and `.table-header-bg` has a fallback background (the real layout also gets it from `bootstrap4.css`).
+- Not in A1 (next groups): fund transfers and vouchers, purchases, sales, returns and damages, the reports. The print/invoice documents and export partials stay as they are.
+- Fixtures `tools/fixtures/account/*`, previews `/preview/acc-*`, spec `tools/browser/account.spec.cjs`.

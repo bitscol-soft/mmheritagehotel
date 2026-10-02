@@ -1,0 +1,47 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">    <link rel="stylesheet" href="/assets/css/chosen.min.css"/>
+    <link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css"/>
+    <link rel="stylesheet" href="/assets/custom_css/chosen-required.css"/>
+
+<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+<section class="mm-ui mm-acc mm-rst mm-rst-inv mm-rst-form">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Category Edit</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Update the product category.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button" href="http://localhost/acc/categories/index"><i class="fa fa-list"></i> List</a></div>        </header>
+        <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><!-- INPUTS -->
+        <form action="http://localhost/acc/categories/update/1" method="post">
+            <input type="hidden" name="_token" value="fixture-csrf-token"> <input type="hidden" name="_method" value="PUT">
+
+            <div class="row" style="width: 100%; margin: 0 0 20px !important;">
+                <div class="col-sm-12 px-4">
+                    <!-- Name -->
+                    <div class="form-group row">
+                        <label class="col-sm-3 control-label" for="name">
+                            <b>Name <sup class="text-danger">*</sup></b>
+                        </label>
+
+                        <div class="col-sm-9">
+                            <input name="name" type="text" required class="form-control input-sm" placeholder="Name" value="Beverage &lt;b&gt;x&lt;/b&gt;">
+                        </div>
+                    </div>
+
+                    <!-- Submit -->
+                    <button class="btn btn-info btn-sm pull-right"><i class="fa fa-edit"></i> Update</button>
+                </div>
+            </div>
+        </form></div>
+    </div>
+</section>
+
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
+
+
+
+<!--/MM-JS--></body></html>

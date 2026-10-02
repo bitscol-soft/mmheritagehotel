@@ -137,3 +137,12 @@ payment collection and night audit pending. See `docs/BOOKING-LIFECYCLE-PLAN.md`
 | B1: product categories, units, manufacturers, suppliers, products (list, add, edit), product inventory report, packages, tables, purchases, sales (list, create, show), sale returns, sales / cash flow / inventory / today-activities reports, night audit list and generate | Migrated; expressions, controls, forms, directives and scripts unchanged (compared with `df1b849e`). Filters rebuilt as inline fields. The manufacturer edit modal now posts to the Bar route instead of the Restaurant one | Render fixtures + Playwright (`bar.spec.cjs`); staging pending |
 | POS (`sales-v2/create`), `sales-v2/show`, `pos-print`, `bar-night-audits/invoice`, `frontend.bar-menu`, unreachable views | Not migrated (POS and print documents, deprioritised) | n/a |
 
+## Account (module/Account)
+
+| Group | Status | Verification |
+|---|---|---|
+| A1: account controls, groups, subsidiaries, chart of accounts, opening balances, customers, suppliers, product categories, units, products | Migrated; expressions, controls, forms, directives and scripts unchanged (compared with `3516b9d9`). Opening balances filter is inline; stray `)` and an unclosed div fixed | Render fixtures + Playwright (`account.spec.cjs`); staging pending |
+| A2: fund transfers, receive / payment / journal / contra vouchers | Not migrated | n/a |
+| A3: purchases, sales, returns, damages, collections | Not migrated | n/a |
+| A4: reports (ledgers, trial balance, income statement, balance sheet, cash flow, ...) | Not migrated; print and export documents stay legacy | n/a |
+

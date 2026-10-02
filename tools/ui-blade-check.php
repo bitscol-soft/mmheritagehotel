@@ -525,14 +525,14 @@ $hsData = [
 $hsMarkers = [
     'aminities/index' => ['mm-hotel-setup', 'id="data-table"', 'Free WiFi', 'delete_check(1)', 'id="deleteCheck_1"', 'aminities.create' === 0 ? '' : 'Add New Aminities'],
     'aminities/create' => ['name="name"', 'name="aminiti_icon"', 'name="status"', 'method="post"'],
-    'aminities/edit' => ['name="_method" value="PUT"', 'name="aminiti_icon"', '<option value="1" selected>Active</option>'],
+    'aminities/edit' => ['name="_method"', 'name="aminiti_icon"', '<option value="1" selected>Active</option>'],
     'account_type/index' => ['id="deleteCheck_2"', 'name="name"', 'Add account type'],
-    'account_type/edit' => ['name="_method" value="PUT"', 'name="name" value="Cash"', '<option value="1" selected>Active</option>'],
+    'account_type/edit' => ['name="_method"', 'name="name" value="Cash"', '<option value="1" selected>Active</option>'],
     'vat/index' => ['name="hotel_vat" value="10"', 'name="resturent_vat"', 'name="bar_vat"', 'name="vat_number" value="BIN-123"', 'name="room_rate"', 'name="room_service"', 'name="rst_service_charge"', 'name="key[use_vat_included]"'],
     'currency-conversions/index' => ['class="form-horizontal createCurrencyConversionForm"', 'id="currencyId"', 'id="effectedDate"', 'submitRoomStoreForm', 'render-currency-class', 'id="deleteCheck_3"', 'name="currency_id"'],
-    'currency-conversions/edit' => ['name="_method" value="PUT"', 'render(`', '<option value="2" selected>USD</option>', 'value="122.5"'],
+    'currency-conversions/edit' => ['name="_method"', 'render(`', '<option value="2" selected>USD</option>', 'value="122.5"'],
     'guest-registration-terms/index' => ['name="title"', 'Registration terms', 'Check-in after 2pm'],
-    'guest-registration-terms/edit' => ['name="_method" value="PUT"', '<textarea name="title"', 'Check-in after 2pm'],
+    'guest-registration-terms/edit' => ['name="_method"', '<textarea name="title"', 'Check-in after 2pm'],
 ];
 @mkdir(__DIR__ . '/fixtures/hotel-setup', 0777, true);
 foreach ($hsData as $hsView => $hsViewData) {
@@ -748,7 +748,7 @@ $hsvAudit = new MmHsAudit(['id' => 9, 'date' => '2026-09-30', 'total_check_in' =
 $hsvAudit2 = new MmHsAudit(['id' => 8, 'date' => '2026-09-29', 'total_check_in' => 1, 'total_check_out' => 2, 'total_reservation' => 1, 'total_cancelled' => 1, 'total_cancel' => 1, 'total_room' => 5, 'total_dirty_room' => 2, 'restourantCount' => 1, 'details' => collect([$hsvTx('0299', 500, 500)])]);
 $hsvCases = [
     'services' => ['services.category.index', '/hotelservice/services', ['services' => new MmHsPage([(object) ['id' => 1, 'name' => 'Laundry <b>x</b>', 'price' => 350, 'created_at' => '2026-09-01 10:00:00', 'updated_at' => '2026-09-02 11:30:00'], (object) ['id' => 2, 'name' => 'Airport pickup', 'price' => 1500, 'created_at' => '2026-09-03 09:00:00', 'updated_at' => '2026-09-03 09:00:00']])],
-        ['mm-hotel-setup', 'mm-hs-services', 'id="data-table"', 'data-toggle="modal"', 'href="#modal-dialog"', 'href="#modal-dialog2"', 'id="modal-dialog"', 'id="modal-dialog1"', 'id="modal-dialog2"', 'name="name"', 'name="price"', 'name="_method" value="PUT"', 'delete_item(', 'Airport pickup', 'Laundry &lt;b&gt;x&lt;/b&gt;'], ['widget-box', 'widget-main', 'widget-header', 'Laundry <b>x</b>']],
+        ['mm-hotel-setup', 'mm-hs-services', 'id="data-table"', 'data-toggle="modal"', 'href="#modal-dialog"', 'href="#modal-dialog2"', 'id="modal-dialog"', 'id="modal-dialog1"', 'id="modal-dialog2"', 'name="name"', 'name="price"', 'name="_method"', 'delete_item(', 'Airport pickup', 'Laundry &lt;b&gt;x&lt;/b&gt;'], ['widget-box', 'widget-main', 'widget-header', 'Laundry <b>x</b>']],
     'sales' => ['services.sales.index', '/hotelservice/service-sales?invoice_no=0301', ['account_types' => collect([1 => 'Cash', 2 => 'Card']), 'services' => new MmHsPage([$hsvSale(1, '0301', 1200, 0, 1200, 1200), $hsvSale(2, '0302', 1000, 200, 300, 800)])],
         ['mm-hotel-service', 'name="invoice_no"', 'name="customer_id"', 'value="0301"', 'id="exampleModal"', 'id="payment-form"', 'name="previous_due"', 'id="previous-due"', 'id="payable-amount"', 'id="current-due"', 'name="is_from_due_collection"', 'onclick="payment(', 'PAID', 'delete_item(', 'class="pagination"', 'Total Amount', '2,200.00', '500.00'], ['widget-box', 'widget-main', 'widget-header', 'Rahim <b>Uddin</b>']],
     'sale-create' => ['services.sales.create', '/hotelservice/service-sales/create', [],
@@ -830,7 +830,7 @@ $prCases = [
     'permission-create' => ['perm.permission.create', '/setting/permissions/create', ['parentPermissions' => collect([7 => 'Room list'])],
         ['mm-perm-narrow', 'action="http://localhost/setting/permissions"', 'name="parent_permission_id"', 'name="name"', 'name="actions[]"', 'value="Super Approve"', 'name="description"'], ['widget-box', 'widget-main', 'widget-header']],
     'permission-edit' => ['perm.permission.edit', '/setting/permissions/11/edit', ['parentPermissions' => collect([7 => 'Room list']), 'permission' => (object) ['id' => 11, 'name' => 'View rooms', 'slug' => 'rooms.view', 'description' => 'See rooms', 'parent_permission_id' => 7]],
-        ['mm-perm-narrow', 'action="http://localhost/setting/permissions/11"', 'name="_method" value="PUT"', 'name="parent_permission_id"', 'value="rooms.view"', 'See rooms'], ['widget-box', 'widget-main', 'widget-header']],
+        ['mm-perm-narrow', 'action="http://localhost/setting/permissions/11"', 'name="_method"', 'name="parent_permission_id"', 'value="rooms.view"', 'See rooms'], ['widget-box', 'widget-main', 'widget-header']],
     'users-index' => ['perm.users.index', '/setting/permitted-users', ['users' => $prUsers, 'slugs' => []],
         ['mm-perm-list', 'id="data-table"', 'Rahim &lt;b&gt;Uddin&lt;/b&gt;', 'Not an Employee', 'delete_check(5)', 'id="deleteCheck_5"', 'name="_method" value="DELETE"', 'setting/users/5/2', 'setting/users/6/1', 'data-rel="popover"', 'setting/create-user', 'setting/users/5/password'], ['widget-box', 'widget-main', 'widget-header', 'color: white', 'Rahim <b>Uddin</b>']],
     'users-create' => ['perm.users.create', '/setting/create-user', [],
@@ -948,7 +948,7 @@ $rsCases = [
     'purchase-show' => ['rs.purchase-v2.show', '/rst/purchases/1', ['purchases' => $rsPurchase(1, 'P-0001', 1)],
         ['mm-invoice-page', 'mm-rst', 'onclick="printForm()"', 'border-print-none', 'P-0001', 'MM Heritage &lt;i&gt;Ltd&lt;/i&gt;', 'Basmati &lt;b&gt;rice&lt;/b&gt;', 'Purchase Form No:', 'Created By:', 'Approved By:'], ['widget-box', 'widget-main', 'widget-header', 'page-header', 'Basmati <b>rice</b>']],
     'purchase-approve' => ['rs.purchase-v2.approve', '/rst/purchase-approve/1', ['purchase' => $rsPurchase(1, 'P-0001', 0), 'companies' => [1 => 'MM Heritage', 2 => 'Other']],
-        ['mm-rst-purchase', 'class="form-horizontal"', 'action="http://localhost/rst/purchase-approve/1"', 'name="_method" value="PUT"', 'name="company_id"', 'name="purchase_date"', 'id="purchase_table"', 'name="purchase_id"', 'name="product_id[]"', 'name="item_unit_id[]"', 'name="item_price[]"', 'name="quantity[]"', 'name="available_quantity[]"', 'name="total"', 'Approve', 'Basmati &lt;b&gt;rice&lt;/b&gt;'], ['widget-box', 'widget-main', 'widget-header', 'page-header', 'Basmati <b>rice</b>', 'col-sm-offset']],
+        ['mm-rst-purchase', 'class="form-horizontal"', 'action="http://localhost/rst/purchase-approve/1"', 'name="_method"', 'name="company_id"', 'name="purchase_date"', 'id="purchase_table"', 'name="purchase_id"', 'name="product_id[]"', 'name="item_unit_id[]"', 'name="item_price[]"', 'name="quantity[]"', 'name="available_quantity[]"', 'name="total"', 'Approve', 'Basmati &lt;b&gt;rice&lt;/b&gt;'], ['widget-box', 'widget-main', 'widget-header', 'page-header', 'Basmati <b>rice</b>', 'col-sm-offset']],
     'purchase-create' => ['rs.purchase-v2.create', '/rst/purchases/create', ['challan_id' => 'P-0003', 'suppliers' => collect([(object) ['id' => 1, 'name' => 'Fresh <b>Co</b>']]), 'accounts' => collect([(object) ['id' => 1, 'name' => 'Cash']])],
         ['mm-rst-purchase-create', 'id="purchase-form"', 'action="http://localhost/rst/purchases"', 'name="supplier_id"', 'name="account_id"', 'name="challan_id"', 'name="date"', 'id="product-search"', 'id="products"', 'name="subtotal"', 'name="discount"', 'name="total_vat"', 'name="grand_total"', 'name="paid_amount"', 'name="due_amount"', 'save-purchase', 'P-0003'], ['widget-box', 'widget-main', 'widget-header', 'page-header', 'Fresh <b>Co</b>']],
     'tables' => ['rs.rst.tables.index', '/rst/table-manages', ['table_manages' => new MmHsPage([new MmRsModel(['id' => 1, 'name' => 'Terrace <b>1</b>', 'table_no' => 'T1', 'status' => 1]), new MmRsModel(['id' => 2, 'name' => 'Hall', 'table_no' => 'T2', 'status' => 2])]), 'slugs' => []],
@@ -1106,14 +1106,14 @@ $riCases = [
         ['mm-report', 'SA-1', 'rst/stock-adjustment/create', 'Spoiled &lt;b&gt;stock&lt;/b&gt;'], ['Spoiled <b>stock</b>']],
     'form-product-create' => ['ri.inventory.product.create', '/rst/products/create', $riCatalog, ['mm-rst-form', 'action="http://localhost/rst/products/store"', 'data-parsley-validate', 'name="name"', 'name="barcode"', 'name="category_id"', 'name="unit_id"', 'name="supplier_id"', 'name="sale_price"', 'id="product_name"', 'Rice &lt;b&gt;dishes&lt;/b&gt;', 'rst/products/index'], ['Rice <b>dishes</b>']],
     'form-product-upload' => ['ri.inventory.product.create', '/rst/products/create?type=upload', $riCatalog, ['mm-rst-form', 'type="file"', 'rst/product-uploads'], []],
-    'form-product-edit' => ['ri.inventory.product.edit', '/rst/products/1/edit', $riCatalog + ['product' => $riProduct(1, 'Chicken <b>Biryani</b>') ], ['mm-rst-form', 'name="_method" value="PUT"', 'action="http://localhost/rst/products/update/1"', 'name="name"', 'name="barcode"', 'Chicken &lt;b&gt;Biryani&lt;/b&gt;'], ['Chicken <b>Biryani</b>']],
+    'form-product-edit' => ['ri.inventory.product.edit', '/rst/products/1/edit', $riCatalog + ['product' => $riProduct(1, 'Chicken <b>Biryani</b>') ], ['mm-rst-form', 'name="_method"', 'action="http://localhost/rst/products/update/1"', 'name="name"', 'name="barcode"', 'Chicken &lt;b&gt;Biryani&lt;/b&gt;'], ['Chicken <b>Biryani</b>']],
     'form-mat-create' => ['ri.inventory.mat_product.create', '/rst/mat-products/create', $riCatalog, ['mm-rst-form', 'name="name"', 'name="category_id"', 'name="unit_id"'], ['Rice <b>dishes</b>']],
-    'form-mat-edit' => ['ri.inventory.mat_product.edit', '/rst/mat-products/1/edit', $riCatalog + ['product' => $riProduct(1, 'Basmati <b>rice</b>')], ['mm-rst-form', 'name="_method" value="PUT"', 'name="name"', 'Basmati &lt;b&gt;rice&lt;/b&gt;'], ['Basmati <b>rice</b>']],
+    'form-mat-edit' => ['ri.inventory.mat_product.edit', '/rst/mat-products/1/edit', $riCatalog + ['product' => $riProduct(1, 'Basmati <b>rice</b>')], ['mm-rst-form', 'name="_method"', 'name="name"', 'Basmati &lt;b&gt;rice&lt;/b&gt;'], ['Basmati <b>rice</b>']],
     'form-upload-edit' => ['ri.inventory.product.uploads.edit', '/rst/product-uploads/1/edit', ['product' => $riProduct(1, 'Chicken <b>Biryani</b>')], ['mm-rst-form', 'name="name"', 'Chicken &lt;b&gt;Biryani&lt;/b&gt;'], ['Chicken <b>Biryani</b>']],
     'form-item-create' => ['ri.inventory.production.items.create', '/rst/production/items/create', ['companies' => [1 => 'MM <b>Heritage</b>'], 'item_units' => [1 => 'Sack'], 'message' => ''], ['mm-rst-form', 'name="company_id"', 'name="name"', 'MM &lt;b&gt;Heritage&lt;/b&gt;'], ['MM <b>Heritage</b>']],
-    'form-item-edit' => ['ri.inventory.production.items.edit', '/rst/production/items/1/edit', ['companies' => [1 => 'MM Heritage'], 'item_units' => [1 => 'Sack'], 'message' => '', 'item' => $riRow(['id' => 1, 'name' => 'Basmati <b>rice</b>', 'company_id' => 1, 'item_unit_id' => 1, 'opening_balance' => 4, 'rate' => 120, 'purchase_detail_count' => 0, 'goods_requisition_count' => 0])], ['mm-rst-form', 'name="_method" value="PUT"', 'Basmati &lt;b&gt;rice&lt;/b&gt;'], ['Basmati <b>rice</b>']],
+    'form-item-edit' => ['ri.inventory.production.items.edit', '/rst/production/items/1/edit', ['companies' => [1 => 'MM Heritage'], 'item_units' => [1 => 'Sack'], 'message' => '', 'item' => $riRow(['id' => 1, 'name' => 'Basmati <b>rice</b>', 'company_id' => 1, 'item_unit_id' => 1, 'opening_balance' => 4, 'rate' => 120, 'purchase_detail_count' => 0, 'goods_requisition_count' => 0])], ['mm-rst-form', 'name="_method"', 'Basmati &lt;b&gt;rice&lt;/b&gt;'], ['Basmati <b>rice</b>']],
     'form-item-unit-create' => ['ri.inventory.production.item-units.create', '/rst/production/item-units/create', ['message' => ''], ['mm-rst-form', 'name="name"', 'name="conversion"'], []],
-    'form-item-unit-edit' => ['ri.inventory.production.item-units.edit', '/rst/production/item-units/1/edit', ['message' => '', 'itemUnit' => $riRow(['id' => 1, 'name' => 'Sack <b>x</b>', 'conversion' => 25, 'status' => 1])], ['mm-rst-form', 'name="_method" value="PUT"', 'Sack &lt;b&gt;x&lt;/b&gt;'], ['Sack <b>x</b>']],
+    'form-item-unit-edit' => ['ri.inventory.production.item-units.edit', '/rst/production/item-units/1/edit', ['message' => '', 'itemUnit' => $riRow(['id' => 1, 'name' => 'Sack <b>x</b>', 'conversion' => 25, 'status' => 1])], ['mm-rst-form', 'name="_method"', 'Sack &lt;b&gt;x&lt;/b&gt;'], ['Sack <b>x</b>']],
     'form-requisition-create' => ['ri.inventory.production.goods_requisitions.create', '/rst/production/goods-requisitions/create', ['message' => '', 'challan_id' => 'GR-2', 'companies' => [1 => 'MM Heritage'], 'departments' => [1 => 'Kitchen']], ['mm-rst-form', 'GR-2', 'name="challan_id"', 'name="date"'], []],
     'form-purchase-approve' => ['ri.inventory.production.purchases.approve', '/rst/production/purchases/1/approve', ['message' => '', 'companies' => [1 => 'MM Heritage'], 'purchase' => $riRow(['id' => 1, 'company_id' => 1, 'date' => '2026-10-01', 'purchase_reference' => 'REF-1', 'purchase_details' => $riList([$riRow(['quantity' => 3, 'item_price' => 120, 'product' => $riRow(['id' => 7, 'name' => 'Basmati <b>rice</b>', 'available_quantity' => 12, 'unit' => $riRow(['id' => 2, 'name' => 'Kg'])])])])])], ['mm-rst-form', 'Basmati &lt;b&gt;rice&lt;/b&gt;', 'name="purchase_id"'], ['Basmati <b>rice</b>']],
     'form-purchase-edit' => ['ri.inventory.production.purchases.edit', '/rst/production/purchases/1/edit', ['message' => '', 'companies' => [1 => 'MM Heritage'], 'systemSetting' => $riRow(['value' => 'Reference']), 'items' => $riList([$riRow(['id' => 3, 'name' => 'Basmati <b>rice</b>', 'company_id' => 1])]), 'purchase' => $riRow(['id' => 1, 'company_id' => 1, 'purchase_reference' => 'REF-1', 'purchase_details' => $riList([$riRow(['item_id' => 3, 'quantity' => 3, 'item' => $riRow(['current_stock' => 5, 'item_unit' => $riRow(['name' => 'Kg'])])])])])], ['mm-rst-form', 'Basmati &lt;b&gt;rice&lt;/b&gt;'], ['Basmati <b>rice</b>']],
@@ -1175,16 +1175,16 @@ $gsCases = [
     'item-units' => ['gs.item-units.index', '/gs/item-units', ['item_units' => $riList([$riRow(['id' => 1, 'name' => 'Sack <b>x</b>', 'conversion' => 25, 'status' => 1]), $riRow(['id' => 2, 'name' => 'Box', 'conversion' => 12, 'status' => 0])])],
         ['mm-gs', 'id="dynamic-table"', 'delete_check(1)', 'Sack &lt;b&gt;x&lt;/b&gt;', 'class="pagination"'], ['Sack <b>x</b>', 'btnPrint']],
     'form-item-unit-create' => ['gs.item-units.create', '/gs/item-units/create', [], ['mm-gs', 'mm-rst-form', 'name="name"', 'name="conversion"', 'name="status"'], ['group_id']],
-    'form-item-unit-edit' => ['gs.item-units.edit', '/gs/item-units/1/edit', ['itemUnit' => $riRow(['id' => 1, 'name' => 'Sack <b>x</b>', 'conversion' => 25, 'status' => 1])], ['mm-gs', 'name="_method" value="PUT"', 'Sack &lt;b&gt;x&lt;/b&gt;'], ['Sack <b>x</b>']],
+    'form-item-unit-edit' => ['gs.item-units.edit', '/gs/item-units/1/edit', ['itemUnit' => $riRow(['id' => 1, 'name' => 'Sack <b>x</b>', 'conversion' => 25, 'status' => 1])], ['mm-gs', 'name="_method"', 'Sack &lt;b&gt;x&lt;/b&gt;'], ['Sack <b>x</b>']],
     'items' => ['gs.items.index', '/gs/items?name=1', ['items' => $riList([$riRow(['id' => 1, 'name' => 'Basmati <b>rice</b>', 'opening_balance' => 10, 'rate' => 120, 'purchase_detail_count' => 0, 'goods_requisition_count' => 0, 'created_at' => '2026-09-30', 'updated_at' => '2026-10-01', 'company' => $riRow(['name' => 'MM Heritage']), 'item_unit' => $riRow(['name' => 'Kg']), 'created_user' => $riRow(['name' => 'Rahim']), 'updated_user' => $riRow(['name' => 'Karim'])])]), 'companies' => [1 => 'MM Heritage'], 'item_ids' => [1 => 'Basmati <b>rice</b>']],
         ['mm-gs', 'mm-report-filter', 'Basmati &lt;b&gt;rice&lt;/b&gt;', 'gs/item/upload', 'gs/item/export', 'Records Found'], ['Basmati <b>rice</b></td>']],
     'form-item-create' => ['gs.items.create', '/gs/items/create', ['companies' => [1 => 'MM <b>Heritage</b>'], 'item_units' => [1 => 'Sack'], 'message' => ''], ['mm-gs', 'mm-rst-form', 'name="company_id"', 'name="name"', 'MM &lt;b&gt;Heritage&lt;/b&gt;'], ['MM <b>Heritage</b>']],
-    'form-item-edit' => ['gs.items.edit', '/gs/items/1/edit', ['companies' => [1 => 'MM Heritage'], 'item_units' => [1 => 'Sack'], 'message' => '', 'item' => $riRow(['id' => 1, 'name' => 'Basmati <b>rice</b>', 'company_id' => 1, 'item_unit_id' => 1, 'opening_balance' => 4, 'rate' => 120, 'purchase_detail_count' => 0, 'goods_requisition_count' => 0])], ['mm-gs', 'name="_method" value="PUT"', 'Basmati &lt;b&gt;rice&lt;/b&gt;'], ['Basmati <b>rice</b>']],
+    'form-item-edit' => ['gs.items.edit', '/gs/items/1/edit', ['companies' => [1 => 'MM Heritage'], 'item_units' => [1 => 'Sack'], 'message' => '', 'item' => $riRow(['id' => 1, 'name' => 'Basmati <b>rice</b>', 'company_id' => 1, 'item_unit_id' => 1, 'opening_balance' => 4, 'rate' => 120, 'purchase_detail_count' => 0, 'goods_requisition_count' => 0])], ['mm-gs', 'name="_method"', 'Basmati &lt;b&gt;rice&lt;/b&gt;'], ['Basmati <b>rice</b>']],
     'form-item-upload' => ['gs.items.upload', '/gs/item-upload', [], ['mm-gs', 'mm-rst-form', 'name="item_csv_file"', 'item-sample-csv.csv'], []],
     'suppliers' => ['gs.suppliers.index', '/generalstore/suppliers', ['suppliers' => $riList([$gsSupplier])],
         ['mm-gs', 'id="data-table"', 'href="#view-details1"', 'id="view-details1"', 'delete_check(1)', 'Sarker &lt;b&gt;Traders&lt;/b&gt;', 'Local &lt;b&gt;x&lt;/b&gt;'], ['Sarker <b>Traders</b>', 'Local <b>x</b>']],
     'form-supplier-create' => ['gs.suppliers.create', '/generalstore/suppliers/create', ['supplier_types' => [1 => 'Local <b>x</b>'], 'countries' => [18 => 'Bangladesh', 19 => 'India']], ['mm-gs', 'mm-rst-form', 'name="group_id"', 'name="name"', 'name="supplier_type_id"', 'name="country_id"', 'Local &lt;b&gt;x&lt;/b&gt;'], ['Local <b>x</b>']],
-    'form-supplier-edit' => ['gs.suppliers.edit', '/generalstore/suppliers/1/edit', ['Supplier' => $gsSupplier, 'supplier_types' => [1 => 'Local <b>x</b>'], 'countries' => [18 => 'Bangladesh']], ['mm-gs', 'mm-rst-form', 'name="_method" value="PUT"', 'Sarker &lt;b&gt;Traders&lt;/b&gt;'], ['Sarker <b>Traders</b>']],
+    'form-supplier-edit' => ['gs.suppliers.edit', '/generalstore/suppliers/1/edit', ['Supplier' => $gsSupplier, 'supplier_types' => [1 => 'Local <b>x</b>'], 'countries' => [18 => 'Bangladesh']], ['mm-gs', 'mm-rst-form', 'name="_method"', 'Sarker &lt;b&gt;Traders&lt;/b&gt;'], ['Sarker <b>Traders</b>']],
     'supplier-types' => ['gs.supplier-types.index', '/generalstore/supplier-types?name=1', ['supplierTypes' => $riList([$riRow(['id' => 1, 'name' => 'Local <b>x</b>']), $riRow(['id' => 2, 'name' => 'Import'])])],
         ['mm-gs', 'id="myTable"', 'name="name[]"', 'href="#edit1"', 'id="edit1"', 'delete_check(1)', 'Local &lt;b&gt;x&lt;/b&gt;', 'Total : 2', 'class="pagination"'], ['Local <b>x</b>']],
     'purchases' => ['gs.purchases.index', '/gs/purchases?purchase_number=1', ['companies' => [1 => 'MM Heritage'], 'systemSetting' => $riRow(['value' => 'Ref No.']), 'purchases' => $riList([$gsPurchase(1, 'GP-0001', 0), $gsPurchase(2, 'GP-0002', 1)])],
@@ -1192,7 +1192,7 @@ $gsCases = [
     'purchase-show' => ['gs.purchases.show', '/gs/purchases/1', ['purchase' => $gsPurchase(1, 'GP-0001', 1), 'systemSetting' => $riRow(['value' => 'Ref No.'])], ['mm-invoice-page', 'mm-gs', 'printForm(', 'GP-0001', 'Basmati &lt;b&gt;rice&lt;/b&gt;', 'Designation'], ['Basmati <b>rice</b>']],
     'form-purchase-approve' => ['gs.purchases.approve', '/gs/purchase-approve/1', ['purchase' => $gsPurchase(1, 'GP-0001', 0), 'companies' => [1 => 'MM Heritage'], 'items' => collect([$riRow(['id' => 7, 'name' => 'Basmati <b>rice</b>', 'company_id' => 1])]), 'last_purchases' => [0 => $riRow(['id' => 4, 'form_number' => 'GP-0000'])]], ['mm-gs', 'mm-rst-form', 'name="last_purchases[]"'], []],
     'form-purchase-create' => ['gs.purchases.create', '/gs/purchases/create', ['companies' => [1 => 'MM Heritage'], 'items' => collect([$riRow(['id' => 7, 'name' => 'Basmati <b>rice</b>', 'company_id' => 1])]), 'systemSetting' => $riRow(['value' => 'Ref No.'])], ['mm-gs', 'mm-rst-form', 'name="company_id"'], []],
-    'form-purchase-edit' => ['gs.purchases.edit', '/gs/purchases/1/edit', ['purchase' => $gsPurchase(1, 'GP-0001', 0), 'companies' => [1 => 'MM Heritage'], 'items' => collect([$riRow(['id' => 7, 'name' => 'Basmati <b>rice</b>', 'company_id' => 1])]), 'systemSetting' => $riRow(['value' => 'Ref No.'])], ['mm-gs', 'mm-rst-form', 'name="_method" value="PUT"'], []],
+    'form-purchase-edit' => ['gs.purchases.edit', '/gs/purchases/1/edit', ['purchase' => $gsPurchase(1, 'GP-0001', 0), 'companies' => [1 => 'MM Heritage'], 'items' => collect([$riRow(['id' => 7, 'name' => 'Basmati <b>rice</b>', 'company_id' => 1])]), 'systemSetting' => $riRow(['value' => 'Ref No.'])], ['mm-gs', 'mm-rst-form', 'name="_method"'], []],
     'grn-list' => ['gs.purchase_receives.grn_list', '/gs/grn-list', ['companies' => [1 => 'MM Heritage'], 'purchase_receives' => $riList([$gsReceive])], ['mm-gs', 'mm-report', 'GRN-0001', 'class="pagination"'], []],
     'receive-list' => ['gs.purchase_receives.purchase_receive_list', '/gs/purchase-receive/list/1', ['purchase_receives' => $riList([$gsReceive])], ['mm-gs', 'mm-report', 'GRN-0001'], []],
     'form-receive-create' => ['gs.purchase_receives.create', '/gs/purchase-receive/create/1', ['purchase' => $gsPurchase(1, 'GP-0001', 1), 'suppliers' => [1 => 'Sarker <b>Traders</b>'], 'receive_items' => collect([]), 'receive_items_quantity' => 0, 'requisition_number' => 'REQ-1', 'requisition_from_item' => [], 'systemSetting' => $riRow(['value' => 'Ref No.'])], ['mm-gs', 'mm-rst-form', 'name="purchase_id"'], []],
@@ -1206,11 +1206,11 @@ $gsGrCases = [
     'gin-list' => ['gs.goods_requisitions.gin_list', '/gs/gin-list', ['companies' => [1 => 'MM Heritage'], 'systemSetting' => $riRow(['value' => 'Ref No.']), 'goods_requisitions' => $riList([$gsGr(2, 'GR-0002', 1)])],
         ['mm-gs', 'mm-report', 'GIN-0002', 'id="goods-requisition-details2"', 'class="pagination"'], ['Kitchen <b>x</b>']],
     'form-gr-approve' => ['gs.goods_requisitions.approve', '/gs/goods-requisitions/approve/1', ['goodsRequisition' => $gsGr(1, 'GR-0001', 0), 'companies' => [1 => 'MM Heritage'], 'departments' => [1 => 'Kitchen'], 'items' => $gsGrItems, 'previous_unapprove' => null, 'message' => ''],
-        ['mm-gs', 'mm-rst-form', 'id="goods_requisition_table"', 'name="_method" value="PUT"', 'name="company_id"', 'Approve'], []],
+        ['mm-gs', 'mm-rst-form', 'id="goods_requisition_table"', 'name="_method"', 'name="company_id"', 'Approve'], []],
     'form-gr-create' => ['gs.goods_requisitions.create', '/gs/goods-requisitions/create', ['companies' => [1 => 'MM Heritage'], 'departments' => [1 => 'Kitchen'], 'items' => $gsGrItems, 'systemSetting' => $riRow(['value' => 'Ref No.']), 'message' => ''],
         ['mm-gs', 'mm-rst-form', 'id="purchase_table"', 'name="company_id"', 'name="department_id"'], []],
     'form-gr-edit' => ['gs.goods_requisitions.edit', '/gs/goods-requisitions/1/edit', ['goodsRequisition' => $gsGr(1, 'GR-0001', 0), 'companies' => [1 => 'MM Heritage'], 'departments' => [1 => 'Kitchen'], 'items' => $gsGrItems, 'systemSetting' => $riRow(['value' => 'Ref No.']), 'message' => '', 'receive_items' => [0 => []], 'receive_items_quantity' => [0 => []], 'requisition_number' => [0 => $riRow(['id' => 2, 'issue_number' => 'GIN-0002'])], 'requisition_from_item' => [0 => null]],
-        ['mm-gs', 'mm-rst-form', 'id="goods_requisition_table"', 'name="_method" value="PUT"', 'GIN-0002'], []],
+        ['mm-gs', 'mm-rst-form', 'id="goods_requisition_table"', 'name="_method"', 'GIN-0002'], []],
     'weekly-movement' => ['gs.reports.weakly_movement_issue', '/gs/gs-reports/weakly-movement-issue?x=1', ['companies' => [1 => 'MM Heritage'], 'departments' => [1 => 'Kitchen'], 'systemSetting' => $riRow(['value' => 'Ref No.']), 'goods_requisitions' => $riList([$gsGr(2, 'GR-0002', 1)]), 'requisition_from_items' => [0 => [0 => null]], 'requisition_from_receives' => [0 => [0 => []]]],
         ['mm-gs', 'GIN-0002', 'id="goods-requisition-details2"', 'class="pagination"'], ['Kitchen <b>x</b>']],
     'stock-in-hand' => ['gs.reports.stock-in-hand', '/gs/gs-reports/items-stock', ['companies' => [1 => 'MM Heritage'], 'units' => [1 => 'Kg'], 'items' => [7 => 'Basmati <b>rice</b>'], 'item_stocks' => $riList([$riRow(['id' => 7, 'name' => 'Basmati <b>rice</b>', 'company_id' => 1, 'current_stock' => 12, 'created_at' => '2026-09-30', 'item_unit' => $riRow(['name' => 'Kg']), 'company' => $riRow(['name' => 'MM <b>Heritage</b>'])])])],
@@ -1303,7 +1303,7 @@ $brCases = [
     'bar-audit-generate' => ['bar-night-audits.create-v2', '/bar/night-audits/create?from_date=2026-10-01&to_date=2026-10-01', ['from_date' => '2026-10-01', 'to_date' => '2026-10-01', 'accountTypes' => collect([1 => 'Cash', 2 => 'Card']), 'total_reservation' => 3, 'total_booked_room' => 7, 'total_check_in' => 2, 'total_check_out' => 1, 'total_room' => 32, 'total_cancel' => 0, 'total_dirty_room' => 4, 'total_maintenance_room' => 1, 'transactions' => collect(['Bar Sale' => collect([$rsTx(21, 'B-0101', 800, 800), $rsTx(22, 'B-0102', 600, 100)])])],
         ['mm-night-audit', 'mm-bar', 'id="formSubmit"', 'name="date"', 'name="transaction_ids[21]"', 'name="payment_way[Cash]"', 'name="total_amount"'], []],
     'bar-product-create' => ['bar.inventory.product.create', '/bar/inventory/products/create', $brCatalog, ['mm-bar', 'mm-rst-form', 'data-parsley-validate', 'name="name"', 'name="barcode"', 'name="category_id"', 'name="unit_id"', 'name="supplier_id"', 'Rice &lt;b&gt;dishes&lt;/b&gt;'], ['Rice <b>dishes</b>']],
-    'bar-product-edit' => ['bar.inventory.product.edit', '/bar/inventory/products/1/edit', $brCatalog + ['product' => (object) ['id' => 1, 'name' => 'Black <b>Label</b>', 'barcode' => 'B-1', 'category' => (object) ['name' => 'Spirits'], 'category_id' => 1, 'pack_size' => 12, 'pack_unit_id' => 1, 'sale_price' => 250, 'status' => 1, 'stock_limit' => 5, 'unit_cost' => 100, 'supplier_id' => 1, 'unit_id' => 2, 'vat_amount' => 5]], ['mm-bar', 'mm-rst-form', 'name="_method" value="PUT"', 'name="name"', 'Black &lt;b&gt;Label&lt;/b&gt;'], ['Black <b>Label</b>']],
+    'bar-product-edit' => ['bar.inventory.product.edit', '/bar/inventory/products/1/edit', $brCatalog + ['product' => (object) ['id' => 1, 'name' => 'Black <b>Label</b>', 'barcode' => 'B-1', 'category' => (object) ['name' => 'Spirits'], 'category_id' => 1, 'pack_size' => 12, 'pack_unit_id' => 1, 'sale_price' => 250, 'status' => 1, 'stock_limit' => 5, 'unit_cost' => 100, 'supplier_id' => 1, 'unit_id' => 2, 'vat_amount' => 5]], ['mm-bar', 'mm-rst-form', 'name="_method"', 'name="name"', 'Black &lt;b&gt;Label&lt;/b&gt;'], ['Black <b>Label</b>']],
     'bar-inventory-report' => ['bar.inventory.inventory-report', '/bar/inventory/inventory-report?category_id=1', ['products' => $riList([$riProduct(1, 'Black <b>Label</b>')])], ['mm-bar', 'mm-rst-inventory', 'Black &lt;b&gt;Label&lt;/b&gt;'], ['Black <b>Label</b>']],
 ];
 @mkdir(__DIR__ . '/fixtures/bar', 0777, true);
@@ -1326,3 +1326,93 @@ foreach ($brCases as $brName => [$brViewName, $brUrl, $brData, $brMarkers, $brAb
     if (file_get_contents($brFile) !== $brHtml) throw new RuntimeException($brFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
 }
 echo "PASS bar screens render: setup, catalog, purchases, sales, returns, reports and night audit\n";
+
+// ---- Account A1: setup, party and product screens (module/Account/views, same helper substitutions as the other modules) ----
+$acMigrated = ['setup/account-controls/index', 'setup/account-controls/create', 'setup/account-controls/edit', 'setup/account-groups/index', 'setup/account-opening-balances/create', 'setup/account-subsidiaries/index', 'setup/account-subsidiaries/create', 'setup/account-subsidiaries/edit', 'setup/accounts/index', 'setup/accounts/create', 'setup/accounts/edit', 'party/customers/index', 'party/customers/create', 'party/customers/edit', 'party/suppliers/index', 'party/suppliers/create', 'party/suppliers/edit', 'product/categories/index', 'product/categories/create', 'product/categories/edit', 'product/units/index', 'product/units/create', 'product/units/edit', 'product/products/index', 'product/products/create', 'product/products/edit'];
+foreach ($acMigrated as $acFile) { token_get_all($compiler->compileString(file_get_contents($root . '/module/Account/views/' . $acFile . '.blade.php')), TOKEN_PARSE); }
+echo "PASS compile account views\n";
+$acViews = array_merge($acMigrated, ['includes/inputs/date-field', 'includes/inputs/input-field', 'includes/inputs/option-select', 'includes/inputs/select-balance-type', 'includes/inputs/status', 'includes/inputs/textarea-field', 'partials/_user-log']);
+foreach ($acViews as $acView) {
+    $acSource = $rsSubst($acView, 'Account');
+    $acSource = str_replace('auth()->user()->company->id', '1', $acSource);
+    $acSource = str_replace(["@include('includes.inputs.", "@include('partials._user-log'", '@include(\'partials._paginate\', [\'data\' => $accounts])', 'auth()->user()', 'Auth::user()'], ["@include('acc.includes.inputs.", "@include('acc.partials._user-log'", '', 'mm_auth_user()', 'mm_auth_user()'], $acSource);
+    $acSource = preg_replace('/(?<![\\\\\\w])Str::/', '\\\\Illuminate\\\\Support\\\\Str::', $acSource);
+    @mkdir(dirname($coViews . '/acc/' . $acView), 0777, true);
+    file_put_contents($coViews . '/acc/' . $acView . '.blade.php', $acSource);
+}
+if (!function_exists('oldSelect')) { function oldSelect($name, $value, $edit = null) { return $edit !== null && (string) $edit === (string) $value ? 'selected' : ''; } }
+$acSeen = [];
+foreach ($acViews as $acView) {
+    preg_match_all("/route\\('([\\w.-]+)'/", file_get_contents($coViews . '/acc/' . $acView . '.blade.php'), $acMatch);
+    foreach ($acMatch[1] as $acRoute) {
+        if (isset($acSeen[$acRoute]) || $rsRoutes->getByName($acRoute)) continue;
+        $acSeen[$acRoute] = true;
+        $rsRoutes->add((new Illuminate\Routing\Route(['GET', 'POST'], 'acc/' . str_replace('.', '/', $acRoute) . '/{id?}', function () {}))->name($acRoute));
+    }
+}
+$acOpt = function ($rows) use ($riRow) { return collect(array_map(function ($r) use ($riRow) { return $riRow($r); }, $rows)); };
+$acGroup = $acOpt([['id' => 1, 'name' => 'Asset <b>group</b>'], ['id' => 2, 'name' => 'Liability']]);
+$acControl = $acOpt([['id' => 1, 'name' => 'Current <b>assets</b>']]);
+$acSub = $acOpt([['id' => 1, 'name' => 'Cash <b>sub</b>']]);
+$acParty = function ($kind) use ($riRow) { return $riRow(['id' => 3, 'name' => $kind . ' <b>Ltd</b>', 'mobile' => '017', 'email' => 'a@example.com', 'address' => 'Dhaka <i>1</i>', 'opening_balance' => 100, 'current_balance' => 150]); };
+$acCases = [
+    'account-controls' => ['acc.setup.account-controls.index', '/acc/account-controls', ['accountControls' => $acOpt([['id' => 1, 'name' => 'Current <b>assets</b>', 'status' => 1, 'accountGroup' => $riRow(['name' => 'Asset'])], ['id' => 2, 'name' => 'Loans', 'status' => 0, 'accountGroup' => $riRow(['name' => 'Liability'])]])],
+        ['mm-acc', 'mm-report', 'id="data-table"', 'Current &lt;b&gt;assets&lt;/b&gt;'], ['Current <b>assets</b>']],
+    'account-groups' => ['acc.setup.account-groups.index', '/acc/account-groups', ['data' => $acOpt([['id' => 1, 'name' => 'Asset <b>x</b>', 'status' => 1, 'balance_type' => 'Debit']])],
+        ['mm-acc', 'table-striped', 'Asset &lt;b&gt;x&lt;/b&gt;'], ['Asset <b>x</b>']],
+    'subsidiaries' => ['acc.setup.account-subsidiaries.index', '/acc/account-subsidiaries', ['accountSubsidiaries' => $acOpt([['id' => 1, 'name' => 'Cash <b>sub</b>', 'status' => 1, 'accountControl' => $riRow(['name' => 'Current']), 'accountGroup' => $riRow(['name' => 'Asset'])]])],
+        ['mm-acc', 'id="data-table"', 'Cash &lt;b&gt;sub&lt;/b&gt;'], ['Cash <b>sub</b>']],
+    'accounts' => ['acc.setup.accounts.index', '/acc/accounts', ['accounts' => $acOpt([['id' => 1, 'name' => 'Petty <b>cash</b>', 'status' => 1, 'opening_balance' => 500, 'accountControl' => $riRow(['name' => 'Current']), 'accountGroup' => $riRow(['name' => 'Asset']), 'accountSubsidiary' => $riRow(['name' => 'Cash']), 'accountType' => $riRow(['name' => 'Cash'])]])],
+        ['mm-acc', 'id="data-table"', 'Petty &lt;b&gt;cash&lt;/b&gt;'], ['Petty <b>cash</b>']],
+    'customers' => ['acc.party.customers.index', '/acc/customers', ['customers' => $acOpt([['id' => 3, 'name' => 'Customer <b>Ltd</b>', 'mobile' => '017', 'email' => 'a@example.com']])],
+        ['mm-acc', 'id="data-table"', 'Customer &lt;b&gt;Ltd&lt;/b&gt;'], ['Customer <b>Ltd</b>']],
+    'suppliers' => ['acc.party.suppliers.index', '/acc/suppliers', ['suppliers' => $acOpt([['id' => 3, 'name' => 'Supplier <b>Ltd</b>', 'mobile' => '017', 'email' => 'a@example.com', 'opening_balance' => 100]])],
+        ['mm-acc', 'id="data-table"', 'Supplier &lt;b&gt;Ltd&lt;/b&gt;'], ['Supplier <b>Ltd</b>']],
+    'categories' => ['acc.product.categories.index', '/acc/categories', ['categories' => $acOpt([['id' => 1, 'name' => 'Beverage <b>x</b>']])],
+        ['mm-acc', 'id="data-table"', 'Beverage &lt;b&gt;x&lt;/b&gt;'], ['Beverage <b>x</b>']],
+    'units' => ['acc.product.units.index', '/acc/units', ['units' => $acOpt([['id' => 1, 'name' => 'Litre <b>x</b>']])],
+        ['mm-acc', 'id="data-table"', 'Litre &lt;b&gt;x&lt;/b&gt;'], ['Litre <b>x</b>']],
+    'products' => ['acc.product.products.index', '/acc/products', ['products' => $acOpt([['id' => 1, 'name' => 'Juice <b>x</b>', 'description' => 'Fresh <i>d</i>', 'opening_quantity' => 5, 'purchase_price' => 10, 'selling_price' => 15, 'category' => $riRow(['name' => 'Beverage']), 'unit' => $riRow(['name' => 'Litre'])]])],
+        ['mm-acc', 'id="data-table"', 'Juice &lt;b&gt;x&lt;/b&gt;'], ['Juice <b>x</b>']],
+    'opening-balances' => ['acc.setup.account-opening-balances.create', '/acc/account-opening-balances/create', ['companies' => [1 => 'MM <b>Heritage</b>'], 'accountGroups' => $acGroup, 'accountControls' => [1 => 'Current'], 'accounts' => $acOpt([['id' => 1, 'name' => 'Petty <b>cash</b>', 'opening_balances' => $riRow(['amount' => 5])]])],
+        ['mm-acc', 'name="company_id"', 'MM &lt;b&gt;Heritage&lt;/b&gt;'], ['MM <b>Heritage</b>']],
+    'opening-balances-data' => ['acc.setup.account-opening-balances.create', '/acc/account-opening-balances/create?company_id=1', ['companies' => [1 => 'MM <b>Heritage</b>'], 'accountGroups' => [1 => 'Asset'], 'accountControls' => [1 => 'Current'], 'accounts' => $riList([$riRow(['id' => 1, 'name' => 'Petty <b>cash</b>', 'opening_balances' => collect([$riRow(['amount' => 5])])])])],
+        ['mm-report-filter', 'name="account_ids[]"', 'name="amounts[]"', 'Petty &lt;b&gt;cash&lt;/b&gt;', 'account-opening-balances/store'], ['Petty <b>cash</b>']],
+    'form-control-create' => ['acc.setup.account-controls.create', '/acc/account-controls/create', ['company' => [1 => 'MM <b>Heritage</b>'], 'accountGroups' => $acGroup],
+        ['mm-rst-form', 'name="company_id"', 'name="account_group_id"', 'name="name"', 'Asset &lt;b&gt;group&lt;/b&gt;'], ['Asset <b>group</b>']],
+    'form-control-edit' => ['acc.setup.account-controls.edit', '/acc/account-controls/1/edit', ['accountControl' => $riRow(['id' => 1, 'name' => 'Current <b>assets</b>', 'account_group_id' => 1, 'status' => 1]), 'accountGroups' => $acGroup],
+        ['mm-rst-form', 'name="_method"', 'name="name"', 'Current &lt;b&gt;assets&lt;/b&gt;'], ['Current <b>assets</b>']],
+    'form-subsidiary-create' => ['acc.setup.account-subsidiaries.create', '/acc/account-subsidiaries/create', ['accountGroups' => $acGroup, 'accountControls' => $acControl],
+        ['mm-rst-form', 'name="account_group_id"', 'name="account_control_id"', 'name="name"'], []],
+    'form-account-create' => ['acc.setup.accounts.create', '/acc/accounts/create', ['accountGroups' => $acGroup, 'accountControls' => $acControl, 'accountSubsidiaries' => $acSub],
+        ['mm-rst-form', 'name="account_group_id"', 'name="account_control_id"', 'name="account_subsidiary_id"', 'name="name"', 'name="remarks"'], []],
+    'form-customer-create' => ['acc.party.customers.create', '/acc/customers/create', [], ['mm-rst-form', 'name="name"', 'name="mobile"', 'name="email"', 'name="address"', 'name="opening_balance"'], []],
+    'form-customer-edit' => ['acc.party.customers.edit', '/acc/customers/3/edit', ['customer' => $acParty('Customer')], ['mm-rst-form', 'name="_method"', 'Customer &lt;b&gt;Ltd&lt;/b&gt;', 'Dhaka &lt;i&gt;1&lt;/i&gt;'], ['Customer <b>Ltd</b>']],
+    'form-supplier-create' => ['acc.party.suppliers.create', '/acc/suppliers/create', [], ['mm-rst-form', 'name="name"', 'name="mobile"', 'name="address"'], []],
+    'form-supplier-edit' => ['acc.party.suppliers.edit', '/acc/suppliers/3/edit', ['supplier' => $acParty('Supplier')], ['mm-rst-form', 'name="_method"', 'Supplier &lt;b&gt;Ltd&lt;/b&gt;'], ['Supplier <b>Ltd</b>']],
+    'form-category-create' => ['acc.product.categories.create', '/acc/categories/create', [], ['mm-rst-form', 'name="name"'], []],
+    'form-category-edit' => ['acc.product.categories.edit', '/acc/categories/1/edit', ['category' => $riRow(['id' => 1, 'name' => 'Beverage <b>x</b>'])], ['mm-rst-form', 'name="_method"', 'Beverage &lt;b&gt;x&lt;/b&gt;'], ['Beverage <b>x</b>']],
+    'form-unit-create' => ['acc.product.units.create', '/acc/units/create', [], ['mm-rst-form', 'name="name"'], []],
+    'form-product-create' => ['acc.product.products.create', '/acc/products/create', ['categories' => [1 => 'Beverage <b>x</b>'], 'units' => [1 => 'Litre']], ['mm-rst-form', 'name="name"', 'name="category_id"', 'name="unit_id"', 'name="purchase_price"', 'name="selling_price"', 'Beverage &lt;b&gt;x&lt;/b&gt;'], ['Beverage <b>x</b>']],
+    'form-product-edit' => ['acc.product.products.edit', '/acc/products/1/edit', ['categories' => [1 => 'Beverage'], 'units' => [1 => 'Litre'], 'product' => $riRow(['id' => 1, 'name' => 'Juice <b>x</b>', 'description' => 'Fresh', 'category_id' => 1, 'unit_id' => 1, 'opening_quantity' => 5, 'purchase_price' => 10, 'selling_price' => 15])], ['mm-rst-form', 'name="_method"', 'Juice &lt;b&gt;x&lt;/b&gt;'], ['Juice <b>x</b>']],
+];
+@mkdir(__DIR__ . '/fixtures/account', 0777, true);
+foreach ($acCases as $acName => [$acViewName, $acUrl, $acData, $acMarkers, $acAbsent]) {
+    $acRequest = Illuminate\Http\Request::create($acUrl);
+    $acRequest->setLaravelSession(new Illuminate\Session\Store('mm', new Illuminate\Session\ArraySessionHandler(10)));
+    $app->instance('request', $acRequest);
+    $app->instance('url', new Illuminate\Routing\UrlGenerator($rsRoutes, $acRequest));
+    try { $acHtml = $app->make('view')->make($acViewName, array_merge(['errors' => new Illuminate\Support\ViewErrorBag(), 'slugs' => []], $acData))->render(); }
+    catch (Throwable $e) { throw new RuntimeException('Account screen ' . $acName . ' failed to render: ' . $e->getMessage(), 0, $e); }
+    $acHtml = preg_replace('/(name="_token" value=")[A-Za-z0-9]+"/', '$1fixture-csrf-token"', str_replace('http://localhost/assets', '/assets', $acHtml));
+    $acMissing = [];
+    foreach (array_merge(['mm-panel', 'mm-page-title'], $acMarkers) as $acMarker) { if (strpos($acHtml, $acMarker) === false) $acMissing[] = $acMarker; }
+    if ($acMissing) throw new RuntimeException('Account screen ' . $acName . ' missing ' . implode(' | ', $acMissing));
+    if (preg_match('/class="[^"]*\\b(?:widget-box|widget-main|widget-header|page-header)\\b/', $acHtml)) throw new RuntimeException('Account screen ' . $acName . ' still contains the legacy frame');
+    foreach ($acAbsent as $acMarker) { if (strpos($acHtml, $acMarker) !== false) throw new RuntimeException('Account screen ' . $acName . ' still contains ' . $acMarker); }
+    if (strpos($acHtml, '<b>Warning</b>') !== false || strpos($acHtml, '<b>Notice</b>') !== false) throw new RuntimeException('Account screen ' . $acName . ' sample data is incomplete (PHP warning in output)');
+    $acFile = __DIR__ . '/fixtures/account/' . $acName . '.html';
+    if (getenv('MM_WRITE_FIXTURE')) { file_put_contents($acFile, $acHtml); file_put_contents($previewDir . '/acc-' . $acName . '.html', $acHtml); }
+    if (file_get_contents($acFile) !== $acHtml) throw new RuntimeException($acFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
+}
+echo "PASS account screens render: setup, party and product\n";

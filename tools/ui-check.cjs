@@ -866,3 +866,36 @@ console.log('PASS: note list/edit expressions, forms and status scripts; legacy 
   console.log('PASS: bar B1 (inventory, tables, purchases, sales, returns, reports, night audit) keeps fields, expressions, directives, components and scripts; controllers and routes untouched');
 }
 
+{
+  // Account A1 (setup, party, product): fields, expressions, directives, components and scripts stay as they were.
+  const base='3516b9d9';
+  const nc=s=>s.replace(/\{\{--[\s\S]*?--\}\}/g,'');
+  const q=x=>x.replace(/\s+/g,'').replace(/"/g,"'");
+  const ex=s=>(nc(s).match(/\{\{[\s\S]*?\}\}|\{!![\s\S]*?!!\}/g)||[]).map(q);
+  const comps=s=>(nc(s).match(/<x-(?!mm\.|slot)[a-z.-]+[^>]*>/g)||[]).map(q);
+  const added=/ (?:aria-label="[^"]*"|style="[^"]*"|class="[^"]*")/g;
+  const ctl=s=>(nc(s).replace(/\{\{[\s\S]*?\}\}/g,'{{}}').match(/<(input|select|textarea|button)\b[^>]*>/g)||[]).map(x=>x.replace(/\s+/g,' ').replace(added,''));
+  const forms=s=>(nc(s).match(/<form[^>]*>/g)||[]).map(x=>q(x.replace(/ class="[^"]*"/,'')));
+  const directives=s=>(nc(s).match(/@(?:if|elseif|else|endif|foreach|endforeach|forelse|empty|endforelse|include|isset|endisset|can|endcan|error|enderror|csrf|method|php|endphp)\b/g)||[]);
+  const only=(l,m)=>{const c={};l.forEach(x=>c[x]=(c[x]||0)+1);m.forEach(x=>c[x]=(c[x]||0)-1);return Object.entries(c).filter(([,n])=>n).map(([k,n])=>`${n>0?'-':'+'}${Math.abs(n)} ${k}`).sort();};
+  const scripts=s=>(nc(s).match(/<script[\s\S]*?<\/script>/g)||[]).map(q).join('|');
+  const dir='module/Account/views/';
+  const changed={};
+  // an empty @php/@endphp pair above the page markup was dropped
+  const dirChanged={};
+  const files=["setup/account-controls/index", "setup/account-controls/create", "setup/account-controls/edit", "setup/account-groups/index", "setup/account-opening-balances/create", "setup/account-subsidiaries/index", "setup/account-subsidiaries/create", "setup/account-subsidiaries/edit", "setup/accounts/index", "setup/accounts/create", "setup/accounts/edit", "party/customers/index", "party/customers/create", "party/customers/edit", "party/suppliers/index", "party/suppliers/create", "party/suppliers/edit", "product/categories/index", "product/categories/create", "product/categories/edit", "product/units/index", "product/units/create", "product/units/edit", "product/products/index", "product/products/create", "product/products/edit"];
+  for(const f of files){
+    const p=`${dir}${f}.blade.php`,after=fs.readFileSync(p,'utf8'),before=execFileSync('git',['show',`${base}:${p}`],{encoding:'utf8'});
+    assert.deepEqual(only(ex(before),ex(after)),changed[f]||[],`${f}: Blade expressions changed`);
+    assert.deepEqual(only(comps(before),comps(after)),[],`${f}: Blade components changed`);
+    assert.deepEqual(only(ctl(before),ctl(after)),[],`${f}: form controls changed`);
+    assert.deepEqual(only(forms(before),forms(after)),[],`${f}: form tags changed`);
+    assert.deepEqual(only(directives(before),directives(after)),dirChanged[f]||[],`${f}: Blade directives changed`);
+    assert.equal(scripts(after),scripts(before),`${f}: scripts changed`);
+    assert(after.includes('<x-mm.page'),`${f}: shared layout expected`);
+    assert(!/class="[^"]*\b(?:widget-box|widget-main|widget-header|page-header)\b/.test(after),`${f}: legacy frame should be gone`);
+  }
+  const untouched=execFileSync('git',['diff','--name-only',base,'--','module/Account/Controllers','module/Account/routes','module/Account/Models'],{encoding:'utf8'}).trim();
+  assert.equal(untouched,'','Account controllers, routes and models must stay unchanged');
+  console.log('PASS: account A1 (setup, party, product) keeps fields, expressions, directives, components and scripts; controllers and routes untouched');
+}

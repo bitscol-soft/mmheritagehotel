@@ -1,0 +1,109 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">    <link rel="stylesheet" href="/assets/css/chosen.min.css"/>
+    <link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css"/>
+    <link rel="stylesheet" href="/assets/custom_css/chosen-required.css"/>
+
+<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+<section class="mm-ui mm-acc mm-rst mm-rst-inv mm-rst-form">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Account Subsidiary</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Add a subsidiary ledger.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button" href="http://localhost/acc/account-subsidiaries/index"><i class="fa fa-list"></i> List</a></div>        </header>
+        <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><!-- INPUTS -->
+        <form action="http://localhost/acc/account-subsidiaries/store" method="post">
+            <input type="hidden" name="_token" value="fixture-csrf-token">            <div class="row" style="width: 100%; margin: 0 0 20px !important;">
+                <div class="col-sm-12 px-4">
+                    <!-- Account Group -->
+                    <div class="form-group row">
+    <label class="control-label col-sm-3" for="account_group_id">
+        <b>
+            Account Group
+                            <sup class="text-danger"> *</sup>
+                    </b>
+    </label>
+
+    <div class="col-sm-9 col-sm-9">
+
+        <select id="account_group_id" name="account_group_id" required
+                class="chosen-select-100-percent  required"
+                data-placeholder="- Select Account Group -">
+            <option value=""></option>
+
+                            <option value="1" >Asset &lt;b&gt;group&lt;/b&gt;</option>
+                            <option value="2" >Liability</option>
+                    </select>
+    </div>
+</div>
+
+                    <!-- Account Controls -->
+                    <div class="form-group row">
+    <label class="control-label col-sm-3" for="account_control_id">
+        <b>
+            Account Control
+                            <sup class="text-danger"> *</sup>
+                    </b>
+    </label>
+
+    <div class="col-sm-9 col-sm-9">
+
+        <select id="account_control_id" name="account_control_id" required
+                class="chosen-select-100-percent  required"
+                data-placeholder="- Select Account Control -">
+            <option value=""></option>
+
+                            <option value="1" >Current &lt;b&gt;assets&lt;/b&gt;</option>
+                    </select>
+    </div>
+</div>
+
+                    <!-- Name -->
+                    <div class="form-group row">
+                        <label class="col-sm-3 control-label" for="name">
+                            <b>Subsidiary Name <sup class="text-danger">*</sup></b>
+                        </label>
+
+                        <div class="col-sm-9">
+                            <input id="name" name="name" type="text" required class="form-control input-sm" placeholder="Name" value="">
+                        </div>
+                    </div>
+
+                    <!-- Submit -->
+                    <button class="btn btn-primary btn-sm pull-right"><i class="fa fa-save"></i> Save</button>
+                </div>
+            </div>
+        </form></div>
+    </div>
+</section>
+
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
+    <script src="/assets/js/chosen.jquery.min.js"></script>
+    <script src="/assets/js/bootstrap-datepicker.min.js"></script>
+
+
+    <script src="/assets/custom_js/chosen-box.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            const accountControlId = $('#account_control_id');
+
+            $('#account_group_id').change(function () {
+                $.get(`http://localhost/acc/ajax/account-controls?account_group_id=${$(this).val()}`, function (res) {
+                    accountControlId.empty().append('<option></option>')
+
+                    res.forEach(function (item) {
+                        accountControlId.append(`<option value="${item.id}">${item.name}</option>`)
+                    })
+
+                    accountControlId.trigger('chosen:updated');
+                })
+            })
+        });
+    </script>
+
+<!--/MM-JS--></body></html>
