@@ -1540,3 +1540,81 @@ foreach ($a3Cases as $a3Name => [$a3ViewName, $a3Url, $a3Data, $a3Markers, $a3Ab
     if (file_get_contents($a3File) !== $a3Html) throw new RuntimeException($a3File . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
 }
 echo "PASS account trading screens render\n";
+
+// ---- Account A4: reports (index screens; print and export documents stay legacy) ----
+$a4Migrated = ['reports/account-ledger/index', 'reports/account-payables/index', 'reports/account-receivables/index', 'reports/balance-sheet/index', 'reports/cash-flow/index', 'reports/chart-of-account/index', 'reports/customer-ledger/index', 'reports/equity-statement/index', 'reports/expense-analysis/index', 'reports/income-statement/index', 'reports/journal-report/index', 'reports/ratio-analysis/index', 'reports/received-payment-statement/index', 'reports/revenue-analysis/index', 'reports/subsidiary-wise-ledger/index', 'reports/supplier-ledger/index', 'reports/supplier/index', 'reports/trial-balance/index', 'reports/voucher-reports/index', 'reports/nominal-account-ledger/index', 'reports/transaction-ledger/category-index', 'reports/inventory-reports/stock-in-hand', 'reports/inventory-reports/item-ledger'];
+// partials included by the migrated screens (unchanged files, copied so that includes resolve)
+$a4Partials = ['reports/income-statement/details-view', 'reports/income-statement/expense-details-view', 'reports/income-statement/sort-view', 'reports/chart-of-account/export/excel', 'includes/input-groups/select-group', 'includes/input-groups/date-range', 'includes/input-groups/date-field', 'acc-includes/input-groups/select-group', 'acc-includes/input-groups/date-range', 'acc-includes/input-groups/date-field', 'acc-includes/inputs/action', 'acc-includes/inputs/date-field', 'acc-includes/inputs/input-field', 'acc-includes/inputs/option-select', 'acc-includes/inputs/select-balance-type', 'acc-includes/inputs/status', 'acc-includes/inputs/textarea-field', 'includes/inputs/date-field', 'includes/inputs/input-field', 'includes/inputs/option-select', 'includes/inputs/select-balance-type', 'includes/inputs/status', 'includes/inputs/textarea-field'];
+foreach (array_merge($a4Migrated, $a4Partials) as $a4File) { token_get_all($compiler->compileString(file_get_contents($root . '/module/Account/views/' . $a4File . '.blade.php')), TOKEN_PARSE); }
+echo "PASS compile account report views\n";
+foreach (array_merge($a4Migrated, $a4Partials) as $a4View) {
+    $a4Source = $rsSubst($a4View, 'Account');
+    $a4Source = preg_replace("/@include\\('partials\\._paginate', \\['data' => \\$\\w+\\]\\)/", '', $a4Source);
+    $a4Source = preg_replace("/@include\\('(?:reports\\.chart-of-account\\.export\\.excel|reports\\/income-statement\\/(?:expense-details-view|details-view|sort-view))'\\)/", '', $a4Source);
+    $a4Source = str_replace(["date('Y-m-d')", "@include('partials._user-log'", 'auth()->user()', 'Auth::user()'], ["'2026-10-01'", "@include('acc.partials._user-log'", 'mm_auth_user()', 'mm_auth_user()'], $a4Source);
+    $a4Source = preg_replace_callback("/@include\\('((?:acc-)?includes)[\\/.]([\\w\\/.-]+)'/", function ($m) { return "@include('acc." . $m[1] . '.' . str_replace('/', '.', $m[2]) . "'"; }, $a4Source);
+    $a4Source = preg_replace('/(?<![\\\\\w])Str::/', '\\Illuminate\\Support\\Str::', $a4Source);
+    @mkdir(dirname($coViews . '/acc/' . $a4View), 0777, true);
+    file_put_contents($coViews . '/acc/' . $a4View . '.blade.php', $a4Source);
+}
+$a4Seen = [];
+foreach ($a4Migrated as $a4View) {
+    preg_match_all("/route\\('([\\w.-]+)'/", file_get_contents($coViews . '/acc/' . $a4View . '.blade.php'), $a4Match);
+    foreach ($a4Match[1] as $a4Route) {
+        if (isset($a4Seen[$a4Route]) || $rsRoutes->getByName($a4Route)) continue;
+        $a4Seen[$a4Route] = true;
+        $rsRoutes->add((new Illuminate\Routing\Route(['GET', 'POST'], 'acc/' . str_replace('.', '/', $a4Route) . '/{id?}', function () {}))->name($a4Route));
+    }
+}
+$a4Co = [1 => 'MM <b>Heritage</b>'];
+$a4Accounts = $acOpt([['id' => 1, 'name' => 'Cash <b>in hand</b>'], ['id' => 2, 'name' => 'Bank']]);
+$a4Trx = function ($extra = []) use ($riRow) { return $riRow($extra + ['date' => '2026-10-01', 'invoice_no' => 'V-0004', 'description' => 'Rent <b>paid</b>', 'debit_amount' => 150, 'credit_amount' => 0, 'amount' => 150, 'account_id' => 1, 'account' => $riRow(['name' => 'Rent <b>expense</b>']), 'customer_id' => 1]); };
+$a4Ledger = ['companies' => $a4Co, 'accounts' => $a4Accounts, 'from' => '2026-10-01', 'to' => '2026-10-01', 'transactions' => $riList([$a4Trx(), $a4Trx(['invoice_no' => 'V-0005', 'debit_amount' => 0, 'credit_amount' => 90])]), 'selected_account' => $riRow(['name' => 'Cash', 'accountGroup' => $riRow(['balance_type' => 'Debit', 'name' => 'Asset'])]), 'balance' => 60, 'total_balance' => 60, 'total_debit' => 150, 'total_credit' => 90, 'debit_balance' => 60, 'credit_balance' => 0, 'grand_total_debit_balance' => 150, 'grand_total_credit_balance' => 90, 'paginate_debit_balance' => 150, 'paginate_credit_balance' => 90, 'customers' => $a4Accounts, 'suppliers' => $a4Accounts, 'customer' => $acOpt([['id' => 1, 'account_id' => 1, 'name' => 'Rahim <i>Stores</i>']]), 'supplier' => $acOpt([['id' => 1, 'account_id' => 1, 'name' => 'Karim <i>Traders</i>']]), 'totalDebit' => 150, 'totalCredit' => 90, 'totalbalance' => 60];
+$a4Ledger0 = array_diff_key($a4Ledger, ['transactions' => 1]);
+$a4Empty = ['companies' => $a4Co, 'from' => '2026-10-01', 'to' => '2026-10-01'];
+$a4Cases = [
+    'account-ledger' => ['acc.reports.account-ledger.index', '/acc/report/account-ledger?company_id=1', $a4Ledger, ['mm-report', 'mm-report-filter', 'name="company_id"', 'V-0004', 'V-0005', 'Rent &lt;b&gt;paid&lt;/b&gt;'], ['Rent <b>paid</b>']],
+    'account-payables' => ['acc.reports.account-payables.index', '/acc/report/account-payables', array_merge($a4Ledger0, ['transactions' => $riList([$riRow(['id' => 1, 'name' => 'Karim <i>Traders</i>', 'balance' => 150])])]), ['mm-report-filter', 'name="company_id"', 'Karim &lt;i&gt;Traders&lt;/i&gt;'], ['Karim <i>Traders</i>']],
+    'account-receivables' => ['acc.reports.account-receivables.index', '/acc/report/account-receivables', array_merge($a4Ledger0, ['transactions' => $riList([$riRow(['id' => 1, 'name' => 'Rahim <i>Stores</i>', 'balance' => 150])])]), ['mm-report-filter', 'name="company_id"', 'Rahim &lt;i&gt;Stores&lt;/i&gt;'], ['Rahim <i>Stores</i>']],
+    'balance-sheet' => ['acc.reports.balance-sheet.index', '/acc/report/balance-sheet', $a4Empty + ['accountGroups' => collect([]), 'accountGroup' => null, 'asset' => 0, 'balance' => 0, 'equity_balance' => 0, 'totalBalance' => 0], ['mm-report', 'mm-report-filter', 'name="company_id"'], []],
+    'cash-flow' => ['acc.reports.cash-flow.index', '/acc/report/cash-flow', $a4Empty + ['asset' => [0, 0], 'depreciations' => 0, 'equity_balance' => 0, 'liabilities' => [0, 0], 'new_asset' => 0, 'operating_activities' => 0], ['mm-report', 'mm-report-filter', 'name="company_id"'], []],
+    'chart-of-account' => ['acc.reports.chart-of-account.index', '/acc/report/chart-of-account', $a4Empty + ['accounts' => $a4Accounts], ['mm-report', 'mm-report-filter', 'name="company_id"'], []],
+    'customer-ledger' => ['acc.reports.customer-ledger.index', '/acc/report/customer-ledger', $a4Ledger, ['mm-report', 'mm-report-filter', 'V-0004', 'Rahim &lt;i&gt;Stores&lt;/i&gt;'], ['Rahim <i>Stores</i>']],
+    'equity-statement' => ['acc.reports.equity-statement.index', '/acc/report/equity-statement', $a4Empty + ['equity' => 0, 'addition_retained_earnings' => 0, 'addition_share_capital' => 0, 'adjusement_retained_earnings' => 0, 'adjustment_share_capital' => 0, 'previous_year_retained_earnings' => 0, 'previous_year_share_capital' => 0, 'profit_and_loss' => 0, 'profit_los_retained_earnings' => 0, 'profit_loss_share_capital' => 0], ['mm-report', 'mm-report-filter', 'name="company_id"'], []],
+    'expense-analysis' => ['acc.reports.expense-analysis.index', '/acc/report/expense-analysis', $a4Empty + ['accounts' => $a4Accounts, 'accountSubsidiaries' => $a4Accounts, 'accountControls' => $a4Accounts, 'transactions' => collect([]), 'controlWise' => collect([]), 'subWise' => collect([])], ['mm-report', 'mm-report-filter', 'name="account_id"'], []],
+    'income-statement' => ['acc.reports.income-statement.index', '/acc/report/income-statement', $a4Empty + ['companyNames' => ['MM <b>Heritage</b>'], 'revenues' => collect([]), 'expenses' => collect([]), 'equity' => collect([]), 'depreciations' => collect([]), 'purchases' => collect([])], ['mm-report', 'mm-report-filter', 'name="company_id[]"', 'name="month"'], []],
+    'journal-report' => ['acc.reports.journal-report.index', '/acc/report/journal-report', $a4Empty + ['transactions' => collect([]), 'totalDebit' => 0, 'totalCredit' => 0], ['mm-report', 'mm-report-filter', 'name="company_id"'], []],
+    'ratio-analysis' => ['acc.reports.ratio-analysis.index', '/acc/report/ratio-analysis', $a4Empty + ['assets' => 1000, 'liabilities' => 400, 'revenue' => 800, 'expense' => 300, 'ratios' => [['Current <b>ratio</b>', 2.5, 'A / L']]], ['mm-report', 'mm-report-filter', 'name="from"', 'name="to"', 'Current &lt;b&gt;ratio&lt;/b&gt;', 'Liabilities'], ['Current <b>ratio</b>']],
+    'received-payment-statement' => ['acc.reports.received-payment-statement.index', '/acc/report/received-payment-statement', $a4Empty + ['customers' => $a4Accounts, 'total' => 150, 'collections' => $riList([$riRow(['date' => '2026-10-01', 'invoice_no' => 'C-1', 'transaction_no' => 'T-1', 'customer_id' => 1, 'amount' => 150, 'remarks' => 'Paid <b>cash</b>'])])], ['mm-report', 'mm-report-filter', 'C-1', 'Paid &lt;b&gt;cash&lt;/b&gt;'], ['Paid <b>cash</b>']],
+    'revenue-analysis' => ['acc.reports.revenue-analysis.index', '/acc/report/revenue-analysis', $a4Empty + ['row_count' => 1, 'total_amount' => 150, 'transaction_items' => $riList([$a4Trx()])], ['mm-report', 'mm-report-filter', 'name="from"', 'V-0004', 'Rent &lt;b&gt;expense&lt;/b&gt;'], ['Rent <b>expense</b>']],
+    'subsidiary-wise-ledger' => ['acc.reports.subsidiary-wise-ledger.index', '/acc/report/subsidiary-wise-ledger', $a4Empty + ['accounts' => collect([]), 'accountSubsidiaries' => $a4Accounts, 'accountTransactions' => collect([]), 'total' => 0, 'total_debit' => 0, 'total_credit' => 0, 'balance_type' => 'Debit'], ['mm-report', 'mm-report-filter', 'name="company_id"'], []],
+    'supplier-ledger' => ['acc.reports.supplier-ledger.index', '/acc/report/supplier-ledger', $a4Ledger, ['mm-report', 'mm-report-filter', 'V-0004', 'Karim &lt;i&gt;Traders&lt;/i&gt;'], ['Karim <i>Traders</i>']],
+    'supplier-report' => ['acc.reports.supplier.index', '/acc/report/supplier', array_merge($a4Ledger0, ['purchases' => $riList([$riRow(['date' => '2026-10-01', 'invoice_no' => 'P-1', 'total_amount' => 150, 'paid_amount' => 100, 'due_amount' => 50, 'company' => $riRow(['name' => 'MM Heritage']), 'supplier' => $riRow(['name' => 'Karim <i>Traders</i>'])])]), 'total_amount' => 150, 'total_paid' => 100, 'total_due' => 50, 'suppliers' => $a4Accounts]), ['mm-report', 'mm-report-filter', 'P-1', 'Karim &lt;i&gt;Traders&lt;/i&gt;'], ['Karim <i>Traders</i>']],
+    'trial-balance' => ['acc.reports.trial-balance.index', '/acc/report/trial-balance', $a4Empty + ['accountGroups' => collect([]), 'totalDebit' => 0, 'totalCredit' => 0, 'totalTrialAmountDebit' => 0, 'totalTrialAmountCredit' => 0, 'debitAccountGroup' => collect([]), 'creditAccountGroup' => collect([]), 'debitAccountControl' => collect([]), 'creditAccountControl' => collect([])], ['mm-report', 'mm-report-filter', 'name="company_id"'], []],
+    'voucher-reports' => ['acc.reports.voucher-reports.index', '/acc/report/voucher-reports', $a4Empty + ['accounts' => $a4Accounts, 'route' => 'x', 'grand_total' => 150, 'voucherTypes' => ['Receive' => 'Receive'], 'vouchers' => $riList([$riRow(['id' => 4, 'amount' => 150, 'date' => '2026-10-01', 'invoice_no' => 'V-0004', 'voucher_type' => 'Receive', 'description' => 'Rent <b>paid</b>', 'company' => $riRow(['name' => 'MM Heritage'])])])], ['mm-report', 'mm-report-filter', 'V-0004', 'Rent &lt;b&gt;paid&lt;/b&gt;'], ['Rent <b>paid</b>']],
+    'nominal-account-ledger' => ['acc.reports.nominal-account-ledger.index', '/acc/report/nominal-account-ledger', $a4Empty + ['debit_total' => 150, 'credit_total' => 0, 'transaction_items' => $riList([$riRow(['date' => '2026-10-01', 'invoice_no' => 'V-0004', 'debit_amount' => 150, 'credit_amount' => 0, 'account' => $riRow(['name' => 'Rent <b>expense</b>', 'accountGroup' => $riRow(['name' => 'Expense'])])])])], ['mm-report', 'mm-report-filter', 'name="from"', 'V-0004', 'Rent &lt;b&gt;expense&lt;/b&gt;'], ['Rent <b>expense</b>']],
+    'transaction-ledger' => ['acc.reports.transaction-ledger.category-index', '/acc/report/transaction-ledger', $a4Empty + ['accountGroups' => collect([]), 'balance' => 0, 'totalDebit' => 0, 'totalCredit' => 0, 'totalOpeningBalance' => 0], ['mm-report', 'mm-report-filter', 'mm-report-form'], []],
+    'stock-in-hand' => ['acc.reports.inventory-reports.stock-in-hand', '/acc/report/stock-in-hand', $a4Empty + ['units' => [1 => 'kg'], 'products' => [1 => 'Rice <b>50kg</b>'], 'itemStocks' => $riList([$riRow(['product' => $riRow(['name' => 'Rice <b>50kg</b>', 'unit' => $riRow(['name' => 'kg'])]), 'avg_rate' => 40, 'stock' => 12])])], ['mm-report', 'mm-report-filter', 'name="company_id"', 'name="unit_id"', 'name="product_id"', 'Rice &lt;b&gt;50kg&lt;/b&gt;'], ['<td>Rice <b>50kg</b>']],
+    'item-ledger' => ['acc.reports.inventory-reports.item-ledger', '/acc/report/item-ledger', $a4Empty + ['items' => [1 => 'Rice <b>50kg</b>']], ['mm-report', 'mm-report-filter', 'name="company_id"', 'name="from_date"', 'name="product_id"'], []],
+];
+@mkdir(__DIR__ . '/fixtures/account', 0777, true);
+$a4Failures = [];
+foreach ($a4Cases as $a4Name => [$a4ViewName, $a4Url, $a4Data, $a4Markers, $a4Absent]) {
+    $a4Request = Illuminate\Http\Request::create($a4Url);
+    $a4Request->setLaravelSession(new Illuminate\Session\Store('mm', new Illuminate\Session\ArraySessionHandler(10)));
+    $app->instance('request', $a4Request);
+    $app->instance('url', new Illuminate\Routing\UrlGenerator($rsRoutes, $a4Request));
+    try { $a4Html = $app->make('view')->make($a4ViewName, array_merge(['errors' => new Illuminate\Support\ViewErrorBag(), 'slugs' => []], $a4Data))->render(); }
+    catch (Throwable $e) { if (getenv('MM_DEBUG')) { echo 'FAIL ' . $a4Name . ': ' . $e->getMessage() . "\n"; continue; } throw new RuntimeException('Account screen ' . $a4Name . ' failed to render: ' . $e->getMessage(), 0, $e); }
+    $a4Html = preg_replace('/(name="_token" value=")[A-Za-z0-9]+"/', '$1fixture-csrf-token"', str_replace('http://localhost/assets', '/assets', $a4Html));
+    $a4Missing = [];
+    foreach (array_merge(['mm-panel', 'mm-page-title'], $a4Markers) as $a4Marker) { if (strpos($a4Html, $a4Marker) === false) $a4Missing[] = $a4Marker; }
+    if ($a4Missing) { if (getenv('MM_DEBUG')) { echo 'MISSING ' . $a4Name . ': ' . implode(' | ', $a4Missing) . "\n"; continue; } throw new RuntimeException('Account screen ' . $a4Name . ' missing ' . implode(' | ', $a4Missing)); }
+    if (preg_match('/class="[^"]*\\b(?:widget-box|widget-main|widget-header|page-header)\\b/', $a4Html)) throw new RuntimeException('Account screen ' . $a4Name . ' still contains the legacy frame');
+    foreach ($a4Absent as $a4Marker) { if (strpos($a4Html, $a4Marker) !== false) throw new RuntimeException('Account screen ' . $a4Name . ' still contains ' . $a4Marker); }
+    if (strpos($a4Html, '<b>Warning</b>') !== false || strpos($a4Html, '<b>Notice</b>') !== false) throw new RuntimeException('Account screen ' . $a4Name . ' sample data is incomplete (PHP warning in output)');
+    $a4File = __DIR__ . '/fixtures/account/' . $a4Name . '.html';
+    if (getenv('MM_WRITE_FIXTURE')) { file_put_contents($a4File, $a4Html); file_put_contents($previewDir . '/acc-' . $a4Name . '.html', $a4Html); }
+    if (file_get_contents($a4File) !== $a4Html) throw new RuntimeException($a4File . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
+}
+echo "PASS account report screens render\n";

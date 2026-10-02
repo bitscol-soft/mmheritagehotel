@@ -3,9 +3,9 @@
     $colSm          = isset($colSm) ? $colSm : 12;
     $labelClass     = isset($label_class) ? $label_class: '';
     $chosenSize     = isset($chosen_size) ? $chosen_size : '100-percent';
-    $selectName     = Str::snake(Str::singular($modelVariable)) . '_id';
+    $selectName     = is_string($modelVariable) ? Str::snake(Str::singular($modelVariable)) . "_id" : "";
     $isRequired     = isset($is_required);
-    $selectTitle    = ucwords(implode(" ", preg_split('/(?=[A-Z])/', Str::singular($modelVariable))));
+    $selectTitle    = is_string($modelVariable) ? ucwords(implode(" ", preg_split("/(?=[A-Z])/", Str::singular($modelVariable)))) : "";
     $title          = isset($title) ? $title : '';
     $name           = isset($title) ? $title.'_id' : '';
     $value          = isset($title) ? request($name) : '';

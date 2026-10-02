@@ -836,3 +836,12 @@
 .mm-ui.mm-acc .table-header-bg { background: #7592a5; }
 .mm-ui.mm-acc .mm-table-scroll thead tr.table-header-bg th, .mm-ui.mm-acc thead tr.table-header-bg th { background: transparent; color: #fff; }
 .mm-ui.mm-acc.mm-report .mm-panel > .row > .col-sm-12.px-4 { padding-left: 0 !important; padding-right: 0 !important; }
+.mm-ui.mm-acc .mm-panel.mm-report-filter .row { flex-wrap: wrap; }
+.mm-ui.mm-acc .mm-panel.mm-report-filter .chosen-container { max-width: 100%; }
+@media (max-width: 767px) {
+    .mm-ui.mm-acc .mm-panel.mm-report-filter .row > [class*="col-"] { flex: 0 0 100%; max-width: 100%; width: 100%; }
+}
+.mm-ui.mm-acc .mm-panel.mm-report-filter .row .input-group { display: flex; flex-wrap: nowrap; width: 100%; max-width: 100%; }
+.mm-ui.mm-acc .mm-panel.mm-report-filter .row .input-group-addon { width: auto; display: flex; align-items: center; white-space: nowrap; min-height: 40px; }
+.mm-ui.mm-acc .mm-panel.mm-report-filter .row .input-group .form-control { flex: 1 1 0; min-width: 0; width: 100%; float: none; min-height: 40px; }
+.mm-ui.mm-acc .mm-panel.mm-report-filter .row .input-group .chosen-container { flex: 1 1 0; min-width: 0; width: auto !important; }

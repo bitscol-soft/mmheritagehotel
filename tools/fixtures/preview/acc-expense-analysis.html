@@ -1,0 +1,196 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">    <link rel="stylesheet" href="/assets/css/chosen.min.css"/>
+    <link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css"/>
+
+    <style type="text/css">
+        .rate-entry-table td, tr {
+            border: none !important;
+        }
+
+        .bg-qty {
+            background: #5759604a;
+        }
+
+        .bg-value {
+            background: #33712e45;
+        }
+
+        .chosen-container > .chosen-single, [class*=chosen-container] > .chosen-single {
+            height: 30px !important;
+        }
+    </style>
+<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+<section class="mm-ui mm-report mm-acc mm-rst mm-rst-inv">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Expense Analysis</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Expenses by account.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button mm-button-secondary" href="http://localhost/acc/report/expense-analysis"><i class="fa fa-refresh"></i> Refresh Data</a>
+        <a class="mm-button" href="http://localhost/acc/report/expense-analysis?print=1&amp;from=2026-10-01&amp;to=2026-10-01" style="color: maroon !important;"><i class="fa fa-print"></i> Print Data</a></div>        </header>
+        <div class="mm-panel tw-p-4 sm:tw-p-6 mm-report-filter"><form class="mm-setup-filter mm-report-form" action="">
+            <div class="row px-3" style="width: 100%; margin: 0 !important;">
+                    <div class="input-group">
+    <label class=" input-group-addon" for="account_control_id">
+        Account Control
+            </label>
+
+    <select id="account_control_id" name="account_control_id" 
+    class="chosen-select-100-percent  "
+            data-placeholder="- Select Account Control -">
+        <option value=""></option>
+
+                    <option value="1" >Cash &lt;b&gt;in hand&lt;/b&gt;</option>
+                    <option value="2" >Bank</option>
+            </select>
+</div>
+
+                    <div class="input-group">
+                        <label class="input-group-addon" for="account_subsidiary_id">
+                            Account Subsidiary
+                        </label>
+
+                        <select id="account_subsidiary_id" name="account_subsidiary_id"
+                                class="chosen-select-100-percent"
+                                data-placeholder="- Select Account Subsidiary -">
+                            <option value=""></option>
+
+                                                            <option value="1" >Cash &lt;b&gt;in hand&lt;/b&gt;</option>
+                                                            <option value="2" >Bank</option>
+                                                    </select>
+                    </div>
+            </div>
+
+            <div class="row px-3 pt-1 pb-2" style="width: 100%; margin: 0 !important;">
+                    <div class="input-group">
+                        <label class="input-group-addon" for="account_id">
+                            Account
+                        </label>
+
+                        <select id="account_id" name="account_id"
+                        class="chosen-select-100-percent"
+                                data-placeholder="- Select Account -">
+                            <option value=""></option>
+
+                                                            <option value="1" >Cash &lt;b&gt;in hand&lt;/b&gt;</option>
+                                                            <option value="2" >Bank</option>
+                                                    </select>
+                    </div>
+
+                    <div class="input-daterange input-group">
+    <span class="input-group-addon" style="border-left: 1px solid #ccc;">
+        Date
+                    <sup class="text-danger">*</sup>
+            </span>
+
+    <input type="text"
+           name="from"
+           class="input-sm form-control date-picker"
+           value="2026-10-01"
+           autocomplete="off"
+           placeholder="From"
+           style="cursor: pointer"
+        readonly
+        required
+    >
+
+    <span class="input-group-addon">
+        <i class="fa fa-exchange"></i>
+    </span>
+
+    <input type="text"
+           name="to"
+           class="input-sm form-control date-picker"
+           value="2026-10-01"
+           autocomplete="off"
+           placeholder="To"
+           style="cursor: pointer"
+        readonly
+        required
+    >
+</div>
+
+                    <div class="btn-group btn-corner">
+                        <button type="submit" class="btn btn-primary btn-sm" style="height: 31px"><i class="fa fa-search"></i> Search</button>
+                    </div>
+            </div>
+        </form></div>
+    <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><!-- LIST -->
+        <div class="row" style="width: 100%; margin: 0 !important;">
+            <div class="col-sm-12 px-4">
+
+                <div class="mm-table-scroll" role="region" aria-label="Expense Analysis" tabindex="0"><table style="width: 100%">
+                        <thead>
+                        
+                                                </thead>
+                    </table></div>
+
+                
+            </div>
+        </div></div>
+    </div>
+</section>
+
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
+    <script src="/assets/js/chosen.jquery.min.js"></script>
+    <script src="/assets/js/bootstrap-datepicker.min.js"></script>
+
+
+    <script src="/assets/custom_js/chosen-box.js"></script>
+    <script src="/assets/custom_js/date-picker.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            const accountControlId = $('#account_control_id');
+            const accountSubsidiaryId = $('#account_subsidiary_id');
+            const accountId = $('#account_id');
+
+            accountControlId.change(function () {
+                accountSubsidiaryId.empty();
+                accountSubsidiaryId.append(`<option value="">- Select Account Subsidiary -</option>`);
+                accountSubsidiaryId.trigger('chosen:updated');
+
+                accountId.empty();
+                accountId.append(`<option value="">- Select Account -</option>`);
+                accountId.trigger('chosen:updated');
+
+                if ($(this).val() == '')
+                    return 0;
+
+                $.get('http://localhost/acc/ajax/subsidiaries-and-accounts-by-control?account_control_id='+$(this).val(), function (res) {
+                    res.subsidiaries.forEach(function (item) {
+                        accountSubsidiaryId.append(`<option value="${item.id}">${item.name}</option>`);
+                    });
+                    accountSubsidiaryId.trigger('chosen:updated');
+
+                    res.accounts.forEach(function (item) {
+                        accountId.append(`<option value="${item.id}">${item.name}</option>`);
+                    });
+                    accountId.trigger('chosen:updated');
+                })
+            });
+
+
+            accountSubsidiaryId.change(function () {
+                accountId.empty();
+                accountId.append(`<option value="">- Select Account -</option>`);
+                accountId.trigger('chosen:updated');
+
+                if ($(this).val() == '')
+                    return 0;
+
+                $.get(`http://localhost/acc/ajax/accounts-by-control-and-subsidiary?account_control_id=${accountControlId.val()}&account_subsidiary_id=${$(this).val()}`, function (res) {
+                    res.forEach(function (item) {
+                        accountId.append(`<option value="${item.id}">${item.name}</option>`);
+                    });
+                    accountId.trigger('chosen:updated');
+                })
+            })
+        })
+    </script>
+
+<!--/MM-JS--></body></html>

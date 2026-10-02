@@ -968,3 +968,38 @@ console.log('PASS: note list/edit expressions, forms and status scripts; legacy 
   assert.equal(untouched,'','Account controllers, routes and models must stay unchanged');
   console.log('PASS: account A3 (purchases, sales, returns, damages, collections) keeps fields, expressions, directives, components and scripts; controllers and routes untouched');
 }
+
+{
+  // Account A4 (reports): fields, expressions, directives, components and scripts stay as they were.
+  const base='d5393038';
+  const nc=s=>s.replace(/\{\{--[\s\S]*?--\}\}/g,'');
+  const q=x=>x.replace(/\s+/g,'').replace(/"/g,"'");
+  const ex=s=>(nc(s).match(/\{\{[\s\S]*?\}\}|\{!![\s\S]*?!!\}/g)||[]).map(q);
+  const comps=s=>(nc(s).match(/<x-(?!mm\.|slot)[a-z.-]+[^>]*>/g)||[]).map(q);
+  const added=/ (?:aria-label="[^"]*"|style="[^"]*"|class="[^"]*")/g;
+  const ctl=s=>(nc(s).replace(/\{\{[\s\S]*?\}\}/g,'{{}}').match(/<(input|select|textarea|button)\b[^>]*>/g)||[]).map(x=>x.replace(/\s+/g,' ').replace(added,''));
+  const forms=s=>(nc(s).match(/<form[^>]*>/g)||[]).map(x=>q(x.replace(/ class="[^"]*"/,'')));
+  const directives=s=>(nc(s).match(/@(?:if|elseif|else|endif|foreach|endforeach|forelse|empty|endforelse|include|isset|endisset|can|endcan|error|enderror|csrf|method|php|endphp)\b/g)||[]);
+  const only=(l,m)=>{const c={};l.forEach(x=>c[x]=(c[x]||0)+1);m.forEach(x=>c[x]=(c[x]||0)-1);return Object.entries(c).filter(([,n])=>n).map(([k,n])=>`${n>0?'-':'+'}${Math.abs(n)} ${k}`).sort();};
+  const scripts=s=>(nc(s).match(/<script[\s\S]*?<\/script>/g)||[]).map(q).join('|');
+  const dir='module/Account/views/';
+  const changed={};
+  // the stock-in-hand search button now states its default type
+  const ctlChanged={'reports/inventory-reports/stock-in-hand':['+1 <button type="submit">','-1 <button>']};
+    const dirChanged={};
+  const files=["reports/account-ledger/index", "reports/account-payables/index", "reports/account-receivables/index", "reports/balance-sheet/index", "reports/cash-flow/index", "reports/chart-of-account/index", "reports/customer-ledger/index", "reports/equity-statement/index", "reports/expense-analysis/index", "reports/income-statement/index", "reports/journal-report/index", "reports/ratio-analysis/index", "reports/received-payment-statement/index", "reports/revenue-analysis/index", "reports/subsidiary-wise-ledger/index", "reports/supplier-ledger/index", "reports/supplier/index", "reports/trial-balance/index", "reports/voucher-reports/index", "reports/nominal-account-ledger/index", "reports/transaction-ledger/category-index", "reports/inventory-reports/stock-in-hand", "reports/inventory-reports/item-ledger"];
+  for(const f of files){
+    const p=`${dir}${f}.blade.php`,after=fs.readFileSync(p,'utf8'),before=execFileSync('git',['show',`${base}:${p}`],{encoding:'utf8'});
+    assert.deepEqual(only(ex(before),ex(after)),changed[f]||[],`${f}: Blade expressions changed`);
+    assert.deepEqual(only(comps(before),comps(after)),[],`${f}: Blade components changed`);
+    assert.deepEqual(only(ctl(before),ctl(after)),ctlChanged[f]||[],`${f}: form controls changed`);
+    assert.deepEqual(only(forms(before),forms(after)),[],`${f}: form tags changed`);
+    assert.deepEqual(only(directives(before),directives(after)),dirChanged[f]||[],`${f}: Blade directives changed`);
+    assert.equal(scripts(after),scripts(before),`${f}: scripts changed`);
+    assert(after.includes('<x-mm.page'),`${f}: shared layout expected`);
+    assert(!/class="[^"]*\b(?:widget-box|widget-main|widget-header|page-header)\b/.test(after),`${f}: legacy frame should be gone`);
+  }
+  const untouched=execFileSync('git',['diff','--name-only',base,'--','module/Account/Controllers','module/Account/routes','module/Account/Models'],{encoding:'utf8'}).trim();
+  assert.equal(untouched,'','Account controllers, routes and models must stay unchanged');
+  console.log('PASS: account A4 (reports) keeps fields, expressions, directives, components and scripts; print and export documents, controllers and routes untouched');
+}

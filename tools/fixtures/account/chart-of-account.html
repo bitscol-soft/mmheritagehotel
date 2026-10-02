@@ -1,0 +1,183 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">    <link rel="stylesheet" href="/assets/css/chosen.min.css" />
+    <link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css" />
+
+    <style type="text/css">
+        .rate-entry-table td,
+        tr {
+            border: none !important;
+        }
+
+        .bg-qty {
+            background: #5759604a;
+        }
+
+        .bg-value {
+            background: #33712e45;
+        }
+
+        .chosen-container>.chosen-single,
+        [class*=chosen-container]>.chosen-single {
+            height: 30px !important;
+        }
+
+    </style>
+<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+<section class="mm-ui mm-report mm-acc mm-rst mm-rst-inv">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Chart Of Account</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Chart of accounts by group.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button mm-button-secondary" href="http://localhost/acc/report/chart-of-account"><i class="fa fa-refresh"></i> Refresh</a>
+        
+        <a class="mm-button" href="http://localhost/acc/report/chart-of-account?print=print&"><i class="fa fa-print"></i> Print</a></div>        </header>
+        <div class="mm-panel tw-p-4 sm:tw-p-6 mm-report-filter"><form class="mm-setup-filter mm-report-form" action="" method="get">
+
+            <div class="row px-3 pb-2 no-print">
+
+                <!-- COMPANY -->
+                <div class="col-sm-3">
+    <div class="input-group">
+
+        <label class="company input-group-addon" for="company">
+            company
+                    </label>
+
+        <select id="company_id"
+                name="company_id"
+                
+                class="chosen-select-100-percent  "
+                data-placeholder="- Select company -">
+            <option value=""></option>
+
+                            <option value="1" >MM &lt;b&gt;Heritage&lt;/b&gt;</option>
+                    </select>
+
+    </div>
+</div>
+
+                <!-- BALANCE TYPE -->
+                <div class="col-sm-3">
+    <div class="input-group">
+
+        <label class=" input-group-addon" for="">
+            Balance Type
+                    </label>
+
+        <select id="balance_type" name="balance_type" class="chosen-select-100-percent" data-placeholder="- Select Type -">
+            <option value=""></option>
+            <option value="Debit" >Debit</option>
+            <option value="Credit" >Credit</option>
+        </select>
+
+    </div>
+</div>
+
+                <!-- NAME -->
+                <div class="col-sm-3">
+    <div class="input-group">
+
+        <label class="name input-group-addon" for="name">
+            Name
+                    </label>
+
+        <div class="">
+            <input id="name" name="name"  type="text"
+
+                        
+            class="form-control input-sm" placeholder="Type Name" value="">
+        </div>
+
+    </div>
+</div>
+
+                <!-- DATE -->
+                <div class="col-sm-3">
+    <div class="input-daterange input-group">
+        <span class="input-group-addon" style="border-left: 1px solid #ccc;">
+            Date
+                    </span>
+
+        <input type="text"
+            name="from"
+            class="input-sm form-control date-picker"
+            value="1970-01-01"
+            autocomplete="off"
+            placeholder="From"
+            style="cursor: pointer"
+            readonly
+            
+        >
+
+        <span class="input-group-addon">
+            <i class="fa fa-exchange"></i>
+        </span>
+
+        <input type="text"
+            name="to"
+            class="input-sm form-control date-picker"
+            value="1970-01-01"
+            autocomplete="off"
+            placeholder="To"
+            style="cursor: pointer"
+            readonly
+            
+        >
+    </div>
+</div>
+
+                <!-- ACTION -->
+                <div class="col-sm-12 mt-1 text-center">
+    <div class="btn-group btn-corner">
+                    <button type="submit" class="btn btn-primary btn-sm">
+                <i class="fa fa-search"></i> Search
+            </button>
+                            <a href="http://localhost/acc/report/chart-of-account" class="btn btn-sm btn-default">
+                <i class="fa fa-refresh"></i> Refresh
+            </a>
+            </div>
+</div>
+
+
+
+            </div>
+
+        </form></div>
+    <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><!-- FILTER FORM -->
+
+
+        <!-- LIST -->
+        <div class="row" style="width: 100%; margin: 0 !important;">
+            <div class="col-sm-12 px-4">
+
+                
+
+
+                
+
+
+                <!-- EXCEL BUTTON -->
+                <a class="hidden-print" href="http://localhost/acc/report/chart-of-account?export_type=excel&" target="_blank" style="margin: 18px 0 0 20px; display: inline-block;">
+                    <img src="/assets/images/export-icons/excel-icon.png">
+                </a>
+
+
+            </div>
+        </div></div>
+    </div>
+</section>
+
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
+    <script src="/assets/js/chosen.jquery.min.js"></script>
+    <script src="/assets/js/bootstrap-datepicker.min.js"></script>
+
+
+    <script src="/assets/custom_js/chosen-box.js"></script>
+    <script src="/assets/custom_js/date-picker.js"></script>
+
+<!--/MM-JS--></body></html>

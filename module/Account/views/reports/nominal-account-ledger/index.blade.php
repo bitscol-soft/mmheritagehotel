@@ -7,18 +7,19 @@
 @stop
 
 @section('content')
-    <div class="widget-box">
-        <div class="widget-header">
-            <h5 style="font-weight:600"><i class="fa fa-filter"></i> Nominal Accounts (Revenue &amp; Expense) — {{ $from }} → {{ $to }}</h5>
-        </div>
-        <div class="widget-body">
-            <div class="widget-main">
-                <form method="GET" class="form-inline" style="margin-bottom:12px">
-                    <input type="date" name="from" value="{{ $from }}" class="form-control input-sm" style="width:160px">
-                    <input type="date" name="to" value="{{ $to }}" class="form-control input-sm" style="width:160px;margin-left:6px">
-                    <button type="submit" class="btn btn-sm btn-primary" style="margin-left:6px"><i class="fa fa-search"></i> Filter</button>
-                </form>
+    <x-mm.styles />
+    <x-mm.page class="mm-report mm-acc mm-rst mm-rst-inv" title="Nominal Account Ledger" description="Nominal accounts (revenue and expense) for the period.">
+        <x-mm.panel class="mm-report-filter">
+            <form method="GET" class="mm-setup-filter mm-report-form form-inline" style="margin-bottom:12px">
+                <input type="date" name="from" value="{{ $from }}" class="form-control input-sm" style="width:160px">
+                <input type="date" name="to" value="{{ $to }}" class="form-control input-sm" style="width:160px;margin-left:6px">
+                <button type="submit" class="btn btn-sm btn-primary" style="margin-left:6px"><i class="fa fa-search"></i> Filter</button>
+            </form>
+        </x-mm.panel>
+        <x-mm.panel class="tw-p-4">
+            <p class="text-muted"><i class="fa fa-filter"></i> Nominal Accounts (Revenue &amp; Expense) — {{ $from }} → {{ $to }}</p>
 
+            <x-mm.table-scroll label="Nominal Account Ledger">
                 <table class="table table-striped table-bordered table-hover">
                     <thead>
                     <tr>
@@ -52,9 +53,9 @@
                     </tr>
                     </tfoot>
                 </table>
+            </x-mm.table-scroll>
 
-                {{ method_exists($transaction_items, 'links') ? $transaction_items->links() : '' }}
-            </div>
-        </div>
-    </div>
+            {{ method_exists($transaction_items, 'links') ? $transaction_items->links() : '' }}
+        </x-mm.panel>
+    </x-mm.page>
 @stop

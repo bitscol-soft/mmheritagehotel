@@ -769,3 +769,13 @@ Reviewed legacy bugs in `module/Restaurant/views/purchase-v2/`, all view-level (
 - CSS: lists in the `mm-acc mm-report` scope drop the legacy `col-sm-12 px-4` inset around the table (it narrowed every list and clipped the Action column); this also tidies the A1 and A2 lists.
 - Left as they were: the invoice documents (`*/invoice`), the `includes/returnable-items` partials, and `purchase/purchases/show` and `sale/sales/show` (not used by any controller; `show` renders the invoice; the purchase one starts with `@dd('sfkfj')`).
 - Fixtures `tools/fixtures/account/*`, previews `/preview/acc-*`, spec `tools/browser/account-trading.spec.cjs`.
+
+## Forty-second increment: Account A4
+
+23 report screens under `module/Account/views/reports/*/index` (plus `transaction-ledger/category-index`) use `x-mm.page` / `x-mm.panel` (classes `mm-acc mm-rst mm-rst-inv mm-report`): account, customer, supplier, subsidiary-wise, nominal-account, transaction and journal ledgers, payable / receivable, trial balance, income statement, balance sheet, cash flow, equity statement, ratio, revenue and expense analysis, chart of account, received payment statement, supplier and voucher reports, stock in hand and item ledger.
+
+- Wrapped from the Account originals by script, except `nominal-account-ledger`, `stock-in-hand` and `item-ledger`, which were rebuilt by hand. Expressions, controls, forms, directives and scripts are unchanged (`tools/ui-check.cjs` compares them with `d5393038`). Filters are inline `mm-report-filter` panels with the same field names; report tables sit in `x-mm.table-scroll`.
+- Fix: `acc-includes/input-groups/select-group` called `Str::singular()` on an array when `$modelVariable` is a collection of options (the chart-of-account filter), which throws on Laravel 8; both expressions are guarded now.
+- CSS: filter rows in `mm-acc` wrap, selects and date ranges shrink to the column, and columns go full width below 768px (three filters overflowed at 390px).
+- Left as they were: every `print`, `export/*`, `index-old`, `index-[WITHOUT-FILTER]`, `profit-loss` and singular `inventory-report` view, the legacy income-statement partials (`details-view`, `expense-details-view`, `sort-view`), the "Voucer Reports" title typo, and the invalid hidden-input rows inside the item ledger table (kept so the query string does not change).
+- Fixtures `tools/fixtures/account/*`, previews `/preview/acc-*`, spec `tools/browser/account-reports.spec.cjs`.
