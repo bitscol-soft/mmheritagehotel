@@ -4,6 +4,8 @@ set_error_handler(function ($no, $msg, $file, $line) { if (!(error_reporting() &
 // Standalone Blade smoke check: no database, .env or application boot needed.
 $root = dirname(__DIR__);
 require $root . '/vendor/autoload.php';
+// Freeze time for the whole run: several views and fixtures read now()/date(), and the check must not depend on the day it runs.
+Carbon\Carbon::setTestNow(Carbon\Carbon::parse('2026-10-01 09:30:00', 'Asia/Dhaka'));
 $app = new Illuminate\Foundation\Application($root . '');
 $app->singleton('config', function() use ($root){ return new Illuminate\Config\Repository(['view'=>['paths'=>[$root . '/resources/views',$root . '/module/Hotel/views'], 'compiled'=>'/tmp/mm-blade-cache']]); });
 @mkdir('/tmp/mm-blade-cache');
@@ -140,7 +142,7 @@ $boardViews = '/tmp/mm-board-views';
 @mkdir($boardViews . '/home/_inc', 0777, true);
 foreach (['room-board', 'room-card', 'bed-icon'] as $partial) {
     $source = file_get_contents($root . '/resources/views/home/_inc/' . $partial . '.blade.php');
-    $source = str_replace(["hasPermission('bookings.create', p_slugs())", "setting('room_wise_pricing_booking')", "fdate(\$date[0], 'Y-m-d')", 'today_from_system()'], ['true', '1', "date('Y-m-d', strtotime(\$date[0]))", "'2026-10-01'"], $source);
+    $source = str_replace(["hasPermission('bookings.create', p_slugs())", "setting('room_wise_pricing_booking')", "fdate(\$date[0], 'Y-m-d')", 'today_from_system()', "date('Y-m-d')"], ['true', '1', "date('Y-m-d', strtotime(\$date[0]))", "'2026-10-01'", "'2026-10-01'"], $source);
     if (strpos($source, 'hasPermission(') !== false || strpos($source, 'setting(') !== false) throw new RuntimeException('Unsubstituted helper in ' . $partial);
     file_put_contents($boardViews . '/home/_inc/' . $partial . '.blade.php', $source);
 }
@@ -644,6 +646,7 @@ foreach (['guests/sms/index', 'guests/include/script', 'night-audits/show', 'hot
     @mkdir(dirname($hmViews . '/' . $hmView), 0777, true);
     $hmSource = $hmSub($hmView);
     if ($hmView === 'hotel/reports/monthly/index' || $hmView === 'hotel/reports/monthly/booking-ui') $hmSource = str_replace('totalDaysInMonth(', 'mm_days(', $hmSource);
+    $hmSource = str_replace(["date('d')", "date('Y-m-d')"], ["'01'", "'2026-10-01'"], $hmSource); // native date() ignores the frozen Carbon clock
     file_put_contents($hmViews . '/' . $hmView . '.blade.php', $hmSource);
 }
 $hmRoutes = new Illuminate\Routing\RouteCollection();
@@ -1056,7 +1059,7 @@ foreach ($riViews as $riView) {
     $riSource = $rsSubst('inventory/' . $riView);
     $riSource = preg_replace(["/@include\\('inventory([.\\/])/", "/@include\\('rs\\.inventory[.\\/][\\w.\\/-]*script'\\)/", "/@include\\('partials\\._paginate', \\['data' => [^\\]]*\\]\\)/"], ["@include('ri.inventory$1", '', $rpPaginate], $riSource);
     $riSource = preg_replace("/@include\\('ri\\.inventory[.\\/][\\w.\\/-]*script'\\)/", '', $riSource);
-    $riSource = str_replace(['DNS1D::getBarcodeHTML(', 'Auth::user()'], ['mm_barcode(', 'mm_auth_user()'], $riSource);
+    $riSource = str_replace(['DNS1D::getBarcodeHTML(', 'Auth::user()', 'Carbon::parse(now())'], ['mm_barcode(', 'mm_auth_user()', "Carbon::parse('2026-10-01')"], $riSource);
     @mkdir(dirname($coViews . '/ri/inventory/' . $riView), 0777, true);
     file_put_contents($coViews . '/ri/inventory/' . $riView . '.blade.php', $riSource);
 }
@@ -1091,7 +1094,7 @@ $riCases = [
         ['mm-report', 'mm-rst-inventory', 'mm-report-filter', 'Chicken &lt;b&gt;Biryani&lt;/b&gt;'], ['Chicken <b>Biryani</b>']],
     'product-uploads' => ['ri.inventory.product.uploads.index', '/rst/product-uploads', ['products' => $riList([$riProduct(1, 'Chicken <b>Biryani</b>')])],
         ['mm-report', 'id="datatable"', 'mm-rst-count', 'delete_item(', 'rst/product/add-confirm-list', 'Chicken &lt;b&gt;Biryani&lt;/b&gt;'], ['Chicken <b>Biryani</b>', 'float: right']],
-    'production-items' => ['ri.inventory.production.items.index', '/rst/production/items?name=1', ['items' => $riList([$riRow(['id' => 1, 'name' => 'Basmati <b>rice</b>', 'opening_balance' => 10, 'rate' => 120, 'purchase_detail_count' => 0, 'goods_requisition_count' => 0, 'company' => $riRow(['name' => 'MM Heritage'])])]), 'companies' => [1 => 'MM Heritage'], 'item_ids' => [1 => 'Basmati <b>rice</b>']],
+    'production-items' => ['ri.inventory.production.items.index', '/rst/production/items?name=1', ['items' => $riList([$riRow(['id' => 1, 'name' => 'Basmati <b>rice</b>', 'opening_balance' => 10, 'rate' => 120, 'purchase_detail_count' => 0, 'goods_requisition_count' => 0, 'created_at' => '2026-09-30', 'updated_at' => '2026-10-01', 'company' => $riRow(['name' => 'MM Heritage'])])]), 'companies' => [1 => 'MM Heritage'], 'item_ids' => [1 => 'Basmati <b>rice</b>']],
         ['mm-report', 'mm-rst-inv', 'Basmati &lt;b&gt;rice&lt;/b&gt;'], ['Basmati <b>rice</b></td>']],
     'production-item-units' => ['ri.inventory.production.item-units.index', '/rst/production/item-units', ['item_units' => $riList([$riRow(['id' => 1, 'name' => 'Sack <b>x</b>', 'conversion' => 25, 'status' => 1])])],
         ['mm-report', 'Sack &lt;b&gt;x&lt;/b&gt;'], ['Sack <b>x</b>']],
