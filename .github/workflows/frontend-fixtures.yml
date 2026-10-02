@@ -40,11 +40,11 @@ jobs:
           MARIADB_DATABASE: mmheritagehotel
           MARIADB_USER: mm
           MARIADB_PASSWORD: mm
-          MARIADB_RANDOM_ROOT_PASSWORD: 'yes'
+          MARIADB_ROOT_PASSWORD: root
         ports:
           - 3306:3306
         options: >-
-          --health-cmd="mysqladmin ping -h 127.0.0.1 -umm -pmm"
+          --health-cmd="mysqladmin ping --silent"
           --health-interval=5s
           --health-timeout=5s
           --health-retries=20
@@ -96,8 +96,6 @@ jobs:
             exit 1
 
       - name: Load the MySQL dump
-        env:
-          PGPASSWORD: mm
         run: |
             # Disable FK checks during the load — the dump adds ALTER TABLE ... ADD CONSTRAINT
             # FOREIGN KEY clauses after the INSERTs, so a naive load against a freshly created
@@ -107,8 +105,8 @@ jobs:
             { sed 's/^START TRANSACTION;/START TRANSACTION;\nSET FOREIGN_KEY_CHECKS=0;\nSET UNIQUE_CHECKS=0;/' database/mmheritagehotel_db.sql; \
               echo 'SET FOREIGN_KEY_CHECKS=1;'; \
               echo 'SET UNIQUE_CHECKS=1;'; \
-            } | mysql --protocol=tcp -h 127.0.0.1 -umm -pmm mmheritagehotel
-            echo "Dump loaded: $(mysql --protocol=tcp -h 127.0.0.1 -umm -pmm -e 'SHOW TABLES' mmheritagehotel | wc -l) tables"
+            } | mysql --protocol=tcp -h 127.0.0.1 -uroot -proot mmheritagehotel
+            echo "Dump loaded: $(mysql --protocol=tcp -h 127.0.0.1 -uroot -proot -e 'SHOW TABLES' mmheritagehotel | wc -l) tables"
 
       - name: Configure Laravel environment
         run: |
