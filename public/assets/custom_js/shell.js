@@ -67,8 +67,11 @@
             else if (!event.shiftKey && (document.activeElement === last || !sidebar.contains(document.activeElement))) { event.preventDefault(); first.focus(); }
         }
     });
+    // Chromium may blur the sidebar link as soon as the layout hides it, before this listener runs; remember where focus last was.
+    var lastFocus = null;
+    document.addEventListener('focusin', function (event) { lastFocus = event.target; });
     var breakpointChanged = function () {
-        var focusWasInSidebar = sidebar.contains(document.activeElement);
+        var focusWasInSidebar = sidebar.contains(document.activeElement) || (document.activeElement === document.body && !!lastFocus && sidebar.contains(lastFocus));
         close(false);
         if (focusWasInSidebar && (mobile.matches || collapsed)) toggle.focus();
     };
