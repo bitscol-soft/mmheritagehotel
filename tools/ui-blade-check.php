@@ -1476,3 +1476,67 @@ foreach ($a2Cases as $a2Name => [$a2ViewName, $a2Url, $a2Data, $a2Markers, $a2Ab
     if (file_get_contents($a2File) !== $a2Html) throw new RuntimeException($a2File . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
 }
 echo "PASS account voucher screens render\n";
+
+// ---- Account A3: purchases, sales, returns, collections and damages ----
+$a3Migrated = ['purchase/purchases/index', 'purchase/purchases/create', 'purchase/purchases/edit', 'purchase/purchase-returns/index', 'purchase/purchase-returns/create', 'purchase/payments/index', 'sale/sales/index', 'sale/sales/create', 'sale/sales/edit', 'sale/sale-returns/index', 'sale/sale-returns/create', 'sale/collections/index', 'product/damages/index', 'product/damages/create'];
+foreach ($a3Migrated as $a3File) { token_get_all($compiler->compileString(file_get_contents($root . '/module/Account/views/' . $a3File . '.blade.php')), TOKEN_PARSE); }
+echo "PASS compile account trading views\n";
+foreach ($a3Migrated as $a3View) {
+    $a3Source = $rsSubst($a3View, 'Account');
+    $a3Source = preg_replace("/@include\\('partials\\._paginate', \\['data' => \\$\\w+\\]\\)/", '', $a3Source);
+    $a3Source = str_replace(["@include('includes.inputs.", "@include('partials._user-log'", 'auth()->user()', 'Auth::user()'], ["@include('acc.includes.inputs.", "@include('acc.partials._user-log'", 'mm_auth_user()', 'mm_auth_user()'], $a3Source);
+    $a3Source = preg_replace('/(?<![\\\\\w])Str::/', '\\Illuminate\\Support\\Str::', $a3Source);
+    @mkdir(dirname($coViews . '/acc/' . $a3View), 0777, true);
+    file_put_contents($coViews . '/acc/' . $a3View . '.blade.php', $a3Source);
+}
+$a3Seen = [];
+foreach ($a3Migrated as $a3View) {
+    preg_match_all("/route\\('([\\w.-]+)'/", file_get_contents($coViews . '/acc/' . $a3View . '.blade.php'), $a3Match);
+    foreach ($a3Match[1] as $a3Route) {
+        if (isset($a3Seen[$a3Route]) || $rsRoutes->getByName($a3Route)) continue;
+        $a3Seen[$a3Route] = true;
+        $rsRoutes->add((new Illuminate\Routing\Route(['GET', 'POST'], 'acc/' . str_replace('.', '/', $a3Route) . '/{id?}', function () {}))->name($a3Route));
+    }
+}
+$a3Products = $acOpt([['id' => 1, 'name' => 'Rice <b>50kg</b>', 'purchase_price' => 40, 'selling_price' => 55, 'sale_price' => 55, 'current_stock' => 12, 'description' => 'Basmati', 'unit' => $riRow(['name' => 'bag'])], ['id' => 2, 'name' => 'Oil', 'purchase_price' => 10, 'selling_price' => 14, 'sale_price' => 14, 'current_stock' => 3, 'description' => '', 'unit' => $riRow(['name' => 'ltr'])]]);
+$a3Parties = $acOpt([['id' => 1, 'name' => 'Karim <i>Traders</i>'], ['id' => 2, 'name' => 'Rahim']]);
+$a3Base = ['companies' => [1 => 'MM <b>Heritage</b>'], 'account' => $riRow(['id' => 9]), 'products' => $a3Products, 'suppliers' => $a3Parties, 'customers' => $a3Parties];
+$a3Details = $acOpt([['id' => 1, 'product_id' => 1, 'price' => 40, 'quantity' => 3, 'amount' => 120, 'description' => 'Basmati']]);
+$a3Trade = function ($extra = []) use ($riRow, $a3Details) { return $riRow($extra + ['id' => 4, 'supplier_id' => 1, 'customer_id' => 1, 'invoice_no' => 'INV-7', 'date' => '2026-10-01', 'qty_amount' => 120, 'qty_total' => 3, 'discount_amount' => 5, 'total_amount' => 115, 'paid_amount' => 100, 'due_amount' => 15, 'source' => 'Account', 'details' => $a3Details, 'supplier' => $riRow(['name' => 'Karim <i>Traders</i>']), 'customer' => $riRow(['name' => 'Rahim <i>Stores</i>'])]); };
+$a3Ret = function () use ($riRow) { return $riRow(['id' => 6, 'invoice_no' => 'RET-6', 'date' => '2026-10-01', 'total_payable' => 80, 'total_paid_amount' => 50, 'total_due_amount' => 30, 'supplier' => $riRow(['name' => 'Karim <i>Traders</i>']), 'customer' => $riRow(['name' => 'Rahim <i>Stores</i>'])]); };
+$a3Cases = [
+    'purchases' => ['acc.purchase.purchases.index', '/acc/acc-purchases', ['purchases' => $riList([$a3Trade(), $a3Trade(['id' => 5, 'invoice_no' => 'INV-8', 'source' => 'Production'])])], ['mm-acc', 'mm-report', 'INV-7', 'INV-8', 'Production', 'Karim &lt;i&gt;Traders&lt;/i&gt;'], ['Karim <i>Traders</i>']],
+    'form-purchases-create' => ['acc.purchase.purchases.create', '/acc/acc-purchases/create', $a3Base, ['mm-rst-form', 'name="supplier_id"', 'name="company_id"', 'name="product_id[]"', 'name="qty_amount"', 'name="paid_amount"', 'id="addrow"'], ['Rice <b>50kg</b>']],
+    'form-purchases-edit' => ['acc.purchase.purchases.edit', '/acc/acc-purchases/4/edit', $a3Base + ['purchase' => $a3Trade()], ['mm-rst-form', 'name="_method"', 'name="detail_ids[]"', 'name="purchase_price[]"', 'name="quantity[]"'], []],
+    'purchase-returns' => ['acc.purchase.purchase-returns.index', '/acc/acc-purchase-returns', ['purchaseReturns' => $riList([$a3Ret()])], ['mm-acc', 'mm-report', 'RET-6', 'Karim &lt;i&gt;Traders&lt;/i&gt;'], ['Karim <i>Traders</i>']],
+    'form-purchase-returns-create' => ['acc.purchase.purchase-returns.create', '/acc/acc-purchase-returns/create', $a3Base, ['mm-rst-form', 'name="supplier_id"', 'name="company_id"'], []],
+    'purchase-payments' => ['acc.purchase.payments.index', '/acc/acc-purchase-payments', [], ['mm-acc', 'mm-report-filter', 'name="invoice_no"', 'name="reference"', 'id="data-table"'], []],
+    'sales' => ['acc.sale.sales.index', '/acc/acc-sales', ['sales' => $riList([$a3Trade(), $a3Trade(['id' => 5, 'invoice_no' => 'INV-8'])])], ['mm-acc', 'mm-report', 'INV-7', 'INV-8', 'Rahim &lt;i&gt;Stores&lt;/i&gt;'], ['Rahim <i>Stores</i>']],
+    'form-sales-create' => ['acc.sale.sales.create', '/acc/acc-sales/create', $a3Base, ['mm-rst-form', 'name="customer_id"', 'name="company_id"', 'name="product_id[]"', 'name="sale_price[]"', 'name="qty_amount"', 'name="due_amount"', 'id="addrow"'], ['Rice <b>50kg</b>']],
+    'form-sales-edit' => ['acc.sale.sales.edit', '/acc/acc-sales/4/edit', $a3Base + ['sale' => $a3Trade()], ['mm-rst-form', 'name="_method"', 'name="detail_ids[]"', 'name="sale_price[]"', 'name="quantity[]"'], []],
+    'sale-returns' => ['acc.sale.sale-returns.index', '/acc/acc-sale-returns', ['saleReturns' => $riList([$a3Ret()])], ['mm-acc', 'mm-report', 'RET-6', 'Rahim &lt;i&gt;Stores&lt;/i&gt;'], ['Rahim <i>Stores</i>']],
+    'form-sale-returns-create' => ['acc.sale.sale-returns.create', '/acc/acc-sale-returns/create', $a3Base, ['mm-rst-form', 'name="customer_id"', 'name="company_id"'], []],
+    'collections' => ['acc.sale.collections.index', '/acc/acc-collections', [], ['mm-acc', 'No Records Founds Yet'], []],
+    'damages' => ['acc.product.damages.index', '/acc/damages', ['damages' => $riList([$riRow(['id' => 3, 'invoice_no' => 'DMG-3', 'date' => '2026-10-01', 'total_amount' => 45])])], ['mm-acc', 'mm-report', 'DMG-3'], []],
+    'form-damages-create' => ['acc.product.damages.create', '/acc/damages/create', $a3Base, ['mm-rst-form', 'name="company_id"', 'name="date"', 'name="total_amount"'], ['Rice <b>50kg</b>']],
+];
+@mkdir(__DIR__ . '/fixtures/account', 0777, true);
+foreach ($a3Cases as $a3Name => [$a3ViewName, $a3Url, $a3Data, $a3Markers, $a3Absent]) {
+    $a3Request = Illuminate\Http\Request::create($a3Url);
+    $a3Request->setLaravelSession(new Illuminate\Session\Store('mm', new Illuminate\Session\ArraySessionHandler(10)));
+    $app->instance('request', $a3Request);
+    $app->instance('url', new Illuminate\Routing\UrlGenerator($rsRoutes, $a3Request));
+    try { $a3Html = $app->make('view')->make($a3ViewName, array_merge(['errors' => new Illuminate\Support\ViewErrorBag(), 'slugs' => []], $a3Data))->render(); }
+    catch (Throwable $e) { throw new RuntimeException('Account screen ' . $a3Name . ' failed to render: ' . $e->getMessage(), 0, $e); }
+    $a3Html = preg_replace('/(name="_token" value=")[A-Za-z0-9]+"/', '$1fixture-csrf-token"', str_replace('http://localhost/assets', '/assets', $a3Html));
+    $a3Missing = [];
+    foreach (array_merge(['mm-panel', 'mm-page-title'], $a3Markers) as $a3Marker) { if (strpos($a3Html, $a3Marker) === false) $a3Missing[] = $a3Marker; }
+    if ($a3Missing) throw new RuntimeException('Account screen ' . $a3Name . ' missing ' . implode(' | ', $a3Missing));
+    if (preg_match('/class="[^"]*\\b(?:widget-box|widget-main|widget-header|page-header)\\b/', $a3Html)) throw new RuntimeException('Account screen ' . $a3Name . ' still contains the legacy frame');
+    foreach ($a3Absent as $a3Marker) { if (strpos($a3Html, $a3Marker) !== false) throw new RuntimeException('Account screen ' . $a3Name . ' still contains ' . $a3Marker); }
+    if (strpos($a3Html, '<b>Warning</b>') !== false || strpos($a3Html, '<b>Notice</b>') !== false) throw new RuntimeException('Account screen ' . $a3Name . ' sample data is incomplete (PHP warning in output)');
+    $a3File = __DIR__ . '/fixtures/account/' . $a3Name . '.html';
+    if (getenv('MM_WRITE_FIXTURE')) { file_put_contents($a3File, $a3Html); file_put_contents($previewDir . '/acc-' . $a3Name . '.html', $a3Html); }
+    if (file_get_contents($a3File) !== $a3Html) throw new RuntimeException($a3File . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
+}
+echo "PASS account trading screens render\n";

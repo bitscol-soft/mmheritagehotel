@@ -933,3 +933,38 @@ console.log('PASS: note list/edit expressions, forms and status scripts; legacy 
   assert.equal(untouched,'','Account controllers, routes and models must stay unchanged');
   console.log('PASS: account A2 (fund transfers, receive, payment, journal and contra vouchers) keeps fields, expressions, directives, components and scripts; controllers and routes untouched');
 }
+
+{
+  // Account A3 (purchases, sales, returns, damages): fields, expressions, directives, components and scripts stay as they were.
+  const base='a53777be';
+  const nc=s=>s.replace(/\{\{--[\s\S]*?--\}\}/g,'');
+  const q=x=>x.replace(/\s+/g,'').replace(/"/g,"'");
+  const ex=s=>(nc(s).match(/\{\{[\s\S]*?\}\}|\{!![\s\S]*?!!\}/g)||[]).map(q);
+  const comps=s=>(nc(s).match(/<x-(?!mm\.|slot)[a-z.-]+[^>]*>/g)||[]).map(q);
+  const added=/ (?:aria-label="[^"]*"|style="[^"]*"|class="[^"]*")/g;
+  const ctl=s=>(nc(s).replace(/\{\{[\s\S]*?\}\}/g,'{{}}').match(/<(input|select|textarea|button)\b[^>]*>/g)||[]).map(x=>x.replace(/\s+/g,' ').replace(added,''));
+  const forms=s=>(nc(s).match(/<form[^>]*>/g)||[]).map(x=>q(x.replace(/ class="[^"]*"/,'')));
+  const directives=s=>(nc(s).match(/@(?:if|elseif|else|endif|foreach|endforeach|forelse|empty|endforelse|include|isset|endisset|can|endcan|error|enderror|csrf|method|php|endphp)\b/g)||[]);
+  const only=(l,m)=>{const c={};l.forEach(x=>c[x]=(c[x]||0)+1);m.forEach(x=>c[x]=(c[x]||0)-1);return Object.entries(c).filter(([,n])=>n).map(([k,n])=>`${n>0?'-':'+'}${Math.abs(n)} ${k}`).sort();};
+  const scripts=s=>(nc(s).match(/<script[\s\S]*?<\/script>/g)||[]).map(q).join('|');
+  const dir='module/Account/views/';
+  // Legacy bug removed from sale edit: a stray <td> repeated the description textarea using $key, which is undefined outside the old() loop
+  const changed={'sale/sales/edit':["-1 {{old('description')[$key]??null}}"]};
+  const ctlChanged={'sale/sales/edit':['-1 <textarea name="description[]">']};
+    const dirChanged={};
+  const files=["purchase/purchases/index", "purchase/purchases/create", "purchase/purchases/edit", "purchase/purchase-returns/index", "purchase/purchase-returns/create", "purchase/payments/index", "sale/sales/index", "sale/sales/create", "sale/sales/edit", "sale/sale-returns/index", "sale/sale-returns/create", "sale/collections/index", "product/damages/index", "product/damages/create"];
+  for(const f of files){
+    const p=`${dir}${f}.blade.php`,after=fs.readFileSync(p,'utf8'),before=execFileSync('git',['show',`${base}:${p}`],{encoding:'utf8'});
+    assert.deepEqual(only(ex(before),ex(after)),changed[f]||[],`${f}: Blade expressions changed`);
+    assert.deepEqual(only(comps(before),comps(after)),[],`${f}: Blade components changed`);
+    assert.deepEqual(only(ctl(before),ctl(after)),ctlChanged[f]||[],`${f}: form controls changed`);
+    assert.deepEqual(only(forms(before),forms(after)),[],`${f}: form tags changed`);
+    assert.deepEqual(only(directives(before),directives(after)),dirChanged[f]||[],`${f}: Blade directives changed`);
+    assert.equal(scripts(after),scripts(before),`${f}: scripts changed`);
+    assert(after.includes('<x-mm.page'),`${f}: shared layout expected`);
+    assert(!/class="[^"]*\b(?:widget-box|widget-main|widget-header|page-header)\b/.test(after),`${f}: legacy frame should be gone`);
+  }
+  const untouched=execFileSync('git',['diff','--name-only',base,'--','module/Account/Controllers','module/Account/routes','module/Account/Models'],{encoding:'utf8'}).trim();
+  assert.equal(untouched,'','Account controllers, routes and models must stay unchanged');
+  console.log('PASS: account A3 (purchases, sales, returns, damages, collections) keeps fields, expressions, directives, components and scripts; controllers and routes untouched');
+}

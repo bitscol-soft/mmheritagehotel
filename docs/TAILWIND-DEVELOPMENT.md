@@ -758,3 +758,14 @@ Reviewed legacy bugs in `module/Restaurant/views/purchase-v2/`, all view-level (
 - Fix (CSS, also repairs the A1 lists): table headers with `table-header-bg` and inline white text showed white on the light generic header colour; the `mm-acc` scope now keeps the header row's own background.
 - Left as they were: the journal and contra detail pages' bottom Print link (empty `href`, no handler), the contra edit page title ("Create Contra Voucher"), the commented-out edit link on the payments list.
 - Fixtures `tools/fixtures/account/*`, previews `/preview/acc-*`, spec `tools/browser/account-vouchers.spec.cjs`.
+
+## Forty-first increment: Account A3
+
+14 views under `module/Account/views/{purchase,sale,product/damages}` use `x-mm.page` / `x-mm.panel` (classes `mm-acc mm-rst mm-rst-inv`, plus `mm-rst-form` on forms and `mm-report` on lists): purchases, sales, purchase returns, sale returns, damages (list, create, and edit for purchases and sales), the supplier payments list and the customer collections list.
+
+- Wrapped from the Account originals by script (widget frame and the form's `widget-body` / `widget-main` removed, toolbar links turned into `mm-button`s, line-item tables inside `x-mm.table-scroll`), so expressions, controls, forms, directives and scripts are unchanged (`tools/ui-check.cjs` compares them with `a53777be`).
+- The supplier payments list keeps its (hard-coded, static) invoice and reference selects in an inline `mm-report-filter` panel. It and the collections list are placeholders in the legacy code (commented-out rows / "No Records Founds Yet!"); they were only re-framed.
+- Fix: `sale/sales/edit` rendered a stray `<td>` with a second `description[]` textarea that read `old('description')[$key]`, and `$key` is undefined outside the `old()` loop, so the edit page failed with an undefined variable on every load without validation errors. The stray cell is removed; the guard lists the single removed expression and control.
+- CSS: lists in the `mm-acc mm-report` scope drop the legacy `col-sm-12 px-4` inset around the table (it narrowed every list and clipped the Action column); this also tidies the A1 and A2 lists.
+- Left as they were: the invoice documents (`*/invoice`), the `includes/returnable-items` partials, and `purchase/purchases/show` and `sale/sales/show` (not used by any controller; `show` renders the invoice; the purchase one starts with `@dd('sfkfj')`).
+- Fixtures `tools/fixtures/account/*`, previews `/preview/acc-*`, spec `tools/browser/account-trading.spec.cjs`.

@@ -1,19 +1,8 @@
-@extends('layouts.master')
-
-
-@section('title', 'Purchase Return Create')
-
-
-
-@section('page-header')
-    <i class="fa fa-plus-circle"></i> Purchase Return Create
-@stop
-
-
-@push('style')
-    <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/custom_css/chosen-required.css') }}" />
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">    <link rel="stylesheet" href="/assets/css/chosen.min.css" />
+    <link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css" />
+    <link rel="stylesheet" href="/assets/custom_css/chosen-required.css" />
 
 
     <style>
@@ -41,28 +30,20 @@
             margin-top: 15px !important;
         }
     </style>
-@endpush
+<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+<section class="mm-ui mm-acc mm-rst mm-rst-inv mm-rst-form">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Sale Return Create</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Record a sale return.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button" href="http://localhost/acc/acc-sale-returns/index"><i class="fa fa-list-alt"></i> List</a></div>        </header>
+        <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><!-- body -->
+                <form class="form-horizontal" action="http://localhost/acc/acc-sale-returns/store" method="post" enctype="multipart/form-data">
 
+                    <input type="hidden" name="_token" value="fixture-csrf-token">                    
 
-
-
-
-
-@section('content')
-
-<x-mm.styles />
-<x-mm.page class="mm-acc mm-rst mm-rst-inv mm-rst-form" title="Purchase Return Create" description="Record a purchase return.">
-    <x-slot name="actions">
-        <a class="mm-button" href="{{ route('acc-purchase-returns.index') }}"><i class="fa fa-list-alt"></i> List</a>
-    </x-slot>
-    <x-mm.panel class="tw-p-4">
-        <!-- body -->
-                <form class="form-horizontal" action="{{ route('acc-purchase-returns.store') }}" method="post" enctype="multipart/form-data">
-
-                    @csrf
-                    @include('partials._alert_message')
-
-                    <input hidden name="account_id" value="{{ $account->id }}">
+                    <input hidden name="account_id" value="9">
 
 
                     <div class="row">
@@ -81,15 +62,9 @@
                                 <select required name="company_id" class="chosen-select-100-percent select-company" data-placeholder="- Select Company -">
                                     <option></option>
 
-                                    @foreach($companies as $id => $name)
-
-                                        @if(count($companies) > 1)
-                                            <option value="{{ $id }}" {{ old('company_id') == $id ? 'selected' : '' }}>{{ $name }}</option>
-                                        @else
-                                            <option value="{{ $id }}" selected>{{ $name }}</option>
-                                        @endif
-                                    @endforeach
-                                </select>
+                                    
+                                                                                    <option value="1" selected>MM &lt;b&gt;Heritage&lt;/b&gt;</option>
+                                                                                                            </select>
                             </div>
                         </div>
 
@@ -98,18 +73,17 @@
 
 
 
-                        <!-- Supplier -->
+                        <!-- Customer -->
                         <div class="col-sm-3 my-1">
                             <div class="input-group">
                                 <span class="input-group-addon input-sm">
-                                    Supplier<span class="text-danger">*</span>
+                                    Customer<span class="text-danger">*</span>
                                 </span>
-                                <select required name="supplier_id" class="chosen-select-100-percent select-supplier" data-placeholder="- Select Supplier -">
+                                <select required name="customer_id" class="chosen-select-100-percent select-customer" data-placeholder="- Select Customer -">
                                     <option></option>
-                                    @foreach($suppliers as $id => $name)
-                                        <option value="{{ $id }}" {{ old('supplier_id') == $id ? 'selected' : '' }}>{{ $name }}</option>
-                                    @endforeach
-                                </select>
+                                                                            <option value="0" selected></option>
+                                                                            <option value="1" ></option>
+                                                                    </select>
                             </div>
                         </div>
 
@@ -123,7 +97,7 @@
                                 <span class="input-group-addon input-sm">
                                     Date<span class="text-danger">*</span>
                                 </span>
-                                <input name="date" class="form-control date-picker" id="id-date-picker-1" type="text" value=" {{ old('date') ?:  date('Y-m-d') }}" data-date-format="yyyy-mm-dd">
+                                <input name="date" class="form-control date-picker" id="id-date-picker-1" type="text" value=" 2026-10-01" data-date-format="yyyy-mm-dd">
                             </div>
                         </div>
 
@@ -138,7 +112,7 @@
                                 <span class="input-group-addon input-sm">
                                     Invoice<span class="text-danger">*</span>
                                 </span>
-                                <select required name="purchase_id" class="chosen-select-100-percent select-invoice" data-placeholder="- Select Invoice -">
+                                <select required name="sale_id" class="chosen-select-100-percent select-invoice" data-placeholder="- Select Invoice -">
                                     <option></option>
 
                                 </select>
@@ -155,8 +129,7 @@
                         <!-- PRODUCT RETURN INFORMATION -->
                         <div class="col-sm-12 mt-3">
                             <h4>Product Return Information</h4>
-                            <x-mm.table-scroll label="Purchase Return Create">
-                                <table id="myTable" class="table table-bordered order-list">
+                            <div class="mm-table-scroll" role="region" aria-label="Sale Return Create" tabindex="0"><table id="myTable" class="table table-bordered order-list">
 
 
 
@@ -166,6 +139,7 @@
                                             <td width="40px;">SL.</td>
                                             <td style="width: 25%">Product Name</td>
                                             <td class="text-center" width="120px;">Unit</td>
+                                            <td class="text-center" width="200px;">Condition</td>
                                             <td class="text-center" width="120px;">Price</td>
                                             <td class="text-center" width="120px;">Returnable Qty</td>
                                             <td class="text-center" width="120px;">Quantity</td>
@@ -176,7 +150,7 @@
 
 
                                     <!-- body -->
-                                    <tbody class="returnable-purchase-items">
+                                    <tbody class="returnable-sale-items">
 
 
                                     </tbody>
@@ -187,17 +161,16 @@
                                     <!-- footer -->
                                     <tfoot>
                                         <tr>
-                                            <td colspan="5" class="text-right item-serial">Total</td>
+                                            <td colspan="6" class="text-right item-serial">Total</td>
                                             <td>
-                                                <input readonly name="return_total_qty" value="{{ old('return_total_qty') }}" class="return-total-qty text-center form-control">
+                                                <input readonly name="return_total_qty" value="" class="return-total-qty text-center form-control">
                                             </td>
                                             <td>
-                                                <input readonly name="return_total_amount" value="{{ old('return_total_amount') }}" class="return-total-amount text-center form-control">
+                                                <input readonly name="return_total_amount" value="" class="return-total-amount text-center form-control">
                                             </td>
                                         </tr>
                                     </tfoot>
-                                </table>
-                            </x-mm.table-scroll>
+                                </table></div>
                         </div>
 
 
@@ -223,10 +196,9 @@
                                         </span>
                                         <select class="form-control chosen-select-100-percent select-product" >
                                             <option></option>
-                                            @foreach($products as $prod)
-                                                <option value="{{ $prod->id }}" data-unit="{{ optional($prod->unit)->name }}" data-price="{{ $prod->selling_price > 0 ? $prod->selling_price : $prod->purchase_price }}">{{ $prod->name }}</option>
-                                            @endforeach
-                                        </select>
+                                                                                            <option value="1" data-unit="bag" data-price="55">Rice &lt;b&gt;50kg&lt;/b&gt;</option>
+                                                                                            <option value="2" data-unit="ltr" data-price="14">Oil</option>
+                                                                                    </select>
                                     </div>
                                 </div>
 
@@ -238,7 +210,7 @@
                                         <span class="input-group-addon input-sm">
                                             Price
                                         </span>
-                                        <input class="form-control only-number text-center input-price" placeholder="Purchase Price">
+                                        <input class="form-control only-number text-center input-price" placeholder="Sale Price">
                                     </div>
                                 </div>
 
@@ -264,8 +236,7 @@
                            </div>
 
 
-                            <x-mm.table-scroll label="Purchase Return Create">
-                                <table id="myTable" class="table table-bordered order-list">
+                            <div class="mm-table-scroll" role="region" aria-label="Sale Return Create" tabindex="0"><table id="myTable" class="table table-bordered order-list">
 
 
 
@@ -298,16 +269,15 @@
                                         <tr>
                                             <td colspan="4" class="text-right">Total</td>
                                             <td>
-                                                <input readonly name="exchange_total_qty" value="{{ old('exchange_total_qty') }}" class="exchange-total-qty text-center form-control">
+                                                <input readonly name="exchange_total_qty" value="" class="exchange-total-qty text-center form-control">
                                             </td>
                                             <td>
-                                                <input readonly name="exchange_total_amount" value="{{ old('exchange_total_amount') }}" class="exchange-total-amount text-center form-control">
+                                                <input readonly name="exchange_total_amount" value="" class="exchange-total-amount text-center form-control">
                                             </td>
                                             <td></td>
                                         </tr>
                                     </tfoot>
-                                </table>
-                            </x-mm.table-scroll>
+                                </table></div>
                         </div>
 
 
@@ -357,12 +327,9 @@
                                 <div class="col-md-5 pull-right">
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label">Due Amount</label>
-                                        <div class="col-xs-12 col-sm-8 @error('end_date') has-error @enderror">
+                                        <div class="col-xs-12 col-sm-8 ">
                                             <input name="due_amount" value="" readonly class="due-amount total-credit text-right form-control">
-                                            @error('end_date')
-                                            <span class="text-danger">{{ $message }}</span>
-                                            @enderror
-                                        </div>
+                                                                                    </div>
                                     </div>
                                 </div>
                             </div>
@@ -382,18 +349,18 @@
                             </div>
                         </div>
                     </div>
-                </form>
-    </x-mm.panel>
-</x-mm.page>
+                </form></div>
+    </div>
+</section>
 
-@endsection
-
-
-@section('js')
-    <script src="{{ asset('assets/js/chosen.jquery.min.js') }}"></script>
-    <script src="{{ asset('assets/js/bootstrap-datepicker.min.js') }}"></script>
-    <script src="{{ asset('assets/custom_js/chosen-box.js') }}"></script>
-    <script src="{{ asset('assets/custom_js/date-picker.js') }}"></script>
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
+    <script src="/assets/js/chosen.jquery.min.js"></script>
+    <script src="/assets/js/bootstrap-datepicker.min.js"></script>
+    <script src="/assets/custom_js/chosen-box.js"></script>
+    <script src="/assets/custom_js/date-picker.js"></script>
 
 
     <script>
@@ -403,8 +370,8 @@
         const enableDiscountField   = $('.dicount-enable')
         const draftValue            = $('.draft-value')
 
-        const url_returnable_purchase_invoices  = "{{ route('acc-returnable-purchase-invoices') }}"
-        const url_returnable_purchase_items     = "{{ route('acc-returnable-purchase-items') }}"
+        const url_returnable_sale_invoices  = "http://localhost/acc/acc-returnable-sale-invoices"
+        const url_returnable_sale_items     = "http://localhost/acc/acc-returnable-sale-items"
 
 
         $(document).on('keyup', '.return-price, .return-quantity', calculateReturnTotal)
@@ -570,16 +537,16 @@
         }
 
 
-        $('.select-supplier').change(function() {
+        $('.select-customer').change(function() {
 
-            let supplier_id = $(this).val()
+            let customer_id = $(this).val()
 
             $('.select-invoice').empty().append('<option></option>').trigger('chosen:updated')
 
-            if(supplier_id != '')
+            if(customer_id != '')
             {
-                $.get(url_returnable_purchase_invoices, {
-                    supplier_id: supplier_id
+                $.get(url_returnable_sale_invoices, {
+                    customer_id: customer_id
                 })
                 .then(function(data) {
 
@@ -601,20 +568,20 @@
 
         $('.select-invoice').change(function() {
 
-            let purchase_id = $(this).val()
+            let sale_id = $(this).val()
 
 
-            if(purchase_id != '')
+            if(sale_id != '')
             {
-                $.get(url_returnable_purchase_items, {
-                    purchase_id: purchase_id
+                $.get(url_returnable_sale_items, {
+                    sale_id: sale_id
                 })
                 .then(function(data) {
 
-                    $('.returnable-purchase-items').html(data)
+                    $('.returnable-sale-items').html(data)
                 })
             }
         })
     </script>
 
-@endsection
+<!--/MM-JS--></body></html>
