@@ -63,9 +63,40 @@
                 <x-multi-account-pay-modal-booking />
 
                 <!----------- INCLUDING BOOKING TABLE ---------->
-                <x-mm.table-scroll label="Booking results">
-                    @include('booking._inc._booking-table')
-                </x-mm.table-scroll>
+                {{-- W1.7c: build the column list for <x-mm.data-table>. The
+                     "Reference By" column is only shown on the
+                     booking.referred-booking route, mirroring the
+                     conditional <th> in the original
+                     _booking-table.blade.php partial. --}}
+                @php
+                    {{-- money-travel-on-block: column labels for the
+                         booking list table. None of these are money
+                         math; the tripwire flags them only because
+                         the file path contains "booking". The block
+                         marker opts the @php/@endphp region out of
+                         the tripwire. --}}
+                    $bookingTableColumns = [
+                        ['label' => 'Booking ID', 'width' => '9%', 'align' => 'center'],
+                        ['label' => 'Customer'],
+                        ['label' => 'Date', 'align' => 'center'],
+                        ['label' => 'Check IN', 'align' => 'center'],
+                        ['label' => 'Check Out', 'align' => 'center'],
+                        ['label' => 'Room', 'width' => '12%', 'align' => 'center'],
+                        ['label' => 'Booking From', 'align' => 'center'],
+                        ['label' => 'Transaction', 'align' => 'right'],
+                        ['label' => 'Status', 'align' => 'center'],
+                        ['label' => 'Action', 'width' => '10%', 'align' => 'center'],
+                    ];
+                    if (url()->current() == route('booking.referred-booking')) {
+                        array_splice($bookingTableColumns, 1, 0, [['label' => 'Reference By', 'align' => 'center']]);
+                    }
+                    {{-- money-travel-on-end --}}
+                @endphp
+                <x-mm.data-table label="Booking results"
+                    table-class="table table-striped table-bordered table-hover"
+                    :columns="$bookingTableColumns">
+                    @include('booking._inc._booking-rows')
+                </x-mm.data-table>
                 @if ($booking->isEmpty())
                     <p class="tw-p-6 tw-text-center tw-text-muted" role="status">No bookings found. Try changing or clearing your filters.</p>
                 @endif

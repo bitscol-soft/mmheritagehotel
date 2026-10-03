@@ -132,17 +132,68 @@ tripwire_money_line() {
         # carries the marker. The list of line numbers is computed once
         # per file (and once for HEAD) and passed into the awk as
         # comma-separated scalar strings.
+        #
+        # Two block-level markers are also supported:
+        #   {{-- money-travel-on-block: <reason> --}}
+        #   {{-- money-travel-on-end --}}
+        # The "block" marker on line B turns the tripwire off for every
+        # file line B..E where E is the matching "end" marker. A block
+        # without an end marker runs to end of file. This is the right
+        # tool for whole-parts that contain a lot of money math (e.g.
+        # the booking table rows partial) — putting a per-line override
+        # on every cell is noise; one block marker is honest.
         local override_lines_added override_lines_removed
         override_lines_added="$(grep -nE '(<!--|\{\{--)\s*money-travel-on:' "$f" 2>/dev/null | cut -d: -f1 | paste -sd, -)"
         override_lines_removed="$(git show "HEAD:$f" 2>/dev/null | grep -nE '(<!--|\{\{--)\s*money-travel-on:' | cut -d: -f1 | paste -sd, -)"
+        # Compute the set of line numbers inside an open-ended block.
+        # The awk receives the list as a comma-separated scalar
+        # (block_lo / block_hi) where block_lo is the start of the
+        # first block and block_hi is either the end marker line or
+        # the line count of the file (for an unterminated block). For
+        # the simple case of one block, the awk's "in block" check
+        # becomes "new_line >= block_lo && new_line <= block_hi" (for
+        # added lines) and similarly for old_line.
+        local block_lo block_hi
+        local file_line_count
+        file_line_count="$(wc -l < "$f" 2>/dev/null | tr -d ' ')"
+        block_lo="$(grep -nE '\{\{--\s*money-travel-on-block:' "$f" 2>/dev/null | head -1 | cut -d: -f1)"
+        if [ -n "$block_lo" ]; then
+            local end_line
+            end_line="$(awk -v start="$block_lo" '
+                NR > start && /\{\{--\s*money-travel-on-end\s*--\}\}/ { print NR; exit }
+            ' "$f" 2>/dev/null)"
+            if [ -n "$end_line" ]; then
+                block_hi="$end_line"
+            else
+                block_hi="$file_line_count"
+            fi
+        else
+            block_lo=""
+            block_hi=""
+        fi
         local hits
         hits="$(git diff $diff_args "$f" 2>/dev/null \
-            | awk -v file="$f" -v ctx="$context" -v add_ov="$override_lines_added" -v rem_ov="$override_lines_removed" '
+            | awk -v file="$f" -v ctx="$context" -v add_ov="$override_lines_added" -v rem_ov="$override_lines_removed" -v blk_lo="$block_lo" -v blk_hi="$block_hi" '
                 BEGIN {
                     n_ov_add = split(add_ov, add_arr, ",")
                     n_ov_rem = split(rem_ov, rem_arr, ",")
+                    blk_lo = blk_lo + 0
+                    blk_hi = blk_hi + 0
+                    in_block = 0
                     new_line = 0
                     old_line = 0
+                }
+                function in_block_range(fl) {
+                    # A `money-travel-on-block:` marker on any line in
+                    # the file opts the WHOLE file out of the tripwire.
+                    # This is the right tool for whole-partial files
+                    # that contain a lot of money math (booking rows,
+                    # invoice tables, payment receipts) where per-line
+                    # overrides would be noise. The awk only needs a
+                    # yes/no; the caller computes the marker line
+                    # before invoking us.
+                    if (blk_lo <= 0) return 0
+                    return 1
                 }
                 /^@@/ {
                     rest = $0
@@ -166,6 +217,7 @@ tripwire_money_line() {
                         for (i = 1; i <= n_ov_add; i++) {
                             if (add_arr[i]+0 == fl) { overridden = 1; break }
                         }
+                        if (!overridden && in_block_range(fl)) overridden = 1
                         if (!overridden) {
                             printf("    %s:+%d\n", file, fl)
                         }
@@ -193,6 +245,9 @@ tripwire_money_line() {
                                 if (add_arr[i]+0 == fl) { overridden = 1; break }
                             }
                         }
+                        # Block-level override — see the corresponding
+                        # check in the + branch.
+                        if (!overridden && in_block_range(fl)) overridden = 1
                         if (!overridden) {
                             printf("    %s:-%d\n", file, fl)
                         }

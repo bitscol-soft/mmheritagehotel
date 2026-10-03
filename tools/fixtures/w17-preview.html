@@ -41,7 +41,7 @@
     Hand-rendered HTML mock of the three screens the W1.7 commit touched, using the same classes, slot structure, and form hooks that the Blade templates emit. Not the live Laravel render.
     <ul style="margin: 8px 0 0 20px; padding: 0;">
         <li><a href="#booking-board">Booking board</a> — wrapped in <code>x-mm.page</code> since W1 (visually a no-op).</li>
-        <li><a href="#booking-list">Booking list</a> — W1.7 added an <code>x-mm.toolbar</code> action row; the heavy booking table is the next port.</li>
+        <li><a href="#booking-list">Booking list</a> — W1.7 added an <code>x-mm.toolbar</code>; W1.7c ports the 12-column table to <code>x-mm.data-table</code> with all hooks preserved.</li>
         <li><a href="#guest-list">Guest list</a> — full W1.7 conversion: <code>x-mm.toolbar</code> + <code>x-mm.data-table</code> with all form hooks preserved.</li>
     </ul>
 </div>
@@ -69,7 +69,7 @@
 <section class="preview-section" id="booking-list">
     <h2>Booking list — <code>booking/index.blade.php</code></h2>
     <div class="breadcrumb">Hotel → Booking → List</div>
-    <p style="color:#526578">W1.7 added a list-level <code>x-mm.toolbar</code> with a trailing Reset button (form-bound to <code>id="searchForm"</code>). The booking table itself is left in <code>x-mm.table-scroll</code> + the original <code>_booking-table.blade.php</code> partial — that table is 80+ lines of complex inline HTML (label badges, popovers, button groups with JS-bound class hooks) and is being migrated per-column in the next commit.</p>
+    <p style="color:#526578">W1.7 added a list-level <code>x-mm.toolbar</code> with a trailing Reset button (form-bound to <code>id="searchForm"</code>). The 12-column booking table is now <code>x-mm.data-table</code> (W1.7c): the rows live in <code>_booking-rows.blade.php</code> (a partial that emits only <code>&lt;tr&gt;</code> elements, not a full <code>&lt;table&gt;</code>); the parent <code>booking/index.blade.php</code> builds the columns list and passes it to <code>&lt;x-mm.data-table :columns="$bookingTableColumns"&gt;</code>. The "Reference By" column is conditional on the <code>booking.referred-booking</code> route, mirroring the original partial's behaviour. All hook strings (form ids, onclick handlers, route() calls, JS-bound class names like <code>.adjustBtn</code>, <code>.bar-charge-btn</code>, <code>.extra-charge-btn</code>, <code>.extend-date-btn</code>) are byte-identical to the pre-W1.7 view.</p>
 
     <div class="page-head">
         <div class="meta">
@@ -119,64 +119,134 @@
         </div>
     </form>
 
-    <div class="mm-table-scroll" role="region" aria-label="Booking results" tabindex="0" style="margin-top:16px;">
-        <table class="table table-striped table-bordered table-hover">
-            <thead>
-                <tr>
-                    <th>Booking ID</th>
-                    <th>Customer</th>
-                    <th>Date</th>
-                    <th>Check IN</th>
-                    <th>Check Out</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>B-1024</td>
-                    <td>Sarah Khan</td>
-                    <td>Oct 2, 2026</td>
-                    <td>Oct 3, 2026</td>
-                    <td>Oct 5, 2026</td>
-                    <td><span class="label label-primary">Reserved</span></td>
-                    <td>
-                        <a class="btn btn-xs btn-success" href="#" title="Edit"><i class="fa fa-pencil"></i></a>
-                        <a class="btn btn-xs btn-info" href="#" title="Extend"><i class="fa fa-calendar"></i></a>
-                        <a class="btn btn-xs btn-purple" href="#" title="Details"><i class="fa fa-eye"></i></a>
-                        <a class="btn btn-xs btn-danger" href="#" title="Delete"><i class="fa fa-trash-o"></i></a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>B-1025</td>
-                    <td>Ahmed Rahman</td>
-                    <td>Oct 1, 2026</td>
-                    <td>Oct 2, 2026</td>
-                    <td>Oct 4, 2026</td>
-                    <td><span class="label label-success">Checked In</span></td>
-                    <td>
-                        <a class="btn btn-xs btn-success" href="#" title="Edit"><i class="fa fa-pencil"></i></a>
-                        <a class="btn btn-xs btn-warning adjustBtn" href="#" title="Adjust"><i class="fa fa-adjust"></i></a>
-                        <a class="btn btn-xs btn-purple" href="#" title="Details"><i class="fa fa-eye"></i></a>
-                        <a class="btn btn-xs btn-danger" href="#" title="Delete"><i class="fa fa-trash-o"></i></a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>B-1026</td>
-                    <td>Mei Lin</td>
-                    <td>Oct 2, 2026</td>
-                    <td>Oct 4, 2026</td>
-                    <td>Oct 6, 2026</td>
-                    <td><span class="label label-warning">Due</span></td>
-                    <td>
-                        <a class="btn btn-xs btn-success" href="#" title="Edit"><i class="fa fa-pencil"></i></a>
-                        <a class="btn btn-xs btn-info" href="#" title="Due"><i class="fa fa-dollar"></i></a>
-                        <a class="btn btn-xs btn-purple" href="#" title="Details"><i class="fa fa-eye"></i></a>
-                        <a class="btn btn-xs btn-danger" href="#" title="Delete"><i class="fa fa-trash-o"></i></a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+    <div class="mm-data-table-wrap" data-mm-data-table style="margin-top:16px;">
+        <div class="mm-table-scroll" role="region" aria-label="Booking results" tabindex="0">
+            <table class="mm-data-table table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col" style="width: 9%" class="mm-text-center">Booking ID</th>
+                        <th scope="col" class="mm-text-center">Customer</th>
+                        <th scope="col" class="mm-text-center">Date</th>
+                        <th scope="col" class="mm-text-center">Check IN</th>
+                        <th scope="col" class="mm-text-center">Check Out</th>
+                        <th scope="col" style="width: 12%" class="mm-text-center">Room</th>
+                        <th scope="col" class="mm-text-center">Booking From</th>
+                        <th scope="col" class="mm-text-right">Transaction</th>
+                        <th scope="col" class="mm-text-center">Status</th>
+                        <th scope="col" style="width: 10%" class="mm-text-center">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-center"><strong>B-1024</strong></td>
+                        <td>
+                            <p>Sarah Khan</p>
+                            <p>+880 1711 234 567</p>
+                        </td>
+                        <td class="text-center">Oct 2, 2026</td>
+                        <td class="text-center">
+                            <p><b>Date:</b> Oct 3, 2026</p>
+                            <p><b>Time:</b> 14:32:00</p>
+                        </td>
+                        <td class="text-center">
+                            <p><b>Date:</b> Oct 5, 2026</p>
+                        </td>
+                        <td class="text-center">
+                            <label class="label label-success" style="margin-top:2px">101</label>
+                            <label class="label label-success" style="margin-top:2px">102</label>
+                        </td>
+                        <td class="text-center">Front Desk</td>
+                        <td class="text-right transactions">
+                            <p><b>Subtotal:</b> <span style="font-size:15px"><span class="currency-sign"></span> 12,500.00</span></p>
+                            <p><b>Paid:</b> <span class="green" style="font-size:15px"><span class="currency-sign"></span> 12,500.00</span></p>
+                            <p><b>Due:</b> <span class="red" style="font-size:15px"><span class="currency-sign"></span></span> 0</p>
+                        </td>
+                        <td class="text-center"><span class="label label-primary">Reserved</span></td>
+                        <td class="text-center action-button-td">
+                            <div class="action-button">
+                                <a class="btn btn-xs btn-success" href="#" title="Edit"><i class="fa fa-pencil"></i></a>
+                                <a class="btn btn-xs btn-info" href="#" title="Extend"><i class="fa fa-calendar"></i></a>
+                                <a class="btn btn-xs btn-purple" href="#" title="Details"><i class="fa fa-eye"></i></a>
+                                <a class="btn btn-xs btn-danger" href="#" title="Delete"><i class="fa fa-trash-o"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center"><strong>B-1025</strong></td>
+                        <td>
+                            <p>Ahmed Rahman</p>
+                            <p>+880 1815 987 654</p>
+                        </td>
+                        <td class="text-center">Oct 1, 2026</td>
+                        <td class="text-center">
+                            <p><b>Date:</b> Oct 2, 2026</p>
+                        </td>
+                        <td class="text-center">
+                            <p><b>Date:</b> Oct 4, 2026</p>
+                        </td>
+                        <td class="text-center">
+                            <label class="label label-success" style="margin-top:2px">201</label>
+                        </td>
+                        <td class="text-center">Website</td>
+                        <td class="text-right transactions">
+                            <p><b>Subtotal:</b> <span style="font-size:15px"><span class="currency-sign"></span> 8,200.00</span></p>
+                            <p><b>Paid:</b> <span class="green" style="font-size:15px"><span class="currency-sign"></span> 5,000.00</span></p>
+                            <p><b>Due:</b> <span class="red" style="font-size:15px"><span class="currency-sign"></span></span> 3,200.00</p>
+                        </td>
+                        <td class="text-center"><span class="label label-success">Checked In</span></td>
+                        <td class="text-center action-button-td">
+                            <div class="action-button">
+                                <a class="btn btn-xs btn-success" href="#" title="Edit"><i class="fa fa-pencil"></i></a>
+                                <a class="btn btn-xs btn-warning adjustBtn" href="#" title="Adjust"><i class="fa fa-adjust"></i></a>
+                                <a class="btn btn-xs btn-purple" href="#" title="Details"><i class="fa fa-eye"></i></a>
+                                <a class="btn btn-xs btn-danger" href="#" title="Delete"><i class="fa fa-trash-o"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center"><strong>B-1026</strong></td>
+                        <td>
+                            <p>Mei Lin</p>
+                            <p>+86 138 0013 8000</p>
+                        </td>
+                        <td class="text-center">Oct 2, 2026</td>
+                        <td class="text-center">
+                            <p><b>Date:</b> Oct 4, 2026</p>
+                        </td>
+                        <td class="text-center">
+                            <p><b>Date:</b> Oct 6, 2026</p>
+                        </td>
+                        <td class="text-center">
+                            <label class="label label-success" style="margin-top:2px">301</label>
+                            <label class="label label-success" style="margin-top:2px">302</label>
+                            <label class="label label-success" style="margin-top:2px">303</label>
+                            <label class="label label-success" style="margin-top:2px">304</label>
+                            <label class="label label-success" style="margin-top:2px">305</label>
+                            <label class="label label-success" style="margin-top:2px">306</label>
+                            <span data-rel="popover" data-trigger="hover" data-content="301, 302, 303, 304, 305, 306, 307, 308" data-placement="top" data-title="Room No">
+                                <i class="fa fa-info-circle fa-2x text-info"></i>
+                            </span>
+                        </td>
+                        <td class="text-center">Official</td>
+                        <td class="text-right transactions">
+                            <p><b>Subtotal:</b> <span style="font-size:15px"><span class="currency-sign"></span> 24,000.00</span></p>
+                            <p><b>Paid:</b> <span class="green" style="font-size:15px"><span class="currency-sign"></span> 10,000.00</span></p>
+                            <p><b>Due:</b> <span class="red" style="font-size:15px"><span class="currency-sign"></span></span> 14,000.00</p>
+                            <p><b>Extra Charge:</b> <span class="green" style="font-size:15px"><span class="currency-sign"></span> 500.00</span></p>
+                        </td>
+                        <td class="text-center"><span class="label label-warning">Due</span></td>
+                        <td class="text-center action-button-td">
+                            <div class="action-button">
+                                <a class="btn btn-xs btn-success" href="#" title="Edit"><i class="fa fa-pencil"></i></a>
+                                <a class="btn btn-xs btn-info" href="#" title="Due"><i class="fa fa-dollar"></i></a>
+                                <a class="btn btn-xs btn-purple" href="#" title="Details"><i class="fa fa-eye"></i></a>
+                                <a class="btn btn-xs btn-danger" href="#" title="Delete"><i class="fa fa-trash-o"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </section>
 
