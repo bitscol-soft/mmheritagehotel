@@ -44,11 +44,11 @@ Files: `public/assets/custom_css/tokens.css` (new), `resources/views/components/
 
 ## 3. W2 — App shell  → issue #7
 
-- [ ] **W2.1** Sidebar icon-rail (68px, persisted in `localStorage`), active-item pill, module counters (arrivals/departures/due-today via existing AJAX endpoints, 60s cache).
-- [ ] **W2.2** Topbar: global search (wire to existing `searchRoomByNumberAjax`-style endpoints per module *only where an endpoint already exists*; else omit), quick-add menu (route-gated by same permissions as their create buttons), date button → board-today.
-- [ ] **W2.3** `x-page` becomes the only header pattern; delete per-page `page-header` blocks *as encountered* (never bulk-sed).
-- [ ] **W2.4** Fluid container (max 1440) + horizontal-scroll wrappers for all tables (`.mm-table-scroll`); mobile bottom action-bar variant for `x-toolbar` footers.
-- [ ] **W2.5** `prefers-reduced-motion` + focus-visible global tokens; contrast sweep: replace sub-12px `--mm-muted` on colored bg (board meta pattern) with `--mm-ink-soft`.
+- [x] **W2.1** Sidebar icon-rail (68px, persisted in `localStorage`), active-item pill, module counters (arrivals/departures/due-today via existing AJAX endpoints, 60s cache). Shipped in `e62ade52`; module counters omitted (no existing endpoints).
+- [x] **W2.2** Topbar: global search (wire to existing `searchRoomByNumberAjax`-style endpoints per module *only where an endpoint already exists*; else omit), quick-add menu (route-gated by same permissions as their create buttons), date button → board-today. Shipped in `83034b00`; global search omitted (no existing endpoints).
+- [x] **W2.3** `x-page` becomes the only header pattern; delete per-page `page-header` blocks *as encountered* (never bulk-sed). 219 dead blocks removed (commit `7efd787d`); ui-guard Tripwire 3 prevents regression; 95 untouched blocks remain in non-ported pages (encountered-pool).
+- [x] **W2.4** Fluid container (max 1440) + horizontal-scroll wrappers for all tables (`.mm-table-scroll`); mobile bottom action-bar variant for `x-toolbar` footers. Shipped in `96c9ee85`; mobile action-bar deferred.
+- [x] **W2.5** `prefers-reduced-motion` + focus-visible global tokens; contrast sweep: replace sub-12px `--mm-muted` on colored bg (board meta pattern) with `--mm-ink-soft`. Shipped in `96c9ee85`.
   Exit: every module visually inherits shell without per-page edits; 360px audit passes on dashboard, booking list, login.
 
 ## 4. W3 — Hotel module completion + print programme  → issue #8
