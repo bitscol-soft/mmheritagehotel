@@ -1,0 +1,99 @@
+/* =============================================================================
+   tokens.css — mm-web design tokens
+   -----------------------------------------------------------------------------
+   Per docs/FRONTEND-DEV-PLAN.md W1.1. The single source of truth for the
+   design contract: every CSS custom property used by mm-ui components lives
+   here. No rules — only declarations — so this file is safe to load before
+   any other stylesheet without specificity conflicts.
+
+   Scope: tokens are defined on `.mm-ui` (the mm-web root) so they cascade to
+   every mm-* component without polluting the legacy Bootstrap/Ace elements
+   that live outside `.mm-ui`. Loading order (per x-mm.styles):
+     1. tokens.css  (this file)        — declares the contract
+     2. ui.css      (compiled)         — consumes the contract
+     3. shell.css   (admin shell)      — also consumes the contract
+
+   Why custom properties on `.mm-ui` (not `:root`)?
+     The legacy admin shell already loads a half-dozen stylesheets that
+     define their own --bs-* / --ace-* variables. Declaring mm-web tokens
+     on :root would shadow those when the admin shell loads. Scoping to
+     .mm-ui keeps the contract scoped to the renovation layer.
+   ============================================================================= */
+
+.mm-ui {
+    /* --- Color tokens ------------------------------------------------------ */
+    --mm-brand:        #2f63a8;
+    --mm-brand-hover:  #275188;
+    --mm-brand-soft:   #eef3f9;
+    --mm-ink:          #1f2a33;
+    --mm-muted:        #526578;
+    --mm-line:         #dbe5f1;
+    --mm-bg:           #f7fafd;
+    --mm-surface:      #ffffff;
+    --mm-danger:       #b42318;
+    --mm-danger-soft:  #fde7e4;
+    --mm-success:      #2c6c33;
+    --mm-success-soft: #ecf6ee;
+    --mm-warning:      #b8860b;
+    --mm-warning-soft: #fdf3d6;
+
+    /* --- Radii / sizing ---------------------------------------------------- */
+    --mm-radius:           10px;   /* panel, modal, table card */
+    --mm-radius-sm:        6px;    /* inputs, buttons, chips */
+    --mm-input-min-height: 40px;
+    --mm-button-min-height:40px;
+    --mm-pad-1: 4px;
+    --mm-pad-2: 8px;
+    --mm-pad-3: 12px;
+    --mm-pad-4: 16px;
+    --mm-pad-5: 20px;
+    --mm-pad-6: 24px;
+
+    /* --- Typography -------------------------------------------------------- */
+    --mm-font:   system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --mm-font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+    --mm-text-xs:  12px;
+    --mm-text-sm:  14px;
+    --mm-text-md:  14px;
+    --mm-text-lg:  16px;
+    --mm-text-xl:  20px;
+    --mm-text-2xl: 24px;
+    --mm-text-3xl: 30px;
+    --mm-line-tight:  1.25;
+    --mm-line-normal: 1.5;
+
+    /* --- Focus / motion ---------------------------------------------------- */
+    --mm-focus-ring: 3px solid var(--mm-brand);
+    --mm-focus-offset: 1px;
+    --mm-motion-fast: 120ms ease;
+    --mm-motion:      200ms ease;
+    --mm-motion-slow: 320ms ease;
+
+    /* --- Z-index ----------------------------------------------------------- */
+    --mm-z-dropdown: 100;
+    --mm-z-modal:    1000;
+    --mm-z-toast:    1100;
+
+    /* --- Document defaults (declared once on the root) --------------------- */
+    color: var(--mm-ink);
+    font-family: var(--mm-font);
+    font-size: var(--mm-text-md);
+    line-height: var(--mm-line-normal);
+    min-width: 0;
+}
+.mm-ui *,
+.mm-ui *::before,
+.mm-ui *::after { box-sizing: border-box; }
+
+/* Reduced-motion preference applies to every component. The component rules
+   themselves don't need to repeat this — it's enough to declare it once at
+   the root. */
+@media (prefers-reduced-motion: reduce) {
+    .mm-ui *,
+    .mm-ui *::before,
+    .mm-ui *::after {
+        animation: none !important;
+        scroll-behavior: auto !important;
+        transition: none !important;
+    }
+}

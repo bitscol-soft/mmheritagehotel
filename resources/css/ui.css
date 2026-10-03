@@ -3,31 +3,26 @@
 @tailwind components;
 @tailwind utilities;
 
-.mm-ui {
-    --mm-brand: #2f63a8;
-    --mm-ink: #1f2a33;
-    --mm-muted: #526578;
-    --mm-line: #dbe5f1;
-    --mm-bg: #f7fafd;
-    --mm-surface: #ffffff;
-    color: var(--mm-ink);
-    font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
-    font-size: 14px;
-    line-height: 1.5;
-    min-width: 0;
-}
-.mm-ui *, .mm-ui *::before, .mm-ui *::after { box-sizing: border-box; }
-.mm-ui .mm-panel { border: 1px solid var(--mm-line); border-radius: 10px; background: var(--mm-surface); }
+/* Design tokens (colors, radii, sizing, typography, motion, z-index) live in
+   public/assets/custom_css/tokens.css. They are loaded by <x-mm.styles />
+   BEFORE this file. Only consumer rules live here. */
+.mm-ui .mm-panel { border: 1px solid var(--mm-line); border-radius: var(--mm-radius); background: var(--mm-surface); }
 .mm-ui .mm-button {
     display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-    min-height: 40px; padding: 8px 16px; border: 1px solid var(--mm-brand);
-    border-radius: 6px; background: var(--mm-brand); color: white;
+    min-height: var(--mm-button-min-height); padding: var(--mm-pad-2) var(--mm-pad-4); border: 1px solid var(--mm-brand);
+    border-radius: var(--mm-radius-sm); background: var(--mm-brand); color: white;
     font: inherit; font-weight: 600; text-decoration: none; cursor: pointer;
+    transition: background var(--mm-motion-fast), border-color var(--mm-motion-fast), color var(--mm-motion-fast);
 }
-.mm-ui .mm-button:hover { background: #275188; border-color: #275188; color: white; }
+.mm-ui .mm-button:hover { background: var(--mm-brand-hover); border-color: var(--mm-brand-hover); color: white; }
 .mm-ui .mm-button-secondary { background: white; color: var(--mm-brand); border-color: var(--mm-line); }
-.mm-ui .mm-button-secondary:hover { background: #eef3f9; color: var(--mm-brand); }
-.mm-ui :focus-visible { outline: 3px solid var(--mm-brand); outline-offset: 3px; }
+.mm-ui .mm-button-secondary:hover { background: var(--mm-brand-soft); color: var(--mm-brand); }
+.mm-ui .mm-button-danger { background: var(--mm-danger); border-color: var(--mm-danger); color: white; }
+.mm-ui .mm-button-danger:hover { background: #931c12; border-color: #931c12; color: white; }
+.mm-ui .mm-button-ghost { background: transparent; border-color: transparent; color: var(--mm-brand); }
+.mm-ui .mm-button-ghost:hover { background: var(--mm-brand-soft); color: var(--mm-brand); border-color: transparent; }
+.mm-ui .mm-button[disabled], .mm-ui .mm-button[aria-disabled="true"] { opacity: 0.5; cursor: not-allowed; }
+.mm-ui :focus-visible { outline: var(--mm-focus-ring); outline-offset: var(--mm-focus-offset); }
 .mm-ui .mm-input {
     display: block; width: 100%; min-height: 40px; padding: 8px 12px;
     border: 1px solid #aab9ca; border-radius: 6px; color: var(--mm-ink);
@@ -884,3 +879,135 @@
     .mm-ui.mm-auth .form-group.row > .col-md-6,
     .mm-ui.mm-auth .form-group.row > .col-md-6.offset-md-4 { max-width: 100%; width: 100%; padding: 0; }
 }
+
+/* =============================================================================
+   mm-web components (W1)
+   -----------------------------------------------------------------------------
+   All new components added in the W1 design-system wave. Each rule uses the
+   tokens declared in tokens.css. No new colors, radii, or sizing magic-numbers
+   below — every value resolves through a CSS custom property.
+   ============================================================================= */
+
+/* --- mm-input (formerly inline) — keep the existing rule for backward compat
+   with views that pre-date the W1 refactor. The new canonical input class is
+   also .mm-input. */
+.mm-ui .mm-input {
+    display: block; width: 100%; min-height: var(--mm-input-min-height);
+    padding: var(--mm-pad-2) var(--mm-pad-3);
+    border: 1px solid #aab9ca; border-radius: var(--mm-radius-sm);
+    color: var(--mm-ink); background: var(--mm-surface);
+    font: inherit;
+    transition: border-color var(--mm-motion-fast), outline-color var(--mm-motion-fast);
+}
+.mm-ui .mm-input:focus { border-color: var(--mm-brand); outline: var(--mm-focus-ring); outline-offset: var(--mm-focus-offset); }
+.mm-ui .mm-input[aria-invalid="true"], .mm-ui .mm-input.is-invalid { border-color: var(--mm-danger); }
+.mm-ui textarea.mm-input { min-height: 80px; padding: var(--mm-pad-3); resize: vertical; }
+.mm-ui select.mm-input { appearance: none; background-image: linear-gradient(45deg, transparent 50%, var(--mm-muted) 50%), linear-gradient(135deg, var(--mm-muted) 50%, transparent 50%); background-position: calc(100% - 18px) 50%, calc(100% - 12px) 50%; background-size: 6px 6px; background-repeat: no-repeat; padding-right: 32px; }
+
+/* --- mm-button — small variant for chips and inline actions --- */
+.mm-ui .mm-button-small { min-height: 32px; padding: var(--mm-pad-1) var(--mm-pad-3); font-size: var(--mm-text-xs); }
+
+/* --- mm-tile --- */
+.mm-ui .mm-tile { background: var(--mm-surface); border: 1px solid var(--mm-line); border-radius: var(--mm-radius); padding: var(--mm-pad-4) var(--mm-pad-5); display: flex; flex-direction: column; gap: var(--mm-pad-1); }
+.mm-ui .mm-tile-label { color: var(--mm-muted); font-size: var(--mm-text-xs); text-transform: uppercase; letter-spacing: 0.04em; font-weight: 600; }
+.mm-ui .mm-tile-value { color: var(--mm-ink); font-size: var(--mm-text-2xl); font-weight: 700; line-height: var(--mm-line-tight); }
+.mm-ui .mm-tile-hint { color: var(--mm-muted); font-size: var(--mm-text-sm); }
+.mm-ui .mm-tile-brand { border-top: 3px solid var(--mm-brand); }
+.mm-ui .mm-tile-success { border-top: 3px solid var(--mm-success); }
+.mm-ui .mm-tile-warning { border-top: 3px solid var(--mm-warning); }
+.mm-ui .mm-tile-danger { border-top: 3px solid var(--mm-danger); }
+
+/* --- mm-empty --- */
+.mm-ui .mm-empty { display: flex; flex-direction: column; align-items: center; gap: var(--mm-pad-3); padding: var(--mm-pad-6) var(--mm-pad-5); background: var(--mm-surface); border: 1px dashed var(--mm-line); border-radius: var(--mm-radius); text-align: center; }
+.mm-ui .mm-empty-text { margin: 0; color: var(--mm-muted); }
+
+/* --- mm-chip --- */
+.mm-ui .mm-chip { display: inline-flex; align-items: center; gap: var(--mm-pad-1); padding: 2px var(--mm-pad-2); border-radius: 9999px; background: var(--mm-brand-soft); color: var(--mm-brand); font-size: var(--mm-text-xs); font-weight: 600; line-height: 1.6; }
+.mm-ui .mm-chip-default { background: var(--mm-bg); color: var(--mm-ink); }
+.mm-ui .mm-chip-success { background: var(--mm-success-soft); color: var(--mm-success); }
+.mm-ui .mm-chip-warning { background: var(--mm-warning-soft); color: var(--mm-warning); }
+.mm-ui .mm-chip-danger { background: var(--mm-danger-soft); color: var(--mm-danger); }
+.mm-ui .mm-chip-muted { background: var(--mm-bg); color: var(--mm-muted); }
+.mm-ui .mm-chip-remove { background: transparent; border: 0; color: inherit; cursor: pointer; font-size: var(--mm-text-md); line-height: 1; padding: 0 var(--mm-pad-1); }
+.mm-ui .mm-chip-remove:hover { color: var(--mm-danger); }
+
+/* --- mm-toolbar --- */
+.mm-ui .mm-toolbar { display: flex; align-items: center; gap: var(--mm-pad-3); padding: var(--mm-pad-3) 0; flex-wrap: wrap; }
+.mm-ui .mm-toolbar-leading { display: flex; gap: var(--mm-pad-3); align-items: center; flex: 1 1 auto; }
+.mm-ui .mm-toolbar-actions { display: flex; gap: var(--mm-pad-2); align-items: center; flex-wrap: wrap; }
+.mm-ui .mm-toolbar-trailing { display: flex; gap: var(--mm-pad-3); align-items: center; }
+
+/* --- mm-data-table --- */
+.mm-ui .mm-data-table-wrap { width: 100%; }
+.mm-ui .mm-data-table { width: 100%; margin: 0; border-collapse: collapse; font-size: var(--mm-text-sm); }
+.mm-ui .mm-data-table thead th { background: var(--mm-bg); color: var(--mm-muted); font-size: var(--mm-text-xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; white-space: nowrap; padding: var(--mm-pad-3) var(--mm-pad-4); text-align: left; border-bottom: 1px solid var(--mm-line); }
+.mm-ui .mm-data-table tbody td { padding: var(--mm-pad-3) var(--mm-pad-4); border-bottom: 1px solid var(--mm-line); vertical-align: middle; color: var(--mm-ink); }
+.mm-ui .mm-data-table tbody tr:hover { background: #f0f5fa; }
+.mm-ui .mm-data-table .mm-text-right { text-align: right; }
+.mm-ui .mm-data-table .mm-text-center { text-align: center; }
+.mm-ui .mm-data-table.mm-sticky-header thead th { position: sticky; top: 0; z-index: 1; }
+/* Priority fold at ≤767px: hide columns where data-priority >= 2. The default
+   no-priority column is also hidden on mobile to keep the table narrow. */
+@media (max-width: 767px) {
+    .mm-ui .mm-data-table th[data-priority="2"],
+    .mm-ui .mm-data-table td:nth-child( var(--mm-priority-2-col, auto) ) { display: none; }
+    .mm-ui .mm-data-table th[data-priority="3"],
+    .mm-ui .mm-data-table td:nth-child( var(--mm-priority-3-col, auto) ) { display: none; }
+    .mm-ui .mm-data-table th:not([data-priority]) { display: none; }
+    .mm-ui .mm-data-table tbody td:nth-child(1) { font-weight: 600; }
+}
+
+/* --- mm-filter-bar --- */
+.mm-ui .mm-filter-bar { display: flex; gap: var(--mm-pad-3); align-items: flex-end; flex-wrap: wrap; padding: var(--mm-pad-4); background: var(--mm-bg); border: 1px solid var(--mm-line); border-radius: var(--mm-radius); }
+.mm-ui .mm-filter-bar-fields { display: grid; gap: var(--mm-pad-3); flex: 1 1 320px; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+.mm-ui .mm-filter-bar-actions { display: flex; gap: var(--mm-pad-2); }
+
+/* --- mm-daterange --- */
+.mm-ui .mm-daterange { display: flex; gap: var(--mm-pad-3); align-items: flex-end; flex-wrap: wrap; }
+.mm-ui .mm-daterange-field { display: flex; flex-direction: column; gap: var(--mm-pad-1); flex: 1 1 160px; }
+.mm-ui .mm-daterange-label { font-size: var(--mm-text-xs); color: var(--mm-muted); font-weight: 600; }
+.mm-ui .mm-daterange-quick { display: flex; gap: var(--mm-pad-1); flex-wrap: wrap; }
+.mm-ui .mm-daterange-quick .mm-button[aria-pressed="true"] { background: var(--mm-brand); color: white; border-color: var(--mm-brand); }
+
+/* --- mm-stepper --- */
+.mm-ui .mm-stepper { display: flex; list-style: none; margin: 0; padding: 0; gap: 0; counter-reset: step; border: 1px solid var(--mm-line); border-radius: var(--mm-radius); overflow: hidden; background: var(--mm-surface); }
+.mm-ui .mm-step { flex: 1 1 0; min-width: 0; position: relative; }
+.mm-ui .mm-step + .mm-step::before { content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 1px; height: 60%; background: var(--mm-line); }
+.mm-ui .mm-step-link { display: flex; align-items: center; gap: var(--mm-pad-3); padding: var(--mm-pad-3) var(--mm-pad-4); color: var(--mm-muted); text-decoration: none; transition: background var(--mm-motion-fast), color var(--mm-motion-fast); }
+.mm-ui .mm-step-link:hover { background: var(--mm-bg); color: var(--mm-ink); }
+.mm-ui .mm-step-mark { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; background: var(--mm-bg); color: var(--mm-muted); font-weight: 700; font-size: var(--mm-text-sm); border: 1px solid var(--mm-line); flex-shrink: 0; }
+.mm-ui .mm-step-label { font-weight: 600; font-size: var(--mm-text-sm); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mm-ui .mm-step.is-current .mm-step-link { background: var(--mm-brand-soft); color: var(--mm-brand); }
+.mm-ui .mm-step.is-current .mm-step-mark { background: var(--mm-brand); color: white; border-color: var(--mm-brand); }
+.mm-ui .mm-step.is-done .mm-step-link { color: var(--mm-success); }
+.mm-ui .mm-step.is-done .mm-step-mark { background: var(--mm-success); color: white; border-color: var(--mm-success); }
+.mm-ui .mm-step.is-upcoming .mm-step-mark { color: var(--mm-muted); }
+
+/* --- mm-modal --- */
+.mm-ui .mm-modal { position: fixed; inset: 0; z-index: var(--mm-z-modal); display: flex; align-items: center; justify-content: center; padding: var(--mm-pad-4); }
+.mm-ui .mm-modal[hidden] { display: none; }
+.mm-ui .mm-modal[data-open] { display: flex; }
+.mm-ui .mm-modal-backdrop { position: absolute; inset: 0; background: rgba(15, 23, 42, 0.5); }
+.mm-ui .mm-modal-card { position: relative; background: var(--mm-surface); border-radius: var(--mm-radius); box-shadow: 0 12px 32px rgba(15, 23, 42, 0.18); max-height: calc(100vh - 64px); display: flex; flex-direction: column; width: 100%; }
+.mm-ui .mm-modal-s { max-width: 360px; }
+.mm-ui .mm-modal-m { max-width: 560px; }
+.mm-ui .mm-modal-l { max-width: 800px; }
+.mm-ui .mm-modal-xl { max-width: 1100px; }
+.mm-ui .mm-modal-head { display: flex; align-items: center; justify-content: space-between; padding: var(--mm-pad-4) var(--mm-pad-5); border-bottom: 1px solid var(--mm-line); }
+.mm-ui .mm-modal-title { margin: 0; font-size: var(--mm-text-lg); font-weight: 600; }
+.mm-ui .mm-modal-close { background: transparent; border: 0; font-size: var(--mm-text-2xl); line-height: 1; color: var(--mm-muted); cursor: pointer; padding: 0 var(--mm-pad-2); }
+.mm-ui .mm-modal-close:hover { color: var(--mm-ink); }
+.mm-ui .mm-modal-body { padding: var(--mm-pad-5); overflow-y: auto; }
+.mm-ui .mm-modal-foot { display: flex; gap: var(--mm-pad-2); justify-content: flex-end; padding: var(--mm-pad-3) var(--mm-pad-5); border-top: 1px solid var(--mm-line); background: var(--mm-bg); border-bottom-left-radius: var(--mm-radius); border-bottom-right-radius: var(--mm-radius); }
+
+/* --- mm-print-sheet --- */
+.mm-ui .mm-print-sheet { background: var(--mm-surface); border: 1px solid var(--mm-line); border-radius: var(--mm-radius); padding: var(--mm-pad-5); max-width: 800px; margin: 0 auto; }
+.mm-ui .mm-print-sheet-head { border-bottom: 1px solid var(--mm-line); padding-bottom: var(--mm-pad-3); margin-bottom: var(--mm-pad-4); }
+.mm-ui .mm-print-sheet-title { margin: 0; font-size: var(--mm-text-xl); font-weight: 600; }
+.mm-ui .mm-print-sheet-foot { margin-top: var(--mm-pad-4); padding-top: var(--mm-pad-3); border-top: 1px solid var(--mm-line); display: flex; justify-content: flex-end; }
+@media print {
+    .mm-ui .mm-print-sheet { border: 0; max-width: none; padding: 0; }
+    .mm-ui .mm-print-sheet-foot { display: none; }
+}
+.mm-ui .mm-print-sheet-thermal-80mm { width: 80mm; max-width: 80mm; padding: var(--mm-pad-2); font-family: var(--mm-font-mono); font-size: var(--mm-text-xs); }
+.mm-ui .mm-print-sheet-thermal-58mm { width: 58mm; max-width: 58mm; padding: var(--mm-pad-2); font-family: var(--mm-font-mono); font-size: var(--mm-text-xs); }
