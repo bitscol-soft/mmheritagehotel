@@ -47,6 +47,7 @@
         <li><a href="#w2-2">W2.2</a> — "Today" date button + quick-add menu in the topbar. Global search omitted per the plan's "no existing endpoint" rule.</li>
         <li><a href="#w2-1">W2.1</a> — Sidebar icon-rail (68px), localStorage persistence, active-item pill. Module counters omitted per the plan's "no existing endpoint" rule.</li>
         <li><a href="#w2-3">W2.3</a> — <code>x-page</code> is the only header pattern. Dead <code>page-header</code> blocks removed from 219 pages; ui-guard tripwire added to prevent regression.</li>
+        <li><a href="#w3-1">W3.1</a> — Reservation invoice restyled to round-6 <code>invoice-doc</code> look (print-sheet wrapper, inv-head, inv-panels). Hall twin and other invoices follow in W3.2 / W4.</li>
     </ul>
 </div>
 
@@ -669,6 +670,65 @@ tripwire_xpage_pageheader_combo() {
 
     <h3 style="margin-top:24px">What was NOT done (and why)</h3>
     <p style="color:#526578">The remaining 95 <code>@section('page-header')</code> blocks (in <code>sale/sales/show.blade.php</code>, <code>reports/*/print.blade.php</code>, <code>banquethall/hall_booking/*</code>, etc.) were NOT removed. Those files don't have <code>&lt;x-mm.page&gt;</code> yet, so they fall under the "as encountered" rule — they'll be cleaned up when the page is ported for some other reason (W3, W6, or whatever module work touches them next). Forcing the migration would either leave the page without a header (bad) or require porting 95 unrelated pages (out of scope for W2).</p>
+</section>
+
+<!-- ==================== W3.1 ==================== -->
+<section class="preview-section" id="w3-1">
+    <h2>W3.1 — Reservation invoice → round-6 <code>invoice-doc</code></h2>
+    <p style="color:#526578">The W3.1 plan item from <code>docs/FRONTEND-DEV-PLAN.md</code>: <em>"Reservation invoice → <code>x-print-sheet</code> (the open user-visible task: restyle <code>module/Hotel/views/booking/reservation-invoice.blade.php</code> to the round-6 <code>invoice-doc</code> look; amounts PHP left byte-identical; twin <code>hall_booking/reservation-invoice</code> follows in W4)."</em></p>
+
+    <h3 style="margin-top:24px">What changed</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>Wrapped in <code>&lt;x-mm.print-sheet&gt;</code></strong> (A4 sheet variant). The print-sheet's footer provides a print button that calls <code>window.print()</code> — the old jQuery <code>printThis</code> plugin is gone.</li>
+        <li><strong>Wrapped in <code>&lt;div class="invoice-doc"&gt;</code></strong> (the round-6 class). The border, padding, max-width, and font come from <code>module/Hotel/views/booking/_css/invoice-sheet.blade.php</code>.</li>
+        <li><strong>Header restructured</strong> as <code>.inv-head</code> with <code>.inv-brand</code> (company name + address + phone) on the left and <code>.inv-doctitle</code> (kind + number + printed date) on the right. The blue bottom-border (2px solid #2f63a8) is provided by <code>.invoice-doc .inv-head</code>.</li>
+        <li><strong>Two key/value panels</strong> added above the body: <em>Booking</em> (date, company, address) and <em>Guest</em> (confirmation no, cell, e-mail, NID). Each row is an <code>.inv-defrow</code> (label muted, value bold right-aligned).</li>
+        <li><strong>Signature block</strong> upgraded to <code>.inv-sign .sig</code> (consistent border-top + width 200px).</li>
+        <li><strong>Inline <code>&lt;style&gt;</code> block removed</strong> (~226 lines). The Calistoga font, the <code>col-print-N</code> float columns, the <code>.print-body</code> border, and the @media print overrides are all gone. The round-6 partial provides the equivalents. The existing body content (greeting, stay details, room details, notes, payment) keeps its old markup under <code>&lt;div class="invoice-content-legacy"&gt;</code> — it's a deliberate keep-the-baby-in-the-bathwater step; restructuring the entire body would be a follow-up commit (W3.1+).</li>
+        <li><strong>Print button</strong> in the page actions slot removed (the print-sheet footer has one). The <code>hasPermission('service.view', $slugs)</code> gate moved to wrap the entire <code>&lt;x-mm.print-sheet&gt;</code> — the permission check is preserved byte-identically.</li>
+        <li><strong>PrintThis JS removed</strong> — the <code>printThis.js</code> script tag, the <code>printPage()</code> function, and the <code>window.addEventListener('load')</code> handler. The <code>data-mm-print</code> hook in <code>mm-ui.js</code> handles the click.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">PHP byte-identicality check</h3>
+    <p style="color:#526578">A diff of the <code>{{ ... }}</code> expressions and Blade directives between the original and the refactored file:</p>
+    <div class="mm-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);">
+            <strong>Removed (intentional)</strong>
+            <ul style="color:var(--mm-muted);font-size:13px;margin:8px 0 0;">
+                <li><code>{{ asset('assets/custom_js/printThis.js') }}</code> — the printThis script tag (replaced by the print-sheet's built-in <code>data-mm-print</code> hook).</li>
+            </ul>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);">
+            <strong>Added</strong>
+            <ul style="color:var(--mm-muted);font-size:13px;margin:8px 0 0;">
+                <li><code>{{ date('F j, Y') }}</code> — printed date in the doctitle (new, in the <code>.inv-printed</code> row).</li>
+                <li>5 W3.1 explanatory Blade comments.</li>
+            </ul>
+        </div>
+    </div>
+    <p style="color:#526578">The 50+ other <code>{{ }}</code> expressions (booking_date, company name, address, NID, cell, email, etc.) and the <code>@if</code>/<code>@foreach</code>/<code>@else</code> directives are unchanged. The <code>hasPermission('service.view', $slugs)</code> gate is preserved.</p>
+
+    <h3 style="margin-top:24px">What was NOT done (and why)</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>Body content (greeting, stay/room/notes)</strong> — left under <code>&lt;div class="invoice-content-legacy"&gt;</code> with its original <code>col-print-N</code> float columns. Restructuring every row to <code>.inv-defrow</code> would be a separate, larger commit. The round-6 look comes through on the header and the panels; the body keeps its existing print-friendly layout.</li>
+        <li><strong>The <code>hall_booking/reservation-invoice</code> twin</strong> — out of scope. The plan explicitly defers it to W4. The other <code>printThis</code>-using files (<code>hall_booking/checkout_invoice.blade.php</code>, <code>hall_booking/checkout-invoice-v2.blade.php</code>, etc.) are also out of scope until W3.2 / W4.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">Numbers</h3>
+    <div class="mm-grid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;">
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">765 → 558</div>
+            <div style="color:var(--mm-muted);font-size:13px;">line count (after dedent + style block removal)</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">~226</div>
+            <div style="color:var(--mm-muted);font-size:13px;">lines of inline CSS removed (replaced by the round-6 partial)</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">50+</div>
+            <div style="color:var(--mm-muted);font-size:13px;">PHP <code>{{ }}</code> expressions preserved byte-identically</div>
+        </div>
+    </div>
 </section>
 
 </body>
