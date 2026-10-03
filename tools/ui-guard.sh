@@ -163,12 +163,225 @@ tripwire_nested_style_include() {
         [ -z "$f" ] && continue
         [ ! -f "$f" ] && continue
         # Use awk to detect <style>…</style> blocks containing @include/@yield/@stack.
+        # State tracking:
+        #   in_blade_comment  — inside a Blade {{-- … --}} block; ignore every literal
+        #                      mention of <style> or @directive on a comment line.
+        #   in_html_comment   — inside a <!-- … --> block; same reasoning.
+        #   in_script         — inside a <script>…</script> block; Blade doesn't
+        #                      compile these, but a literal '@directive' could
+        #                      appear in a JS string and we don't want to chase it.
+        #   in_style          — the real state we care about. Only set when we
+        #                      see <style> OUTSIDE a comment / script.
+        # The Blade-comment regex handles two cases on a single line — both an
+        # opening AND a closing on the same line, e.g. `{{-- foo --}} bar` —
+        # by setting in_blade_comment=0 whenever --}} is seen anywhere on the
+        # line, even if the line also opened a comment earlier. This is the
+        # conservative choice: false negatives on a line like
+        #   {{-- open --}} <style>… {{-- close --}} @include --}}
+        # are acceptable; false positives on legitimate code are not.
         local hits
+        # Two-phase awk:
+        #   Phase A (per-line): strip out everything that lives inside a Blade
+        #   comment, HTML comment, or <script> block. The remaining text is
+        #   "code" that the simple state machine in phase B can scan.
+        #   Phase B (per-file): the original 3-rule state machine — in_style
+        #   is set by <style> and reset by </style>, and a Blade directive
+        #   inside a style block is the real defect.
+        #
+        # Why two phases? Walking one line segment-by-segment (open/close
+        # markers) is O(n²) on awk strings and hard to keep correct when
+        # multiple marker types overlap. Stripping comments first reduces the
+        # problem to the original 3-rule machine, which is fast and easy to
+        # reason about.
+        #
+        # Comment stripping is itself stateful across lines — a Blade comment
+        # can open on one line and close on another — so the state variables
+        # in_blade_comment / in_html_comment / in_script live in BEGIN-block
+        # initialisation and persist across NR (lines).
         hits="$(awk '
-            /<style[^>]*>/ { in_style = 1; next }
-            /<\/style>/     { in_style = 0; next }
-            in_style && /@(include|yield|stack|push|section|once)/ {
-                printf("%s:%d:%s\n", FILENAME, NR, $0)
+            BEGIN {
+                in_blade_comment = 0
+                in_html_comment  = 0
+                in_script        = 0
+                in_style         = 0
+            }
+            {
+                # ---- Phase A: strip comments and scripts from this line ----
+                cleaned = ""
+                line = $0
+                pos = 1
+                # Walk left-to-right. At each step, find the earliest of:
+                #   - the close marker of whatever block we are currently in
+                #   - the open marker of any other block
+                # and copy the text BEFORE that marker into `cleaned`, then
+                # advance past the marker and update the state. Anything we
+                # skip over (inside a comment or script) is dropped.
+                while (pos <= length(line)) {
+                    # Find the next interesting marker from `pos` onwards.
+                    # For each marker type, the close marker is only meaningful
+                    # when we are inside that block; the open marker is
+                    # meaningful when we are NOT inside that block.
+                    next_at = 0; next_kind = ""
+                    # Blade comment close: --}}
+                    if (in_blade_comment) {
+                        i = index(substr(line, pos), "--}}")
+                        if (i > 0 && (next_at == 0 || i < next_at)) {
+                            next_at = i; next_kind = "blade_close"
+                        }
+                    }
+                    # Blade comment open: {{--
+                    if (!in_blade_comment) {
+                        i = index(substr(line, pos), "{{--")
+                        if (i > 0 && (next_at == 0 || i < next_at)) {
+                            next_at = i; next_kind = "blade_open"
+                        }
+                    }
+                    # HTML comment close: -->
+                    if (in_html_comment) {
+                        i = index(substr(line, pos), "-->")
+                        if (i > 0 && (next_at == 0 || i < next_at)) {
+                            next_at = i; next_kind = "html_close"
+                        }
+                    }
+                    # HTML comment open: <!--
+                    if (!in_html_comment) {
+                        i = index(substr(line, pos), "<!--")
+                        if (i > 0 && (next_at == 0 || i < next_at)) {
+                            next_at = i; next_kind = "html_open"
+                        }
+                    }
+                    # Script close: </script>
+                    if (in_script) {
+                        i = index(substr(line, pos), "</script>")
+                        if (i > 0 && (next_at == 0 || i < next_at)) {
+                            next_at = i; next_kind = "script_close"
+                        }
+                    }
+                    # Script open: <script…>  (use a regex via match for the
+                    # optional attributes; fall back to plain "<script>" if
+                    # there are none on this line).
+                    if (!in_script) {
+                        rest = substr(line, pos)
+                        # find "<script" then ensure next char is space, >, or /
+                        idx = index(rest, "<script")
+                        while (idx > 0) {
+                            tail_pos = idx + length("<script")
+                            if (tail_pos > length(rest)) break
+                            ch = substr(rest, tail_pos, 1)
+                            if (ch == " " || ch == ">" || ch == "\t" || ch == "\n") {
+                                i = idx
+                                if (next_at == 0 || i < next_at) {
+                                    next_at = i; next_kind = "script_open"
+                                }
+                                break
+                            }
+                            # "<script" appears but is followed by another
+                            # letter (e.g. "<scripty") — keep looking.
+                            idx = index(substr(rest, tail_pos), "<script")
+                            if (idx > 0) idx = idx + tail_pos - 1
+                        }
+                    }
+                    if (next_at == 0) {
+                        # No more markers. The remaining tail is "code" if we
+                        # are not inside a comment or script; otherwise drop it.
+                        if (!in_blade_comment && !in_html_comment && !in_script) {
+                            cleaned = cleaned substr(line, pos)
+                        }
+                        break
+                    }
+                    # Copy the pre-marker segment (if it is "code") into
+                    # cleaned, then advance past the marker and update state.
+                    if (!in_blade_comment && !in_html_comment && !in_script) {
+                        cleaned = cleaned substr(line, pos, next_at - 1)
+                    }
+                    # Advance pos past the marker.
+                    if (next_kind == "blade_close")   { pos = pos + next_at - 1 + length("--}}");      in_blade_comment = 0 }
+                    else if (next_kind == "blade_open")   { pos = pos + next_at - 1 + length("{{--");       in_blade_comment = 1 }
+                    else if (next_kind == "html_close")   { pos = pos + next_at - 1 + length("-->");        in_html_comment  = 0 }
+                    else if (next_kind == "html_open")    { pos = pos + next_at - 1 + length("<!--");       in_html_comment  = 1 }
+                    else if (next_kind == "script_close") { pos = pos + next_at - 1 + length("</script>"); in_script        = 0 }
+                    else if (next_kind == "script_open")  { pos = pos + next_at - 1 + length("<script");   in_script        = 1 }
+                }
+
+                # ---- Phase B: state machine on `cleaned` ----
+                # Same left-to-right walker pattern as Phase A, but only for
+                # <style>…</style> markers. Anything inside a style block is
+                # checked for the round-10 defect directives.
+                pos = 1
+                while (pos <= length(cleaned)) {
+                    next_at = 0; next_kind = ""
+                    if (in_style) {
+                        i = index(substr(cleaned, pos), "</style>")
+                        if (i > 0 && (next_at == 0 || i < next_at)) {
+                            next_at = i; next_kind = "style_close"
+                        }
+                    }
+                    if (!in_style) {
+                        i = index(substr(cleaned, pos), "<style")
+                        if (i > 0 && (next_at == 0 || i < next_at)) {
+                            # Verify the next char is a tag terminator (space,
+                            # tab, >, or newline), not a letter (e.g. "<styley").
+                            tail_pos = pos + i - 1 + length("<style")
+                            if (tail_pos <= length(cleaned)) {
+                                ch = substr(cleaned, tail_pos, 1)
+                                if (ch == " " || ch == ">" || ch == "\t") {
+                                    # Also skip any extra attributes up to the
+                                    # tag close.
+                                    while (tail_pos <= length(cleaned) && substr(cleaned, tail_pos, 1) != ">") {
+                                        tail_pos++
+                                    }
+                                    # The "<style …>" tag itself ends at the
+                                    # closing >. next_at is the position of the
+                                    # <; we will use index to find the > below
+                                    # when we compute the slice length. Stash
+                                    # it via next_at_len. Simpler: just track
+                                    # that we are inside the style block and
+                                    # advance past >.
+                                    next_at = i
+                                    next_kind = "style_open"
+                                    # We will advance by the distance to >
+                                    # plus 1; do that inline below.
+                                }
+                            }
+                        }
+                    }
+                    if (next_at == 0) {
+                        # Remaining tail — check for directives if in style.
+                        if (in_style) {
+                            tail = substr(cleaned, pos)
+                            if (tail ~ /@(include|yield|stack|push|section|once)/) {
+                                printf("%s:%d:%s\n", FILENAME, NR, $0)
+                            }
+                        }
+                        break
+                    }
+                    # Pre-marker segment — check for directives if in style.
+                    if (in_style) {
+                        seg = substr(cleaned, pos, next_at - 1)
+                        if (seg ~ /@(include|yield|stack|push|section|once)/) {
+                            printf("%s:%d:%s\n", FILENAME, NR, $0)
+                        }
+                    }
+                    # Advance past the marker.
+                    if (next_kind == "style_close") {
+                        pos = pos + next_at - 1 + length("</style>")
+                        in_style = 0
+                    } else if (next_kind == "style_open") {
+                        # We are at the < of <style …>. Walk to the >.
+                        open_pos = pos + next_at - 1
+                        close_pos = index(substr(cleaned, open_pos), ">")
+                        if (close_pos == 0) {
+                            # No > on this line — the open tag is incomplete.
+                            # Treat the rest of the line as if the style block
+                            # were open; this matches the multi-line case.
+                            pos = length(cleaned) + 1
+                            in_style = 1
+                        } else {
+                            pos = open_pos + close_pos
+                            in_style = 1
+                        }
+                    }
+                }
             }
         ' "$f")"
         if [ -n "$hits" ]; then
