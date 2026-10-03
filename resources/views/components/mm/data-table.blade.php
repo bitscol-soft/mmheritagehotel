@@ -5,10 +5,14 @@
     'sticky' => false,
     'label' => 'Records',
     'rowClass' => null,  // callable($row, $index) → string
+    'tableClass' => '',  // extra classes to append to the <table> (e.g. legacy Bootstrap
+                          // classes when migrating an existing table without dropping its
+                          // visual styling). The default mm-data-table class is always added.
 ])
 
 @php
     $isEmpty = $rows !== null ? count($rows) === 0 : trim((string) $slot) === '';
+    $finalTableClass = trim('mm-data-table' . ($sticky ? ' mm-sticky-header' : '') . ' ' . $tableClass);
 @endphp
 
 <div {{ $attributes->merge(['class' => 'mm-data-table-wrap']) }} data-mm-data-table>
@@ -16,7 +20,7 @@
         <x-mm.empty :text="$empty['text'] ?? 'No records'" :action="$empty['action'] ?? null" />
     @else
         <x-mm.table-scroll :label="$label">
-            <table class="mm-data-table {{ $sticky ? 'mm-sticky-header' : '' }}">
+            <table class="{{ $finalTableClass }}">
                 <thead>
                     <tr>
                         @foreach ($columns as $col)
@@ -24,7 +28,15 @@
                                 @if(!empty($col['width'])) style="width: {{ $col['width'] }}" @endif
                                 @if(!empty($col['priority'])) data-priority="{{ $col['priority'] }}" @endif
                                 @if(!empty($col['align'])) class="mm-text-{{ $col['align'] }}" @endif>
-                                {{ $col['label'] }}
+                                {{-- label may be a plain string (escaped) or arbitrary
+                                     HTML for header cells that need interactive content
+                                     (e.g. a "select all" checkbox). The caller signals
+                                     the choice by setting $col['raw'] = true. --}}
+                                @if(!empty($col['raw']))
+                                    {!! $col['label'] !!}
+                                @else
+                                    {{ $col['label'] }}
+                                @endif
                             </th>
                         @endforeach
                     </tr>

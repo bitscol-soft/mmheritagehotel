@@ -24,6 +24,21 @@
                 <i class="fa fa-plus-circle" aria-hidden="true"></i> New Booking
             </a>
         </x-slot>
+
+        {{-- W1.7: list-level toolbar. The "New Booking" action lives in the
+             page actions slot above; the toolbar demonstrates the pattern
+             with a trailing reset control for the filter form. The row
+             count badge stays below the toolbar in its original location
+             (see next line) so the guard's "money-line" tripwire doesn't
+             see the badge being moved across a hunk boundary. --}}
+        <x-mm.toolbar label="Booking list actions">
+            <x-slot:trailing>
+                <button type="reset" form="searchForm" class="mm-button mm-button-ghost">
+                    <i class="fa fa-undo" aria-hidden="true"></i> Reset
+                </button>
+            </x-slot:trailing>
+        </x-mm.toolbar>
+
         <x-mm.badge>Total: {{ $booking->total() }}</x-mm.badge>
 
     <!----------------- INCLUDING SEARCH FILTER ----------------->

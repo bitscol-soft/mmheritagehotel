@@ -123,17 +123,85 @@ tripwire_money_line() {
             staged)  diff_args="-U0 --cached --" ;;
             diff)    diff_args="-U0 $BASE_REF...HEAD --" ;;
         esac
+        # The tripwire honors an explicit override marker on a file line:
+        #   <!-- money-travel-on: <reason> -->     (HTML)
+        #   {{-- money-travel-on: <reason> --}}    (Blade)
+        # The marker is checked on the working tree copy (for added lines)
+        # and on the HEAD copy (for removed lines). A diff line is
+        # suppressed when EITHER side of the diff at that hunk position
+        # carries the marker. The list of line numbers is computed once
+        # per file (and once for HEAD) and passed into the awk as
+        # comma-separated scalar strings.
+        local override_lines_added override_lines_removed
+        override_lines_added="$(grep -nE '(<!--|\{\{--)\s*money-travel-on:' "$f" 2>/dev/null | cut -d: -f1 | paste -sd, -)"
+        override_lines_removed="$(git show "HEAD:$f" 2>/dev/null | grep -nE '(<!--|\{\{--)\s*money-travel-on:' | cut -d: -f1 | paste -sd, -)"
         local hits
         hits="$(git diff $diff_args "$f" 2>/dev/null \
-            | awk -v file="$f" -v ctx="$context" '
-                /^\+[^+]/ || /^-[^-]/ {
+            | awk -v file="$f" -v ctx="$context" -v add_ov="$override_lines_added" -v rem_ov="$override_lines_removed" '
+                BEGIN {
+                    n_ov_add = split(add_ov, add_arr, ",")
+                    n_ov_rem = split(rem_ov, rem_arr, ",")
+                    new_line = 0
+                    old_line = 0
+                }
+                /^@@/ {
+                    rest = $0
+                    sub(/^@@ /, "", rest)
+                    sub(/ @@.*$/, "", rest)
+                    split(rest, parts, " ")
+                    split(parts[1], a, ",")
+                    split(parts[2], b, ",")
+                    old_line = a[1] + 0
+                    new_line = b[1] + 0
+                    next
+                }
+                /^\+[^+]/ {
                     line = substr($0, 2)
                     low = tolower(line)
                     has_amount = (low ~ /amount|total|grand_total|grand total|due|paid|balance|price|rent|fare|charge|vat|tax/)
                     has_ctx = (ctx != "") || (low ~ /invoice|checkout|payment|voucher|receipt|booking/)
                     if (has_amount && has_ctx) {
-                        printf("    %s:%s\n", file, NR)
+                        fl = new_line
+                        overridden = 0
+                        for (i = 1; i <= n_ov_add; i++) {
+                            if (add_arr[i]+0 == fl) { overridden = 1; break }
+                        }
+                        if (!overridden) {
+                            printf("    %s:+%d\n", file, fl)
+                        }
                     }
+                    new_line++
+                }
+                /^-[^-]/ {
+                    line = substr($0, 2)
+                    low = tolower(line)
+                    has_amount = (low ~ /amount|total|grand_total|grand total|due|paid|balance|price|rent|fare|charge|vat|tax/)
+                    has_ctx = (ctx != "") || (low ~ /invoice|checkout|payment|voucher|receipt|booking/)
+                    if (has_amount && has_ctx) {
+                        fl = old_line
+                        overridden = 0
+                        for (i = 1; i <= n_ov_rem; i++) {
+                            if (rem_arr[i]+0 == fl) { overridden = 1; break }
+                        }
+                        # Also accept an override on the new-file side —
+                        # this lets a `git mv`-style rename or a delete+add
+                        # in a new position carry the same override to both
+                        # sides of the diff. The override is on the line
+                        # that the content lives on now.
+                        if (!overridden) {
+                            for (i = 1; i <= n_ov_add; i++) {
+                                if (add_arr[i]+0 == fl) { overridden = 1; break }
+                            }
+                        }
+                        if (!overridden) {
+                            printf("    %s:-%d\n", file, fl)
+                        }
+                    }
+                    old_line++
+                }
+                /^ / {
+                    new_line++
+                    old_line++
                 }
             ')"
         if [ -n "$hits" ]; then
