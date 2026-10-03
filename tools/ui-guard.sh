@@ -209,7 +209,7 @@ tripwire_money_line() {
                 /^\+[^+]/ {
                     line = substr($0, 2)
                     low = tolower(line)
-                    has_amount = (low ~ /amount|total|grand_total|grand total|due|paid|balance|price|rent|fare|charge|vat|tax/)
+                    has_amount = (low ~ /\<amount\>|\<total\>|\<grand_total\>|\<grand total\>|\<due\>|\<paid\>|\<balance\>|\<price\>|\<rent\>|\<fare\>|\<charge\>|\<vat\>|\<tax\>/)
                     has_ctx = (ctx != "") || (low ~ /invoice|checkout|payment|voucher|receipt|booking/)
                     if (has_amount && has_ctx) {
                         fl = new_line
@@ -227,7 +227,7 @@ tripwire_money_line() {
                 /^-[^-]/ {
                     line = substr($0, 2)
                     low = tolower(line)
-                    has_amount = (low ~ /amount|total|grand_total|grand total|due|paid|balance|price|rent|fare|charge|vat|tax/)
+                    has_amount = (low ~ /\<amount\>|\<total\>|\<grand_total\>|\<grand total\>|\<due\>|\<paid\>|\<balance\>|\<price\>|\<rent\>|\<fare\>|\<charge\>|\<vat\>|\<tax\>/)
                     has_ctx = (ctx != "") || (low ~ /invoice|checkout|payment|voucher|receipt|booking/)
                     if (has_amount && has_ctx) {
                         fl = old_line

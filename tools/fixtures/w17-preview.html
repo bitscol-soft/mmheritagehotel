@@ -44,6 +44,7 @@
         <li><a href="#booking-list">Booking list</a> — W1.7 added an <code>x-mm.toolbar</code>; W1.7c ports the 12-column table to <code>x-mm.data-table</code> with all hooks preserved.</li>
         <li><a href="#guest-list">Guest list</a> — full W1.7 conversion: <code>x-mm.toolbar</code> + <code>x-mm.data-table</code> with all form hooks preserved.</li>
         <li><a href="#w2-4-5">W2.4 + W2.5</a> — fluid container (max 1440), stack utilities, contrast sweep with <code>--mm-ink-soft</code>, a11y tokens.</li>
+        <li><a href="#w2-2">W2.2</a> — "Today" date button + quick-add menu in the topbar. Global search omitted per the plan's "no existing endpoint" rule.</li>
     </ul>
 </div>
 
@@ -104,6 +105,35 @@
     <p style="color:#526378">Both were shipped in W1 and verified still in place. The reduced-motion rule disables every animation/transition inside <code>.mm-ui</code> when the user has the OS-level setting on. The focus-visible rule paints a 3px brand-coloured outline around any mm-* element that receives keyboard focus (mouse focus doesn't trigger the outline). Test by tabbing through the page.</p>
     <button class="mm-button" style="margin-top:8px">Tab into this button to see :focus-visible</button>
     <button class="mm-button mm-button-ghost" style="margin-top:8px;margin-left:8px">And this one</button>
+</section>
+
+<!-- ==================== W2.2 ==================== -->
+<section class="preview-section" id="w2-2">
+    <h2>W2.2 — Topbar additions: "Today" button + quick-add menu</h2>
+    <p style="color:#526578">The W2.2 plan asked for a global search (omitted: no existing AJAX endpoints to wire to — the plan's "only where an endpoint already exists; else omit" rule), a quick-add menu (route-gated by the same permissions as the create buttons), and a date button → board-today. Two of three landed in this commit.</p>
+
+    <h3 style="margin-top:24px">"Today" date button</h3>
+    <p style="color:#526578">A small topbar item with a calendar icon + "Today" label, linking to <code>route('booking.ui')</code> (the booking board). The board's <code>$availablity_check</code> default is the request <code>booking_date</code> param or today/tomorrow, so a plain link to the route lands the user on today's board. The markup matches the existing topbar's <code>&lt;li class="light-10"&gt;</code> pattern so the visual is consistent with the RST Sale / Bar Sale / Optimize Clear icons already in place.</p>
+    <div class="mm-panel" style="padding:12px;display:inline-flex;align-items:center;gap:8px;background:var(--mm-bg);">
+        <a href="#" style="display:inline-flex;align-items:center;gap:6px;text-decoration:none;color:var(--mm-ink);font-weight:600;">
+            <i class="fa fa-calendar" style="font-size:18px;"></i>
+            <span style="font-size:12px;">Today</span>
+        </a>
+        <span style="color:var(--mm-muted);font-size:12px;">→ <code>route('booking.ui')</code></span>
+    </div>
+
+    <h3 style="margin-top:24px">Quick-add menu</h3>
+    <p style="color:#526578">A dropdown (Bootstrap 3 pattern, matching the existing topbar) with two entries: New Booking and New Guest. Each entry is wrapped in <code>@if (hasPermission('...'))</code> so the menu only shows actions the user is allowed to take. If neither permission is held, a single disabled entry is shown so the menu still opens and the affordance is visible.</p>
+    <div class="mm-panel" style="padding:12px;display:inline-block;background:var(--mm-bg);">
+        <ul class="dropdown-menu" style="display:block;position:static;float:none;margin:0;">
+            <li><a href="#"><i class="fa fa-bed"></i> New Booking</a></li>
+            <li><a href="#"><i class="fa fa-user-plus"></i> New Guest</a></li>
+        </ul>
+        <p style="color:var(--mm-muted);font-size:12px;margin:8px 0 0;">Open with the <i class="fa fa-plus-circle"></i> icon in the topbar. Each item is gated by <code>hasPermission('bookings.add')</code> / <code>hasPermission('guests.add')</code>.</p>
+    </div>
+
+    <h3 style="margin-top:24px">What was omitted (and why)</h3>
+    <p style="color:#526578">The plan also asked for a global search that wires to "existing <code>searchRoomByNumberAjax</code>-style endpoints per module only where an endpoint already exists; else omit." A search through the codebase returned no existing AJAX search endpoints to wire to, so per the plan's own rule the search is omitted. The W2.2 commit lands only the two items that have a real destination: the Today button and the quick-add menu.</p>
 </section>
 
 <!-- ==================== BOOKING LIST ==================== -->
