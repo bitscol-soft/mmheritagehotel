@@ -55,7 +55,7 @@ Files: `public/assets/custom_css/tokens.css` (new), `resources/views/components/
 
 Order = user value; each task = one PR-size chunk. Screens not listed keep their layout until their archetype lands.
 
-- [ ] **W3.1** **Reservation invoice → `x-print-sheet`** (the *open user-visible task*: restyle `module/Hotel/views/booking/reservation-invoice.blade.php` to the round-6 `invoice-doc` look; amounts PHP left byte-identical; twin `hall_booking/reservation-invoice` follows in W4).
+- [x] **W3.1** **Reservation invoice → `x-print-sheet`** (the *open user-visible task*: restyle `module/Hotel/views/booking/reservation-invoice.blade.php` to the round-6 `invoice-doc` look; amounts PHP left byte-identical; twin `hall_booking/reservation-invoice` follows in W4). Shipped in `8fa1373b`; body content kept under `.invoice-content-legacy` (full body restructuring deferred to a follow-up commit).
 - [ ] **W3.2** Booking check-in slip + payment receipt → `x-print-sheet`.
 - [ ] **W3.3** Guests (`/hotel/guests` family), referred-booking, booking notes: `x-filter-bar` + `x-data-table`.
 - [ ] **W3.4** Room management CRUD (categories/rooms/amenities/vat/account-type) — forms → `x-field`/`x-select`; photo uploader dropzone (progress bar only, endpoint unchanged).
