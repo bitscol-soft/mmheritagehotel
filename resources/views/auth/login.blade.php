@@ -20,8 +20,11 @@ $login_background_image = optional(App\Models\Group::first())->login_background_
 @section('title', (request()->routeIs('password-reset.verify-token') ? 'Reset Password' : 'Login Page') . ' - ' . config('app.name'))
 
 @push('ui-styles')
-    {{-- Conditional login background image (was a literal CSS block in the legacy self-contained
-         view, now pushed to the layout's ui-styles stack so the rules render inside head). --}}
+    {{-- Conditional login background image. The legacy self-contained view had this as a
+         literal <style> block inside <head>; here we push it to the layout's ui-styles stack
+         so the rules still land inside <head> via @stack('ui-styles') in layouts.app. The
+         rules only emit when an admin has uploaded a background image AND enabled it via
+         the `login_background_image` SystemSetting. --}}
     @if (file_exists($login_background_image) && $login_background_option)
         <style>
             .login-layout {
