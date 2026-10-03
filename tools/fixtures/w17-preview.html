@@ -45,6 +45,7 @@
         <li><a href="#guest-list">Guest list</a> — full W1.7 conversion: <code>x-mm.toolbar</code> + <code>x-mm.data-table</code> with all form hooks preserved.</li>
         <li><a href="#w2-4-5">W2.4 + W2.5</a> — fluid container (max 1440), stack utilities, contrast sweep with <code>--mm-ink-soft</code>, a11y tokens.</li>
         <li><a href="#w2-2">W2.2</a> — "Today" date button + quick-add menu in the topbar. Global search omitted per the plan's "no existing endpoint" rule.</li>
+        <li><a href="#w2-1">W2.1</a> — Sidebar icon-rail (68px), localStorage persistence, active-item pill. Module counters omitted per the plan's "no existing endpoint" rule.</li>
     </ul>
 </div>
 
@@ -522,6 +523,75 @@
             </div>
         </div>
     </form>
+</section>
+
+<!-- ==================== W2.1 ==================== -->
+<section class="preview-section" id="w2-1">
+    <h2>W2.1 — Sidebar icon-rail (68px) + active-item pill, persisted in localStorage</h2>
+    <p style="color:#526578">W2.1 is the sidebar icon-rail sub-task of the W2 (App shell) lane from <code>docs/FRONTEND-DEV-PLAN.md</code>. Three pieces: a 68px icon-only rail state, an active-item pill (already in the shell CSS, just verified to work in rail mode), and localStorage persistence so the user's choice survives page reloads. The fourth piece — module counters via existing AJAX endpoints with a 60s cache — is omitted per the plan's "only where an endpoint already exists" rule (no counter endpoints exist in the codebase).</p>
+
+    <h3 style="margin-top:24px">Three nav modes (full / rail / hidden)</h3>
+    <p style="color:#526578">The shell supports three sidebar modes. Each is a class on <code>&lt;body&gt;</code> that the JS toggles via <code>[data-mm-nav-toggle]</code> click handlers. The choice is persisted in <code>localStorage['mm-nav-mode']</code>.</p>
+    <div class="mm-grid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;">
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);">
+            <strong>Full (default, 248-272px)</strong>
+            <p style="margin:8px 0 0;color:var(--mm-muted);font-size:13px;">Full sidebar with text labels, the menu search filter, and the nav-mode picker. Recommended for desktop.</p>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);">
+            <strong>Rail (68px)</strong>
+            <p style="margin:8px 0 0;color:var(--mm-muted);font-size:13px;">Icon-only rail. The 28px icon chip in each menu item becomes a 32px centered icon, the text label is screen-reader-only, the menu search is hidden. The active-item pill renders as a 1px bottom-border on the active item.</p>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);">
+            <strong>Hidden (0px)</strong>
+            <p style="margin:8px 0 0;color:var(--mm-muted);font-size:13px;">The existing <code>.mm-nav-collapsed</code> state — the sidebar is fully hidden and the main content fills the viewport. The hamburger button in the topbar reopens it.</p>
+        </div>
+    </div>
+
+    <h3 style="margin-top:24px">Visual: rail vs full</h3>
+    <div class="mm-grid" style="display:grid;grid-template-columns:1fr 2fr;gap:16px;align-items:start;">
+        <div class="mm-panel" style="padding:8px;background:var(--mm-bg);">
+            <div class="tw-text-xs tw-text-muted tw-mb-2">Rail (68px)</div>
+            <ul class="nav nav-list" style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px;">
+                <li><a href="#" style="display:flex;justify-content:center;align-items:center;width:52px;height:44px;background:#eaf1fa;border-radius:8px;color:#275188;font-weight:600;text-decoration:none;box-shadow:inset 0 -1px #2f63a8;"><i class="fa fa-tachometer" aria-hidden="true"></i></a></li>
+                <li><a href="#" style="display:flex;justify-content:center;align-items:center;width:52px;height:44px;background:transparent;border-radius:8px;color:#37536a;text-decoration:none;"><i class="fa fa-bed" aria-hidden="true"></i></a></li>
+                <li><a href="#" style="display:flex;justify-content:center;align-items:center;width:52px;height:44px;background:transparent;border-radius:8px;color:#37536a;text-decoration:none;"><i class="fa fa-user" aria-hidden="true"></i></a></li>
+                <li><a href="#" style="display:flex;justify-content:center;align-items:center;width:52px;height:44px;background:transparent;border-radius:8px;color:#37536a;text-decoration:none;"><i class="fa fa-cutlery" aria-hidden="true"></i></a></li>
+                <li><a href="#" style="display:flex;justify-content:center;align-items:center;width:52px;height:44px;background:transparent;border-radius:8px;color:#37536a;text-decoration:none;"><i class="fa fa-glass" aria-hidden="true"></i></a></li>
+            </ul>
+        </div>
+        <div class="mm-panel" style="padding:8px;background:var(--mm-bg);">
+            <div class="tw-text-xs tw-text-muted tw-mb-2">Full (248px)</div>
+            <ul class="nav nav-list" style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px;">
+                <li><a href="#" style="display:flex;align-items:center;gap:10px;height:42px;padding:0 12px;background:#eaf1fa;border-radius:8px;color:#275188;font-weight:600;text-decoration:none;box-shadow:inset 3px 0 #2f63a8;"><i class="fa fa-tachometer" aria-hidden="true"></i> Dashboard</a></li>
+                <li><a href="#" style="display:flex;align-items:center;gap:10px;height:42px;padding:0 12px;background:transparent;border-radius:8px;color:#37536a;text-decoration:none;"><i class="fa fa-bed" aria-hidden="true"></i> Reservations</a></li>
+                <li><a href="#" style="display:flex;align-items:center;gap:10px;height:42px;padding:0 12px;background:transparent;border-radius:8px;color:#37536a;text-decoration:none;"><i class="fa fa-user" aria-hidden="true"></i> Guests</a></li>
+                <li><a href="#" style="display:flex;align-items:center;gap:10px;height:42px;padding:0 12px;background:transparent;border-radius:8px;color:#37536a;text-decoration:none;"><i class="fa fa-cutlery" aria-hidden="true"></i> Restaurant</a></li>
+                <li><a href="#" style="display:flex;align-items:center;gap:10px;height:42px;padding:0 12px;background:transparent;border-radius:8px;color:#37536a;text-decoration:none;"><i class="fa fa-glass" aria-hidden="true"></i> Bar</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <h3 style="margin-top:24px">JS contract (mm-ui.js)</h3>
+    <p style="color:#526578">A new <code>mm-nav-mode</code> section in <code>public/assets/custom_js/mm-ui.js</code> handles the toggle:</p>
+    <pre style="background:#0f1720;color:#e4ecf5;padding:12px;border-radius:8px;overflow:auto;font-size:12px;line-height:1.5;"><code>// On init:
+applyNavMode(readNavMode());  // reads localStorage['mm-nav-mode']
+
+// On click of [data-mm-nav-toggle]:
+//   if data-mm-nav-mode is set → jump to that mode
+//   else → cycle full → rail → collapsed → full
+applyNavMode(next);
+writeNavMode(next);</code></pre>
+    <p style="color:#526578">The button emits no global event; it just toggles a class on <code>&lt;body&gt;</code> and lets the CSS rules in <code>shell.css</code> reshape the sidebar. The choice is local — no server round-trip — so the toggle feels instant.</p>
+
+    <h3 style="margin-top:24px">What was omitted (and why)</h3>
+    <p style="color:#526578">The plan's fourth item — "module counters (arrivals/departures/due-today via existing AJAX endpoints, 60s cache)" — was omitted per the plan's "wire to existing endpoints, else omit" rule. A scan of <code>module/Hotel/routes/web_hotel_ajax.php</code> returned no counter-style endpoints (the existing AJAX routes are for room-by-category, booking-details, in-house guest info, room status updates, etc., but none that return a single counter number suitable for a sidebar badge).</p>
+    <p style="color:#526578">If a sidebar counter system is needed, it would require:</p>
+    <ol style="color:#526578;line-height:1.7;">
+        <li>New backend endpoints: <code>GET /api/sidebar/counters</code> returning <code>{arrivals: N, departures: M, due_today: K}</code>.</li>
+        <li>A <code>&lt;span class="mm-nav-counter"&gt;</code> in each menu item, populated by a JS poller on a 60s interval.</li>
+        <li>An ETag / cache-bust on the booking/check-in tables so the counter refreshes on writes.</li>
+    </ol>
+    <p style="color:#526578">That's a W6 or later ticket (depends on the existing notification system in <code>app/Services/AppNotificationService.php</code>), not a W2 ticket.</p>
 </section>
 
 </body>

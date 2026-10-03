@@ -231,6 +231,7 @@
         bindDaterange(root);
         bindChipRemove(root);
         bindPrint(root);
+        bindNavToggle(root);
         reflowDataTables();
     }
     if (document.readyState === 'loading') {
@@ -247,6 +248,74 @@
             reflowDataTables();
         });
     });
+    // --- mm-nav-mode (W2.1) -----------------------------------------------
+    // The admin shell sidebar can be in one of three modes:
+    //   - mm-nav-full    : the default 248-272px sidebar with text labels
+    //   - mm-nav-rail    : a 68px icon-only rail (the W2.1 plan target)
+    //   - mm-nav-collapsed: 0px (sidebar fully hidden; existing mode)
+    // The user's choice is persisted in localStorage under
+    // 'mm-nav-mode' so it survives page reloads. The toggle button
+    // (data-mm-nav-toggle) cycles full → rail → collapsed → full.
+    // The mode is applied as a class on <body> so the CSS rules in
+    // shell.css can target the right state.
+    var NAV_MODE_KEY = 'mm-nav-mode';
+    var NAV_MODES = ['mm-nav-full', 'mm-nav-rail', 'mm-nav-collapsed'];
+    function readNavMode() {
+        try {
+            var v = localStorage.getItem(NAV_MODE_KEY);
+            if (v && NAV_MODES.indexOf(v) !== -1) return v;
+        } catch (e) { /* localStorage may be unavailable; fall through */ }
+        // Default to mm-nav-full when nothing is stored.
+        return 'mm-nav-full';
+    }
+    function writeNavMode(mode) {
+        try { localStorage.setItem(NAV_MODE_KEY, mode); } catch (e) {}
+    }
+    function applyNavMode(mode) {
+        var body = document.body;
+        if (!body) return;
+        NAV_MODES.forEach(function (m) { body.classList.remove(m); });
+        // The base .mm-shell class is always present; the
+        // .mm-nav-collapsed modifier is already used by the existing
+        // shell, so this code is additive.
+        body.classList.add('mm-shell');
+        body.classList.add(mode);
+        // Update the active-state aria on every toggle button so
+        // screen readers know which mode is current.
+        var btns = document.querySelectorAll('[data-mm-nav-toggle]');
+        btns.forEach(function (b) {
+            b.setAttribute('aria-pressed', String(b.dataset.mmNavMode === mode));
+        });
+    }
+    function bindNavToggle(root) {
+        var scope = root || document;
+        var btns = scope.querySelectorAll('[data-mm-nav-toggle]');
+        if (!btns.length) return;
+        btns.forEach(function (btn) {
+            if (btn.dataset.mmNavBound) return;
+            btn.dataset.mmNavBound = '1';
+            btn.addEventListener('click', function (ev) {
+                ev.preventDefault();
+                var current = readNavMode();
+                var next;
+                // If the button declares a target mode, jump to it
+                // (used by the nav-tools segmented control). Otherwise
+                // cycle through the three modes.
+                if (btn.dataset.mmNavMode && NAV_MODES.indexOf(btn.dataset.mmNavMode) !== -1) {
+                    next = btn.dataset.mmNavMode;
+                } else {
+                    var idx = NAV_MODES.indexOf(current);
+                    next = NAV_MODES[(idx + 1) % NAV_MODES.length];
+                }
+                applyNavMode(next);
+                writeNavMode(next);
+            });
+        });
+    }
+    // Apply the persisted mode on init. The CSS variables
+    // (--mm-nav-width) are read by shell.css to size the sidebar.
+    applyNavMode(readNavMode());
+
     // Re-init on Livewire / Turbo / custom events.
     document.addEventListener('mm:init', function (e) {
         init(e.detail || document);
