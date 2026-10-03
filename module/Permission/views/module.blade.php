@@ -1,11 +1,7 @@
 @extends('layouts.master')
 @section('title',' Manage Module')
-@section('page-header')
-    <i class="fa fa-list"></i>  Manage Module
-@stop
 @section('css')
 @stop
-
 
 @section('content')
 <x-mm.styles />
@@ -20,8 +16,6 @@
                 @endif
                 @include('partials._alert_message')
 
-
-
                 <div class="row">
 
                     <div class="form-group">
@@ -35,10 +29,6 @@
                             @enderror
                         </div>
                     </div>
-
-
-
-
 
                     <div class="form-group">
                         <label for="inputError" class="col-xs-12 col-sm-3 col-md-3 control-label"></label>
@@ -105,12 +95,8 @@
 
     
 
-
-
     <!-- inline scripts related to this page -->
     <script type="text/javascript">
-
-
 
         function delete_check(id)
         {
@@ -143,6 +129,5 @@
             });
         })
     </script>
-
 
 @stop

@@ -2,9 +2,6 @@
 
 @extends('layouts.master')
 @section('title','GIN List')
-@section('page-header')
-    <i class="fa fa-list"></i> GIN List
-@stop
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -16,7 +13,6 @@
     </style>
 
 @stop
-
 
 @section('content')
 
@@ -196,8 +192,6 @@
         </div>
         <input type="hidden" id="csrf" value="{{ csrf_token() }}">
 
-
-
         {{-- goods_requisitions detail modals --}}
         @foreach($goods_requisitions as $key => $goods_requisition)
 
@@ -272,15 +266,12 @@
     <script src="{{ asset('assets/js/chosen.jquery.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap-datepicker.min.js') }}"></script>
 
-
-
     <script type="text/javascript">
         function exportData(url)
         {
             $('.exportForm').attr('action', url).submit();
         }
     </script>
-
 
     <!--  Select Box Search-->
     <script type="text/javascript">
@@ -307,7 +298,6 @@
                         $this.next().css({'width':'220px'});
                     })
                 });
-
 
                 $('#chosen-multiple-style .btn').on('click', function(e){
                     var target = $(this).find('input[type=radio]');

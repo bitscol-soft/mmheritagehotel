@@ -272,6 +272,46 @@ tripwire_money_line() {
 }
 
 # -----------------------------------------------------------------------------
+# Tripwire 3: page-header + x-page combo (W2.3).
+#
+# A Blade file that has BOTH a <x-mm.page> component AND a
+# @section('page-header') block is a W2.3 violation: the master layout
+# does not @yield('page-header'), so the page-header section is dead
+# code. The dev plan says "x-page becomes the only header pattern; delete
+# per-page page-header blocks as encountered". This tripwire enforces
+# that going forward: a file that has both fails the guard.
+#
+# The tripwire only scans the working tree (post-modification), not the
+# diff. That keeps the migration in W2.3 (which removes 200+ dead
+# page-header blocks) from tripping itself. The tripwire fires when a
+# new page is added or an existing page is modified and ends up with
+# both markers.
+# -----------------------------------------------------------------------------
+tripwire_xpage_pageheader_combo() {
+    local f
+    local found=0
+    while IFS= read -r f; do
+        [ -z "$f" ] && continue
+        [ ! -f "$f" ] && continue
+        # Only check the post-modification state. A file that has BOTH
+        # markers after the working tree is updated is a violation.
+        # The migration that removed the existing dead blocks leaves
+        # files in a state where they have x-mm.page but not
+        # page-header, so they pass.
+        if grep -q '<x-mm.page' "$f" && grep -q "@section(['\"]page-header['\"]" "$f"; then
+            report "page-header + x-page combo in $f" \
+                "  File uses <x-mm.page> (the W2 header pattern) AND" \
+                "  defines @section('page-header') (dead — the master" \
+                "  layout does not @yield it)." \
+                "  Remove the @section('page-header') … @stop block." \
+                "  See docs/FRONTEND-DEV-PLAN.md W2.3."
+            found=1
+        fi
+    done < <(collect_blade_files)
+    return $found
+}
+
+# -----------------------------------------------------------------------------
 # Tripwire 2: @include / @yield inside <style>…</style>.
 #
 # A Blade template that places an @include (or @yield, @stack) directive
@@ -524,6 +564,7 @@ echo "ui-guard: scanning $(collect_blade_files | wc -l) Blade files"
 
 tripwire_money_line || true
 tripwire_nested_style_include || true
+tripwire_xpage_pageheader_combo || true
 
 if [ "$fail" -ne 0 ]; then
     echo

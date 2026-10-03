@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title', 'Product Inventory')
-@section('page-header')
-    <i class="fa fa-list"></i> Product Inventory
-@stop
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -16,7 +13,6 @@
 
 @stop
 
-
 @section('content')
 
 <x-mm.styles />
@@ -26,7 +22,6 @@
     </x-mm.panel>
     <x-mm.panel class="tw-p-4">
         <x-alert-message />
-
 
         <div class="json_table mt-2">
 

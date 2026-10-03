@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title', 'Room Categories List')
-@section('page-header')
-    <i class="fa fa-gears"></i> Room Categories List
-@stop
 
 @section('content')
     <x-mm.styles />

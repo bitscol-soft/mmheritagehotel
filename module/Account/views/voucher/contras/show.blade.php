@@ -2,12 +2,6 @@
 
 @section('title', 'Contra Voucher Details')
 
-
-@section('page-header')
-    <i class="fa fa-info-circle"></i> Contra Voucher Details
-@stop
-
-
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -24,8 +18,6 @@
 
     </style>
 @endpush
-
-
 
 @section('content')
 

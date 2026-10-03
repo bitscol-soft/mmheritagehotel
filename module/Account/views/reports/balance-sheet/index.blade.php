@@ -1,13 +1,6 @@
 @extends('layouts.master')
 
-
 @section('title', 'Balance Sheet')
-
-
-@section('page-header')
-    <i class="fa fa-info-circle"></i> Balance Sheet
-@stop
-
 
 @push('style')
 
@@ -24,7 +17,6 @@
         }
     </style>
 @endpush
-
 
 @section('content')
 @php
@@ -115,7 +107,6 @@
                     </div>
                 @endforeach
 
-
                 <div class="space-20"></div>
 
                 <div class="row">
@@ -144,7 +135,6 @@
                         </x-mm.table-scroll>
                     </div>
                 </div>
-
 
                 @php
                     $totalBalance = 0;
@@ -183,9 +173,6 @@
                                             </tr>
                                         @endforeach
 
-
-
-
                                         @if($loop->last)
                                             <tr>
                                                 <td class="text-right" style="border-bottom: 1px solid black !important;">
@@ -223,7 +210,6 @@
 
                 <br>
 
-
                 <!-- EXCEL BUTTON -->
                 <a class="hidden-print" href="{{ url()->current() }}?export_type=excel&{{ request()->getQueryString() }}" target="_blank" style="margin: 18px 0 0 20px; display: inline-block;">
                     <img src="{{ asset('assets/images/export-icons/excel-icon.png') }}">
@@ -240,10 +226,8 @@
     <script src="{{ asset('assets/js/chosen.jquery.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap-datepicker.min.js') }}"></script>
 
-
     <script src="{{ asset('assets/custom_js/chosen-box.js') }}"></script>
     <script src="{{ asset('assets/custom_js/date-picker.js') }}"></script>
 
 @endsection
-
 

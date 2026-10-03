@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title', 'Add New Hotel Service Sale')
-@section('page-header')
-    <i class="fa fa-plus-circle"></i> New Hotel Service Sale
-@stop
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
@@ -15,7 +12,6 @@
 
     </style>
 @stop
-
 
 @section('content')
 <x-mm.styles />
@@ -220,7 +216,6 @@
         function submitForm() {
             let is_submit = true;
 
-
             if ($('#guest_name').val() == '') {
                 is_submit = false;
                 warning('toster', 'Please select Guest Type!')
@@ -266,7 +261,6 @@
         }
     </script>
 
-
     {{-- Get Room Number --}}
     <script>
         $(document).on('focus', '#room_number', function() {
@@ -297,7 +291,6 @@
             })
         })
     </script>
-
 
     {{-- Get Booking Number --}}
     <script>
@@ -408,11 +401,9 @@
             $('.container').append(html);
         }
 
-
         function deleteRow(obj) {
             $(obj).parents('.repeat-group').remove();
         }
-
 
         function itemTotal(object) {
             let price = parseFloat($(object).closest('tr').find('.service-prices').val());
@@ -453,7 +444,6 @@
                         }
                     })
 
-
                     if (check == true) {
                         item.parents('tr').find('.service-prices').val(ui.item.data.price);
                         item.parents('tr').find('.service-ids').val(ui.item.data.id);
@@ -464,8 +454,6 @@
             });
         })
 
-
-
         function requestUrl(urlParts) {
             urlParts = $.extend({
                 basePath: '{{ url('/') }}/',
@@ -474,7 +462,6 @@
             }, urlParts);
             return urlParts.basePath + urlParts.path + urlParts.param;
         }
-
 
         function patientFilter() {
             selfFilter('service');
@@ -485,6 +472,5 @@
             referenceFilter();
         }
     </script>
-
 
 @endsection

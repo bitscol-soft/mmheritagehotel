@@ -1,10 +1,6 @@
 @extends('layouts.master')
 @section('title', 'Table List')
 
-@section('page-header')
-    <i class="fa fa-bars"></i> Table List
-@stop
-
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -16,7 +12,6 @@
 
     </style>
 @stop
-
 
 @section('content')
 
@@ -68,7 +63,6 @@
                                         </a>
                                     @endif
 
-
                                     @if (hasPermission('pharmacy.delete', $slugs))
                                         <button type="button"
                                             onclick="delete_item(`{{ route('rst.table-manages.destroy', $item->id) }}`)"
@@ -76,7 +70,6 @@
                                             <i class="fa fa-trash-o"></i>
                                         </button>
                                     @endif
-
 
                                 </div>
                             </td>
@@ -104,7 +97,6 @@
 
             var $radios = $('input:radio[name=status]');
             $radios.filter('[value=' + status + ']').prop('checked', true);
-
 
             $('#editForm').attr('action', url)
         }

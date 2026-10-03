@@ -1,12 +1,6 @@
 @extends('layouts.master')
 
-
 @section('title', 'Account')
-
-@section('page-header')
-    <i class="fa fa-edit"></i> Account Edit
-@stop
-
 
 @push('style')
 
@@ -29,15 +23,11 @@
         <form action="{{ route('accounts.update', $account->id) }}" method="post">
             @csrf @method('PUT')
 
-
             <div class="row" style="width: 100%; margin: 0 0 20px !important;">
                 <div class="col-sm-12 px-4">
 
-
-
                     <!-- Name -->
                     @include('includes.inputs.input-field', ['name' => 'name', 'value' => $account->name, 'is_required' => 'required'])
-
 
                     <!-- Account Group -->
                     @if($transaction_count == 0)
@@ -56,24 +46,17 @@
                         </div>
                     @endif
 
-
                     <!-- Account Controls -->
                     @include('includes.inputs.option-select', ['modelVariable' => 'accountControls', 'edit_id' => $account->account_control_id, 'is_required' => true])
-
-
 
                     <!-- Account Subsidiaries -->
                     @include('includes.inputs.option-select', ['modelVariable' => 'accountSubsidiaries', 'edit_id' => $account->account_subsidiary_id, 'is_required' => true])
 
-
                     <!-- Remarks -->
                     @include('includes.inputs.input-field', ['name' => 'remarks', 'value' => $account->remarks])
 
-
                     <!-- STATUS -->
                     @include('includes.inputs.status', ['edit_id' => $account->status])
-
-
 
                     <!-- Submit -->
                     <button class="btn btn-primary btn-sm pull-right"><i class="fa fa-edit"></i> Update</button>
@@ -90,10 +73,7 @@
     <script src="{{ asset('assets/js/chosen.jquery.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap-datepicker.min.js') }}"></script>
 
-
     <script src="{{ asset('assets/custom_js/chosen-box.js') }}"></script>
-
-
 
     <script>
 
@@ -129,5 +109,4 @@
     </script>
 
 @endsection
-
 

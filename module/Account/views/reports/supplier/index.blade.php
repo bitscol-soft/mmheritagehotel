@@ -2,12 +2,6 @@
 
 @section('title', 'Supplier Report')
 
-@section('page-header')
-    <i class="fa fa-info-circle"></i> Supplier Report
-@stop
-
-
-
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -33,7 +27,6 @@
 
     </style>
 @endpush
-
 
 @section('content')
 
@@ -131,7 +124,6 @@
                                 $total_due = 0;
                             @endphp
 
-
                             @foreach ($purchases as $key => $purchase)
                                 @php
                                     $total_amount += $purchase->total_amount;
@@ -172,12 +164,10 @@
 
                 @include('partials._paginate', ['data' => $purchases])
 
-
                 <!-- EXCEL BUTTON -->
                 <a class="hidden-print" href="{{ url()->current() }}?export_type=excel&{{ request()->getQueryString() }}" target="_blank" style="margin: 18px 0 0 20px; display: inline-block;">
                     <img src="{{ asset('assets/images/export-icons/excel-icon.png') }}">
                 </a>
-
 
             </div>
         </div>

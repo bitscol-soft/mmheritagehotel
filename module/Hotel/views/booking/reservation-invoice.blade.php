@@ -1,10 +1,6 @@
 @extends('layouts.master')
 @section('title', 'Invoice')
 
-@section('page-header')
-    <i class="fa fa-info-circle"></i> Invoice
-@stop
-
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -148,7 +144,6 @@
             margin-bottom: 20px
         }
 
-
         /*----------- NEW MEDIA PRINT -----------*/
         @media print{
             .col-print-1 {width:8%;  float:left; }
@@ -241,12 +236,10 @@
             }
         }
 
-
     </style>
 
     @include('booking._css.invoice-sheet')
 @stop
-
 
 @section('content')
 
@@ -285,7 +278,6 @@
                                                     <!-- <p>Website: </p> -->
                                                 </div>
                                             </div> <hr>
-
 
                                             <!-- RESERVATION CONFIRMATION -->
                                             <h2 class="invoice-title font-family">{{ $booking->status == 0 ? 'Reservation' : 'Booking' }} Confirmation</h2>
@@ -369,7 +361,6 @@
 
                                         </div>
                                     </div>
-
 
                                     <!-- INVOICE CONTENT -->
                                     <div class="invoice-content">
@@ -560,7 +551,6 @@
                                                 </div>
                                             </div>
 
-
                                             <div class="row" @if ($booking->status == 0) style="display: none" @endif>
                                                 <div class="col-print-8">
                                                     <div class="row">
@@ -733,7 +723,6 @@
                                         </div>
 
                                     </div>
-
 
                                     <!-- PRINT FOOTER -->
                                     <div class="print-footer">

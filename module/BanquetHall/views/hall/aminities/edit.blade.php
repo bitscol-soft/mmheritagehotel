@@ -1,13 +1,9 @@
 @extends('layouts.master')
 
 @section('title', ' Edit Aminities')
-@section('page-header')
-    <i class="fa fa-gears"></i> Edit Aminities
-@stop
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
 @stop
-
 
 @section('content')
     <x-mm.styles />
@@ -72,7 +68,6 @@
                     </div>
                 </div>
 
-
                 <div class="form-actions center" style="text-align: right !important;">
                     <button type="submit" class="mm-button">
                         <i class="ace-icon fa fa-save icon-on-right bigger-110"></i>
@@ -88,9 +83,6 @@
 
     <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('assets/js/jquery.dataTables.bootstrap.min.js') }}"></script>
-
-
-
 
     <!-- inline scripts related to this page -->
     <script type="text/javascript">

@@ -1,10 +1,5 @@
 @extends('layouts.master')
 @section('title', 'Booking Purpose')
-@section('page-header') <i class="fa fa-info-circle"></i> Booking Purpose @stop
-
-@section('css')
-    {{-- @include('guests.include.css') --}}
-@endsection
 
 @section('content')
     <x-mm.styles />
@@ -57,7 +52,6 @@
                     </table></x-mm.table-scroll>
                 </div>
             @endif
-
 
             <!-- For Platform -->
             @if (request('type') == 'platform')

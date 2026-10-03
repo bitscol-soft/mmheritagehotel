@@ -1,20 +1,11 @@
 @extends('layouts.master')
 
-
 @section('title', 'Damage Create')
-
-
-
-@section('page-header')
-    <i class="fa fa-plus-circle"></i> Damage Create
-@stop
-
 
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/custom_css/chosen-required.css') }}" />
-
 
     <style>
         .borderRemove {
@@ -43,11 +34,6 @@
     </style>
 @endpush
 
-
-
-
-
-
 @section('content')
 
 <x-mm.styles />
@@ -64,14 +50,7 @@
 
                     <input hidden name="account_id" value="{{ $account->id }}">
 
-
                     <div class="row">
-
-
-
-
-
-
 
                         <!-- Companies -->
                         <div class="col-sm-4 my-1">
@@ -93,10 +72,6 @@
                             </div>
                         </div>
 
-
-
-
-
                         <!-- Date -->
                         <div class="col-sm-3 my-1">
                             <div class="input-group">
@@ -107,15 +82,8 @@
                             </div>
                         </div>
 
-
-
-
-
-
                         <!-- PRODUCT EXCHANGE INFORMATION -->
                         <div class="col-sm-12 mt-3">
-
-
 
                            <div class="row">
                                 <!-- Product -->
@@ -133,8 +101,6 @@
                                     </div>
                                 </div>
 
-
-
                                 <!-- Product -->
                                 <div class="col-sm-3 my-1">
                                     <div class="input-group">
@@ -144,7 +110,6 @@
                                         <input class="form-control only-number text-center input-price" placeholder="Purchase Price">
                                     </div>
                                 </div>
-
 
                                 <!-- Product -->
                                 <div class="col-sm-3 my-1">
@@ -156,8 +121,6 @@
                                     </div>
                                 </div>
 
-
-
                                 <!-- ACTION -->
                                 <div class="col-sm-2 my-1">
                                     <button type="button" class="btn btn-sm btn-primary add-product-btn">
@@ -165,7 +128,6 @@
                                     </button>
                                 </div>
                            </div>
-
 
                             <x-mm.table-scroll label="Damage Create">
                                 <table id="myTable" class="table table-bordered order-list">
@@ -183,16 +145,10 @@
                                         </tr>
                                     </thead>
 
-
-
                                     <!-- body -->
                                     <tbody class="exchange-product-details">
 
-
                                     </tbody>
-
-
-
 
                                     <!-- footer -->
                                     <tfoot>
@@ -210,11 +166,6 @@
                                 </table>
                             </x-mm.table-scroll>
                         </div>
-
-
-
-
-
 
                         <!-- Action -->
                         <div class="row">
@@ -234,27 +185,19 @@
 
 @endsection
 
-
 @section('js')
     <script src="{{ asset('assets/js/chosen.jquery.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap-datepicker.min.js') }}"></script>
     <script src="{{ asset('assets/custom_js/chosen-box.js') }}"></script>
     <script src="{{ asset('assets/custom_js/date-picker.js') }}"></script>
 
-
     <script>
-
-
-
 
         $(document).on('change', '.select-product', setProductPrice)
 
         $(document).on('click', '.add-product-btn', addExchangeProduct)
 
         $(document).on('click', '.remove-product-btn', removeExchangeItem)
-
-
-
 
         function setProductPrice()
         {
@@ -265,13 +208,11 @@
             $('.input-qty').focus()
         }
 
-
         function removeExchangeItem()
         {
             $(this).closest('tr').remove()
             calculateExchangeTotal()
         }
-
 
         function addExchangeProduct()
         {
@@ -321,10 +262,6 @@
             $('.select-product').val('').trigger('chosen:updated')
         }
 
-
-
-
-
         function calculateExchangeTotal()
         {
             let subtotal        = 0
@@ -344,7 +281,6 @@
 
                 $(this).closest('tr').find('.exchange-product-subtotal').val(subtotal)
             })
-
 
             $('.total-qty').val(total_qty)
             $('.total-amount').val(total_amount)

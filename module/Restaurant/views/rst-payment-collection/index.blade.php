@@ -1,10 +1,6 @@
 @extends('layouts.master')
 @section('title', 'Payment Collection')
 
-@section('page-header')
-    <i class="fa fa-info-circle"></i> Payment Collection
-@stop
-
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -30,7 +26,6 @@
         }
     </style>
 @endpush
-
 
 @section('content')
 
@@ -233,7 +228,6 @@
             calculatePayment()
         });
 
-
         $(document).on("click", "#check-full-payment", function() {
             let get_due = $('#get-due').val()
             if ($('#check-full-payment').is(':checked')) {
@@ -249,7 +243,6 @@
             }
 
         });
-
 
         function calculateDiscount() {
             let total_due       = 0
@@ -267,8 +260,6 @@
 
             $('.current-due').html(total_due);
         }
-
-
 
         function calculatePayment() {
             let total_payment   = 0

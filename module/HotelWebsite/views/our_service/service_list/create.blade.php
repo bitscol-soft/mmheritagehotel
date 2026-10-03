@@ -1,9 +1,6 @@
 @extends('layouts.master')
 
 @section('title',' Edit Feature Header')
-@section('page-header')
-<i class="fa fa-gears"></i> Our Service Section Heading
-@stop
 @section('css')
 <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
 <style>
@@ -63,7 +60,6 @@
                     <div class="form-group">
                         <label class="col-sm-3 control-label" for="form-field-1-1">Service List</label>
 
-
                         <div class="col-xs-12 col-sm-8 @error('heading_title') has-error @enderror">
                             <div class="inline" style="display: inline !important;">
 												<input type="text" class="form-control" name="service_list" id="form-field-tags" value="" placeholder="Enter tags ..." />
@@ -73,7 +69,6 @@
                 </div>
 
             </div>
-
 
             <div class="form-actions center" style="text-align: right !important; margin: 0;">
                 <button type="submit" class="mm-button">

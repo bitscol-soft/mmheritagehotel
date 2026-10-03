@@ -46,6 +46,7 @@
         <li><a href="#w2-4-5">W2.4 + W2.5</a> — fluid container (max 1440), stack utilities, contrast sweep with <code>--mm-ink-soft</code>, a11y tokens.</li>
         <li><a href="#w2-2">W2.2</a> — "Today" date button + quick-add menu in the topbar. Global search omitted per the plan's "no existing endpoint" rule.</li>
         <li><a href="#w2-1">W2.1</a> — Sidebar icon-rail (68px), localStorage persistence, active-item pill. Module counters omitted per the plan's "no existing endpoint" rule.</li>
+        <li><a href="#w2-3">W2.3</a> — <code>x-page</code> is the only header pattern. Dead <code>page-header</code> blocks removed from 219 pages; ui-guard tripwire added to prevent regression.</li>
     </ul>
 </div>
 
@@ -592,6 +593,82 @@ writeNavMode(next);</code></pre>
         <li>An ETag / cache-bust on the booking/check-in tables so the counter refreshes on writes.</li>
     </ol>
     <p style="color:#526578">That's a W6 or later ticket (depends on the existing notification system in <code>app/Services/AppNotificationService.php</code>), not a W2 ticket.</p>
+</section>
+
+<!-- ==================== W2.3 ==================== -->
+<section class="preview-section" id="w2-3">
+    <h2>W2.3 — <code>x-page</code> is the only header pattern</h2>
+    <p style="color:#526578">The W2.3 plan item from <code>docs/FRONTEND-DEV-PLAN.md</code>: <em>"x-page becomes the only header pattern; delete per-page page-header blocks as encountered (never bulk-sed)."</em></p>
+
+    <h3 style="margin-top:24px">Before / after</h3>
+    <p style="color:#526578">A page that has been ported to <code>&lt;x-mm.page&gt;</code> no longer needs a <code>@section('page-header')</code> block. The master layout does not <code>@yield('page-header')</code> anywhere, so the block is dead code. The "as encountered" rule means the cleanup happens when a page is touched for other reasons (W1.7c, W3, W6). This commit goes one step further: it cleans up the 219 pages that already had <code>x-mm.page</code> but were still carrying the dead header block, and adds a guard so future ports can never re-introduce it.</p>
+
+    <div class="mm-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);">
+            <strong>Before (dead block)</strong>
+            <pre style="background:#0f1720;color:#e4ecf5;padding:10px;border-radius:8px;overflow:auto;font-size:11px;line-height:1.4;margin:8px 0 0;"><code>@extends('layouts.master')
+@section('title', 'Fund Transfer Create')
+@section('page-header')
+    &lt;i class="fa fa-list"&gt;&lt;/i&gt; Fund Transfer Create
+@stop
+@push('style')
+    ...
+@endpush
+@section('content')
+&lt;x-mm.page ...&gt;
+    ...
+&lt;/x-mm.page&gt;
+@stop</code></pre>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);">
+            <strong>After (clean)</strong>
+            <pre style="background:#0f1720;color:#e4ecf5;padding:10px;border-radius:8px;overflow:auto;font-size:11px;line-height:1.4;margin:8px 0 0;"><code>@extends('layouts.master')
+@section('title', 'Fund Transfer Create')
+@push('style')
+    ...
+@endpush
+@section('content')
+&lt;x-mm.page ...&gt;
+    ...
+&lt;/x-mm.page&gt;
+@stop</code></pre>
+        </div>
+    </div>
+
+    <h3 style="margin-top:24px">Migration numbers</h3>
+    <div class="mm-grid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;">
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">219</div>
+            <div style="color:var(--mm-muted);font-size:13px;">pages cleaned (had both <code>x-mm.page</code> and a dead <code>page-header</code> block)</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">95</div>
+            <div style="color:var(--mm-muted);font-size:13px;">pages still carry <code>page-header</code> (untouched — no <code>x-mm.page</code> yet, ported in W3/W6 as "encountered")</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">0</div>
+            <div style="color:var(--mm-muted);font-size:13px;">pages now have both <code>x-mm.page</code> and a <code>page-header</code> block (the guard prevents this)</div>
+        </div>
+    </div>
+
+    <h3 style="margin-top:24px">The guard</h3>
+    <p style="color:#526578">A new tripwire in <code>tools/ui-guard.sh</code> catches any new file (or modified file) that has BOTH <code>&lt;x-mm.page</code> and <code>@section('page-header')</code>:</p>
+    <pre style="background:#0f1720;color:#e4ecf5;padding:12px;border-radius:8px;overflow:auto;font-size:12px;line-height:1.5;"><code># Tripwire 3: page-header + x-page combo (W2.3).
+tripwire_xpage_pageheader_combo() {
+    while IFS= read -r f; do
+        [ ! -f "$f" ] && continue
+        if grep -q '&lt;x-mm.page' "$f" \
+           && grep -q "@section(['\"]page-header['\"]" "$f"; then
+            report "page-header + x-page combo in $f" \
+                "Remove the @section('page-header') … @stop block." \
+                "See docs/FRONTEND-DEV-PLAN.md W2.3."
+        fi
+    done &lt; &lt;(collect_blade_files)
+}</code></pre>
+    <p style="color:#526578">The tripwire scans the working tree (post-modification state), not the diff. That keeps this migration from tripping itself: the 219 files no longer have both markers, so the guard passes after the migration lands.</p>
+
+    <h3 style="margin-top:24px">What was NOT done (and why)</h3>
+    <p style="color:#526578">The remaining 95 <code>@section('page-header')</code> blocks (in <code>sale/sales/show.blade.php</code>, <code>reports/*/print.blade.php</code>, <code>banquethall/hall_booking/*</code>, etc.) were NOT removed. Those files don't have <code>&lt;x-mm.page&gt;</code> yet, so they fall under the "as encountered" rule — they'll be cleaned up when the page is ported for some other reason (W3, W6, or whatever module work touches them next). Forcing the migration would either leave the page without a header (bad) or require porting 95 unrelated pages (out of scope for W2).</p>
 </section>
 
 </body>

@@ -1,13 +1,9 @@
 @extends('layouts.master')
 @section('title','Edit Permission')
-@section('page-header')
-    <i class="fa fa-gear"></i> Edit Permission
-@stop
 @section('css')
 
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
 @stop
-
 
 @section('content')
 
@@ -22,9 +18,6 @@
                         @method('PUT')
 
                             @include('partials._alert_message')
-
-
-
 
                             <div class="form-group col-sm-12">
                                 <label class="col-sm-3 control-label" for="form-field-1-1"> Sub Module </label>
@@ -78,9 +71,6 @@
                                 </div>
                             </div>
 
-
-
-
                             <div class="form-group">
                                 <label for="inputError" class="col-xs-12 col-sm-3 col-md-3 control-label"></label>
                                 <div class="col-xs-12 col-sm-6">
@@ -94,9 +84,6 @@
     </x-mm.panel>
 </x-mm.page>
 
-
-
-
 @endsection
 
 @section('js')
@@ -104,7 +91,6 @@
     <script src="{{ asset('assets/js/chosen.jquery.min.js') }}"></script>
     <script src="{{ asset('assets/js/jquery.maskedinput.min.js') }}"></script>
     
-
 
     <!--  Select Box Search-->
     <script type="text/javascript">

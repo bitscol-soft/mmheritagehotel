@@ -1,10 +1,6 @@
 @extends('layouts.master')
 @section('title', 'Service Invoice')
 
-@section('page-header')
-    <i class="fa fa-info-circle"></i> Booking Invoice
-@stop
-
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -77,7 +73,6 @@
         $total_amount = $sub_total + $vat_amount;
         $current_due = $total_amount - $adv_amount;
     @endphp
-
 
     <x-mm.styles />
     <x-mm.page class="mm-invoice-page" title="Booking invoice" description="Review the invoice and print it. Printing outputs the document only.">
@@ -152,7 +147,6 @@
 
                                                 @endphp
 
-
                                                 {{-- Booking Service --}}
                                                 @foreach ($booking->bookingDetails as $item)
 
@@ -204,11 +198,6 @@
                                                     </tr>
                                                 @endforeach
 
-
-
-
-
-
                                                 {{-- Booking Adjust Service --}}
                                                 @foreach ($booking->bookingAdjusts as $bookingAdjust)
                                                     @php
@@ -221,8 +210,6 @@
                                                         $total_due_amount += $due_amount;
                                                         $net_collection = $total_paid_amount;
                                                     @endphp
-
-
 
                                                     <tr style="background: #fbeeec">
                                                         <td class="text-center">
@@ -256,10 +243,6 @@
                                                     </tr>
                                                 @endforeach
 
-
-
-
-
                                                 {{-- Hotel Service --}}
                                                 @foreach ($booking->hotelServiceSale ?? [] as $service)
                                                     @php
@@ -269,7 +252,6 @@
 
                                                     @endphp
 
-
                                                     {{-- @if ($due_amount > 0) --}}
 
                                                     @php
@@ -278,7 +260,6 @@
                                                         $total_due_amount += $due_amount;
                                                         $net_collection = $total_paid_amount;
                                                     @endphp
-
 
                                                     <tr style="background: #e9e3e2">
                                                         <td class="text-center">
@@ -312,7 +293,6 @@
                                                     </tr>
                                                 @endforeach
 
-
                                                 {{-- Resturent Service --}}
                                                 @foreach ($booking->resturentServiceSale as $resturent)
                                                     @php
@@ -329,7 +309,6 @@
                                                         $total_due_amount += $due_amount;
                                                         $net_collection = $total_paid_amount;
                                                     @endphp
-
 
                                                     <tr style="background: #fbeeec">
                                                         <td class="text-center">

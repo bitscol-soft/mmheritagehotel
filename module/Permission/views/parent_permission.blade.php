@@ -1,12 +1,8 @@
 @extends('layouts.master')
 @section('title',' Manage Parent Permission')
-@section('page-header')
-    <i class="fa fa-list"></i>  Manage Parent Permission
-@stop
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
 @stop
-
 
 @section('content')
 <x-mm.styles />
@@ -20,8 +16,6 @@
                     @method('PUT')
                 @endif
                 @include('partials._alert_message')
-
-
 
                 <div class="row">
 
@@ -61,10 +55,6 @@
                             @enderror
                         </div>
                     </div>
-
-
-
-
 
                     <div class="form-group">
                         <label for="inputError" class="col-xs-12 col-sm-3 col-md-3 control-label"></label>
@@ -131,8 +121,6 @@
     <script src="{{ asset('assets/js/jquery.dataTables.bootstrap.min.js') }}"></script>
 
     
-
-
 
     <!--  Select Box Search-->
     <script type="text/javascript">

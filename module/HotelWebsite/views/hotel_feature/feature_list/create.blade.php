@@ -1,10 +1,6 @@
 @extends('layouts.master')
 
-
 @section('title',' Edit Feature List')
-@section('page-header')
-<i class="fa fa-gears"></i> Homepage Feature List
-@stop
 @section('css')
 <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
 @stop
@@ -59,7 +55,6 @@
                     </div>
                 </div>
             </div>
-
 
             <div class="form-actions center" style="text-align: right !important; margin: 0;">
                 <button type="submit" class="mm-button">

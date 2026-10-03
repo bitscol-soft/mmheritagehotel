@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title','Add New Category')
-@section('page-header')
-    <i class="fa fa-plus-circle"></i> Add New Category
-@stop
 @push('style')
 <link rel="stylesheet" href="{{ asset('assets/css/dropzone.min.css') }}" />
 <style>
@@ -27,7 +24,6 @@
                         @csrf
 
                         <x-alert-message />
-
 
                         <div class="row">
                             <div class="col-md-6">
@@ -98,7 +94,6 @@
                                             </div>
                                         </div>
                                     </div>
-
 
                                     {{-- <div class="col-md-12">
                                         <div class="form-group">
@@ -172,7 +167,6 @@
                             </div>
                         </div>
 
-
                         <div class="col-md-12 guest-wise-price-div" style="display: none">
                             <div class="form-group">
                                 <h4 style="font-weight: bolder">Guest Wise Price</h4>
@@ -182,8 +176,6 @@
                                 </div>
                             </div>
                         </div>
-
-
 
                         <div class="form-group category-form-actions">
                             <div class="col-xs-12 col-sm-12 text-right">
@@ -197,8 +189,6 @@
         </x-mm.panel>
     </x-mm.page>
 @endsection
-
-
 
 @section('js')
     <script src="{{ asset('assets/js/ace-elements.min.js') }}"></script>

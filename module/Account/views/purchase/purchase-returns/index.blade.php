@@ -2,11 +2,6 @@
 
 @section('title', 'Purchase Return List')
 
-@section('page-header')
-<i class="fa fa-info-circle"></i> Purchase Return List
-@stop
-
-
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -74,9 +69,6 @@
                     </table>
                 </x-mm.table-scroll>
             </div>
-
-
-
 
             @if(count($purchaseReturns) <= 0)
                 <div class="text-center">

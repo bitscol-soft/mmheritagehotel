@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title', 'Fund Transfer Edit')
-@section('page-header')
-    <i class="fa fa-list"></i> Fund Transfer Edit
-@stop
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}"/>
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}"/>
@@ -30,7 +27,6 @@
 
             <div class="row" style="width: 100%; margin: 0 0 20px !important;">
                 <div class="col-sm-12 px-4">
-
 
                 <!-- Date -->
                 @include('includes.inputs.date-field', ['name' => 'date', 'is_required' => 'required', 'value' => $fundTransfer->date])
@@ -91,7 +87,6 @@
                         </div>
                     </div>
 
-
                     <!-- Description -->
                 @include('includes.inputs.input-field', ['name' => 'description', 'is_required' => 1, 'value' => $fundTransfer->description])
 
@@ -116,7 +111,6 @@
 @section('js')
     <script src="{{ asset('assets/js/chosen.jquery.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap-datepicker.min.js') }}"></script>
-
 
     <script src="{{ asset('assets/custom_js/chosen-box.js') }}"></script>
     <script src="{{ asset('assets/custom_js/date-picker.js') }}"></script>

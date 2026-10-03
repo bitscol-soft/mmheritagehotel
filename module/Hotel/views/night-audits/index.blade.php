@@ -2,10 +2,6 @@
 
 @section('title', ' Night Audit')
 
-@section('page-header')
-    <i class="fa fa-info-circle"></i> Night Audit <span class="badge badge-info">{{ $nightaudits->count() }}</span>
-@stop
-
 @section('content')
 
     <x-mm.styles />

@@ -2,10 +2,6 @@
 
 @section('title', 'Today In House Guest List')
 
-@section('page-header')
-    <i class="fa fa-plus-circle"></i> Today In House Guest List
-@stop
-
 @section('content')
 <x-mm.styles />
 <x-mm.page class="mm-report" title="Today in-house guest list" description="Guests staying in the hotel today.">

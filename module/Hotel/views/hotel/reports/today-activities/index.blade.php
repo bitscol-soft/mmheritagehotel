@@ -2,10 +2,6 @@
 
 @section('title', 'Today Report')
 
-@section('page-header')
-    <i class="fa fa-plus-circle"></i> Today Report
-@stop
-
 @section('content')
 <x-mm.styles />
 <x-mm.page class="mm-report" title="Today report" description="Check-ins, check-outs and reservations for one day.">
@@ -232,5 +228,4 @@
     @endif
 </x-mm.page>
 @endsection
-
 

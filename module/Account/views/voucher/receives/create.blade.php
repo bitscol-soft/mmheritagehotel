@@ -1,19 +1,11 @@
 @extends('layouts.master')
 
-
 @section('title', 'Receive Voucher')
-
-
-@section('page-header')
-    <i class="fa fa-plus-circle"></i> Receive Voucher
-@stop
-
 
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/custom_css/chosen-required.css') }}" />
-
 
     <style>
         td {
@@ -44,10 +36,6 @@
     </style>
 @endpush
 
-
-
-
-
 @section('content')
 
 <x-mm.styles />
@@ -61,14 +49,11 @@
         <form id="form" action="{{ route('voucher-receives.store') }}" method="post" enctype="multipart/form-data">
             @csrf
 
-
             <input type="hidden" name="voucher_type" value="Receive">
-
 
             <div class="row mt-1">
 
                 <div class="col-sm-12 px-3">
-
 
                     <!-- Filter -->
                     <div class="row">
@@ -102,9 +87,6 @@
                             </div>
                         </div>
 
-
-
-
                         <!-- Reference -->
                         <div class="col-sm-5 my-1">
                             <div class="input-group">
@@ -115,8 +97,6 @@
                                     type="text">
                             </div>
                         </div>
-
-
 
                         <!-- Date -->
                         <div class="col-sm-2 my-1">
@@ -134,13 +114,6 @@
                         </div>
                     </div>
 
-
-
-
-
-
-
-
                     <!-- Item Detail -->
                     <div class="row mt-2">
                         <div class="col-sm-12">
@@ -157,10 +130,6 @@
                                             <td width="50px;"></td>
                                         </tr>
                                     </thead>
-
-
-
-
 
                                     <!-- Item Detail Table Body -->
                                     <tbody>
@@ -284,8 +253,6 @@
                                         @endif
                                     </tbody>
 
-
-
                                     <!-- Table Footer -->
                                     <tfoot>
                                         <tr>
@@ -314,16 +281,6 @@
                     </div>
                 </div>
 
-
-
-
-
-
-
-
-
-
-
                 <div class="col-sm-12 px-4 mt-2 mb-2">
 
                     <div class="row">
@@ -344,10 +301,6 @@
                                     <input type="file" name="attachment" id="id-input-file-3" />
                             </div>
                         </div>
-
-
-
-
 
                         <!-- Action -->
                         <div class="pull-right mt-5">
@@ -372,24 +325,12 @@
 
 @endsection
 
-
-
-
-
 @section('js')
-
 
     <script src="{{ asset('assets/js/chosen.jquery.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap-datepicker.min.js') }}"></script>
     <script src="{{ asset('assets/custom_js/chosen-box.js') }}"></script>
     <script src="{{ asset('assets/custom_js/date-picker.js') }}"></script>
-
-
-
-
-
-
-
 
     <script>
         const saveButton = $('.save-btn')
@@ -426,18 +367,9 @@
                             <td><a class="ibtnDel btn btn-sm btn-danger"><i class="fa fa-trash-o"></i></a></td>
                         </tr>`
 
-
-
-
         $('select').chosen({
             allow_single_deselect: true
         });
-
-
-
-
-
-
 
         $("#draft").click(function() {
 
@@ -446,16 +378,9 @@
             $('#form').submit();
         })
 
-
-
-
         $(document).on("keyup", ".calculate-total", function() {
             calculateAmount()
         });
-
-
-
-
 
         function calculateAmount() {
 
@@ -480,30 +405,14 @@
             }
         }
 
-
-
-
-
-
         function disabledReverse($class_name, object) {
             let disableItem = $(object).closest('tr').find('.' + $class_name)
             disableItem.attr('readonly', true).val('0')
         }
 
-
-
-
-
-
-
         function enableMe(object) {
             $(object).attr('readonly', false)
         }
-
-
-
-
-
 
         $(document).ready(function() {
             var i = 0;

@@ -1,12 +1,6 @@
 @extends('layouts.master')
 
-
 @section('title', 'Equity Statement')
-
-
-@section('page-header')
-    <i class="fa fa-info-circle"></i> Equity Statement
-@stop
 
 @push('style')
 
@@ -26,7 +20,6 @@
         tr {
             border: 1px solid black !important;
         }
-
 
         @media print {
 
@@ -71,7 +64,6 @@
     </style>
 @endpush
 
-
 @section('content')
 @php
     $from = request('from', date('Y-m-d'));
@@ -108,27 +100,17 @@
         <h3 class="text-center d-print" style="margin-top: -30px !important;">EQUITY STATEMENT</h3>
         <h4 class="text-center d-print">As On {{ fdate(request('from') ?? today(), 'd/m/Y') }}</h4>
 
-
-
         @php
             $previous_year_share_capital = 0;
             $previous_year_retained_earnings = 0;
         @endphp
 
-
-
-
-
         <!-- DETAIL -->
         <div class="row" style="width: 100%; margin: 0 !important; padding: 0 !important;">
-
-
 
             <div class="col-sm-12">
                 <x-mm.table-scroll label="Equity Statement">
                     <table class="table table-sm table-bordered">
-
-
 
                         <thead>
                             <tr>
@@ -138,9 +120,6 @@
                                 <th class="text-center">Total</th>
                             </tr>
                         </thead>
-
-
-
 
                         <tbody>
                             <tr>
@@ -217,16 +196,12 @@
                     <img src="{{ asset('assets/images/export-icons/excel-icon.png') }}">
                 </a>
 
-
             </div>
         </div>
     </x-mm.panel>
 </x-mm.page>
 
 @endsection
-
-
-
 
 @section('js')
 

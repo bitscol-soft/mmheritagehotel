@@ -2,10 +2,6 @@
 
 @section('title', 'Expected Departure List')
 
-@section('page-header')
-    <i class="fa fa-plus-circle"></i> Expected Departure List
-@stop
-
 @section('content')
 <x-mm.styles />
 <x-mm.page class="mm-report" title="Expected departure list" description="Guests due to check out on the selected date.">
@@ -38,5 +34,4 @@
     @endif
 </x-mm.page>
 @endsection
-
 

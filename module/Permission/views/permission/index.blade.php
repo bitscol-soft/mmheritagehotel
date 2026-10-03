@@ -1,12 +1,8 @@
 @extends('layouts.master')
 @section('title','User Permission')
-@section('page-header')
-    <i class="fa fa-list"></i> User Permissions
-@stop
 @section('css')
 
 @stop
-
 
 @section('content')
 <x-mm.styles />
@@ -97,7 +93,6 @@
         }
 
     </script>
-
 
     <script type="text/javascript">
         jQuery(function($) {

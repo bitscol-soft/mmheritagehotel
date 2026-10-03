@@ -1,14 +1,10 @@
 @extends('layouts.master')
 @section('title','Edit User Permission')
-@section('page-header')
-    <i class="fa fa-edit"></i> Edit User Permission
-@stop
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/jquery-ui.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/jquery-ui.custom.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
 @stop
-
 
 @section('content')
 
@@ -23,14 +19,12 @@
                             <!-- Employee info -->
                             <div class="row">
 
-
                                  <div class="col-md-4" style="height: 40px;">
                                     <div class="input-group" style="width:100%">
                                         <label class="input-group-addon" style="width:130px; text-align:left"> Employee Id </label>
                                         <input type="text" name="employee_name" class="form-control" value="{{ optional($user->employee)->employee_full_id ?? 'Not an Emloyee' }}" readonly  />
                                     </div>
                                 </div>
-
 
                                 <div class="col-md-4" style="height: 40px;">
                                     <div class="input-group" style="width:100%">
@@ -46,8 +40,6 @@
                                     </div>
                                 </div>
 
-
-
                                 <div class="col-md-4" style="height: 40px;">
                                     <div class="input-group" style="width:100%">
                                         <label class="input-group-addon" style="width:130px; text-align:left"> Department </label>
@@ -62,10 +54,7 @@
                                     </div>
                                 </div>
 
-
                             </div>
-
-
 
                             <!-- Order Type -->
                             @if( in_array('Order Type', $hasFeatures) && false)
@@ -81,7 +70,6 @@
                                             </h4>
                                         </div>
 
-
                                         <div id="collapse_order_type" class="panel-collapse collapse" role="tabpanel" aria-labelledby="order_type_collapse">
                                             <div class="panel-body">
                                                 <div class="row order-type">
@@ -96,7 +84,6 @@
                                                             </td>
                                                         </tr>
                                                         </thead>
-
 
                                                         <tbody>
                                                         @foreach ($orderTypes->chunk(5) as $row)
@@ -125,8 +112,6 @@
                                 </div>
                             @endif
 
-
-
                             <!-- Company -->
                             @if( in_array('Company', $hasFeatures))
                                 <div class="panel-group" style="margin-top:40px" id="accordion" role="tablist" aria-multiselectable="true">
@@ -140,7 +125,6 @@
                                                 </a>
                                             </h4>
                                         </div>
-
 
                                         <div id="collapse_company" class="panel-collapse collapse" role="tabpanel" aria-labelledby="company_collapse">
                                             <div class="panel-body">
@@ -156,7 +140,6 @@
                                                             </td>
                                                         </tr>
                                                         </thead>
-
 
                                                         <tbody>
                                                         @foreach ($companies->chunk(5) as $row)
@@ -184,9 +167,6 @@
                                 </div>
                             @endif
 
-
-
-
                             <!-- Department -->
                             @if( in_array('Department', $hasFeatures))
                                 <div class="panel-group" style="margin-top:40px" id="accordion" role="tablist" aria-multiselectable="true">
@@ -200,7 +180,6 @@
                                                 </a>
                                             </h4>
                                         </div>
-
 
                                         <div id="collapse_department" class="panel-collapse collapse" role="tabpanel" aria-labelledby="department_collapse">
                                             <div class="panel-body">
@@ -216,8 +195,6 @@
                                                             </td>
                                                         </tr>
                                                         </thead>
-
-
 
                                                         <tbody>
                                                         @if ($departments)
@@ -249,9 +226,6 @@
                                 </div>
                             @endif
 
-
-
-
                             <!-- Designation -->
                             @if( in_array('Designation', $hasFeatures))
                                 <div class="panel-group" style="margin-top:40px" id="accordion" role="tablist" aria-multiselectable="true">
@@ -265,7 +239,6 @@
                                                 </a>
                                             </h4>
                                         </div>
-
 
                                         <div id="collapse_designation" class="panel-collapse collapse" role="tabpanel" aria-labelledby="designation_collapse">
                                             <div class="panel-body">
@@ -281,8 +254,6 @@
                                                             </td>
                                                         </tr>
                                                         </thead>
-
-
 
                                                         <tbody>
                                                         @if ($designations)
@@ -314,8 +285,6 @@
                                 </div>
                             @endif
 
-
-
                             <!-- Buyer -->
                             @if( in_array('Buyer', $hasFeatures) && false)
                                 <div class="panel-group" style="margin-top:40px" id="accordion" role="tablist" aria-multiselectable="true">
@@ -329,7 +298,6 @@
                                                 </a>
                                             </h4>
                                         </div>
-
 
                                         <div id="collapse_buyer" class="panel-collapse collapse" role="tabpanel" aria-labelledby="buyer_collapse">
                                             <div class="panel-body">
@@ -345,8 +313,6 @@
                                                             </td>
                                                         </tr>
                                                         </thead>
-
-
 
                                                         <tbody>
                                                         @foreach ($buyers->chunk(5) as $row)
@@ -374,14 +340,10 @@
                                 </div>
                             @endif
 
-
-
-
                             <!-- Access Control -->
                             @if ($modules->count() > 0)
                                 <div class="well text-center" style="margin-top:30px; margin-left:auto; margin-right:auto; font-size:20px; padding:10px; font-weight:bold">Access Control</div>
                             @endif
-
 
                             <!-- Menus All -->
                             <div class="access-control">
@@ -448,8 +410,6 @@
                                     @endforeach
                                 </ul>
 
-
-
                                 {{-- actions --}}
                                 <div class="form-group pull-right" style="margin-top:14px">
                                     <button class="btn  btn-sm btn-success"> <i class="fa fa-save"></i> Update </button>
@@ -457,7 +417,6 @@
                                 </div>
 
                             </div>
-
 
                         </form>
                     
@@ -480,10 +439,8 @@
 <script src="{{ asset('assets/js/jquery-ui.custom.min.js') }}"></script>
 <script src="{{ asset('assets/js/chosen.jquery.min.js') }}"></script>
 
-
 <script src="{{ asset('assets/js/ace-elements.min.js') }}"></script>
 <script src="{{ asset('assets/js/ace.min.js') }}"></script>
-
 
 {{-- dynamically control checkbox --}}
 <script type="text/javascript">
@@ -565,7 +522,6 @@
             $(this).closest("label").find(".array_permission").val(0);
         }
 
-
         var flag = false;
         var rowChildCheckBoxes = $(this).closest('tr');
 
@@ -599,8 +555,6 @@
     })
 </script>
 
-
-
 {{-- // populate employee information when select employee id --}}
 <script type="text/javascript">
 
@@ -632,7 +586,6 @@ var has_route = $('#route-exist').val();
 
 </script>
 {{-- acrodion --}}
-
 
 <script>
     function toggleIcon(e) {

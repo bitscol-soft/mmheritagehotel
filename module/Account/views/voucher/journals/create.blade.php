@@ -2,16 +2,11 @@
 
 @section('title', 'Journal Voucher')
 
-@section('page-header')
-    <i class="fa fa-plus-circle"></i> Create Journal Voucher
-@stop
-
 @push('style')
 
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/custom_css/chosen-required.css') }}" />
-
 
     <style>
         td {
@@ -41,13 +36,6 @@
 
     </style>
 @endpush
-
-
-
-
-
-
-
 
 @section('content')
 
@@ -340,12 +328,7 @@
 
 @endsection
 
-
-
-
-
 @section('js')
-
 
     <script src="{{ asset('assets/js/chosen.jquery.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap-datepicker.min.js') }}"></script>
@@ -488,7 +471,6 @@
             $(object).attr('readonly', false)
         }
     </script>
-
 
     <script type="text/javascript">
         $(document).ready(function() {

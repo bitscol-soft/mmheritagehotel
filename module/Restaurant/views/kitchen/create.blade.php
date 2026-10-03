@@ -2,10 +2,6 @@
 
 @section('title', 'Kitchen Order List')
 
-@section('page-header')
-    <i class="fa fa-gears"></i> Kitchen Order List
-@stop
-
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -77,7 +73,6 @@
                                 <span class="label label-sm label-danger">No New Order Found</span>
                             @endif
 
-
                         </footer>
                     </article>
                 @endif
@@ -116,7 +111,6 @@
                             @endforeach
                         </tbody>
 
-
                     </table>
                 </x-mm.table-scroll>
             </x-mm.panel>
@@ -131,9 +125,7 @@
     <script src="{{ asset('assets/js/jquery.dataTables.bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/custom_js/date-picker.js') }}"></script>
 
-
     @include('currency-conversions.inc.script')
-
 
     <!-- inline scripts related to this page -->
     <script type="text/javascript">

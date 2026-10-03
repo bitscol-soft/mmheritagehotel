@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title', 'Booking Note List')
-@section('page-header')
-    <i class="fa fa-info-circle"></i> Booking Note List
-@stop
 
 @section('content')
     <x-mm.styles />

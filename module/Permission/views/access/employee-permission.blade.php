@@ -1,14 +1,10 @@
 @extends('layouts.master')
 @section('title', 'Employee Permission')
-@section('page-header')
-    <i class="fa fa-plus-circle"></i> Employee Permission
-@stop
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/jquery-ui.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/jquery-ui.custom.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
 @stop
-
 
 @section('content')
 
@@ -17,7 +13,6 @@
     <x-mm.panel>
                 <form class="form-horizontal" action="{{ route('permission-access.employee.store') }}" method="post" role="form">
                     @csrf
-
 
                     <!-- Ppermissions For Employee -->
                     <ul style="list-style:none" class="list-group">
@@ -83,8 +78,6 @@
                         @endforeach
                     </ul>
 
-
-
                     <!-- actions -->
                     <div class="btn-group pull-right" style="margin-top:14px">
                         <a href="{{ route('permitted.users') }}" class="btn btn-sm  btn-info"> <i class="fa fa-list"></i> List</a>
@@ -102,7 +95,6 @@
         <input type="hidden" id="route-exist" value="{{ route('selected_employee') }}">
     @endif
 
-
     <input type="hidden" id="csrf" value="{{ csrf_token() }}">
 
 @endsection
@@ -113,10 +105,8 @@
 <script src="{{ asset('assets/js/jquery-ui.custom.min.js') }}"></script>
 <script src="{{ asset('assets/js/chosen.jquery.min.js') }}"></script>
 
-
 <script src="{{ asset('assets/js/ace-elements.min.js') }}"></script>
 <script src="{{ asset('assets/js/ace.min.js') }}"></script>
-
 
 {{-- dynamically control checkbox --}}
 <script type="text/javascript">
@@ -198,7 +188,6 @@
             $(this).closest("label").find(".array_permission").val(0);
         }
 
-
         var flag = false;
         var rowChildCheckBoxes = $(this).closest('tr');
 
@@ -232,11 +221,8 @@
     })
 </script>
 
-
-
 {{-- // populate employee information when select employee id --}}
 <script type="text/javascript">
-
 
 var has_route = $('#route-exist').val();
 
@@ -265,7 +251,6 @@ if(has_route != 'no')
 }
 </script>
 {{-- acrodion --}}
-
 
 <script>
     function toggleIcon(e) {

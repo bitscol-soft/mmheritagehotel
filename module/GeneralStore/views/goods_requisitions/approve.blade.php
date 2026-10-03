@@ -1,9 +1,6 @@
 
 @extends('layouts.master')
 @section('title','Approve Goods Requisition')
-@section('page-header')
-    <i class="fa fa-gear"></i> Approve Goods Requisition
-@stop
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -17,7 +14,6 @@
     </style>
 @stop
 
-
 @section('content')
 
 <x-mm.styles />
@@ -29,7 +25,6 @@
         <form class="form-horizontal" action="{{ route('approve.goods.requisition', $goodsRequisition->id) }}" method="post" enctype="multipart/form-data">
             @csrf
             @method('PUT')
-
 
             @if ($errors->any())
                 <div class="alert alert-danger error">
@@ -65,7 +60,6 @@
                 </div>
             @endif
 
-
             <div class="form-group">
                 <label class="col-sm-3 control-label" for="form-field-1-1"> Company </label>
                 <div class="col-xs-12 col-sm-8 @error('company_id') has-error @enderror">
@@ -83,7 +77,6 @@
                 </div>
             </div>
 
-
             <div class="form-group">
                 <label class="col-sm-3 control-label" for="form-field-1-1"> Department </label>
                 <div class="col-xs-12 col-sm-8 @error('department_id') has-error @enderror">
@@ -99,8 +92,6 @@
                     @enderror
                 </div>
             </div>
-
-
 
             <div class="form-group col-">
                 <label for="inputError" class="col-xs-12 col-sm-3 col-md-3 control-label"> Date </label>
@@ -259,7 +250,6 @@
     <script src="{{ asset('assets/js/chosen.jquery.min.js') }}"></script>
     <script src="{{ asset('assets/custom_js/jq_repeater.js') }}"></script>
 
-
     <script src="{{ asset('assets/js/bootstrap-datepicker.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap-timepicker.min.js') }}"></script>
 
@@ -284,7 +274,6 @@
         var item_row = 0;
         var items = [];
 
-
         function load_item_stock(element) {
             var id = $(element).val();
             var row = $(element).closest('tr');
@@ -300,13 +289,11 @@
             });
         }
 
-
         function insert_Row(el) {
             // alert($(".company_id option:selected").val())
             var item_row = $('.item').length + 1;
             // first delete add item
             $(el).parents("tr").remove();
-
 
             // add new item row
             var r = document.getElementById('goods_requisition_table').insertRow();
@@ -322,7 +309,6 @@
 
             c1.innerHTML = '<select name="item_id[]" class="form-control item item'+ item_row + ' chosen-select" onchange="load_item_stock(this)"></select>';
 
-
             c2.innerHTML = '<input type="text" name="item_unit_id[]" class="form-control item_unit" readonly="readonly" />';
 
             c3.innerHTML = '<input type="text" id="current_stockq"' + item_row + ' name="current_stock[]" class="form-control current_stock item_stock" readonly="readonly" />';
@@ -333,11 +319,9 @@
 
             c6.innerHTML = '<button type="button" class="ibtnDel btn btn-sm btn-danger delete_row" onclick="removeRow(this)"><i class="fa fa-times-circle"></i></button>';
 
-
             // again add "+ Add New" Button
             var markup = '<tr><td colspan="7" style="text-align: right;"><button type="button" onclick="insert_Row(this)" class="btn btn-xs btn-inverse add_row r-btnAdd"> + Add New </button></td></tr>';
             $("table tbody").append(markup);
-
 
             var company_id = $(".company_id option:selected").val();
             load_items(null, company_id, item_row);
@@ -352,7 +336,6 @@
             }
 
         }
-
 
         function load_items(element = null, company_id = null, item_row = null) {
             var id = company_id == null ? $(element).val() : company_id;
@@ -381,7 +364,6 @@
         }
     </script>
 
-
     <script type="text/javascript">
         $(() => chosenTrigger() )
 
@@ -409,7 +391,6 @@
                         })
                     });
 
-
                     $('#chosen-multiple-style .btn').on('click', function(e){
                         var target = $(this).find('input[type=radio]');
                         var which = parseInt(target.val());
@@ -417,7 +398,6 @@
                         else $('#form-field-select-4').removeClass('tag-input-style');
                     });
                 }
-
 
                 if(!ace.vars['touch']) {
                     $('.chosen-select').chosen({allow_single_deselect:true});
@@ -440,7 +420,6 @@
                         })
                     });
 
-
                     $('#chosen-multiple-style .btn').on('click', function(e){
                         var target = $(this).find('input[type=radio]');
                         var which = parseInt(target.val());
@@ -451,8 +430,6 @@
 
             })
         }
-
-
 
         function checkQtyLimit(object)
         {
@@ -466,8 +443,5 @@
         }
     </script>
 
-
 @stop
-
-
 

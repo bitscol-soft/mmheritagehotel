@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title', 'Contra Voucher')
-@section('page-header')
-<i class="fa fa-plus-circle"></i> Create Contra Voucher
-@stop
 @push('style')
 <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
 <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -324,7 +321,6 @@
         $(object).attr('readonly', false)
     }
 </script>
-
 
 <script type="text/javascript">
     $(document).ready(function() {

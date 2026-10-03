@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title','Vat & Services')
-@section('page-header')
-    <i class="fa fa-info-circle"></i> Vat & Services
-@stop
 
 @section('content')
 <x-mm.styles />
@@ -114,7 +111,6 @@
                     </div>
                 </div>
             </div>
-
 
             <div class="form-actions center mb-0" style="text-align: right !important;">
                 <button type="submit" class="mm-button">

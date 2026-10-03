@@ -1,10 +1,6 @@
 @extends('layouts.master')
 @section('title', 'Hotel Service Invoice')
 
-@section('page-header')
-    <i class="fa fa-gear"></i> Hotel Service Invoice
-@stop
-
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -88,7 +84,6 @@
                                 <div id="customer_info" style="padding: 0 10px;">
                                     <div class="row">
 
-
                                         <div class="company-info text-center">
                                             <h4>{{ optional($invoice->company)->name }}</h4>
                                             <p>{{ optional($invoice->company)->head_office }}</p>
@@ -114,7 +109,6 @@
                                             <p class="patient"><b>Mobile : </b>
                                                 {{ optional($invoice->hotel_guest)->phone_no }}
                                             </p>
-
 
                                         </div>
                                         <div class="invoiceInfo" style="width: 40%;float: left;margin-top: 5px;">
