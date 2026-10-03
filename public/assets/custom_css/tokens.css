@@ -26,6 +26,9 @@
     --mm-brand-hover:  #275188;
     --mm-brand-soft:   #eef3f9;
     --mm-ink:          #1f2a33;
+    --mm-ink-soft:     #344558;   /* W2.5: readable on --mm-bg / --mm-brand-soft
+                                    for sub-12px text. AAA at 12px on white;
+                                    AA at 12px on --mm-bg (#f7fafd). */
     --mm-muted:        #526578;
     --mm-line:         #dbe5f1;
     --mm-bg:           #f7fafd;

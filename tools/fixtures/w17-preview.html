@@ -43,6 +43,7 @@
         <li><a href="#booking-board">Booking board</a> — wrapped in <code>x-mm.page</code> since W1 (visually a no-op).</li>
         <li><a href="#booking-list">Booking list</a> — W1.7 added an <code>x-mm.toolbar</code>; W1.7c ports the 12-column table to <code>x-mm.data-table</code> with all hooks preserved.</li>
         <li><a href="#guest-list">Guest list</a> — full W1.7 conversion: <code>x-mm.toolbar</code> + <code>x-mm.data-table</code> with all form hooks preserved.</li>
+        <li><a href="#w2-4-5">W2.4 + W2.5</a> — fluid container (max 1440), stack utilities, contrast sweep with <code>--mm-ink-soft</code>, a11y tokens.</li>
     </ul>
 </div>
 
@@ -62,7 +63,47 @@
     </div>
     <div class="mm-panel" style="padding: 16px;">
         <p style="margin:0;color:#526578">Stay range: 10/03/2026 - 10/04/2026 (sample). The room board renders the 35 available rooms in a 2-row grid; expand each room to select it for a booking. Not reproduced here.</p>
+        <div class="board-stay-strip" style="margin-top:12px">
+            <span class="stay-chip stay-chip-right"><i class="fa fa-home"></i> <b>35</b> rooms</span>
+            <span class="stay-chip stay-chip-right"><i class="fa fa-check-circle"></i> <b>8</b> free now</span>
+            <span class="stay-chip stay-chip-right"><i class="fa fa-bed"></i> <b>12</b> occupied</span>
+        </div>
     </div>
+</section>
+
+<!-- ==================== W2.4 + W2.5 ==================== -->
+<section class="preview-section" id="w2-4-5">
+    <h2>W2.4 + W2.5 — fluid container, a11y tokens, contrast sweep</h2>
+    <p style="color:#526578">W2 is the app-shell lane from <code>docs/FRONTEND-DEV-PLAN.md</code>. This commit is the CSS-only sub-tasks: a fluid container with a max-1440 width cap, the <code>prefers-reduced-motion</code> and <code>:focus-visible</code> tokens (already shipped in W1), and a contrast sweep that introduces a new <code>--mm-ink-soft</code> token for sub-12px text on colored backgrounds.</p>
+
+    <h3 style="margin-top:24px">Fluid container (max 1440)</h3>
+    <p style="color:#526578"><code>.mm-container</code> caps the page content at 1440px wide, centres it, and gives it 24px of side padding (16px on mobile). <code>.mm-container-fluid</code> is the same but with no max-width cap — useful for boards and tables that should bleed to the edge of the screen but still want consistent side padding.</p>
+    <div class="mm-container" style="background:#edf4ff;border:1px dashed #2f63a8;padding:16px;text-align:center;color:#24436a;">
+        <strong>.mm-container</strong> — content stays inside this 1440px box, even on a 4K display.
+    </div>
+    <div class="mm-container-fluid" style="background:#ecf6ee;border:1px dashed #2c6c33;padding:16px;text-align:center;color:#1c4d22;margin-top:12px;">
+        <strong>.mm-container-fluid</strong> — full-bleed (no max-width), still has the 24px side padding.
+    </div>
+
+    <h3 style="margin-top:24px">Stacks (vertical rhythm)</h3>
+    <p style="color:#526578">Two new utility classes for the common "stack of panels" pattern. <code>.mm-stack</code> uses 16px gaps (the default page rhythm); <code>.mm-stack-tight</code> uses 8px (for sub-sections inside a panel).</p>
+    <div class="mm-stack" style="background:var(--mm-bg);border:1px solid var(--mm-line);border-radius:8px;padding:16px;max-width:480px;">
+        <div class="mm-panel" style="padding:12px;">Item 1</div>
+        <div class="mm-panel" style="padding:12px;">Item 2</div>
+        <div class="mm-panel" style="padding:12px;">Item 3</div>
+    </div>
+
+    <h3 style="margin-top:24px">Contrast sweep (W2.5)</h3>
+    <p style="color:#526578">The booking board's stay-range chips and the data-table / table-scroll <code>&lt;thead&gt;</code> labels now use <code>--mm-ink-soft</code> instead of <code>--mm-muted</code> for the 12px text. <code>--mm-ink-soft</code> is a darker blue-grey (<code>#344558</code>) that hits WCAG AA at 12px on the <code>--mm-bg</code> surface, where <code>--mm-muted</code> was a bit thin.</p>
+    <div class="board-stay-strip" style="margin-top:12px">
+        <span class="stay-chip stay-chip-right"><i class="fa fa-home"></i> <b>35</b> rooms (now in --mm-ink-soft)</span>
+        <span class="stay-chip stay-chip-right"><i class="fa fa-check-circle"></i> <b>8</b> free now</span>
+    </div>
+
+    <h3 style="margin-top:24px">prefers-reduced-motion + :focus-visible</h3>
+    <p style="color:#526378">Both were shipped in W1 and verified still in place. The reduced-motion rule disables every animation/transition inside <code>.mm-ui</code> when the user has the OS-level setting on. The focus-visible rule paints a 3px brand-coloured outline around any mm-* element that receives keyboard focus (mouse focus doesn't trigger the outline). Test by tabbing through the page.</p>
+    <button class="mm-button" style="margin-top:8px">Tab into this button to see :focus-visible</button>
+    <button class="mm-button mm-button-ghost" style="margin-top:8px;margin-left:8px">And this one</button>
 </section>
 
 <!-- ==================== BOOKING LIST ==================== -->
