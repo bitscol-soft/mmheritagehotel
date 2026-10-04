@@ -17,19 +17,7 @@
 
                 <div class="row">
                     <div class="col-sm-12">
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label" for="form-field-1-1">Aminities
-                                Name</label>
-
-                            <div class="col-xs-12 col-sm-8 @error('name') has-error @enderror">
-                                <input type="text" class="form-control input-sm" name="name"
-                                    value="" placeholder="Aminities Name">
-
-                                @error('name')
-                                    <span class="text-danger"> {{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
+                        <x-mm.field label="Aminities Name" id="hall-amenity-name" name="name" placeholder="Aminities Name" />
                     </div>
                     <div class="col-sm-12">
                         <div class="form-group">
@@ -38,6 +26,8 @@
 
                             <div class="col-xs-12 col-sm-8 @error('name') has-error @enderror">
                                 <label class="text-danger">use flaticon icon/png size (38 * 40)px</label>
+                                {{-- W4.2: kept raw. The ace_file_input plugin binds to the
+                                     `category_photos` class on this <input>. --}}
                                 <input type="file" name="aminiti_icon" class="category_photos" multiple>
 
                                 @error('name')
@@ -51,6 +41,8 @@
                             <label class="col-sm-3 control-label" for="form-field-1-1"> Status</label>
 
                             <div class="col-xs-12 col-sm-8 @error('status') has-error @enderror">
+                                {{-- W4.2: kept raw. The select2 plugin binds to the
+                                     `select2` class on this <select>. --}}
                                 <select name="status" class="select2">
                                     <option value="">Select Option</option>
                                     <option value="1">Active</option>
