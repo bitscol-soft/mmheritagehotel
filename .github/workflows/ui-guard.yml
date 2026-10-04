@@ -1,15 +1,22 @@
 # =============================================================================
 # UI guard — diff tripwires for Blade / JS / CSS UI changes (W0.4).
 #
-# Runs tools/ui-guard.sh on every push and PR. Two tripwires (per
+# Runs tools/ui-guard.sh on every push and PR. Three tripwires (per
 # docs/FRONTEND-DEV-PLAN.md W0.4):
 #   1. money-line change: any added/removed line in resources/views/**/*.blade.php
 #      or module/*/views/**/*.blade.php that touches invoice/payment context plus
 #      an amount keyword. Override with <!-- money-travel-on: <reason> -->.
 #   2. nested style include: any @include/@yield/@stack directive inside a
 #      <style>…</style> block in a Blade file (round-10 defect class).
+#   3. page-header + x-page combo: file with BOTH <x-mm.page> AND
+#      @section('page-header') is a W2.3 violation (the master layout
+#      does not @yield it, so the page-header block is dead code).
 #
 # The script exits 1 when any tripwire triggers, which fails this workflow.
+# A second job runs tools/ui-guard-test.sh as a self-test that catches
+# silent regressions in the tripwire regexes themselves (9 assertions
+# cover all three tripwires + the per-line override marker + the
+# portable character-class word boundary).
 # =============================================================================
 name: UI guard
 
@@ -33,6 +40,7 @@ on:
 
 permissions:
   contents: read
+  pull-requests: write
 
 jobs:
   guard:
@@ -62,7 +70,28 @@ jobs:
         run: git fetch origin "${{ steps.base.outputs.ref }}"
 
       - name: Run the diff tripwires
-        run: ./tools/ui-guard.sh --base="origin/${{ steps.base.outputs.ref }}"
+        id: tripwires
+        run: ./tools/ui-guard.sh --base="origin/${{ steps.base.outputs.ref }}" 2> tripwire-failures.txt || echo "TRIPWIRE_FAILED=1" >> "$GITHUB_OUTPUT"
+
+      - name: Post PR comment on tripwire failure
+        if: failure() && steps.tripwires.outputs.TRIPWIRE_FAILED == '1' && github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+              const fs = require('fs');
+              const body = fs.readFileSync('tripwire-failures.txt', 'utf8') ||
+                'tools/ui-guard.sh exited non-zero but produced no stderr.';
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: '## :no_entry: UI guard — tripwire fired\n\n' +
+                  '`tools/ui-guard.sh` rejected this PR. The full stderr is below.\n\n' +
+                  '```\n' + body + '\n```\n\n' +
+                  'See `docs/FRONTEND-DEV-PLAN.md` §0 (guardrails) for the rule and the override syntax ' +
+                  '(`<!-- money-travel-on: <reason> -->` on the affected line, or ' +
+                  '`{{-- money-travel-on-block: <reason> --}} ... {{-- money-travel-on-end --}}` for a block).'
+              });
 
   guard-self-test:
     name: Tripwire self-test (smoke test the guard)
@@ -81,4 +110,30 @@ jobs:
         # the money-line tripwire (the GNU `\<...\>` word-boundary syntax
         # is a no-op on mawk, the default awk on Debian-based systems
         # including the GitHub Actions ubuntu-latest runner).
-        run: ./tools/ui-guard-test.sh
+        id: selftest
+        run: ./tools/ui-guard-test.sh 2> selftest-failures.txt || echo "SELFTEST_FAILED=1" >> "$GITHUB_OUTPUT"
+
+      - name: Post PR comment on self-test failure
+        if: failure() && steps.selftest.outputs.SELFTEST_FAILED == '1' && github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+              const fs = require('fs');
+              const body = fs.readFileSync('selftest-failures.txt', 'utf8') ||
+                'tools/ui-guard-test.sh exited non-zero but produced no stderr.';
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: '## :warning: UI guard — self-test FAILED\n\n' +
+                  '`tools/ui-guard-test.sh` rejected this PR because at least one tripwire in `tools/ui-guard.sh` is no longer ' +
+                  'firing on a synthetic violation (or a benign change was incorrectly flagged).\n\n' +
+                  'The most likely cause is a refactor that broke one of the tripwire regexes. The ' +
+                  'test catches:\n' +
+                  '  - money-line changes that no longer trip (e.g. word-boundary regression)\n' +
+                  '  - benign changes that now incorrectly trip (false positive)\n' +
+                  '  - nested-style includes that no longer trip\n' +
+                  '  - page-header + x-page combos that no longer trip\n\n' +
+                  'Fix the tripwire regex in `tools/ui-guard.sh` and re-run the workflow.\n\n' +
+                  'Full stderr:\n\n```\n' + body + '\n```'
+              });
