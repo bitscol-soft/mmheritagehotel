@@ -64,6 +64,7 @@
         <li><a href="#w4-3a">W4.3a</a> — HotelService sales/show wrapped in <code>&lt;x-mm.print-sheet&gt;</code>; HotelWebsite hotel_feature + our_service feature_list (6 files) → <code>&lt;x-mm.field&gt;</code> + <code>&lt;x-mm.data-table&gt;</code>. HotelService sales/create + sales/edit deferred to W4.3b.</li>
         <li><a href="#w4-3b">W4.3b</a> — HotelService sales/create: 5 top-section text inputs (guest_name, room_number, booking_number, invoice_id, sale_date) → <code>&lt;x-mm.field&gt;</code>. Bottom totals (Bootstrap-3 input-group with ৳ currency addon) deferred to T2.</li>
         <li><a href="#w5-1">W5.1</a> — Restaurant kitchen ticket wrapped in <code>&lt;x-mm.print-sheet sheet="thermal-80mm"&gt;</code> (80mm thermal print); rst/tables + bar/tables raw <code>&lt;table&gt;</code> → <code>&lt;x-mm.data-table&gt;</code>. Board-grid table map + order screen x-stepper deferred.</li>
+        <li><a href="#w5-2">W5.2</a> — rst/tables + bar/tables get a board-grid <b>tile map</b> (new <code>.mm-table-map</code> auto-fill grid + <code>.mm-table-tile</code> cards) above the existing data-table. Each tile shows the table name, status badge (green/red), the table number, and an "Order" button (when the table is active + user has sales.create) that links to <code>rst.sales.create</code> / <code>bar.sales-v2.create</code> with <code>?table_id=…</code>. CSS-only (14 lines); no new JS.</li>
     </ul>
 </div>
 
@@ -1377,6 +1378,41 @@ tripwire_xpage_pageheader_combo() {
         <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
             <div style="font-size:32px;font-weight:700;color:#2f63a8;">0</div>
             <div style="color:var(--mm-muted);font-size:13px;">JS hooks broken (editTable + DataTables both intact)</div>
+        </div>
+    </div>
+</section>
+
+<section class="preview-section" id="w5-2">
+    <h2>W5.2 — Restaurant + Bar table board-grid (tile map)</h2>
+    <p style="color:#526578">The W5 plan item: <em>"Restaurant table map → board-grid"</em>. W5.1 converted the flat list to a data-table; this commit layers a board-grid <b>tile map</b> above the data-table for at-a-glance live status of every table in the restaurant or bar. The same <code>$table_manages</code> paginated collection drives both views.</p>
+
+    <h3 style="margin-top:24px">What was done in this commit</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong><code>module/Restaurant/views/rst/tables/index.blade.php</code> (+48)</strong> — a new <code>&lt;x-mm.panel&gt;</code> with a "Table map" heading + a <code>.mm-table-map</code> auto-fill grid (140px min tile width) renders one <code>.mm-table-tile</code> per table. Each tile: header (name + green/red status badge), body (large table number), footer (Order button when active + sales.create permission + edit + delete).</li>
+        <li><strong><code>module/Bar/views/bar/tables/index.blade.php</code> (+46)</strong> — same pattern; Order link points to <code>bar.sales-v2.create</code>.</li>
+        <li><strong><code>resources/css/ui.css</code> (+14)</strong> — <code>.mm-table-map</code> grid, <code>.mm-table-tile</code> card with hover lift, <code>.mm-table-tile-head/body/foot</code>, <code>.mm-table-tile-status-{0,1}</code> badge colors, <code>.mm-table-tile-no</code> typography. Scoped under <code>.mm-ui</code> so it composes with both <code>mm-rst</code> and <code>mm-bar</code> page classes.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">What was NOT done (and why)</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>Order screen → <code>&lt;x-mm.stepper&gt;</code></strong> — the "Order" tile link still lands on the existing sales/create form. The <code>?table_id=…</code> query param is advisory; the sales/create controller does not yet read it. Deferred to W5.3 (the sales/create rewrite will handle table pre-fill).</li>
+        <li><strong>Live status (occupied / free)</strong> — the tile only shows the table's own status (active / inactive). A "live" board with current-order occupancy would require querying open sales + table assignments; deferred (out of scope for a UI-only PR).</li>
+        <li><strong>Auto-refresh</strong> — the board does not poll. Operations on the page (create/edit/delete) refresh the whole page via redirect, which is enough for now.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">Numbers</h3>
+    <div class="mm-grid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;">
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">2</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Board-grid views (rst/tables + bar/tables)</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">+14</div>
+            <div style="color:var(--mm-muted);font-size:13px;">CSS lines (mm-table-map + mm-table-tile + status badges)</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">0</div>
+            <div style="color:var(--mm-muted);font-size:13px;">New JS hooks required</div>
         </div>
     </div>
 </section>
