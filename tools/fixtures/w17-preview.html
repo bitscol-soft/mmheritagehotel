@@ -48,6 +48,7 @@
         <li><a href="#w2-1">W2.1</a> — Sidebar icon-rail (68px), localStorage persistence, active-item pill. Module counters omitted per the plan's "no existing endpoint" rule.</li>
         <li><a href="#w2-3">W2.3</a> — <code>x-page</code> is the only header pattern. Dead <code>page-header</code> blocks removed from 219 pages; ui-guard tripwire added to prevent regression.</li>
         <li><a href="#w3-1">W3.1</a> — Reservation invoice restyled to round-6 <code>invoice-doc</code> look (print-sheet wrapper, inv-head, inv-panels). Hall twin and other invoices follow in W3.2 / W4.</li>
+        <li><a href="#w3-2">W3.2</a> — Booking invoice (checkout slip + payment receipt) → round-6 <code>invoice-doc</code>. printThis retired; print-on-open behavior preserved via <code>window.print()</code>.</li>
     </ul>
 </div>
 
@@ -726,6 +727,60 @@ tripwire_xpage_pageheader_combo() {
         </div>
         <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
             <div style="font-size:32px;font-weight:700;color:#2f63a8;">50+</div>
+            <div style="color:var(--mm-muted);font-size:13px;">PHP <code>{{ }}</code> expressions preserved byte-identically</div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== W3.2 ==================== -->
+<section class="preview-section" id="w3-2">
+    <h2>W3.2 — Booking invoice (checkout slip + payment receipt) → <code>x-print-sheet</code></h2>
+    <p style="color:#526578">The W3.2 plan item from <code>docs/FRONTEND-DEV-PLAN.md</code>: <em>"Booking check-in slip + payment receipt → <code>x-print-sheet</code>."</em></p>
+
+    <h3 style="margin-top:24px">What changed</h3>
+    <p style="color:#526578"><code>module/Hotel/views/booking/checkout_invoice.blade.php</code> already had the round-6 <code>.invoice-doc</code> class structure applied to its body (an earlier round touched it). The W3.2 commit only needed to:</p>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>Remove the inline <code>&lt;style&gt;</code> block</strong> (~60 lines: table border tweaks, .company-info rules, @media print overrides). The round-6 partial provides the equivalents.</li>
+        <li><strong>Wrap the body in <code>&lt;x-mm.print-sheet&gt;</code></strong> (A4 variant). The print-sheet's footer provides a print button that calls <code>window.print()</code>.</li>
+        <li><strong>Remove the <code>printThis.js</code> script tag and the <code>printPage()</code> function.</strong> The print-on-open behavior (auto-firing the print dialog on page load) is preserved by a new script that calls <code>window.print()</code> after the load event with the same 400ms delay as the old path.</li>
+        <li><strong>The <code>hasPermission('service.view', $slugs)</code> gate</strong> moved to wrap the entire <code>&lt;x-mm.print-sheet&gt;</code> — the permission check is preserved byte-identically.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">PHP byte-identicality</h3>
+    <p style="color:#526578">A diff of the <code>{{ ... }}</code> expressions between the original and the refactored file:</p>
+    <div class="mm-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);">
+            <strong>Removed (intentional)</strong>
+            <ul style="color:var(--mm-muted);font-size:13px;margin:8px 0 0;">
+                <li><code>{{ asset('assets/custom_js/printThis.js') }}</code> — the printThis script tag (replaced by the print-sheet's built-in <code>data-mm-print</code> hook + the new <code>window.print()</code> path for print-on-open).</li>
+            </ul>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);">
+            <strong>Preserved (byte-identical)</strong>
+            <ul style="color:var(--mm-muted);font-size:13px;margin:8px 0 0;">
+                <li>54 <code>{{ }}</code> expressions: <code>$booking->booking_number</code>, <code>$booking->check_in_date</code>, <code>$booking->service_amount</code>, <code>$booking->vat_amount</code>, <code>$booking->transection->due_amount</code>, the <code>number_format(..., 2)</code> calls, the <code>&#x09F3;</code> taka signs, the auth user lookup, the booking total math — all preserved.</li>
+            </ul>
+        </div>
+    </div>
+
+    <h3 style="margin-top:24px">What was NOT done (and why)</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>Body restructuring</strong> — the body already had the round-6 <code>.inv-head</code> / <code>.inv-panels</code> / <code>.inv-lines</code> / <code>.inv-sign</code> / <code>.inv-foot</code> classes from an earlier round. No new class application needed.</li>
+        <li><strong>The BanquetHall twins (<code>checkout_invoice.blade.php</code>, <code>checkout-invoice-v2.blade.php</code>)</strong> — out of scope. The plan defers them to W4. (W3.8 will delete <code>checkout-invoice-v2</code> and <code>get_invoice</code> as dead templates per Decision D1.)</li>
+    </ul>
+
+    <h3 style="margin-top:24px">Numbers</h3>
+    <div class="mm-grid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;">
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">436 → 390</div>
+            <div style="color:var(--mm-muted);font-size:13px;">line count (after dedent + style block removal)</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">~60</div>
+            <div style="color:var(--mm-muted);font-size:13px;">lines of inline CSS removed (replaced by the round-6 partial)</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">54</div>
             <div style="color:var(--mm-muted);font-size:13px;">PHP <code>{{ }}</code> expressions preserved byte-identically</div>
         </div>
     </div>
