@@ -234,6 +234,39 @@ run_violation_case \
 <x-mm.page title="Hello"></x-mm.page>' \
     'resources/views/hello.blade.php'
 
+# The diff-based check is the main win over the legacy file-content
+# tripwire. A pre-migration file (one that already has BOTH markers
+# sitting in the working tree from the W2.3 work-in-progress) must
+# NOT trip when an unrelated commit changes something else in the
+# file. The old file-content tripwire fired on every commit for every
+# such file; the new diff-based check ignores diffs that don't add a
+# new marker instance.
+run_benign_case \
+    "unrelated change in a file that already has both markers" \
+    '@section("page-header")
+    <i class="fa fa-info"></i> Hello
+@stop
+<x-mm.page title="Hello"></x-mm.page>' \
+    '@section("page-header")
+    <i class="fa fa-info"></i> Hello
+@stop
+<x-mm.page title="Hello"></x-mm.page>
+<p>An unrelated paragraph added by a commit.</p>' \
+    'resources/views/hello.blade.php'
+
+# The migration direction (removing @section('page-header') from a
+# file that still has <x-mm.page>) must NOT trip. The diff does not
+# ADD a marker; the + lines are just the unchanged <x-mm.page> and
+# maybe some other content. The tripwire only flags additions.
+run_benign_case \
+    "migration direction (remove @section('page-header') from x-mm.page file)" \
+    '@section("page-header")
+    <i class="fa fa-info"></i> Hello
+@stop
+<x-mm.page title="Hello"></x-mm.page>' \
+    '<x-mm.page title="Hello"></x-mm.page>' \
+    'resources/views/hello.blade.php'
+
 # --- Negative: a fully benign change must pass --------------------------------
 echo
 echo "[negative] benign change must NOT trip"

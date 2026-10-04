@@ -312,35 +312,139 @@ tripwire_money_line() {
 # per-page page-header blocks as encountered". This tripwire enforces
 # that going forward: a file that has both fails the guard.
 #
-# The tripwire only scans the working tree (post-modification), not the
-# diff. That keeps the migration in W2.3 (which removes 200+ dead
-# page-header blocks) from tripping itself. The tripwire fires when a
-# new page is added or an existing page is modified and ends up with
-# both markers.
-# -----------------------------------------------------------------------------
+# The tripwire is a DIFF check (not a file-content check), so the
+# migration in W2.3 that removes 200+ dead page-header blocks does
+# NOT trip itself - only diffs that ADD a marker to a file that
+# already has the other marker (i.e. that perpetuate the combo) fire.
+# Pre-migration files that sit in the working tree with both markers
+# are not the responsibility of any particular commit; the tripwire
+# only flags diffs that are responsible.
 tripwire_xpage_pageheader_combo() {
     local f
     local found=0
     while IFS= read -r f; do
         [ -z "$f" ] && continue
         [ ! -f "$f" ] && continue
-        # Only check the post-modification state. A file that has BOTH
-        # markers after the working tree is updated is a violation.
-        # The migration that removed the existing dead blocks leaves
-        # files in a state where they have x-mm.page but not
-        # page-header, so they pass.
-        if grep -q '<x-mm.page' "$f" && grep -q "@section(['\"]page-header['\"]" "$f"; then
+        # File-state check: does the working tree copy of the file
+        # already carry either marker? Both grep patterns are the same
+        # single-line anchors used by the diff-line check below. The
+        # grep may match a marker that lives inside a Blade comment
+        # (e.g. `{{-- <x-mm.page old --}}`) and that small
+        # false-positive is accepted as the price of a fast O(file
+        # size) check; a developer can clean up the comment to
+        # silence the tripwire.
+        local has_xpage=0 has_pageheader=0
+        grep -qE '<x-mm\.page[> \t/]' "$f" && has_xpage=1
+        grep -qE "@section\(\s*['\"]page-header['\"]" "$f" && has_pageheader=1
+        # If the file (working tree) does not have BOTH markers, the
+        # current diff cannot introduce the combo by adding a new
+        # instance of either side; skip the diff scan entirely. This
+        # is the main win over the legacy file-content tripwire: a
+        # working tree that has 200+ files stuck with both markers
+        # (un-migrated W2.3 state) no longer trips on every commit,
+        # only on diffs that ADD a marker to a file that already has
+        # the other side.
+        if [ "$has_xpage" -eq 0 ] || [ "$has_pageheader" -eq 0 ]; then
+            continue
+        fi
+        # ALSO check the BASE file (HEAD for working/staged, or
+        # $BASE_REF for diff mode). If the BASE already has BOTH
+        # markers, then the file is in a known-bad pre-migration
+        # state, and the current diff is just perpetuating it. We
+        # do NOT want to fire on a diff that merely re-emits a
+        # marker line that was already there (e.g. when git treats a
+        # line as + because the surrounding newline state changed).
+        # The "diff is responsible for the combo" criterion is: the
+        # base does NOT have both markers. If it does, the file was
+        # already bad before this commit; the tripwire ignores the
+        # diff.
+        local base_ref=""
+        case "$MODE" in
+            working|diff) base_ref="HEAD" ;;
+            staged)        base_ref="HEAD" ;;   # staged diff is vs HEAD
+        esac
+        local base_has_xpage=0 base_has_pageheader=0
+        if git show "$base_ref:$f" 2>/dev/null | grep -qE '<x-mm\.page[> \t/]'; then
+            base_has_xpage=1
+        fi
+        if git show "$base_ref:$f" 2>/dev/null | grep -qE "@section\(\s*['\"]page-header['\"]"; then
+            base_has_pageheader=1
+        fi
+        if [ "$base_has_xpage" -eq 1 ] && [ "$base_has_pageheader" -eq 1 ]; then
+            continue
+        fi
+        local diff_args=""
+        case "$MODE" in
+            working) diff_args="-U0 --" ;;
+            staged)  diff_args="-U0 --cached --" ;;
+            diff)    diff_args="-U0 $BASE_REF...HEAD --" ;;
+        esac
+        local hits
+        hits="$(git diff $diff_args "$f" 2>/dev/null \
+            | awk -v file="$f" '
+                BEGIN {
+                    new_line = 0
+                    old_line = 0
+                    in_hunk  = 0
+                }
+                /^@@/ {
+                    rest = $0
+                    sub(/^@@ /, "", rest)
+                    sub(/ @@.*$/, "", rest)
+                    split(rest, parts, " ")
+                    split(parts[1], a, ",")
+                    split(parts[2], b, ",")
+                    old_line = a[1] + 0
+                    new_line = b[1] + 0
+                    in_hunk  = 1
+                    next
+                }
+                # File headers live OUTSIDE a hunk - see the comment
+                # in tripwire_money_line for the in_hunk gate rationale.
+                /^---/        { if (!in_hunk) next }
+                /^\+\+\+/    { if (!in_hunk) next }
+                /^\+/ {
+                    if (!in_hunk) next
+                    line = substr($0, 2)
+                    low  = tolower(line)
+                    # The diff is responsible for the W2.3 combo when
+                    # it ADDS one of the two markers. The pre-check at
+                    # the top of tripwire_xpage_pageheader_combo
+                    # already established that the file (working tree)
+                    # has BOTH markers, so any new addition of either
+                    # one perpetuates the bad state.
+                    added_marker = ""
+                    if (low ~ /<x-mm\.page[> \t\/]/) added_marker = "<x-mm.page>"
+                    else if (line ~ /@section\([^)]*page-header[^)]*\)/) added_marker = "@section('page-header')"
+                    if (added_marker != "") {
+                        printf("    %s:+%d  (new %s)\n", file, new_line, added_marker)
+                    }
+                    new_line++
+                }
+                /^-/ {
+                    if (!in_hunk) next
+                    old_line++
+                }
+                /^ / {
+                    if (!in_hunk) next
+                    new_line++
+                    old_line++
+                }
+            ')"
+        if [ -n "$hits" ]; then
             report "page-header + x-page combo in $f" \
-                "  File uses <x-mm.page> (the W2 header pattern) AND" \
-                "  defines @section('page-header') (dead — the master" \
-                "  layout does not @yield it)." \
-                "  Remove the @section('page-header') … @stop block." \
-                "  See docs/FRONTEND-DEV-PLAN.md W2.3."
+                "  Diff ADDS a marker that perpetuates the W2.3 combo" \
+                '  (file already has <x-mm.page> AND @section('page-header')):' \
+                "$hits" \
+                '  Remove the @section('page-header') ... @stop block - the master' \
+                "  layout does not @yield it. See docs/FRONTEND-DEV-PLAN.md W2.3."
             found=1
         fi
     done < <(collect_blade_files)
     return $found
 }
+
+
 
 # -----------------------------------------------------------------------------
 # Tripwire 4: new <style> tag in a non-CSS Blade file.
