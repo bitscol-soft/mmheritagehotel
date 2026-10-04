@@ -71,6 +71,7 @@
         <li><a href="#w6-2">W6.2</a> — Account voucher show (invoice) pages: the body is wrapped in <code>&lt;x-mm.print-sheet&gt;</code> (the data-mm-print hook calls <code>window.print()</code>). Legacy broken Print buttons (<code>&lt;a href=""&gt;</code> at the bottom of contras/journals, <code>onclick="print()"</code> in the actions of payments/receives) are removed in favor of the print-sheet footer. The body table stays as raw <code>&lt;table&gt;</code> + <code>&lt;tfoot&gt;</code> because <code>&lt;x-mm.data-table&gt;</code> does NOT render <code>&lt;tfoot&gt;</code> — the totals row (<code>{{ number_format($voucher->amount, 2) }}</code> for contras/journals; <code>$totalAmount = $voucher->details->sum('amount') / 2</code> for payments/receives) is preserved byte-for-byte.</li>
         <li><a href="#w5-4b">W5.4b</a> — GS goods_requisitions gin_list: the 11-column results table (SL, Issue Date, GIN Number, Date, Requisition No, Company, Department, Reference, Total Qty, Received By, Action) → <code>&lt;x-mm.data-table&gt;</code>. Per-row Print / View Details / Unapprove / Delete action buttons + delete <code>&lt;form&gt;</code> + permission checks + route bindings all preserved. Top filter table + per-row view-details Bootstrap-3 modals + print-gin-details view + create/edit/approve views of goods_requisitions stay deferred.</li>
         <li><a href="#t2-hall-aminities">T2 hall-aminities</a> — 3 files in <code>module/BanquetHall/views/hall/aminities/</code> (create, edit, index) had 2 unused jQuery DataTables script tags in their <code>@section('js')</code> blocks. Removed. The <code>delete_check</code> JS function + <code>dropzone.min.js</code> (create only) remain. 28 more views across the project have the same unused DataTables tags and are T2 candidates.</li>
+        <li><a href="#t2-sweep">T2 DataTables sweep</a> — 28 views cleaned (the full T2 inventory closed in one PR). For each: removed the 2 unused <code>jquery.dataTables.min.js</code> + <code>jquery.dataTables.bootstrap.min.js</code> script tags. Every file was verified to have no <code>.DataTable(...)</code> constructor call and no <code>dataTables_</code> / <code>fnFilter</code> / <code>fnSort</code> API call. 28 files, 56 deletions, 0 additions. Module breakdown: Account (3), GeneralStore (2), Hotel (5), HotelWebsite (11), Permission (1), Restaurant (3), BanquetHall (2).</li>
     </ul>
 </div>
 
@@ -1675,6 +1676,78 @@ tripwire_xpage_pageheader_combo() {
         <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
             <div style="font-size:32px;font-weight:700;color:#2f63a8;">28</div>
             <div style="color:var(--mm-muted);font-size:13px;">More T2 candidates across the project (same 2-line removal pattern)</div>
+        </div>
+    </div>
+</section>
+
+<section class="preview-section" id="t2-sweep">
+    <h2>T2 DataTables sweep — 28 views cleaned</h2>
+    <p style="color:#526578">Sister PR to T2 hall-aminities (commit <code>e92ad590</code>). Closes the T2 inventory in one focused PR. For each of the 28 remaining views, the 2 unused <code>&lt;script src="...jquery.dataTables..."&gt;</code> script tags were removed. Every file was verified to have no <code>.DataTable(...)</code> constructor call and no <code>dataTables_</code> / <code>fnFilter</code> / <code>fnSort</code> / <code>fnAddData</code> / <code>fnDraw</code> / <code>fnGetData</code> API call. No other JS was touched.</p>
+
+    <h3 style="margin-top:24px">What was done in this commit</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>28 files, 56 deletions, 0 additions</strong> — the smallest possible diff per file (2 lines removed).</li>
+        <li>Module breakdown: <code>module/Account/</code> (3) + <code>module/BanquetHall/</code> (2) + <code>module/GeneralStore/</code> (2) + <code>module/Hotel/</code> (5) + <code>module/HotelWebsite/</code> (11) + <code>module/Permission/</code> (1) + <code>module/Restaurant/</code> (3) = 27, plus 1 from this PR's earlier T2 hall-aminities = 28 total cleaned.</li>
+        <li>For each file: removed the 2 script tags
+            <pre style="background:#f0f3f7;padding:8px;border-radius:4px;margin:8px 0">&lt;script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"&gt;&lt;/script&gt;
+&lt;script src="{{ asset('assets/js/jquery.dataTables.bootstrap.min.js') }}"&gt;&lt;/script&gt;</pre>
+        </li>
+        <li>Each file's real JS work is preserved: <code>delete_check</code> Swal.fire (most files), <code>chosen-select</code> init, <code>date-picker</code> init, <code>popover</code>, <code>exportData</code>, <code>dropzone</code>, <code>ace_file_input</code>, kitchen-specific ticket refresh, etc.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">Files cleaned (28)</h3>
+    <pre style="background:#f0f3f7;padding:12px;border-radius:4px;color:#3a4a5b;font-size:12px;line-height:1.5;overflow-x:auto">
+module/Account/views/fund-transfers/index.blade.php
+module/Account/views/voucher/contras/show.blade.php
+module/Account/views/voucher/journals/show.blade.php
+module/BanquetHall/views/hall/rooms/create.blade.php
+module/BanquetHall/views/hall/rooms/edit.blade.php
+module/GeneralStore/views/goods_requisitions/index.blade.php
+module/GeneralStore/views/suppliers/index.blade.php
+module/Hotel/views/account_type/edit.blade.php
+module/Hotel/views/account_type/index.blade.php
+module/Hotel/views/aminities/index.blade.php
+module/Hotel/views/currency-conversions/index.blade.php
+module/Hotel/views/rooms/create.blade.php
+module/Hotel/views/rooms/edit.blade.php
+module/HotelWebsite/views/banner/index.blade.php
+module/HotelWebsite/views/gallery/index.blade.php
+module/HotelWebsite/views/hotel_feature/create.blade.php
+module/HotelWebsite/views/hotel_feature/feature_list/create.blade.php
+module/HotelWebsite/views/hotel_feature/feature_list/edit.blade.php
+module/HotelWebsite/views/hotel_feature/feature_list/index.blade.php
+module/HotelWebsite/views/our_service/create.blade.php
+module/HotelWebsite/views/our_service/service_list/create.blade.php
+module/HotelWebsite/views/our_service/service_list/edit.blade.php
+module/HotelWebsite/views/our_service/service_list/index.blade.php
+module/HotelWebsite/views/pages/index.blade.php
+module/Permission/views/users/index.blade.php
+module/Restaurant/views/inventory/production/goods_requisitions/index.blade.php
+module/Restaurant/views/kitchen/create.blade.php
+module/Restaurant/views/kitchen/index.blade.php
+    </pre>
+
+    <h3 style="margin-top:24px">What was NOT done (and why)</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li>The <strong>hall/aminities/{create,edit,index}</strong> were already cleaned in the prior T2 hall-aminities PR (commit <code>e92ad590</code>); they are NOT in this PR.</li>
+        <li>The <strong>gin_list</strong> was already cleaned in W5.4b (commit <code>d71d243b</code>); the 2 script tags were never re-added.</li>
+        <li>The <strong>DataTables-init pages</strong> (hall/category/index, hall/rooms/index, GS item-units/index, etc.) — they load DataTables AND call <code>$('#...').DataTable({...})</code>; the script is genuinely used, so the tags stay.</li>
+        <li>No other JS was touched in any of the 28 files.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">Numbers</h3>
+    <div class="mm-grid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;">
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">28</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Views cleaned (T2 inventory closed)</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">56</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Lines deleted (2 per file)</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">0</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Other JS touched (delete_check, chosen, date-picker, popover, exportData, dropzone, etc. all intact)</div>
         </div>
     </div>
 </section>
