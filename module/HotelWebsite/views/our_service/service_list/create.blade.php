@@ -65,8 +65,6 @@
 
 @section('js')
 
-<script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
-<script src="{{ asset('assets/js/jquery.dataTables.bootstrap.min.js') }}"></script>
 <script src="{{ asset('assets/js/bootstrap-tag.min.js') }}"></script>
 <script>
     var tag_input = $('#form-field-tags');
