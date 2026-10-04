@@ -33,52 +33,44 @@ $canDelete = in_array('items.delete', $isPermitted);
     <x-mm.panel>
 
         <div class="table-responsive" style="border: 1px #cdd9e8 solid;">
-            <x-mm.table-scroll label="Material units">
-                <table id="dynamic-table" class="table table-striped table-bordered table-hover">
-                    <thead>
-                        <tr>
-                            <th>SL</th>
-                            <th>Unit Name</th>
-                            <th>Conversion</th>
-                            <th>Satatus</th>
-                            <th></th>
-                        </tr>
-                    </thead>
+            <x-mm.data-table :columns="[
+                ['label' => 'SL'],
+                ['label' => 'Unit Name'],
+                ['label' => 'Conversion'],
+                ['label' => 'Satatus'],
+                ['label' => ''],
+            ]" id="dynamic-table" table-class="table table-striped table-bordered table-hover" label="Material units">
+                @foreach ($item_units as $key => $item_unit)
+                    <tr>
+                        <td>{{ $key + 1 }}</td>
+                        <td>{{ $item_unit->name }}</td>
+                        <td>{{ $item_unit->conversion }}</td>
+                        <td class="text-{{ $item_unit->status ? 'success' : 'danger' }}">
+                            {{ $item_unit->status ? 'Active' : 'Deactive' }}</td>
+                        <td>
+                            @if ($canEdit || $admin_id == 1)
+                                <a href="{{ route('rst.material-unit.edit', $item_unit->id) }}"
+                                    class="btn btn-sm btn-success" title="Edit">
+                                    <i class="fa fa-pencil-square-o"></i>
+                                </a>
+                            @endif
+                            @if ($canDelete || $admin_id == 1)
+                                <button type="button" onclick="delete_check({{ $item_unit->id }})"
+                                    class="btn btn-sm btn-danger" title="Delete">
+                                    <i class="fa fa-trash-o"></i>
+                                </button>
+                            @endif
 
-                    <tbody>
-                        @foreach ($item_units as $key => $item_unit)
-                            <tr>
-                                <td>{{ $key + 1 }}</td>
-                                <td>{{ $item_unit->name }}</td>
-                                <td>{{ $item_unit->conversion }}</td>
-                                <td class="text-{{ $item_unit->status ? 'success' : 'danger' }}">
-                                    {{ $item_unit->status ? 'Active' : 'Deactive' }}</td>
-                                <td>
-                                    @if ($canEdit || $admin_id == 1)
-                                        <a href="{{ route('rst.material-unit.edit', $item_unit->id) }}"
-                                            class="btn btn-sm btn-success" title="Edit">
-                                            <i class="fa fa-pencil-square-o"></i>
-                                        </a>
-                                    @endif
-                                    @if ($canDelete || $admin_id == 1)
-                                        <button type="button" onclick="delete_check({{ $item_unit->id }})"
-                                            class="btn btn-sm btn-danger" title="Delete">
-                                            <i class="fa fa-trash-o"></i>
-                                        </button>
-                                    @endif
+                            <form action="{{ route('rst.material-unit.destroy', $item_unit->id) }}"
+                                id="deleteCheck_{{ $item_unit->id }}" method="POST">
+                                @csrf
+                                @method("DELETE")
+                            </form>
 
-                                    <form action="{{ route('rst.material-unit.destroy', $item_unit->id) }}"
-                                        id="deleteCheck_{{ $item_unit->id }}" method="POST">
-                                        @csrf
-                                        @method("DELETE")
-                                    </form>
-
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </x-mm.table-scroll>
+                        </td>
+                    </tr>
+                @endforeach
+            </x-mm.data-table>
 
             @include('partials._paginate', ['data' => $item_units])
         </div>
@@ -102,9 +94,6 @@ $canDelete = in_array('items.delete', $isPermitted);
 
 @section('js')
 
-    <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('assets/js/jquery.dataTables.bootstrap.min.js') }}"></script>
-
     <!-- inline scripts related to this page -->
     <script type="text/javascript">
         function delete_check(id) {
@@ -124,16 +113,5 @@ $canDelete = in_array('items.delete', $isPermitted);
             })
 
         }
-    </script>
-
-    <script type="text/javascript">
-        jQuery(function($) {
-            $('#dynamic-table').DataTable({
-                "ordering": false,
-                "bPaginate": false,
-                "lengthChange": false,
-                "info": false
-            });
-        })
     </script>
 @stop

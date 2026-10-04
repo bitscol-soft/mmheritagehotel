@@ -35,70 +35,64 @@
             </x-mm.panel>
 
             <div class="mm-panel tw-p-4">
-                <x-mm.table-scroll label="Room inventory">
-                <table id="data-table" class="table table-striped table-bordered table-hover">
-                    <thead>
+                <x-mm.data-table :columns="[
+                    ['label' => 'SL', 'align' => 'center', 'width' => '5%'],
+                    ['label' => 'Name', 'align' => 'center', 'width' => '25%'],
+                    ['label' => 'Room No', 'align' => 'center', 'width' => '10%'],
+                    ['label' => 'Bed', 'align' => 'center', 'width' => '10%'],
+                    ['label' => 'Price', 'align' => 'center', 'width' => '10%'],
+                    ['label' => 'F R ID', 'align' => 'center', 'width' => '10%'],
+                    ['label' => 'Status', 'align' => 'center', 'width' => '10%'],
+                    ['label' => 'Action', 'align' => 'center', 'width' => '10%'],
+                ]" id="data-table" table-class="table table-striped table-bordered table-hover" label="Room inventory">
+                    @foreach ($rooms as $key => $data)
                         <tr>
-                            <th scope="col" width="5%">SL</th>
-                            <th scope="col" width="25%" class="text-center">Name</th>
-                            <th scope="col" width="10%" class="text-center">Room No</th>
+                            <td>{{ $loop->iteration }}</td>
+                            <td class="text-center">{{ $data->name }}</td>
+                            <td class="text-center">
+                                {{ $data->room_number }}
+                            </td>
                             @if (setting('room_wise_pricing_booking') == 1)
-                                <th scope="col" width="10%" class="text-center">Bed</th>
-                                <th scope="col" width="10%" class="text-center">Price</th>
+                                <td class="text-center">
+                                    <i class="fa fa-bed"> * {{ $data->beds }}</i>
+                                </td>
+                                <td class="text-center">{{ $data->rent }} </td>
+                            @else
+                                <td></td>
+                                <td></td>
                             @endif
-                            <th scope="col" width="10%" class="text-center">F R ID </th>
-                            <th scope="col" width="10%" class="text-center">Status</th>
-                            <th scope="col" width="10%" class="text-center">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($rooms as $key => $data)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td class="text-center">{{ $data->name }}</td>
-                                <td class="text-center">
-                                    {{ $data->room_number }}
-                                </td>
-                                @if (setting('room_wise_pricing_booking') == 1)
-                                    <td class="text-center">
-                                        <i class="fa fa-bed"> * {{ $data->beds }}</i>
-                                    </td>
-                                    <td class="text-center">{{ $data->rent }} </td>
+
+                            <td class="text-center">{{ $data->f_r_id_card }}</td>
+                            <td class="text-center">
+                                @if ($data->status == 1)
+                                    <span class="label label-sm label-success">Ready</span>
+                                @elseif ($data->status == 0)
+                                    <span class="label label-sm label-danger">Dirty</span>
+                                @else
+                                    <span class="label label-sm label-warning">Maintenance</span>
                                 @endif
+                            </td>
+                            <td class="text-center">
+                                <div class="btn-group btn-corner">
+                                    <a href="{{ route('rooms.edit', $data->id) }}"
+                                        class="btn btn-xs btn-sm btn-success " title="Edit">
+                                        <i class="fa fa-pencil-square-o"></i>
+                                    </a>
+                                    <button type="button" onclick="delete_check({{ $data->id }})"
+                                        class="btn btn-xs btn-sm btn-danger" title="Delete">
+                                        <i class="fa fa-trash-o"></i>
+                                    </button>
+                                </div>
 
-                                <td class="text-center">{{ $data->f_r_id_card }}</td>
-                                <td class="text-center">
-                                    @if ($data->status == 1)
-                                        <span class="label label-sm label-success">Ready</span>
-                                    @elseif ($data->status == 0)
-                                        <span class="label label-sm label-danger">Dirty</span>
-                                    @else
-                                        <span class="label label-sm label-warning">Maintenance</span>
-                                    @endif
-                                </td>
-                                <td class="text-center">
-                                    <div class="btn-group btn-corner">
-                                        <a href="{{ route('rooms.edit', $data->id) }}"
-                                            class="btn btn-xs btn-sm btn-success " title="Edit">
-                                            <i class="fa fa-pencil-square-o"></i>
-                                        </a>
-                                        <button type="button" onclick="delete_check({{ $data->id }})"
-                                            class="btn btn-xs btn-sm btn-danger" title="Delete">
-                                            <i class="fa fa-trash-o"></i>
-                                        </button>
-                                    </div>
-
-                                    <form action="{{ route('rooms.destroy', $data->id) }}"
-                                        id="deleteCheck_{{ $data->id }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                    </form>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-                </x-mm.table-scroll>
+                                <form action="{{ route('rooms.destroy', $data->id) }}"
+                                    id="deleteCheck_{{ $data->id }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                </x-mm.data-table>
             </div>
         </div>
 
@@ -108,8 +102,6 @@
 
 @section('js')
 
-    <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('assets/js/jquery.dataTables.bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/custom_js/date-picker.js') }}"></script>
 
     @include('rooms.inc.script')
@@ -133,17 +125,5 @@
             })
 
         }
-    </script>
-
-    <script type="text/javascript">
-        jQuery(function($) {
-            $('#data-table').DataTable({
-                "ordering": false,
-                "bPaginate": true,
-                "lengthChange": false,
-                "info": false,
-                "pageLength": 25
-            });
-        })
     </script>
 @stop
