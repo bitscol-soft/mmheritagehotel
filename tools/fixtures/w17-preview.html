@@ -58,6 +58,7 @@
         <li><a href="#w3-9">W3.9</a> — Booking create/edit/adjust deep pass: stepper now uses <code>&lt;x-mm.stepper&gt;</code>; payment tab &amp; modals audit logged; full T2 backlog item.</li>
         <li><a href="#w3-4b">W3.4b</a> — Categories (create/edit) + rooms (create/edit) forms → <code>&lt;x-mm.field&gt;</code>; pre-existing data-binding bug in rooms/edit fixed.</li>
         <li><a href="#w3-5b">W3.5b</a> — Night-audits list/export split (Excel keeps colspan=10 title; on-screen uses new <code>list.blade.php</code>); today-activities transaction list extracted to partial.</li>
+        <li><a href="#w4-1">W4.1</a> — BanquetHall <code>hall_booking/reservation-invoice</code> wrapped in <code>&lt;x-mm.page&gt; + &lt;x-mm.print-sheet&gt;</code>; jQuery <code>printPage</code> + <code>printThis.js</code> removed.</li>
     </ul>
 </div>
 
@@ -1141,6 +1142,42 @@ tripwire_xpage_pageheader_combo() {
         <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
             <div style="font-size:32px;font-weight:700;color:#2f63a8;">0</div>
             <div style="color:var(--mm-muted);font-size:13px;">Excel export paths broken (Excel still uses <code>export/excel.blade.php</code>)</div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== W4.1 ==================== -->
+<section class="preview-section" id="w4-1">
+    <h2>W4.1 — BanquetHall reservation-invoice → <code>&lt;x-mm.print-sheet&gt;</code></h2>
+    <p style="color:#526578">The W4.1 plan item from <code>docs/FRONTEND-DEV-PLAN.md</code>: <em>"<code>hall_booking/reservation-invoice</code> → <code>x-print-sheet</code>"</em>.</p>
+
+    <h3 style="margin-top:24px">What changed</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong><code>module/BanquetHall/views/hall_booking/reservation-invoice.blade.php</code></strong> (878 lines, now 889 with the wrap + comments) — the existing <code>&lt;div class="row invoice-body"&gt;</code> content is now wrapped in <code>&lt;x-mm.page&gt; + &lt;x-mm.panel&gt; + &lt;x-mm.print-sheet&gt;</code>. The print button now comes from <code>&lt;x-mm.print-sheet&gt;</code>'s footer (the <code>data-mm-print</code> hook calls <code>window.print()</code>).</li>
+        <li>The dead <code>@section('page-header')</code> block is removed (the W2.3 master layout doesn't <code>@yield</code> it).</li>
+        <li>The <code>@yield('page-header')</code> in the widget title is replaced with a hardcoded <code>&lt;i class="fa fa-info-circle"&gt;&lt;/i&gt; Invoice</code> (the same content the <code>@section</code> was providing).</li>
+        <li>The old jQuery <code>printPage('print_body')</code> link is removed; the <code>printThis.js</code> script and the <code>printPage()</code> function are also removed (no longer used).</li>
+    </ul>
+
+    <h3 style="margin-top:24px">What was NOT done (and why)</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>Bespoke BanquetHall styles</strong> (<code>.col-print-1..12</code>, <code>.print-body</code> border, <code>.company-info</code>, <code>.customer-info</code>, etc.) are kept byte-identical. They don't conflict with the print sheet; refactoring them to use the <code>.invoice-doc</code> pattern from the Hotel <code>invoice-sheet.blade.php</code> is out of scope for W4.1 and would require a separate "visual redesign" PR. The <code>.col-print-N</code> classes are used 50+ times throughout the body.</li>
+        <li><strong><code>invoice-sheet.blade.php</code></strong> (from W3.1) is NOT included; its <code>.invoice-doc</code> styles don't match the BanquetHall's <code>.company-info / .print-body</code> layout.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">Numbers</h3>
+    <div class="mm-grid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;">
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">1</div>
+            <div style="color:var(--mm-muted);font-size:13px;">BanquetHall invoice wrapped in <code>&lt;x-mm.print-sheet&gt;</code></div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">1</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Dead <code>@section('page-header')</code> block removed</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">1</div>
+            <div style="color:var(--mm-muted);font-size:13px;">jQuery <code>printPage</code> + <code>printThis.js</code> removed</div>
         </div>
     </div>
 </section>
