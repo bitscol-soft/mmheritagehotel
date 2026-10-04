@@ -951,6 +951,40 @@
 .mm-ui .mm-toolbar-actions { display: flex; gap: var(--mm-pad-2); align-items: center; flex-wrap: wrap; }
 .mm-ui .mm-toolbar-trailing { display: flex; gap: var(--mm-pad-3); align-items: center; }
 
+/* W2.4 mobile action-bar: at ≤767px, the actions row detaches from the
+   inline toolbar and sticks to the bottom of the viewport as a fixed
+   action bar. The leading + trailing sections stay inline at the top
+   of the toolbar (search, filters, page meta). The body gets bottom
+   padding equal to the action-bar height so the last row of the page
+   content is not hidden behind the bar. The bar uses mm-no-print so
+   it does not appear in print. */
+@media (max-width: 767px) {
+    .mm-ui .mm-toolbar { padding-bottom: calc(var(--mm-pad-3) + 56px); }
+    .mm-ui .mm-toolbar-actions {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: var(--mm-z-toolbar, 30);
+        background: var(--mm-surface);
+        border-top: 1px solid var(--mm-line);
+        box-shadow: 0 -2px 8px rgba(15, 23, 42, 0.08);
+        padding: var(--mm-pad-2) var(--mm-pad-4);
+        margin: 0;
+        gap: var(--mm-pad-2);
+        justify-content: flex-end;
+    }
+    .mm-ui .mm-toolbar-actions .mm-button { min-height: 40px; flex: 1 1 auto; }
+    .mm-ui .mm-toolbar-actions .mm-button:not(.mm-button-primary):last-child { flex: 0 0 auto; }
+    .mm-ui .mm-toolbar-actions { print-color-adjust: exact; }
+}
+@media (max-width: 767px) {
+    .mm-ui .mm-toolbar-actions { page-break-inside: avoid; }
+}
+@media print {
+    .mm-ui .mm-toolbar-actions { display: none !important; }
+}
+
 /* --- mm-data-table --- */
 .mm-ui .mm-data-table-wrap { width: 100%; }
 .mm-ui .mm-data-table { width: 100%; margin: 0; border-collapse: collapse; font-size: var(--mm-text-sm); }
