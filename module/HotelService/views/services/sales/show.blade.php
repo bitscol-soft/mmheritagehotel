@@ -74,12 +74,13 @@
             <a class="mm-button mm-button-secondary" href="{{ route('hotelservice.service-sales.index') }}">
                 <i class="fa fa-list" aria-hidden="true"></i> All Sales
             </a>
-            <a href="#" class="mm-button" onclick="printPage('print_body'); return false;">
-                <i class="fa fa-print" aria-hidden="true"></i> Print
-            </a>
+            {{-- W4.3a: the print button is now provided by <x-mm.print-sheet>'s footer
+                 (the data-mm-print hook calls window.print()). The old jQuery
+                 printPage('print_body') link is removed. --}}
         @endif
     </x-slot>
     <x-mm.panel class="tw-p-4">
+        <x-mm.print-sheet>
                             <div id="print_body">
                                 <div id="customer_info" style="padding: 0 10px;">
                                     <div class="row">
@@ -237,20 +238,16 @@
                                     <br>
                                 </div>
                             </div>
+        </x-mm.print-sheet>
     </x-mm.panel>
 </x-mm.page>
 @endsection
 
 @section('js')
-    <script src="{{ asset('assets/custom_js/printThis.js') }}"></script>
-    <script type="text/javascript">
-        function printPage(id) {
-            $('#' + id).printThis({
-                importStyle: true
-            });
-        };
-        window.onreadystatechange = $('#print_body').printThis({
-            importStyle: true
-        });
+    {{-- W4.3a: the printThis.js script and the printPage() function
+         are no longer used. The print button is now provided by
+         <x-mm.print-sheet>'s footer (data-mm-print hook calls
+         window.print()). --}}
+@stop
     </script>
 @stop

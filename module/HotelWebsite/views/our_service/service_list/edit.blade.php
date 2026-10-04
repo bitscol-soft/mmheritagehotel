@@ -19,17 +19,7 @@
             @method('PUT')
             <div class="row">
                 <div class="col-sm-12">
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label" for="form-field-1-1">Service Title</label>
-
-                        <div class="col-xs-12 col-sm-8 @error('service_title') has-error @enderror">
-                            <input type="text" class="form-control input-sm" name="service_title" value="{{ $service->service_title }}" placeholder="Enter Service Title">
-
-                            @error('service_title')
-                            <span class="text-danger"> {{ $message }}</span>
-                            @enderror
-                        </div>
-                    </div>
+                    <x-mm.field label="Service Title" id="service-title" name="service_title" value="{{ $service->service_title }}" placeholder="Enter Service Title" :error="$errors->first('service_title')" />
                 </div>
                 <div class="col-sm-12">
                     <div class="form-group">
@@ -44,26 +34,18 @@
                     </div>
                 </div>
                 <div class="col-sm-12">
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label" for="form-field-1-1">Service Box Icon (FontAwsome 4.7)</label>
-
-                        <div class="col-xs-12 col-sm-8 @error('service_icon') has-error @enderror">
-                            <input type="text" class="form-control input-sm" name="service_icon" value="{{ $service->service_icon }}" placeholder="Ex - fa fa-bed">
-
-                            @error('service_icon')
-                            <span class="text-danger"> {{ $message }}</span>
-                            @enderror
-                        </div>
-                    </div>
+                    <x-mm.field label="Service Box Icon (FontAwsome 4.7)" id="service-icon" name="service_icon" value="{{ $service->service_icon }}" placeholder="Ex - fa fa-bed" :error="$errors->first('service_icon')" />
                 </div>
                 <div class="col-sm-12">
                     <div class="form-group">
                         <label class="col-sm-3 control-label" for="form-field-1-1">Service List</label>
 
                         <div class="col-xs-12 col-sm-8 @error('heading_title') has-error @enderror">
+                            {{-- W4.3: kept raw. The bootstrap-tag plugin binds to
+                                 the #form-field-tags id and the inline tag_input.tag() call. --}}
                             <div class="inline" style="display: inline !important;">
-												<input type="text" class="form-control" name="service_list" id="form-field-tags" value="{{ $service->service_list }}" placeholder="Enter tags ..." />
-											</div>
+                                <input type="text" class="form-control" name="service_list" id="form-field-tags" value="{{ $service->service_list }}" placeholder="Enter tags ..." />
+                            </div>
                         </div>
                     </div>
                 </div>
