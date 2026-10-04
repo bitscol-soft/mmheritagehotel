@@ -16,49 +16,37 @@
     <x-mm.panel class="tw-p-4">
         @include('partials._alert_message')
         <!-- LIST -->
-        <div class="row" style="width: 100%; margin: 0 !important;">
-            <div class="col-sm-12 px-4">
-                <x-mm.table-scroll label="Suppliers">
-                    <table id="data-table" class="table table-bordered table-striped">
-                        <thead>
-                            <tr class="table-header-bg">
-                                <th class="text-center" style="color: white !important;" width="8%">Sl</th>
-                                <th class="pl-3" style="color: white !important;" >Name</th>
-                                <th class="pl-3" style="color: white !important;" >Mobile</th>
-                                <th class="pl-3" style="color: white !important;" >Email</th>
-                                <th class="pl-3 text-right" style="color: white !important;" >Opening Banalce</th>
-                                <th class="text-center" style="color: white !important;" width="15%">Actions</th>
-                            </tr>
-                        </thead>
+            <x-mm.data-table :columns="[
+                ['label' => 'Sl', 'align' => 'center', 'width' => '8%'],
+                ['label' => 'Name'],
+                ['label' => 'Mobile'],
+                ['label' => 'Email'],
+                ['label' => 'Opening Banalce', 'align' => 'right'],
+                ['label' => 'Actions', 'align' => 'center', 'width' => '15%'],
+            ]" id="data-table" table-class="table table-bordered table-striped" label="Suppliers">
+                @foreach($suppliers as $item)
+                    <tr>
+                        <td class="text-center">{{ $loop->iteration }}</td>
+                        <td class="pl-3">{{ $item->name }}</td>
+                        <td class="pl-3">{{ $item->mobile }}</td>
+                        <td class="pl-3">{{ $item->email }}</td>
+                        <td class="pl-3 text-right">{{ number_format($item->opening_balance, 2) }}</td>
+                        <td class="text-center">
+                            <div class="btn-group btn-corner">
+                                @include('partials._user-log', ['data' => $item])
 
-                        <tbody>
-                            @foreach($suppliers as $item)
-                                <tr>
-                                    <td class="text-center">{{ $loop->iteration }}</td>
-                                    <td class="pl-3">{{ $item->name }}</td>
-                                    <td class="pl-3">{{ $item->mobile }}</td>
-                                    <td class="pl-3">{{ $item->email }}</td>
-                                    <td class="pl-3 text-right">{{ number_format($item->opening_balance, 2) }}</td>
-                                    <td class="text-center">
-                                        <div class="btn-group btn-corner">
-                                            @include('partials._user-log', ['data' => $item])
+                                @if ((hasPermission("account-suppliers.edit", $slugs)))
+                                    <a href="{{route('acc-suppliers.edit', $item->id)}}" class="btn btn-primary btn-xs"><i class="fa fa-pencil-square"></i></a>
+                                @endif
 
-                                            @if ((hasPermission("account-suppliers.edit", $slugs)))
-                                                <a href="{{route('acc-suppliers.edit', $item->id)}}" class="btn btn-primary btn-xs"><i class="fa fa-pencil-square"></i></a>
-                                            @endif
-
-                                            @if ((hasPermission("account-suppliers.delete", $slugs)))
-                                                <a href="#" onclick="delete_item('{{ route('acc-suppliers.destroy', $item->id) }}')" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i></a>
-                                            @endif
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </x-mm.table-scroll>
-            </div>
-        </div>
+                                @if ((hasPermission("account-suppliers.delete", $slugs)))
+                                    <a href="#" onclick="delete_item('{{ route('acc-suppliers.destroy', $item->id) }}')" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i></a>
+                                @endif
+                            </div>
+                        </td>
+                    </tr>
+                @endforeach
+            </x-mm.data-table>
     </x-mm.panel>
 </x-mm.page>
 
@@ -74,20 +62,5 @@
     <script src="{{ asset('assets/js/bootstrap-datepicker.min.js') }}"></script>
 
     <script src="{{ asset('assets/custom_js/confirm_delete_dialog.js') }}"></script>
-    <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('assets/js/jquery.dataTables.bootstrap.min.js') }}"></script>
-
-    <script type="text/javascript">
-        jQuery(function($) {
-            $('#data-table').DataTable({
-                "ordering": false,
-                "bPaginate": true,
-                "lengthChange": false,
-                "info": false,
-                "pageLength": 25
-            });
-        })
-    </script>
-
 @endsection
 

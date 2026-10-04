@@ -20,64 +20,51 @@
     <x-mm.panel class="tw-p-4">
         @include('partials._alert_message')
         <!-- LIST -->
-        <div class="row" style="width: 100%; margin: 0 !important;">
-            <div class="col-sm-12">
-                <x-mm.table-scroll label="Chart Of Accounts">
-                    <table id="data-table" class="table table-bordered table-striped">
-                        <thead>
-                            <tr class="table-header-bg">
-                                <th class="text-center" style="color: white !important;" width="8%">Sl</th>
-                                <th class="pl-3" style="color: white !important;" width="20%">Account Group</th>
-                                <th class="pl-3" style="color: white !important;" width="20%">Account Control</th>
-                                <th class="pl-3" style="color: white !important;" width="20%">Account Subsidiary</th>
-                                <th class="pl-3" style="color: white !important;" >Account Name</th>
-                                <th class="pl-3" style="color: white !important;" >Opening</th>
-                                <th class="text-center" style="color: white !important;" width="15%">Status</th>
-                                <th class="text-center" style="color: white !important;" width="12%">Actions</th>
-                            </tr>
-                        </thead>
+            <x-mm.data-table :columns="[
+                ['label' => 'Sl', 'align' => 'center', 'width' => '8%'],
+                ['label' => 'Account Group', 'width' => '20%'],
+                ['label' => 'Account Control', 'width' => '20%'],
+                ['label' => 'Account Subsidiary', 'width' => '20%'],
+                ['label' => 'Account Name'],
+                ['label' => 'Opening'],
+                ['label' => 'Status', 'align' => 'center', 'width' => '15%'],
+                ['label' => 'Actions', 'align' => 'center', 'width' => '12%'],
+            ]" id="data-table" table-class="table table-bordered table-striped" label="Chart Of Accounts">
+                @foreach($accounts as $item)
+                    <tr>
+                        <td class="text-center">{{ $loop->iteration }}</td>
+                        <td class="pl-3">{{ optional($item->accountGroup)->name }}</td>
+                        <td class="pl-3">{{ optional($item->accountControl)->name }}</td>
+                        <td class="pl-3">{{ optional($item->accountSubsidiary)->name }}</td>
+                        <td class="pl-3">{{ $item->name }}</td>
+                        <td class="pl-3">{{ $item->opening_balance }}</td>
+                        <td class="text-center">
+                            {!! $item->status == 1 ? '<span class="label label-info">Active</span>' : '<span class="label label-warning">Inactive</span>' !!}
+                        </td>
+                        <td class="text-center">
+                            <div class="btn-group btn-corner">
+                                @include('partials._user-log', ['data' => $item])
 
-                        <tbody>
-                            @foreach($accounts as $item)
+                                @if($item->id > 85 && $item->accountType == null)
 
-                                <tr>
-                                    <td class="text-center">{{ $loop->iteration }}</td>
-                                    <td class="pl-3">{{ optional($item->accountGroup)->name }}</td>
-                                    <td class="pl-3">{{ optional($item->accountControl)->name }}</td>
-                                    <td class="pl-3">{{ optional($item->accountSubsidiary)->name }}</td>
-                                    <td class="pl-3">{{ $item->name }}</td>
-                                    <td class="pl-3">{{ $item->opening_balance }}</td>
-                                    <td class="text-center">
-                                        {!! $item->status == 1 ? '<span class="label label-info">Active</span>' : '<span class="label label-warning">Inactive</span>' !!}
-                                    </td>
-                                    <td class="text-center">
-                                        <div class="btn-group btn-corner">
-                                            @include('partials._user-log', ['data' => $item])
+                                    @if ($item->id == 1000 || $item->id == 1001 || $item->id == 1002 || $item->id == 1003)
 
-                                            @if($item->id > 85 && $item->accountType == null)
+                                    @else
+                                        @if(hasPermission('account.edit', $slugs))
+                                            <a href="{{route('accounts.edit', $item->id)}}" class="btn btn-primary btn-xs"><i class="fa fa-pencil-square"></i></a>
+                                        @endif
 
-                                                @if ($item->id == 1000 || $item->id == 1001 || $item->id == 1002 || $item->id == 1003)
+                                        @if(hasPermission('account.delete', $slugs))
+                                            <a href="#" onclick="delete_item(`{{ route('accounts.destroy', $item->id) }}`)" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i></a>
+                                        @endif
+                                    @endif
 
-                                                @else
-                                                    @if(hasPermission('account.edit', $slugs))
-                                                        <a href="{{route('accounts.edit', $item->id)}}" class="btn btn-primary btn-xs"><i class="fa fa-pencil-square"></i></a>
-                                                    @endif
-
-                                                    @if(hasPermission('account.delete', $slugs))
-                                                        <a href="#" onclick="delete_item(`{{ route('accounts.destroy', $item->id) }}`)" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i></a>
-                                                    @endif
-                                                @endif
-
-                                            @endif
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </x-mm.table-scroll>
-            </div>
-        </div>
+                                @endif
+                            </div>
+                        </td>
+                    </tr>
+                @endforeach
+            </x-mm.data-table>
     </x-mm.panel>
 </x-mm.page>
 
@@ -93,20 +80,5 @@
     <script src="{{ asset('assets/js/bootstrap-datepicker.min.js') }}"></script>
 
     <script src="{{ asset('assets/custom_js/confirm_delete_dialog.js') }}"></script>
-    <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('assets/js/jquery.dataTables.bootstrap.min.js') }}"></script>
-
-    <script type="text/javascript">
-        jQuery(function($) {
-            $('#data-table').DataTable({
-                "ordering": false,
-                "bPaginate": true,
-                "lengthChange": false,
-                "info": false,
-                "pageLength": 25
-            });
-        })
-    </script>
-
 @endsection
 
