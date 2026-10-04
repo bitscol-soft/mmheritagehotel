@@ -739,6 +739,20 @@
 .mm-ui.mm-rst-board .mm-board-card-foot form { margin: 0; }
 .mm-ui.mm-rst-board .mm-board-card-foot .btn { float: none !important; min-height: 32px; }
 @media (max-width: 991px) { .mm-ui.mm-rst-board .mm-board-layout { grid-template-columns: minmax(0, 1fr); } }
+
+/* Restaurant / Bar table map: tile grid for live status (rst/tables + bar/tables indexes). */
+.mm-ui .mm-table-map { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
+.mm-ui .mm-table-tile { display: flex; flex-direction: column; min-width: 0; background: var(--mm-surface); border: 1px solid var(--mm-line); border-radius: 8px; overflow: hidden; transition: box-shadow .15s ease, transform .15s ease; }
+.mm-ui .mm-table-tile:hover { box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); transform: translateY(-1px); }
+.mm-ui .mm-table-tile-head { padding: 10px 12px; border-bottom: 1px solid var(--mm-line); display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.mm-ui .mm-table-tile-head h6 { margin: 0; font-size: 14px; font-weight: 700; color: var(--mm-ink); }
+.mm-ui .mm-table-tile-body { flex: 1 1 auto; padding: 12px; }
+.mm-ui .mm-table-tile-foot { padding: 8px 12px; border-top: 1px solid var(--mm-line); display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.mm-ui .mm-table-tile-foot .btn { float: none !important; min-height: 30px; }
+.mm-ui .mm-table-tile-status { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; line-height: 1.4; }
+.mm-ui .mm-table-tile-status-1 { background: #d1f4d8; color: #166534; }
+.mm-ui .mm-table-tile-status-0 { background: #fee2e2; color: #991b1b; }
+.mm-ui .mm-table-tile-no { font-size: 22px; font-weight: 700; color: var(--mm-ink); margin: 0; line-height: 1.2; }
 @media (max-width: 575px) { .mm-ui.mm-rst .mm-report-check { flex-basis: 100%; } .mm-ui.mm-rst-inventory .mm-report-filter .row > [class*="col-"] { flex-basis: 100%; max-width: none; } }
 .mm-ui.mm-rst .mm-setup-title { margin: 0 0 16px; font-size: 18px; font-weight: 700; color: var(--mm-ink); }
 

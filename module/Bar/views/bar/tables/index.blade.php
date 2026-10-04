@@ -29,6 +29,52 @@
     <x-mm.panel class="tw-p-4">
         <x-alert-message />
 
+        <h2 class="mm-setup-title">Table map</h2>
+        <div class="mm-table-map" aria-label="Bar table map">
+            @forelse ($table_manages as $tile)
+                <article class="mm-table-tile" aria-label="Table {{ $tile->table_no }}">
+                    <header class="mm-table-tile-head">
+                        <h6>{{ $tile->name ?: 'Table' }}</h6>
+                        <span class="mm-table-tile-status mm-table-tile-status-{{ (int) $tile->status }}">
+                            {{ status($tile->status) }}
+                        </span>
+                    </header>
+                    <div class="mm-table-tile-body">
+                        <p class="mm-table-tile-no">#{{ $tile->table_no }}</p>
+                    </div>
+                    <footer class="mm-table-tile-foot">
+                        @if (hasPermission('bar.sales.create', $slugs) && (int) $tile->status === 1)
+                            <a href="{{ route('bar.sales-v2.create') }}?table_id={{ $tile->id }}"
+                                class="btn btn-xs btn-primary" title="Take order">
+                                <i class="fa fa-cutlery"></i> Order
+                            </a>
+                        @else
+                            <span></span>
+                        @endif
+                        <div class="btn-group btn-corner">
+                            @if (hasPermission('bar.table-manages.edit', $slugs))
+                                <a href="#edit-modal"
+                                    onclick="editTable(`{{ route('bar.table-manages.update', $tile->id) }}`,{{ $tile }})"
+                                    data-toggle="modal" class="btn btn-xs btn-success" title="Edit">
+                                    <i class="fa fa-pencil-square-o"></i>
+                                </a>
+                            @endif
+                            @if (hasPermission('bar.table-manages.delete', $slugs))
+                                <button type="button"
+                                    onclick="delete_item(`{{ route('bar.table-manages.destroy', $tile->id) }}`)"
+                                    class="btn btn-xs btn-danger" title="Delete">
+                                    <i class="fa fa-trash-o"></i>
+                                </button>
+                            @endif
+                        </div>
+                    </footer>
+                </article>
+            @empty
+                <div class="alert alert-info" style="grid-column: 1 / -1;">No tables yet — add one to get started.</div>
+            @endforelse
+        </div>
+
+        <h2 class="mm-setup-title" style="margin-top:24px">Manage tables</h2>
         <x-mm.data-table :columns="[
             ['label' => 'Sl', 'width' => '5%'],
             ['label' => 'Name'],
