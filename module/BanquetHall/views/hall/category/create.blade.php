@@ -30,24 +30,10 @@
                     <div class="col-md-6">
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label" for="cat_name"> Name <sup
-                                            class="text-danger">*</sup> </label>
-                                    <div class="col-xs-12 col-sm-8 ">
-                                        <input type="text" id="cat_name" name="cat_name"
-                                            placeholder="Enter Category Name" class="form-control" required>
-                                    </div>
-                                </div>
+                                <x-mm.field label="Name" id="cat_name" name="cat_name" placeholder="Enter Category Name" required />
                             </div>
                             <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label" for="capacity"> Guest Capacity <sup
-                                            class="text-danger">*</sup></label>
-                                    <div class="col-xs-12 col-sm-8 ">
-                                        <input type="number" id="capacity" name="guest_capacity"
-                                            placeholder="Enter Guest Capacity" class="form-control" required>
-                                    </div>
-                                </div>
+                                <x-mm.field label="Guest Capacity" id="capacity" name="guest_capacity" type="number" placeholder="Enter Guest Capacity" required />
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">

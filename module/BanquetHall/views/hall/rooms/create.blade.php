@@ -25,18 +25,7 @@
                 {{-- <input type="hidden" id="roomId" value="null"> --}}
                 <div class="row">
                     <div class="col-sm-12">
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label" for="form-field-1-1"> Hall Name <span
-                                    style="color: deeppink">*</span> </label>
-                            <div class="col-xs-12 col-sm-8 @error('name') has-error @enderror">
-                                <input type="text" class="form-control input-sm" name="name"
-                                    value="{{ old('name') }}" placeholder="Enter Hall Name">
-
-                                @error('name')
-                                    <span class="text-danger"> {{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
+                        <x-mm.field label="Hall Name" id="hall-name" name="name" value="{{ old('name') }}" placeholder="Enter Hall Name" required />
                     </div>
                     <div class="col-sm-12">
                         <div class="form-group">
@@ -64,6 +53,8 @@
                             <label class="col-sm-3 control-label" for="form-field-1-1"> Hall Number <span
                                     style="color: deeppink">*</span></label>
                             <div class="col-xs-12 col-sm-8 @error('hall_number') has-error @enderror">
+                                {{-- W4.2: kept raw. The checkRoomNumber() JS hook binds
+                                     to onkeyup="checkRoomNumber(this)". --}}
                                 <input type="text" class="form-control input-sm" name="hall_number"
                                     id="roomNumber" value="{{ old('hall_number') }}"
                                     placeholder="Enter Hall Number" required
@@ -77,48 +68,16 @@
                     </div>
 
                     <div class="col-sm-12">
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label" for="form-field-1-1"> Size SQ </label>
-                            <div class="col-xs-12 col-sm-8 @error('hall_sqft') has-error @enderror">
-                                <input type="text" class="form-control input-sm" name="hall_sqft"
-                                    value="{{ old('hall_sqft') }}" placeholder="Enter Square Size">
-
-                                @error('hall_sqft')
-                                    <span class="text-danger"> {{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
+                        <x-mm.field label="Size SQ" id="hall-sqft" name="hall_sqft" value="{{ old('hall_sqft') }}" placeholder="Enter Square Size" />
                     </div>
                     {{-- Rent  --}}
                     <div class="col-sm-12">
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label" for="form-field-1-1"> Rent
-                            </label>
-                            <div class="col-xs-12 col-sm-8 @error('price') has-error @enderror">
-                                <input type="text" class="form-control input-sm" name="price"
-                                    value="{{ old('price') }}" placeholder="Rent">
-
-                                @error('price')
-                                    <span class="text-danger"> {{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
+                        <x-mm.field label="Rent" id="hall-price" name="price" value="{{ old('price') }}" placeholder="Rent" />
                     </div>
 
                     {{-- Max Guests  --}}
                     <div class="col-sm-12">
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label" for="form-field-1-1"> Max Guests
-                            </label>
-                            <div class="col-xs-12 col-sm-8 @error('max_guests') has-error @enderror">
-                                <input type="text" class="form-control input-sm" name="max_guests"
-                                    value="{{ old('max_guests') }}" placeholder="Enter Max Guests">
-
-                                @error('max_guests')
-                                    <span class="text-danger"> {{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
+                        <x-mm.field label="Max Guests" id="hall-max-guests" name="max_guests" value="{{ old('max_guests') }}" placeholder="Enter Max Guests" />
                     </div>
 
                     <div class="col-sm-12">
