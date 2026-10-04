@@ -61,6 +61,7 @@
         <li><a href="#w4-1">W4.1</a> — BanquetHall <code>hall_booking/reservation-invoice</code> wrapped in <code>&lt;x-mm.page&gt; + &lt;x-mm.print-sheet&gt;</code>; jQuery <code>printPage</code> + <code>printThis.js</code> removed.</li>
         <li><a href="#w4-2">W4.2</a> — Hall lists/forms ride Hotel partials (verified); 9 hall views converted (aminities + category + rooms); raw form fields → <code>&lt;x-mm.field&gt;</code>; raw <code>&lt;table&gt;</code> (DataTables) → <code>&lt;x-mm.data-table&gt;</code>.</li>
         <li><a href="#w4-4">W4.4</a> — booking-purpose CRUD: 3 views (create, edit, index) → <code>&lt;x-mm.field&gt;</code> + <code>&lt;x-mm.data-table&gt;</code>; conditional "Purpose" vs "Platform" label uses <code>:label</code> and <code>:placeholder</code> props.</li>
+        <li><a href="#w4-3a">W4.3a</a> — HotelService sales/show wrapped in <code>&lt;x-mm.print-sheet&gt;</code>; HotelWebsite hotel_feature + our_service feature_list (6 files) → <code>&lt;x-mm.field&gt;</code> + <code>&lt;x-mm.data-table&gt;</code>. HotelService sales/create + sales/edit deferred to W4.3b.</li>
     </ul>
 </div>
 
@@ -1254,6 +1255,45 @@ tripwire_xpage_pageheader_combo() {
         <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
             <div style="font-size:32px;font-weight:700;color:#2f63a8;">62</div>
             <div style="color:var(--mm-muted);font-size:13px;">Net diff (insertions - deletions = 62-117 = -55 lines, +28% slimmer)</div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== W4.3a ==================== -->
+<section class="preview-section" id="w4-3a">
+    <h2>W4.3a — HotelService + News & Events → <code>x-mm</code> patterns (8 files)</h2>
+    <p style="color:#526578">The W4.3 plan item from <code>docs/FRONTEND-DEV-PLAN.md</code>: <em>"HotelService + News & Events lists/tables"</em>. This is the first of two W4.3 sub-commits; the large sales/create (476 lines) and sales/edit (357 lines) forms are deferred to W4.3b.</p>
+
+    <h3 style="margin-top:24px">What changed</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>HotelService sales/show</strong> (257 lines) — the print body is now wrapped in <code>&lt;x-mm.print-sheet&gt;</code>. The old jQuery <code>printPage('print_body')</code> link, the <code>printThis.js</code> script, and the <code>printPage()</code> function are removed.</li>
+        <li><strong>HotelService night-audits index</strong> — on-screen / export branching added (W3.5b pattern); <code>:print=1</code> added to <code>&lt;x-export-button&gt;</code> for consistency with the W3.7 reports.</li>
+        <li><strong>HotelService services/category index</strong> — raw <code>&lt;table id="data-table"&gt;</code> → <code>&lt;x-mm.data-table&gt;</code> with the 6 columns.</li>
+        <li><strong>HotelWebsite hotel_feature/feature_list</strong> (3 files) — 3 text inputs in create/edit → <code>&lt;x-mm.field&gt;</code>; raw <code>&lt;table id="data-table"&gt;</code> in index → <code>&lt;x-mm.data-table&gt;</code> with the 6 columns.</li>
+        <li><strong>HotelWebsite our_service/service_list</strong> (3 files) — 2 text inputs in create/edit → <code>&lt;x-mm.field&gt;</code>; raw <code>&lt;table id="data-table"&gt;</code> in index → <code>&lt;x-mm.data-table&gt;</code> with the 7 columns.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">What was NOT done (and why)</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>HotelService sales/create (476 lines) + sales/edit (357 lines)</strong> — large forms with many LaravelCollective <code>Form::select / Form::text</code> calls. Deferred to W4.3b to keep this diff reviewable.</li>
+        <li><strong>HotelService due-receive index + list</strong> — hospital-fork views (<code>@extends('layout.app')</code> + <code>hospital_partials</code>); not in scope.</li>
+        <li><strong>HotelService night-audits invoice (611 lines)</strong> — print template; deferred to T2.</li>
+        <li><strong>JS plugins</strong> (chosen-select, select2, bootstrap-tag, ace-switch, ace_file_input) — kept raw, the JS hooks depend on the class names.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">Numbers</h3>
+    <div class="mm-grid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;">
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">8</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Views converted across HotelService + HotelWebsite</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">3</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Raw <code>&lt;table&gt;</code> (DataTables) → <code>&lt;x-mm.data-table&gt;</code></div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">8</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Text inputs → <code>&lt;x-mm.field&gt;</code> (across the 4 form files)</div>
         </div>
     </div>
 </section>
