@@ -1025,3 +1025,7 @@
 }
 .mm-ui .mm-print-sheet-thermal-80mm { width: 80mm; max-width: 80mm; padding: var(--mm-pad-2); font-family: var(--mm-font-mono); font-size: var(--mm-text-xs); }
 .mm-ui .mm-print-sheet-thermal-58mm { width: 58mm; max-width: 58mm; padding: var(--mm-pad-2); font-family: var(--mm-font-mono); font-size: var(--mm-text-xs); }
+.mm-ui .mm-print-sheet-a4-landscape { max-width: 1100px; }
+@media print {
+    .mm-ui .mm-print-sheet-a4-landscape { max-width: none; }
+}

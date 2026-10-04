@@ -1,5 +1,5 @@
 @props([
-    'sheet' => 'a4',  // 'a4' | 'thermal-80mm' | 'thermal-58mm'
+    'sheet' => 'a4',  // 'a4' | 'a4-landscape' | 'thermal-80mm' | 'thermal-58mm'
     'title' => null,
 ])
 
