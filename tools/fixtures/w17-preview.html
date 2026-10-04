@@ -67,6 +67,7 @@
         <li><a href="#w5-2">W5.2</a> — rst/tables + bar/tables get a board-grid <b>tile map</b> (new <code>.mm-table-map</code> auto-fill grid + <code>.mm-table-tile</code> cards) above the existing data-table. Each tile shows the table name, status badge (green/red), the table number, and an "Order" button (when the table is active + user has sales.create) that links to <code>rst.sales.create</code> / <code>bar.sales-v2.create</code> with <code>?table_id=…</code>. CSS-only (14 lines); no new JS.</li>
         <li><a href="#w5-3">W5.3</a> — restaurant sales/create: 5 top-section text inputs (guest_name, room_number, booking_number, invoice_id, sale_date) → <code>&lt;x-mm.field&gt;</code>, mirroring the W4.3b pattern from HotelService sales/create. The "Add guest" icon-button is now a separate small button below the guest field (was an input-group-addon). The product_name input-group + bottom totals + dynamic product-item rows stay raw (JS class hooks + Bootstrap-3 input-group + ৳ currency addon).</li>
         <li><a href="#w5-4">W5.4</a> — GS goods_requisitions index: the results table (10 columns) → <code>&lt;x-mm.data-table&gt;</code>. Per-row action buttons (view/edit/approve/unapprove/delete), the <code>data-rel="popover"</code> info icon, the delete form, the permission checks, the route bindings, and the entire <code>@section('js')</code> block all preserved. The top filter table + per-row view-details modals + create/edit/approve/gin_list views + stock-count board grid stay deferred.</li>
+        <li><a href="#w6-1a">W6.1a</a> — Account voucher list pages (contras / journals / payments / receives): the 7-column list (Sl, Invoice No, Date, Reference, Amount, Status, Actions) → <code>&lt;x-mm.data-table&gt;</code>. Money amount renders byte-for-byte (<code>{{ number_format($item->amount, 2) }}</code>); per-row view/approve/edit/delete action buttons + permission checks + <code>@include('partials._user-log', …)</code> preserved. The top filter form (date-range input-group addon), the create/edit/show forms, and the financial-report prints (W6.2) stay deferred.</li>
     </ul>
 </div>
 
@@ -1493,6 +1494,53 @@ tripwire_xpage_pageheader_combo() {
         <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
             <div style="font-size:32px;font-weight:700;color:#2f63a8;">0</div>
             <div style="color:var(--mm-muted);font-size:13px;">Lines of JS changed (chosen + date-picker + popover + delete_check + exportData all intact)</div>
+        </div>
+    </div>
+</section>
+
+<section class="preview-section" id="w6-1a">
+    <h2>W6.1a — Account voucher list pages → <code>&lt;x-mm.data-table&gt;</code></h2>
+    <p style="color:#526578">The W6 plan item: <em>"Voucher entry: x-field repeat-groups for ledger rows (totals JS untouched)"</em>. This commit lands the smallest, highest-value piece of W6 first: the 4 voucher LIST pages (the index page that lists existing vouchers with their approval status). The create / edit / show (invoice) pages of the vouchers — with the actual ledger row repeaters — are deferred; each is 438-492 lines and would be separate focused W6.1b/d PRs.</p>
+
+    <h3 style="margin-top:24px">What was done in this commit</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>4 files</strong> — <code>module/Account/views/voucher/{contras,journals,payments,receives}/index.blade.php</code> (148-154 lines each).</li>
+        <li>All 4 list pages get the same 7-column structure → <code>&lt;x-mm.data-table&gt;</code>: <code>Sl | Invoice No | Date | Reference | Amount | Status | Actions</code>.</li>
+        <li>Money amount renders byte-for-byte: <code>{{ number_format($item->amount, 2) }}</code> (no number-rendering diff).</li>
+        <li>Per-row action buttons preserved:
+            <ul>
+                <li><strong>contras</strong> — view (<code>voucher-contras.show</code>) + approve (when <code>!$item->is_approved</code>) + delete (<code>voucher-contras.delete</code>).</li>
+                <li><strong>journals</strong> — view + edit (when <code>!$item->is_approved</code>) + delete.</li>
+                <li><strong>payments</strong> — view + approve (when <code>!$item->is_approved</code>) + delete.</li>
+                <li><strong>receives</strong> — view + approve (when <code>!$item->is_approved</code>) + delete.</li>
+            </ul>
+        </li>
+        <li>The <code>@include('partials._user-log', ['data' => $item])</code> audit-log popover is preserved on every row.</li>
+        <li>Empty-state colspan reduced 30 (or 50) → 7 (the actual column count).</li>
+    </ul>
+
+    <h3 style="margin-top:24px">What was NOT done (and why)</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>Voucher CREATE forms</strong> (4 files × 438-492 lines = ~1845 lines) — deferred. The ledger row repeater (<code>&lt;table class="ledger-rows"&gt;</code> with JS row-add/total) requires careful <code>x-mm.field</code> migration that preserves the JS hooks. Each is a separate W6.1b / W6.1c / W6.1d focused PR.</li>
+        <li><strong>Voucher EDIT forms</strong> — same constraint as create (same ledger repeater pattern).</li>
+        <li><strong>Voucher SHOW (invoice) pages</strong> — left as-is; the <code>printPage</code>/<code>printThis.js</code> migration to <code>&lt;x-mm.print-sheet&gt;</code> would be W6.2 ("Financial report prints → x-print-sheet A4-landscape variant").</li>
+        <li><strong>Top filter form</strong> (Invoice No + Reference + From/To date range + Search/Refresh buttons) — left as raw markup. The date-range input-group addon does not map cleanly to <code>&lt;x-mm.field&gt;</code> without a slot for the addon.</li>
+        <li><strong>@section('js')</strong> — left as-is. All JS function bindings (<code>delete_item()</code>, <code>$('.date-picker').datepicker()</code>, <code>$('.chosen-select').chosen()</code>) are preserved.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">Numbers</h3>
+    <div class="mm-grid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;">
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">4</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Voucher list pages → <code>&lt;x-mm.data-table&gt;</code></div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">7</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Columns per list (Sl / Invoice / Date / Reference / Amount / Status / Actions)</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">0</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Number-rendering diffs (byte-for-byte number_format preserved)</div>
         </div>
     </div>
 </section>
