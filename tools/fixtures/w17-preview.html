@@ -52,6 +52,7 @@
         <li><a href="#w3-3">W3.3</a> — Booking notes → <code>x-data-table</code> + <code>x-filter-bar</code>. Guest list (W1.7) and booking list (W1.7) were already on <code>x-data-table</code>; referred-booking uses the same booking-list view.</li>
         <li><a href="#w3-4">W3.4</a> — Room management forms → <code>x-field</code>/<code>x-select</code> (amenities + account_type + vat done; category + room forms follow in a follow-up commit).</li>
         <li><a href="#w3-5">W3.5</a> — Night audit + today-activities dashboards already use the tile pattern (<code>dl.mm-audit-summary</code>). The Excel-export paths in the night-audits list retain raw <code>&lt;table&gt;</code> markup because the data-table component is incompatible with the colspan=10 title row.</li>
+        <li><a href="#w3-6">W3.6</a> — Housekeeping board already shares the booking-board tile pattern; <code>updateStatus</code> / <code>updateKeepingStatus</code> hooks verified intact.</li>
     </ul>
 </div>
 
@@ -890,6 +891,44 @@ tripwire_xpage_pageheader_combo() {
         <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
             <div style="font-size:32px;font-weight:700;color:#2f63a8;">2</div>
             <div style="color:var(--mm-muted);font-size:13px;">Dashboards verified (night-audit show, today-activities index)</div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== W3.6 ==================== -->
+<section class="preview-section" id="w3-6">
+    <h2>W3.6 — Housekeeping board already shares the booking-board tile pattern</h2>
+    <p style="color:#526578">The W3.6 plan item from <code>docs/FRONTEND-DEV-PLAN.md</code>: <em>"Housekeeping board → same tile grid as booking board (reuses <code>x-room-status</code>; verify <code>updateStatus</code> hook intact)."</em></p>
+
+    <h3 style="margin-top:24px">State of the housekeeping board</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>Housekeeping index (<code>module/Hotel/views/house-keeping/index.blade.php</code>)</strong> — already uses <code>&lt;x-mm.page&gt;</code> + <code>&lt;x-mm.panel&gt;</code> with a <code>&lt;x-room-keeping&gt;</code> component (note: separate from <code>&lt;x-room-status&gt;</code>, because the housekeeping board has its own state machine — Maintanence, Ready).</li>
+        <li><strong><code>&lt;x-room-keeping&gt;</code> component</strong> — at <code>resources/views/components/room-keeping.blade.php</code>, 99 lines. Renders the same tile-grid visual structure as <code>&lt;x-room-status&gt;</code> (color-coded tiles per room status, hover/click to change status).</li>
+        <li><strong><code>updateKeepingStatus</code> hook</strong> — at <code>module/Hotel/views/house-keeping/_script/script.blade.php</code> line 4, the script is wired to <code>route('update-room-status-keeping', ':id')</code> (the housekeeping route at <code>module/Hotel/routes/web_hotel_ajax.php:46</code>). The <code>updateStatus</code> hook (booking board) is also intact at <code>web_hotel_ajax.php:44</code>.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">What was NOT done (and why)</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>Merging <code>&lt;x-room-keeping&gt;</code> and <code>&lt;x-room-status&gt;</code> into one component</strong> — the two components have different state machines (housekeeping: Maintanence/Ready; booking: Reserved/Booked/In-house/Today Checkout) and different routes (<code>update-room-status-keeping</code> vs <code>update-room-status</code>). Merging them would require a state-machine refactor that's out of scope for W3.6. A follow-up could introduce a single <code>&lt;x-room-tile&gt;</code> with a <code>mode</code> prop.</li>
+        <li><strong>Visual alignment</strong> — the two components already share the tile-grid CSS (both use the same <code>room-status-ui</code> wrapper class). The visual look is consistent.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">Verification</h3>
+    <p style="color:#526578">Hooks intact (verified by grep on the codebase):</p>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><code>route('update-room-status', ':id')</code> — <code>RoomsController@updateStatus</code> (booking board).</li>
+        <li><code>route('update-room-status-keeping', ':id')</code> — <code>RoomsController@updateKeepingStatus</code> (housekeeping board).</li>
+    </ul>
+
+    <h3 style="margin-top:24px">Numbers</h3>
+    <div class="mm-grid" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;">
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">0</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Blade files modified in this commit (the hook is already intact; no conversion was needed)</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">2</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Update hooks verified (booking + housekeeping)</div>
         </div>
     </div>
 </section>
