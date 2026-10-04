@@ -56,6 +56,8 @@
         <li><a href="#w3-7">W3.7</a> — Reports (12 hotel screens) get a print button via <code>&lt;x-export-button :print=1 /&gt;</code>. <code>ExportService</code> untouched; PDF/Excel export paths preserved.</li>
         <li><a href="#w3-8">W3.8</a> — Decision D1: delete dead invoice templates (<code>get_invoice</code>, <code>checkout-invoice-v2</code>, <code>checkout-invoice-v4</code>) and annotate unrouted banquet methods (<code>bookingUi</code>, <code>available</code>) as <code>@deprecated</code>.</li>
         <li><a href="#w3-9">W3.9</a> — Booking create/edit/adjust deep pass: stepper now uses <code>&lt;x-mm.stepper&gt;</code>; payment tab &amp; modals audit logged; full T2 backlog item.</li>
+        <li><a href="#w3-4b">W3.4b</a> — Categories (create/edit) + rooms (create/edit) forms → <code>&lt;x-mm.field&gt;</code>; pre-existing data-binding bug in rooms/edit fixed.</li>
+        <li><a href="#w3-5b">W3.5b</a> — Night-audits list/export split (Excel keeps colspan=10 title; on-screen uses new <code>list.blade.php</code>); today-activities transaction list extracted to partial.</li>
     </ul>
 </div>
 
@@ -1065,6 +1067,80 @@ tripwire_xpage_pageheader_combo() {
         <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
             <div style="font-size:32px;font-weight:700;color:#2f63a8;">3</div>
             <div style="color:var(--mm-muted);font-size:13px;">Custom <code>.md-modal</code> modals (extend-date, extra-charge, member-detail) — T2 backlog</div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== W3.4b ==================== -->
+<section class="preview-section" id="w3-4b">
+    <h2>W3.4b — Categories + rooms forms → <code>&lt;x-mm.field&gt;</code></h2>
+    <p style="color:#526578">The W3.4 plan said "categories + rooms forms → deferred to W3.4b (follow-up commit, scope-driven decision)". This is that follow-up, split into two commits for reviewability.</p>
+
+    <h3 style="margin-top:24px">W3.4b (part 1) — category create/edit (<code>520589df</code>)</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><code>module/Hotel/views/category/create.blade.php</code> — 7 text/number inputs converted to <code>&lt;x-mm.field&gt;</code>: cat_name, guest_capacity, can_sleep, bed_details, room_size, price, vat.</li>
+        <li><code>module/Hotel/views/category/edit.blade.php</code> — same 7 fields converted, with <code>$category</code> value bindings.</li>
+        <li>Kept raw: dropzone (category_photos class on the raw <code>&lt;input&gt;</code>), guest-wise-price toggle (ace-switch JS binding), amenities checkboxes (multi-select with ace plugin), status select (chosen-select JS binding).</li>
+    </ul>
+
+    <h3 style="margin-top:24px">W3.4b (part 2) — rooms create/edit (<code>968307e3</code>)</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><code>module/Hotel/views/rooms/create.blade.php</code> — 2 fields converted: f_r_id_card, rent.</li>
+        <li><code>module/Hotel/views/rooms/edit.blade.php</code> — 3 fields (in the <code>@if(setting('room_wise_pricing_booking') == 1)</code> block) got their value bindings fixed (was <code>old('rent')</code> with no fallback, now <code>old('rent', $room->rent)</code>). This is a pre-existing data-binding bug fix; the field names are byte-identical.</li>
+        <li>Kept raw: <code>Form::select</code> for category (chosen-select JS), room_number (custom onkeyup JS), status/smoking_status selects (chosen-select JS).</li>
+    </ul>
+
+    <h3 style="margin-top:24px">What was NOT done (and why)</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><code>module/Hotel/views/category/index.blade.php</code> — uses DataTables plugin bound to <code>#dynamic-table</code>. Converting to <code>&lt;x-mm.data-table&gt;</code> requires rewriting the JS hook. Deferred to T2.</li>
+        <li><code>module/Hotel/views/rooms/index.blade.php</code> — same situation (DataTables bound to <code>#data-table</code>). The filter form is already on <code>&lt;x-mm.field&gt;</code>. Deferred to T2.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">Numbers</h3>
+    <div class="mm-grid" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;">
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">12</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Fields converted to <code>&lt;x-mm.field&gt;</code> (across 4 form files)</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">1</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Pre-existing data-binding bug fixed (rooms/edit rent/beds/max_guests)</div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== W3.5b ==================== -->
+<section class="preview-section" id="w3-5b">
+    <h2>W3.5b — Night-audits list/export split + today-activities transaction list</h2>
+    <p style="color:#526578">The W3.5 plan said "Excel-export and transaction-list tables in these pages deferred to W3.5b (the data-table component is incompatible with the colspan=10 Excel title row)". This is that follow-up, committed in <code>54288c2d</code>.</p>
+
+    <h3 style="margin-top:24px">What changed</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong><code>module/Hotel/views/night-audits/index.blade.php</code></strong> — branches on <code>request('export_type')</code>. Excel uses the existing <code>export/excel.blade.php</code> (with colspan=10 title row). On-screen uses a new <code>list.blade.php</code> partial that omits the title row. <code>:print=1</code> added to <code>&lt;x-export-button&gt;</code> for consistency with W3.7.</li>
+        <li><strong><code>module/Hotel/views/night-audits/list.blade.php</code></strong> (NEW, 60 lines) — on-screen version with all columns + Action column always shown.</li>
+        <li><strong><code>module/Hotel/views/hotel/reports/today-activities/index.blade.php</code></strong> — transaction list (the second table) extracted to a partial. Summary stats table (the first table, with custom borderless label/value layout) stays inline.</li>
+        <li><strong><code>module/Hotel/views/hotel/reports/today-activities/transactions.blade.php</code></strong> (NEW, 56 lines) — the transaction list partial.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">What was NOT done (and why)</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>Using <code>&lt;x-mm.data-table&gt;</code> directly</strong> — the night-audits table has a colspan=10 title row (Excel only) and a colspan tfoot row (Total); the today-activities transactions has 8 columns + colspan=7 tfoot rows + read-only inputs inside cells. Using the data-table component would require either dropping the colspan rows or adding a custom colspan API. The "split list/export + extract partial" pattern is simpler and preserves behavior byte-identically.</li>
+        <li><strong>Summary stats table in today-activities</strong> — stays inline (~85 lines, custom borderless layout) because it doesn't match the data-table component at all.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">Numbers</h3>
+    <div class="mm-grid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;">
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">2</div>
+            <div style="color:var(--mm-muted);font-size:13px;">New partials (night-audits/list, today-activities/transactions)</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">2</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Index files updated (night-audits, today-activities)</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">0</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Excel export paths broken (Excel still uses <code>export/excel.blade.php</code>)</div>
         </div>
     </div>
 </section>
