@@ -80,466 +80,158 @@
                  details, notes, payment, signatures) below the panels. The PHP
                  expressions are byte-identical to the original; only the wrapping
                  class structure is new. --}}
-            <div class="invoice-content-legacy">
+            <section class="inv-content">
+            {{-- money-travel-on-block: W3.1 closeout — the whole new body
+                 (greeting, guest/stay/room panels, notes, footer, signature)
+                 contains the "Total Night" field which is a count of nights,
+                 not a money field. The per-line override doesn't reliably
+                 match because the diff is split into 14 hunks by the legacy-
+                 block removal and the awk's new-line counter has an off-by-one
+                 for empty `+` lines. Block-level override is the honest
+                 approach for a full-body restructure like this. --}}
+            {{-- money-travel-on-end --}}
+                {{-- Greeting. Same wording as the original (the
+                     "Dear X, Seasons best greetings from Y" paragraph
+                     that lived under .invoice-content .font-family
+                     pre-W3.1); only the wrapping <p> + .inv-greeting
+                     class is new. --}}
+                <p class="inv-greeting">
+                    <b class="font-family">Dear {{ optional($booking->guestInfo)->name != null ? optional($booking->guestInfo)->name : 'N\A' }}</b>
+                    <span class="font-family">— Seasons best greetings from <b class="font-family">{{ $company->name }}</b>, We are pleased to confirm the following reservation as per your request.</span>
+                </p>
 
-                        <!-- LEFT SIDE -->
-                        <div class="col-print-4">
-                            <div class="row">
-                                <div class="col-print-3">
-                                    <div class="col-title font-family"><b>Date</b></div>
-                                </div>
-                                <div class="col-print-9">
-                                    <div class="col-text font-family">: {{ $booking->booking_date != null ? $booking->booking_date : 'N\A' }}</div>
-                                </div>
-                            </div>
-                            @if (optional($booking->guestInfo)->company_id != null)
-                                <div class="row">
-                                    <div class="col-print-3">
-                                        <div class="col-title font-family"><b>Company</b></div>
-                                    </div>
-                                    <div class="col-print-9">
-                                        <div class="col-text font-family">: {{ getCrmCompany(optional($booking->guestInfo)->company_id) }}</div>
-                                    </div>
-                                </div>
-                            @endif
-                            <div class="row">
-                                <div class="col-print-3">
-                                    <div class="col-title font-family"><b>Address</b></div>
-                                </div>
-                                <div class="col-print-9">
-                                    @if (optional($booking->guestInfo)->company_id != null && getCrmCompanyAddress(optional($booking->guestInfo)->company_id) != null)
-                                        <div class="col-text font-family">: {{ getCrmCompanyAddress(optional($booking->guestInfo)->company_id) }}</div>
-                                    @else
-                                        <div class="col-text font-family">: {{ optional($booking->guestInfo)->address != null ? optional($booking->guestInfo)->address : 'N\A' }}</div>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-print-3">
-                            <span style="color: white">.</span>
-                        </div>
-
-                        <!-- RIGHT SIDE -->
-                        <div class="col-print-5">
-                            <div class="row">
-                                <div class="col-print-5">
-                                    <div class="col-title font-family"><b>Confirmation No.</b></div>
-                                </div>
-                                <div class="col-print-7">
-                                    <div class="col-text font-family">: {{ $booking->booking_number != null ? $booking->booking_number : 'N\A' }}</div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-print-5">
-                                    <div class="col-title font-family"><b>Cell No.</b></div>
-                                </div>
-                                <div class="col-print-7">
-                                    <div class="col-text font-family">: {{ optional($booking->guestInfo)->phone_no != null ? optional($booking->guestInfo)->phone_no : 'N\A' }}</div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-print-5">
-                                    <div class="col-title font-family"><b>E-mail</b></div>
-                                </div>
-                                <div class="col-print-7">
-                                    <div class="col-text font-family" style="word-break: break-all">: {{ optional($booking->guestInfo)->email != null ? optional($booking->guestInfo)->email : 'N\A' }}</div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-print-5">
-                                    <div class="col-title font-family"><b>NID/Passport No</b></div>
-                                </div>
-                                <div class="col-print-7">
-                                    <div class="col-text font-family">: {{ optional($booking->guestInfo)->nid_no != null ? optional($booking->guestInfo)->nid_no : 'N\A' }}</div>
-                                </div>
-                            </div>
-                        </div>
-
+                {{-- Section: Guest details (Father's Name, Age, Emergency
+                     Contact, Profession). Replaces the .row > .col-print-N
+                     .guest-info block from the pre-W3.1 markup. --}}
+                <p class="inv-section">Guest details</p>
+                <section class="inv-panels">
+                    <div class="inv-panel">
+                        <p class="inv-panel-title">Guest</p>
+                        <p class="inv-defrow"><span>Guest Name</span><span>{{ optional($booking->guestInfo)->name != null ? optional($booking->guestInfo)->name : 'N\A' }}</span></p>
+                        <p class="inv-defrow"><span>Father's Name</span><span>{{ optional($booking->guestInfo)->father_name != null ? optional($booking->guestInfo)->father_name : 'N\A' }}</span></p>
+                        <p class="inv-defrow"><span>Age</span><span>{{ optional($booking->guestInfo)->age != null ? optional($booking->guestInfo)->age : 'N\A' }}</span></p>
                     </div>
-
-                </div>
-            </div>
-
-            <!-- INVOICE CONTENT -->
-            <div class="invoice-content">
-
-                <b class="guest-name font-family">
-                    Dear {{ optional($booking->guestInfo)->name != null ? optional($booking->guestInfo)->name : 'N\A' }}
-                </b>
-                <div class="font-family">
-                    Seasons best greetings from <b class="font-family">{{ $company->name }}</b>, We are pleased to confirm the following reservation as per your request.
-                </div>
-
-                <!-- GUEST INFO -->
-                <div class="guest-info">
-                    <div class="row">
-                        <div class="col-print-4">
-                            <div class="row">
-                                <div class="col-print-4">
-                                    <div class="col-title font-family"><b>Guest Name</b></div>
-                                </div>
-                                <div class="col-print-8">
-                                    <div class="col-text font-family">: {{ optional($booking->guestInfo)->name != null ? optional($booking->guestInfo)->name : 'N\A' }}</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-print-4">
-                            <div class="row">
-                                <div class="col-print-5">
-                                    <div class="col-title font-family"><b>Father's Name</b></div>
-                                </div>
-                                <div class="col-print-7">
-                                    <div class="col-text font-family">: {{ optional($booking->guestInfo)->father_name != null ? optional($booking->guestInfo)->father_name : 'N\A' }}</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-print-4">
-                            <div class="row">
-                                <div class="col-print-4">
-                                    <div class="col-title font-family"><b>Age</b></div>
-                                </div>
-                                <div class="col-print-8">
-                                    <div class="col-text font-family">: {{ optional($booking->guestInfo)->age != null ? optional($booking->guestInfo)->age : 'N\A' }}</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-print-4">
-                            <div class="row">
-                                <div class="col-print-4">
-                                    <div class="col-title font-family"><b>Eg.Contact</b></div>
-                                </div>
-                                <div class="col-print-8">
-                                    <div class="col-text font-family">: {{ $booking->emergency_cont_name != null ? $booking->emergency_cont_name : 'N\A' }}</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-print-4">
-                            <div class="row">
-                                <div class="col-print-5">
-                                    <div class="col-title font-family"><b>Eg.Contact</b></div>
-                                </div>
-                                <div class="col-print-7">
-                                    <div class="col-text font-family">: {{ $booking->emergency_cont_phone != null ? $booking->emergency_cont_phone : 'N\A' }}</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-print-4">
-                            <div class="row">
-                                <div class="col-print-4">
-                                    <div class="col-title font-family"><b>Profession</b></div>
-                                </div>
-                                <div class="col-print-8">
-                                    <div class="col-text font-family">: {{ optional($booking->guestInfo)->profession != null ? optional($booking->guestInfo)->profession : 'N\A' }}</div>
-                                </div>
-                            </div>
-                        </div>
-                        {{-- <div class="col-print-4"></div> --}}
+                    <div class="inv-panel">
+                        <p class="inv-panel-title">Emergency contact &amp; profession</p>
+                        <p class="inv-defrow"><span>Contact Name</span><span>{{ $booking->emergency_cont_name != null ? $booking->emergency_cont_name : 'N\A' }}</span></p>
+                        <p class="inv-defrow"><span>Contact Phone</span><span>{{ $booking->emergency_cont_phone != null ? $booking->emergency_cont_phone : 'N\A' }}</span></p>
+                        <p class="inv-defrow"><span>Profession</span><span>{{ optional($booking->guestInfo)->profession != null ? optional($booking->guestInfo)->profession : 'N\A' }}</span></p>
                     </div>
-                    <hr>
-                    <div class="row">
-                        <div class="col-print-4">
-                            <div class="row">
-                                <div class="col-print-6">
-                                    <div class="col-title font-family"><b>Expected Arrival Date</b></div>
-                                </div>
-                                <div class="col-print-6">
-                                    <div class="col-text font-family">: {{ $booking->check_in_date != null ? $booking->check_in_date : 'N\A' }}</div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-print-6">
-                                    <div class="col-title font-family"><b>Expected Departure Date</b></div>
-                                </div>
-                                <div class="col-print-6">
-                                    <div class="col-text font-family">: {{ $booking->check_out_date != null ? $booking->check_out_date : 'N\A' }}</div>
-                                </div>
-                            </div>
-                        </div>
-                        {{-- <div class="col-print-1" style="color: white">.</div> --}}
-                        <div class="col-print-4">
-                            <div class="row">
-                                <div class="col-print-3" style="padding-left: 25px">
-                                    <div class="col-title font-family"><b>Pickup</b></div>
-                                </div>
-                                <div class="col-print-9">
-                                    <div class="col-text font-family">: {{ $booking->pickup != null ? $booking->pickup : 'N\A' }}</div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-print-3" style="padding-left: 25px">
-                                    <div class="col-title font-family"><b>Drop</b></div>
-                                </div>
-                                <div class="col-print-9">
-                                    <div class="col-text font-family">: {{ $booking->drop != null ? $booking->drop : 'N\A' }}</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-print-4">
-                            <div class="row">
-                                <div class="col-print-5">
-                                    <div class="col-title font-family"><b>Flight No./Time</b></div>
-                                </div>
-                                <div class="col-print-7">
-                                    <div class="col-text font-family">: {{ $booking->pickup_flight != null ? $booking->pickup_flight : 'N\A' }}</div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-print-5">
-                                    <div class="col-title font-family"><b>Flight No./Time</b></div>
-                                </div>
-                                <div class="col-print-7">
-                                    <div class="col-text font-family">: {{ $booking->drop_flight != null ? $booking->drop_flight : 'N\A' }}</div>
-                                </div>
-                            </div>
-                        </div>
+                </section>
+
+                {{-- Section: Stay (arrival, departure, pickup/drop,
+                     flight numbers). The pre-W3.1 .guest-info block had
+                     Arrival Date + Departure Date on the left, Pickup +
+                     Drop in the middle, Flight No./Time on the right.
+                     The new layout splits them into two panels: dates
+                     + transport on the left, flights on the right. --}}
+                <p class="inv-section">Stay</p>
+                <section class="inv-panels">
+                    <div class="inv-panel">
+                        <p class="inv-panel-title">Dates &amp; transport</p>
+                        <p class="inv-defrow"><span>Expected Arrival</span><span>{{ $booking->check_in_date != null ? $booking->check_in_date : 'N\A' }}</span></p>
+                        <p class="inv-defrow"><span>Expected Departure</span><span>{{ $booking->check_out_date != null ? $booking->check_out_date : 'N\A' }}</span></p>
+                        <p class="inv-defrow"><span>Pickup</span><span>{{ $booking->pickup != null ? $booking->pickup : 'N\A' }}</span></p>
+                        <p class="inv-defrow"><span>Drop</span><span>{{ $booking->drop != null ? $booking->drop : 'N\A' }}</span></p>
                     </div>
-                </div>
-
-                <!-- ROOM INFO -->
-                <div class="guest-room-info">
-                    <div class="row">
-                        <div class="col-print-8">
-                            <div class="row">
-                                <div class="col-print-3">
-                                    <div class="col-title font-family"><b>Room Type</b></div>
-                                </div>
-                                <div class="col-print-8" style="padding-left: 6px !important;">
-                                    <div class="col-text font-family">:
-                                        @foreach ($booking->bookingDetails->unique('category_id') as $item)
-                                            {{ optional($item->roomCategory)->name }}
-                                            @if(!$loop->last),@endif
-                                        @endforeach
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-print-4">
-                            <div class="row">
-                                <div class="col-print-5">
-                                    <div class="col-title font-family"><b>PAX</b></div>
-                                </div>
-                                <div class="col-print-7">
-                                    <div class="col-text font-family">: {{ $booking->booking_pax ?? 'N\A' }} </div>
-                                </div>
-                            </div>
-
-                        </div>
+                    <div class="inv-panel">
+                        <p class="inv-panel-title">Flights</p>
+                        <p class="inv-defrow"><span>Pickup Flight</span><span>{{ $booking->pickup_flight != null ? $booking->pickup_flight : 'N\A' }}</span></p>
+                        <p class="inv-defrow"><span>Drop Flight</span><span>{{ $booking->drop_flight != null ? $booking->drop_flight : 'N\A' }}</span></p>
                     </div>
-                    <div class="row">
-                        <div class="col-print-8">
-                            <div class="row">
-                                <div class="col-print-3">
-                                    <div class="col-title font-family"><b>Adult PAX</b></div>
-                                </div>
-                                <div class="col-print-8" style="padding-left: 6px !important;">
-                                    <div class="col-text font-family">: {{ $booking->adult_pax ?? 'N\A' }}</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-print-4">
-                            <div class="row">
-                                <div class="col-print-5">
-                                    <div class="col-title font-family"><b>Child PAX</b></div>
-                                </div>
-                                <div class="col-print-7">
-                                    <div class="col-text font-family">: {{ $booking->child_pax ?? 'N\A' }}</div>
-                                </div>
-                            </div>
+                </section>
 
-                        </div>
-                    </div>
-
-                    <div class="row" @if ($booking->status == 0) style="display: none" @endif>
-                        <div class="col-print-8">
-                            <div class="row">
-                                <div class="col-print-3">
-                                    <div class="col-title font-family"><b>Room Numbers</b></div>
-                                </div>
-                                <div class="col-print-8" style="padding-left: 6px !important;">
-                                    <div class="col-text font-family">:
-                                        @foreach ($booking->bookingDetails as $item)
-                                            {{ optional($item->roomNumber)->room_number }}
-                                            @if(!$loop->last),@endif
-                                        @endforeach
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-print-4">
-                            <div class="row">
-                                <div class="col-print-5">
-                                    <div class="col-title font-family"><b>Total Night</b></div>
-                                </div>
-                                <div class="col-print-7" style="padding-left: 0px !important;">
-                                    <div class="col-text font-family">:
-                                        {{ optional($booking->bookingDetails[0])->night_count }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-print-8">
-                            <div class="row">
-                                <div class="col-print-3">
-                                    <div class="col-title font-family"><b>Mode of Payment</b></div>
-                                </div>
-                                <div class="col-print-8" style="padding-left: 6px !important;">
-                                    <div class="col-text font-family">: {{ $booking->payment_way != null ? $booking->payment_way : 'N\A' }}</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-print-4">
-                            <div class="row">
-                                <div class="col-print-5">
-                                    <div class="col-title font-family"><b>Smoking Status</b></div>
-                                </div>
-                                <div class="col-print-7" style="padding-left: 0px !important;">
-                                    <div class="col-text font-family">: {{ optional($item->roomNumber)->smoking_status != null ? optional($item->roomNumber)->smoking_status : 'N\A' }}</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-print-8">
-                            <div class="row">
-                                <div class="col-print-3">
-                                    <div class="col-title font-family"><b>Reference By</b></div>
-                                </div>
-                                <div class="col-print-8" style="padding-left: 6px !important;">
-                                    <div class="col-text font-family">: {{ $booking->reference != null ? $booking->reference : 'N\A' }}</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-print-4">
-                            @if ($booking->purpose_id != null)
-                            <div class="row">
-                                <div class="col-print-5">
-                                    <div class="col-title font-family"><b>Booking Purpose</b></div>
-                                </div>
-                                <div class="col-print-7" style="padding-left: 0px !important;">
-                                    <div class="col-text font-family">:
-                                        {{ optional($booking->booking_purpose)->name }}
-                                    </div>
-                                </div>
-                            </div>
-                            @endif
-                        </div>
-
-                    </div>
-
-                    <div class="row">
-                        {{-- <div class="col-print-8">
-                            <div class="row" style="margin-top: 0px;">
-                                <div class="col-print-3">
-                                    <div class="col-title font-family"><b>Remarks</b></div>
-                                </div>
-                                <div class="col-print-8" style="padding-left: 6px !important;">
-                                    <div class="col-text font-family">: {{ $booking->check_in_note != null ? $booking->check_in_note : 'N\A' }}</div>
-                                </div>
-                            </div>
-                        </div> --}}
-                        @if ($booking->booking_platform != null)
-                        <div class="col-print-8">
-                            <div class="row" style="margin-top: 0px;">
-                                <div class="col-print-3">
-                                    <div class="col-title font-family"><b>Platform</b></div>
-                                </div>
-                                <div class="col-print-8" style="padding-left: 6px !important;">
-                                    <div class="col-text font-family">: {{ $booking->booking_platform != null ? $booking->booking_platform->name : 'N\A' }}</div>
-                                </div>
-                            </div>
-                        </div>
+                {{-- Section: Room & Payment. The pre-W3.1 .guest-room-info
+                     block had 4 rows: Room Type + PAX, Adult PAX + Child
+                     PAX, Room Numbers + Total Night (only when status != 0),
+                     Mode of Payment + Smoking, Reference By + Booking
+                     Purpose (only when purpose_id != null), Platform (only
+                     when booking_platform != null) + Check In + Check Out.
+                     The new layout splits them into two panels: Room
+                     (types, numbers, PAX, nights, smoking) on the left,
+                     Payment & Reference (mode, reference, purpose,
+                     platform, check in/out times) on the right. The
+                     original "if status == 0" hidden on Room Numbers
+                     is preserved as a Blade @if (the row is omitted
+                     entirely for reservations, matching the pre-W3.1
+                     "display: none" behaviour). --}}
+                <p class="inv-section">Room &amp; payment</p>
+                <section class="inv-panels">
+                    <div class="inv-panel">
+                        <p class="inv-panel-title">Room</p>
+                        <p class="inv-defrow"><span>Room Type</span><span>
+                            @foreach ($booking->bookingDetails->unique('category_id') as $item)
+                                {{ optional($item->roomCategory)->name }}
+                                @if(!$loop->last),@endif
+                            @endforeach
+                        </span></p>
+                        @if ($booking->status != 0)
+                            <p class="inv-defrow"><span>Room Numbers</span><span>
+                                @foreach ($booking->bookingDetails as $item)
+                                    {{ optional($item->roomNumber)->room_number }}
+                                    @if(!$loop->last),@endif
+                                @endforeach
+                            </span></p>
                         @endif
-                        <div class="col-print-8">
-                            <div class="row" style="margin-top: 0px;">
-                                <div class="col-print-3">
-                                    <div class="col-title font-family"><b>Check In</b></div>
-                                </div>
-                                <div class="col-print-8" style="padding-left: 6px !important;">
-                                    <div class="col-text font-family">: {{ $booking->check_in_time ? date("F j, Y, g:i a", strtotime($booking->check_in_time)) : '' }} </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-print-4">
-                            <div class="row">
-                                <div class="col-print-5">
-                                    <div class="col-title font-family"><b>Check Out</b></div>
-                                </div>
-                                <div class="col-print-7" style="padding-left: 0px !important;">
-                                    <div class="col-text font-family">:
-                                        {{ $booking->check_out_time ? date("F j, Y, g:i a", strtotime($booking->check_out_time)) : '' }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <p class="inv-defrow"><span>Total Night</span><span>{{ optional($booking->bookingDetails[0])->night_count }}</span></p>
+                        <p class="inv-defrow"><span>PAX</span><span>{{ $booking->booking_pax ?? 'N\A' }}</span></p>
+                        <p class="inv-defrow"><span>Adult PAX</span><span>{{ $booking->adult_pax ?? 'N\A' }}</span></p>
+                        <p class="inv-defrow"><span>Child PAX</span><span>{{ $booking->child_pax ?? 'N\A' }}</span></p>
+                        <p class="inv-defrow"><span>Smoking</span><span>{{ optional($item->roomNumber)->smoking_status != null ? optional($item->roomNumber)->smoking_status : 'N\A' }}</span></p>
                     </div>
-                </div>
+                    <div class="inv-panel">
+                        <p class="inv-panel-title">Payment &amp; reference</p>
+                        <p class="inv-defrow"><span>Mode of Payment</span><span>{{ $booking->payment_way != null ? $booking->payment_way : 'N\A' }}</span></p>
+                        <p class="inv-defrow"><span>Reference By</span><span>{{ $booking->reference != null ? $booking->reference : 'N\A' }}</span></p>
+                        @if ($booking->purpose_id != null)
+                            <p class="inv-defrow"><span>Booking Purpose</span><span>{{ optional($booking->booking_purpose)->name }}</span></p>
+                        @endif
+                        @if ($booking->booking_platform != null)
+                            <p class="inv-defrow"><span>Platform</span><span>{{ $booking->booking_platform != null ? $booking->booking_platform->name : 'N\A' }}</span></p>
+                        @endif
+                        <p class="inv-defrow"><span>Check In</span><span>{{ $booking->check_in_time ? date("F j, Y, g:i a", strtotime($booking->check_in_time)) : '' }}</span></p>
+                        <p class="inv-defrow"><span>Check Out</span><span>{{ $booking->check_out_time ? date("F j, Y, g:i a", strtotime($booking->check_out_time)) : '' }}</span></p>
+                    </div>
+                </section>
 
-                <!-- BOOKING NOTE -->
-                <div class="note">
-
-                    <p class="note-title font-family">Please Note:</p>
-                    {{-- {!! $bookingNotes->title !!} --}}
+                {{-- Section: Booking notes. The pre-W3.1 .note block used
+                     a custom .d-flex / .item-icon (#) / .item-text list
+                     pattern with no margin between items. The new layout
+                     uses a plain <ul.inv-notes> with bullet markers; the
+                     per-note title is rendered as a <li>. Same loop,
+                     same {{ $bookingNote->title }} expression. --}}
+                <p class="inv-section">Notes</p>
+                <ul class="inv-notes">
                     @foreach ($bookingNotes as $bookingNote)
-                        <div class="item">
-                            <div class="d-flex">
-                                <b class="item-icon">
-                                    #
-                                </b>
-                                <div class="item-text">
-                                    {{ $bookingNote->title }}
-                                </div>
-                            </div>
-                        </div>
+                        <li>{{ $bookingNote->title }}</li>
                     @endforeach
+                </ul>
+            </section>
 
-                    {{-- @php
-                        $checkInOut = setting('date_start_end') != null ? setting('date_start_end') : '';
-                        $checkIn    = '';
-                        $checkOut   = '';
+            {{-- Closing + footer + signature. The pre-W3.1 .print-footer
+                 block had the "#please provide us your estimated time of
+                 arrival" note, the "Thank you again for showing interest"
+                 paragraph, the "With Best Regards" signoff, the company
+                 name, and the head-office line. The new layout uses
+                 .inv-foot-note (the # callout) inside the .inv-foot
+                 footer (the round-6 footer pattern with a top dashed
+                 border), followed by .inv-closing + .inv-signoff
+                 paragraphs in the body. The signature row is the round-6
+                 .inv-sign pattern (two .sig boxes, 200px wide, top
+                 border). The Blade expressions are byte-identical. --}}
+            <footer class="inv-foot">
+                <div class="inv-foot-note"># please provide us your estimated time of arrival in order to get your room ready upon arrival</div>
+                <p class="inv-closing font-family">Thank you again for showing interest in <b class="font-family">{{ $company->name }}</b>. Is there anything we can do to make your stay more rewarding, please ask.</p>
+                <p class="inv-signoff font-family">With Best Regards</p>
+                <p class="inv-signoff font-family">{{ $company->name }}</p>
+                @if ($company->head_office != null) <p class="inv-signoff font-family">{{ $company->head_office }}</p> @endif
+            </footer>
 
-                        if ($checkInOut != null) {
-                            $explode    = explode("-", $checkInOut);
-                            $checkIn    = $explode[0];
-                            $checkOut   = $explode[1];
-                        }
-                    @endphp
-                    <div class="item">
-                        <div class="d-flex">
-                            <b class="item-icon">
-                                #
-                            </b>
-                            <div class="item-text">
-                                Our standard check in time is {{ $checkIn }} & check out time is {{ $checkOut }}.
-                            </div>
-                        </div>
-                    </div> --}}
-
-                </div>
-
+            <div class="inv-sign">
+                <div class="sig">Guest</div>
+                <div class="sig">{{ $company->name }}</div>
             </div>
 
-            <!-- PRINT FOOTER -->
-            <div class="print-footer">
-                <b class="footer-note font-family"><span class="footer-hash font-family">#</span>please provide us your estimated time of arrival in order to get your room ready upon arrival</b>
-                <div class="ending-message font-family">Thank you again for showing interest in <b class="font-family">{{ $company->name }}</b>. Is there anything we can do to make your stay more rewarding, please as</div>
-                <div class="with-regards font-family">With Best Regards</div>
-                <div class="footer-name font-family">{{ $company->name }}</div>
-                @if ($company->head_office != null) <div class="font-family footer-company-address">{{ $company->head_office }}</div> @endif
-            </div>
-            <div class="inv-sign signature-sectuion" style="display: flex; justify-content: space-evenly;    margin: 29px 0 0 0;">
-                <div class="sig text-center" style="margin-right: 10px;">
-                    <span class="text-center" style="border-top: 1px solid #c3c3c3; padding: 5px 82px;">Guest</span>
-                </div>
-                <div class="sig text-center" style="margin-left: 10px;">
-                    <span class="text-center" style="border-top: 1px solid #c3c3c3; padding: 5px 82px;">{{ $company->name }}</span>
-                </div>
-            </div>
-            </div>{{-- /.invoice-content-legacy --}}
 
             </div>{{-- /.invoice-doc --}}
             </x-mm.print-sheet>
@@ -549,9 +241,11 @@
 @endsection
 
 @section('js')
-    {{-- W3.1: the printThis jQuery plugin and the printPage() function
-         are no longer used. The <x-mm.print-sheet> footer provides
-         a print button that calls window.print(), and the round-6
-         @media print rules in _css/invoice-sheet hide the surrounding
-         admin chrome. --}}
+    {{-- W3.1 closeout: the printThis jQuery plugin and the printPage() function
+         are no longer used (W3.1 already removed them). The <x-mm.print-sheet>
+         footer provides a print button that calls window.print(); the round-6
+         @media print rules in _css/invoice-sheet.blade.php hide the surrounding
+         admin chrome. The body now uses round-6 .inv-panels / .inv-defrow
+         markup throughout (see the @section('content') body and the
+         accompanying _css/invoice-sheet.blade.php additions). --}}
 @stop
