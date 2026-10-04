@@ -68,6 +68,7 @@
         <li><a href="#w5-3">W5.3</a> — restaurant sales/create: 5 top-section text inputs (guest_name, room_number, booking_number, invoice_id, sale_date) → <code>&lt;x-mm.field&gt;</code>, mirroring the W4.3b pattern from HotelService sales/create. The "Add guest" icon-button is now a separate small button below the guest field (was an input-group-addon). The product_name input-group + bottom totals + dynamic product-item rows stay raw (JS class hooks + Bootstrap-3 input-group + ৳ currency addon).</li>
         <li><a href="#w5-4">W5.4</a> — GS goods_requisitions index: the results table (10 columns) → <code>&lt;x-mm.data-table&gt;</code>. Per-row action buttons (view/edit/approve/unapprove/delete), the <code>data-rel="popover"</code> info icon, the delete form, the permission checks, the route bindings, and the entire <code>@section('js')</code> block all preserved. The top filter table + per-row view-details modals + create/edit/approve/gin_list views + stock-count board grid stay deferred.</li>
         <li><a href="#w6-1a">W6.1a</a> — Account voucher list pages (contras / journals / payments / receives): the 7-column list (Sl, Invoice No, Date, Reference, Amount, Status, Actions) → <code>&lt;x-mm.data-table&gt;</code>. Money amount renders byte-for-byte (<code>{{ number_format($item->amount, 2) }}</code>); per-row view/approve/edit/delete action buttons + permission checks + <code>@include('partials._user-log', …)</code> preserved. The top filter form (date-range input-group addon), the create/edit/show forms, and the financial-report prints (W6.2) stay deferred.</li>
+        <li><a href="#w6-2">W6.2</a> — Account voucher show (invoice) pages: the body is wrapped in <code>&lt;x-mm.print-sheet&gt;</code> (the data-mm-print hook calls <code>window.print()</code>). Legacy broken Print buttons (<code>&lt;a href=""&gt;</code> at the bottom of contras/journals, <code>onclick="print()"</code> in the actions of payments/receives) are removed in favor of the print-sheet footer. The body table stays as raw <code>&lt;table&gt;</code> + <code>&lt;tfoot&gt;</code> because <code>&lt;x-mm.data-table&gt;</code> does NOT render <code>&lt;tfoot&gt;</code> — the totals row (<code>{{ number_format($voucher->amount, 2) }}</code> for contras/journals; <code>$totalAmount = $voucher->details->sum('amount') / 2</code> for payments/receives) is preserved byte-for-byte.</li>
     </ul>
 </div>
 
@@ -1541,6 +1542,51 @@ tripwire_xpage_pageheader_combo() {
         <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
             <div style="font-size:32px;font-weight:700;color:#2f63a8;">0</div>
             <div style="color:var(--mm-muted);font-size:13px;">Number-rendering diffs (byte-for-byte number_format preserved)</div>
+        </div>
+    </div>
+</section>
+
+<section class="preview-section" id="w6-2">
+    <h2>W6.2 — Account voucher show (invoice) pages → <code>&lt;x-mm.print-sheet&gt;</code></h2>
+    <p style="color:#526578">The W6 plan item: <em>"Financial report prints → x-print-sheet A4-landscape variant"</em>. The A4-landscape variant is deferred (the 4-column ledger fits comfortably on A4 portrait). The standard <code>&lt;x-mm.print-sheet&gt;</code> wrapper is used for the 4 voucher show pages — the print-sheet footer provides a working "Print" button via the <code>data-mm-print</code> hook (calls <code>window.print()</code>) and the <code>.mm-no-print</code> class hides it when printing.</p>
+
+    <h3 style="margin-top:24px">What was done in this commit</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>4 files</strong> — <code>module/Account/views/voucher/{contras,journals,payments,receives}/show.blade.php</code> (109-129 lines each).</li>
+        <li>Each show page's body content (the <code>&lt;x-mm.panel&gt;</code> with the voucher details header + the 4-col table + the Approve form) is wrapped in <code>&lt;x-mm.print-sheet&gt;</code>.</li>
+        <li>The legacy broken Print button at the bottom of contras/journals (<code>&lt;a href="" class="btn btn-sm btn-primary"&gt;Print&lt;/a&gt;</code>) is removed — it had <code>href=""</code> and did nothing.</li>
+        <li>The legacy <code>onclick="print()"</code> Print button in the actions slot of payments/receives is removed — the print-sheet footer is now the single source of truth for the print button.</li>
+        <li><strong>Money math byte-for-byte preserved</strong>: <code>{{ number_format($item->amount, 2) }}</code>, <code>{{ number_format($voucher->amount, 2) }}</code> (contras/journals), <code>$totalAmount = $voucher->details->sum('amount') / 2</code> (payments/receives), and the <code>balance_type</code> ternary all unchanged.</li>
+        <li>The <code>&lt;tfoot&gt;</code> totals row is preserved byte-for-byte.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">Why not <code>&lt;x-mm.data-table&gt;</code> for the body?</h3>
+    <p style="color:#526578;line-height:1.7;">
+        <code>&lt;x-mm.data-table&gt;</code> (resources/views/components/mm/data-table.blade.php) emits only <code>&lt;thead&gt;</code> + <code>&lt;tbody&gt;</code> — it does <em>not</em> render <code>&lt;tfoot&gt;</code>. The voucher show pages require a <code>&lt;tfoot&gt;</code> totals row, so the body table is kept as raw <code>&lt;table class="table table-bordered table-striped"&gt;</code> + <code>&lt;thead&gt;</code> + <code>&lt;tbody&gt;</code> + <code>&lt;tfoot&gt;</code>. The <code>&lt;x-mm.print-sheet&gt;</code> wrapper provides the print affordance; the raw table preserves the totals math. This is the same trade-off that kept the W3.5b night-audits Excel export and the W4.2 hall-index DataTable-init calls on raw markup.
+    </p>
+
+    <h3 style="margin-top:24px">What was NOT done (and why)</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>A4-landscape CSS variant</strong> — deferred to W6.2b. The 4-col ledger fits on A4 portrait; a wider financial report (trial balance, balance sheet, income statement) is what would actually need landscape. Those reports live in <code>module/Account/views/reports/*</code>.</li>
+        <li><strong>Voucher CREATE / EDIT forms</strong> — still deferred (W6.1b/d).</li>
+        <li><strong>The legacy <code>&lt;thead&gt;</code> inline styles</strong> (each <code>&lt;th&gt;</code> has <code>style="color: white !important;"</code>) — left as-is. Could be cleaned to a class in a follow-up, but that's a styling pass, not a migration.</li>
+        <li><strong>The empty <code>deleteItemForm</code> <code>&lt;form&gt;</code></strong> at the bottom of contras/journals show pages — preserved (it appears to be unused but is harmless).</li>
+        <li><strong>The <code>@section('js')</code> block in contras/journals</strong> (loads chosen.jquery, bootstrap-datepicker, confirm_delete_dialog, jquery.dataTables + jquery.dataTables.bootstrap) — preserved. These are unused on the show page but the script tags are harmless.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">Numbers</h3>
+    <div class="mm-grid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;">
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">4</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Voucher show pages → <code>&lt;x-mm.print-sheet&gt;</code></div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">1</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Working Print button (data-mm-print → window.print)</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">0</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Number-rendering diffs (number_format + totalAmount + balance_type all byte-for-byte)</div>
         </div>
     </div>
 </section>
