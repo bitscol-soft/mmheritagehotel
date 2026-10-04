@@ -51,25 +51,10 @@
                                 <div class="col-md-6">
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label class="col-sm-3 control-label" for="cat_name"> Category Name </label>
-                                                <div class="col-xs-12 col-sm-8 ">
-                                                    <input type="text" id="cat_name" name="cat_name"
-                                                        value="{{ $category->name }}" placeholder="Enter Category Name"
-                                                        class="form-control">
-                                                </div>
-                                            </div>
+                                            <x-mm.field label="Category Name" id="cat_name" name="cat_name" value="{{ $category->name }}" placeholder="Enter Category Name" />
                                         </div>
                                         <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label class="col-sm-3 control-label" for="capacity"> Guest Capacity
-                                                </label>
-                                                <div class="col-xs-12 col-sm-8 ">
-                                                    <input type="number" id="capacity" name="guest_capacity"
-                                                        value="{{ $category->guest_capacity }}"
-                                                        placeholder="Enter Guest Capacity" class="form-control">
-                                                </div>
-                                            </div>
+                                            <x-mm.field label="Guest Capacity" id="capacity" name="guest_capacity" type="number" value="{{ $category->guest_capacity }}" placeholder="Enter Guest Capacity" />
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-group">
@@ -84,34 +69,13 @@
                                             </div>
                                         </div>
                                         <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label class="col-sm-3 control-label" for="can_sleep">Can Sleep </label>
-                                                <div class="col-xs-12 col-sm-8 ">
-                                                    <input type="number" id="can_sleep" name="can_sleep"
-                                                        placeholder="Ex - 1 person" class="form-control"
-                                                        value="{{ $category->can_sleep }}" autocomplete="off">
-                                                </div>
-                                            </div>
+                                            <x-mm.field label="Can Sleep" id="can_sleep" name="can_sleep" type="number" value="{{ $category->can_sleep }}" placeholder="Ex - 1 person" />
                                         </div>
                                         <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label class="col-sm-3 control-label" for="bed_details">Bed Details </label>
-                                                <div class="col-xs-12 col-sm-8 ">
-                                                    <input type="text" id="bed_details" name="bed_details"
-                                                        value="{{ $category->bed_details }}" placeholder="EX - Double Bed"
-                                                        class="form-control" autocomplete="off">
-                                                </div>
-                                            </div>
+                                            <x-mm.field label="Bed Details" id="bed_details" name="bed_details" value="{{ $category->bed_details }}" placeholder="EX - Double Bed" />
                                         </div>
                                         <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label class="col-sm-3 control-label" for="room_size">Room Sqft</label>
-                                                <div class="col-xs-12 col-sm-8 ">
-                                                    <input type="number" id="room_size" name="room_size"
-                                                        value="{{ $category->room_sqft }}" placeholder="EX - 2400sqft"
-                                                        class="form-control" autocomplete="off">
-                                                </div>
-                                            </div>
+                                            <x-mm.field label="Room Sqft" id="room_size" name="room_size" type="number" value="{{ $category->room_sqft }}" placeholder="EX - 2400sqft" />
                                         </div>
 
                                         <div class="col-md-12">
@@ -136,26 +100,10 @@
                                 <div class="col-md-6">
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label class="col-sm-3 control-label" for="price"> Default Price <span
-                                                        class="currency-sign"></span></label>
-                                                <div class="col-xs-12 col-sm-8 ">
-                                                    <input type="text" name="price" id="price"
-                                                        value="{{ calculateCurrencyAmount($category->price, 1) }}"
-                                                        placeholder="Enter Price" class="form-control only-number"
-                                                        autocomplete="off">
-                                                </div>
-                                            </div>
+                                            <x-mm.field label="Default Price" id="price" name="price" value="{{ calculateCurrencyAmount($category->price, 1) }}" placeholder="Enter Price" help="Currency" />
                                         </div>
                                         <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label class="col-sm-3 control-label" for="vat"> Vat (%) </label>
-                                                <div class="col-xs-12 col-sm-8 ">
-                                                    <input type="number" id="vat" name="vat"
-                                                        value="{{ $category->vat }}" placeholder="Enter Vat Amount"
-                                                        class="form-control">
-                                                </div>
-                                            </div>
+                                            <x-mm.field label="Vat (%)" id="vat" name="vat" type="number" value="{{ $category->vat }}" placeholder="Enter Vat Amount" />
                                         </div>
                                         <div class="col-md-12">
                                             <div class="form-group">
@@ -257,10 +205,12 @@
                             <div class="form-group category-form-actions">
                                 <label for="inputError" class="col-xs-12 col-sm-3 col-md-3 control-label"></label>
                                 <div class="col-xs-12 col-sm-12 text-right">
-                                    <button class="mm-button" type="submit"> <i class="fa fa-save"></i>
-                                        Save</button>
-                                    <button class="mm-button mm-button-secondary" type="Reset"> <i class="fa fa-refresh"></i>
-                                        Reset</button>
+                                    <div class="btn-group">
+                                        <button class="mm-button" type="submit"> <i class="fa fa-save"></i> Update</button>
+                                        <a class="mm-button mm-button-secondary"
+                                            href="{{ route('hotel-categories.index') }}"> <i class="fa fa-times"></i>
+                                            Cancel</a>
+                                    </div>
                                 </div>
                             </div>
                         </form>
@@ -271,7 +221,5 @@
 @section('js')
     <script src="{{ asset('assets/js/ace-elements.min.js') }}"></script>
     <script src="{{ asset('assets/js/dropzone.min.js') }}"></script>
-
     @include('category.inc.script')
-
 @endsection
