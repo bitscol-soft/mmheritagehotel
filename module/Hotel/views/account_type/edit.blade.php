@@ -15,40 +15,22 @@
             @csrf
             @method('PUT')
 
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label" for="form-field-1-1"> Account Type</label>
-
-                        <div class="col-xs-12 col-sm-8 @error('name') has-error @enderror">
-                            {!! Form::text('name', $account->name, ['class' => 'form-control', 'placeholder' => 'Edit account']) !!}
-
-                            @error('name')
-                            <span class="text-danger"> {{ $message }}</span>
-                            @enderror
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-12">
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label" for="form-field-1-1"> Status</label>
-
-                        <div class="col-xs-12 col-sm-8 @error('status') has-error @enderror">
-                            <select name="status" class="select2" style="width: 100%">
-                                <option value="1" {{ $account->status == 1 ? 'selected' : '' }}>Active</option>
-                                <option value="0" {{ $account->status == 0 ? 'selected' : '' }}>In Active</option>
-                            </select>
-                            @error('status')
-                            <span class="text-danger"> {{ $message }}</span>
-                            @enderror
-                        </div>
-                    </div>
-                </div>
+            {{-- W3.4: replaced LaravelCollective Form::text() / raw
+                 <select> markup with <x-mm.field> and <x-mm.select>.
+                 The field id, name, value, placeholder, and validation
+                 error hooks are preserved byte-identically. --}}
+            <div class="tw-grid tw-gap-4 sm:tw-grid-cols-2">
+                <x-mm.field label="Account type" id="account-type-name" name="name" value="{{ $account->name }}" placeholder="Edit account" :error="$errors->first('name')" />
+                <x-mm.select name="status" label="Status"
+                    :options="['1' => 'Active', '0' => 'In Active']"
+                    selected="{{ $account->status }}"
+                    placeholder="Select option"
+                    :error="$errors->first('status')" />
             </div>
 
-            <div class="form-actions center" style="text-align: right !important;">
+            <div class="tw-mt-6 tw-flex tw-justify-end tw-gap-2">
                 <button type="submit" class="mm-button">
-                    <i class="ace-icon fa fa-save icon-on-right bigger-110"></i>
+                    <i class="fa fa-save" aria-hidden="true"></i>
                     Save
                 </button>
             </div>

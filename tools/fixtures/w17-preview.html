@@ -50,6 +50,7 @@
         <li><a href="#w3-1">W3.1</a> — Reservation invoice restyled to round-6 <code>invoice-doc</code> look (print-sheet wrapper, inv-head, inv-panels). Hall twin and other invoices follow in W3.2 / W4.</li>
         <li><a href="#w3-2">W3.2</a> — Booking invoice (checkout slip + payment receipt) → round-6 <code>invoice-doc</code>. printThis retired; print-on-open behavior preserved via <code>window.print()</code>.</li>
         <li><a href="#w3-3">W3.3</a> — Booking notes → <code>x-data-table</code> + <code>x-filter-bar</code>. Guest list (W1.7) and booking list (W1.7) were already on <code>x-data-table</code>; referred-booking uses the same booking-list view.</li>
+        <li><a href="#w3-4">W3.4</a> — Room management forms → <code>x-field</code>/<code>x-select</code> (amenities + account_type + vat done; category + room forms follow in a follow-up commit).</li>
     </ul>
 </div>
 
@@ -821,6 +822,42 @@ tripwire_xpage_pageheader_combo() {
         </div>
         <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
             <div style="font-size:32px;font-weight:700;color:#2f63a8;">7</div>
+            <div style="color:var(--mm-muted);font-size:13px;">PHP <code>{{ }}</code> expressions preserved byte-identically</div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== W3.4 ==================== -->
+<section class="preview-section" id="w3-4">
+    <h2>W3.4 — Room management CRUD → <code>x-field</code>/<code>x-select</code></h2>
+    <p style="color:#526578">The W3.4 plan item from <code>docs/FRONTEND-DEV-PLAN.md</code>: <em>"Room management CRUD (categories/rooms/amenities/vat/account-type) — forms → <code>x-field</code>/<code>x-select</code>; photo uploader dropzone (progress bar only, endpoint unchanged)."</em></p>
+
+    <h3 style="margin-top:24px">What shipped (in this commit)</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>Amenities (<code>module/Hotel/views/aminities/</code>)</strong> — create / edit / index all converted. Forms use <code>&lt;x-mm.field&gt;</code> for the name + icon, <code>&lt;x-mm.select&gt;</code> for status. The icon file uploader keeps its dropzone behavior (the <code>category_photos</code> class + <code>ace_file_input</code> plugin); endpoint unchanged. Index uses <code>&lt;x-mm.data-table&gt;</code>.</li>
+        <li><strong>Account types (<code>module/Hotel/views/account_type/</code>)</strong> — edit / index converted. The split layout (list on left, add form on right) is preserved. The LaravelCollective <code>Form::text()</code> call is replaced with <code>&lt;x-mm.field&gt;</code>.</li>
+        <li><strong>VAT (<code>module/Hotel/views/vat/index.blade.php</code>)</strong> — the 8-field VAT form is converted. The radio group for "Included VAT calc" stays as raw radio inputs (the <code>x-mm.field</code> component doesn't support radios; a follow-up could add <code>&lt;x-mm.radio&gt;</code>).</li>
+        <li><strong><code>x-mm.field</code> extended</strong> with an optional <code>help</code> prop that renders a muted <code>&lt;p&gt;</code> below the input. Used for the "Percent (%)" hint next to VAT fields.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">What was NOT done (and why)</h3>
+    <p style="color:#526578">The <strong>categories</strong> (199-line create, 277-line edit) and <strong>rooms</strong> (221-line create, 244-line edit) forms are large multi-section forms with photo uploaders, amenity multi-selects, and rate tables. Converting them in the same commit would balloon the diff and make review hard. They will be a follow-up commit (W3.4b).</p>
+
+    <h3 style="margin-top:24px">PHP byte-identicality</h3>
+    <p style="color:#526578">All <code>{{ }}</code> expressions in the converted forms are preserved byte-identically: <code>$account->name</code>, <code>$account->status</code>, <code>$vat->hotel_vat</code>, <code>$vat->resturent_vat</code>, <code>$vat->bar_vat</code>, <code>$vat->vat_number ?? ''</code>, <code>$vat->room_rate ?? ''</code>, <code>intval($vat->room_service_charge) ?? ''</code>, <code>intval($vat->rst_service_charge) ?? ''</code>, <code>$systemSetting->value</code>, the route names (<code>route('aminities.store')</code>, <code>route('aminities.update', $aminities->id)</code>, <code>route('account-type.update', $account->id)</code>, <code>route('vat.update', $vat->id)</code>), and the field/select props. The LaravelCollective <code>Form::text()</code> calls were replaced with native <code>&lt;input&gt;</code> via <code>&lt;x-mm.field&gt;</code> — the resulting HTML is identical (the Form facade just outputs an input with the same class).</p>
+
+    <h3 style="margin-top:24px">Numbers</h3>
+    <div class="mm-grid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;">
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">6</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Blade files converted (amenities create/edit/index, account_type edit/index, vat/index)</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">~300</div>
+            <div style="color:var(--mm-muted);font-size:13px;">lines of Bootstrap-3 form-group markup replaced</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">~20</div>
             <div style="color:var(--mm-muted);font-size:13px;">PHP <code>{{ }}</code> expressions preserved byte-identically</div>
         </div>
     </div>
