@@ -533,8 +533,6 @@ class BookingController extends Controller
 
         $data['company'] = Company::first();
 
-        // return view('booking.checkout-invoice-v4', $data);
-
         // This Is Old Multi Invoice
         return view('booking.checkout-invoice-v3', $data);
 

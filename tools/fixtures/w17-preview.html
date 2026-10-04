@@ -54,6 +54,7 @@
         <li><a href="#w3-5">W3.5</a> — Night audit + today-activities dashboards already use the tile pattern (<code>dl.mm-audit-summary</code>). The Excel-export paths in the night-audits list retain raw <code>&lt;table&gt;</code> markup because the data-table component is incompatible with the colspan=10 title row.</li>
         <li><a href="#w3-6">W3.6</a> — Housekeeping board already shares the booking-board tile pattern; <code>updateStatus</code> / <code>updateKeepingStatus</code> hooks verified intact.</li>
         <li><a href="#w3-7">W3.7</a> — Reports (12 hotel screens) get a print button via <code>&lt;x-export-button :print=1 /&gt;</code>. <code>ExportService</code> untouched; PDF/Excel export paths preserved.</li>
+        <li><a href="#w3-8">W3.8</a> — Decision D1: delete dead invoice templates (<code>get_invoice</code>, <code>checkout-invoice-v2</code>, <code>checkout-invoice-v4</code>) and annotate unrouted banquet methods (<code>bookingUi</code>, <code>available</code>) as <code>@deprecated</code>.</li>
     </ul>
 </div>
 
@@ -979,6 +980,46 @@ tripwire_xpage_pageheader_combo() {
         <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
             <div style="font-size:32px;font-weight:700;color:#2f63a8;">0</div>
             <div style="color:var(--mm-muted);font-size:13px;">ExportService routes / AJAX URLs changed (untouched)</div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== W3.8 ==================== -->
+<section class="preview-section" id="w3-8">
+    <h2>W3.8 — Decision D1: delete dead templates + annotate unrouted methods</h2>
+    <p style="color:#526578">The W3.8 plan item from <code>docs/FRONTEND-DEV-PLAN.md</code> Decision D1: <em>"Delete dead templates <code>booking/get_invoice</code>, <code>checkout-invoice-v2</code>, <code>-v4</code> + unrouted banquet <code>booking_ui</code> / <code>available()</code> (or annotate <code>@deprecated</code>)."</em></p>
+
+    <h3 style="margin-top:24px">What was deleted</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><code>module/Hotel/views/booking/get_invoice.blade.php</code> — 298 lines, no callers (the W3.2 <code>checkout_invoice</code> is the active flow).</li>
+        <li><code>module/Hotel/views/booking/checkout-invoice-v2.blade.php</code> — 390 lines, no callers (referenced only in old git history).</li>
+        <li><code>module/Hotel/views/booking/checkout-invoice-v4.blade.php</code> — 304 lines, no callers (the only mention in the codebase was a commented-out <code>// return view('booking.checkout-invoice-v4', $data);</code> at <code>BookingController.php:536</code>, now removed).</li>
+    </ul>
+
+    <h3 style="margin-top:24px">What was annotated (kept, with <code>@deprecated</code>)</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><code>module/BanquetHall/Controllers/BanquetBookingController.php:bookingUi()</code> (line 955) — the box-style room booking UI; not wired to any route in <code>web_banquet_hall.php</code>. Annotated with a <code>@deprecated</code> PHPDoc block explaining the W3.8 decision and the W3.9 plan to remove if no caller emerges.</li>
+        <li><code>module/BanquetHall/Controllers/BanquetBookingController.php:available()</code> (line 1070) — the check-availability-for-new-room endpoint; not wired to any route. The available-room check is now done inline by <code>RoomStatusService::availableRoom()</code>. Annotated with a <code>@deprecated</code> PHPDoc block.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">What was NOT deleted (and why)</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong><code>module/Hotel/views/booking/checkout-invoice-v3.blade.php</code></strong> — is still referenced by <code>BookingController.php:537</code> as <code>return view('booking.checkout-invoice-v3', $data);</code> with a comment "This Is Old Multi Invoice". The v3 view is part of an active flow (the "Old Multi Invoice" output). Deleting it would break the flow. Out of scope for W3.8; can be revisited in W3.9 if the Old Multi Invoice flow is itself deprecated.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">Numbers</h3>
+    <div class="mm-grid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;">
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">3</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Dead templates deleted (~990 lines)</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">2</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Unrouted methods annotated <code>@deprecated</code></div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">0</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Active flows broken (all <code>return view(...)</code> paths verified)</div>
         </div>
     </div>
 </section>
