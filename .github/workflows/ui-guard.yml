@@ -21,12 +21,14 @@ on:
       - 'resources/views/**/*.blade.php'
       - 'module/**/views/**/*.blade.php'
       - 'tools/ui-guard.sh'
+      - 'tools/ui-guard-test.sh'
       - '.github/workflows/ui-guard.yml'
   pull_request:
     paths:
       - 'resources/views/**/*.blade.php'
       - 'module/**/views/**/*.blade.php'
       - 'tools/ui-guard.sh'
+      - 'tools/ui-guard-test.sh'
       - '.github/workflows/ui-guard.yml'
 
 permissions:
@@ -61,3 +63,22 @@ jobs:
 
       - name: Run the diff tripwires
         run: ./tools/ui-guard.sh --base="origin/${{ steps.base.outputs.ref }}"
+
+  guard-self-test:
+    name: Tripwire self-test (smoke test the guard)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run the tripwire self-test
+        # tools/ui-guard-test.sh builds a throwaway git repo per assertion
+        # and feeds synthetic violations to tools/ui-guard.sh, asserting
+        # that each tripwire still fires and that benign changes still
+        # pass. The test caught a real mawk-vs-gawk portability bug in
+        # the money-line tripwire (the GNU `\<...\>` word-boundary syntax
+        # is a no-op on mawk, the default awk on Debian-based systems
+        # including the GitHub Actions ubuntu-latest runner).
+        run: ./tools/ui-guard-test.sh

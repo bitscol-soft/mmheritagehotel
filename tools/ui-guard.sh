@@ -209,7 +209,13 @@ tripwire_money_line() {
                 /^\+[^+]/ {
                     line = substr($0, 2)
                     low = tolower(line)
-                    has_amount = (low ~ /\<amount\>|\<total\>|\<grand_total\>|\<grand total\>|\<due\>|\<paid\>|\<balance\>|\<price\>|\<rent\>|\<fare\>|\<charge\>|\<vat\>|\<tax\>/)
+                    # Use a portable word-boundary approximation: (^|[^a-z])
+                    # before, ($|[^a-z]) after. The GNU `\<...\>` syntax is
+                    # NOT supported by mawk (the default awk on Debian-based
+                    # systems including the GitHub Actions ubuntu-latest
+                    # runner), so without this fallback the tripwire silently
+                    # matches nothing and the money-line guard is a no-op.
+                    has_amount = (low ~ /(^|[^a-z0-9_])(amount|total|grand_total|grand total|due|paid|balance|price|rent|fare|charge|vat|tax)($|[^a-z0-9_])/)
                     has_ctx = (ctx != "") || (low ~ /invoice|checkout|payment|voucher|receipt|booking/)
                     if (has_amount && has_ctx) {
                         fl = new_line
@@ -227,7 +233,7 @@ tripwire_money_line() {
                 /^-[^-]/ {
                     line = substr($0, 2)
                     low = tolower(line)
-                    has_amount = (low ~ /\<amount\>|\<total\>|\<grand_total\>|\<grand total\>|\<due\>|\<paid\>|\<balance\>|\<price\>|\<rent\>|\<fare\>|\<charge\>|\<vat\>|\<tax\>/)
+                    has_amount = (low ~ /(^|[^a-z0-9_])(amount|total|grand_total|grand total|due|paid|balance|price|rent|fare|charge|vat|tax)($|[^a-z0-9_])/)
                     has_ctx = (ctx != "") || (low ~ /invoice|checkout|payment|voucher|receipt|booking/)
                     if (has_amount && has_ctx) {
                         fl = old_line
