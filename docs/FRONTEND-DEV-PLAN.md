@@ -10,12 +10,13 @@ Owner: — · Tracker: GitHub **milestone “UI Renovation”** — waves are is
 
 | Fact | Value |
 |---|---|
-| Work branch | `arena/01a0f37d-mmheritagehotel` → PR **#4** into `AI` (never merged yet; do **not** merge without the owner) |
-| Done & shipped to branch | Rounds 1–10 (hardening, booking board, booking flow, invoice/slip print, guests sweep, app-wide FA4 icon sweep, banquet parity, reservation-invoice fix, booking-UI responsive redesign). Details: PR #4 comments per round. |
-| Deploy | **Manual.** `.github/workflows/deploy-{staging,production}.yml` exist but have 0 runs — `STAGING_*`/`PROD_*` secrets not configured (see `docs/DEPLOYMENT.md`). Test box = `mmheritagehotel-test.dizihotel.com`. Until W0 is done, every shipped wave needs a manual sync + `php artisan view:clear` on the box. |
-| Verification harness | php-wasm (no PHP binary in sandbox). Recipe in §5 — keep it; every UI task is verified by *rendering the real route and grepping markers*, plus `rawlint` token check. |
+| Work branch | `arena/01a0fe5b-mmheritagehotel` (most recent: `1d389033` docs) |
+| Done & shipped to branch | W0.4 + W1.1-W1.7 + W2.0-W2.5 (all closed); W6.1a + W6.2 + W6.2b + W6.2b-2 + W6.2b-3 + W6.4a + W-data-table-sweep (account + other + no-table-scroll); W3.1-W3.9; W4.1-W4.3b; W5.1-W5.4b; W7 mm-web shell. See the per-wave ship notes under each §1-§5 heading for the commit map. |
+| Deploy | **Manual, owner-driven.** `.github/workflows/deploy-{staging,production}.yml` exist but have 0 runs — `STAGING_*`/`PROD_*` secrets not configured (see `docs/DEPLOYMENT.md`). Test box = `mmheritagehotel-test.dizihotel.com`. Until W0.1-W0.3 land, every shipped wave needs a manual sync + `php artisan view:clear` on the box. |
+| Verification harness | php-wasm (no PHP binary in sandbox) + `tools/ui-guard.sh` + `tools/ui-guard-test.sh` + `tools/pre-commit` + `tools/ui-check.cjs`. The ui-guard tripwires catch money-line changes, nested `<style>` @includes, and `x-mm.page` + `@section('page-header')` combos in CI; the self-test catches silent tripwire regressions; the pre-commit hook runs both locally. |
+| W0 owner actions (W0.1-W0.3) | W0.1: `gh api repos/.../environments` — create `staging` and `production` envs. W0.2: `gh workflow run deploy-staging.yml -f ref=arena/01a0fe5b-mmheritagehotel` and confirm Health check. W0.3: open `mmheritagehotel-test.dizihotel.com` and `console.log(!document.body.innerText.includes('.col-print-1 {'))`. None of these are mechanical; they all require the owner. |
 | Standing rules (violated = reject) | ① form `name`s, element `id`s used by JS, AJAX URLs, route names, `hasPermission(...)` gates stay **byte-identical**. ② **No money/amount/currency math changes in any UI diff.** ③ New CSS only in `tokens.css` / component partials; per-page `<style>` shrinks, never grows. ④ A `<style>`-emitting `@include` must never sit inside another `<style>` (round-10 incident). |
-| Known open quirks (deliberately unfixed) | `Due` column math in `_booking-table` (docs/BUGS.md), dead invoice templates (decision D1), dark mode (deferred, tokens-ready), `salary_without_payslip.blade.php` is a *directory* (repo oddity — do not "fix" casually). |
+| Known open quirks (deliberately unfixed) | `Due` column math in `_booking-table` (docs/BUGS.md), dark mode (deferred, tokens-ready), `salary_without_payslip.blade.php` is a *directory* (repo oddity — do not "fix" casually). HRM module does not exist — W6.3 is N/A. W6.4b (permission matrix bulk toggle) and W6.5 (settings + login/password) are the next single-PR tasks for the mechanical side. |
 
 Screen inventory (verified by count): Hotel 87 routes/173 views · Account 61/178 · Restaurant 59/187 · GS 37/37 · Bar 29/109 · Permission 20/13 · HotelService 12/17 · HotelWebsite 10/21 (public) · BanquetHall 7/78 (mostly bleeds into Hotel views) · core `routes/` 49 & `resources/views` 160 (shell, landing, shared components, auth).
 
@@ -130,8 +131,10 @@ Cadence: 1 task per PR-sized chunk; every chunk ships green on the test box (sam
 
 ## 9. “I’m back — what do I do?” checklist
 
-1. `git log --oneline docs/UI-REDESIGN-PLAN.md docs/FRONTEND-DEV-PLAN.md` + read milestone **UI Renovation** (issues are the live task board; tick boxes there, not here).
-2. Check PR #4 status (open rounds are listed in its comments).
-3. If nothing changed since this file: start **W0.1**, then **W1.1** (`tokens.css`).
-4. Rebuild the harness per §6 if the sandbox is fresh (it gets wiped — that's normal).
-5. Keep the four standing rules (§0) non-negotiable; when in doubt about money lines: touch nothing.
+1. `git fetch origin arena/01a0fe5b-mmheritagehotel` then `git log --oneline -10` to see what's been pushed.
+2. Read §0 (State of play) — the work-branch row + the W0 owner-actions row tell you what's done and what only the owner can do.
+3. Check the open issues on the GitHub **UI Renovation** milestone (issues #5-#12 are the live task board; tick boxes there, not here).
+4. If nothing has changed: the next mechanical work is one of — W6.1b/d (voucher create/edit forms, 438-492 lines each), W6.4b (permission matrix bulk toggle), W6.5 (settings + login/password). The remaining W2-W5 bulk work in the working tree is "packaged but not PR'd" and needs to be split into reviewable PRs.
+5. Owner-side: W0.1-W0.3 (deploy secrets, dry-run, test-box check) — see the §0 row for the exact commands.
+6. Rebuild the harness per §6 if the sandbox is fresh (it gets wiped — that's normal).
+7. Keep the four standing rules (§0) non-negotiable; when in doubt about money lines: touch nothing.
