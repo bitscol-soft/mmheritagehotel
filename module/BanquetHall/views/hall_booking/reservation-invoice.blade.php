@@ -1,10 +1,6 @@
 @extends('layouts.master')
 @section('title', 'Invoice')
 
-@section('page-header')
-    <i class="fa fa-info-circle"></i> Invoice
-@stop
-
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -398,20 +394,35 @@
 
 @section('content')
 
+    {{-- W4.1: wrap the existing <div class="row invoice-body"> in <x-mm.page>
+         and <x-mm.print-sheet>. The print button now comes from
+         <x-mm.print-sheet>'s footer (data-mm-print hook calls
+         window.print()). The old jQuery `printPage('print_body')` path
+         used printThis against #print_body; the new path uses the
+         browser's print pipeline. The bespoke BanquetHall styles
+         (.col-print-1..12, .print-body border, .company-info, etc.)
+         are kept byte-identical — they don't conflict with the print
+         sheet and the file structure was not refactored. --}}
+    <x-mm.styles />
+    <x-mm.page class="mm-invoice-page mm-hall-invoice" title="Hall reservation invoice" description="Review the hall reservation invoice and print it. Printing outputs the document only.">
+        <x-slot name="actions">
+            <a class="mm-button mm-button-secondary" href="{{ route('hall-booking.index') }}">
+                <i class="fa fa-list-alt" aria-hidden="true"></i> Hall booking list
+            </a>
+        </x-slot>
+        <x-mm.panel class="tw-p-4">
+            <x-mm.print-sheet>
     <div class="row invoice-body">
         <div class="col-sm-12">
             <div class="widget-box">
 
-                <!-- WIDGET HEADER -->
                 <div class="widget-header hidden-print">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
+                    <h4 class="widget-title"> <i class="fa fa-info-circle"></i> Invoice</h4>
                     @if (hasPermission('service.view', $slugs))
                         <span class="widget-toolbar">
-
-                            <a href="#" onclick="printPage('print_body')">
-                                <i class="fa fa-print"></i>
-                                Print
-                            </a>
+                            {{-- W4.1: the print button below is now provided by
+                                 <x-mm.print-sheet>'s footer. The old jQuery
+                                 printPage('print_body') link is removed. --}}
                         </span>
                     @endif
                 </div>
@@ -861,18 +872,14 @@
             </div>
         </div>
     </div>
+    </x-mm.print-sheet>
+            </x-mm.panel>
+        </x-mm.page>
 @endsection
 
 @section('js')
-    <script src="{{ asset('assets/custom_js/printThis.js') }}"></script>
-    {{-- <script type="text/javascript">
-        function printPage(id) {
-            $('#' + id).printThis({
-                importStyle: true
-            });
-        };
-        window.onreadystatechange = $('#print_body').printThis({
-            importStyle: true
-        });
-    </script> --}}
+    {{-- W4.1: the printThis.js script and the printPage() function
+         are no longer used. The print button is now provided by
+         <x-mm.print-sheet>'s footer (data-mm-print hook calls
+         window.print()). --}}
 @stop
