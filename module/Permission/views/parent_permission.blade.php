@@ -69,45 +69,35 @@
         </x-mm.panel>
 
         <x-mm.panel>
-            <x-mm.table-scroll label="Parent permissions">
-                <table id="dynamic-table" class="table table-striped table-bordered table-hover" >
-                    <thead>
-                        <tr>
-                            <th>SL</th>
-                            <th>Submodule</th>
-                            <th>Parent Permission</th>
-                            <th class="text-center">Action</th>
-                        </tr>
-                    </thead>
+            <x-mm.data-table :columns="[
+                ['label' => 'SL'],
+                ['label' => 'Submodule'],
+                ['label' => 'Parent Permission'],
+                ['label' => 'Action', 'align' => 'center'],
+            ]" table-class="table table-striped table-bordered table-hover" id="dynamic-table" label="Parent permissions">
+                @foreach ($parentPermissions as $key => $parentPermission)
+                    <tr>
+                        <td>{{ $key + 1 }}</td>
+                        <td>{{ $parentPermission->submodule->name }}</td>
+                        <td>{{ $parentPermission->name }}</td>
+                        <td class="text-center">
+                            <div class="btn-group btn-corner">
+                                <a href="{{ route('parent-permissions.edit',$parentPermission->id) }}" class="btn btn-xs btn-success" title="Edit">
+                                    <i class="fa fa-pencil-square-o"></i>
+                                </a>
+                                <button type="button" onclick="delete_check({{ $parentPermission->id }})" class="btn btn-xs btn-danger" title="Delete">
+                                    <i class="fa fa-trash-o"></i>
+                                </button>
+                            </div>
 
-                    <tbody>
-                         @foreach ($parentPermissions as $key => $parentPermission)
-                            <tr>
-                                <td>{{ $key + 1 }}</td>
-                                <td>{{ $parentPermission->submodule->name }}</td>
-                                <td>{{ $parentPermission->name }}</td>
-
-                                <td class="text-center">
-                                    <div class="btn-group btn-corner">
-                                        <a href="{{ route('parent-permissions.edit',$parentPermission->id) }}" class="btn btn-xs btn-success" title="Edit">
-                                            <i class="fa fa-pencil-square-o"></i>
-                                        </a>
-                                        <button type="button" onclick="delete_check({{ $parentPermission->id }})" class="btn btn-xs btn-danger" title="Delete">
-                                            <i class="fa fa-trash-o"></i>
-                                        </button>
-                                    </div>
-
-                                    <form action="{{ route('parent-permissions.destroy',$parentPermission->id)}}" id="deleteCheck_{{ $parentPermission->id }}" method="POST">
-                                        @csrf
-                                        @method("DELETE")
-                                    </form>
-                                </td>
-
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </x-mm.table-scroll>
+                            <form action="{{ route('parent-permissions.destroy',$parentPermission->id)}}" id="deleteCheck_{{ $parentPermission->id }}" method="POST">
+                                @csrf
+                                @method("DELETE")
+                            </form>
+                        </td>
+                    </tr>
+                @endforeach
+            </x-mm.data-table>
             @include('partials._paginate', ['data' => $parentPermissions])
         </x-mm.panel>
     </div>
@@ -117,10 +107,6 @@
 
 @section('js')
     <script src="{{ asset('assets/js/chosen.jquery.min.js') }}"></script>
-    <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('assets/js/jquery.dataTables.bootstrap.min.js') }}"></script>
-
-    
 
     <!--  Select Box Search-->
     <script type="text/javascript">
@@ -148,16 +134,5 @@
             })
 
         }
-
-        jQuery(function ($) {
-            $('#dynamic-table').DataTable({
-                "ordering": false,
-                "bPaginate": false,
-                "lengthChange": false,
-                "info": false
-            });
-        })
     </script>
-
-   
 @stop

@@ -43,45 +43,35 @@
         </x-mm.panel>
 
         <x-mm.panel>
-            <x-mm.table-scroll label="Modules">
-                <table id="dynamic-table" class="table table-striped table-bordered table-hover" >
-                    <thead>
+            <x-mm.data-table :columns="[
+                ['label' => 'SL'],
+                ['label' => 'Module Name'],
+                ['label' => 'Status', 'align' => 'center'],
+                ['label' => 'Action', 'align' => 'center'],
+            ]" table-class="table table-striped table-bordered table-hover" id="dynamic-table" label="Modules">
+                @foreach ($modules as $key => $setting)
                     <tr>
-                        <th>SL</th>
-                        <th>Module Name</th>
-                        <th class="text-center">Status</th>
-                        <th class="text-center">Action</th>
+                        <td>{{ $key + 1 }}</td>
+                        <td>{{ $setting->name }}</td>
+                        <td class="text-center"><a href="{{ route('active.deactive.module', $setting->id) }}" class="badge badge-{{ $setting->status == 1 ? 'success' : 'danger' }}">{{ $setting->status == 1 ? 'Active' : 'De-Active' }}</a></td>
+                        <td class="text-center">
+                            <div class="btn-group btn-corner">
+                                <a href="{{ route('modules.edit',$setting->id) }}" class="btn btn-sm btn-success" title="Edit">
+                                    <i class="fa fa-pencil-square-o"></i>
+                                </a>
+                                <button type="button" onclick="delete_check({{ $setting->id }})" class="btn btn-sm btn-danger" title="Delete">
+                                    <i class="fa fa-trash-o"></i>
+                                </button>
+                            </div>
+
+                            <form action="{{ route('modules.destroy',$setting->id)}}" id="deleteCheck_{{ $setting->id }}" method="POST">
+                                @csrf
+                                @method("DELETE")
+                            </form>
+                        </td>
                     </tr>
-                    </thead>
-
-                    <tbody>
-                         @foreach ($modules as $key => $setting)
-                            <tr>
-                                <td>{{ $key + 1 }}</td>
-                                <td>{{ $setting->name }}</td>
-                                <td class="text-center"><a href="{{ route('active.deactive.module', $setting->id) }}" class="badge badge-{{ $setting->status == 1 ? 'success' : 'danger' }}">{{ $setting->status == 1 ? 'Active' : 'De-Active' }}</a></td>
-
-                                <td class="text-center">
-                                    <div class="btn-group btn-corner">
-                                        <a href="{{ route('modules.edit',$setting->id) }}" class="btn btn-sm btn-success" title="Edit">
-                                            <i class="fa fa-pencil-square-o"></i>
-                                        </a>
-                                        <button type="button" onclick="delete_check({{ $setting->id }})" class="btn btn-sm btn-danger" title="Delete">
-                                            <i class="fa fa-trash-o"></i>
-                                        </button>
-                                    </div>
-
-                                    <form action="{{ route('modules.destroy',$setting->id)}}" id="deleteCheck_{{ $setting->id }}" method="POST">
-                                        @csrf
-                                        @method("DELETE")
-                                    </form>
-                                </td>
-
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </x-mm.table-scroll>
+                @endforeach
+            </x-mm.data-table>
             @include('partials._paginate', ['data' => $modules])
         </x-mm.panel>
     </div>
@@ -90,11 +80,6 @@
 @endsection
 
 @section('js')
-    <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('assets/js/jquery.dataTables.bootstrap.min.js') }}"></script>
-
-    
-
     <!-- inline scripts related to this page -->
     <script type="text/javascript">
 
@@ -118,16 +103,4 @@
         }
 
     </script>
-
-    <script type="text/javascript">
-        jQuery(function ($) {
-            $('#dynamic-table').DataTable({
-                "ordering": false,
-                "bPaginate": false,
-                "lengthChange": false,
-                "info": false
-            });
-        })
-    </script>
-
 @stop
