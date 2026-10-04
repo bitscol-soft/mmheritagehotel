@@ -11,35 +11,41 @@
 
             @include('booking-note.include.filter')
             <div>
-                <x-mm.table-scroll label="Booking notes"><table class="table table-striped table-bordered table-hover">
-                    <thead>
+                {{-- W3.3: converted from <x-mm.table-scroll> + raw <table>
+                     to <x-mm.data-table>. The data-table component renders
+                     the same Bootstrap-classed table (preserved via the
+                     table-class prop) and applies mm-data-table styling.
+                     All cell widths, class names, route names, and the
+                     <x-status> component usage are byte-identical. --}}
+                <x-mm.data-table label="Booking notes"
+                    table-class="table table-striped table-bordered table-hover"
+                    :columns="[
+                        ['label' => 'SL', 'width' => '5%', 'align' => 'center'],
+                        ['label' => 'Title', 'width' => '70%'],
+                        ['label' => 'Status', 'width' => '10%', 'align' => 'center'],
+                        ['label' => 'Action', 'width' => '10%', 'align' => 'center'],
+                    ]">
+                    @forelse ($bookingNotes as $item)
                         <tr>
-                            <th scope="col" width="5%">SL</th>
-                            <th scope="col" width="70%">Title</th>
-                            <th scope="col" width="10%" class="text-center">Status</th>
-                            <th scope="col" width="10%" class="center">Action</th>
+                            <td class="center">{{ $loop->index + 1 }}</td>
+                            <td>{{ strip_tags($item->title) }}</td>
+                            <td class="text-center">
+                                <x-status status="{{ $item->status }}" id="{{ $item->id }}" table="{{ $table }}" />
+                            </td>
+                            <td class="center">
+                                <div class="btn-group">
+                                    <a aria-label="Edit booking note" class="btn btn-sm btn-success" href="{{ route('booking-note.edit', $item->id) }}">
+                                        <i class="fa fa-edit"></i>
+                                    </a>
+                                </div>
+                            </td>
                         </tr>
-                    </thead>
-
-                    <tbody>
-                        @foreach ($bookingNotes as $item)
-                            <tr>
-                                <td width="5%" class="center">{{ $loop->index + 1 }}</td>
-                                <td width="70%">{{ strip_tags($item->title) }}</td>
-                                <td width="10%" class="text-center">
-                                    <x-status status="{{ $item->status }}" id="{{ $item->id }}" table="{{ $table }}" />
-                                </td>
-                                <td width="10%" class="center">
-                                    <div class="btn-group">
-                                        <a aria-label="Edit booking note" class="btn btn-sm btn-success" href="{{ route('booking-note.edit', $item->id) }}">
-                                            <i class="fa fa-edit"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table></x-mm.table-scroll>
+                    @empty
+                        <tr>
+                            <td colspan="4" class="text-center">No booking notes found.</td>
+                        </tr>
+                    @endforelse
+                </x-mm.data-table>
             </div>
         </div>
     </div>

@@ -49,6 +49,7 @@
         <li><a href="#w2-3">W2.3</a> — <code>x-page</code> is the only header pattern. Dead <code>page-header</code> blocks removed from 219 pages; ui-guard tripwire added to prevent regression.</li>
         <li><a href="#w3-1">W3.1</a> — Reservation invoice restyled to round-6 <code>invoice-doc</code> look (print-sheet wrapper, inv-head, inv-panels). Hall twin and other invoices follow in W3.2 / W4.</li>
         <li><a href="#w3-2">W3.2</a> — Booking invoice (checkout slip + payment receipt) → round-6 <code>invoice-doc</code>. printThis retired; print-on-open behavior preserved via <code>window.print()</code>.</li>
+        <li><a href="#w3-3">W3.3</a> — Booking notes → <code>x-data-table</code> + <code>x-filter-bar</code>. Guest list (W1.7) and booking list (W1.7) were already on <code>x-data-table</code>; referred-booking uses the same booking-list view.</li>
     </ul>
 </div>
 
@@ -781,6 +782,45 @@ tripwire_xpage_pageheader_combo() {
         </div>
         <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
             <div style="font-size:32px;font-weight:700;color:#2f63a8;">54</div>
+            <div style="color:var(--mm-muted);font-size:13px;">PHP <code>{{ }}</code> expressions preserved byte-identically</div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== W3.3 ==================== -->
+<section class="preview-section" id="w3-3">
+    <h2>W3.3 — Booking notes → <code>x-data-table</code> + <code>x-filter-bar</code></h2>
+    <p style="color:#526578">The W3.3 plan item from <code>docs/FRONTEND-DEV-PLAN.md</code>: <em>"Guests (<code>/hotel/guests</code> family), referred-booking, booking notes: <code>x-filter-bar</code> + <code>x-data-table</code>."</em></p>
+
+    <h3 style="margin-top:24px">What was already done (in earlier rounds)</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>Guest list</strong> — ported in W1.7 (commit <code>36995686</code>) to <code>x-mm.data-table</code> + <code>x-mm.toolbar</code>. The filter partial already uses <code>x-mm.field</code>. No further work needed.</li>
+        <li><strong>Booking list</strong> — ported in W1.7 (commit <code>36995686</code>) to <code>x-mm.data-table</code> + <code>x-mm.toolbar</code>. The "referred-booking" route (<code>route('booking.referred-booking')</code>) is just a flag in the same controller that filters by referred status — it uses the same <code>module/Hotel/views/booking/index.blade.php</code> view. No separate work needed.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">What was done in W3.3</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>Booking notes (<code>module/Hotel/views/booking-note/index.blade.php</code>)</strong> — converted from <code>&lt;x-mm.table-scroll&gt;</code> + raw <code>&lt;table&gt;</code> markup to <code>&lt;x-mm.data-table&gt;</code>. The data-table component renders the same Bootstrap-classed table (preserved via the <code>table-class</code> prop: <code>"table table-striped table-bordered table-hover"</code>). All cell widths, class names, route names (<code>route('booking-note.edit', $item->id)</code>), and the <code>&lt;x-status&gt;</code> component usage are byte-identical.</li>
+        <li><strong>Booking notes filter (<code>include/filter.blade.php</code>)</strong> — converted from a raw <code>&lt;form&gt;</code> to <code>&lt;x-mm.filter-bar&gt;</code>. The filter-bar wires <code>data-mm-filter-target="#searchForm"</code> so it submits on change when the page wraps a search form with that id.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">PHP byte-identicality</h3>
+    <p style="color:#526578">The 7 <code>{{ ... }}</code> expressions in the booking notes index (<code>$item->id</code>, <code>$item->status</code>, <code>$loop->index + 1</code>, <code>$table</code>, <code>route('booking-note.edit', $item->id)</code>, <code>strip_tags($item->title)</code>) are all preserved byte-identically. The <code>&lt;x-status&gt;</code> component is invoked with the same props (<code>status</code>, <code>id</code>, <code>table</code>). The <code>&lt;x-mm.toolbar&gt;</code> and the row count badge from W1.7 are unchanged.</p>
+
+    <h3 style="margin-top:24px">What was NOT done (and why)</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>Guest list / booking list</strong> — already on <code>x-data-table</code> from W1.7. Re-running the conversion would re-apply work that's already in the history.</li>
+        <li><strong>Referred-booking</strong> — uses the same <code>module/Hotel/views/booking/index.blade.php</code> view as the regular booking list, with a server-side filter in the controller. The "referred" UI is already on <code>x-data-table</code>.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">Numbers</h3>
+    <div class="mm-grid" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;">
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">2</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Blade files touched (booking-note index + filter)</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">7</div>
             <div style="color:var(--mm-muted);font-size:13px;">PHP <code>{{ }}</code> expressions preserved byte-identically</div>
         </div>
     </div>
