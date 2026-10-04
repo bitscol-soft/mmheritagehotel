@@ -48,19 +48,10 @@
         </div>
 
         <div class="col-sm-12">
-            <div class="form-group">
-                <label class="col-sm-3 control-label" for="roomNumber"> Room Number <span
-                        style="color: deeppink">*</span></label>
-                <div class="col-xs-12 col-sm-8 @error('room_number') has-error @enderror">
-                    <input type="text" class="form-control input-sm" name="room_number" id="roomNumber"
-                        value="{{ old('room_number') }}" placeholder="Enter Room Number" required
-                        onkeyup="checkRoomNumber(this)">
-                    <p id="duplicateRoomError" role="status" aria-live="polite" style="color: red; display: none;"></p>
-                    @error('room_number')
-                        <span class="text-danger"> {{ $message }}</span>
-                    @enderror
-                </div>
-            </div>
+            <x-mm.field label="Room Number" id="roomNumber" name="room_number"
+                value="{{ old('room_number') }}" placeholder="Enter Room Number" required
+                onkeyup="checkRoomNumber(this)" />
+            <p id="duplicateRoomError" role="status" aria-live="polite" style="color: red; display: none;"></p>
         </div>
 
         <div class="col-sm-12">
@@ -74,32 +65,14 @@
 
             {{-- Beds  --}}
             <div class="col-sm-12">
-                <div class="form-group">
-                    <label class="col-sm-3 control-label" for="room-beds"> Beds </label>
-                    <div class="col-xs-12 col-sm-8 @error('beds') has-error @enderror">
-                        <input type="text" class="form-control input-sm" id="room-beds" name="beds"
-                            value="{{ old('beds') }}" placeholder="Enter Beds">
-
-                        @error('beds')
-                            <span class="text-danger"> {{ $message }}</span>
-                        @enderror
-                    </div>
-                </div>
+                <x-mm.field label="Beds" id="room-beds" name="beds"
+                    value="{{ old('beds') }}" placeholder="Enter Beds" />
             </div>
 
             {{-- Max Guests  --}}
             <div class="col-sm-12">
-                <div class="form-group">
-                    <label class="col-sm-3 control-label" for="room-max-guests"> Max Guests </label>
-                    <div class="col-xs-12 col-sm-8 @error('max_guests') has-error @enderror">
-                        <input type="text" class="form-control input-sm" id="room-max-guests" name="max_guests"
-                            value="{{ old('max_guests') }}" placeholder="Enter Max Guests">
-
-                        @error('max_guests')
-                            <span class="text-danger"> {{ $message }}</span>
-                        @enderror
-                    </div>
-                </div>
+                <x-mm.field label="Max Guests" id="room-max-guests" name="max_guests"
+                    value="{{ old('max_guests') }}" placeholder="Enter Max Guests" />
             </div>
         @endif
 
