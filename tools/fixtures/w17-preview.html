@@ -73,6 +73,7 @@
         <li><a href="#t2-hall-aminities">T2 hall-aminities</a> — 3 files in <code>module/BanquetHall/views/hall/aminities/</code> (create, edit, index) had 2 unused jQuery DataTables script tags in their <code>@section('js')</code> blocks. Removed. The <code>delete_check</code> JS function + <code>dropzone.min.js</code> (create only) remain. 28 more views across the project have the same unused DataTables tags and are T2 candidates.</li>
         <li><a href="#t2-sweep">T2 DataTables sweep</a> — 28 views cleaned (the full T2 inventory closed in one PR). For each: removed the 2 unused <code>jquery.dataTables.min.js</code> + <code>jquery.dataTables.bootstrap.min.js</code> script tags. Every file was verified to have no <code>.DataTable(...)</code> constructor call and no <code>dataTables_</code> / <code>fnFilter</code> / <code>fnSort</code> API call. 28 files, 56 deletions, 0 additions. Module breakdown: Account (3), GeneralStore (2), Hotel (5), HotelWebsite (11), Permission (1), Restaurant (3), BanquetHall (2).</li>
         <li><a href="#w6-2b">W6.2b (pilot)</a> — 3 canonical financial reports (<code>trial-balance</code>, <code>balance-sheet</code>, <code>income-statement</code>) in <code>module/Account/views/reports/*/print.blade.php</code> wrapped in <code>&lt;x-mm.print-sheet sheet="a4-landscape"&gt;</code>. New <code>a4-landscape</code> variant added to <code>resources/css/ui.css</code> (max-width 1100px screen, max-width none print). The raw <code>&lt;table border="1"&gt;</code> in each file is now a <code>&lt;x-mm.data-table&gt;</code>. Inline <code>&lt;style&gt;</code> blocks reduced to just <code>@page { size: landscape; margin: 0.5in; }</code> — all other print CSS is in ui.css + print-sheet. The top-right "no-print" button bar (Print + Back) is replaced with a single Back link (using <code>.mm-no-print</code>); the print-sheet has its own bottom Print button. The ugly <code>background:red !important</code> on the title + date-range is removed. Money math preserved byte-for-byte. 12 more reports remain for W6.2b-2.</li>
+        <li><a href="#w6-2b-2">W6.2b-2</a> — 2 more landscape reports (<code>cash-flow</code>, <code>equity-statement</code>) converted. Same pattern as the pilot. 5 of 15 financial reports are now on the new print-sheet pattern. 10 portrait reports remain (different pattern, need design decision on <code>&lt;tfoot&gt;</code> issue first).</li>
     </ul>
 </div>
 
@@ -1804,6 +1805,39 @@ module/Restaurant/views/kitchen/index.blade.php
         <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
             <div style="font-size:32px;font-weight:700;color:#2f63a8;">12</div>
             <div style="color:var(--mm-muted);font-size:13px;">More reports to convert in W6.2b-2</div>
+        </div>
+    </div>
+</section>
+
+<section class="preview-section" id="w6-2b-2">
+    <h2>W6.2b-2 — 2 more landscape reports</h2>
+    <p style="color:#526578">Sister PR to W6.2b (pilot). Converts the 2 remaining landscape financial reports (<code>cash-flow</code> + <code>equity-statement</code>) to <code>&lt;x-mm.print-sheet sheet="a4-landscape"&gt;</code>. Same pattern as the pilot. <strong>5 of 15 financial reports are now on the new print-sheet pattern.</strong> 10 more portrait reports remain for W6.2b-3 (different pattern, need a design decision on the <code>&lt;tfoot&gt;</code> issue first).</p>
+
+    <h3 style="margin-top:24px">What was done in this commit (2 files, 108 insertions, 219 deletions)</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>equity-statement/print.blade.php</strong> (160 → 105 lines, 9-column data-table with Total row). Was a copy-paste of the pre-pilot trial-balance with the title changed from "Category Wise Transaction Ledger" to "Equity Statement".</li>
+        <li><strong>cash-flow/print.blade.php</strong> (163 → 98 lines, 2-column data-table per account group with Liabilities / Current Equity / Total rows). Was a copy-paste of the pre-pilot balance-sheet with the title changed from "Balance Sheet" to "Cash Flow".</li>
+    </ul>
+
+    <h3 style="margin-top:24px">What was NOT done (and why)</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>10 portrait reports remain</strong>: <code>account-ledger</code>, <code>account-payables</code>, <code>account-receivables</code>, <code>customer-ledger</code>, <code>supplier</code>, <code>supplier-ledger</code>, <code>chart-of-account</code>, <code>voucher-reports</code>, <code>subsidiary-wise-ledger</code>, <code>expense-analysis</code>. They use a different pattern (portrait, no <code>@page landscape</code>, smaller inline styles, <code>&lt;tfoot&gt;</code> for the Total row).</li>
+        <li>The <strong>&lt;tfoot&gt; issue</strong>: <code>&lt;x-mm.data-table&gt;</code> does NOT render <code>&lt;tfoot&gt;</code> (per the W6.2 ship note). Several of the portrait reports (account-payables, account-receivables, customer-ledger, supplier, supplier-ledger) use <code>&lt;tfoot&gt;</code> for the Total row. They will need either: (a) a tfoot slot added to the data-table component, or (b) the Total row moved to the end of <code>&lt;tbody&gt;</code>. The W6.2b-3 PR will need a design decision on this first.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">Numbers</h3>
+    <div class="mm-grid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;">
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">2</div>
+            <div style="color:var(--mm-muted);font-size:13px;">More landscape reports converted (cash-flow, equity-statement)</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">5 / 15</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Financial reports on the new print-sheet pattern</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">10</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Portrait reports remain (for W6.2b-3 after tfoot design decision)</div>
         </div>
     </div>
 </section>
