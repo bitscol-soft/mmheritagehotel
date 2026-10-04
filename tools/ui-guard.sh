@@ -557,6 +557,146 @@ tripwire_raw_style_tag() {
 }
 
 # -----------------------------------------------------------------------------
+# Tripwire 5: x-mm.field misuse.
+#
+# Two sub-checks per docs/FRONTEND-DEV-PLAN.md W4.3b:
+#
+# (1) On form pages (create / edit / form), a <x-mm.field> in a
+#     + line that lives in a hunk containing input-group or
+#     chosen-select. The x-mm.field component cannot render the
+#     currency input-group addon; the two patterns must not mix
+#     in the same hunk. (This applies on form pages only; x-mm.field
+#     is not used outside forms.)
+#
+# (2) On any file, a <x-mm.field> with name= but no id= on the
+#     same line. The component requires an id prop (used by
+#     <label for="..."> and the input id="..."); without it, the
+#     rendered HTML has empty for="" and id="", breaking
+#     accessibility and label-clicking.
+#
+# Both sub-checks are diff-based (scanning + and - lines in the
+# working-tree diff). The awk uses the same in_hunk flag pattern
+# as the other diff-based tripwires; the file headers (--- a/file
+# / +++ b/file) are skipped via the in_hunk gate, and the hunk
+# header (^@@) resets the hunk_removes_group state.
+# -----------------------------------------------------------------------------
+tripwire_xmm_field_misuse() {
+    local f
+    local found=0
+    while IFS= read -r f; do
+        [ -z "$f" ] && continue
+        [ ! -f "$f" ] && continue
+        # File-path filter: x-mm.field is a form-field component, so the
+        # sub-check 1 (input-group/chosen-select coexistence) is only
+        # meaningful in form pages. Sub-check 2 (id= prop required)
+        # applies wherever x-mm.field is used. We run sub-check 1 only
+        # on form pages; sub-check 2 runs on all Blade files.
+        local is_form_page=0
+        case "$f" in
+            *create.blade.php|*edit.blade.php|*form.blade.php) is_form_page=1 ;;
+        esac
+        local diff_args=""
+        case "$MODE" in
+            working) diff_args="-U0 --" ;;
+            staged)  diff_args="-U0 --cached --" ;;
+            diff)    diff_args="-U0 $BASE_REF...HEAD --" ;;
+        esac
+        local hits
+        hits="$(git diff $diff_args "$f" 2>/dev/null \
+            | awk -v file="$f" -v form_page="$is_form_page" '
+                BEGIN {
+                    new_line            = 0
+                    old_line            = 0
+                    in_hunk             = 0
+                    # Track whether the current hunk REMOVES an
+                    # input-group or chosen-select (i.e. a - line
+                    # has the marker). The replacement pattern is
+                    # what W4.3b flags: a + line adds <x-mm.field>
+                    # AND a - line in the same hunk removes an
+                    # input-group or chosen-select. Tracking + lines
+                    # as well would fire false positives when a
+                    # developer adds an input-group to a form that
+                    # already has <x-mm.field> (the x-mm.field is
+                    # just re-emitted by git as a + line because of
+                    # newline state changes, not because the
+                    # developer is adding it).
+                    hunk_removes_group = 0
+                }
+                /^@@/ {
+                    rest = $0
+                    sub(/^@@ /, "", rest)
+                    sub(/ @@.*$/, "", rest)
+                    split(rest, parts, " ")
+                    split(parts[1], a, ",")
+                    split(parts[2], b, ",")
+                    old_line           = a[1] + 0
+                    new_line           = b[1] + 0
+                    in_hunk            = 1
+                    hunk_removes_group = 0
+                    next
+                }
+                # File headers live OUTSIDE a hunk.
+                /^---/        { if (!in_hunk) next }
+                /^\+\+\+/    { if (!in_hunk) next }
+                /^\+/ {
+                    if (!in_hunk) next
+                    line = substr($0, 2)
+                    # Sub-check 1 (form pages only): a new <x-mm.field>
+                    # in a hunk that REMOVES an input-group or
+                    # chosen-select. The W4.3b rule says x-mm.field
+                    # cannot render the currency input-group addon;
+                    # the replacement pattern (input-group -,
+                    # x-mm.field +) is the actual violation. The
+                    # hunk-level state is set by - lines (see below),
+                    # so by the time we reach a + line, the state
+                    # already reflects any removed input-group /
+                    # chosen-select in the same hunk.
+                    if (form_page == 1 && line ~ /<x-mm\.field/ && hunk_removes_group) {
+                        printf("    %s:+%d  (x-mm.field added in hunk that removes input-group / chosen-select)\n", file, new_line)
+                    }
+                    # Sub-check 2 (all files): <x-mm.field> with name=
+                    # but no id= on the same line. The x-mm.field
+                    # component requires an id prop (used by <label
+                    # for=...> and the input id=...); without it, the
+                    # rendered HTML has empty for="" and id="" which
+                    # breaks accessibility and label-clicking.
+                    if (line ~ /<x-mm\.field/ && line ~ /name=/) {
+                        if (line !~ /id=/) {
+                            printf("    %s:+%d  (x-mm.field has name= but no id=)\n", file, new_line)
+                        }
+                    }
+                    new_line++
+                }
+                /^-/ {
+                    if (!in_hunk) next
+                    line = substr($0, 2)
+                    if (line ~ /input-group/ || line ~ /chosen-select/) {
+                        hunk_removes_group = 1
+                    }
+                    old_line++
+                }
+                /^ / {
+                    if (!in_hunk) next
+                    new_line++
+                    old_line++
+                }
+            ')"
+        if [ -n "$hits" ]; then
+            report "x-mm.field misuse in $f" \
+                "  x-mm.field components must follow the W4.3b rules:" \
+                "$hits" \
+                "  - On form pages, do not REPLACE a raw input-group / chosen-select with <x-mm.field>" \
+                "    in the same hunk (x-mm.field cannot render the currency input-group addon; keep the raw input)." \
+                "  - Every <x-mm.field> with name= must also have id= (used by <label for=...>)." \
+                "  See docs/FRONTEND-DEV-PLAN.md W4.3b."
+            found=1
+        fi
+    done < <(collect_blade_files)
+    return $found
+}
+
+
+# -----------------------------------------------------------------------------
 # Tripwire 2: @include / @yield inside <style>…</style>.
 #
 # A Blade template that places an @include (or @yield, @stack) directive
@@ -811,6 +951,7 @@ tripwire_money_line || true
 tripwire_nested_style_include || true
 tripwire_xpage_pageheader_combo || true
 tripwire_raw_style_tag || true
+tripwire_xmm_field_misuse || true
 
 if [ "$fail" -ne 0 ]; then
     echo

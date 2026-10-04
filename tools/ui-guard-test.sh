@@ -364,6 +364,88 @@ run_benign_case \
 <link rel="stylesheet" href="/css/tokens.css">' \
     'resources/views/welcome.blade.php'
 
+# --- Tripwire 5: x-mm.field misuse -------------------------------------------
+echo
+echo "[tripwire 5] x-mm.field misuse (W4.3b rules)"
+
+# Sub-check 1 (form page): the W4.3b replacement pattern. A
+# developer replaces a raw input-group (with the currency addon)
+# with a <x-mm.field>. The x-mm.field component cannot render
+# the addon, so the currency symbol disappears from the rendered
+# form. The diff has BOTH a - line removing the input-group AND
+# a + line adding <x-mm.field>. The tripwire fires on the +
+# line.
+run_violation_case \
+    "x-mm.field replaces a raw input-group (W4.3b replacement pattern)" \
+    '<h1>Create</h1>
+<div class="input-group">
+    <span class="input-group-addon">$</span>
+    <input type="text" name="total" class="form-control">
+</div>' \
+    '<h1>Create</h1>
+<x-mm.field id="total" name="total" value="" label="Total" />' \
+    'resources/views/sale/sales/create.blade.php'
+
+# Sub-check 1 (form page) - chosen-select variant: the W4.3b rule
+# also covers JS-hooked select inputs (chosen-select class), which
+# x-mm.field would replace with a vanilla input that loses the
+# chosen jQuery hook.
+run_violation_case \
+    "x-mm.field replaces a chosen-select (W4.3b replacement pattern)" \
+    '<h1>Create</h1>
+<select name="supplier" class="chosen-select form-control">
+    <option>One</option>
+</select>' \
+    '<h1>Create</h1>
+<x-mm.field id="supplier" name="supplier" value="" label="Supplier" />' \
+    'resources/views/sale/sales/create.blade.php'
+
+# Sub-check 1 benign: x-mm.field on a form page in a hunk that
+# does NOT have input-group or chosen-select. The standard pattern.
+run_benign_case \
+    "x-mm.field on a form page with no input-group / chosen-select" \
+    '<h1>Create</h1>' \
+    '<h1>Create</h1>
+<x-mm.field id="name" name="name" value="" label="Name" />
+<x-mm.field id="email" name="email" value="" label="Email" />' \
+    'resources/views/sale/sales/create.blade.php'
+
+# Sub-check 1 scope: a non-form page (index.blade.php) is OUT OF
+# SCOPE for sub-check 1. Even if the hunk has a - line removing
+# an input-group AND a + line adding <x-mm.field>, the tripwire
+# does not fire on non-form pages. The sub-check is gated on the
+# file path. This test deliberately exercises the same diff
+# pattern that would trip sub-check 1 on a form page.
+run_benign_case \
+    "x-mm.field replacing input-group on a NON-form page (out of scope for sub-check 1)" \
+    '<h1>List</h1>
+<div class="input-group">
+    <input type="text" name="filter" class="form-control">
+</div>' \
+    '<h1>List</h1>
+<x-mm.field id="filter" name="filter" value="" label="Filter" />' \
+    'resources/views/sale/sales/index.blade.php'
+
+# Sub-check 2: <x-mm.field> with name= but no id= on the same
+# line. The x-mm.field component requires id= for the <label
+# for=...> and the input id=... attributes. Without id=, the
+# rendered HTML is broken (empty for and id).
+run_violation_case \
+    "x-mm.field has name= but no id= on the same line" \
+    '<h1>Create</h1>' \
+    '<h1>Create</h1>
+<x-mm.field name="email" value="" label="Email" />' \
+    'resources/views/welcome.blade.php'
+
+# Sub-check 2 benign: <x-mm.field> with both id= and name= on
+# the same line. The standard pattern.
+run_benign_case \
+    "x-mm.field with both id= and name= (must not trip)" \
+    '<h1>Create</h1>' \
+    '<h1>Create</h1>
+<x-mm.field id="email" name="email" value="" label="Email" />' \
+    'resources/views/welcome.blade.php'
+
 # --- Summary -----------------------------------------------------------------
 echo
 read -r pass fail < "$MARKER"
