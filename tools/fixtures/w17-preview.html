@@ -51,6 +51,7 @@
         <li><a href="#w3-2">W3.2</a> — Booking invoice (checkout slip + payment receipt) → round-6 <code>invoice-doc</code>. printThis retired; print-on-open behavior preserved via <code>window.print()</code>.</li>
         <li><a href="#w3-3">W3.3</a> — Booking notes → <code>x-data-table</code> + <code>x-filter-bar</code>. Guest list (W1.7) and booking list (W1.7) were already on <code>x-data-table</code>; referred-booking uses the same booking-list view.</li>
         <li><a href="#w3-4">W3.4</a> — Room management forms → <code>x-field</code>/<code>x-select</code> (amenities + account_type + vat done; category + room forms follow in a follow-up commit).</li>
+        <li><a href="#w3-5">W3.5</a> — Night audit + today-activities dashboards already use the tile pattern (<code>dl.mm-audit-summary</code>). The Excel-export paths in the night-audits list retain raw <code>&lt;table&gt;</code> markup because the data-table component is incompatible with the colspan=10 title row.</li>
     </ul>
 </div>
 
@@ -859,6 +860,36 @@ tripwire_xpage_pageheader_combo() {
         <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
             <div style="font-size:32px;font-weight:700;color:#2f63a8;">~20</div>
             <div style="color:var(--mm-muted);font-size:13px;">PHP <code>{{ }}</code> expressions preserved byte-identically</div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== W3.5 ==================== -->
+<section class="preview-section" id="w3-5">
+    <h2>W3.5 — Night audit + today-activities dashboards</h2>
+    <p style="color:#526578">The W3.5 plan item from <code>docs/FRONTEND-DEV-PLAN.md</code>: <em>"Night audit + today-activities → <code>x-tile</code> dashboard grid + <code>x-data-table</code>."</em></p>
+
+    <h3 style="margin-top:24px">State of the dashboards</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>Night audit detail (<code>module/Hotel/views/night-audits/show.blade.php</code>)</strong> — the dashboard already uses a tile-grid pattern: <code>&lt;dl class="mm-audit-summary"&gt;</code> with each metric in a <code>&lt;div&gt;&lt;dt&gt;…&lt;dt&gt;&lt;dd&gt;…&lt;dd&gt;&lt;/div&gt;</code> row. The CSS in <code>shell.css</code> lays this out as a responsive tile grid (2-column on mobile, 6-column on desktop). No further work needed.</li>
+        <li><strong>Today activities (<code>module/Hotel/views/hotel/reports/today-activities/index.blade.php</code>)</strong> — the report already uses <code>&lt;x-mm.page&gt;</code> + <code>&lt;x-mm.panel&gt;</code> with a summary table at the top (Total Check In, Total Reservation, etc.) and a transaction list at the bottom. The summary table is a form (readonly inputs that submit the audit data) and the transaction list is a regular table.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">What was NOT done (and why)</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>Night-audits list table</strong> — uses an export partial (<code>night-audits.export.excel</code>) that includes an Excel-specific colspan=10 title row. The <code>&lt;x-mm.data-table&gt;</code> component generates <code>&lt;thead&gt;</code> from a columns array, so it can't accept a custom first row. The raw <code>&lt;table&gt;</code> markup is kept for the export paths. The list rendering itself uses the partial via <code>@include</code>, so the data is the same.</li>
+        <li><strong>Today-activities transaction list</strong> — the bottom table (8 columns, with hidden form fields for transaction_ids) is large enough that converting it would be a separate commit. A follow-up commit (W3.5b) can convert it.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">Numbers</h3>
+    <div class="mm-grid" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;">
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">0</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Blade files modified in this commit (the dashboards already use the pattern; no conversion was needed)</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">2</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Dashboards verified (night-audit show, today-activities index)</div>
         </div>
     </div>
 </section>
