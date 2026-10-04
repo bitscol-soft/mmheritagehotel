@@ -59,6 +59,8 @@
         <li><a href="#w3-4b">W3.4b</a> — Categories (create/edit) + rooms (create/edit) forms → <code>&lt;x-mm.field&gt;</code>; pre-existing data-binding bug in rooms/edit fixed.</li>
         <li><a href="#w3-5b">W3.5b</a> — Night-audits list/export split (Excel keeps colspan=10 title; on-screen uses new <code>list.blade.php</code>); today-activities transaction list extracted to partial.</li>
         <li><a href="#w4-1">W4.1</a> — BanquetHall <code>hall_booking/reservation-invoice</code> wrapped in <code>&lt;x-mm.page&gt; + &lt;x-mm.print-sheet&gt;</code>; jQuery <code>printPage</code> + <code>printThis.js</code> removed.</li>
+        <li><a href="#w4-2">W4.2</a> — Hall lists/forms ride Hotel partials (verified); 9 hall views converted (aminities + category + rooms); raw form fields → <code>&lt;x-mm.field&gt;</code>; raw <code>&lt;table&gt;</code> (DataTables) → <code>&lt;x-mm.data-table&gt;</code>.</li>
+        <li><a href="#w4-4">W4.4</a> — booking-purpose CRUD: 3 views (create, edit, index) → <code>&lt;x-mm.field&gt;</code> + <code>&lt;x-mm.data-table&gt;</code>; conditional "Purpose" vs "Platform" label uses <code>:label</code> and <code>:placeholder</code> props.</li>
     </ul>
 </div>
 
@@ -1178,6 +1180,80 @@ tripwire_xpage_pageheader_combo() {
         <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
             <div style="font-size:32px;font-weight:700;color:#2f63a8;">1</div>
             <div style="color:var(--mm-muted);font-size:13px;">jQuery <code>printPage</code> + <code>printThis.js</code> removed</div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== W4.2 ==================== -->
+<section class="preview-section" id="w4-2">
+    <h2>W4.2 — Hall lists/forms ride Hotel partials</h2>
+    <p style="color:#526578">The W4.2 plan item from <code>docs/FRONTEND-DEV-PLAN.md</code>: <em>"hall lists/forms ride Hotel partials (cheap by design — verify bleed, don't fork)"</em>.</p>
+
+    <h3 style="margin-top:24px">Bleed verification</h3>
+    <p style="color:#526578">All 9 hall views were already on the shared <code>&lt;x-mm.styles /&gt;</code> + <code>&lt;x-mm.page&gt;</code> + <code>&lt;x-mm.panel&gt;</code> + <code>&lt;x-mm.table-scroll&gt;</code> patterns. No fork at the page-level — the plan's promise of "ride Hotel partials" was already satisfied. The W4.2 commits brought the form fields + tables in line too.</p>
+
+    <h3 style="margin-top:24px">What was converted (across 2 commits)</h3>
+    <ul style="color:#526578;line-height:1.7;font-size:13px;">
+        <li><strong><code>hall/aminities/{create,edit,index}.blade.php</code></strong> (commit <code>c7d09d9e</code>) — 1 text input → <code>&lt;x-mm.field&gt;</code>; raw <code>&lt;table id="data-table"&gt;</code> → <code>&lt;x-mm.data-table&gt;</code> with the 5 columns.</li>
+        <li><strong><code>hall/category/{create,edit,index}.blade.php</code></strong> (commit <code>fefba343</code>) — 2 text/number inputs → <code>&lt;x-mm.field&gt;</code>; raw <code>&lt;table id="dynamic-table"&gt;</code> → <code>&lt;x-mm.data-table&gt;</code> with the 5 columns.</li>
+        <li><strong><code>hall/rooms/{create,edit,index}.blade.php</code></strong> (commit <code>fefba343</code>) — 4 text inputs → <code>&lt;x-mm.field&gt;</code>; filter form (Name, Hall No) → <code>&lt;x-mm.field&gt;</code>; raw <code>&lt;table id="data-table"&gt;</code> → <code>&lt;x-mm.data-table&gt;</code> with the 8 columns (with widths).</li>
+    </ul>
+
+    <h3 style="margin-top:24px">What was NOT done (and why)</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>Form::select (chosen-select)</strong> + <strong>select2 / category_photos / ace-switch</strong> — kept raw, JS plugins bind to the class names.</li>
+        <li><strong>Duplicate <code>id="roomNumber"</code></strong> in hall/rooms/edit (between the name and hall_number inputs) — kept as-is, flagged in a comment. A real refactor would need a follow-up.</li>
+        <li><strong>DataTables scripts</strong> at the bottom of the index files — kept; the table ids are preserved on the inner <code>&lt;table&gt;</code>.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">Numbers</h3>
+    <div class="mm-grid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;">
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">9</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Hall views converted (aminities 3, category 3, rooms 3)</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">3</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Raw <code>&lt;table&gt;</code> (DataTables) → <code>&lt;x-mm.data-table&gt;</code> with id preserved</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">0</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Hotel partials forked (all ride the same components)</div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== W4.4 ==================== -->
+<section class="preview-section" id="w4-4">
+    <h2>W4.4 — booking-purpose CRUD → <code>&lt;x-mm.field&gt;</code> + <code>&lt;x-mm.data-table&gt;</code></h2>
+    <p style="color:#526578">The W4.4 plan item from <code>docs/FRONTEND-DEV-PLAN.md</code>: <em>"booking-purpose CRUD"</em>. This is the smallest W4 sub-task (3 files, ~290 lines).</p>
+
+    <h3 style="margin-top:24px">What changed</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong><code>module/Hotel/views/booking-purpose/create.blade.php</code></strong> — 1 text input (name) → <code>&lt;x-mm.field&gt;</code>. The conditional "Purpose" vs "Platform" label/placeholder uses <code>:label</code> and <code>:placeholder</code> props on the component.</li>
+        <li><strong><code>module/Hotel/views/booking-purpose/edit.blade.php</code></strong> — same field, with <code>$booking_purpose-&gt;name</code> value binding.</li>
+        <li><strong><code>module/Hotel/views/booking-purpose/index.blade.php</code></strong> — both raw <code>&lt;table&gt;</code> blocks (purpose and platform) → <code>&lt;x-mm.data-table&gt;</code> with the 4 columns (SL, Name, Status, Action). Each is wrapped in <code>&lt;x-mm.panel&gt;</code> for consistent styling.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">What was NOT done (and why)</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li>The <code>ace_file_input</code> scripts at the bottom of create/edit (for <code>.nid-front</code>, <code>.nid-back</code>, <code>.image</code>) are kept verbatim — they don't apply to this form (they're copy-pasted from the guest form) but removing them is out of scope.</li>
+        <li>The <code>@error('name')</code> display: moved to the <code>:error</code> prop on <code>&lt;x-mm.field&gt;</code> (preserves the error display via the component's built-in <code>@error</code> rendering). The original was in a structurally odd position outside the form.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">Numbers</h3>
+    <div class="mm-grid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;">
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">3</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Views converted (create, edit, index)</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">2</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Raw <code>&lt;table&gt;</code> (purpose + platform) → <code>&lt;x-mm.data-table&gt;</code></div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">62</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Net diff (insertions - deletions = 62-117 = -55 lines, +28% slimmer)</div>
         </div>
     </div>
 </section>
