@@ -187,6 +187,27 @@ run_benign_case \
 <p>Total: {{ $invoice->total }} <!-- money-travel-on: legacy total kept for backward compat --></p>' \
     'resources/views/invoice/show.blade.php'
 
+# Per-line override with an empty + line in the diff hunk. The
+# original awk regex (^\+[^+]) did not match the bare "+" line
+# (just a + followed by a newline, no second char), so the
+# new_line counter lagged the file line number by 1. This caused
+# the per-line override on the file-line-after-the-blank to
+# miss (override marker recorded on file-line N, awk comparing
+# against new_line = N-1). The fix replaces the regex with /^\+/
+# (gated by an explicit in_hunk flag so the "+++ b/file" file
+# header is still skipped) and increments new_line for every +
+# line — including the empty one. This test was added when the
+# off-by-one was first observed (W3.1 closeout 4a4c2726) and
+# worked around with a block-level override; it now serves as
+# the regression guard for the per-line case.
+run_benign_case \
+    "per-line override with empty + line in hunk (regression for off-by-one)" \
+    '@section("content")' \
+    '@section("content")
+
+<p>Total: {{ $invoice->total }} <!-- money-travel-on: legacy total kept for backward compat --></p>' \
+    'resources/views/invoice/show.blade.php'
+
 # --- Tripwire 2: nested style include ----------------------------------------
 echo
 echo "[tripwire 2] nested @include inside <style>"

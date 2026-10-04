@@ -182,6 +182,7 @@ tripwire_money_line() {
                     in_block = 0
                     new_line = 0
                     old_line = 0
+                    in_hunk = 0
                 }
                 function in_block_range(fl) {
                     # A `money-travel-on-block:` marker on any line in
@@ -204,9 +205,21 @@ tripwire_money_line() {
                     split(parts[2], b, ",")
                     old_line = a[1] + 0
                     new_line = b[1] + 0
+                    in_hunk = 1
                     next
                 }
-                /^\+[^+]/ {
+                # The "--- a/file" / "+++ b/file" lines only appear
+                # as file headers BEFORE the first hunk. The previous
+                # regex (^\+[^+] / ^-[^-]) skipped them by accident
+                # (the [^+] char class rejects the second +); the
+                # explicit in_hunk gate below does it correctly
+                # without breaking the empty-+-line case the
+                # previous regex got wrong (see the empty-line case
+                # in tripwire_money_line below).
+                /^---/ { if (!in_hunk) next }
+                /^\+\+\+/ { if (!in_hunk) next }
+                /^\+/ {
+                    if (!in_hunk) next
                     line = substr($0, 2)
                     low = tolower(line)
                     # Use a portable word-boundary approximation: (^|[^a-z])
@@ -228,9 +241,21 @@ tripwire_money_line() {
                             printf("    %s:+%d\n", file, fl)
                         }
                     }
+                    # Always increment new_line for every + line we see
+                    # in a hunk — INCLUDING the empty + line case. The
+                    # previous regex (^\+[^+]) skipped empty + lines
+                    # (just "+" followed by newline, no second char),
+                    # which caused the new_line counter to lag the file
+                    # line number by 1. That broke the per-line
+                    # money-travel-on override whenever a diff hunk
+                    # contained an empty + line (a common case when a
+                    # restructuring PR adds blank lines between
+                    # sections, as in the W3.1 / W3.1-twin
+                    # reservation-invoice closeouts).
                     new_line++
                 }
-                /^-[^-]/ {
+                /^-/ {
+                    if (!in_hunk) next
                     line = substr($0, 2)
                     low = tolower(line)
                     has_amount = (low ~ /(^|[^a-z0-9_])(amount|total|grand_total|grand total|due|paid|balance|price|rent|fare|charge|vat|tax)($|[^a-z0-9_])/)
