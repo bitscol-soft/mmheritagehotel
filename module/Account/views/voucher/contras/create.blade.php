@@ -2,13 +2,7 @@
 
 @section('title', 'Contra Voucher')
 
-@section('page-header')
-    <i class="fa fa-plus-circle"></i> Create Contra Voucher
-@stop
-
-
 @push('style')
-
 
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -43,9 +37,6 @@
     </style>
 @endpush
 
-
-
-
 @section('content')
 
 <x-mm.styles />
@@ -74,7 +65,6 @@
                                             <select required name="company_id" class="chosen-select-100-percent"
                                                 data-placeholder="- Select Account -">
                                                 <option></option>
-
 
                                                 @foreach ($company as $key => $name)
                                                     <option value="{{ $key }}"
@@ -140,9 +130,6 @@
                                             <td width="50px;"></td>
                                         </tr>
                                     </thead>
-
-
-
 
                                     <tbody>
                                         @if (old('account_ids'))
@@ -277,8 +264,6 @@
                                         @endif
                                     </tbody>
 
-
-
                                     <tfoot>
                                         <tr>
                                             <td></td>
@@ -302,11 +287,6 @@
                             </x-mm.table-scroll>
                         </div>
                     </div>
-
-
-
-
-
 
                     <div class="row">
                         <div class="input-group " style="width: 100%!important; float: left; ">
@@ -348,7 +328,6 @@
 @endsection
 
 @section('js')
-
 
     <script src="{{ asset('assets/js/chosen.jquery.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap-datepicker.min.js') }}"></script>
@@ -482,7 +461,6 @@
             $(object).attr('readonly', false)
         }
     </script>
-
 
     <script type="text/javascript">
         $(document).ready(function() {

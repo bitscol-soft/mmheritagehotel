@@ -2,11 +2,6 @@
 
 @section('title', 'Purchase List')
 
-@section('page-header')
-    <i class="fa fa-info-circle"></i> Purchase List
-@stop
-
-
 @push('style')
 
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
@@ -81,9 +76,6 @@
                     </table>
                 </x-mm.table-scroll>
             </div>
-
-
-
 
             @if(count($purchases) <= 0)
                 <div class="text-center">

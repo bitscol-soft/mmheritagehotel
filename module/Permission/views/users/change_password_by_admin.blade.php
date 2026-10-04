@@ -1,16 +1,10 @@
 @extends('layouts.master')
 @section('title',' Change User Password')
-@section('page-header')
-    <i class="fa fa-lock"></i>  Change User Password
-@stop
 @section('css')
 
 @stop
 
-
 @section('content')
-
-
 
     <x-mm.styles />
 <x-mm.page class="mm-perm mm-perm-password" title="Change user password" description="Set a new password for another user.">
@@ -24,7 +18,6 @@
                                 <div class="col-xs-8 col-xs-offset-2">
 
                                     @include('partials._alert_message')
-
 
                                     <div class="input-group" style="width:100% !important; margin-bottom:20px">
                                         <b>Set new password for <span class="text-info">{{ $user->name }}</span></b>
@@ -89,8 +82,6 @@
 
 @section('js')
 
-
     
-
 
 @stop

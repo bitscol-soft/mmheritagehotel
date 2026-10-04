@@ -952,6 +952,15 @@ class BanquetBookingController extends Controller{
      | bookingUi METHOD FOR Box Style Room Booking
      |--------------------------------------------------------------------------
     */
+    /**
+     * @deprecated since W3.8 (this method is not wired to any route in
+     *             module/BanquetHall/routes/web_banquet_hall.php).
+     *             It was originally the "box style room booking" UI, but
+     *             the box-style flow is no longer in use. Kept for now
+     *             in case an external client (webhook, scheduled task)
+     *             still calls it via routing-by-reflection. Remove in
+     *             W3.9 if no caller emerges.
+     */
     public function bookingUi(Request $request)
     {
         $this->hasAccess("bookings.create");
@@ -1067,6 +1076,16 @@ class BanquetBookingController extends Controller{
      | available METHOD FOR Check availability for new room
      |--------------------------------------------------------------------------
     */
+    /**
+     * @deprecated since W3.8 (this method is not wired to any route in
+     *             module/BanquetHall/routes/web_banquet_hall.php).
+     *             The "check availability for new room" flow is no longer
+     *             used; the available-room check is now done inline by
+     *             RoomStatusService::availableRoom() at the controller
+     *             entry points. Kept for now in case an external caller
+     *             still hits it via routing-by-reflection. Remove in
+     *             W3.9 if no caller emerges.
+     */
     public function available(Request $request)
     {
 

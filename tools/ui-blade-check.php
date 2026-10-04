@@ -1757,3 +1757,22 @@ foreach ($hwCases as $hwName => [$hwViewName, $hwUrl, $hwData, $hwMarkers, $hwAb
     if (!getenv('MM_DEBUG') && file_get_contents($hwFixture) !== $hwHtml) throw new RuntimeException($hwFixture . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
 }
 echo "PASS hotel website screens render\n";
+
+// ---- Public site (frontend.* views rendered through the new mm-web shell) ----
+// The new public mm-web shell and shared partials are compile-checked here (no render — the views
+// touch DB-backed helpers `pages()`, `getBanner()`, `websiteInfo()` etc., so full rendering belongs
+// in the Playwright suite that runs against the real preview server, not in this DB-free harness).
+$frontendShared = [$root . '/resources/views/frontend/layouts/master.blade.php', $root . '/resources/views/frontend/layouts/mm-web.blade.php', $root . '/resources/views/frontend/layouts/includes/public_head.blade.php', $root . '/resources/views/frontend/layouts/includes/public_nav.blade.php', $root . '/resources/views/frontend/layouts/includes/public_footer.blade.php'];
+$frontendMigrated = [$root . '/resources/views/frontend/home.blade.php', $root . '/resources/views/frontend/room_view.blade.php', $root . '/resources/views/frontend/booking-cart.blade.php', $root . '/resources/views/frontend/search_all_room.blade.php', $root . '/resources/views/frontend/search_room.blade.php', $root . '/resources/views/frontend/guest-register.blade.php', $root . '/resources/views/frontend/booking-register.blade.php', $root . '/resources/views/frontend/terms.blade.php', $root . '/resources/views/frontend/privacy_policy.blade.php', $root . '/resources/views/frontend/single-page-view.blade.php'];
+foreach (array_merge($frontendShared, $frontendMigrated) as $ffFile) { token_get_all($compiler->compileString(file_get_contents($ffFile)), TOKEN_PARSE); }
+echo "PASS compile public mm-web shell and shared partials\n";
+
+// ---- Auth cluster (resources/views/auth/*) ----
+// The auth views reference App\Models\SystemSetting / App\Models\Group, so the views are
+// compile-checked only here (no render — those queries are DB-backed). The new layouts.app
+// shell is also included in the compile set; it loads Bootstrap + <x-mm.styles /> as the
+// mm-auth surface for the stock auth scaffolding pages.
+$authShell = [$root . '/resources/views/layouts/app.blade.php'];
+$authViews = [$root . '/resources/views/auth/login.blade.php', $root . '/resources/views/auth/passwords/email.blade.php', $root . '/resources/views/auth/passwords/reset.blade.php', $root . '/resources/views/auth/register.blade.php', $root . '/resources/views/auth/verify.blade.php', $root . '/resources/views/home.blade.php'];
+foreach (array_merge($authShell, $authViews) as $authFile) { token_get_all($compiler->compileString(file_get_contents($authFile)), TOKEN_PARSE); }
+echo "PASS compile auth shell and 5 auth views\n";

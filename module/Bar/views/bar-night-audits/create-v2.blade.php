@@ -2,11 +2,6 @@
 
 @section('title', 'Night Audit')
 
-@section('page-header')
-    <i class="fa fa-plus-circle"></i> Night Audit
-@stop
-
-
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datetimepicker.min.css') }}">
     <style>
@@ -14,7 +9,6 @@
             background-color: #EAF4FA !important;
             background-image: none !important;
         }
-
 
         table thead th {
             background-color: #4d8cb3;
@@ -47,7 +41,6 @@
         }
     </style>
 @endpush
-
 
 @section('content')
 
@@ -111,7 +104,6 @@
                 <form action="{{ route('rst.night-audits.store') }}" method="post" id="formSubmit">
                     @csrf
 
-
                     <div class="row">
                         <h3 class="text-center">
                             <strong>Generate Date</strong> :
@@ -137,7 +129,6 @@
                                                 style="background: white !important" name="total_reservation"
                                                 value="{{ $total_reservation }}">
                                         </th>
-
 
                                         <th style="border: none"></th>
                                         <th class="text-right border-none" style="padding: 0 7px 0 0 !important;">
@@ -344,7 +335,6 @@
                                             @endforeach
                                         </tbody>
 
-
                                         <tfoot>
                                             <tr>
                                                 <th class="text-right" colspan="{{ $key == 'Booking' ? 7 : 5 }}">
@@ -364,7 +354,6 @@
                                                         style="font-size: 18px">{{ calculateCurrencyAmount($total_due_amount - $total_discount, 1) }}</strong>
                                                 </th>
                                             </tr>
-
 
                                         </tfoot>
                                     </table>
@@ -506,7 +495,6 @@
             }, 10000);
 
         })
-
 
         $('.date-picker-v2').datetimepicker({
             //  format: 'YYYY-MM-DD H:mm:ss',//use this option to display seconds

@@ -2,10 +2,6 @@
 
 @section('title', ' Night Audit')
 
-@section('page-header')
-    <i class="fa fa-info-circle"></i> Night Audit <span class="badge badge-info">{{ $nightaudits->count() }}</span>
-@stop
-
 @section('content')
 
     <x-mm.styles />
@@ -47,10 +43,16 @@
 
         <x-mm.panel class="mm-co-charges">
             <x-mm.table-scroll label="Night audits">
-                @include('night-audits.export.excel')
+                @if (request('export_type'))
+                    {{-- Excel export uses the export partial (with colspan=10 title row). --}}
+                    @include('night-audits.export.excel')
+                @else
+                    {{-- W3.5b: on-screen view uses the list partial (no colspan title row). --}}
+                    @include('night-audits.list')
+                @endif
             </x-mm.table-scroll>
 
-            <x-export-button pdf="1" excel="1" />
+            <x-export-button pdf="1" excel="1" :print=1 />
 
             <x-paginate :data="$nightaudits" />
         </x-mm.panel>

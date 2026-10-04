@@ -2,9 +2,6 @@
 
 @extends('layouts.master')
 @section('title','Goods Requisition')
-@section('page-header')
-    <i class="fa fa-list"></i> Goods Requisition List
-@stop
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
@@ -222,8 +219,6 @@
 
         <input type="hidden" id="csrf" value="{{ csrf_token() }}">
 
-
-
         {{-- purchase_receives   modals --}}
         @foreach($goods_requisitions as $key => $goods_requisition)
 
@@ -302,8 +297,6 @@
     <script src="{{ asset('assets/js/chosen.jquery.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap-datepicker.min.js') }}"></script>
 
-
-
     {{-- export excel/pdf --}}
     <script type="text/javascript">
         function exportData(url)
@@ -311,7 +304,6 @@
             $('.exportForm').attr('action', url).submit();
         }
     </script>
-
 
     <script type="text/javascript">
         $('[data-rel=popover]').popover({html:true});
@@ -381,7 +373,5 @@
 
         })
     </script>
-
-
 
 @stop

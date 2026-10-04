@@ -1,18 +1,10 @@
 @extends('layouts.master')
 
-
 @section('title', 'Receive Vouchers')
-
-
-@section('page-header')
-    <i class="fa fa-info-circle"></i> Receive Vouchers
-@stop
-
 
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
-
 
     <style>
         .table {
@@ -20,10 +12,6 @@
         }
     </style>
 @endpush
-
-
-
-
 
 @section('content')
 
@@ -67,8 +55,6 @@
     </x-mm.panel>
     <x-mm.panel class="tw-p-4">
         @include('partials._alert_message')
-
-
 
         <!-- Filtering -->
         <!-- LIST -->
@@ -143,11 +129,6 @@
 </x-mm.page>
 
 @endsection
-
-
-
-
-
 
 @section('js')
 

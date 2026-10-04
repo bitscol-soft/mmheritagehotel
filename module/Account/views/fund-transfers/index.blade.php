@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title','Fund Transfers')
-@section('page-header')
-    <i class="fa fa-list"></i> Fund Transfers
-@stop
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}"/>
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}"/>
@@ -102,7 +99,6 @@
     <script src="{{ asset('assets/js/chosen.jquery.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap-datepicker.min.js') }}"></script>
 
-
     <script src="{{ asset('assets/custom_js/confirm_delete_dialog.js') }}"></script>
     <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('assets/js/jquery.dataTables.bootstrap.min.js') }}"></script>
@@ -114,5 +110,4 @@
     </script>
 
 @endsection
-
 

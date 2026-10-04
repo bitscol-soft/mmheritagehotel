@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title', 'Fund Transfer Create')
-@section('page-header')
-    <i class="fa fa-list"></i> Fund Transfer Create
-@stop
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}"/>
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}"/>
@@ -29,7 +26,6 @@
             @csrf
             <div class="row" style="width: 100%; margin: 0 0 20px !important;">
                 <div class="col-sm-12 px-4">
-
 
                     <!-- Date -->
                 @include('includes.inputs.date-field', ['name' => 'date', 'is_required' => 'required'])
@@ -82,7 +78,6 @@
                         </div>
                     </div>
 
-
                     <!-- Description -->
                 @include('includes.inputs.input-field', ['name' => 'description', 'is_required' => 1])
 
@@ -108,7 +103,6 @@
     <script src="{{ asset('assets/js/chosen.jquery.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap-datepicker.min.js') }}"></script>
 
-
     <script src="{{ asset('assets/custom_js/chosen-box.js') }}"></script>
     <script src="{{ asset('assets/custom_js/date-picker.js') }}"></script>
 
@@ -119,7 +113,6 @@
         const toAccountId = $('#to_account_id');
 
         $(document).ready(function () {
-
 
             $('#from_account_id').change(function () {
                 $('.from-text-account-balance').text($(this).find('option:selected').data('balance'))
@@ -166,5 +159,4 @@
     </script>
 
 @endsection
-
 

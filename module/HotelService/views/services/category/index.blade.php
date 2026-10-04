@@ -1,15 +1,10 @@
 @extends('layouts.master')
 @section('title', 'Hotel Service List')
 
-@section('page-header')
-    <i class="fa fa-bars"></i> Hotel Service List
-@stop
-
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
 @stop
-
 
 @section('content')
 <x-mm.styles />

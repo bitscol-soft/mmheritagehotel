@@ -2,11 +2,6 @@
 
 @section('title', 'Night Audit')
 
-@section('page-header')
-    <i class="fa fa-info-circle"></i> Night Audit Detail
-@stop
-
-
 @push('style')
     <style>
         @media print {
@@ -77,7 +72,6 @@
 
                         @endphp
 
-
                         <tr>
                             <td class="text-center td-font-size">{{ $loop->iteration }}</td>
                             <td class="text-center td-font-size">{{ optional(optional($detail->transaction)->transaction)->source_type }}</td>
@@ -104,7 +98,6 @@
                         </tr>
                     @endforeach
                 </tbody>
-
 
                 <tfoot>
                     <tr style="border-bottom:none !important">

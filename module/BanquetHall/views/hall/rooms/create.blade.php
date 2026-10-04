@@ -2,9 +2,6 @@
 
 @section('title', 'Hall Manage')
 
-@section('page-header')
-    <i class="fa fa-gears"></i> Hall Manage
-@stop
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -79,7 +76,6 @@
                         </div>
                     </div>
 
-
                     <div class="col-sm-12">
                         <div class="form-group">
                             <label class="col-sm-3 control-label" for="form-field-1-1"> Size SQ </label>
@@ -108,7 +104,6 @@
                             </div>
                         </div>
                     </div>
-
 
                     {{-- Max Guests  --}}
                     <div class="col-sm-12">
@@ -143,7 +138,6 @@
                         </div>
                     </div>
 
-
                     {{-- <div class="col-sm-12">
                         <div class="form-group">
                             <label class="col-sm-3 control-label" for="form-field-1-1">Smoking
@@ -159,8 +153,6 @@
                             </div>
                         </div>
                     </div> --}}
-
-
 
                     <div class="col-sm-12" style="display: none">
                         <div class="form-group">
@@ -185,9 +177,7 @@
                         </div>
                     </div>
 
-
                 </div>
-
 
                 <div class="form-actions center" style="text-align: right !important;">
                     <button type="submit" class="mm-button" id="submitRoomFormBtn"
@@ -207,9 +197,7 @@
     <script src="{{ asset('assets/js/jquery.dataTables.bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/custom_js/date-picker.js') }}"></script>
 
-
     @include('rooms.inc.script')
-
 
     <!-- inline scripts related to this page -->
     <script type="text/javascript">

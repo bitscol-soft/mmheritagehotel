@@ -1,13 +1,6 @@
 @extends('layouts.master')
 
-
 @section('title', 'Collection')
-
-
-@section('page-header')
-    <i class="fa fa-plus"></i> Collection Lists
-@stop
-
 
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}"/>
@@ -40,5 +33,4 @@
     <script src="{{ asset('assets/custom_js/chosen-box.js') }}"></script>
 
 @endsection
-
 

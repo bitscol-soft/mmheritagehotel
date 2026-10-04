@@ -1,12 +1,6 @@
 @extends('layouts.master')
 
-
 @section('title', 'Contra Vouchers')
-
-@section('page-header')
-    <i class="fa fa-info-circle"></i> Contra Vouchers
-@stop
-
 
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />

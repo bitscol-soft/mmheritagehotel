@@ -2,9 +2,6 @@
 
 @section('title', 'Room Manage')
 
-@section('page-header')
-    <i class="fa fa-gears"></i> Room Manage
-@stop
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -66,36 +63,14 @@
             </div>
         </div>
 
-
         <div class="col-sm-12">
-            <div class="form-group">
-                <label class="col-sm-3 control-label" for="room-card"> F R ID Card </label>
-                <div class="col-xs-12 col-sm-8 @error('f_r_id_card') has-error @enderror">
-                    <input type="text" class="form-control input-sm" id="room-card" name="f_r_id_card"
-                        value="{{ old('f_r_id_card') }}" placeholder="Enter F R ID Card">
-
-                    @error('f_r_id_card')
-                        <span class="text-danger"> {{ $message }}</span>
-                    @enderror
-                </div>
-            </div>
+            <x-mm.field label="F R ID Card" id="room-card" name="f_r_id_card" value="{{ old('f_r_id_card') }}" placeholder="Enter F R ID Card" />
         </div>
         @if (setting('room_wise_pricing_booking') == 1)
             {{-- Rent  --}}
             <div class="col-sm-12">
-                <div class="form-group">
-                    <label class="col-sm-3 control-label" for="room-rent"> Rent/Night </label>
-                    <div class="col-xs-12 col-sm-8 @error('rent') has-error @enderror">
-                        <input type="text" class="form-control input-sm" id="room-rent" name="rent"
-                            value="{{ old('rent') }}" placeholder="Rent/Night">
-
-                        @error('rent')
-                            <span class="text-danger"> {{ $message }}</span>
-                        @enderror
-                    </div>
-                </div>
+                <x-mm.field label="Rent/Night" id="room-rent" name="rent" value="{{ old('rent') }}" placeholder="Rent/Night" />
             </div>
-
 
             {{-- Beds  --}}
             <div class="col-sm-12">
@@ -111,7 +86,6 @@
                     </div>
                 </div>
             </div>
-
 
             {{-- Max Guests  --}}
             <div class="col-sm-12">
@@ -146,7 +120,6 @@
             </div>
         </div>
 
-
         <div class="col-sm-12">
             <div class="form-group">
                 <label class="col-sm-3 control-label" for="room-smoking">Smoking Status</label>
@@ -161,8 +134,6 @@
                 </div>
             </div>
         </div>
-
-
 
         <div class="col-sm-12" style="display: none">
             <div class="form-group">
@@ -185,9 +156,7 @@
             </div>
         </div>
 
-
     </div>
-
 
     <div class="form-actions mm-room-form-actions">
         <button type="submit" class="mm-button" id="submitRoomFormBtn"
@@ -207,9 +176,7 @@
     <script src="{{ asset('assets/js/jquery.dataTables.bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/custom_js/date-picker.js') }}"></script>
 
-
     @include('rooms.inc.script')
-
 
     <!-- inline scripts related to this page -->
     <script type="text/javascript">

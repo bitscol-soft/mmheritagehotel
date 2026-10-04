@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title', 'Add New Booking Purpose')
-@section('page-header')
-    <i class="fa fa-plus-circle"></i> Add New Booking @if (request('type') == 'purpose') Purpose @else Platform @endif
-@stop
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <!-- page specific plugin styles -->

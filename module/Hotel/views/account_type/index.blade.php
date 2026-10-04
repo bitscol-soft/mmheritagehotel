@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title','Add New Account Type')
-@section('page-header')
-    <i class="fa fa-gears"></i> Add New Account Type
-@stop
 @section('css')
 <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
 @stop
@@ -14,40 +11,41 @@
 
     <div class="mm-setup-split">
         <x-mm.panel>
-            <x-mm.table-scroll label="Account types">
-                <table id="data-table" class="table table-striped table-bordered table-hover">
-                    <thead>
-                        <tr>
-                            <th>SL</th>
-                            <th class="text-center">Name</th>
-                            <th class="text-center">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    @foreach($account as $key => $data)
-                        <tr>
-                            <td>{{ $loop->iteration }}</td>
-                            <td class="text-center">{{ $data->name }}</td>
-                            <td class="text-center">
-                                <div class="btn-group btn-corner">
-                                    <a href="{{ route('account-type.edit', $data->id) }}" class="btn btn-xs btn-sm btn-success" title="Edit">
-                                        <i class="fa fa-pencil-square-o"></i>
-                                    </a>
-                                    <button type="button" onclick="delete_check({{ $data->id }})" class="btn btn-xs btn-sm btn-danger" title="Delete">
-                                        <i class="fa fa-trash-o"></i>
-                                    </button>
-                                </div>
+            {{-- W3.4: converted from <x-mm.table-scroll> + raw <table>
+                 to <x-mm.data-table>. --}}
+            <x-mm.data-table label="Account types"
+                table-class="table table-striped table-bordered table-hover"
+                :columns="[
+                    ['label' => 'SL'],
+                    ['label' => 'Name', 'align' => 'center'],
+                    ['label' => 'Action', 'align' => 'center'],
+                ]">
+                @forelse ($account as $item)
+                    <tr>
+                        <td>{{ $loop->iteration }}</td>
+                        <td class="text-center">{{ $item->name }}</td>
+                        <td class="text-center">
+                            <div class="btn-group btn-corner">
+                                <a href="{{ route('account-type.edit', $item->id) }}" class="btn btn-xs btn-sm btn-success" title="Edit">
+                                    <i class="fa fa-pencil-square-o"></i>
+                                </a>
+                                <button type="button" onclick="delete_check({{ $item->id }})" class="btn btn-xs btn-sm btn-danger" title="Delete">
+                                    <i class="fa fa-trash-o"></i>
+                                </button>
+                            </div>
 
-                                <form action="{{ route('account-type.destroy',$data->id)}}" id="deleteCheck_{{ $data->id }}" method="POST">
-                                    @csrf
-                                    @method("DELETE")
-                                </form>
-                            </td>
-                        </tr>
-                    @endforeach
-                    </tbody>
-                </table>
-            </x-mm.table-scroll>
+                            <form action="{{ route('account-type.destroy',$item->id)}}" id="deleteCheck_{{ $item->id }}" method="POST">
+                                @csrf
+                                @method("DELETE")
+                            </form>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="3" class="text-center">No account types found.</td>
+                    </tr>
+                @endforelse
+            </x-mm.data-table>
         </x-mm.panel>
 
         <x-mm.panel>
@@ -55,27 +53,15 @@
             <form class="form-horizontal" id="companyForm" action="{{ route('account-type.store') }}" method="post" enctype="multipart/form-data">
                 @csrf
 
-                <div class="row">
-                    <div class="col-sm-12">
+                {{-- W3.4: replaced Bootstrap-3 form-group markup with
+                     <x-mm.field>. The field name, value (with old() for
+                     validation repopulation), and placeholder are
+                     preserved byte-identically. --}}
+                <x-mm.field label="Account type name" id="account-type-name" name="name" value="{{ old('name') }}" placeholder="Account type name" :error="$errors->first('name')" />
 
-                        <div class="form-group">
-                            <label class="col-sm-4 control-label" for="form-field-1-1"> Account Type Name </label>
-
-                            <div class="col-xs-12 col-sm-7 @error('name') has-error @enderror">
-                                <input type="text" class="form-control input-sm" name="name" value="{{ old('name') }}" placeholder="Account Type Name">
-
-                                @error('name')
-                                <span class="text-danger"> {{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="form-actions center" style="text-align: right !important;">
+                <div class="tw-mt-4 tw-flex tw-justify-end tw-gap-2">
                     <button type="submit" class="mm-button">
-                        <i class="ace-icon fa fa-save icon-on-right bigger-110"></i>
+                        <i class="fa fa-save" aria-hidden="true"></i>
                         Save
                     </button>
                 </div>
@@ -89,7 +75,6 @@
 
 <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('assets/js/jquery.dataTables.bootstrap.min.js') }}"></script>
-
 
 <!-- inline scripts related to this page -->
 <script type="text/javascript">

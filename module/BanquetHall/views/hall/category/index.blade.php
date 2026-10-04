@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title', 'Banque tHall Categories List')
-@section('page-header')
-    <i class="fa fa-gears"></i> Banquet Hall Categories List
-@stop
 
 @section('content')
     <x-mm.styles />

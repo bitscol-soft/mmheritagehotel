@@ -4,9 +4,6 @@
 @php
     $checkNUll = $nightaudits[0] != null || $nightaudits[0] != '';
 @endphp
-@section('page-header')
-    <i class="fa fa-info-circle"></i>Hotel Service Night Audit <span class="badge badge-info">{{ $checkNUll ? $nightaudits[0]->details->count() : 0 }}</span>
-@stop
 
 @section('content')
 <x-mm.styles />

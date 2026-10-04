@@ -1,11 +1,6 @@
 @extends('layouts.master')
 @section('title', 'Supplier List')
 
-@section('page-header')
-    <i class="fa fa-bars"></i> Supplier List
-@stop
-
-
 @section('content')
 
 <x-mm.styles />
@@ -45,14 +40,12 @@
 
                                         <div class="btn-group btn-corner">
 
-
                                             @if (hasPermission('bar.suppliers.edit', $slugs))
                                                 <a href="#modal-dialog{{ $item->id }}" data-toggle="modal"
                                                     class="btn btn-sm btn-success" title="Edit">
                                                     <i class="fa fa-pencil-square-o"></i>
                                                 </a>
                                             @endif
-
 
                                             @if (hasPermission('bar.suppliers.destroy', $slugs))
                                                 <button type="button"
@@ -61,7 +54,6 @@
                                                     <i class="fa fa-trash-o"></i>
                                                 </button>
                                             @endif
-
 
                                         </div>
                                         @include('bar.inventory.supplier.edit-modal')

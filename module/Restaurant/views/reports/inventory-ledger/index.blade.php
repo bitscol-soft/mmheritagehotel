@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title', 'Stock Ledger')
-@section('page-header')
-    <i class="fa fa-list"></i> Stock Ledger
-@stop
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -15,7 +12,6 @@
     </style>
 
 @stop
-
 
 @section('content')
 

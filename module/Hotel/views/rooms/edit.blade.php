@@ -1,13 +1,9 @@
 
 
-
 @extends('layouts.master')
 
 @section('title', 'Room Manage')
 
-@section('page-header')
-    <i class="fa fa-gears"></i> Room Manage
-@stop
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -96,7 +92,7 @@
                     <label class="col-sm-3 control-label" for="room-rent"> Rent/Night </label>
                     <div class="col-xs-12 col-sm-8 @error('rent') has-error @enderror">
                         <input type="text" class="form-control input-sm" id="room-rent" name="rent"
-                            value="{{ old('rent') }}" placeholder="Rent/Night">
+                            value="{{ old('rent', $room->rent) }}" placeholder="Rent/Night">
 
                         @error('rent')
                             <span class="text-danger"> {{ $message }}</span>
@@ -105,14 +101,13 @@
                 </div>
             </div>
 
-
             {{-- Beds  --}}
             <div class="col-sm-12">
                 <div class="form-group">
                     <label class="col-sm-3 control-label" for="room-beds"> Beds </label>
                     <div class="col-xs-12 col-sm-8 @error('beds') has-error @enderror">
                         <input type="text" class="form-control input-sm" id="room-beds" name="beds"
-                            value="{{ old('beds') }}" placeholder="Enter Beds">
+                            value="{{ old('beds', $room->beds) }}" placeholder="Enter Beds">
 
                         @error('beds')
                             <span class="text-danger"> {{ $message }}</span>
@@ -121,14 +116,13 @@
                 </div>
             </div>
 
-
             {{-- Max Guests  --}}
             <div class="col-sm-12">
                 <div class="form-group">
                     <label class="col-sm-3 control-label" for="room-max-guests"> Max Guests </label>
                     <div class="col-xs-12 col-sm-8 @error('max_guests') has-error @enderror">
                         <input type="text" class="form-control input-sm" id="room-max-guests" name="max_guests"
-                            value="{{ old('max_guests') }}" placeholder="Enter Max Guests">
+                            value="{{ old('max_guests', $room->max_guests) }}" placeholder="Enter Max Guests">
 
                         @error('max_guests')
                             <span class="text-danger"> {{ $message }}</span>
@@ -137,7 +131,6 @@
                 </div>
             </div>
         @endif
-
 
         <div class="col-sm-12">
             <div class="form-group">
@@ -163,7 +156,6 @@
             </div>
         </div>
 
-
         <div class="col-sm-12">
             <div class="form-group">
                 <label class="col-sm-3 control-label" for="room-smoking">Smoking
@@ -183,7 +175,6 @@
                 </div>
             </div>
         </div>
-
 
         <div class="col-sm-12" style="display: none">
             <div class="form-group">
@@ -208,10 +199,7 @@
             </div>
         </div>
 
-
-
     </div>
-
 
     <div class="form-actions mm-room-form-actions">
         <button type="submit" class="mm-button" id="submitRoomFormBtn"
@@ -231,9 +219,7 @@
     <script src="{{ asset('assets/js/jquery.dataTables.bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/custom_js/date-picker.js') }}"></script>
 
-
     @include('rooms.inc.script')
-
 
     <!-- inline scripts related to this page -->
     <script type="text/javascript">

@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>W1.7 proving screens — visual preview</title>
+    <link rel="stylesheet" href="/assets/css/ace.min.css">
+    <link rel="stylesheet" href="/assets/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/assets/custom_css/tokens.css">
+    <link rel="stylesheet" href="/assets/custom_css/ui.css">
+    <link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">
+    <link rel="stylesheet" href="/assets/css/chosen.min.css">
+    <style>
+        body { background: #f4f6f9; font-family: 'Fira Sans', system-ui, -apple-system, 'Segoe UI', sans-serif; padding: 24px 0; }
+        .preview-banner { max-width: 1100px; margin: 0 auto 16px; padding: 12px 16px; background: #edf4ff; border: 1px solid #c5d7ee; color: #24436a; border-radius: 6px; }
+        .preview-banner strong { display: block; margin-bottom: 4px; }
+        .preview-section { max-width: 1100px; margin: 0 auto 32px; background: #fff; border: 1px solid #dbe5f1; border-radius: 8px; padding: 24px; }
+        .preview-section h2 { margin-top: 0; padding-bottom: 8px; border-bottom: 1px solid #dbe5f1; }
+        .preview-section .breadcrumb { color: #526578; font-size: 13px; margin-bottom: 16px; }
+        .preview-section .breadcrumb a { color: #2f63a8; }
+        .page-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin: 0 0 20px; }
+        .page-head .meta h1 { margin: 0 0 4px; font-size: 24px; color: #1f2a33; }
+        .page-head .meta p { margin: 0; color: #526578; }
+        .page-head .actions { display: flex; flex-wrap: wrap; gap: 8px; }
+        .form-control { background: #fff; border: 1px solid #aab9ca; border-radius: 6px; color: #1f2a33; display: block; font: inherit; min-height: 40px; padding: 8px 12px; width: 100%; }
+        .form-horizontal .form-group { display: flex; align-items: center; gap: 8px; margin: 0 0 12px; }
+        .form-horizontal .form-group label { flex: 0 0 90px; color: #1f2a33; font-weight: 600; }
+        .booking-filter-panel { background: #f7fafd; border: 1px solid #e4ebf3; border-radius: 4px; padding: 12px 6px 8px; }
+        .mm-booking-filter { border-radius: 10px; padding: 20px; }
+        .chosen-container-single .chosen-single { background: #fff; border: 1px solid #aab9ca; border-radius: 6px; box-shadow: none; line-height: 38px; min-height: 40px; padding: 0 12px; }
+        .mm-text-center { text-align: center; }
+        .label { display: inline-block; padding: 2px 6px; font-size: 11px; font-weight: 700; line-height: 14px; color: #fff; text-align: center; border-radius: 3px; }
+        .label-primary { background-color: #6fb3e0; }
+        .label-success { background-color: #87b87f; }
+        .label-warning { background-color: #ffb752; color: #fff; }
+    </style>
+</head>
+<body>
+
+<div class="preview-banner">
+    <strong>W1.7 proving screens — visual preview</strong>
+    Hand-rendered HTML mock of the three screens the W1.7 commit touched, using the same classes, slot structure, and form hooks that the Blade templates emit. Not the live Laravel render.
+    <ul style="margin: 8px 0 0 20px; padding: 0;">
+        <li><a href="#booking-board">Booking board</a> — wrapped in <code>x-mm.page</code> since W1 (visually a no-op).</li>
+        <li><a href="#booking-list">Booking list</a> — W1.7 added an <code>x-mm.toolbar</code>; W1.7c ports the 12-column table to <code>x-mm.data-table</code> with all hooks preserved.</li>
+        <li><a href="#guest-list">Guest list</a> — full W1.7 conversion: <code>x-mm.toolbar</code> + <code>x-mm.data-table</code> with all form hooks preserved.</li>
+        <li><a href="#w2-4-5">W2.4 + W2.5</a> — fluid container (max 1440), stack utilities, contrast sweep with <code>--mm-ink-soft</code>, a11y tokens.</li>
+        <li><a href="#w2-2">W2.2</a> — "Today" date button + quick-add menu in the topbar. Global search omitted per the plan's "no existing endpoint" rule.</li>
+        <li><a href="#w2-1">W2.1</a> — Sidebar icon-rail (68px), localStorage persistence, active-item pill. Module counters omitted per the plan's "no existing endpoint" rule.</li>
+        <li><a href="#w2-3">W2.3</a> — <code>x-page</code> is the only header pattern. Dead <code>page-header</code> blocks removed from 219 pages; ui-guard tripwire added to prevent regression.</li>
+        <li><a href="#w3-1">W3.1</a> — Reservation invoice restyled to round-6 <code>invoice-doc</code> look (print-sheet wrapper, inv-head, inv-panels). Hall twin and other invoices follow in W3.2 / W4.</li>
+        <li><a href="#w3-2">W3.2</a> — Booking invoice (checkout slip + payment receipt) → round-6 <code>invoice-doc</code>. printThis retired; print-on-open behavior preserved via <code>window.print()</code>.</li>
+        <li><a href="#w3-3">W3.3</a> — Booking notes → <code>x-data-table</code> + <code>x-filter-bar</code>. Guest list (W1.7) and booking list (W1.7) were already on <code>x-data-table</code>; referred-booking uses the same booking-list view.</li>
+        <li><a href="#w3-4">W3.4</a> — Room management forms → <code>x-field</code>/<code>x-select</code> (amenities + account_type + vat done; category + room forms follow in a follow-up commit).</li>
+        <li><a href="#w3-5">W3.5</a> — Night audit + today-activities dashboards already use the tile pattern (<code>dl.mm-audit-summary</code>). The Excel-export paths in the night-audits list retain raw <code>&lt;table&gt;</code> markup because the data-table component is incompatible with the colspan=10 title row.</li>
+        <li><a href="#w3-6">W3.6</a> — Housekeeping board already shares the booking-board tile pattern; <code>updateStatus</code> / <code>updateKeepingStatus</code> hooks verified intact.</li>
+        <li><a href="#w3-7">W3.7</a> — Reports (12 hotel screens) get a print button via <code>&lt;x-export-button :print=1 /&gt;</code>. <code>ExportService</code> untouched; PDF/Excel export paths preserved.</li>
+        <li><a href="#w3-8">W3.8</a> — Decision D1: delete dead invoice templates (<code>get_invoice</code>, <code>checkout-invoice-v2</code>, <code>checkout-invoice-v4</code>) and annotate unrouted banquet methods (<code>bookingUi</code>, <code>available</code>) as <code>@deprecated</code>.</li>
+        <li><a href="#w3-9">W3.9</a> — Booking create/edit/adjust deep pass: stepper now uses <code>&lt;x-mm.stepper&gt;</code>; payment tab &amp; modals audit logged; full T2 backlog item.</li>
+        <li><a href="#w3-4b">W3.4b</a> — Categories (create/edit) + rooms (create/edit) forms → <code>&lt;x-mm.field&gt;</code>; pre-existing data-binding bug in rooms/edit fixed.</li>
+        <li><a href="#w3-5b">W3.5b</a> — Night-audits list/export split (Excel keeps colspan=10 title; on-screen uses new <code>list.blade.php</code>); today-activities transaction list extracted to partial.</li>
+    </ul>
+</div>
+
+<!-- ==================== BOOKING BOARD ==================== -->
+<section class="preview-section" id="booking-board">
+    <h2>Booking board — <code>booking_ui.blade.php</code></h2>
+    <div class="breadcrumb">Hotel → Booking → Board</div>
+    <p style="color:#526578">Already wrapped in <code>&lt;x-mm.styles /&gt;</code> + <code>&lt;x-mm.page&gt;</code> in W1 (<code>5d56e904</code>); the W1.7 commit made no change to this view. The action slot carries a single "Booking List" link. The room board panel is the existing <code>&lt;x-room-manage&gt;</code> component (not reproduced in this preview).</p>
+    <div class="page-head">
+        <div class="meta">
+            <h1>Room availability</h1>
+            <p>Choose your stay dates, review room availability and select rooms for a booking.</p>
+        </div>
+        <div class="actions">
+            <a class="mm-button mm-button-secondary" href="#"><i class="fa fa-list-alt"></i> Booking List</a>
+        </div>
+    </div>
+    <div class="mm-panel" style="padding: 16px;">
+        <p style="margin:0;color:#526578">Stay range: 10/03/2026 - 10/04/2026 (sample). The room board renders the 35 available rooms in a 2-row grid; expand each room to select it for a booking. Not reproduced here.</p>
+        <div class="board-stay-strip" style="margin-top:12px">
+            <span class="stay-chip stay-chip-right"><i class="fa fa-home"></i> <b>35</b> rooms</span>
+            <span class="stay-chip stay-chip-right"><i class="fa fa-check-circle"></i> <b>8</b> free now</span>
+            <span class="stay-chip stay-chip-right"><i class="fa fa-bed"></i> <b>12</b> occupied</span>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== W2.4 + W2.5 ==================== -->
+<section class="preview-section" id="w2-4-5">
+    <h2>W2.4 + W2.5 — fluid container, a11y tokens, contrast sweep</h2>
+    <p style="color:#526578">W2 is the app-shell lane from <code>docs/FRONTEND-DEV-PLAN.md</code>. This commit is the CSS-only sub-tasks: a fluid container with a max-1440 width cap, the <code>prefers-reduced-motion</code> and <code>:focus-visible</code> tokens (already shipped in W1), and a contrast sweep that introduces a new <code>--mm-ink-soft</code> token for sub-12px text on colored backgrounds.</p>
+
+    <h3 style="margin-top:24px">Fluid container (max 1440)</h3>
+    <p style="color:#526578"><code>.mm-container</code> caps the page content at 1440px wide, centres it, and gives it 24px of side padding (16px on mobile). <code>.mm-container-fluid</code> is the same but with no max-width cap — useful for boards and tables that should bleed to the edge of the screen but still want consistent side padding.</p>
+    <div class="mm-container" style="background:#edf4ff;border:1px dashed #2f63a8;padding:16px;text-align:center;color:#24436a;">
+        <strong>.mm-container</strong> — content stays inside this 1440px box, even on a 4K display.
+    </div>
+    <div class="mm-container-fluid" style="background:#ecf6ee;border:1px dashed #2c6c33;padding:16px;text-align:center;color:#1c4d22;margin-top:12px;">
+        <strong>.mm-container-fluid</strong> — full-bleed (no max-width), still has the 24px side padding.
+    </div>
+
+    <h3 style="margin-top:24px">Stacks (vertical rhythm)</h3>
+    <p style="color:#526578">Two new utility classes for the common "stack of panels" pattern. <code>.mm-stack</code> uses 16px gaps (the default page rhythm); <code>.mm-stack-tight</code> uses 8px (for sub-sections inside a panel).</p>
+    <div class="mm-stack" style="background:var(--mm-bg);border:1px solid var(--mm-line);border-radius:8px;padding:16px;max-width:480px;">
+        <div class="mm-panel" style="padding:12px;">Item 1</div>
+        <div class="mm-panel" style="padding:12px;">Item 2</div>
+        <div class="mm-panel" style="padding:12px;">Item 3</div>
+    </div>
+
+    <h3 style="margin-top:24px">Contrast sweep (W2.5)</h3>
+    <p style="color:#526578">The booking board's stay-range chips and the data-table / table-scroll <code>&lt;thead&gt;</code> labels now use <code>--mm-ink-soft</code> instead of <code>--mm-muted</code> for the 12px text. <code>--mm-ink-soft</code> is a darker blue-grey (<code>#344558</code>) that hits WCAG AA at 12px on the <code>--mm-bg</code> surface, where <code>--mm-muted</code> was a bit thin.</p>
+    <div class="board-stay-strip" style="margin-top:12px">
+        <span class="stay-chip stay-chip-right"><i class="fa fa-home"></i> <b>35</b> rooms (now in --mm-ink-soft)</span>
+        <span class="stay-chip stay-chip-right"><i class="fa fa-check-circle"></i> <b>8</b> free now</span>
+    </div>
+
+    <h3 style="margin-top:24px">prefers-reduced-motion + :focus-visible</h3>
+    <p style="color:#526378">Both were shipped in W1 and verified still in place. The reduced-motion rule disables every animation/transition inside <code>.mm-ui</code> when the user has the OS-level setting on. The focus-visible rule paints a 3px brand-coloured outline around any mm-* element that receives keyboard focus (mouse focus doesn't trigger the outline). Test by tabbing through the page.</p>
+    <button class="mm-button" style="margin-top:8px">Tab into this button to see :focus-visible</button>
+    <button class="mm-button mm-button-ghost" style="margin-top:8px;margin-left:8px">And this one</button>
+</section>
+
+<!-- ==================== W2.2 ==================== -->
+<section class="preview-section" id="w2-2">
+    <h2>W2.2 — Topbar additions: "Today" button + quick-add menu</h2>
+    <p style="color:#526578">The W2.2 plan asked for a global search (omitted: no existing AJAX endpoints to wire to — the plan's "only where an endpoint already exists; else omit" rule), a quick-add menu (route-gated by the same permissions as the create buttons), and a date button → board-today. Two of three landed in this commit.</p>
+
+    <h3 style="margin-top:24px">"Today" date button</h3>
+    <p style="color:#526578">A small topbar item with a calendar icon + "Today" label, linking to <code>route('booking.ui')</code> (the booking board). The board's <code>$availablity_check</code> default is the request <code>booking_date</code> param or today/tomorrow, so a plain link to the route lands the user on today's board. The markup matches the existing topbar's <code>&lt;li class="light-10"&gt;</code> pattern so the visual is consistent with the RST Sale / Bar Sale / Optimize Clear icons already in place.</p>
+    <div class="mm-panel" style="padding:12px;display:inline-flex;align-items:center;gap:8px;background:var(--mm-bg);">
+        <a href="#" style="display:inline-flex;align-items:center;gap:6px;text-decoration:none;color:var(--mm-ink);font-weight:600;">
+            <i class="fa fa-calendar" style="font-size:18px;"></i>
+            <span style="font-size:12px;">Today</span>
+        </a>
+        <span style="color:var(--mm-muted);font-size:12px;">→ <code>route('booking.ui')</code></span>
+    </div>
+
+    <h3 style="margin-top:24px">Quick-add menu</h3>
+    <p style="color:#526578">A dropdown (Bootstrap 3 pattern, matching the existing topbar) with two entries: New Booking and New Guest. Each entry is wrapped in <code>@if (hasPermission('...'))</code> so the menu only shows actions the user is allowed to take. If neither permission is held, a single disabled entry is shown so the menu still opens and the affordance is visible.</p>
+    <div class="mm-panel" style="padding:12px;display:inline-block;background:var(--mm-bg);">
+        <ul class="dropdown-menu" style="display:block;position:static;float:none;margin:0;">
+            <li><a href="#"><i class="fa fa-bed"></i> New Booking</a></li>
+            <li><a href="#"><i class="fa fa-user-plus"></i> New Guest</a></li>
+        </ul>
+        <p style="color:var(--mm-muted);font-size:12px;margin:8px 0 0;">Open with the <i class="fa fa-plus-circle"></i> icon in the topbar. Each item is gated by <code>hasPermission('bookings.add')</code> / <code>hasPermission('guests.add')</code>.</p>
+    </div>
+
+    <h3 style="margin-top:24px">What was omitted (and why)</h3>
+    <p style="color:#526578">The plan also asked for a global search that wires to "existing <code>searchRoomByNumberAjax</code>-style endpoints per module only where an endpoint already exists; else omit." A search through the codebase returned no existing AJAX search endpoints to wire to, so per the plan's own rule the search is omitted. The W2.2 commit lands only the two items that have a real destination: the Today button and the quick-add menu.</p>
+</section>
+
+<!-- ==================== BOOKING LIST ==================== -->
+<section class="preview-section" id="booking-list">
+    <h2>Booking list — <code>booking/index.blade.php</code></h2>
+    <div class="breadcrumb">Hotel → Booking → List</div>
+    <p style="color:#526578">W1.7 added a list-level <code>x-mm.toolbar</code> with a trailing Reset button (form-bound to <code>id="searchForm"</code>). The 12-column booking table is now <code>x-mm.data-table</code> (W1.7c): the rows live in <code>_booking-rows.blade.php</code> (a partial that emits only <code>&lt;tr&gt;</code> elements, not a full <code>&lt;table&gt;</code>); the parent <code>booking/index.blade.php</code> builds the columns list and passes it to <code>&lt;x-mm.data-table :columns="$bookingTableColumns"&gt;</code>. The "Reference By" column is conditional on the <code>booking.referred-booking</code> route, mirroring the original partial's behaviour. All hook strings (form ids, onclick handlers, route() calls, JS-bound class names like <code>.adjustBtn</code>, <code>.bar-charge-btn</code>, <code>.extra-charge-btn</code>, <code>.extend-date-btn</code>) are byte-identical to the pre-W1.7 view.</p>
+
+    <div class="page-head">
+        <div class="meta">
+            <h1>Reservations</h1>
+            <p>Search bookings, review stays and manage front-desk activity.</p>
+        </div>
+        <div class="actions">
+            <a class="mm-button" href="#"><i class="fa fa-plus-circle"></i> New Booking</a>
+        </div>
+    </div>
+
+    <!-- W1.7 toolbar -->
+    <div class="mm-toolbar" role="toolbar" aria-label="Booking list actions">
+        <div class="mm-toolbar-actions"></div>
+        <div class="mm-toolbar-trailing">
+            <button type="reset" form="searchForm" class="mm-button mm-button-ghost">
+                <i class="fa fa-undo"></i> Reset
+            </button>
+        </div>
+    </div>
+
+    <div style="margin: 0 0 12px;"><span class="mm-badge">Total: 14</span></div>
+
+    <form id="searchForm" action="" method="get" class="booking-filter-panel mm-booking-filter">
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label>Booking ID</label>
+                <input type="text" class="form-control" placeholder="Search by booking ID">
+            </div>
+            <div class="form-group">
+                <label>Customer</label>
+                <input type="text" class="form-control" placeholder="Search by name">
+            </div>
+            <div class="form-group">
+                <label>Date range</label>
+                <input type="text" class="form-control" placeholder="10/03/2026 - 10/04/2026">
+            </div>
+            <div class="form-group">
+                <label>Status</label>
+                <div class="chosen-container chosen-container-single" style="width: 100%;">
+                    <a class="chosen-single" tabindex="-1"><span>All</span><div><b></b></div></a>
+                </div>
+            </div>
+            <div style="display:flex;justify-content:flex-end;gap:8px;">
+                <button type="submit" class="mm-button"><i class="fa fa-search"></i> Search</button>
+            </div>
+        </div>
+    </form>
+
+    <div class="mm-data-table-wrap" data-mm-data-table style="margin-top:16px;">
+        <div class="mm-table-scroll" role="region" aria-label="Booking results" tabindex="0">
+            <table class="mm-data-table table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col" style="width: 9%" class="mm-text-center">Booking ID</th>
+                        <th scope="col" class="mm-text-center">Customer</th>
+                        <th scope="col" class="mm-text-center">Date</th>
+                        <th scope="col" class="mm-text-center">Check IN</th>
+                        <th scope="col" class="mm-text-center">Check Out</th>
+                        <th scope="col" style="width: 12%" class="mm-text-center">Room</th>
+                        <th scope="col" class="mm-text-center">Booking From</th>
+                        <th scope="col" class="mm-text-right">Transaction</th>
+                        <th scope="col" class="mm-text-center">Status</th>
+                        <th scope="col" style="width: 10%" class="mm-text-center">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="text-center"><strong>B-1024</strong></td>
+                        <td>
+                            <p>Sarah Khan</p>
+                            <p>+880 1711 234 567</p>
+                        </td>
+                        <td class="text-center">Oct 2, 2026</td>
+                        <td class="text-center">
+                            <p><b>Date:</b> Oct 3, 2026</p>
+                            <p><b>Time:</b> 14:32:00</p>
+                        </td>
+                        <td class="text-center">
+                            <p><b>Date:</b> Oct 5, 2026</p>
+                        </td>
+                        <td class="text-center">
+                            <label class="label label-success" style="margin-top:2px">101</label>
+                            <label class="label label-success" style="margin-top:2px">102</label>
+                        </td>
+                        <td class="text-center">Front Desk</td>
+                        <td class="text-right transactions">
+                            <p><b>Subtotal:</b> <span style="font-size:15px"><span class="currency-sign"></span> 12,500.00</span></p>
+                            <p><b>Paid:</b> <span class="green" style="font-size:15px"><span class="currency-sign"></span> 12,500.00</span></p>
+                            <p><b>Due:</b> <span class="red" style="font-size:15px"><span class="currency-sign"></span></span> 0</p>
+                        </td>
+                        <td class="text-center"><span class="label label-primary">Reserved</span></td>
+                        <td class="text-center action-button-td">
+                            <div class="action-button">
+                                <a class="btn btn-xs btn-success" href="#" title="Edit"><i class="fa fa-pencil"></i></a>
+                                <a class="btn btn-xs btn-info" href="#" title="Extend"><i class="fa fa-calendar"></i></a>
+                                <a class="btn btn-xs btn-purple" href="#" title="Details"><i class="fa fa-eye"></i></a>
+                                <a class="btn btn-xs btn-danger" href="#" title="Delete"><i class="fa fa-trash-o"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center"><strong>B-1025</strong></td>
+                        <td>
+                            <p>Ahmed Rahman</p>
+                            <p>+880 1815 987 654</p>
+                        </td>
+                        <td class="text-center">Oct 1, 2026</td>
+                        <td class="text-center">
+                            <p><b>Date:</b> Oct 2, 2026</p>
+                        </td>
+                        <td class="text-center">
+                            <p><b>Date:</b> Oct 4, 2026</p>
+                        </td>
+                        <td class="text-center">
+                            <label class="label label-success" style="margin-top:2px">201</label>
+                        </td>
+                        <td class="text-center">Website</td>
+                        <td class="text-right transactions">
+                            <p><b>Subtotal:</b> <span style="font-size:15px"><span class="currency-sign"></span> 8,200.00</span></p>
+                            <p><b>Paid:</b> <span class="green" style="font-size:15px"><span class="currency-sign"></span> 5,000.00</span></p>
+                            <p><b>Due:</b> <span class="red" style="font-size:15px"><span class="currency-sign"></span></span> 3,200.00</p>
+                        </td>
+                        <td class="text-center"><span class="label label-success">Checked In</span></td>
+                        <td class="text-center action-button-td">
+                            <div class="action-button">
+                                <a class="btn btn-xs btn-success" href="#" title="Edit"><i class="fa fa-pencil"></i></a>
+                                <a class="btn btn-xs btn-warning adjustBtn" href="#" title="Adjust"><i class="fa fa-adjust"></i></a>
+                                <a class="btn btn-xs btn-purple" href="#" title="Details"><i class="fa fa-eye"></i></a>
+                                <a class="btn btn-xs btn-danger" href="#" title="Delete"><i class="fa fa-trash-o"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center"><strong>B-1026</strong></td>
+                        <td>
+                            <p>Mei Lin</p>
+                            <p>+86 138 0013 8000</p>
+                        </td>
+                        <td class="text-center">Oct 2, 2026</td>
+                        <td class="text-center">
+                            <p><b>Date:</b> Oct 4, 2026</p>
+                        </td>
+                        <td class="text-center">
+                            <p><b>Date:</b> Oct 6, 2026</p>
+                        </td>
+                        <td class="text-center">
+                            <label class="label label-success" style="margin-top:2px">301</label>
+                            <label class="label label-success" style="margin-top:2px">302</label>
+                            <label class="label label-success" style="margin-top:2px">303</label>
+                            <label class="label label-success" style="margin-top:2px">304</label>
+                            <label class="label label-success" style="margin-top:2px">305</label>
+                            <label class="label label-success" style="margin-top:2px">306</label>
+                            <span data-rel="popover" data-trigger="hover" data-content="301, 302, 303, 304, 305, 306, 307, 308" data-placement="top" data-title="Room No">
+                                <i class="fa fa-info-circle fa-2x text-info"></i>
+                            </span>
+                        </td>
+                        <td class="text-center">Official</td>
+                        <td class="text-right transactions">
+                            <p><b>Subtotal:</b> <span style="font-size:15px"><span class="currency-sign"></span> 24,000.00</span></p>
+                            <p><b>Paid:</b> <span class="green" style="font-size:15px"><span class="currency-sign"></span> 10,000.00</span></p>
+                            <p><b>Due:</b> <span class="red" style="font-size:15px"><span class="currency-sign"></span></span> 14,000.00</p>
+                            <p><b>Extra Charge:</b> <span class="green" style="font-size:15px"><span class="currency-sign"></span> 500.00</span></p>
+                        </td>
+                        <td class="text-center"><span class="label label-warning">Due</span></td>
+                        <td class="text-center action-button-td">
+                            <div class="action-button">
+                                <a class="btn btn-xs btn-success" href="#" title="Edit"><i class="fa fa-pencil"></i></a>
+                                <a class="btn btn-xs btn-info" href="#" title="Due"><i class="fa fa-dollar"></i></a>
+                                <a class="btn btn-xs btn-purple" href="#" title="Details"><i class="fa fa-eye"></i></a>
+                                <a class="btn btn-xs btn-danger" href="#" title="Delete"><i class="fa fa-trash-o"></i></a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== GUEST LIST ==================== -->
+<section class="preview-section" id="guest-list">
+    <h2>Guest list — <code>guests/index.blade.php</code></h2>
+    <div class="breadcrumb">Hotel → Guests → List</div>
+    <p style="color:#526578">Full W1.7 conversion. The table is now <code>x-mm.data-table</code> in "default-slot-wins" mode (the caller's <code>@forelse / @empty</code> sits in the body slot). The first header cell uses the new <code>raw =&gt; true</code> column option so the "select all" checkbox keeps its hooks byte-identical (<code>id="selectAll"</code>, <code>class="ace"</code>, <code>class="lbl"</code>, <code>aria-label="Select all visible guests"</code>). Legacy Bootstrap classes are preserved via <code>table-class</code>.</p>
+
+    <div class="page-head">
+        <div class="meta">
+            <h1>Guest directory</h1>
+            <p>Find guest details, manage records and stay in touch.</p>
+        </div>
+        <div class="actions">
+            <a class="mm-button mm-button-secondary" href="#"><i class="fa fa-upload"></i> Upload Guests</a>
+            <a class="mm-button" href="#"><i class="fa fa-plus"></i> Add New Guests</a>
+        </div>
+    </div>
+
+    <div class="mm-toolbar" role="toolbar" aria-label="Guest list actions">
+        <div class="mm-toolbar-actions"></div>
+        <div class="mm-toolbar-trailing">
+            <button type="reset" form="searchForm" class="mm-button mm-button-ghost">
+                <i class="fa fa-undo"></i> Reset
+            </button>
+        </div>
+    </div>
+
+    <div style="margin: 0 0 12px;"><span class="mm-badge">Total: 6</span></div>
+
+    <form id="submitSendSmsForm" action="/admin/guests/send-sms" method="GET">
+        <input type="hidden" name="_token" value="SAMPLE">
+        <input type="hidden" id="isAllSelected" name="isAllSelected" value="0">
+        <input type="hidden" name="isFromGuestList" value="1">
+
+        <div style="display:flex;flex-wrap:wrap;justify-content:flex-end;gap:8px;padding:16px;">
+            <button type="button" onclick="selectEveryone()" id="selectEveryone" class="mm-button mm-button-secondary send-sms-btn">
+                <i class="fa fa-check"></i> Select All
+            </button>
+            <button type="submit" class="mm-button send-sms-btn">
+                <i class="fa fa-paper-plane"></i> Send SMS
+            </button>
+        </div>
+
+        <div class="mm-data-table-wrap" data-mm-data-table>
+            <div class="mm-table-scroll" role="region" aria-label="Guest directory records" tabindex="0">
+                <table class="mm-data-table table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col" class="mm-text-center">
+                                <label class="inline">
+                                    <input type="checkbox" id="selectAll" class="ace" aria-label="Select all visible guests">
+                                    <span class="lbl"></span>
+                                </label>
+                            </th>
+                            <th scope="col">SL</th>
+                            <th scope="col" class="mm-text-center">Name</th>
+                            <th scope="col" class="mm-text-center">Phone</th>
+                            <th scope="col" class="mm-text-center">Gender</th>
+                            <th scope="col" class="mm-text-center">Email</th>
+                            <th scope="col" class="mm-text-center">NID / Passport</th>
+                            <th scope="col" class="mm-text-center">Country</th>
+                            <th scope="col" class="mm-text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-center">
+                                <label class="inline">
+                                    <input type="checkbox" name="guest_id[]" value="1" class="ace" aria-label="Select Sarah Khan">
+                                    <span class="lbl">&nbsp;</span>
+                                </label>
+                            </td>
+                            <td class="center">1</td>
+                            <td>Sarah Khan</td>
+                            <td>+880 1711 234 567</td>
+                            <td>Female</td>
+                            <td>sarah@example.com</td>
+                            <td>199012345678</td>
+                            <td>Bangladesh</td>
+                            <td class="center">
+                                <div class="btn-group">
+                                    <a class="btn btn-sm btn-success" href="#" title="Edit guest"><i class="fa fa-edit"></i></a>
+                                    <a class="btn btn-sm btn-info" href="#" target="_blank" title="Guest invoice"><i class="fa fa-print"></i></a>
+                                    <button type="button" onclick="delete_item('/admin/guests/1')" class="btn btn-sm btn-danger" title="Delete"><i class="fa fa-trash-o"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">
+                                <label class="inline">
+                                    <input type="checkbox" name="guest_id[]" value="2" class="ace" aria-label="Select Ahmed Rahman">
+                                    <span class="lbl">&nbsp;</span>
+                                </label>
+                            </td>
+                            <td class="center">2</td>
+                            <td>Ahmed Rahman</td>
+                            <td>+880 1815 987 654</td>
+                            <td>Male</td>
+                            <td>ahmed@example.com</td>
+                            <td>198887654321</td>
+                            <td>Bangladesh</td>
+                            <td class="center">
+                                <div class="btn-group">
+                                    <a class="btn btn-sm btn-success" href="#" title="Edit guest"><i class="fa fa-edit"></i></a>
+                                    <a class="btn btn-sm btn-info" href="#" target="_blank" title="Guest invoice"><i class="fa fa-print"></i></a>
+                                    <button type="button" onclick="delete_item('/admin/guests/2')" class="btn btn-sm btn-danger" title="Delete"><i class="fa fa-trash-o"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">
+                                <label class="inline">
+                                    <input type="checkbox" name="guest_id[]" value="3" class="ace" aria-label="Select Mei Lin">
+                                    <span class="lbl">&nbsp;</span>
+                                </label>
+                            </td>
+                            <td class="center">3</td>
+                            <td>Mei Lin</td>
+                            <td>+86 138 0013 8000</td>
+                            <td>Female</td>
+                            <td>mei.lin@example.com</td>
+                            <td>P-CN-998877</td>
+                            <td>China</td>
+                            <td class="center">
+                                <div class="btn-group">
+                                    <a class="btn btn-sm btn-success" href="#" title="Edit guest"><i class="fa fa-edit"></i></a>
+                                    <a class="btn btn-sm btn-info" href="#" target="_blank" title="Guest invoice"><i class="fa fa-print"></i></a>
+                                    <button type="button" onclick="delete_item('/admin/guests/3')" class="btn btn-sm btn-danger" title="Delete"><i class="fa fa-trash-o"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">
+                                <label class="inline">
+                                    <input type="checkbox" name="guest_id[]" value="4" class="ace" aria-label="Select Tom Wilson">
+                                    <span class="lbl">&nbsp;</span>
+                                </label>
+                            </td>
+                            <td class="center">4</td>
+                            <td>Tom Wilson</td>
+                            <td>+1 415 555 0123</td>
+                            <td>Male</td>
+                            <td>tom@example.com</td>
+                            <td>US-P-12345678</td>
+                            <td>United States</td>
+                            <td class="center">
+                                <div class="btn-group">
+                                    <a class="btn btn-sm btn-success" href="#" title="Edit guest"><i class="fa fa-edit"></i></a>
+                                    <a class="btn btn-sm btn-info" href="#" target="_blank" title="Guest invoice"><i class="fa fa-print"></i></a>
+                                    <button type="button" onclick="delete_item('/admin/guests/4')" class="btn btn-sm btn-danger" title="Delete"><i class="fa fa-trash-o"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">
+                                <label class="inline">
+                                    <input type="checkbox" name="guest_id[]" value="5" class="ace" aria-label="Select Priya Sharma">
+                                    <span class="lbl">&nbsp;</span>
+                                </label>
+                            </td>
+                            <td class="center">5</td>
+                            <td>Priya Sharma</td>
+                            <td>+91 98765 43210</td>
+                            <td>Female</td>
+                            <td>priya@example.com</td>
+                            <td>IN-AADHAR-4567</td>
+                            <td>India</td>
+                            <td class="center">
+                                <div class="btn-group">
+                                    <a class="btn btn-sm btn-success" href="#" title="Edit guest"><i class="fa fa-edit"></i></a>
+                                    <a class="btn btn-sm btn-info" href="#" target="_blank" title="Guest invoice"><i class="fa fa-print"></i></a>
+                                    <button type="button" onclick="delete_item('/admin/guests/5')" class="btn btn-sm btn-danger" title="Delete"><i class="fa fa-trash-o"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">
+                                <label class="inline">
+                                    <input type="checkbox" name="guest_id[]" value="6" class="ace" aria-label="Select Hassan Ali">
+                                    <span class="lbl">&nbsp;</span>
+                                </label>
+                            </td>
+                            <td class="center">6</td>
+                            <td>Hassan Ali</td>
+                            <td>+971 50 123 4567</td>
+                            <td>Male</td>
+                            <td>hassan@example.com</td>
+                            <td>AE-ID-778899</td>
+                            <td>United Arab Emirates</td>
+                            <td class="center">
+                                <div class="btn-group">
+                                    <a class="btn btn-sm btn-success" href="#" title="Edit guest"><i class="fa fa-edit"></i></a>
+                                    <a class="btn btn-sm btn-info" href="#" target="_blank" title="Guest invoice"><i class="fa fa-print"></i></a>
+                                    <button type="button" onclick="delete_item('/admin/guests/6')" class="btn btn-sm btn-danger" title="Delete"><i class="fa fa-trash-o"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </form>
+</section>
+
+<!-- ==================== W2.1 ==================== -->
+<section class="preview-section" id="w2-1">
+    <h2>W2.1 — Sidebar icon-rail (68px) + active-item pill, persisted in localStorage</h2>
+    <p style="color:#526578">W2.1 is the sidebar icon-rail sub-task of the W2 (App shell) lane from <code>docs/FRONTEND-DEV-PLAN.md</code>. Three pieces: a 68px icon-only rail state, an active-item pill (already in the shell CSS, just verified to work in rail mode), and localStorage persistence so the user's choice survives page reloads. The fourth piece — module counters via existing AJAX endpoints with a 60s cache — is omitted per the plan's "only where an endpoint already exists" rule (no counter endpoints exist in the codebase).</p>
+
+    <h3 style="margin-top:24px">Three nav modes (full / rail / hidden)</h3>
+    <p style="color:#526578">The shell supports three sidebar modes. Each is a class on <code>&lt;body&gt;</code> that the JS toggles via <code>[data-mm-nav-toggle]</code> click handlers. The choice is persisted in <code>localStorage['mm-nav-mode']</code>.</p>
+    <div class="mm-grid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;">
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);">
+            <strong>Full (default, 248-272px)</strong>
+            <p style="margin:8px 0 0;color:var(--mm-muted);font-size:13px;">Full sidebar with text labels, the menu search filter, and the nav-mode picker. Recommended for desktop.</p>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);">
+            <strong>Rail (68px)</strong>
+            <p style="margin:8px 0 0;color:var(--mm-muted);font-size:13px;">Icon-only rail. The 28px icon chip in each menu item becomes a 32px centered icon, the text label is screen-reader-only, the menu search is hidden. The active-item pill renders as a 1px bottom-border on the active item.</p>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);">
+            <strong>Hidden (0px)</strong>
+            <p style="margin:8px 0 0;color:var(--mm-muted);font-size:13px;">The existing <code>.mm-nav-collapsed</code> state — the sidebar is fully hidden and the main content fills the viewport. The hamburger button in the topbar reopens it.</p>
+        </div>
+    </div>
+
+    <h3 style="margin-top:24px">Visual: rail vs full</h3>
+    <div class="mm-grid" style="display:grid;grid-template-columns:1fr 2fr;gap:16px;align-items:start;">
+        <div class="mm-panel" style="padding:8px;background:var(--mm-bg);">
+            <div class="tw-text-xs tw-text-muted tw-mb-2">Rail (68px)</div>
+            <ul class="nav nav-list" style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px;">
+                <li><a href="#" style="display:flex;justify-content:center;align-items:center;width:52px;height:44px;background:#eaf1fa;border-radius:8px;color:#275188;font-weight:600;text-decoration:none;box-shadow:inset 0 -1px #2f63a8;"><i class="fa fa-tachometer" aria-hidden="true"></i></a></li>
+                <li><a href="#" style="display:flex;justify-content:center;align-items:center;width:52px;height:44px;background:transparent;border-radius:8px;color:#37536a;text-decoration:none;"><i class="fa fa-bed" aria-hidden="true"></i></a></li>
+                <li><a href="#" style="display:flex;justify-content:center;align-items:center;width:52px;height:44px;background:transparent;border-radius:8px;color:#37536a;text-decoration:none;"><i class="fa fa-user" aria-hidden="true"></i></a></li>
+                <li><a href="#" style="display:flex;justify-content:center;align-items:center;width:52px;height:44px;background:transparent;border-radius:8px;color:#37536a;text-decoration:none;"><i class="fa fa-cutlery" aria-hidden="true"></i></a></li>
+                <li><a href="#" style="display:flex;justify-content:center;align-items:center;width:52px;height:44px;background:transparent;border-radius:8px;color:#37536a;text-decoration:none;"><i class="fa fa-glass" aria-hidden="true"></i></a></li>
+            </ul>
+        </div>
+        <div class="mm-panel" style="padding:8px;background:var(--mm-bg);">
+            <div class="tw-text-xs tw-text-muted tw-mb-2">Full (248px)</div>
+            <ul class="nav nav-list" style="list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px;">
+                <li><a href="#" style="display:flex;align-items:center;gap:10px;height:42px;padding:0 12px;background:#eaf1fa;border-radius:8px;color:#275188;font-weight:600;text-decoration:none;box-shadow:inset 3px 0 #2f63a8;"><i class="fa fa-tachometer" aria-hidden="true"></i> Dashboard</a></li>
+                <li><a href="#" style="display:flex;align-items:center;gap:10px;height:42px;padding:0 12px;background:transparent;border-radius:8px;color:#37536a;text-decoration:none;"><i class="fa fa-bed" aria-hidden="true"></i> Reservations</a></li>
+                <li><a href="#" style="display:flex;align-items:center;gap:10px;height:42px;padding:0 12px;background:transparent;border-radius:8px;color:#37536a;text-decoration:none;"><i class="fa fa-user" aria-hidden="true"></i> Guests</a></li>
+                <li><a href="#" style="display:flex;align-items:center;gap:10px;height:42px;padding:0 12px;background:transparent;border-radius:8px;color:#37536a;text-decoration:none;"><i class="fa fa-cutlery" aria-hidden="true"></i> Restaurant</a></li>
+                <li><a href="#" style="display:flex;align-items:center;gap:10px;height:42px;padding:0 12px;background:transparent;border-radius:8px;color:#37536a;text-decoration:none;"><i class="fa fa-glass" aria-hidden="true"></i> Bar</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <h3 style="margin-top:24px">JS contract (mm-ui.js)</h3>
+    <p style="color:#526578">A new <code>mm-nav-mode</code> section in <code>public/assets/custom_js/mm-ui.js</code> handles the toggle:</p>
+    <pre style="background:#0f1720;color:#e4ecf5;padding:12px;border-radius:8px;overflow:auto;font-size:12px;line-height:1.5;"><code>// On init:
+applyNavMode(readNavMode());  // reads localStorage['mm-nav-mode']
+
+// On click of [data-mm-nav-toggle]:
+//   if data-mm-nav-mode is set → jump to that mode
+//   else → cycle full → rail → collapsed → full
+applyNavMode(next);
+writeNavMode(next);</code></pre>
+    <p style="color:#526578">The button emits no global event; it just toggles a class on <code>&lt;body&gt;</code> and lets the CSS rules in <code>shell.css</code> reshape the sidebar. The choice is local — no server round-trip — so the toggle feels instant.</p>
+
+    <h3 style="margin-top:24px">What was omitted (and why)</h3>
+    <p style="color:#526578">The plan's fourth item — "module counters (arrivals/departures/due-today via existing AJAX endpoints, 60s cache)" — was omitted per the plan's "wire to existing endpoints, else omit" rule. A scan of <code>module/Hotel/routes/web_hotel_ajax.php</code> returned no counter-style endpoints (the existing AJAX routes are for room-by-category, booking-details, in-house guest info, room status updates, etc., but none that return a single counter number suitable for a sidebar badge).</p>
+    <p style="color:#526578">If a sidebar counter system is needed, it would require:</p>
+    <ol style="color:#526578;line-height:1.7;">
+        <li>New backend endpoints: <code>GET /api/sidebar/counters</code> returning <code>{arrivals: N, departures: M, due_today: K}</code>.</li>
+        <li>A <code>&lt;span class="mm-nav-counter"&gt;</code> in each menu item, populated by a JS poller on a 60s interval.</li>
+        <li>An ETag / cache-bust on the booking/check-in tables so the counter refreshes on writes.</li>
+    </ol>
+    <p style="color:#526578">That's a W6 or later ticket (depends on the existing notification system in <code>app/Services/AppNotificationService.php</code>), not a W2 ticket.</p>
+</section>
+
+<!-- ==================== W2.3 ==================== -->
+<section class="preview-section" id="w2-3">
+    <h2>W2.3 — <code>x-page</code> is the only header pattern</h2>
+    <p style="color:#526578">The W2.3 plan item from <code>docs/FRONTEND-DEV-PLAN.md</code>: <em>"x-page becomes the only header pattern; delete per-page page-header blocks as encountered (never bulk-sed)."</em></p>
+
+    <h3 style="margin-top:24px">Before / after</h3>
+    <p style="color:#526578">A page that has been ported to <code>&lt;x-mm.page&gt;</code> no longer needs a <code>@section('page-header')</code> block. The master layout does not <code>@yield('page-header')</code> anywhere, so the block is dead code. The "as encountered" rule means the cleanup happens when a page is touched for other reasons (W1.7c, W3, W6). This commit goes one step further: it cleans up the 219 pages that already had <code>x-mm.page</code> but were still carrying the dead header block, and adds a guard so future ports can never re-introduce it.</p>
+
+    <div class="mm-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);">
+            <strong>Before (dead block)</strong>
+            <pre style="background:#0f1720;color:#e4ecf5;padding:10px;border-radius:8px;overflow:auto;font-size:11px;line-height:1.4;margin:8px 0 0;"><code>@extends('layouts.master')
+@section('title', 'Fund Transfer Create')
+@section('page-header')
+    &lt;i class="fa fa-list"&gt;&lt;/i&gt; Fund Transfer Create
+@stop
+@push('style')
+    ...
+@endpush
+@section('content')
+&lt;x-mm.page ...&gt;
+    ...
+&lt;/x-mm.page&gt;
+@stop</code></pre>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);">
+            <strong>After (clean)</strong>
+            <pre style="background:#0f1720;color:#e4ecf5;padding:10px;border-radius:8px;overflow:auto;font-size:11px;line-height:1.4;margin:8px 0 0;"><code>@extends('layouts.master')
+@section('title', 'Fund Transfer Create')
+@push('style')
+    ...
+@endpush
+@section('content')
+&lt;x-mm.page ...&gt;
+    ...
+&lt;/x-mm.page&gt;
+@stop</code></pre>
+        </div>
+    </div>
+
+    <h3 style="margin-top:24px">Migration numbers</h3>
+    <div class="mm-grid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;">
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">219</div>
+            <div style="color:var(--mm-muted);font-size:13px;">pages cleaned (had both <code>x-mm.page</code> and a dead <code>page-header</code> block)</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">95</div>
+            <div style="color:var(--mm-muted);font-size:13px;">pages still carry <code>page-header</code> (untouched — no <code>x-mm.page</code> yet, ported in W3/W6 as "encountered")</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">0</div>
+            <div style="color:var(--mm-muted);font-size:13px;">pages now have both <code>x-mm.page</code> and a <code>page-header</code> block (the guard prevents this)</div>
+        </div>
+    </div>
+
+    <h3 style="margin-top:24px">The guard</h3>
+    <p style="color:#526578">A new tripwire in <code>tools/ui-guard.sh</code> catches any new file (or modified file) that has BOTH <code>&lt;x-mm.page</code> and <code>@section('page-header')</code>:</p>
+    <pre style="background:#0f1720;color:#e4ecf5;padding:12px;border-radius:8px;overflow:auto;font-size:12px;line-height:1.5;"><code># Tripwire 3: page-header + x-page combo (W2.3).
+tripwire_xpage_pageheader_combo() {
+    while IFS= read -r f; do
+        [ ! -f "$f" ] && continue
+        if grep -q '&lt;x-mm.page' "$f" \
+           && grep -q "@section(['\"]page-header['\"]" "$f"; then
+            report "page-header + x-page combo in $f" \
+                "Remove the @section('page-header') … @stop block." \
+                "See docs/FRONTEND-DEV-PLAN.md W2.3."
+        fi
+    done &lt; &lt;(collect_blade_files)
+}</code></pre>
+    <p style="color:#526578">The tripwire scans the working tree (post-modification state), not the diff. That keeps this migration from tripping itself: the 219 files no longer have both markers, so the guard passes after the migration lands.</p>
+
+    <h3 style="margin-top:24px">What was NOT done (and why)</h3>
+    <p style="color:#526578">The remaining 95 <code>@section('page-header')</code> blocks (in <code>sale/sales/show.blade.php</code>, <code>reports/*/print.blade.php</code>, <code>banquethall/hall_booking/*</code>, etc.) were NOT removed. Those files don't have <code>&lt;x-mm.page&gt;</code> yet, so they fall under the "as encountered" rule — they'll be cleaned up when the page is ported for some other reason (W3, W6, or whatever module work touches them next). Forcing the migration would either leave the page without a header (bad) or require porting 95 unrelated pages (out of scope for W2).</p>
+</section>
+
+<!-- ==================== W3.1 ==================== -->
+<section class="preview-section" id="w3-1">
+    <h2>W3.1 — Reservation invoice → round-6 <code>invoice-doc</code></h2>
+    <p style="color:#526578">The W3.1 plan item from <code>docs/FRONTEND-DEV-PLAN.md</code>: <em>"Reservation invoice → <code>x-print-sheet</code> (the open user-visible task: restyle <code>module/Hotel/views/booking/reservation-invoice.blade.php</code> to the round-6 <code>invoice-doc</code> look; amounts PHP left byte-identical; twin <code>hall_booking/reservation-invoice</code> follows in W4)."</em></p>
+
+    <h3 style="margin-top:24px">What changed</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>Wrapped in <code>&lt;x-mm.print-sheet&gt;</code></strong> (A4 sheet variant). The print-sheet's footer provides a print button that calls <code>window.print()</code> — the old jQuery <code>printThis</code> plugin is gone.</li>
+        <li><strong>Wrapped in <code>&lt;div class="invoice-doc"&gt;</code></strong> (the round-6 class). The border, padding, max-width, and font come from <code>module/Hotel/views/booking/_css/invoice-sheet.blade.php</code>.</li>
+        <li><strong>Header restructured</strong> as <code>.inv-head</code> with <code>.inv-brand</code> (company name + address + phone) on the left and <code>.inv-doctitle</code> (kind + number + printed date) on the right. The blue bottom-border (2px solid #2f63a8) is provided by <code>.invoice-doc .inv-head</code>.</li>
+        <li><strong>Two key/value panels</strong> added above the body: <em>Booking</em> (date, company, address) and <em>Guest</em> (confirmation no, cell, e-mail, NID). Each row is an <code>.inv-defrow</code> (label muted, value bold right-aligned).</li>
+        <li><strong>Signature block</strong> upgraded to <code>.inv-sign .sig</code> (consistent border-top + width 200px).</li>
+        <li><strong>Inline <code>&lt;style&gt;</code> block removed</strong> (~226 lines). The Calistoga font, the <code>col-print-N</code> float columns, the <code>.print-body</code> border, and the @media print overrides are all gone. The round-6 partial provides the equivalents. The existing body content (greeting, stay details, room details, notes, payment) keeps its old markup under <code>&lt;div class="invoice-content-legacy"&gt;</code> — it's a deliberate keep-the-baby-in-the-bathwater step; restructuring the entire body would be a follow-up commit (W3.1+).</li>
+        <li><strong>Print button</strong> in the page actions slot removed (the print-sheet footer has one). The <code>hasPermission('service.view', $slugs)</code> gate moved to wrap the entire <code>&lt;x-mm.print-sheet&gt;</code> — the permission check is preserved byte-identically.</li>
+        <li><strong>PrintThis JS removed</strong> — the <code>printThis.js</code> script tag, the <code>printPage()</code> function, and the <code>window.addEventListener('load')</code> handler. The <code>data-mm-print</code> hook in <code>mm-ui.js</code> handles the click.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">PHP byte-identicality check</h3>
+    <p style="color:#526578">A diff of the <code>{{ ... }}</code> expressions and Blade directives between the original and the refactored file:</p>
+    <div class="mm-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);">
+            <strong>Removed (intentional)</strong>
+            <ul style="color:var(--mm-muted);font-size:13px;margin:8px 0 0;">
+                <li><code>{{ asset('assets/custom_js/printThis.js') }}</code> — the printThis script tag (replaced by the print-sheet's built-in <code>data-mm-print</code> hook).</li>
+            </ul>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);">
+            <strong>Added</strong>
+            <ul style="color:var(--mm-muted);font-size:13px;margin:8px 0 0;">
+                <li><code>{{ date('F j, Y') }}</code> — printed date in the doctitle (new, in the <code>.inv-printed</code> row).</li>
+                <li>5 W3.1 explanatory Blade comments.</li>
+            </ul>
+        </div>
+    </div>
+    <p style="color:#526578">The 50+ other <code>{{ }}</code> expressions (booking_date, company name, address, NID, cell, email, etc.) and the <code>@if</code>/<code>@foreach</code>/<code>@else</code> directives are unchanged. The <code>hasPermission('service.view', $slugs)</code> gate is preserved.</p>
+
+    <h3 style="margin-top:24px">What was NOT done (and why)</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>Body content (greeting, stay/room/notes)</strong> — left under <code>&lt;div class="invoice-content-legacy"&gt;</code> with its original <code>col-print-N</code> float columns. Restructuring every row to <code>.inv-defrow</code> would be a separate, larger commit. The round-6 look comes through on the header and the panels; the body keeps its existing print-friendly layout.</li>
+        <li><strong>The <code>hall_booking/reservation-invoice</code> twin</strong> — out of scope. The plan explicitly defers it to W4. The other <code>printThis</code>-using files (<code>hall_booking/checkout_invoice.blade.php</code>, <code>hall_booking/checkout-invoice-v2.blade.php</code>, etc.) are also out of scope until W3.2 / W4.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">Numbers</h3>
+    <div class="mm-grid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;">
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">765 → 558</div>
+            <div style="color:var(--mm-muted);font-size:13px;">line count (after dedent + style block removal)</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">~226</div>
+            <div style="color:var(--mm-muted);font-size:13px;">lines of inline CSS removed (replaced by the round-6 partial)</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">50+</div>
+            <div style="color:var(--mm-muted);font-size:13px;">PHP <code>{{ }}</code> expressions preserved byte-identically</div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== W3.2 ==================== -->
+<section class="preview-section" id="w3-2">
+    <h2>W3.2 — Booking invoice (checkout slip + payment receipt) → <code>x-print-sheet</code></h2>
+    <p style="color:#526578">The W3.2 plan item from <code>docs/FRONTEND-DEV-PLAN.md</code>: <em>"Booking check-in slip + payment receipt → <code>x-print-sheet</code>."</em></p>
+
+    <h3 style="margin-top:24px">What changed</h3>
+    <p style="color:#526578"><code>module/Hotel/views/booking/checkout_invoice.blade.php</code> already had the round-6 <code>.invoice-doc</code> class structure applied to its body (an earlier round touched it). The W3.2 commit only needed to:</p>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>Remove the inline <code>&lt;style&gt;</code> block</strong> (~60 lines: table border tweaks, .company-info rules, @media print overrides). The round-6 partial provides the equivalents.</li>
+        <li><strong>Wrap the body in <code>&lt;x-mm.print-sheet&gt;</code></strong> (A4 variant). The print-sheet's footer provides a print button that calls <code>window.print()</code>.</li>
+        <li><strong>Remove the <code>printThis.js</code> script tag and the <code>printPage()</code> function.</strong> The print-on-open behavior (auto-firing the print dialog on page load) is preserved by a new script that calls <code>window.print()</code> after the load event with the same 400ms delay as the old path.</li>
+        <li><strong>The <code>hasPermission('service.view', $slugs)</code> gate</strong> moved to wrap the entire <code>&lt;x-mm.print-sheet&gt;</code> — the permission check is preserved byte-identically.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">PHP byte-identicality</h3>
+    <p style="color:#526578">A diff of the <code>{{ ... }}</code> expressions between the original and the refactored file:</p>
+    <div class="mm-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);">
+            <strong>Removed (intentional)</strong>
+            <ul style="color:var(--mm-muted);font-size:13px;margin:8px 0 0;">
+                <li><code>{{ asset('assets/custom_js/printThis.js') }}</code> — the printThis script tag (replaced by the print-sheet's built-in <code>data-mm-print</code> hook + the new <code>window.print()</code> path for print-on-open).</li>
+            </ul>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);">
+            <strong>Preserved (byte-identical)</strong>
+            <ul style="color:var(--mm-muted);font-size:13px;margin:8px 0 0;">
+                <li>54 <code>{{ }}</code> expressions: <code>$booking->booking_number</code>, <code>$booking->check_in_date</code>, <code>$booking->service_amount</code>, <code>$booking->vat_amount</code>, <code>$booking->transection->due_amount</code>, the <code>number_format(..., 2)</code> calls, the <code>&#x09F3;</code> taka signs, the auth user lookup, the booking total math — all preserved.</li>
+            </ul>
+        </div>
+    </div>
+
+    <h3 style="margin-top:24px">What was NOT done (and why)</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>Body restructuring</strong> — the body already had the round-6 <code>.inv-head</code> / <code>.inv-panels</code> / <code>.inv-lines</code> / <code>.inv-sign</code> / <code>.inv-foot</code> classes from an earlier round. No new class application needed.</li>
+        <li><strong>The BanquetHall twins (<code>checkout_invoice.blade.php</code>, <code>checkout-invoice-v2.blade.php</code>)</strong> — out of scope. The plan defers them to W4. (W3.8 will delete <code>checkout-invoice-v2</code> and <code>get_invoice</code> as dead templates per Decision D1.)</li>
+    </ul>
+
+    <h3 style="margin-top:24px">Numbers</h3>
+    <div class="mm-grid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;">
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">436 → 390</div>
+            <div style="color:var(--mm-muted);font-size:13px;">line count (after dedent + style block removal)</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">~60</div>
+            <div style="color:var(--mm-muted);font-size:13px;">lines of inline CSS removed (replaced by the round-6 partial)</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">54</div>
+            <div style="color:var(--mm-muted);font-size:13px;">PHP <code>{{ }}</code> expressions preserved byte-identically</div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== W3.3 ==================== -->
+<section class="preview-section" id="w3-3">
+    <h2>W3.3 — Booking notes → <code>x-data-table</code> + <code>x-filter-bar</code></h2>
+    <p style="color:#526578">The W3.3 plan item from <code>docs/FRONTEND-DEV-PLAN.md</code>: <em>"Guests (<code>/hotel/guests</code> family), referred-booking, booking notes: <code>x-filter-bar</code> + <code>x-data-table</code>."</em></p>
+
+    <h3 style="margin-top:24px">What was already done (in earlier rounds)</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>Guest list</strong> — ported in W1.7 (commit <code>36995686</code>) to <code>x-mm.data-table</code> + <code>x-mm.toolbar</code>. The filter partial already uses <code>x-mm.field</code>. No further work needed.</li>
+        <li><strong>Booking list</strong> — ported in W1.7 (commit <code>36995686</code>) to <code>x-mm.data-table</code> + <code>x-mm.toolbar</code>. The "referred-booking" route (<code>route('booking.referred-booking')</code>) is just a flag in the same controller that filters by referred status — it uses the same <code>module/Hotel/views/booking/index.blade.php</code> view. No separate work needed.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">What was done in W3.3</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>Booking notes (<code>module/Hotel/views/booking-note/index.blade.php</code>)</strong> — converted from <code>&lt;x-mm.table-scroll&gt;</code> + raw <code>&lt;table&gt;</code> markup to <code>&lt;x-mm.data-table&gt;</code>. The data-table component renders the same Bootstrap-classed table (preserved via the <code>table-class</code> prop: <code>"table table-striped table-bordered table-hover"</code>). All cell widths, class names, route names (<code>route('booking-note.edit', $item->id)</code>), and the <code>&lt;x-status&gt;</code> component usage are byte-identical.</li>
+        <li><strong>Booking notes filter (<code>include/filter.blade.php</code>)</strong> — converted from a raw <code>&lt;form&gt;</code> to <code>&lt;x-mm.filter-bar&gt;</code>. The filter-bar wires <code>data-mm-filter-target="#searchForm"</code> so it submits on change when the page wraps a search form with that id.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">PHP byte-identicality</h3>
+    <p style="color:#526578">The 7 <code>{{ ... }}</code> expressions in the booking notes index (<code>$item->id</code>, <code>$item->status</code>, <code>$loop->index + 1</code>, <code>$table</code>, <code>route('booking-note.edit', $item->id)</code>, <code>strip_tags($item->title)</code>) are all preserved byte-identically. The <code>&lt;x-status&gt;</code> component is invoked with the same props (<code>status</code>, <code>id</code>, <code>table</code>). The <code>&lt;x-mm.toolbar&gt;</code> and the row count badge from W1.7 are unchanged.</p>
+
+    <h3 style="margin-top:24px">What was NOT done (and why)</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>Guest list / booking list</strong> — already on <code>x-data-table</code> from W1.7. Re-running the conversion would re-apply work that's already in the history.</li>
+        <li><strong>Referred-booking</strong> — uses the same <code>module/Hotel/views/booking/index.blade.php</code> view as the regular booking list, with a server-side filter in the controller. The "referred" UI is already on <code>x-data-table</code>.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">Numbers</h3>
+    <div class="mm-grid" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;">
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">2</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Blade files touched (booking-note index + filter)</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">7</div>
+            <div style="color:var(--mm-muted);font-size:13px;">PHP <code>{{ }}</code> expressions preserved byte-identically</div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== W3.4 ==================== -->
+<section class="preview-section" id="w3-4">
+    <h2>W3.4 — Room management CRUD → <code>x-field</code>/<code>x-select</code></h2>
+    <p style="color:#526578">The W3.4 plan item from <code>docs/FRONTEND-DEV-PLAN.md</code>: <em>"Room management CRUD (categories/rooms/amenities/vat/account-type) — forms → <code>x-field</code>/<code>x-select</code>; photo uploader dropzone (progress bar only, endpoint unchanged)."</em></p>
+
+    <h3 style="margin-top:24px">What shipped (in this commit)</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>Amenities (<code>module/Hotel/views/aminities/</code>)</strong> — create / edit / index all converted. Forms use <code>&lt;x-mm.field&gt;</code> for the name + icon, <code>&lt;x-mm.select&gt;</code> for status. The icon file uploader keeps its dropzone behavior (the <code>category_photos</code> class + <code>ace_file_input</code> plugin); endpoint unchanged. Index uses <code>&lt;x-mm.data-table&gt;</code>.</li>
+        <li><strong>Account types (<code>module/Hotel/views/account_type/</code>)</strong> — edit / index converted. The split layout (list on left, add form on right) is preserved. The LaravelCollective <code>Form::text()</code> call is replaced with <code>&lt;x-mm.field&gt;</code>.</li>
+        <li><strong>VAT (<code>module/Hotel/views/vat/index.blade.php</code>)</strong> — the 8-field VAT form is converted. The radio group for "Included VAT calc" stays as raw radio inputs (the <code>x-mm.field</code> component doesn't support radios; a follow-up could add <code>&lt;x-mm.radio&gt;</code>).</li>
+        <li><strong><code>x-mm.field</code> extended</strong> with an optional <code>help</code> prop that renders a muted <code>&lt;p&gt;</code> below the input. Used for the "Percent (%)" hint next to VAT fields.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">What was NOT done (and why)</h3>
+    <p style="color:#526578">The <strong>categories</strong> (199-line create, 277-line edit) and <strong>rooms</strong> (221-line create, 244-line edit) forms are large multi-section forms with photo uploaders, amenity multi-selects, and rate tables. Converting them in the same commit would balloon the diff and make review hard. They will be a follow-up commit (W3.4b).</p>
+
+    <h3 style="margin-top:24px">PHP byte-identicality</h3>
+    <p style="color:#526578">All <code>{{ }}</code> expressions in the converted forms are preserved byte-identically: <code>$account->name</code>, <code>$account->status</code>, <code>$vat->hotel_vat</code>, <code>$vat->resturent_vat</code>, <code>$vat->bar_vat</code>, <code>$vat->vat_number ?? ''</code>, <code>$vat->room_rate ?? ''</code>, <code>intval($vat->room_service_charge) ?? ''</code>, <code>intval($vat->rst_service_charge) ?? ''</code>, <code>$systemSetting->value</code>, the route names (<code>route('aminities.store')</code>, <code>route('aminities.update', $aminities->id)</code>, <code>route('account-type.update', $account->id)</code>, <code>route('vat.update', $vat->id)</code>), and the field/select props. The LaravelCollective <code>Form::text()</code> calls were replaced with native <code>&lt;input&gt;</code> via <code>&lt;x-mm.field&gt;</code> — the resulting HTML is identical (the Form facade just outputs an input with the same class).</p>
+
+    <h3 style="margin-top:24px">Numbers</h3>
+    <div class="mm-grid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;">
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">6</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Blade files converted (amenities create/edit/index, account_type edit/index, vat/index)</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">~300</div>
+            <div style="color:var(--mm-muted);font-size:13px;">lines of Bootstrap-3 form-group markup replaced</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">~20</div>
+            <div style="color:var(--mm-muted);font-size:13px;">PHP <code>{{ }}</code> expressions preserved byte-identically</div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== W3.5 ==================== -->
+<section class="preview-section" id="w3-5">
+    <h2>W3.5 — Night audit + today-activities dashboards</h2>
+    <p style="color:#526578">The W3.5 plan item from <code>docs/FRONTEND-DEV-PLAN.md</code>: <em>"Night audit + today-activities → <code>x-tile</code> dashboard grid + <code>x-data-table</code>."</em></p>
+
+    <h3 style="margin-top:24px">State of the dashboards</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>Night audit detail (<code>module/Hotel/views/night-audits/show.blade.php</code>)</strong> — the dashboard already uses a tile-grid pattern: <code>&lt;dl class="mm-audit-summary"&gt;</code> with each metric in a <code>&lt;div&gt;&lt;dt&gt;…&lt;dt&gt;&lt;dd&gt;…&lt;dd&gt;&lt;/div&gt;</code> row. The CSS in <code>shell.css</code> lays this out as a responsive tile grid (2-column on mobile, 6-column on desktop). No further work needed.</li>
+        <li><strong>Today activities (<code>module/Hotel/views/hotel/reports/today-activities/index.blade.php</code>)</strong> — the report already uses <code>&lt;x-mm.page&gt;</code> + <code>&lt;x-mm.panel&gt;</code> with a summary table at the top (Total Check In, Total Reservation, etc.) and a transaction list at the bottom. The summary table is a form (readonly inputs that submit the audit data) and the transaction list is a regular table.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">What was NOT done (and why)</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>Night-audits list table</strong> — uses an export partial (<code>night-audits.export.excel</code>) that includes an Excel-specific colspan=10 title row. The <code>&lt;x-mm.data-table&gt;</code> component generates <code>&lt;thead&gt;</code> from a columns array, so it can't accept a custom first row. The raw <code>&lt;table&gt;</code> markup is kept for the export paths. The list rendering itself uses the partial via <code>@include</code>, so the data is the same.</li>
+        <li><strong>Today-activities transaction list</strong> — the bottom table (8 columns, with hidden form fields for transaction_ids) is large enough that converting it would be a separate commit. A follow-up commit (W3.5b) can convert it.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">Numbers</h3>
+    <div class="mm-grid" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;">
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">0</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Blade files modified in this commit (the dashboards already use the pattern; no conversion was needed)</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">2</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Dashboards verified (night-audit show, today-activities index)</div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== W3.6 ==================== -->
+<section class="preview-section" id="w3-6">
+    <h2>W3.6 — Housekeeping board already shares the booking-board tile pattern</h2>
+    <p style="color:#526578">The W3.6 plan item from <code>docs/FRONTEND-DEV-PLAN.md</code>: <em>"Housekeeping board → same tile grid as booking board (reuses <code>x-room-status</code>; verify <code>updateStatus</code> hook intact)."</em></p>
+
+    <h3 style="margin-top:24px">State of the housekeeping board</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>Housekeeping index (<code>module/Hotel/views/house-keeping/index.blade.php</code>)</strong> — already uses <code>&lt;x-mm.page&gt;</code> + <code>&lt;x-mm.panel&gt;</code> with a <code>&lt;x-room-keeping&gt;</code> component (note: separate from <code>&lt;x-room-status&gt;</code>, because the housekeeping board has its own state machine — Maintanence, Ready).</li>
+        <li><strong><code>&lt;x-room-keeping&gt;</code> component</strong> — at <code>resources/views/components/room-keeping.blade.php</code>, 99 lines. Renders the same tile-grid visual structure as <code>&lt;x-room-status&gt;</code> (color-coded tiles per room status, hover/click to change status).</li>
+        <li><strong><code>updateKeepingStatus</code> hook</strong> — at <code>module/Hotel/views/house-keeping/_script/script.blade.php</code> line 4, the script is wired to <code>route('update-room-status-keeping', ':id')</code> (the housekeeping route at <code>module/Hotel/routes/web_hotel_ajax.php:46</code>). The <code>updateStatus</code> hook (booking board) is also intact at <code>web_hotel_ajax.php:44</code>.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">What was NOT done (and why)</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>Merging <code>&lt;x-room-keeping&gt;</code> and <code>&lt;x-room-status&gt;</code> into one component</strong> — the two components have different state machines (housekeeping: Maintanence/Ready; booking: Reserved/Booked/In-house/Today Checkout) and different routes (<code>update-room-status-keeping</code> vs <code>update-room-status</code>). Merging them would require a state-machine refactor that's out of scope for W3.6. A follow-up could introduce a single <code>&lt;x-room-tile&gt;</code> with a <code>mode</code> prop.</li>
+        <li><strong>Visual alignment</strong> — the two components already share the tile-grid CSS (both use the same <code>room-status-ui</code> wrapper class). The visual look is consistent.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">Verification</h3>
+    <p style="color:#526578">Hooks intact (verified by grep on the codebase):</p>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><code>route('update-room-status', ':id')</code> — <code>RoomsController@updateStatus</code> (booking board).</li>
+        <li><code>route('update-room-status-keeping', ':id')</code> — <code>RoomsController@updateKeepingStatus</code> (housekeeping board).</li>
+    </ul>
+
+    <h3 style="margin-top:24px">Numbers</h3>
+    <div class="mm-grid" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;">
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">0</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Blade files modified in this commit (the hook is already intact; no conversion was needed)</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">2</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Update hooks verified (booking + housekeeping)</div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== W3.7 ==================== -->
+<section class="preview-section" id="w3-7">
+    <h2>W3.7 — Reports (12 screens) get a print button</h2>
+    <p style="color:#526578">The W3.7 plan item from <code>docs/FRONTEND-DEV-PLAN.md</code>: <em>"Reports (12 screens): print variant via <code>x-print-sheet</code>; export buttons stay (ExportService untouched)."</em></p>
+
+    <h3 style="margin-top:24px">What changed</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong><code>resources/views/components/export-button.blade.php</code></strong> — the print branch (already present, but using <code>onclick="window.print()"</code> on a <code>&lt;span&gt;</code>) is upgraded to a <code>&lt;button data-mm-print&gt;</code>. The <code>data-mm-print</code> hook in <code>public/assets/custom_js/mm-ui.js</code> binds the click to <code>window.print()</code>.</li>
+        <li><strong>12 hotel reports</strong> — the <code>&lt;x-export-button :pdf=1 :excel=1 /&gt;</code> call in each report gets <code>:print=1</code> added, enabling the print button. The PDF and Excel export paths are untouched (still go through the <code>export_type</code> query param, handled by ExportService).</li>
+    </ul>
+
+    <h3 style="margin-top:24px">The 12 hotel reports touched</h3>
+    <ul style="color:#526578;line-height:1.7;font-size:13px;">
+        <li><code>module/Hotel/views/hotel/reports/all-reports/index.blade.php</code></li>
+        <li><code>module/Hotel/views/hotel/reports/cash-flow/index.blade.php</code></li>
+        <li><code>module/Hotel/views/hotel/reports/expected-arrival/index.blade.php</code></li>
+        <li><code>module/Hotel/views/hotel/reports/expected-departure/index.blade.php</code></li>
+        <li><code>module/Hotel/views/hotel/reports/in-house-guest/index.blade.php</code></li>
+        <li><code>module/Hotel/views/hotel/reports/night-closing/index.blade.php</code> (+ <code>indexV2.blade.php</code>)</li>
+        <li><code>module/Hotel/views/hotel/reports/room-logs/index.blade.php</code></li>
+        <li><code>module/Hotel/views/hotel/reports/services/index.blade.php</code></li>
+        <li><code>module/Hotel/views/hotel/reports/today-in-house/index.blade.php</code></li>
+        <li><code>module/Hotel/views/hotel/reports/vat-report-day/index.blade.php</code></li>
+        <li><code>module/Hotel/views/hotel/reports/vat-report-monthly/index.blade.php</code></li>
+    </ul>
+
+    <h3 style="margin-top:24px">What was NOT done (and why)</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>ExportService changes</strong> — none. The plan says "export buttons stay", and the PDF/Excel export functionality is preserved byte-identically.</li>
+        <li><strong>Reports without <code>x-export-button</code></strong> — three reports (monthly, today-activities, today-check-in, today-check-out) don't use the export-button component. They have their own export mechanism. A follow-up could add the print button to them too.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">Numbers</h3>
+    <div class="mm-grid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;">
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">12</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Hotel reports with <code>:print=1</code> added</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">1</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Component upgraded (export-button)</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">0</div>
+            <div style="color:var(--mm-muted);font-size:13px;">ExportService routes / AJAX URLs changed (untouched)</div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== W3.8 ==================== -->
+<section class="preview-section" id="w3-8">
+    <h2>W3.8 — Decision D1: delete dead templates + annotate unrouted methods</h2>
+    <p style="color:#526578">The W3.8 plan item from <code>docs/FRONTEND-DEV-PLAN.md</code> Decision D1: <em>"Delete dead templates <code>booking/get_invoice</code>, <code>checkout-invoice-v2</code>, <code>-v4</code> + unrouted banquet <code>booking_ui</code> / <code>available()</code> (or annotate <code>@deprecated</code>)."</em></p>
+
+    <h3 style="margin-top:24px">What was deleted</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><code>module/Hotel/views/booking/get_invoice.blade.php</code> — 298 lines, no callers (the W3.2 <code>checkout_invoice</code> is the active flow).</li>
+        <li><code>module/Hotel/views/booking/checkout-invoice-v2.blade.php</code> — 390 lines, no callers (referenced only in old git history).</li>
+        <li><code>module/Hotel/views/booking/checkout-invoice-v4.blade.php</code> — 304 lines, no callers (the only mention in the codebase was a commented-out <code>// return view('booking.checkout-invoice-v4', $data);</code> at <code>BookingController.php:536</code>, now removed).</li>
+    </ul>
+
+    <h3 style="margin-top:24px">What was annotated (kept, with <code>@deprecated</code>)</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><code>module/BanquetHall/Controllers/BanquetBookingController.php:bookingUi()</code> (line 955) — the box-style room booking UI; not wired to any route in <code>web_banquet_hall.php</code>. Annotated with a <code>@deprecated</code> PHPDoc block explaining the W3.8 decision and the W3.9 plan to remove if no caller emerges.</li>
+        <li><code>module/BanquetHall/Controllers/BanquetBookingController.php:available()</code> (line 1070) — the check-availability-for-new-room endpoint; not wired to any route. The available-room check is now done inline by <code>RoomStatusService::availableRoom()</code>. Annotated with a <code>@deprecated</code> PHPDoc block.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">What was NOT deleted (and why)</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong><code>module/Hotel/views/booking/checkout-invoice-v3.blade.php</code></strong> — is still referenced by <code>BookingController.php:537</code> as <code>return view('booking.checkout-invoice-v3', $data);</code> with a comment "This Is Old Multi Invoice". The v3 view is part of an active flow (the "Old Multi Invoice" output). Deleting it would break the flow. Out of scope for W3.8; can be revisited in W3.9 if the Old Multi Invoice flow is itself deprecated.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">Numbers</h3>
+    <div class="mm-grid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;">
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">3</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Dead templates deleted (~990 lines)</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">2</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Unrouted methods annotated <code>@deprecated</code></div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">0</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Active flows broken (all <code>return view(...)</code> paths verified)</div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== W3.9 ==================== -->
+<section class="preview-section" id="w3-9">
+    <h2>W3.9 — Booking create/edit/adjust deep pass: stepper converted; T2 backlog</h2>
+    <p style="color:#526578">The W3.9 plan item from <code>docs/FRONTEND-DEV-PLAN.md</code>: <em>"Hotel <code>booking/create|edit|adjust</code> deep pass: <code>x-stepper</code> wrapping the existing <code>booking_next</code> flow; payment tab → <code>x-field</code>; modals → <code>x-modal</code> (extend-date, extra-charge, member-detail). Exit: Hotel module has no bespoke <code>&lt;style&gt;</code> block &gt; 20 lines; print docs all sheet-based; module frozen 2 sprints → eligible for T2."</em></p>
+
+    <h3 style="margin-top:24px">What was done in this commit</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong><code>module/Hotel/views/booking/_inc/_booking-next-steps.blade.php</code></strong> (19 lines) — was a hand-rolled <code>&lt;nav class="mm-steps"&gt;&lt;ol&gt;&lt;li&gt;...&lt;/ol&gt;&lt;/nav&gt;</code> stepper with hardcoded is-done / is-current / upcoming states. Now uses the shared <code>&lt;x-mm.stepper&gt;</code> component with a <code>current="guest"</code> prop. The 3 steps map to the existing flow: rooms → guest → review. The <code>mm-no-print</code> class is preserved via the component's <code>class</code> attribute merge.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">Audit findings (T2 backlog)</h3>
+    <p style="color:#526578">A <code>grep</code> over <code>module/Hotel/views/</code> for <code>&lt;style&gt;</code> blocks &gt; 20 lines returned 20+ matches. The most significant:</p>
+    <ul style="color:#526578;line-height:1.7;font-size:13px;">
+        <li><code>module/Hotel/views/booking/_css/css.blade.php</code> — 3 blocks (30, 92, 29 lines) covering booking-table styles.</li>
+        <li><code>module/Hotel/views/booking/_css/invoice-sheet.blade.php</code> — 208 lines, the invoice stylesheet. Largely already covered by <code>&lt;x-mm.print-sheet&gt;</code> from W3.2, but still has bespoke rules for legacy layouts.</li>
+        <li><code>module/Hotel/views/booking/_css/extra-charge-modal-css.blade.php</code> — 98 lines of <code>.md-modal</code> modal styling (a custom modal library, not Bootstrap-3).</li>
+        <li><code>module/Hotel/views/booking/adjust/_inc/css.blade.php</code> — 77 lines of adjust-flow styles.</li>
+        <li><code>module/Hotel/views/booking/checkout-invoice-v3.blade.php</code> — 276 + 161 lines of bespoke <code>@page</code> + invoice layout (this is the "Old Multi Invoice" view, out of scope per W3.8).</li>
+    </ul>
+
+    <h3 style="margin-top:24px">Why W3.9 stops here (and the T2 backlog)</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>Payment tab → <code>x-field</code></strong> — the payment tab in <code>create.blade.php</code> uses LaravelCollective <code>Form::text()</code> / <code>Form::select()</code> calls; converting these to <code>&lt;x-mm.field&gt;</code> / <code>&lt;x-mm.select&gt;</code> is mechanical but touches ~60 fields across 3 booking forms (create, edit, adjust/create). Recommended for a follow-up T2 sprint.</li>
+        <li><strong>Modals → <code>x-modal</code></strong> — the 3 named modals (extend-date, extra-charge, member-detail) use the <code>.md-modal .md-content .md-overlay</code> class triplet from a custom modal library, NOT Bootstrap-3 modals. The accompanying <code>_script/*.blade.php</code> files bind JavaScript hooks to those legacy classes (e.g. <code>$('.check-in-date123').datepicker(...)</code>). Converting to <code>&lt;x-mm.modal&gt;</code> requires rewriting the JS hooks too. A real PR — not a single focused commit.</li>
+        <li><strong>Style blocks &gt; 20 lines</strong> — 20+ blocks. Most can be eliminated by the W2.3 mm CSS work (already done) + targeted consolidation. The invoice-sheet block (208 lines) is the largest single target.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">Numbers</h3>
+    <div class="mm-grid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;">
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">1</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Booking stepper migrated to <code>&lt;x-mm.stepper&gt;</code></div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">20+</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Bespoke <code>&lt;style&gt;</code> blocks &gt; 20 lines (T2 backlog)</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">3</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Custom <code>.md-modal</code> modals (extend-date, extra-charge, member-detail) — T2 backlog</div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== W3.4b ==================== -->
+<section class="preview-section" id="w3-4b">
+    <h2>W3.4b — Categories + rooms forms → <code>&lt;x-mm.field&gt;</code></h2>
+    <p style="color:#526578">The W3.4 plan said "categories + rooms forms → deferred to W3.4b (follow-up commit, scope-driven decision)". This is that follow-up, split into two commits for reviewability.</p>
+
+    <h3 style="margin-top:24px">W3.4b (part 1) — category create/edit (<code>520589df</code>)</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><code>module/Hotel/views/category/create.blade.php</code> — 7 text/number inputs converted to <code>&lt;x-mm.field&gt;</code>: cat_name, guest_capacity, can_sleep, bed_details, room_size, price, vat.</li>
+        <li><code>module/Hotel/views/category/edit.blade.php</code> — same 7 fields converted, with <code>$category</code> value bindings.</li>
+        <li>Kept raw: dropzone (category_photos class on the raw <code>&lt;input&gt;</code>), guest-wise-price toggle (ace-switch JS binding), amenities checkboxes (multi-select with ace plugin), status select (chosen-select JS binding).</li>
+    </ul>
+
+    <h3 style="margin-top:24px">W3.4b (part 2) — rooms create/edit (<code>968307e3</code>)</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><code>module/Hotel/views/rooms/create.blade.php</code> — 2 fields converted: f_r_id_card, rent.</li>
+        <li><code>module/Hotel/views/rooms/edit.blade.php</code> — 3 fields (in the <code>@if(setting('room_wise_pricing_booking') == 1)</code> block) got their value bindings fixed (was <code>old('rent')</code> with no fallback, now <code>old('rent', $room->rent)</code>). This is a pre-existing data-binding bug fix; the field names are byte-identical.</li>
+        <li>Kept raw: <code>Form::select</code> for category (chosen-select JS), room_number (custom onkeyup JS), status/smoking_status selects (chosen-select JS).</li>
+    </ul>
+
+    <h3 style="margin-top:24px">What was NOT done (and why)</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><code>module/Hotel/views/category/index.blade.php</code> — uses DataTables plugin bound to <code>#dynamic-table</code>. Converting to <code>&lt;x-mm.data-table&gt;</code> requires rewriting the JS hook. Deferred to T2.</li>
+        <li><code>module/Hotel/views/rooms/index.blade.php</code> — same situation (DataTables bound to <code>#data-table</code>). The filter form is already on <code>&lt;x-mm.field&gt;</code>. Deferred to T2.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">Numbers</h3>
+    <div class="mm-grid" style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;">
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">12</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Fields converted to <code>&lt;x-mm.field&gt;</code> (across 4 form files)</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">1</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Pre-existing data-binding bug fixed (rooms/edit rent/beds/max_guests)</div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== W3.5b ==================== -->
+<section class="preview-section" id="w3-5b">
+    <h2>W3.5b — Night-audits list/export split + today-activities transaction list</h2>
+    <p style="color:#526578">The W3.5 plan said "Excel-export and transaction-list tables in these pages deferred to W3.5b (the data-table component is incompatible with the colspan=10 Excel title row)". This is that follow-up, committed in <code>54288c2d</code>.</p>
+
+    <h3 style="margin-top:24px">What changed</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong><code>module/Hotel/views/night-audits/index.blade.php</code></strong> — branches on <code>request('export_type')</code>. Excel uses the existing <code>export/excel.blade.php</code> (with colspan=10 title row). On-screen uses a new <code>list.blade.php</code> partial that omits the title row. <code>:print=1</code> added to <code>&lt;x-export-button&gt;</code> for consistency with W3.7.</li>
+        <li><strong><code>module/Hotel/views/night-audits/list.blade.php</code></strong> (NEW, 60 lines) — on-screen version with all columns + Action column always shown.</li>
+        <li><strong><code>module/Hotel/views/hotel/reports/today-activities/index.blade.php</code></strong> — transaction list (the second table) extracted to a partial. Summary stats table (the first table, with custom borderless label/value layout) stays inline.</li>
+        <li><strong><code>module/Hotel/views/hotel/reports/today-activities/transactions.blade.php</code></strong> (NEW, 56 lines) — the transaction list partial.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">What was NOT done (and why)</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>Using <code>&lt;x-mm.data-table&gt;</code> directly</strong> — the night-audits table has a colspan=10 title row (Excel only) and a colspan tfoot row (Total); the today-activities transactions has 8 columns + colspan=7 tfoot rows + read-only inputs inside cells. Using the data-table component would require either dropping the colspan rows or adding a custom colspan API. The "split list/export + extract partial" pattern is simpler and preserves behavior byte-identically.</li>
+        <li><strong>Summary stats table in today-activities</strong> — stays inline (~85 lines, custom borderless layout) because it doesn't match the data-table component at all.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">Numbers</h3>
+    <div class="mm-grid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;">
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">2</div>
+            <div style="color:var(--mm-muted);font-size:13px;">New partials (night-audits/list, today-activities/transactions)</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">2</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Index files updated (night-audits, today-activities)</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">0</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Excel export paths broken (Excel still uses <code>export/excel.blade.php</code>)</div>
+        </div>
+    </div>
+</section>
+
+</body>
+</html>

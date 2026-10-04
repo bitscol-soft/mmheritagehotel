@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title', 'Journal Voucher Details')
-@section('page-header')
-    <i class="fa fa-info-circle"></i> Journal Voucher Details
-@stop
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />

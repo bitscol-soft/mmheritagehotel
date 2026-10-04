@@ -1,13 +1,9 @@
 @extends('layouts.master')
 @section('title', 'Categories')
-@section('page-header')
-    <i class="fa fa-list"></i> Category List
-@stop
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}"/>
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}"/>
 @endpush
-
 
 @section('content')
 
@@ -73,11 +69,9 @@
     <script src="{{ asset('assets/js/chosen.jquery.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap-datepicker.min.js') }}"></script>
 
-
     <script src="{{ asset('assets/custom_js/confirm_delete_dialog.js') }}"></script>
     <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
     <script src="{{ asset('assets/js/jquery.dataTables.bootstrap.min.js') }}"></script>
-
 
     <script type="text/javascript">
         jQuery(function($) {
@@ -92,5 +86,4 @@
     </script>
 
 @endsection
-
 

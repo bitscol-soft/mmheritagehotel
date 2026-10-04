@@ -1,18 +1,13 @@
 @extends('layouts.master')
 @section('title', 'Booking Migration')
-@section('page-header')
-    <i class="fa fa-plus-circle"></i> Booking Migration
-@stop
 
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/daterangepicker.min.css') }}" />
 
-
     @include('booking.adjust._inc.css')
 @endpush
-
 
 @section('content')
 
@@ -231,6 +226,5 @@
     <script src="{{ asset('assets/custom_js/date-picker.js') }}"></script>
 
     @include('booking.adjust._inc._script')
-
 
 @endsection

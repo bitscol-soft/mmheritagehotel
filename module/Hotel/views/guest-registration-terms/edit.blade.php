@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title','Edit Registration Terms')
-@section('page-header')
-    <i class="fa fa-gears"></i> Edit Registration Terms
-@stop
 
 @section('content')
 <x-mm.styles />
@@ -28,7 +25,6 @@
 
                 </div>
             </div>
-
 
             <div class="form-actions center" style="text-align: right !important;">
                 <button type="submit" class="mm-button">

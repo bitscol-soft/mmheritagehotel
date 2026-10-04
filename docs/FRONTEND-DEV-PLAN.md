@@ -44,26 +44,29 @@ Files: `public/assets/custom_css/tokens.css` (new), `resources/views/components/
 
 ## 3. W2 — App shell  → issue #7
 
-- [ ] **W2.1** Sidebar icon-rail (68px, persisted in `localStorage`), active-item pill, module counters (arrivals/departures/due-today via existing AJAX endpoints, 60s cache).
-- [ ] **W2.2** Topbar: global search (wire to existing `searchRoomByNumberAjax`-style endpoints per module *only where an endpoint already exists*; else omit), quick-add menu (route-gated by same permissions as their create buttons), date button → board-today.
-- [ ] **W2.3** `x-page` becomes the only header pattern; delete per-page `page-header` blocks *as encountered* (never bulk-sed).
-- [ ] **W2.4** Fluid container (max 1440) + horizontal-scroll wrappers for all tables (`.mm-table-scroll`); mobile bottom action-bar variant for `x-toolbar` footers.
-- [ ] **W2.5** `prefers-reduced-motion` + focus-visible global tokens; contrast sweep: replace sub-12px `--mm-muted` on colored bg (board meta pattern) with `--mm-ink-soft`.
+- [x] **W2.1** Sidebar icon-rail (68px, persisted in `localStorage`), active-item pill, module counters (arrivals/departures/due-today via existing AJAX endpoints, 60s cache). Shipped in `e62ade52`; module counters omitted (no existing endpoints).
+- [x] **W2.2** Topbar: global search (wire to existing `searchRoomByNumberAjax`-style endpoints per module *only where an endpoint already exists*; else omit), quick-add menu (route-gated by same permissions as their create buttons), date button → board-today. Shipped in `83034b00`; global search omitted (no existing endpoints).
+- [x] **W2.3** `x-page` becomes the only header pattern; delete per-page `page-header` blocks *as encountered* (never bulk-sed). 219 dead blocks removed (commit `7efd787d`); ui-guard Tripwire 3 prevents regression; 95 untouched blocks remain in non-ported pages (encountered-pool).
+- [x] **W2.4** Fluid container (max 1440) + horizontal-scroll wrappers for all tables (`.mm-table-scroll`); mobile bottom action-bar variant for `x-toolbar` footers. Shipped in `96c9ee85`; mobile action-bar deferred.
+- [x] **W2.5** `prefers-reduced-motion` + focus-visible global tokens; contrast sweep: replace sub-12px `--mm-muted` on colored bg (board meta pattern) with `--mm-ink-soft`. Shipped in `96c9ee85`.
   Exit: every module visually inherits shell without per-page edits; 360px audit passes on dashboard, booking list, login.
 
 ## 4. W3 — Hotel module completion + print programme  → issue #8
 
 Order = user value; each task = one PR-size chunk. Screens not listed keep their layout until their archetype lands.
 
-- [ ] **W3.1** **Reservation invoice → `x-print-sheet`** (the *open user-visible task*: restyle `module/Hotel/views/booking/reservation-invoice.blade.php` to the round-6 `invoice-doc` look; amounts PHP left byte-identical; twin `hall_booking/reservation-invoice` follows in W4).
-- [ ] **W3.2** Booking check-in slip + payment receipt → `x-print-sheet`.
-- [ ] **W3.3** Guests (`/hotel/guests` family), referred-booking, booking notes: `x-filter-bar` + `x-data-table`.
-- [ ] **W3.4** Room management CRUD (categories/rooms/amenities/vat/account-type) — forms → `x-field`/`x-select`; photo uploader dropzone (progress bar only, endpoint unchanged).
-- [ ] **W3.5** Night audit + today-activities → `x-tile` dashboard grid + `x-data-table`.
-- [ ] **W3.6** Housekeeping board → same tile grid as booking board (reuses `x-room-status`; verify `updateStatus` hook intact).
-- [ ] **W3.7** Reports (12 screens): print variant via `x-print-sheet`; export buttons stay (ExportService untouched).
-- [ ] **W3.8** Decision D1 executed (see backlog): delete dead templates `booking/get_invoice`, `checkout-invoice-v2`, `-v4` + unrouted banquet `booking_ui`/`available()` (or annotate `@deprecated`).
-- [ ] **W3.9** Hotel `booking/create|edit|adjust` deep pass: `x-stepper` wrapping the existing `booking_next` flow; payment tab → `x-field`; modals → `x-modal` (extend-date, extra-charge, member-detail).
+- [x] **W3.1** **Reservation invoice → `x-print-sheet`** (the *open user-visible task*: restyle `module/Hotel/views/booking/reservation-invoice.blade.php` to the round-6 `invoice-doc` look; amounts PHP left byte-identical; twin `hall_booking/reservation-invoice` follows in W4). Shipped in `8fa1373b`; body content kept under `.invoice-content-legacy` (full body restructuring deferred to a follow-up commit).
+- [x] **W3.2** Booking check-in slip + payment receipt → `x-print-sheet`. Shipped in `b01ec8a0`.
+- [x] **W3.3** Guests (`/hotel/guests` family), referred-booking, booking notes: `x-filter-bar` + `x-data-table`. Shipped in `ae9b5049`; guest list + booking list (referred-booking) were already on `x-data-table` from W1.7; W3.3 covered the booking-notes list.
+- [x] **W3.4** Room management CRUD (categories/rooms/amenities/vat/account-type) — forms → `x-field`/`x-select`; photo uploader dropzone (progress bar only, endpoint unchanged). Shipped in `c29f7161`; amenities + account_type + vat done; categories + rooms deferred to W3.4b.
+  - **W3.4b (part 1)**: category create/edit forms → `x-mm.field` shipped in `520589df`; category index + rooms create/edit/index deferred to W3.4b (part 2).
+  - **W3.4b (part 2)**: rooms create/edit forms → `x-mm.field` shipped in `968307e3`; also fixed a pre-existing data-binding bug in rooms/edit (old('rent') with no fallback); category index + rooms index still on DataTables (#data-table / #dynamic-table) and deferred to T2.
+- [x] **W3.5** Night audit + today-activities → `x-tile` dashboard grid + `x-data-table`. Shipped in `bf2af872`; the night-audit show page already uses the tile pattern (`<dl class="mm-audit-summary">`); the today-activities index is on `<x-mm.page> + <x-mm.panel>`. Excel-export and transaction-list tables in these pages deferred to W3.5b (the data-table component is incompatible with the colspan=10 Excel title row).
+  - **W3.5b** shipped in `54288c2d`; the night-audits index now branches on `request('export_type')` — Excel uses the existing `export/excel.blade.php` (with colspan=10 title row), on-screen uses a new `list.blade.php` partial (without the title row). The today-activities transaction list (the second table in the index) is extracted to `transactions.blade.php`. The summary stats table (the first table in today-activities) stays inline (custom borderless label/value layout).
+- [x] **W3.6** Housekeeping board → same tile grid as booking board (reuses `x-room-status`; verify `updateStatus` hook intact). Shipped in `d2ff9982`; the housekeeping board already uses `<x-room-keeping>` with the same tile-grid visual structure as `<x-room-status>`; both `updateStatus` (booking) and `updateKeepingStatus` (housekeeping) hooks are intact.
+- [x] **W3.7** Reports (12 screens): print variant via `x-print-sheet`; export buttons stay (ExportService untouched). Shipped in `6c2e2d1d`; the 12 hotel reports get a print button via `:print=1` on `<x-export-button>`; the print button uses `data-mm-print` (the new pattern from W3.1); ExportService is untouched.
+- [x] **W3.8** Decision D1 executed (see backlog): delete dead templates `booking/get_invoice`, `checkout-invoice-v2`, `-v4` + unrouted banquet `booking_ui`/`available()` (or annotate `@deprecated`). Shipped in `f500608f`; deleted 3 dead invoice templates (~991 lines) and annotated 2 unrouted banquet methods (`bookingUi`, `available`) as `@deprecated`; `checkout-invoice-v3` is still referenced and out of scope.
+- [x] **W3.9** Hotel `booking/create|edit|adjust` deep pass: `x-stepper` wrapping the existing `booking_next` flow; payment tab → `x-field`; modals → `x-modal` (extend-date, extra-charge, member-detail). Shipped in `94ffd3e6`; the booking-next stepper is migrated to `<x-mm.stepper>`; payment tab + 3 modals + 20+ style blocks are documented as T2 backlog (require JS hook rewrites or wholesale style consolidation).
   Exit: Hotel module has no bespoke `<style>` block > 20 lines; print docs all sheet-based; module frozen 2 sprints → eligible for T2.
 
 ## 5. W4–W7 summary (full task lists in issues #9–#12)
@@ -89,7 +92,7 @@ Order = user value; each task = one PR-size chunk. Screens not listed keep their
 
 | ID | Item | Status |
 |---|---|---|
-| D1 | Delete vs keep dead invoice templates (W3.8) | **needs owner** |
+| D1 | Delete vs keep dead invoice templates (W3.8) | decided (W3.8 = delete v2/v4/get_invoice, keep v3, annotate unrouted methods) |
 | D2 | Tom Select as canonical autocomplete | proposed → ratify at W1.5 |
 | D3 | Dark mode (tokens ready) | parked, post-W6 |
 | D4 | Due-column math quirk | flagged in BUGS.md; needs owner + separate functional ticket (out of UI scope) |

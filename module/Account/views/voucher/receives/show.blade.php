@@ -1,13 +1,6 @@
 @extends('layouts.master')
 
-
 @section('title', 'Receive Voucher Detail')
-
-
-@section('page-header')
-    <i class="fa fa-info-circle"></i> Receive Voucher Detail
-@stop
-
 
 @push('style')
     <style>
@@ -23,11 +16,6 @@
     </style>
 @endpush
 
-
-
-
-
-
 @section('content')
 
 <x-mm.styles />
@@ -40,21 +28,12 @@
     <x-mm.panel class="tw-p-4">
         @include('partials._alert_message')
 
-
-
-
-
-
-
-
-
         <!-- Top Heading -->
         <div class="row px-2 pb-3">
             <div class="col-md-6">
                 <p><span style="width: 100px">Voucher Type</span> {{ $voucher->voucher_type }}</p>
                 <p><span style="width: 100px">Description</span> {{ $voucher->description }}</p>
             </div>
-
 
             <div class="col-md-6">
                 <div style="width: 255px; float: right">
@@ -63,12 +42,6 @@
                 </div>
             </div>
         </div>
-
-
-
-
-
-
 
         <!-- LIST -->
         <div class="row" style="width: 100%; margin: 0 !important;">
@@ -103,11 +76,9 @@
                             @endforeach
                         </tbody>
 
-
                         @php 
                             $totalAmount = $voucher->details->sum('amount') > 0 ? $voucher->details->sum('amount') / 2 : 0;
                         @endphp
-
 
                         <tfoot>
                             <tr>
@@ -120,10 +91,6 @@
                 </x-mm.table-scroll>
             </div>
         </div>
-
-
-
-
 
         <!-- Approve Button -->
         @if(request('type') == 'approve' && !$voucher->is_approved)

@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title','Page List')
-@section('page-header')
-    <i class="fa fa-gears"></i> Page List
-@stop
 @section('css')
 <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
 @stop
@@ -69,7 +66,6 @@
 
 <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('assets/js/jquery.dataTables.bootstrap.min.js') }}"></script>
-
 
 <!-- inline scripts related to this page -->
 <script type="text/javascript">

@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title', 'Edit Category')
-@section('page-header')
-    <i class="fa fa-edit"></i> Edit Category
-@stop
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/dropzone.min.css') }}" />
     <style>
@@ -50,7 +47,6 @@
                 @method('PUT')
                 @include('partials._alert_message')
 
-
                 <div class="row">
                     <div class="col-md-6">
                         <div class="row">
@@ -87,8 +83,6 @@
                                     </div>
                                 </div>
                             </div>
-
-
 
                         </div>
                     </div>
@@ -134,7 +128,6 @@
                     </div>
                 </div>
 
-
                 <div class="form-group">
                     <label for="inputError" class="col-xs-12 col-sm-3 col-md-3 control-label"></label>
                     <div class="col-xs-12 col-sm-12 text-right">
@@ -148,8 +141,6 @@
         </x-mm.panel>
     </x-mm.page>
 @endsection
-
-
 
 @section('js')
     <script src="{{ asset('assets/js/ace-elements.min.js') }}"></script>

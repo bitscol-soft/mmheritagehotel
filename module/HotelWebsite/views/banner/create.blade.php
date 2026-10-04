@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title', 'Add New Banner')
-@section('page-header')
-    <i class="fa fa-gears"></i> Add New Banner
-@stop
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/dropzone.min.css') }}" />
     <style>
@@ -29,7 +26,6 @@
             @csrf
 
             @include('partials._alert_message')
-
 
             <div class="row">
                 <div class="col-md-6">
