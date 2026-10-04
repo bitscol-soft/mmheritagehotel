@@ -66,6 +66,7 @@
         <li><a href="#w5-1">W5.1</a> — Restaurant kitchen ticket wrapped in <code>&lt;x-mm.print-sheet sheet="thermal-80mm"&gt;</code> (80mm thermal print); rst/tables + bar/tables raw <code>&lt;table&gt;</code> → <code>&lt;x-mm.data-table&gt;</code>. Board-grid table map + order screen x-stepper deferred.</li>
         <li><a href="#w5-2">W5.2</a> — rst/tables + bar/tables get a board-grid <b>tile map</b> (new <code>.mm-table-map</code> auto-fill grid + <code>.mm-table-tile</code> cards) above the existing data-table. Each tile shows the table name, status badge (green/red), the table number, and an "Order" button (when the table is active + user has sales.create) that links to <code>rst.sales.create</code> / <code>bar.sales-v2.create</code> with <code>?table_id=…</code>. CSS-only (14 lines); no new JS.</li>
         <li><a href="#w5-3">W5.3</a> — restaurant sales/create: 5 top-section text inputs (guest_name, room_number, booking_number, invoice_id, sale_date) → <code>&lt;x-mm.field&gt;</code>, mirroring the W4.3b pattern from HotelService sales/create. The "Add guest" icon-button is now a separate small button below the guest field (was an input-group-addon). The product_name input-group + bottom totals + dynamic product-item rows stay raw (JS class hooks + Bootstrap-3 input-group + ৳ currency addon).</li>
+        <li><a href="#w5-4">W5.4</a> — GS goods_requisitions index: the results table (10 columns) → <code>&lt;x-mm.data-table&gt;</code>. Per-row action buttons (view/edit/approve/unapprove/delete), the <code>data-rel="popover"</code> info icon, the delete form, the permission checks, the route bindings, and the entire <code>@section('js')</code> block all preserved. The top filter table + per-row view-details modals + create/edit/approve/gin_list views + stock-count board grid stay deferred.</li>
     </ul>
 </div>
 
@@ -1453,6 +1454,45 @@ tripwire_xpage_pageheader_combo() {
         <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
             <div style="font-size:32px;font-weight:700;color:#2f63a8;">0</div>
             <div style="color:var(--mm-muted);font-size:13px;">Lines of JS changed (autocomplete + AJAX + calculateTotal/Vat untouched)</div>
+        </div>
+    </div>
+</section>
+
+<section class="preview-section" id="w5-4">
+    <h2>W5.4 — GS goods_requisitions index: results table → <code>&lt;x-mm.data-table&gt;</code></h2>
+    <p style="color:#526578">The W5 plan item: <em>"GS: requisition/GRN lists + stock-count board grid"</em>. The full plan covers 5 GS views (index 378 lines + create 569 + edit 534 + approve 447 + gin_list 354 = 2282 lines). This commit lands the smallest, highest-value piece: the results table in <code>module/GeneralStore/views/goods_requisitions/index.blade.php</code> → <code>&lt;x-mm.data-table&gt;</code>. The remaining views (create / edit / approve / gin_list / print-gin-details), the top filter table, and the stock-count board grid remain deferred.</p>
+
+    <h3 style="margin-top:24px">What was done in this commit</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li>The 10-column results table (SL, Date, Requisition No, Company, Department, Issue Date, GIN Number, Reference, Total Qty, Action) → <code>&lt;x-mm.data-table&gt;</code>. The <code>$systemSetting->value</code> ternary for the "Reference" column header is preserved.</li>
+        <li>Per-row action buttons (view / edit / approve / unapprove / delete) are preserved with the same permission checks (<code>create.requisitions.edit</code>, <code>create.requisitions.approve</code>, <code>create.requisitions.delete</code>).</li>
+        <li>The <code>data-rel="popover"</code> info icon with <code>data-content</code> HTML (Created By / Created At / Updated By / Updated At) is preserved.</li>
+        <li>The per-row delete <code>&lt;form&gt;</code> with <code>id="deleteCheck_…"</code> + the <code>delete_check(id)</code> JS function binding is preserved.</li>
+        <li>Empty-state row changed from <code>if (count() == 0)</code> to <code>@forelse / @empty</code>, matching the pattern from hall/aminities, hall/category, hall/rooms, rst/tables, bar/tables. Colspan reduced 12 → 10 to match the actual column count.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">What was NOT done (and why)</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>Top filter table</strong> (Company select + From/To date range + Requisition No + Issue No + Approved status checkboxes + Search/Refresh buttons) — stays raw. The layout is a custom single-row <code>&lt;tr&gt;</code> with search inputs as <code>&lt;td&gt;</code> cells; it does not map to <code>&lt;x-mm.data-table&gt;</code>. Out of scope for this PR.</li>
+        <li><strong>Per-row "view details" modals</strong> — stay raw. They use Bootstrap-3 <code>.modal / .modal-dialog / .modal-content / .modal-header / .modal-body / .modal-footer</code> classes, not <code>&lt;x-mm.modal&gt;</code>. The T2 backlog has "bookings × 3 .md-modal modals → x-mm.modal" — the GS view-details modals follow the same migration path.</li>
+        <li><strong>create / edit / approve / gin_list / print-gin-details</strong> views of goods_requisitions (569 + 534 + 447 + 354 + 135 = 2039 lines) — not touched. Each is a focused follow-up PR (form fields → <code>&lt;x-mm.field&gt;</code>, action button patterns → <code>&lt;x-mm.data-table&gt;</code> if applicable).</li>
+        <li><strong>Stock-count board grid</strong> — the GS module does not have a stock-count page under <code>module/GeneralStore/views/</code>. That pattern is in <code>module/Bar/views/bar/inventory/</code> and <code>module/Restaurant/views/inventory/</code>. Deferred — out of scope for this PR.</li>
+        <li>The <code>@section('js')</code> block (<code>chosen-select</code>, <code>date-picker</code>, <code>popover</code>, <code>delete_check</code>, <code>exportData</code>) is untouched. All JS function bindings are preserved.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">Numbers</h3>
+    <div class="mm-grid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;">
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">10</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Columns in <code>&lt;x-mm.data-table&gt;</code></div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">5</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Per-row action buttons preserved (view / edit / approve / unapprove / delete)</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">0</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Lines of JS changed (chosen + date-picker + popover + delete_check + exportData all intact)</div>
         </div>
     </div>
 </section>
