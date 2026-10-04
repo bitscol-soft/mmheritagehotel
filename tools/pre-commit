@@ -1,0 +1,81 @@
+#!/usr/bin/env bash
+# =============================================================================
+# tools/pre-commit — local pre-commit hook for the UI guard
+#
+# Wires tools/ui-guard.sh + tools/ui-guard-test.sh into a developer-machine
+# pre-commit check. The CI workflow in .github/workflows/ui-guard.yml runs
+# the same checks on every push + PR; this hook runs them locally so the
+# developer finds out about a violation BEFORE pushing, not after the
+# remote CI rejects the push.
+#
+# Install (once per clone):
+#   ln -sf ../../tools/pre-commit .git/hooks/pre-commit
+#   chmod +x .git/hooks/pre-commit
+#
+# Or copy:
+#   cp tools/pre-commit .git/hooks/pre-commit
+#
+# Skip (for an emergency commit that you know is fine):
+#   git commit --no-verify
+#
+# What this hook does NOT do:
+#   - It does NOT block pushes; the CI is the source of truth. If you
+#     bypass this hook with --no-verify, the CI will still catch the
+#     violation before the PR can be merged (assuming the workflow
+#     triggers, which it does for every Blade file change).
+#   - It does NOT enforce money math, JS hook ids, route names, or
+#     permission gates — ui-guard does that. The hook just runs the
+#     same checks the CI runs.
+# =============================================================================
+set -u
+
+ROOT="$(git rev-parse --show-toplevel 2>/dev/null)"
+if [ -z "$ROOT" ]; then
+    echo "pre-commit: must be run inside a git working tree" >&2
+    exit 0  # not a fatal error — let the commit proceed and let CI catch it
+fi
+cd "$ROOT"
+
+if [ ! -x tools/ui-guard.sh ] || [ ! -x tools/ui-guard-test.sh ]; then
+    echo "pre-commit: ui-guard scripts not executable; skipping local check (CI will catch violations)" >&2
+    exit 0
+fi
+
+# --- 1. Run the tripwire self-test first -------------------------------------
+# A regression in the tripwire regexes themselves would make the diff guard
+# a silent no-op, so we run the self-test even when there are no staged
+# changes. The self-test is fast (~1 second) and catches the mawk-vs-gawk
+# portability bug class that previously shipped undetected.
+echo "pre-commit: running ui-guard self-test..."
+if ! tools/ui-guard-test.sh > /tmp/pre-commit-selftest.log 2>&1; then
+    echo "pre-commit: FAILED — ui-guard self-test rejected the tripwire regexes." >&2
+    cat /tmp/pre-commit-selftest.log >&2
+    echo >&2
+    echo "pre-commit: fix tools/ui-guard.sh (or update tools/ui-guard-test.sh if" >&2
+    echo "pre-commit: a new assertion is wrong) and re-commit. Bypass with" >&2
+    echo "pre-commit: 'git commit --no-verify' for emergencies." >&2
+    exit 1
+fi
+
+# --- 2. Run the diff guard on the staged change -----------------------------
+# If nothing is staged (e.g. 'git commit --amend' on a clean tree), skip —
+# the diff would be empty and the guard would be a no-op anyway.
+if [ -z "$(git diff --cached --name-only --diff-filter=AM -- '*.blade.php' 2>/dev/null)" ]; then
+    echo "pre-commit: no staged Blade files; skipping diff guard."
+    exit 0
+fi
+
+echo "pre-commit: running ui-guard on staged diff..."
+if ! tools/ui-guard.sh --staged > /tmp/pre-commit-guard.log 2>&1; then
+    echo "pre-commit: FAILED — ui-guard rejected the staged diff." >&2
+    cat /tmp/pre-commit-guard.log >&2
+    echo >&2
+    echo "pre-commit: see docs/FRONTEND-DEV-PLAN.md §0 (guardrails) for the" >&2
+    echo "pre-commit: override syntax: <!-- money-travel-on: <reason> -->" >&2
+    echo "pre-commit: on the affected line, or {{-- money-travel-on-block: --}}" >&2
+    echo "pre-commit: for a block. Bypass with 'git commit --no-verify'." >&2
+    exit 1
+fi
+
+echo "pre-commit: OK"
+exit 0
