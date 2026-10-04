@@ -65,7 +65,7 @@
                                     @include('hotel/reports/night-closing/export/excel')
 
                                     <x-paginate :data="$nightaudits" />
-                                    <x-export-button :pdf=1 :excel=1 />
+                                    <x-export-button :pdf=1 :excel=1 :print=1 />
                                 @endif
                             </div>
                         </div>

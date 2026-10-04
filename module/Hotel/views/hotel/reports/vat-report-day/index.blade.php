@@ -43,7 +43,7 @@
 
         <x-paginate :data="$daily_vats" />
 
-        <x-export-button :pdf=1 :excel=1 />
+        <x-export-button :pdf=1 :excel=1 :print=1 />
     </x-mm.panel>
 </x-mm.page>
 @endsection

@@ -53,6 +53,7 @@
         <li><a href="#w3-4">W3.4</a> — Room management forms → <code>x-field</code>/<code>x-select</code> (amenities + account_type + vat done; category + room forms follow in a follow-up commit).</li>
         <li><a href="#w3-5">W3.5</a> — Night audit + today-activities dashboards already use the tile pattern (<code>dl.mm-audit-summary</code>). The Excel-export paths in the night-audits list retain raw <code>&lt;table&gt;</code> markup because the data-table component is incompatible with the colspan=10 title row.</li>
         <li><a href="#w3-6">W3.6</a> — Housekeeping board already shares the booking-board tile pattern; <code>updateStatus</code> / <code>updateKeepingStatus</code> hooks verified intact.</li>
+        <li><a href="#w3-7">W3.7</a> — Reports (12 hotel screens) get a print button via <code>&lt;x-export-button :print=1 /&gt;</code>. <code>ExportService</code> untouched; PDF/Excel export paths preserved.</li>
     </ul>
 </div>
 
@@ -929,6 +930,55 @@ tripwire_xpage_pageheader_combo() {
         <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
             <div style="font-size:32px;font-weight:700;color:#2f63a8;">2</div>
             <div style="color:var(--mm-muted);font-size:13px;">Update hooks verified (booking + housekeeping)</div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== W3.7 ==================== -->
+<section class="preview-section" id="w3-7">
+    <h2>W3.7 — Reports (12 screens) get a print button</h2>
+    <p style="color:#526578">The W3.7 plan item from <code>docs/FRONTEND-DEV-PLAN.md</code>: <em>"Reports (12 screens): print variant via <code>x-print-sheet</code>; export buttons stay (ExportService untouched)."</em></p>
+
+    <h3 style="margin-top:24px">What changed</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong><code>resources/views/components/export-button.blade.php</code></strong> — the print branch (already present, but using <code>onclick="window.print()"</code> on a <code>&lt;span&gt;</code>) is upgraded to a <code>&lt;button data-mm-print&gt;</code>. The <code>data-mm-print</code> hook in <code>public/assets/custom_js/mm-ui.js</code> binds the click to <code>window.print()</code>.</li>
+        <li><strong>12 hotel reports</strong> — the <code>&lt;x-export-button :pdf=1 :excel=1 /&gt;</code> call in each report gets <code>:print=1</code> added, enabling the print button. The PDF and Excel export paths are untouched (still go through the <code>export_type</code> query param, handled by ExportService).</li>
+    </ul>
+
+    <h3 style="margin-top:24px">The 12 hotel reports touched</h3>
+    <ul style="color:#526578;line-height:1.7;font-size:13px;">
+        <li><code>module/Hotel/views/hotel/reports/all-reports/index.blade.php</code></li>
+        <li><code>module/Hotel/views/hotel/reports/cash-flow/index.blade.php</code></li>
+        <li><code>module/Hotel/views/hotel/reports/expected-arrival/index.blade.php</code></li>
+        <li><code>module/Hotel/views/hotel/reports/expected-departure/index.blade.php</code></li>
+        <li><code>module/Hotel/views/hotel/reports/in-house-guest/index.blade.php</code></li>
+        <li><code>module/Hotel/views/hotel/reports/night-closing/index.blade.php</code> (+ <code>indexV2.blade.php</code>)</li>
+        <li><code>module/Hotel/views/hotel/reports/room-logs/index.blade.php</code></li>
+        <li><code>module/Hotel/views/hotel/reports/services/index.blade.php</code></li>
+        <li><code>module/Hotel/views/hotel/reports/today-in-house/index.blade.php</code></li>
+        <li><code>module/Hotel/views/hotel/reports/vat-report-day/index.blade.php</code></li>
+        <li><code>module/Hotel/views/hotel/reports/vat-report-monthly/index.blade.php</code></li>
+    </ul>
+
+    <h3 style="margin-top:24px">What was NOT done (and why)</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>ExportService changes</strong> — none. The plan says "export buttons stay", and the PDF/Excel export functionality is preserved byte-identically.</li>
+        <li><strong>Reports without <code>x-export-button</code></strong> — three reports (monthly, today-activities, today-check-in, today-check-out) don't use the export-button component. They have their own export mechanism. A follow-up could add the print button to them too.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">Numbers</h3>
+    <div class="mm-grid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;">
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">12</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Hotel reports with <code>:print=1</code> added</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">1</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Component upgraded (export-button)</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">0</div>
+            <div style="color:var(--mm-muted);font-size:13px;">ExportService routes / AJAX URLs changed (untouched)</div>
         </div>
     </div>
 </section>
