@@ -343,6 +343,116 @@ tripwire_xpage_pageheader_combo() {
 }
 
 # -----------------------------------------------------------------------------
+# Tripwire 4: new <style> tag in a non-CSS Blade file.
+#
+# Per docs/FRONTEND-DEV-PLAN.md §0: "New CSS only in `tokens.css` /
+# component partials; per-page `<style>` shrinks, never grows." A diff
+# that ADDS a new <style> opening tag to a Blade view or page (i.e.
+# any Blade file under resources/views/ or module/*/views/ whose path
+# does NOT end in _css/*.blade.php) is a violation — the new CSS
+# belongs in a tokens.css / component partial instead.
+#
+# This is a DIFF check (not a file-content check), so pre-existing
+# <style> blocks in legacy files do not trip the guard. The migration
+# in W2.3 / W3 / W3.1-twin was deliberately allowed to remove those
+# blocks one at a time; this tripwire only fires on NEW additions.
+#
+# The check is intentionally narrow: it fires on the opening <style>
+# tag (matched as `<style` followed by a tag terminator: space, tab,
+# `>`, or `/` — so `<link rel="stylesheet">` is NOT matched because
+# the char after `<style` is `s`, not a terminator). Closing tags
+# (`</style>`) and inline `style="…"` attributes are also not matched.
+# -----------------------------------------------------------------------------
+tripwire_raw_style_tag() {
+    local f
+    local found=0
+    while IFS= read -r f; do
+        [ -z "$f" ] && continue
+        [ ! -f "$f" ] && continue
+        # Skip the CSS partial directories — those are exactly where
+        # new <style> blocks ARE supposed to live. The plan's
+        # component-partial pattern is `module/.../views/.../_css/*.blade.php`
+        # and `resources/views/.../_css/*.blade.php`; the `tokens.css`
+        # file lives outside the Blade tree.
+        case "$f" in
+            *_css/*.blade.php) continue ;;
+        esac
+        local diff_args=""
+        case "$MODE" in
+            working) diff_args="-U0 --" ;;
+            staged)  diff_args="-U0 --cached --" ;;
+            diff)    diff_args="-U0 $BASE_REF...HEAD --" ;;
+        esac
+        local hits
+        hits="$(git diff $diff_args "$f" 2>/dev/null \
+            | awk -v file="$f" '
+                BEGIN {
+                    new_line = 0
+                    old_line = 0
+                    in_hunk  = 0
+                }
+                /^@@/ {
+                    rest = $0
+                    sub(/^@@ /, "", rest)
+                    sub(/ @@.*$/, "", rest)
+                    split(rest, parts, " ")
+                    split(parts[1], a, ",")
+                    split(parts[2], b, ",")
+                    old_line = a[1] + 0
+                    new_line = b[1] + 0
+                    in_hunk  = 1
+                    next
+                }
+                # Skip the "--- a/file" and "+++ b/file" file headers.
+                # They are NEVER inside a hunk and never contain a <style>
+                # tag, so an in_hunk gate is sufficient and correct.
+                /^---/        { if (!in_hunk) next }
+                /^\+\+\+/    { if (!in_hunk) next }
+                /^\+/ {
+                    if (!in_hunk) next
+                    line = substr($0, 2)
+                    low  = tolower(line)
+                    # Match the opening <style> tag. The char after
+                    # "<style" must be a tag terminator (space, tab,
+                    # ">", or "/") so we do NOT match
+                    #   <link rel="stylesheet" href="…">
+                    # (the char after "<style" is "s", the start of
+                    # "stylesheet"). Case-insensitive: HTML5 allows
+                    # <STYLE>, <Style>, etc.
+                    if (low ~ /<style[> \t\/]/) {
+                        printf("    %s:+%d\n", file, new_line)
+                    }
+                    new_line++
+                }
+                # We do NOT need a `-` branch: removed <style> blocks
+                # are the GOOD direction (the plan says "shrinks, never
+                # grows"). We do need to keep old_line in sync for any
+                # `-` content line in case a future tripwire wants to
+                # also check removed lines, but the current spec only
+                # flags new additions.
+                /^-/ {
+                    if (!in_hunk) next
+                    old_line++
+                }
+                /^ / {
+                    if (!in_hunk) next
+                    new_line++
+                    old_line++
+                }
+            ')"
+        if [ -n "$hits" ]; then
+            report "new <style> tag in $f" \
+                "  New <style> opening tag in a non-CSS Blade file:" \
+                "$hits" \
+                "  Move the CSS into a tokens.css entry or a _css/*.blade.php partial." \
+                "  See docs/FRONTEND-DEV-PLAN.md §0 (guardrails) for the rule."
+            found=1
+        fi
+    done < <(collect_blade_files)
+    return $found
+}
+
+# -----------------------------------------------------------------------------
 # Tripwire 2: @include / @yield inside <style>…</style>.
 #
 # A Blade template that places an @include (or @yield, @stack) directive
@@ -596,6 +706,7 @@ echo "ui-guard: scanning $(collect_blade_files | wc -l) Blade files"
 tripwire_money_line || true
 tripwire_nested_style_include || true
 tripwire_xpage_pageheader_combo || true
+tripwire_raw_style_tag || true
 
 if [ "$fail" -ne 0 ]; then
     echo

@@ -244,11 +244,19 @@ run_benign_case \
     '<h1>Hello, world</h1>' \
     'resources/views/welcome.blade.php'
 
+# Editing a CSS partial (_css/*.blade.php) is the right place to
+# add or change styles. The plan says "New CSS only in tokens.css
+# / component partials" — so a benign change to a CSS partial
+# must NOT trip any of the tripwires. (This replaces an older
+# "benign css change" test that edited a non-CSS Blade view; that
+# scenario is now itself a violation under tripwire 4, and a
+# regression test for tripwire 4 below covers the violation
+# case in the other direction.)
 run_benign_case \
-    "benign css change" \
+    "benign change inside a _css/*.blade.php partial" \
     '<style>body { color: red; }</style>' \
     '<style>body { color: blue; }</style>' \
-    'resources/views/welcome.blade.php'
+    'resources/views/welcome/_css/page.blade.php'
 
 # A line that contains the substring "amount" inside a larger word
 # (e.g. "paramount", "reamounted") must NOT trip — the portable
@@ -265,6 +273,62 @@ run_benign_case \
     '@section("content")
 <p>The paramount concern is user trust.</p>
 <p>It is a paramount priority, not a minor one.</p>' \
+    'resources/views/welcome.blade.php'
+
+# --- Tripwire 4: new <style> tag in a non-CSS Blade file ---------------------
+echo
+echo "[tripwire 4] new <style> tag in a non-CSS Blade file"
+
+# A new <style> block in a regular Blade view (not a _css partial)
+# is a violation of the §0 guardrail: "New CSS only in tokens.css /
+# component partials; per-page <style> shrinks, never grows." The
+# tripwire fires on the opening <style> tag of the new block.
+run_violation_case \
+    "new <style> block in a non-CSS Blade view" \
+    '<h1>Hello</h1>' \
+    '<h1>Hello</h1>
+<style>
+body { color: red; }
+</style>' \
+    'resources/views/welcome.blade.php'
+
+# A new <style> block in a _css/*.blade.php partial is the
+# RIGHT place to add CSS — it must NOT trip the guard. The
+# tripwire's path filter exempts any file whose path contains
+# `_css/.../*.blade.php`.
+run_benign_case \
+    "new <style> block in a _css/*.blade.php partial" \
+    '<style>body { color: red; }</style>' \
+    '<style>
+body { color: red; }
+.btn { padding: 4px; }
+</style>' \
+    'resources/views/welcome/_css/page.blade.php'
+
+# An inline `style="..."` attribute on an element is NOT a
+# <style> tag — it is a per-element style attribute, which the
+# guard does not police. The regex `<style[> \t/]` requires
+# the char after `<style` to be a tag terminator; the char
+# after `<style="` is `"`, which is not a terminator, so the
+# tripwire does not fire.
+run_benign_case \
+    "inline style=\"…\" attribute (must not trip)" \
+    '<h1>Hello</h1>' \
+    '<h1 style="color: red;">Hello</h1>' \
+    'resources/views/welcome.blade.php'
+
+# A <link rel="stylesheet" href="…"> is a link to an external
+# stylesheet, not a <style> tag. The char after `<style` is
+# `s` (the start of `stylesheet`), which is not a tag
+# terminator, so the regex does not match. This test
+# specifically guards against a future refactor that breaks
+# the `[> \t/]` terminator check and starts matching
+# `<link rel="stylesheet">` as a violation.
+run_benign_case \
+    "<link rel=\"stylesheet\"> (must not trip)" \
+    '<h1>Hello</h1>' \
+    '<h1>Hello</h1>
+<link rel="stylesheet" href="/css/tokens.css">' \
     'resources/views/welcome.blade.php'
 
 # --- Summary -----------------------------------------------------------------
