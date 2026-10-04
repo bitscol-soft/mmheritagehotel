@@ -72,6 +72,7 @@
         <li><a href="#w5-4b">W5.4b</a> — GS goods_requisitions gin_list: the 11-column results table (SL, Issue Date, GIN Number, Date, Requisition No, Company, Department, Reference, Total Qty, Received By, Action) → <code>&lt;x-mm.data-table&gt;</code>. Per-row Print / View Details / Unapprove / Delete action buttons + delete <code>&lt;form&gt;</code> + permission checks + route bindings all preserved. Top filter table + per-row view-details Bootstrap-3 modals + print-gin-details view + create/edit/approve views of goods_requisitions stay deferred.</li>
         <li><a href="#t2-hall-aminities">T2 hall-aminities</a> — 3 files in <code>module/BanquetHall/views/hall/aminities/</code> (create, edit, index) had 2 unused jQuery DataTables script tags in their <code>@section('js')</code> blocks. Removed. The <code>delete_check</code> JS function + <code>dropzone.min.js</code> (create only) remain. 28 more views across the project have the same unused DataTables tags and are T2 candidates.</li>
         <li><a href="#t2-sweep">T2 DataTables sweep</a> — 28 views cleaned (the full T2 inventory closed in one PR). For each: removed the 2 unused <code>jquery.dataTables.min.js</code> + <code>jquery.dataTables.bootstrap.min.js</code> script tags. Every file was verified to have no <code>.DataTable(...)</code> constructor call and no <code>dataTables_</code> / <code>fnFilter</code> / <code>fnSort</code> API call. 28 files, 56 deletions, 0 additions. Module breakdown: Account (3), GeneralStore (2), Hotel (5), HotelWebsite (11), Permission (1), Restaurant (3), BanquetHall (2).</li>
+        <li><a href="#w6-2b">W6.2b (pilot)</a> — 3 canonical financial reports (<code>trial-balance</code>, <code>balance-sheet</code>, <code>income-statement</code>) in <code>module/Account/views/reports/*/print.blade.php</code> wrapped in <code>&lt;x-mm.print-sheet sheet="a4-landscape"&gt;</code>. New <code>a4-landscape</code> variant added to <code>resources/css/ui.css</code> (max-width 1100px screen, max-width none print). The raw <code>&lt;table border="1"&gt;</code> in each file is now a <code>&lt;x-mm.data-table&gt;</code>. Inline <code>&lt;style&gt;</code> blocks reduced to just <code>@page { size: landscape; margin: 0.5in; }</code> — all other print CSS is in ui.css + print-sheet. The top-right "no-print" button bar (Print + Back) is replaced with a single Back link (using <code>.mm-no-print</code>); the print-sheet has its own bottom Print button. The ugly <code>background:red !important</code> on the title + date-range is removed. Money math preserved byte-for-byte. 12 more reports remain for W6.2b-2.</li>
     </ul>
 </div>
 
@@ -1748,6 +1749,61 @@ module/Restaurant/views/kitchen/index.blade.php
         <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
             <div style="font-size:32px;font-weight:700;color:#2f63a8;">0</div>
             <div style="color:var(--mm-muted);font-size:13px;">Other JS touched (delete_check, chosen, date-picker, popover, exportData, dropzone, etc. all intact)</div>
+        </div>
+    </div>
+</section>
+
+<section class="preview-section" id="w6-2b">
+    <h2>W6.2b (pilot) — financial reports → <x-mm.print-sheet sheet="a4-landscape"></h2>
+    <p style="color:#526578">Sister PR to W6.2 (voucher show pages). Converts the 3 canonical financial reports to the new <code>&lt;x-mm.print-sheet sheet="a4-landscape"&gt;</code> variant. The new variant is added to <code>resources/css/ui.css</code> with a screen max-width of 1100px and a print max-width of none. The actual <code>@page { size: landscape; margin: 0.5in; }</code> rule stays in each print file's <code>&lt;style&gt;</code> block (a global @page rule in ui.css would also apply to non-landscape pages).</p>
+
+    <h3 style="margin-top:24px">What was done in this commit (5 files, 144 insertions, 300 deletions)</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>3 print files converted</strong> to <code>&lt;x-mm.print-sheet sheet="a4-landscape"&gt;</code> + <code>&lt;x-mm.data-table&gt;</code>:
+            <ul style="margin-top:6px">
+                <li><code>module/Account/views/reports/trial-balance/print.blade.php</code> (160 → 105 lines, 9-column data-table with Total row)</li>
+                <li><code>module/Account/views/reports/balance-sheet/print.blade.php</code> (163 → 98 lines, 2-column data-table per account group + Liabilities / Current Equity / Total rows)</li>
+                <li><code>module/Account/views/reports/income-statement/print.blade.php</code> (160 → 105 lines, 9-column data-table with Total row)</li>
+            </ul>
+        </li>
+        <li><strong>2 infrastructure changes</strong>:
+            <ul style="margin-top:6px">
+                <li><code>resources/css/ui.css</code> — added <code>.mm-print-sheet-a4-landscape { max-width: 1100px; }</code> + <code>@media print { .mm-ui .mm-print-sheet-a4-landscape { max-width: none; } }</code></li>
+                <li><code>resources/views/components/mm/print-sheet.blade.php</code> — updated the <code>@props</code> doc comment to include <code>'a4-landscape'</code> in the valid sheet values list</li>
+            </ul>
+        </li>
+        <li><strong>Top "no-print" button bar removed</strong> from each print file. The original had a Bootstrap-3 button group with [Print] [Back] at the top-right. Replaced with a small Back link at the top using the <code>.mm-no-print</code> utility class. The print-sheet has its own bottom Print button (already exists, uses <code>data-mm-print</code> → <code>window.print()</code>).</li>
+        <li><strong>Ugly <code>background:red !important</code> removed</strong> from the title + date-range headings in all 3 files. The print-sheet's typography + the data-table's styling now provide the visual structure.</li>
+        <li><strong>Inline <code>&lt;style&gt;</code> blocks reduced</strong> from ~25 lines to 4 lines each. The original had <code>#print { display: block !important; }</code> + a full <code>@media print { ... }</code> block with <code>.no-print *</code> + <code>tr { page-break-after: avoid; }</code> + <code>thead { page-break-before: avoid; }</code> + <code>@page { ... }</code> + <code>th, td { padding: 5px; }</code>. All of that is now in ui.css + the print-sheet component + the data-table component.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">Money math (byte-for-byte preserved)</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>trial-balance + income-statement</strong>: <code>number_format($account->opening_balance ?? 0, 2)</code>, <code>number_format(abs($account->debit ?? 0), 2)</code>, <code>number_format($account->credit ?? 0, 2)</code>, <code>number_format($balance ?? 0, 2)</code> — all preserved.</li>
+        <li><strong>trial-balance + income-statement Total row</strong>: <code>$totalOpeningBalance</code> = sum of opening, <code>$totalDebit</code> = sum of debit, <code>$totalCredit</code> = sum of credit, final = <code>abs(opening) + abs(debit) + credit</code> — all preserved.</li>
+        <li><strong>balance-sheet</strong>: <code>$totalBalance = $accountGroup->accounts->sum('balance')</code>, <code>$totalOwnerEquity += $totalBalance</code>, <code>$asset = $totalBalance</code> (first iteration), <code>$currentEquity = $asset - $totalOwnerEquity</code>, final = <code>$totalOwnerEquity + $currentEquity</code> — all preserved.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">What was NOT done (and why)</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>12 more reports remain</strong> in <code>module/Account/views/reports/</code>: <code>account-ledger</code>, <code>account-payables</code>, <code>account-receivables</code>, <code>cash-flow</code>, <code>chart-of-account</code>, <code>customer-ledger</code>, <code>equity-statement</code>, <code>expense-analysis</code>, <code>subsidiary-wise-ledger</code>, <code>supplier</code>, <code>supplier-ledger</code>, <code>voucher-reports</code>. They each have their own quirks and will be converted in a follow-up <strong>W6.2b-2</strong> PR.</li>
+        <li><strong>print-gin-details</strong> (GS goods_requisitions) is a standalone HTML5 page (no <code>@extends('layouts.master')</code>) and needs a separate <code>standalone</code> variant of the print-sheet. That is a <strong>W5.4c</strong> PR.</li>
+        <li>The <strong>income-statement and trial-balance print files were LITERALLY identical</strong> to each other (someone forgot to update the title from "Category Wise Transaction Ledger" in both). They still share the same content but now have different titles.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">Numbers</h3>
+    <div class="mm-grid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;">
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">3</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Financial reports converted (trial-balance, balance-sheet, income-statement)</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">156</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Lines net deleted (300 - 144)</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">12</div>
+            <div style="color:var(--mm-muted);font-size:13px;">More reports to convert in W6.2b-2</div>
         </div>
     </div>
 </section>
