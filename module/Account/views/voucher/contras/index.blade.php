@@ -60,70 +60,62 @@
         <!-- LIST -->
         <div class="row" style="width: 100%; margin: 0 !important; margin-bottom: 20px !important">
             <div class="col-sm-12">
-                <x-mm.table-scroll label="Contra Vouchers">
-                    <table class="table table-bordered table-striped">
-                        <thead>
-                            <tr class="table-header-bg">
-                                <th class="text-center" style="color: white !important;" width="8%">Sl</th>
-                                <th class="pl-3" style="color: white !important;" width="20%">Invoice No</th>
-                                <th class="pl-3" style="color: white !important;">Date</th>
-                                <th class="pl-3" style="color: white !important;" width="15%">Reference</th>
-                                <th class="pr-3 text-right" style="color: white !important;">Amount</th>
-                                <th class="text-center" style="color: white !important;">Status</th>
-                                <th class="text-center" style="color: white !important;">Actions</th>
-                            </tr>
-                        </thead>
+                <x-mm.data-table :columns="[
+                    ['label' => 'Sl', 'width' => '8%', 'align' => 'center'],
+                    ['label' => 'Invoice No', 'width' => '20%'],
+                    ['label' => 'Date'],
+                    ['label' => 'Reference', 'width' => '15%'],
+                    ['label' => 'Amount', 'align' => 'right'],
+                    ['label' => 'Status', 'align' => 'center'],
+                    ['label' => 'Actions', 'align' => 'center'],
+                ]" id="data-table" label="Contra Vouchers" table-class="table table-bordered table-striped">
+                    @forelse ($vouchers as $item)
+                        <tr>
+                            <td class="text-center">{{ $loop->iteration }}</td>
+                            <td class="pl-3">{{ $item->invoice_no }}</td>
+                            <td class="pl-3">{{ $item->date }}</td>
+                            <td class="pl-3">{{ $item->reference }}</td>
+                            <td class="pr-3 text-right">{{ number_format($item->amount, 2) }}</td>
+                            <td class="text-center">
+                                {!! $item->is_approved == 1 ? '<span class="label label-info">Approved</span>' : '<span class="label label-warning">Unapproved</span>' !!}
+                            </td>
+                            <td class="text-center">
+                                <div class="btn-group btn-corner">
 
-                        <tbody>
-                            @forelse ($vouchers as $item)
-                                <tr>
-                                    <td class="text-center">{{ $loop->iteration }}</td>
-                                    <td class="pl-3">{{ $item->invoice_no }}</td>
-                                    <td class="pl-3">{{ $item->date }}</td>
-                                    <td class="pl-3">{{ $item->reference }}</td>
-                                    <td class="pr-3 text-right">{{ number_format($item->amount, 2) }}</td>
-                                    <td class="text-center">
-                                        {!! $item->is_approved == 1 ? '<span class="label label-info">Approved</span>' : '<span class="label label-warning">Unapproved</span>' !!}
-                                    </td>
-                                    <td class="text-center">
-                                        <div class="btn-group btn-corner">
+                                    @include('partials._user-log', ['data' => $item])
 
-                                            @include('partials._user-log', ['data' => $item])
+                                    <a href="{{ route('voucher-contras.show', $item->id) }}" target="_blank"
+                                        class="btn btn-success btn-xs" title="View Details"><i
+                                            class="fa fa-eye"></i></a>
 
-                                            <a href="{{ route('voucher-contras.show', $item->id) }}" target="_blank"
-                                                class="btn btn-success btn-xs" title="View Details"><i
-                                                    class="fa fa-eye"></i></a>
+                                    @if (!$item->is_approved)
+                                        @if (hasPermission('vouchers.approve', $slugs))
+                                            <a href="{{ route('voucher-contras.show', $item->id) }}?type=approve"
+                                                target="_blank" class="btn btn-purple btn-xs"
+                                                title="Approve Voucher"><i class="fa fa-check"></i></a>
+                                        @endif
+                                    @endif
 
-                                            @if (!$item->is_approved)
-                                                @if (hasPermission('vouchers.approve', $slugs))
-                                                    <a href="{{ route('voucher-contras.show', $item->id) }}?type=approve"
-                                                        target="_blank" class="btn btn-purple btn-xs"
-                                                        title="Approve Voucher"><i class="fa fa-check"></i></a>
-                                                @endif
-                                            @endif
-
-                                            @if (hasPermission('voucher-contras.delete', $slugs))
-                                                <button type="button"
-                                                    onclick="delete_item('{{ route('voucher-contras.destroy', $item->id) }}')"
-                                                    class="btn btn-danger btn-xs" title="Delete"><i
-                                                        class="fa fa-trash-o"></i></button>
-                                            @endif
-                                        </div>
-                                    </td>
-                                </tr>
-                            @empty
-                                <tr>
-                                    <th colspan="30" class="text-center">
-                                        <br>
-                                        <strong class="text-danger" style="font-size: 18px">No records found!</strong>
-                                        <br>
-                                        <br>
-                                    </th>
-                                </tr>
-                            @endforelse 
-                        </tbody>
-                    </table>
-                </x-mm.table-scroll>
+                                    @if (hasPermission('voucher-contras.delete', $slugs))
+                                        <button type="button"
+                                            onclick="delete_item('{{ route('voucher-contras.destroy', $item->id) }}')"
+                                            class="btn btn-danger btn-xs" title="Delete"><i
+                                                class="fa fa-trash-o"></i></button>
+                                    @endif
+                                </div>
+                            </td>
+                        </tr>
+                    @empty
+                        <tr>
+                            <td colspan="7" class="text-center">
+                                <br>
+                                <strong class="text-danger" style="font-size: 18px">No records found!</strong>
+                                <br>
+                                <br>
+                            </td>
+                        </tr>
+                    @endforelse
+                </x-mm.data-table>
 
                 @include('partials._paginate', ['data' => $vouchers])
             </div>
