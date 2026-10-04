@@ -92,7 +92,7 @@
                     <label class="col-sm-3 control-label" for="room-rent"> Rent/Night </label>
                     <div class="col-xs-12 col-sm-8 @error('rent') has-error @enderror">
                         <input type="text" class="form-control input-sm" id="room-rent" name="rent"
-                            value="{{ old('rent') }}" placeholder="Rent/Night">
+                            value="{{ old('rent', $room->rent) }}" placeholder="Rent/Night">
 
                         @error('rent')
                             <span class="text-danger"> {{ $message }}</span>
@@ -107,7 +107,7 @@
                     <label class="col-sm-3 control-label" for="room-beds"> Beds </label>
                     <div class="col-xs-12 col-sm-8 @error('beds') has-error @enderror">
                         <input type="text" class="form-control input-sm" id="room-beds" name="beds"
-                            value="{{ old('beds') }}" placeholder="Enter Beds">
+                            value="{{ old('beds', $room->beds) }}" placeholder="Enter Beds">
 
                         @error('beds')
                             <span class="text-danger"> {{ $message }}</span>
@@ -122,7 +122,7 @@
                     <label class="col-sm-3 control-label" for="room-max-guests"> Max Guests </label>
                     <div class="col-xs-12 col-sm-8 @error('max_guests') has-error @enderror">
                         <input type="text" class="form-control input-sm" id="room-max-guests" name="max_guests"
-                            value="{{ old('max_guests') }}" placeholder="Enter Max Guests">
+                            value="{{ old('max_guests', $room->max_guests) }}" placeholder="Enter Max Guests">
 
                         @error('max_guests')
                             <span class="text-danger"> {{ $message }}</span>
