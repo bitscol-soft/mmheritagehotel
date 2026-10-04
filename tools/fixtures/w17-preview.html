@@ -75,6 +75,7 @@
         <li><a href="#w6-2b">W6.2b (pilot)</a> — 3 canonical financial reports (<code>trial-balance</code>, <code>balance-sheet</code>, <code>income-statement</code>) in <code>module/Account/views/reports/*/print.blade.php</code> wrapped in <code>&lt;x-mm.print-sheet sheet="a4-landscape"&gt;</code>. New <code>a4-landscape</code> variant added to <code>resources/css/ui.css</code> (max-width 1100px screen, max-width none print). The raw <code>&lt;table border="1"&gt;</code> in each file is now a <code>&lt;x-mm.data-table&gt;</code>. Inline <code>&lt;style&gt;</code> blocks reduced to just <code>@page { size: landscape; margin: 0.5in; }</code> — all other print CSS is in ui.css + print-sheet. The top-right "no-print" button bar (Print + Back) is replaced with a single Back link (using <code>.mm-no-print</code>); the print-sheet has its own bottom Print button. The ugly <code>background:red !important</code> on the title + date-range is removed. Money math preserved byte-for-byte. 12 more reports remain for W6.2b-2.</li>
         <li><a href="#w6-2b-2">W6.2b-2</a> — 2 more landscape reports (<code>cash-flow</code>, <code>equity-statement</code>) converted. Same pattern as the pilot. 5 of 15 financial reports are now on the new print-sheet pattern. 10 portrait reports remain (different pattern, need design decision on <code>&lt;tfoot&gt;</code> issue first).</li>
         <li><a href="#w6-2b-3">W6.2b-3</a> — 10 portrait reports converted. New <code>&lt;x-slot name="footer"&gt;</code> added to <code>&lt;x-mm.data-table&gt;</code> for the optional <code>&lt;tfoot&gt;</code> Total row. <strong>15 of 15 financial reports are now on the new <code>&lt;x-mm.print-sheet&gt;</code> pattern.</strong> Money math preserved byte-for-byte across all 10 files.</li>
+        <li><a href="#w6-4a">W6.4a</a> — 4 permission CRUD pages (<code>module</code>, <code>submodule</code>, <code>parent_permission</code>, <code>permission/index</code>) converted from <code>&lt;x-mm.table-scroll&gt;</code> + raw <code>&lt;table id="dynamic-table"&gt;</code> + jQuery DataTables to <code>&lt;x-mm.data-table&gt;</code>. 2 unused DataTables script tags + the <code>$('#dynamic-table').DataTable({...})</code> init removed. <code>delete_check</code> + per-row action buttons + delete <code>&lt;form&gt;</code> + Laravel pagination all preserved. <strong>First half of W6.4 done.</strong> The actual permission matrix (bulk-toggle UX redesign) is a separate W6.4b PR.</li>
     </ul>
 </div>
 
@@ -1902,6 +1903,57 @@ module/Restaurant/views/kitchen/index.blade.php
         <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
             <div style="font-size:32px;font-weight:700;color:#2f63a8;">537</div>
             <div style="color:var(--mm-muted);font-size:13px;">Lines net deleted (1150 - 613)</div>
+        </div>
+    </div>
+</section>
+
+<section class="preview-section" id="w6-4a">
+    <h2>W6.4a — 4 permission CRUD pages → <x-mm.data-table></h2>
+    <p style="color:#526578">First half of W6.4. Converts the 4 permission CRUD pages from <code>&lt;x-mm.table-scroll&gt;</code> + raw <code>&lt;table id="dynamic-table"&gt;</code> + jQuery DataTables to <code>&lt;x-mm.data-table&gt;</code>. The 2 unused DataTables script tags + the <code>$('#dynamic-table').DataTable({...})</code> init are removed. The <code>delete_check</code> Swal.fire function + the per-row action buttons + the per-row delete <code>&lt;form&gt;</code> + the Laravel <code>@include('partials._paginate', ...)</code> pagination are all preserved. The actual permission matrix (bulk-toggle UX redesign) is a separate W6.4b PR.</p>
+
+    <h3 style="margin-top:24px">What was done in this commit (4 files, 121 insertions, 223 deletions)</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>4 permission CRUD files converted</strong>:
+            <ul style="margin-top:6px">
+                <li><code>module/Permission/views/module.blade.php</code> (133 → 99 lines, 4-col data-table: SL, Module Name, Status, Action)</li>
+                <li><code>module/Permission/views/submodule.blade.php</code> (161 → 127 lines, 5-col data-table: SL, Module, Sub Module Name, Slug, Action)</li>
+                <li><code>module/Permission/views/parent_permission.blade.php</code> (162 → 128 lines, 4-col data-table: SL, Submodule, Parent Permission, Action)</li>
+                <li><code>module/Permission/views/permission/index.blade.php</code> (108 → 75 lines, 7-col data-table: SL, Module, Submodule, Parent Permission, Permission Name, Slug, Action)</li>
+            </ul>
+        </li>
+        <li>For each file:
+            <ul style="margin-top:6px">
+                <li><code>&lt;x-mm.table-scroll label="..."&gt;</code> + raw <code>&lt;table id="dynamic-table"&gt;</code> replaced with <code>&lt;x-mm.data-table :columns="[...]" ... id="dynamic-table" ...&gt;</code></li>
+                <li>The <code>&lt;thead&gt;</code> removed (data-table renders the thead from <code>:columns</code>)</li>
+                <li>The 2 jQuery DataTables script tags removed</li>
+                <li>The <code>$('#dynamic-table').DataTable({...})</code> init removed</li>
+                <li>The <code>delete_check</code> Swal.fire function preserved (used by the per-row Delete button)</li>
+                <li>The Laravel <code>@include('partials._paginate', ...)</code> pagination link is preserved (the original had <code>"bPaginate": false</code> for some pages, so the Laravel pagination was the sole pagination)</li>
+                <li>The per-row action buttons (Edit + Delete) and the per-row delete <code>&lt;form&gt;</code> are preserved byte-for-byte (same route bindings, same id="deleteCheck_{id}", same @csrf + @method("DELETE"))</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h3 style="margin-top:24px">What was NOT done (and why)</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>The actual permission matrix</strong> (the W6.4 bulk-toggle UX redesign) is a separate <strong>W6.4b</strong> PR. The current pages are the CRUD pages for Module / Submodule / Parent Permission / Permission (separate entities). The matrix page (where you assign permissions to a user/role) is a different file (likely <code>users/index</code> or <code>access/index</code> — not yet looked at).</li>
+        <li>The <code>chosen.jquery.min.js</code> script + <code>chosen-select</code> init are preserved (used by the top form's Module / Submodule dropdowns). <code>chosen</code> is a real jQuery plugin, not DataTables.</li>
+        <li>The <strong>top form</strong> (Module Name / Sub Module Name / Parent Permission Name + Save/Reset buttons) is preserved as raw HTML. The form fields use Bootstrap-3 <code>form-horizontal</code> + <code>form-group</code> + <code>col-sm-3</code> / <code>col-xs-12 col-sm-8</code> which don't fit <code>&lt;x-mm.field&gt;</code> cleanly (input-group addons etc.). This is the same deferred reason as the W6.1b voucher create forms.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">Numbers</h3>
+    <div class="mm-grid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;">
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">4</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Permission CRUD pages converted</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">102</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Lines net deleted (223 - 121)</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">2</div>
+            <div style="color:var(--mm-muted);font-size:13px;">jQuery DataTables script tags removed per file</div>
         </div>
     </div>
 </section>
