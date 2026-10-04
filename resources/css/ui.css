@@ -959,6 +959,8 @@
 .mm-ui .mm-data-table tbody tr:hover { background: #f0f5fa; }
 .mm-ui .mm-data-table .mm-text-right { text-align: right; }
 .mm-ui .mm-data-table .mm-text-center { text-align: center; }
+.mm-ui .mm-data-table tfoot.mm-data-table-tfoot th,
+.mm-ui .mm-data-table tfoot.mm-data-table-tfoot td { background: var(--mm-bg); color: var(--mm-ink); font-weight: 600; padding: var(--mm-pad-3) var(--mm-pad-4); border-top: 1px solid var(--mm-line); border-bottom: none; }
 .mm-ui .mm-data-table.mm-sticky-header thead th { position: sticky; top: 0; z-index: 1; }
 /* Priority fold at ≤767px: hide columns where data-priority >= 2. The default
    no-priority column is also hidden on mobile to keep the table narrow. */

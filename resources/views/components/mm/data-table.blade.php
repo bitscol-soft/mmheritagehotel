@@ -57,6 +57,11 @@
                         {{ $slot }}
                     @endif
                 </tbody>
+                @if(trim((string) ($footer ?? '')) !== '')
+                    <tfoot class="mm-data-table-tfoot">
+                        {{ $footer }}
+                    </tfoot>
+                @endif
             </table>
         </x-mm.table-scroll>
     @endif
