@@ -29,57 +29,48 @@
     <x-mm.panel class="tw-p-4">
         <x-alert-message />
 
-        <div class="row">
-            <div class="col-sm-12">
-                <x-mm.table-scroll label="Tables">
-                    <table id="data-table" class="table table-striped table-bordered nowrap" width="100%">
-                        <thead>
-                            <tr>
-                                <th width="5%">Sl</th>
-                                <th>Name</th>
-                                <th>No</th>
-                                <th width="10%">Status</th>
-                                <th width="10%" class="text-center">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @php($sl = $table_manages->firstItem())
-                            @foreach ($table_manages as $item)
-                                <tr class="odd gradeX">
-                                    <td>{{ $sl++ }}</td>
-                                    <td>{{ $item->name }}</td>
-                                    <td>{{ $item->table_no }}</td>
-                                    <td>{{ status($item->status) }}</td>
-                                    <td class="text-center">
+        <x-mm.data-table :columns="[
+            ['label' => 'Sl', 'width' => '5%'],
+            ['label' => 'Name'],
+            ['label' => 'No'],
+            ['label' => 'Status', 'width' => '10%'],
+            ['label' => 'Action', 'width' => '10%', 'align' => 'center'],
+        ]" id="data-table" label="Tables" table-class="table table-striped table-bordered nowrap">
+            @php($sl = $table_manages->firstItem())
+            @forelse ($table_manages as $item)
+                <tr class="odd gradeX">
+                    <td>{{ $sl++ }}</td>
+                    <td>{{ $item->name }}</td>
+                    <td>{{ $item->table_no }}</td>
+                    <td>{{ status($item->status) }}</td>
+                    <td class="text-center">
 
-                                        <div class="btn-group btn-corner">
+                        <div class="btn-group btn-corner">
 
-                                            @if (hasPermission('bar.table-manages.edit', $slugs))
-                                                <a href="#edit-modal"
-                                                    onclick="editTable(`{{ route('bar.table-manages.update', $item->id) }}`,{{ $item }})"
-                                                    data-toggle="modal" class="btn btn-sm btn-success" title="Edit">
-                                                    <i class="fa fa-pencil-square-o"></i>
-                                                </a>
-                                            @endif
+                            @if (hasPermission('bar.table-manages.edit', $slugs))
+                                <a href="#edit-modal"
+                                    onclick="editTable(`{{ route('bar.table-manages.update', $item->id) }}`,{{ $item }})"
+                                    data-toggle="modal" class="btn btn-sm btn-success" title="Edit">
+                                    <i class="fa fa-pencil-square-o"></i>
+                                </a>
+                            @endif
 
-                                            @if (hasPermission('bar.table-manages.delete', $slugs))
-                                                <button type="button"
-                                                    onclick="delete_item(`{{ route('bar.table-manages.destroy', $item->id) }}`)"
-                                                    class="btn btn-sm btn-danger" title="Delete">
-                                                    <i class="fa fa-trash-o"></i>
-                                                </button>
-                                            @endif
+                            @if (hasPermission('bar.table-manages.delete', $slugs))
+                                <button type="button"
+                                    onclick="delete_item(`{{ route('bar.table-manages.destroy', $item->id) }}`)"
+                                    class="btn btn-sm btn-danger" title="Delete">
+                                    <i class="fa fa-trash-o"></i>
+                                </button>
+                            @endif
 
-                                        </div>
-                                    </td>
+                        </div>
+                    </td>
 
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </x-mm.table-scroll>
-            </div>
-        </div>
+                </tr>
+            @empty
+                <x-no-table-record />
+            @endforelse
+        </x-mm.data-table>
     </x-mm.panel>
 </x-mm.page>
 
