@@ -96,8 +96,6 @@
 
 @section('js')
 
-    <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('assets/js/jquery.dataTables.bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/custom_js/date-picker.js') }}"></script>
 
     @include('rooms.inc.script')
@@ -121,17 +119,5 @@
             })
 
         }
-    </script>
-
-    <script type="text/javascript">
-        jQuery(function($) {
-            $('#data-table').DataTable({
-                "ordering": false,
-                "bPaginate": true,
-                "lengthChange": false,
-                "info": false,
-                "pageLength": 25
-            });
-        })
     </script>
 @stop

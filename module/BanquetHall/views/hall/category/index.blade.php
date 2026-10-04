@@ -59,38 +59,11 @@
 @endsection
 
 @section('js')
-    <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('assets/js/jquery.dataTables.bootstrap.min.js') }}"></script>
-    <script src="{{ asset('assets/js/dataTables.buttons.min.js') }}"></script>
-
     <script>
         $(document).ready(function() {
             $(".currency-sign").each(function() {
                 $(this).text(`{!! currencySign() !!}`);
             });
         });
-    </script>
-
-    <script type="text/javascript">
-        jQuery(function($) {
-            var myTable =
-                $('#dynamic-table')
-                .DataTable({
-                    bAutoWidth: false,
-                    "aoColumns": [{
-                            "bSortable": false
-                        },
-                        null, null, null, null, null,
-                        {
-                            "bSortable": false
-                        }
-                    ],
-                    "aaSorting": [],
-
-                    select: {
-                        style: 'multi'
-                    }
-                });
-        })
     </script>
 @endsection

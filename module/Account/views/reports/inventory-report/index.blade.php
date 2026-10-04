@@ -88,80 +88,76 @@
                 <!-- LIST -->
                 <div class="row" style="width: 100%; margin: 0 !important;">
                     <div class="col-sm-12 px-2">
-                        <div class="table-responsive">
-                            <table id="data-table" class="table table-bordered table-striped">
-                                <thead>
-                                <tr class="table-header-bg">
-                                    <th class="text-center" style="color: white !important;" width="3%">Sl</th>
-                                    <th width="15%" style="color: white !important;">Name</th>
-                                    <th class="pl-2" style="color: white !important;">Opening Qty</th>
-                                    <th class="pl-2" style="color: white !important;">Purchase Qty</th>
-                                    <th class="pl-2" style="color: white !important;">Sale Qty</th>
-                                    <th class="pl-2" style="color: white !important;">Issue Qty</th>
-                                    <th class="pl-2" style="color: white !important;">Purchase Return Qty</th>
-                                    <th class="pl-2" style="color: white !important;">Sale Return Qty</th>
-                                    <th class="pl-2" style="color: white !important;">Transfer In Qty</th>
-                                    <th class="pl-2" style="color: white !important;">Transfer Out Qty</th>
-                                    <th class="pl-2" style="color: white !important;">Available Qty</th>
-                                    <th width="10%" class="text-right" style="color: white !important;">Value</th>
-                                </tr>
-                                </thead>
-
-                                <tbody>
+                        @php
+                            $openingQty = 0;
+                            $purchaseQty = 0;
+                            $saleQty = 0;
+                            $issueQty = 0;
+                            $purchaseReturnQty = 0;
+                            $saleReturnQty = 0;
+                            $transferInQty = 0;
+                            $transferOutQty = 0;
+                            $availableQty = 0;
+                            $value = 0;
+                            $totalValue = 0;
+                        @endphp
+                        <x-mm.data-table
+                            :columns="[
+                                ['label' => 'Sl',                 'align' => 'center', 'width' => '3%'],
+                                ['label' => 'Name',               'align' => 'left',   'width' => '15%'],
+                                ['label' => 'Opening Qty',        'align' => 'center'],
+                                ['label' => 'Purchase Qty',       'align' => 'center'],
+                                ['label' => 'Sale Qty',           'align' => 'center'],
+                                ['label' => 'Issue Qty',          'align' => 'center'],
+                                ['label' => 'Purchase Return Qty','align' => 'center'],
+                                ['label' => 'Sale Return Qty',    'align' => 'center'],
+                                ['label' => 'Transfer In Qty',    'align' => 'center'],
+                                ['label' => 'Transfer Out Qty',   'align' => 'center'],
+                                ['label' => 'Available Qty',      'align' => 'center'],
+                                ['label' => 'Value',              'align' => 'right',  'width' => '10%'],
+                            ]"
+                        >
+                            @foreach($reports ?? [] as $item)
                                 @php
-                                    $openingQty = 0;
-                                    $purchaseQty = 0;
-                                    $saleQty = 0;
-                                    $issueQty = 0;
-                                    $purchaseReturnQty = 0;
-                                    $saleReturnQty = 0;
-                                    $transferInQty = 0;
-                                    $transferOutQty = 0;
-                                    $availableQty = 0;
-                                    $value = 0;
-                                    $totalValue = 0;
+                                    $productInfo = \Module\Account\Models\Product::select('name', 'product_code', 'purchase_price')->whereId($item->product_id)->first();
+                                    $openingQty += $item->opening_qty;
+                                    $purchaseQty += $item->purchase_qty;
+                                    $saleQty += $item->sale_qty;
+                                    $issueQty += $item->issue_qty;
+                                    $purchaseReturnQty += $item->purchase_return_qty;
+                                    $saleReturnQty += $item->sale_return_qty;
+                                    $transferInQty += $item->transfer_in_qty;
+                                    $transferOutQty += $item->transfer_out_qty;
+                                    $availableQty += $item->available_qty;
+                                    $value += $productInfo->purchase_price * $availableQty;
+                                    $totalValue += $value;
                                 @endphp
-                                @foreach($reports ?? [] as $item)
-                                    @php
-                                        $productInfo = \Module\Account\Models\Product::select('name', 'product_code', 'purchase_price')->whereId($item->product_id)->first();
-                                        $openingQty += $item->opening_qty;
-                                        $purchaseQty += $item->purchase_qty;
-                                        $saleQty += $item->sale_qty;
-                                        $issueQty += $item->issue_qty;
-                                        $purchaseReturnQty += $item->purchase_return_qty;
-                                        $saleReturnQty += $item->sale_return_qty;
-                                        $transferInQty += $item->transfer_in_qty;
-                                        $transferOutQty += $item->transfer_out_qty;
-                                        $availableQty += $item->available_qty;
-                                        $value += $productInfo->purchase_price * $availableQty;
-                                        $totalValue += $value;
-                                    @endphp
-                                    <tr>
-                                        <td class="text-center">{{ $loop->iteration }}</td>
-                                        <td class="text-center">
-                                            <span class="popover-success"
-                                                      data-rel="popover"
-                                                      data-placement="top"
-                                                      data-trigger="hover"
-                                                      data-original-title="<i class='ace-icon fa fa-info-circle green'></i> Product Info"
-                                                      data-content="<p><b>Name:</b> {{ $productInfo->name }}.</p><p><b>Code:</b> {{ $productInfo->product_code }}.</p>">
-                                                {{ Str::limit($productInfo->name, 35, '..') }}
-                                            </span>
-                                        </td>
-                                        <td class="text-center">{{ $item->opening_qty }}</td>
-                                        <td class="text-center">{{ $item->purchase_qty }}</td>
-                                        <td class="text-center">{{ $item->sale_qty }}</td>
-                                        <td class="text-center">{{ $item->issue_qty }}</td>
-                                        <td class="text-center">{{ $item->purchase_return_qty }}</td>
-                                        <td class="text-center">{{ $item->sale_return_qty }}</td>
-                                        <td class="text-center">{{ $item->transfer_in_qty }}</td>
-                                        <td class="text-center">{{ $item->transfer_out_qty }}</td>
-                                        <td class="text-center">{{ $item->available_qty }}</td>
-                                        <td class="text-right">{{ number_format($value, 2, '.', '') }}</td>
-                                    </tr>
-                                @endforeach
-                                </tbody>
-                                <tfoot>
+                                <tr>
+                                    <td class="text-center">{{ $loop->iteration }}</td>
+                                    <td class="text-center">
+                                        <span class="popover-success"
+                                                  data-rel="popover"
+                                                  data-placement="top"
+                                                  data-trigger="hover"
+                                                  data-original-title="<i class='ace-icon fa fa-info-circle green'></i> Product Info"
+                                                  data-content="<p><b>Name:</b> {{ $productInfo->name }}.</p><p><b>Code:</b> {{ $productInfo->product_code }}.</p>">
+                                            {{ Str::limit($productInfo->name, 35, '..') }}
+                                        </span>
+                                    </td>
+                                    <td class="text-center">{{ $item->opening_qty }}</td>
+                                    <td class="text-center">{{ $item->purchase_qty }}</td>
+                                    <td class="text-center">{{ $item->sale_qty }}</td>
+                                    <td class="text-center">{{ $item->issue_qty }}</td>
+                                    <td class="text-center">{{ $item->purchase_return_qty }}</td>
+                                    <td class="text-center">{{ $item->sale_return_qty }}</td>
+                                    <td class="text-center">{{ $item->transfer_in_qty }}</td>
+                                    <td class="text-center">{{ $item->transfer_out_qty }}</td>
+                                    <td class="text-center">{{ $item->available_qty }}</td>
+                                    <td class="text-right">{{ number_format($value, 2, '.', '') }}</td>
+                                </tr>
+                            @endforeach
+
+                            <x-slot name="footer">
                                 <tr>
                                     <th colspan="2" class="text-right">Total</th>
                                     <th class="text-center">{{ $openingQty }}</th>
@@ -175,9 +171,8 @@
                                     <th class="text-center">{{ $availableQty }}</th>
                                     <th class="text-right">{{ number_format($totalValue, 2, '.', '') }}</th>
                                 </tr>
-                                </tfoot>
-                            </table>
-                        </div>
+                            </x-slot>
+                        </x-mm.data-table>
                         @if(count($reports) <= 0)
                             <div class="text-center">
                                 <span class="text-warning">No Records Founds Yet!</span>
@@ -206,19 +201,4 @@
     <script src="{{ asset('assets/js/bootstrap-datepicker.min.js') }}"></script>
 
     <script src="{{ asset('assets/custom_js/confirm_delete_dialog.js') }}"></script>
-    <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('assets/js/jquery.dataTables.bootstrap.min.js') }}"></script>
-
-
-    <script type="text/javascript">
-        // jQuery(function($) {
-        //     $('#data-table').DataTable({
-        //         "ordering": false,
-        //         "bPaginate": true,
-        //         "lengthChange": false,
-        //         "info": false,
-        //         "pageLength": 25
-        //     });
-        // })
-    </script>
 @endsection
