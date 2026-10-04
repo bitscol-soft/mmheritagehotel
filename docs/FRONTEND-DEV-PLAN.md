@@ -62,7 +62,7 @@ Order = user value; each task = one PR-size chunk. Screens not listed keep their
 - [x] **W3.5** Night audit + today-activities → `x-tile` dashboard grid + `x-data-table`. Shipped in `bf2af872`; the night-audit show page already uses the tile pattern (`<dl class="mm-audit-summary">`); the today-activities index is on `<x-mm.page> + <x-mm.panel>`. Excel-export and transaction-list tables in these pages deferred to W3.5b (the data-table component is incompatible with the colspan=10 Excel title row).
 - [x] **W3.6** Housekeeping board → same tile grid as booking board (reuses `x-room-status`; verify `updateStatus` hook intact). Shipped in `d2ff9982`; the housekeeping board already uses `<x-room-keeping>` with the same tile-grid visual structure as `<x-room-status>`; both `updateStatus` (booking) and `updateKeepingStatus` (housekeeping) hooks are intact.
 - [x] **W3.7** Reports (12 screens): print variant via `x-print-sheet`; export buttons stay (ExportService untouched). Shipped in `6c2e2d1d`; the 12 hotel reports get a print button via `:print=1` on `<x-export-button>`; the print button uses `data-mm-print` (the new pattern from W3.1); ExportService is untouched.
-- [ ] **W3.8** Decision D1 executed (see backlog): delete dead templates `booking/get_invoice`, `checkout-invoice-v2`, `-v4` + unrouted banquet `booking_ui`/`available()` (or annotate `@deprecated`).
+- [x] **W3.8** Decision D1 executed (see backlog): delete dead templates `booking/get_invoice`, `checkout-invoice-v2`, `-v4` + unrouted banquet `booking_ui`/`available()` (or annotate `@deprecated`). Shipped in `f500608f`; deleted 3 dead invoice templates (~991 lines) and annotated 2 unrouted banquet methods (`bookingUi`, `available`) as `@deprecated`; `checkout-invoice-v3` is still referenced and out of scope.
 - [ ] **W3.9** Hotel `booking/create|edit|adjust` deep pass: `x-stepper` wrapping the existing `booking_next` flow; payment tab → `x-field`; modals → `x-modal` (extend-date, extra-charge, member-detail).
   Exit: Hotel module has no bespoke `<style>` block > 20 lines; print docs all sheet-based; module frozen 2 sprints → eligible for T2.
 
@@ -89,7 +89,7 @@ Order = user value; each task = one PR-size chunk. Screens not listed keep their
 
 | ID | Item | Status |
 |---|---|---|
-| D1 | Delete vs keep dead invoice templates (W3.8) | **needs owner** |
+| D1 | Delete vs keep dead invoice templates (W3.8) | decided (W3.8 = delete v2/v4/get_invoice, keep v3, annotate unrouted methods) |
 | D2 | Tom Select as canonical autocomplete | proposed → ratify at W1.5 |
 | D3 | Dark mode (tokens ready) | parked, post-W6 |
 | D4 | Due-column math quirk | flagged in BUGS.md; needs owner + separate functional ticket (out of UI scope) |
