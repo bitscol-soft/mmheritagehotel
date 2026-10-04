@@ -70,6 +70,7 @@
         <li><a href="#w6-1a">W6.1a</a> — Account voucher list pages (contras / journals / payments / receives): the 7-column list (Sl, Invoice No, Date, Reference, Amount, Status, Actions) → <code>&lt;x-mm.data-table&gt;</code>. Money amount renders byte-for-byte (<code>{{ number_format($item->amount, 2) }}</code>); per-row view/approve/edit/delete action buttons + permission checks + <code>@include('partials._user-log', …)</code> preserved. The top filter form (date-range input-group addon), the create/edit/show forms, and the financial-report prints (W6.2) stay deferred.</li>
         <li><a href="#w6-2">W6.2</a> — Account voucher show (invoice) pages: the body is wrapped in <code>&lt;x-mm.print-sheet&gt;</code> (the data-mm-print hook calls <code>window.print()</code>). Legacy broken Print buttons (<code>&lt;a href=""&gt;</code> at the bottom of contras/journals, <code>onclick="print()"</code> in the actions of payments/receives) are removed in favor of the print-sheet footer. The body table stays as raw <code>&lt;table&gt;</code> + <code>&lt;tfoot&gt;</code> because <code>&lt;x-mm.data-table&gt;</code> does NOT render <code>&lt;tfoot&gt;</code> — the totals row (<code>{{ number_format($voucher->amount, 2) }}</code> for contras/journals; <code>$totalAmount = $voucher->details->sum('amount') / 2</code> for payments/receives) is preserved byte-for-byte.</li>
         <li><a href="#w5-4b">W5.4b</a> — GS goods_requisitions gin_list: the 11-column results table (SL, Issue Date, GIN Number, Date, Requisition No, Company, Department, Reference, Total Qty, Received By, Action) → <code>&lt;x-mm.data-table&gt;</code>. Per-row Print / View Details / Unapprove / Delete action buttons + delete <code>&lt;form&gt;</code> + permission checks + route bindings all preserved. Top filter table + per-row view-details Bootstrap-3 modals + print-gin-details view + create/edit/approve views of goods_requisitions stay deferred.</li>
+        <li><a href="#t2-hall-aminities">T2 hall-aminities</a> — 3 files in <code>module/BanquetHall/views/hall/aminities/</code> (create, edit, index) had 2 unused jQuery DataTables script tags in their <code>@section('js')</code> blocks. Removed. The <code>delete_check</code> JS function + <code>dropzone.min.js</code> (create only) remain. 28 more views across the project have the same unused DataTables tags and are T2 candidates.</li>
     </ul>
 </div>
 
@@ -1629,6 +1630,51 @@ tripwire_xpage_pageheader_combo() {
         <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
             <div style="font-size:32px;font-weight:700;color:#2f63a8;">0</div>
             <div style="color:var(--mm-muted);font-size:13px;">Lines of JS changed (chosen + date-picker + popover + delete_check + exportData all intact)</div>
+        </div>
+    </div>
+</section>
+
+<section class="preview-section" id="t2-hall-aminities">
+    <h2>T2 hall-aminities — remove unused jQuery DataTables script tags</h2>
+    <p style="color:#526578">T2 backlog item. The 3 files in <code>module/BanquetHall/views/hall/aminities/</code> (create, edit, index) had 2 unused jQuery DataTables script tags in their <code>@section('js')</code> blocks. The index was converted to <code>&lt;x-mm.data-table&gt;</code> in W4.2 (which uses pure CSS, no jQuery DataTables), but the 2 <code>&lt;script src="...jquery.dataTables..."&gt;</code> tags were left behind as dead weight. The create + edit are form pages that never used DataTables either. The <code>delete_check</code> JS function (used by the index page's delete button) and <code>dropzone.min.js</code> (used by the create page's image uploader) are preserved.</p>
+
+    <h3 style="margin-top:24px">What was done in this commit</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>3 files, 8 deletions, 0 additions</strong> — the smallest possible diff for a focused T2 cleanup.</li>
+        <li>Removed the unused <code>jquery.dataTables.min.js</code> + <code>jquery.dataTables.bootstrap.min.js</code> script tags from all 3 files' <code>@section('js')</code> blocks.</li>
+        <li>The <code>delete_check</code> JS function (the Swal.fire confirm-and-submit handler) is preserved on index + edit (create doesn't have it).</li>
+        <li>The <code>dropzone.min.js</code> + <code>$('.category_photos').ace_file_input(...)</code> call are preserved on create.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">T2 inventory (28 more views)</h3>
+    <p style="color:#526578;line-height:1.7;">
+        A <code>grep -lE "jquery\.dataTables" module/ | while read f; do grep -q "\.DataTable(" $f || echo $f; done</code> finds 28 more views that load the DataTables library but never call <code>.DataTable(...)</code> (and don't use the dataTables API either). They are split across:
+    </p>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>module/Account/</strong> (3): <code>fund-transfers/index</code>, <code>voucher/contras/show</code>, <code>voucher/journals/show</code>.</li>
+        <li><strong>module/GeneralStore/</strong> (3): <code>goods_requisitions/index</code>, <code>suppliers/index</code>, <code>inventory/production/goods_requisitions/index</code>.</li>
+        <li><strong>module/Hotel/</strong> (5): <code>account_type/index</code>, <code>account_type/edit</code>, <code>aminities/index</code>, <code>currency-conversions/index</code>, <code>rooms/create</code>, <code>rooms/edit</code>.</li>
+        <li><strong>module/HotelWebsite/</strong> (11): <code>banner/index</code>, <code>gallery/index</code>, all 3 of <code>hotel_feature/feature_list/{create,edit,index}</code>, all 4 of <code>our_service/{create,service_list/{create,edit,index}}</code>, <code>pages/index</code>.</li>
+        <li><strong>module/Permission/</strong> (1): <code>users/index</code>.</li>
+        <li><strong>module/Restaurant/</strong> (3): <code>kitchen/create</code>, <code>kitchen/index</code>, <code>inventory/production/goods_requisitions/index</code>.</li>
+    </ul>
+    <p style="color:#526578;line-height:1.7;">
+        Each is a 2-line removal (the 2 DataTables script tags) on top of an already-converted <code>&lt;x-mm.data-table&gt;</code> page. They can be cleaned in a single "T2 DataTables sweep" PR or batched by module.
+    </p>
+
+    <h3 style="margin-top:24px">Numbers</h3>
+    <div class="mm-grid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;">
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">3</div>
+            <div style="color:var(--mm-muted);font-size:13px;">hall/aminities files cleaned</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">8</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Lines deleted (2 unused DataTables script tags × 3 + 2 blank lines)</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">28</div>
+            <div style="color:var(--mm-muted);font-size:13px;">More T2 candidates across the project (same 2-line removal pattern)</div>
         </div>
     </div>
 </section>
