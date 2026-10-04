@@ -153,6 +153,28 @@ run_violation_case \
 <p>Total: {{ $invoice->total }}</p>' \
     'resources/views/invoice/show.blade.php'
 
+# Path does NOT contain any context word, but the LINE itself contains
+# "voucher" + "amount" — exercises the line-context fallback in the
+# tripwire awk. The file name is intentionally generic to prove that
+# the tripwire does not depend on path matching alone.
+run_violation_case \
+    "money-line via line-context fallback (voucher + amount)" \
+    '@section("content")' \
+    '@section("content")
+<h1>Record</h1>
+<p>Voucher amount: {{ $voucher->amount }}</p>' \
+    'resources/views/some/random/path.blade.php'
+
+# Amount keyword adjacent to a non-word character (curly brace, paren,
+# comma, semicolon) — exercises the portable character-class boundaries
+# the previous (mawk-broken) `\<amount\>` regex used to handle.
+run_violation_case \
+    "money-line amount with non-word boundary" \
+    '@section("content")' \
+    '@section("content")
+<p>Receipt total: ({{ $r->amount }})</p>' \
+    'resources/views/receipt/show.blade.php'
+
 # Per-line override marker should suppress the warning when placed on
 # the same line as the violation. This is the positive case for the
 # override machinery — the override is per-LINE, not per-block (the
@@ -205,6 +227,23 @@ run_benign_case \
     "benign css change" \
     '<style>body { color: red; }</style>' \
     '<style>body { color: blue; }</style>' \
+    'resources/views/welcome.blade.php'
+
+# A line that contains the substring "amount" inside a larger word
+# (e.g. "paramount", "reamounted") must NOT trip — the portable
+# character-class word boundary rejects these. This is the case
+# that the old `\<amount\>` regex would have ALSO rejected (because
+# GNU awk has the same word-boundary semantic), but the new portable
+# regex has to be deliberately equivalent. Without this assertion
+# a future refactor that broke the boundary check could regress
+# into matching "paramount" as money math.
+run_benign_case \
+    "amount as substring of larger word (must not trip)" \
+    '@section("content")
+<p>The paramount concern is user trust.</p>' \
+    '@section("content")
+<p>The paramount concern is user trust.</p>
+<p>It is a paramount priority, not a minor one.</p>' \
     'resources/views/welcome.blade.php'
 
 # --- Summary -----------------------------------------------------------------
