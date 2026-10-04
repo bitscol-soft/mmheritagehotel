@@ -77,6 +77,7 @@
         <li><a href="#w6-2b-3">W6.2b-3</a> — 10 portrait reports converted. New <code>&lt;x-slot name="footer"&gt;</code> added to <code>&lt;x-mm.data-table&gt;</code> for the optional <code>&lt;tfoot&gt;</code> Total row. <strong>15 of 15 financial reports are now on the new <code>&lt;x-mm.print-sheet&gt;</code> pattern.</strong> Money math preserved byte-for-byte across all 10 files.</li>
         <li><a href="#w6-4a">W6.4a</a> — 4 permission CRUD pages (<code>module</code>, <code>submodule</code>, <code>parent_permission</code>, <code>permission/index</code>) converted from <code>&lt;x-mm.table-scroll&gt;</code> + raw <code>&lt;table id="dynamic-table"&gt;</code> + jQuery DataTables to <code>&lt;x-mm.data-table&gt;</code>. 2 unused DataTables script tags + the <code>$('#dynamic-table').DataTable({...})</code> init removed. <code>delete_check</code> + per-row action buttons + delete <code>&lt;form&gt;</code> + Laravel pagination all preserved. <strong>First half of W6.4 done.</strong> The actual permission matrix (bulk-toggle UX redesign) is a separate W6.4b PR.</li>
         <li><a href="#w-data-table-sweep-account">W-data-table-sweep (account)</a> — 8 list pages in <code>module/Account/</code> (product categories, units, party customers, suppliers, setup account-controls, account-subsidiaries, accounts, products) converted to <code>&lt;x-mm.data-table&gt;</code>. Sister PR to W6.4a. Per-row action buttons + shared <code>#deleteItemForm</code> + <code>chosen</code> + <code>date-picker</code> + <code>confirm_delete_dialog</code> all preserved. Money math preserved. 7 more <code>&lt;x-mm.table-scroll&gt;</code> files remain in other modules.</li>
+        <li><a href="#w-data-table-sweep-other">W-data-table-sweep (other modules)</a> — 7 more <code>&lt;x-mm.table-scroll&gt;</code> files (bar inventory, hotel categories, hotel rooms, GS item-units, GS purchase-receive list, GS item-ledger, RST material-units) converted to <code>&lt;x-mm.data-table&gt;</code> (GS item-ledger's table kept raw for 2-row thead colspan). <strong>19 of 19 <code>&lt;x-mm.table-scroll&gt;</code> + jQuery DataTables pages are now converted.</strong> T2 inventory fully closed.</li>
     </ul>
 </div>
 
@@ -2019,6 +2020,57 @@ module/Restaurant/views/kitchen/index.blade.php
         <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
             <div style="font-size:32px;font-weight:700;color:#2f63a8;">7</div>
             <div style="color:var(--mm-muted);font-size:13px;">More &lt;x-mm.table-scroll&gt; files in other modules</div>
+        </div>
+    </div>
+</section>
+
+<section class="preview-section" id="w-data-table-sweep-other">
+    <h2>W-data-table-sweep (other modules) — 7 more list pages → <x-mm.data-table></h2>
+    <p style="color:#526578">Closes the T2 inventory's remaining DataTables conversions. Sister PR to W-data-table-sweep (account). Converts the 7 remaining <code>&lt;x-mm.table-scroll&gt;</code> files in <code>module/Bar/</code>, <code>module/Hotel/</code>, <code>module/GeneralStore/</code>, <code>module/Restaurant/</code> to <code>&lt;x-mm.data-table&gt;</code>. The GS item-ledger file's table is kept raw (2-row thead with colspan), but its broken DataTables init + 2 unused DataTables script tags are removed. <strong>19 of 19 <code>&lt;x-mm.table-scroll&gt;</code> + jQuery DataTables pages are now converted to <code>&lt;x-mm.data-table&gt;</code></strong>. The T2 inventory is fully closed.</p>
+
+    <h3 style="margin-top:24px">What was done in this commit (7 files, 289 insertions, 453 deletions)</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>7 list files converted</strong> to <code>&lt;x-mm.data-table&gt;</code>:
+            <ul style="margin-top:6px">
+                <li><code>Bar/views/bar/inventory/inventory-report.blade.php</code> (117 → 67 lines, 8-col: SL, Product Name, Category, Opening Qty, Purchase Qty, Sold Qty, Return Qty, Available Qty; preserves Blade-computed <code>$actual_qty</code> for sold qty)</li>
+                <li><code>Hotel/views/category/index.blade.php</code> (123 → 75 lines, 7-col: SL, Name, Guest Capacity, Price, Image, Status, Action; preserves currency-sign JS init for <code>{{ currencySign() }}</code> helper)</li>
+                <li><code>Hotel/views/rooms/index.blade.php</code> (149 → 88 lines, 8-col with conditional columns: Bed + Price only if <code>setting('room_wise_pricing_booking') == 1</code>)</li>
+                <li><code>GeneralStore/views/item-units/index.blade.php</code> (139 → 84 lines, 5-col: SL, Unit Name, Conversion, Satatus [typo preserved], Action)</li>
+                <li><code>GeneralStore/views/purchase_receives/purchase_receive_list.blade.php</code> (236 → 137 lines, 11-col: SL, Date, GRN No., Date, Purchase Number, Company, Required Qty, Received Qty, Challan Number, Received By, Action; preserves money math)</li>
+                <li><code>GeneralStore/views/reports/item-ledger.blade.php</code> (439 → 431 lines, table kept raw for 2-row thead colspan; only the broken DataTables init + 2 unused DataTables script tags are removed)</li>
+                <li><code>Restaurant/views/inventory/production/item-units/index.blade.php</code> (139 → 84 lines, 5-col: SL, Unit Name, Conversion, Satatus [typo preserved], Action; sister to GS item-units with <code>rst.material-unit.edit/destroy</code> routes)</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h3 style="margin-top:24px">What was NOT done (and why)</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>6 more files use jQuery DataTables without <code>&lt;x-mm.table-scroll&gt;</code></strong> (custom table styling):
+            <ul style="margin-top:6px">
+                <li><code>Account/views/reports/inventory-report/index.blade.php</code></li>
+                <li><code>BanquetHall/views/hall/category/index.blade.php</code></li>
+                <li><code>BanquetHall/views/hall/rooms/index.blade.php</code></li>
+                <li><code>GeneralStore/views/purchases/show.blade.php</code></li>
+                <li><code>Restaurant/views/inventory/production/purchases/show.blade.php</code></li>
+                <li><code>Restaurant/views/purchase-v2/show.blade.php</code></li>
+            </ul>
+        </li>
+        <li>These will be converted in a separate PR after the <code>&lt;x-mm.table-scroll&gt;</code> variant is closed.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">Numbers</h3>
+    <div class="mm-grid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;">
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">7</div>
+            <div style="color:var(--mm-muted);font-size:13px;">More list pages converted</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">19 / 19</div>
+            <div style="color:var(--mm-muted);font-size:13px;">&lt;x-mm.table-scroll&gt; + DataTables pages now converted</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">164</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Lines net deleted (453 - 289)</div>
         </div>
     </div>
 </section>
