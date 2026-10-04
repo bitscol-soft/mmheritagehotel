@@ -63,6 +63,7 @@
         <li><a href="#w4-4">W4.4</a> — booking-purpose CRUD: 3 views (create, edit, index) → <code>&lt;x-mm.field&gt;</code> + <code>&lt;x-mm.data-table&gt;</code>; conditional "Purpose" vs "Platform" label uses <code>:label</code> and <code>:placeholder</code> props.</li>
         <li><a href="#w4-3a">W4.3a</a> — HotelService sales/show wrapped in <code>&lt;x-mm.print-sheet&gt;</code>; HotelWebsite hotel_feature + our_service feature_list (6 files) → <code>&lt;x-mm.field&gt;</code> + <code>&lt;x-mm.data-table&gt;</code>. HotelService sales/create + sales/edit deferred to W4.3b.</li>
         <li><a href="#w4-3b">W4.3b</a> — HotelService sales/create: 5 top-section text inputs (guest_name, room_number, booking_number, invoice_id, sale_date) → <code>&lt;x-mm.field&gt;</code>. Bottom totals (Bootstrap-3 input-group with ৳ currency addon) deferred to T2.</li>
+        <li><a href="#w5-1">W5.1</a> — Restaurant kitchen ticket wrapped in <code>&lt;x-mm.print-sheet sheet="thermal-80mm"&gt;</code> (80mm thermal print); rst/tables + bar/tables raw <code>&lt;table&gt;</code> → <code>&lt;x-mm.data-table&gt;</code>. Board-grid table map + order screen x-stepper deferred.</li>
     </ul>
 </div>
 
@@ -1340,6 +1341,42 @@ tripwire_xpage_pageheader_combo() {
         <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
             <div style="font-size:32px;font-weight:700;color:#2f63a8;">0</div>
             <div style="color:var(--mm-muted);font-size:13px;">JS hooks broken (autocomplete, form-repeater, totalAmount all intact)</div>
+        </div>
+    </div>
+</section>
+
+<!-- ==================== W5.1 ==================== -->
+<section class="preview-section" id="w5-1">
+    <h2>W5.1 — Kitchen ticket 80mm + rst/bar tables</h2>
+    <p style="color:#526578">The W5 plan item from <code>docs/FRONTEND-DEV-PLAN.md</code>: <em>"Restaurant table map → board-grid; order screen → <code>x-stepper</code> (courses→fire→pay); kitchen ticket 80mm (<code>x-print-sheet --sheet=thermal</code>); Bar & Merchandising & Knitting follow the same 3 patterns (list/create/print). GS: requisition/GRN lists + stock-count board grid."</em></p>
+
+    <h3 style="margin-top:24px">What was done in this commit</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>Kitchen ticket (80mm thermal)</strong> — <code>module/Restaurant/views/kitchen/show.blade.php</code> (185 lines) is now wrapped in <code>&lt;x-mm.print-sheet sheet="thermal-80mm"&gt;</code>. The print sheet CSS class <code>.mm-print-sheet-thermal-80mm</code> (already in <code>resources/css/ui.css</code>) provides the 80mm width + monospace font + small text size for thermal printers. The old jQuery <code>printPage</code> + <code>printThis.js</code> are removed.</li>
+        <li><strong>rst/tables + bar/tables</strong> — the raw <code>&lt;table id="data-table"&gt;</code> in both files is converted to <code>&lt;x-mm.data-table&gt;</code> with the 5 columns. The id is preserved for the DataTables binding.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">What was NOT done (and why)</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>Restaurant table map → board-grid</strong> — the current rst/tables is a flat list. The <code>.mm-rst-board</code> CSS class exists in <code>resources/css/ui.css</code>, but converting the data model from a list to a board requires a UX redesign (table tiles with status colors, click-to-take-order flow). Deferred to W5.2.</li>
+        <li><strong>Order screen → <code>&lt;x-mm.stepper&gt;</code></strong> — the sales/create form is tightly coupled with jQuery form-repeater + AJAX autocomplete; converting to a courses→fire→pay stepper requires rewriting the JS hooks. Deferred to W5.3.</li>
+        <li><strong>Merchandising & Knitting modules</strong> — not yet surveyed; out of scope for this commit.</li>
+        <li><strong>GS (GeneralStore) requisition/GRN lists + stock-count</strong> — the goods_requisitions/index is 377 lines, the create is 569 lines. Deferred to W5.4.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">Numbers</h3>
+    <div class="mm-grid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;">
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">1</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Kitchen ticket wrapped in <code>&lt;x-mm.print-sheet sheet="thermal-80mm"&gt;</code></div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">2</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Raw <code>&lt;table&gt;</code> (DataTables) → <code>&lt;x-mm.data-table&gt;</code></div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">0</div>
+            <div style="color:var(--mm-muted);font-size:13px;">JS hooks broken (editTable + DataTables both intact)</div>
         </div>
     </div>
 </section>
