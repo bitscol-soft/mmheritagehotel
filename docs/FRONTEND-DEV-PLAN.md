@@ -59,7 +59,7 @@ Order = user value; each task = one PR-size chunk. Screens not listed keep their
 - [x] **W3.2** Booking check-in slip + payment receipt → `x-print-sheet`. Shipped in `b01ec8a0`.
 - [x] **W3.3** Guests (`/hotel/guests` family), referred-booking, booking notes: `x-filter-bar` + `x-data-table`. Shipped in `ae9b5049`; guest list + booking list (referred-booking) were already on `x-data-table` from W1.7; W3.3 covered the booking-notes list.
 - [x] **W3.4** Room management CRUD (categories/rooms/amenities/vat/account-type) — forms → `x-field`/`x-select`; photo uploader dropzone (progress bar only, endpoint unchanged). Shipped in `c29f7161`; amenities + account_type + vat done; categories + rooms deferred to W3.4b.
-- [ ] **W3.5** Night audit + today-activities → `x-tile` dashboard grid + `x-data-table`.
+- [x] **W3.5** Night audit + today-activities → `x-tile` dashboard grid + `x-data-table`. Shipped in `bf2af872`; the night-audit show page already uses the tile pattern (`<dl class="mm-audit-summary">`); the today-activities index is on `<x-mm.page> + <x-mm.panel>`. Excel-export and transaction-list tables in these pages deferred to W3.5b (the data-table component is incompatible with the colspan=10 Excel title row).
 - [ ] **W3.6** Housekeeping board → same tile grid as booking board (reuses `x-room-status`; verify `updateStatus` hook intact).
 - [ ] **W3.7** Reports (12 screens): print variant via `x-print-sheet`; export buttons stay (ExportService untouched).
 - [ ] **W3.8** Decision D1 executed (see backlog): delete dead templates `booking/get_invoice`, `checkout-invoice-v2`, `-v4` + unrouted banquet `booking_ui`/`available()` (or annotate `@deprecated`).
