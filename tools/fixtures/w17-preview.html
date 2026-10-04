@@ -74,6 +74,7 @@
         <li><a href="#t2-sweep">T2 DataTables sweep</a> — 28 views cleaned (the full T2 inventory closed in one PR). For each: removed the 2 unused <code>jquery.dataTables.min.js</code> + <code>jquery.dataTables.bootstrap.min.js</code> script tags. Every file was verified to have no <code>.DataTable(...)</code> constructor call and no <code>dataTables_</code> / <code>fnFilter</code> / <code>fnSort</code> API call. 28 files, 56 deletions, 0 additions. Module breakdown: Account (3), GeneralStore (2), Hotel (5), HotelWebsite (11), Permission (1), Restaurant (3), BanquetHall (2).</li>
         <li><a href="#w6-2b">W6.2b (pilot)</a> — 3 canonical financial reports (<code>trial-balance</code>, <code>balance-sheet</code>, <code>income-statement</code>) in <code>module/Account/views/reports/*/print.blade.php</code> wrapped in <code>&lt;x-mm.print-sheet sheet="a4-landscape"&gt;</code>. New <code>a4-landscape</code> variant added to <code>resources/css/ui.css</code> (max-width 1100px screen, max-width none print). The raw <code>&lt;table border="1"&gt;</code> in each file is now a <code>&lt;x-mm.data-table&gt;</code>. Inline <code>&lt;style&gt;</code> blocks reduced to just <code>@page { size: landscape; margin: 0.5in; }</code> — all other print CSS is in ui.css + print-sheet. The top-right "no-print" button bar (Print + Back) is replaced with a single Back link (using <code>.mm-no-print</code>); the print-sheet has its own bottom Print button. The ugly <code>background:red !important</code> on the title + date-range is removed. Money math preserved byte-for-byte. 12 more reports remain for W6.2b-2.</li>
         <li><a href="#w6-2b-2">W6.2b-2</a> — 2 more landscape reports (<code>cash-flow</code>, <code>equity-statement</code>) converted. Same pattern as the pilot. 5 of 15 financial reports are now on the new print-sheet pattern. 10 portrait reports remain (different pattern, need design decision on <code>&lt;tfoot&gt;</code> issue first).</li>
+        <li><a href="#w6-2b-3">W6.2b-3</a> — 10 portrait reports converted. New <code>&lt;x-slot name="footer"&gt;</code> added to <code>&lt;x-mm.data-table&gt;</code> for the optional <code>&lt;tfoot&gt;</code> Total row. <strong>15 of 15 financial reports are now on the new <code>&lt;x-mm.print-sheet&gt;</code> pattern.</strong> Money math preserved byte-for-byte across all 10 files.</li>
     </ul>
 </div>
 
@@ -1838,6 +1839,69 @@ module/Restaurant/views/kitchen/index.blade.php
         <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
             <div style="font-size:32px;font-weight:700;color:#2f63a8;">10</div>
             <div style="color:var(--mm-muted);font-size:13px;">Portrait reports remain (for W6.2b-3 after tfoot design decision)</div>
+        </div>
+    </div>
+</section>
+
+<section class="preview-section" id="w6-2b-3">
+    <h2>W6.2b-3 — 10 portrait reports + data-table <code>&lt;x-slot name="footer"&gt;</code></h2>
+    <p style="color:#526578">Sister PR to W6.2b (pilot) + W6.2b-2. Converts the 10 remaining portrait financial reports to the new <code>&lt;x-mm.print-sheet&gt;</code> pattern (portrait = the default <code>a4</code> sheet, so no <code>sheet</code> prop needed). Adds a new named slot <code>&lt;x-slot name="footer"&gt;</code> to the data-table component for the optional <code>&lt;tfoot&gt;</code> Total row (only rendered if non-empty). <strong>15 of 15 financial reports are now on the new <code>&lt;x-mm.print-sheet&gt;</code> pattern.</strong></p>
+
+    <h3 style="margin-top:24px">What was done in this commit (12 files, 613 insertions, 1150 deletions)</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>10 print files converted</strong> to <code>&lt;x-mm.print-sheet&gt;</code>:
+            <ul style="margin-top:6px">
+                <li><code>account-payables/print.blade.php</code> (94 → 36 lines, 3-col data-table + footer Total)</li>
+                <li><code>account-receivables/print.blade.php</code> (94 → 36 lines, 3-col data-table + footer Total)</li>
+                <li><code>customer-ledger/print.blade.php</code> (116 → 64 lines, 7-col data-table with Opening Balance + footer Total)</li>
+                <li><code>supplier/print.blade.php</code> (116 → 64 lines, 7-col data-table with Opening Balance + footer Total)</li>
+                <li><code>supplier-ledger/print.blade.php</code> (126 → 73 lines, 7-col data-table with conditional Opening Balance + footer Total)</li>
+                <li><code>chart-of-account/print.blade.php</code> (95 → 41 lines, 5-col data-table; chosen/date-picker JS preserved)</li>
+                <li><code>voucher-reports/print.blade.php</code> (98 → 47 lines, 7-col data-table + footer Total)</li>
+                <li><code>account-ledger/print.blade.php</code> (148 → 95 lines, 7-col data-table; preserves invoice-logo + .heading + .date print styles)</li>
+                <li><code>subsidiary-wise-ledger/print.blade.php</code> (172 → 95 lines, 3-col data-table; nested per-account tables kept raw because of the 4-level grouping)</li>
+                <li><code>expense-analysis/print.blade.php</code> (199 → 132 lines; 4-level nested raw HTML structure preserved, only the outer print-sheet wrapping is added)</li>
+            </ul>
+        </li>
+        <li><strong>2 infrastructure changes</strong>:
+            <ul style="margin-top:6px">
+                <li><code>resources/views/components/mm/data-table.blade.php</code> — added a named slot <code>footer</code> for the optional <code>&lt;tfoot&gt;</code> Total row. Only rendered if non-empty (so empty reports don't get an empty <code>&lt;tfoot&gt;</code>).</li>
+                <li><code>resources/css/ui.css</code> — added <code>.mm-data-table-tfoot</code> styling (background, font-weight, padding, border-top matching thead).</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h3 style="margin-top:24px">Money math (byte-for-byte preserved across all 10 files)</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><code>$transactions->sum('balance')</code> (account-payables, account-receivables)</li>
+        <li><code>$totalDebit</code> (sum of abs(amount) for negative) + <code>$totalCredit</code> (sum of amount for positive) — customer-ledger, supplier, supplier-ledger</li>
+        <li><code>$vouchers->sum('amount')</code> — voucher-reports</li>
+        <li><code>$total_debit</code> + <code>$total_credit</code> + <code>$balance</code> — account-ledger</li>
+        <li><code>$dateWise->sum('amount')</code> + <code>$subWise->sum('amount')</code> + <code>$controlWise->sum('amount')</code> — expense-analysis</li>
+        <li><code>$total = $account->transaction_items->sum(debit_amount - credit_amount or reverse)</code> per account row — subsidiary-wise-ledger</li>
+    </ul>
+
+    <h3 style="margin-top:24px">What was NOT done (and why)</h3>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>expense-analysis + subsidiary-wise-ledger</strong> have deeply nested raw HTML structures (4 levels deep for expense-analysis, 2 levels with nested tables for subsidiary-wise-ledger). They are wrapped in <code>&lt;x-mm.print-sheet&gt;</code> but their inner tables are kept raw. Converting them to <code>&lt;x-mm.data-table&gt;</code> would require restructuring the data model.</li>
+        <li><strong>print-gin-details</strong> (GS goods_requisitions) is a standalone HTML5 page (no <code>@extends('layouts.master')</code>) and needs a separate <code>standalone</code> variant of the print-sheet. That is a <strong>W5.4c</strong> PR.</li>
+        <li>The <strong>chart-of-account</strong> file still has its own <code>&lt;script src="chosen.jquery.min.js"&gt;</code> + <code>bootstrap-datepicker.min.js</code> + <code>chosen-box.js</code> + <code>date-picker.js</code> in <code>@section('js')</code>. These are NOT unused — they init the chosen/date-picker plugins. They were not in the T2 DataTables sweep inventory.</li>
+        <li>The <strong>account-ledger</strong> file has its own <code>.invoice-logo</code> + <code>.heading</code> + <code>.date</code> @media print CSS rules. These are preserved (the logo resizes + the heading shifts up + the date font shrinks in print preview). They're specific to this report and don't belong in the design system yet.</li>
+    </ul>
+
+    <h3 style="margin-top:24px">Numbers</h3>
+    <div class="mm-grid" style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;">
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">10</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Portrait reports converted</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">15 / 15</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Financial reports on the new print-sheet pattern</div>
+        </div>
+        <div class="mm-panel" style="padding:12px;background:var(--mm-surface);text-align:center;">
+            <div style="font-size:32px;font-weight:700;color:#2f63a8;">537</div>
+            <div style="color:var(--mm-muted);font-size:13px;">Lines net deleted (1150 - 613)</div>
         </div>
     </div>
 </section>
