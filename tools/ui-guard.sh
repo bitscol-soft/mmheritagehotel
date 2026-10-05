@@ -697,6 +697,184 @@ tripwire_xmm_field_misuse() {
 
 
 # -----------------------------------------------------------------------------
+# Tripwire 6: number_format(...) addition in money context.
+#
+# Per docs/FRONTEND-DEV-PLAN.md §0 rule 2: "No money/amount/
+# currency math changes in any UI diff." The original
+# tripwire 1 (money-line) catches additions of amount-keyword
+# lines (total, amount, due, etc.) in money context, but it
+# misses the cases where the column or expression is RENAMED
+# (e.g. $x->grandTotal in camelCase) or where the
+# number_format() call itself is moved to a different
+# expression that does not carry the keyword. This tripwire
+# closes the gap: any + line that ADDS a number_format(...)
+# call in money context is flagged for review, regardless of
+# whether the line contains an amount keyword.
+#
+# False positives: a number_format(...) added in money context
+# for a non-money quantity (e.g. room count, phone number) is
+# still a money-context change and warrants review. Override
+# with <!-- money-travel-on: not money, room count --> on the
+# affected line, or use a block-level override for whole-partial
+# files.
+#
+# Design: diff-based (scans + lines in the working-tree diff).
+# The same in_hunk flag pattern as the other diff-based
+# tripwires protects against the file-header false positive
+# on --- a/file / +++ b/file lines. The per-line and
+# block-level override machinery is shared with tripwire 1
+# (same money-travel-on / money-travel-on-block markers), so
+# a developer who already trippped tripwire 1 can reuse the
+# same override comment for tripwire 6.
+# -----------------------------------------------------------------------------
+tripwire_money_math() {
+    local f
+    local found=0
+    while IFS= read -r f; do
+        [ -z "$f" ] && continue
+        [ ! -f "$f" ] && continue
+        # File-context check: same as tripwire_money_line. Either
+        # the file path carries a money-context word, OR a + line in
+        # the diff will (the awk has_ctx check covers the second
+        # case at the line level).
+        local context=""
+        case "$f" in
+            *invoice*|*checkout*|*payment*|*voucher*|*receipt*) context=1 ;;
+        esac
+        local diff_args=""
+        case "$MODE" in
+            working) diff_args="-U0 --" ;;
+            staged)  diff_args="-U0 --cached --" ;;
+            diff)    diff_args="-U0 $BASE_REF...HEAD --" ;;
+        esac
+        local override_lines_added override_lines_removed
+        override_lines_added="$(grep -nE '(<!--|\{\{--)\s*money-travel-on:' "$f" 2>/dev/null | cut -d: -f1 | paste -sd, -)"
+        override_lines_removed="$(git show "HEAD:$f" 2>/dev/null | grep -nE '(<!--|\{\{--)\s*money-travel-on:' | cut -d: -f1 | paste -sd, -)"
+        local block_lo block_hi
+        local file_line_count
+        file_line_count="$(wc -l < "$f" 2>/dev/null | tr -d ' ')"
+        block_lo="$(grep -nE '\{\{--\s*money-travel-on-block:' "$f" 2>/dev/null | head -1 | cut -d: -f1)"
+        if [ -n "$block_lo" ]; then
+            local end_line
+            end_line="$(awk -v start="$block_lo" '
+                NR > start && /\{\{--\s*money-travel-on-end\s*--\}\}/ { print NR; exit }
+            ' "$f" 2>/dev/null)"
+            if [ -n "$end_line" ]; then
+                block_hi="$end_line"
+            else
+                block_hi="$file_line_count"
+            fi
+        else
+            block_lo=""
+            block_hi=""
+        fi
+        local hits
+        hits="$(git diff $diff_args "$f" 2>/dev/null \
+            | awk -v file="$f" -v ctx="$context" -v add_ov="$override_lines_added" -v rem_ov="$override_lines_removed" -v blk_lo="$block_lo" -v blk_hi="$block_hi" '
+                BEGIN {
+                    n_ov_add = split(add_ov, add_arr, ",")
+                    n_ov_rem = split(rem_ov, rem_arr, ",")
+                    blk_lo = blk_lo + 0
+                    blk_hi = blk_hi + 0
+                    in_block = 0
+                    new_line = 0
+                    old_line = 0
+                    in_hunk  = 0
+                }
+                function in_block_range(fl) {
+                    # A money-travel-on-block marker on any line in
+                    # the file opts the WHOLE file out of the
+                    # tripwire. This is the right tool for
+                    # whole-partial files that contain a lot of
+                    # money math (booking rows, invoice tables,
+                    # payment receipts) where per-line overrides
+                    # would be noise. The awk only needs a yes/no;
+                    # the caller computes the marker line before
+                    # invoking us.
+                    if (blk_lo <= 0) return 0
+                    return 1
+                }
+                /^@@/ {
+                    rest = $0
+                    sub(/^@@ /, "", rest)
+                    sub(/ @@.*$/, "", rest)
+                    split(rest, parts, " ")
+                    split(parts[1], a, ",")
+                    split(parts[2], b, ",")
+                    old_line = a[1] + 0
+                    new_line = b[1] + 0
+                    in_hunk  = 1
+                    next
+                }
+                # File headers live OUTSIDE a hunk.
+                /^---/        { if (!in_hunk) next }
+                /^\+\+\+/    { if (!in_hunk) next }
+                /^\+/ {
+                    if (!in_hunk) next
+                    line = substr($0, 2)
+                    low  = tolower(line)
+                    # The tripwire fires on a + line that adds a
+                    # number_format(...) call in money-context.
+                    # The keyword regex is intentionally permissive
+                    # — any number_format call counts, regardless
+                    # of what the formatted expression is named.
+                    # The W6 guardrail says NO money-math changes
+                    # in UI diffs; a number_format(...) ADDED in
+                    # an invoice / payment / voucher / receipt /
+                    # booking context is exactly the kind of change
+                    # that needs explicit review (it could be a
+                    # rename of an existing total, a new precision
+                    # spec, a moved expression, a new column that
+                    # happens to be money, etc.).
+                    #
+                    # The keyword regex is case-insensitive: number_format
+                    # is a PHP built-in (always lowercase), but
+                    # Number_format and NUMBER_FORMAT are both valid
+                    # PHP and we want to catch them.
+                    has_format = (low ~ /number_format\(/)
+                    has_ctx    = (ctx != "") || (low ~ /invoice|checkout|payment|voucher|receipt|booking/)
+                    if (has_format && has_ctx) {
+                        fl = new_line
+                        overridden = 0
+                        for (i = 1; i <= n_ov_add; i++) {
+                            if (add_arr[i]+0 == fl) { overridden = 1; break }
+                        }
+                        if (!overridden && in_block_range(fl)) overridden = 1
+                        if (!overridden) {
+                            printf("    %s:+%d\n", file, fl)
+                        }
+                    }
+                    new_line++
+                }
+                # The - branch only needs to keep old_line in sync;
+                # the tripwire only flags additions (a REMOVED
+                # number_format(...) is the GOOD direction — the
+                # rule says "no money-math changes", and removing
+                # the math is not a change to it).
+                /^-/ {
+                    if (!in_hunk) next
+                    old_line++
+                }
+                /^ / {
+                    if (!in_hunk) next
+                    new_line++
+                    old_line++
+                }
+            ')"
+        if [ -n "$hits" ]; then
+            report "money-math change in $f" \
+                "  Lines flagged (added a number_format(...) call in money context):" \
+                "$hits" \
+                "  Override with: <!-- money-travel-on: <reason> --> on the affected line." \
+                "  See docs/FRONTEND-DEV-PLAN.md §0 (guardrails) for the rule."
+            found=1
+        fi
+    done < <(collect_blade_files)
+    return $found
+}
+
+
+# -----------------------------------------------------------------------------
 # Tripwire 2: @include / @yield inside <style>…</style>.
 #
 # A Blade template that places an @include (or @yield, @stack) directive
@@ -952,6 +1130,7 @@ tripwire_nested_style_include || true
 tripwire_xpage_pageheader_combo || true
 tripwire_raw_style_tag || true
 tripwire_xmm_field_misuse || true
+tripwire_money_math || true
 
 if [ "$fail" -ne 0 ]; then
     echo

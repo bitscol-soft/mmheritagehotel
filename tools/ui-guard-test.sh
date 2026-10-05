@@ -446,6 +446,70 @@ run_benign_case \
 <x-mm.field id="email" name="email" value="" label="Email" />' \
     'resources/views/welcome.blade.php'
 
+# --- Tripwire 6: number_format(...) addition in money context ---------------
+echo
+echo "[tripwire 6] number_format(...) addition in money context"
+
+# The classic case: a renamed column that the keyword-based
+# tripwire 1 misses because the new column name (camelCase
+# "grandTotal") does not match the (^|[^a-z0-9_])(total) word
+# boundary. A number_format(...) call on this column in an
+# invoice file is exactly the kind of money-math change that
+# the W6 guardrail wants to surface.
+run_violation_case \
+    "number_format on a renamed (camelCase) column in an invoice file" \
+    '<h1>Invoice</h1>' \
+    '<h1>Invoice</h1>
+<td>{{ number_format($invoice->grandTotal, 2) }}</td>' \
+    'resources/views/invoice/show.blade.php'
+
+# The line-context fallback: a number_format call on a
+# non-invoice file but a line that contains a money-context
+# word (e.g. "voucher"). This is the same fallback pattern
+# that tripwire 1 uses for the keyword check.
+run_violation_case \
+    "number_format on a renamed column (line-context fallback)" \
+    '<h1>Record</h1>' \
+    '<h1>Record</h1>
+<td>Voucher subtotal: {{ number_format($voucher->subtotal, 2) }}</td>' \
+    'resources/views/some/random/path.blade.php'
+
+# A number_format call that is NOT in money context (generic
+# file, no money-context word on the line) must NOT trip.
+# This is the negative case — the tripwire requires the
+# context check to fire.
+run_benign_case \
+    "number_format in a non-money file with no money-context word" \
+    '<h1>About</h1>' \
+    '<h1>About</h1>
+<p>{{ number_format($count, 2) }} items</p>' \
+    'resources/views/welcome.blade.php'
+
+# The per-line money-travel-on override should suppress the
+# warning when placed on the same line as the violation. The
+# override machinery is shared with tripwire 1 — same marker
+# comment, same parsing logic.
+run_benign_case \
+    "number_format with per-line money-travel-on override" \
+    '<h1>Invoice</h1>' \
+    '<h1>Invoice</h1>
+<td>{{ number_format($invoice->grandTotal, 2) }} <!-- money-travel-on: legacy total kept for backward compat --></td>' \
+    'resources/views/invoice/show.blade.php'
+
+# A number_format call with a non-word boundary keyword
+# (e.g. "paramount") is NOT a money context — the line-context
+# check uses the same (^|[^a-z0-9_]) boundaries that the
+# tripwire 1 has_amount check uses, so "paramount" does NOT
+# match. This is a regression test for the boundary logic
+# shared between the two tripwires.
+run_benign_case \
+    "number_format on a 'paramount' line (must not trip)" \
+    '<h1>About</h1>' \
+    '<h1>About</h1>
+<p>The paramount concern is user trust.</p>
+<p>Count: {{ number_format($count, 2) }}</p>' \
+    'resources/views/welcome.blade.php'
+
 # --- Summary -----------------------------------------------------------------
 echo
 read -r pass fail < "$MARKER"
