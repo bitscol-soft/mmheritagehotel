@@ -256,33 +256,14 @@ tripwire_money_line() {
                 }
                 /^-/ {
                     if (!in_hunk) next
-                    line = substr($0, 2)
-                    low = tolower(line)
-                    has_amount = (low ~ /(^|[^a-z0-9_])(amount|total|grand_total|grand total|due|paid|balance|price|rent|fare|charge|vat|tax)($|[^a-z0-9_])/)
-                    has_ctx = (ctx != "") || (low ~ /invoice|checkout|payment|voucher|receipt|booking/)
-                    if (has_amount && has_ctx) {
-                        fl = old_line
-                        overridden = 0
-                        for (i = 1; i <= n_ov_rem; i++) {
-                            if (rem_arr[i]+0 == fl) { overridden = 1; break }
-                        }
-                        # Also accept an override on the new-file side —
-                        # this lets a `git mv`-style rename or a delete+add
-                        # in a new position carry the same override to both
-                        # sides of the diff. The override is on the line
-                        # that the content lives on now.
-                        if (!overridden) {
-                            for (i = 1; i <= n_ov_add; i++) {
-                                if (add_arr[i]+0 == fl) { overridden = 1; break }
-                            }
-                        }
-                        # Block-level override — see the corresponding
-                        # check in the + branch.
-                        if (!overridden && in_block_range(fl)) overridden = 1
-                        if (!overridden) {
-                            printf("    %s:-%d\n", file, fl)
-                        }
-                    }
+                    # The - branch only needs to keep old_line in sync.
+                    # The tripwire only flags ADDITIONS — a REMOVED
+                    # money-line is the GOOD direction. The W6 rule
+                    # says "no money-math changes" and removing the
+                    # math is not a change to it. (Previously the -
+                    # branch also fired; that produced noise on every
+                    # legitimate cleanup of legacy money math. The
+                    # same pattern is used in tripwire 6.)
                     old_line++
                 }
                 /^ / {

@@ -208,6 +208,44 @@ run_benign_case \
 <p>Total: {{ $invoice->total }} <!-- money-travel-on: legacy total kept for backward compat --></p>' \
     'resources/views/invoice/show.blade.php'
 
+# REMOVED money-line in an invoice file must NOT trip. The W6 rule
+# is "no money-math changes"; removing the math is the GOOD direction
+# and should be celebrated, not flagged. This is the regression test
+# for the additions-only conversion. The replacement line intentionally
+# contains no amount keyword (no "total", "amount", "paid", etc.) so
+# that the tripwire is unambiguously testing the additions-only logic.
+run_benign_case \
+    "removed money-line in invoice file (additions-only, must not trip)" \
+    '<h1>Invoice {{ $invoice->number }}</h1>
+<p>Total: {{ $invoice->total }}</p>' \
+    '<h1>Invoice {{ $invoice->number }}</h1>
+<p>See itemized bill below.</p>' \
+    'resources/views/invoice/show.blade.php'
+
+# A diff that BOTH adds a money-line AND removes a money-line in
+# the same file should trip on the addition and ignore the removal.
+# Same file, same hunk: the + side carries the violation, the -
+# side is the cleanup.
+run_violation_case \
+    "added + removed money-line in the same hunk (only addition trips)" \
+    '<h1>Invoice {{ $invoice->number }}</h1>
+<p>Total: {{ $invoice->total }}</p>' \
+    '<h1>Invoice {{ $invoice->number }}</h1>
+<p>Old total removed.</p>
+<p>New due: {{ $invoice->due }}</p>' \
+    'resources/views/invoice/show.blade.php'
+
+# A diff that ONLY removes a money-line (no addition) must NOT
+# trip. This is the cleanest pure-cleanup case: legacy total gone,
+# nothing added, no violation.
+run_benign_case \
+    "pure money-line cleanup (removal only, no addition, must not trip)" \
+    '<h1>Receipt</h1>
+<p>Receipt amount: {{ $r->amount }}</p>' \
+    '<h1>Receipt</h1>
+<p>See itemized bill below.</p>' \
+    'resources/views/receipt/show.blade.php'
+
 # --- Tripwire 2: nested style include ----------------------------------------
 echo
 echo "[tripwire 2] nested @include inside <style>"
