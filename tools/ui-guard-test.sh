@@ -259,6 +259,66 @@ run_violation_case \
 </style>' \
     'resources/views/welcome.blade.php'
 
+# A file that ALREADY has the round-10 defect (an @include inside
+# a <style> block) and only changes a non-style line elsewhere in
+# the file must NOT trip. This is the diff-based regression test:
+# the original file-content tripwire 2 fired on every commit for
+# every pre-migration file with the defect, producing noise. The
+# diff-based check only flags + lines that ADD a directive inside
+# a <style> block.
+run_benign_case \
+    "pre-existing @include in <style> not on the changed line (must not trip)" \
+    '<style>
+    body { color: red; }
+    @include("partials.some-style-block")
+</style>
+<h1>Unrelated heading</h1>' \
+    '<style>
+    body { color: red; }
+    @include("partials.some-style-block")
+</style>
+<h1>Updated heading</h1>' \
+    'resources/views/welcome.blade.php'
+
+# A file that has NO <style> block in the change but adds a
+# completely unrelated line must not trip. The state machine
+# is_gating on in_style; a + line outside any <style> is benign.
+run_benign_case \
+    "unrelated change in a file with no <style> block (must not trip)" \
+    '<h1>Old</h1>' \
+    '<h1>New</h1>
+<p>Updated text.</p>' \
+    'resources/views/welcome.blade.php'
+
+# Removing a @directive from inside a <style> block is the GOOD
+# direction and must NOT trip. The diff-based check is
+# additions-only, matching tripwire 1 (money-line) and tripwire 6
+# (number_format).
+run_benign_case \
+    "removed @include from inside <style> (must not trip, additions-only)" \
+    '<style>
+    body { color: red; }
+    @include("partials.some-style-block")
+</style>' \
+    '<style>
+    body { color: red; }
+</style>' \
+    'resources/views/welcome.blade.php'
+
+# A diff that BOTH adds a <style> block AND a @directive on a
+# later + line inside that new block is the canonical violation.
+# This is the same as the existing test, but stated as a separate
+# case to document the additions-only contract.
+run_violation_case \
+    "added <style> + @include in same hunk (canonical violation)" \
+    '<h1>Hello</h1>' \
+    '<h1>Hello</h1>
+<style>
+    body { color: red; }
+    @include("partials.some-style-block")
+</style>' \
+    'resources/views/welcome.blade.php'
+
 # --- Tripwire 3: page-header + x-page combo ---------------------------------
 echo
 echo "[tripwire 3] page-header section + x-mm.page combo"
