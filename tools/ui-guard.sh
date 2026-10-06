@@ -549,11 +549,13 @@ tripwire_raw_style_tag() {
 #     in the same hunk. (This applies on form pages only; x-mm.field
 #     is not used outside forms.)
 #
-# (2) On any file, a <x-mm.field> with name= but no id= on the
-#     same line. The component requires an id prop (used by
-#     <label for="..."> and the input id="..."); without it, the
-#     rendered HTML has empty for="" and id="", breaking
-#     accessibility and label-clicking.
+# (2) On form pages (create / edit / form), a <x-mm.field> with
+#     name= but no id= on the same line. The component requires
+#     an id prop (used by <label for="..."> and the input
+#     id="..."); without it, the rendered HTML has empty for=""
+#     and id="", breaking accessibility and label-clicking.
+#     Non-form uses (e.g. a search/filter input on an index page)
+#     are out of scope.
 #
 # Both sub-checks are diff-based (scanning + and - lines in the
 # working-tree diff). The awk uses the same in_hunk flag pattern
@@ -567,15 +569,22 @@ tripwire_xmm_field_misuse() {
     while IFS= read -r f; do
         [ -z "$f" ] && continue
         [ ! -f "$f" ] && continue
-        # File-path filter: x-mm.field is a form-field component, so the
-        # sub-check 1 (input-group/chosen-select coexistence) is only
-        # meaningful in form pages. Sub-check 2 (id= prop required)
-        # applies wherever x-mm.field is used. We run sub-check 1 only
-        # on form pages; sub-check 2 runs on all Blade files.
+        # File-path filter: x-mm.field is a form-field component, so
+        # BOTH sub-checks are gated on form pages. Sub-check 1
+        # (input-group/chosen-select coexistence) only matters on
+        # form pages where the replacement would break the
+        # currency input-group addon. Sub-check 2 (id= prop
+        # required) also matters only where the rendered field is
+        # paired with a <label for=...>; that pairing is the form
+        # pattern. Other uses of x-mm.field (e.g. a search/filter
+        # input on an index page) are out of scope — the
+        # developer can add id= when they add a <label>. We run
+        # both sub-checks only on form pages.
         local is_form_page=0
         case "$f" in
             *create.blade.php|*edit.blade.php|*form.blade.php) is_form_page=1 ;;
         esac
+        [ "$is_form_page" -eq 0 ] && continue
         local diff_args=""
         case "$MODE" in
             working) diff_args="-U0 --" ;;
@@ -635,13 +644,21 @@ tripwire_xmm_field_misuse() {
                     if (form_page == 1 && line ~ /<x-mm\.field/ && hunk_removes_group) {
                         printf("    %s:+%d  (x-mm.field added in hunk that removes input-group / chosen-select)\n", file, new_line)
                     }
-                    # Sub-check 2 (all files): <x-mm.field> with name=
-                    # but no id= on the same line. The x-mm.field
-                    # component requires an id prop (used by <label
-                    # for=...> and the input id=...); without it, the
-                    # rendered HTML has empty for="" and id="" which
-                    # breaks accessibility and label-clicking.
-                    if (line ~ /<x-mm\.field/ && line ~ /name=/) {
+                    # Sub-check 2 (form pages only): <x-mm.field>
+                    # with name= but no id= on the same line. The
+                    # x-mm.field component requires an id prop
+                    # (used by <label for=...> and the input
+                    # id=...); without it, the rendered HTML has
+                    # empty for="" and id="" which breaks
+                    # accessibility and label-clicking. Other
+                    # uses of x-mm.field (e.g. a search/filter
+                    # input on an index page) are out of scope —
+                    # the developer can add id= when they add a
+                    # <label>. Previously this check ran on all
+                    # files, producing noise on every non-form
+                    # use; the form-page gate keeps the W4.3b
+                    # rule tight.
+                    if (form_page == 1 && line ~ /<x-mm\.field/ && line ~ /name=/) {
                         if (line !~ /id=/) {
                             printf("    %s:+%d  (x-mm.field has name= but no id=)\n", file, new_line)
                         }

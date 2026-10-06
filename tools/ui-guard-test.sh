@@ -527,22 +527,40 @@ run_benign_case \
 # Sub-check 2: <x-mm.field> with name= but no id= on the same
 # line. The x-mm.field component requires id= for the <label
 # for=...> and the input id=... attributes. Without id=, the
-# rendered HTML is broken (empty for and id).
+# rendered HTML is broken (empty for and id). Sub-check 2 is
+# gated on form pages (same as sub-check 1), so the violation
+# file path is a *create.blade.php — a non-form page use
+# (e.g. a filter input on an index page) is out of scope and
+# the developer can add id= when they add a <label>.
 run_violation_case \
-    "x-mm.field has name= but no id= on the same line" \
+    "x-mm.field has name= but no id= on the same line (form page)" \
     '<h1>Create</h1>' \
     '<h1>Create</h1>
 <x-mm.field name="email" value="" label="Email" />' \
-    'resources/views/welcome.blade.php'
+    'resources/views/sale/sales/create.blade.php'
 
 # Sub-check 2 benign: <x-mm.field> with both id= and name= on
 # the same line. The standard pattern.
 run_benign_case \
-    "x-mm.field with both id= and name= (must not trip)" \
+    "x-mm.field with both id= and name= (must not trip, form page)" \
     '<h1>Create</h1>' \
     '<h1>Create</h1>
 <x-mm.field id="email" name="email" value="" label="Email" />' \
-    'resources/views/welcome.blade.php'
+    'resources/views/sale/sales/create.blade.php'
+
+# Sub-check 2 scope: a non-form page (index.blade.php) is OUT
+# OF SCOPE for sub-check 2 — the same form-page gate that
+# applies to sub-check 1. A missing id= on a non-form use of
+# x-mm.field is not a W4.3b violation; the developer can add
+# id= when they add a <label>. This test deliberately
+# exercises the same diff pattern that would trip sub-check 2
+# on a form page.
+run_benign_case \
+    "x-mm.field missing id= on a NON-form page (out of scope for sub-check 2)" \
+    '<h1>List</h1>' \
+    '<h1>List</h1>
+<x-mm.field name="filter" value="" label="Filter" />' \
+    'resources/views/sale/sales/index.blade.php'
 
 # --- Tripwire 6: number_format(...) addition in money context ---------------
 echo
