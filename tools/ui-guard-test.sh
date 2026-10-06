@@ -319,6 +319,67 @@ run_violation_case \
 </style>' \
     'resources/views/welcome.blade.php'
 
+# Control-flow directives (@if / @foreach / @for) added inside an
+# existing <style> block (tested in a _css/*.blade.php partial so
+# tripwire 4 is exempt and <style> sits on an unchanged context
+# line, exercising the -U999999 state-seeding walk).
+run_violation_case \
+    "nested @if/@endif added inside existing <style> block (_css partial)" \
+    '<style>
+    body { color: red; }
+</style>' \
+    '<style>
+    body { color: red; }
+    @if($dark)
+    body { color: black; }
+    @endif
+</style>' \
+    'resources/views/_css/custom.blade.php'
+
+run_violation_case \
+    "nested @foreach/@endforeach added inside existing <style> block (_css partial)" \
+    '<style>
+    body { color: red; }
+</style>' \
+    '<style>
+    body { color: red; }
+    @foreach($colors as $c)
+    .c-{{ $loop->index }} { color: {{ $c }}; }
+    @endforeach
+</style>' \
+    'resources/views/_css/custom.blade.php'
+
+run_violation_case \
+    "nested @for/@endfor added inside existing <style> block (_css partial)" \
+    '<style>
+    body { color: red; }
+</style>' \
+    '<style>
+    body { color: red; }
+    @for($i = 1; $i <= 3; $i++)
+    .col-{{ $i }} { width: 100px; }
+    @endfor
+</style>' \
+    'resources/views/_css/custom.blade.php'
+
+# Standard CSS at-rules (@media, @keyframes, @font-face, @import,
+# @supports, @page) added inside a <style> block must NOT trip.
+run_benign_case \
+    "standard CSS at-rules (@media/@keyframes/@font-face/@import) inside <style> (must not trip)" \
+    '<style>
+    body { color: red; }
+</style>' \
+    '<style>
+    @import url("tokens.css");
+    @font-face { font-family: "Inter"; }
+    body { color: red; }
+    @media (max-width: 768px) { body { color: blue; } }
+    @keyframes spin { from { opacity: 0; } to { opacity: 1; } }
+    @supports (display: grid) { .grid { display: grid; } }
+    @page { size: A4; }
+</style>' \
+    'resources/views/_css/custom.blade.php'
+
 # --- Tripwire 3: page-header + x-page combo ---------------------------------
 echo
 echo "[tripwire 3] page-header section + x-mm.page combo"

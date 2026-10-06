@@ -873,12 +873,15 @@ tripwire_money_math() {
 
 
 # -----------------------------------------------------------------------------
-# Tripwire 2: @include / @yield inside <style>…</style>.
+# Tripwire 2: Blade directives (@include / @yield / @if / @foreach / @for / …)
+# inside <style>…</style>.
 #
-# A Blade template that places an @include (or @yield, @stack) directive
-# inside a <style>…</style> block is a round-10-class defect: the included
-# partial emits its own <style> tags, breaking the outer block. We grep the
-# file in raw form (no Blade compile) for the pattern.
+# A Blade template that places a directive (@include, @yield, @stack, @push,
+# @section, @once, or control-flow / loop / php directives like @if, @foreach,
+# @for, @switch, @php) inside a <style>…</style> block is a round-10-class
+# defect: an included partial or conditional block can emit its own <style>
+# tags or non-CSS markup, breaking the outer block. Standard CSS at-rules
+# (@media, @keyframes, @import, @font-face, @page, @supports, …) are allowed.
 # -----------------------------------------------------------------------------
 tripwire_nested_style_include() {
     local f
@@ -887,40 +890,44 @@ tripwire_nested_style_include() {
         [ -z "$f" ] && continue
         [ ! -f "$f" ] && continue
         local diff_args=""
+        # Use full-file context (-U999999) so that a <style> tag opened on an
+        # unchanged context line (e.g. inside a *_css/*.blade.php partial where
+        # tripwire 4 is exempt) still seeds in_style=1 before a + line inside
+        # that block is reached. Untouched files still produce an empty diff.
         case "$MODE" in
-            working) diff_args="-U0 --" ;;
-            staged)  diff_args="-U0 --cached --" ;;
-            diff)    diff_args="-U0 $BASE_REF...HEAD --" ;;
+            working) diff_args="-U999999 --" ;;
+            staged)  diff_args="-U999999 --cached --" ;;
+            diff)    diff_args="-U999999 $BASE_REF...HEAD --" ;;
         esac
         # The tripwire is diff-based: only flag a + line that ADDS a
-        # @directive (include/yield/stack/push/section/once) inside a
-        # <style>...</style> block. Context ( ) lines advance the
-        # state machine but do not trip; - lines are ignored (the
-        # round-10 defect class is about ADDING a directive inside
-        # a style block — a REMOVED directive is the GOOD direction).
-        #
-        # The scan is the same state machine as the original
-        # file-content tripwire 2 (Phase A strip comments/scripts,
-        # Phase B walk style blocks), but fed the diff and gated on
-        # the + prefix. The state (in_blade_comment, in_html_comment,
-        # in_script, in_style) accumulates across + and   lines so a
-        # @directive that lands inside a <style> that opened on a
-        # context line is still caught.
+        # @directive (include/yield/stack/push/section/once or control-flow
+        # @if/@foreach/@for/...) inside a <style>...</style> block. Context
+        # ( ) lines advance the state machine but do not trip; - lines are
+        # ignored (the round-10 defect class is about ADDING a directive
+        # inside a style block — a REMOVED directive is the GOOD direction).
         local hits
         hits="$(git diff $diff_args "$f" 2>/dev/null \
-            | awk '
+            | awk -v file="$f" '
                 BEGIN {
                     in_blade_comment = 0
                     in_html_comment  = 0
                     in_script        = 0
                     in_style         = 0
                     in_hunk          = 0
+                    new_line         = 0
+                    directive_re     = "@(include|includeIf|includeWhen|includeUnless|includeFirst|yield|stack|push|section|once|if|elseif|else|endif|unless|endunless|foreach|endforeach|forelse|endforelse|for|endfor|while|endwhile|switch|endswitch|php|endphp)([^a-zA-Z0-9_-]|$)"
                 }
                 # File headers are always outside a hunk.
                 /^---/        { if (!in_hunk) next }
                 /^\+\+\+/    { if (!in_hunk) next }
                 /^@@/ {
-                    in_hunk = 1
+                    rest = $0
+                    sub(/^@@ /, "", rest)
+                    sub(/ @@.*$/, "", rest)
+                    split(rest, parts, " ")
+                    split(parts[2], b, ",")
+                    new_line = b[1] + 0
+                    in_hunk  = 1
                     next
                 }
                 # The - branch is ignored. A REMOVED @directive
@@ -992,17 +999,11 @@ tripwire_nested_style_include() {
                         if (next_at == 0) {
                             if (!in_blade_comment && !in_html_comment && !in_script) {
                                 cleaned = cleaned substr(line, pos)
-                                if (is_plus && in_style && cleaned ~ /@(include|yield|stack|push|section|once)/) {
-                                    printf("    %s:+: %s\n", FILENAME, $0)
-                                }
                             }
                             break
                         }
                         if (!in_blade_comment && !in_html_comment && !in_script) {
                             seg = substr(line, pos, next_at - 1)
-                            if (is_plus && in_style && seg ~ /@(include|yield|stack|push|section|once)/) {
-                                printf("    %s:+: %s\n", FILENAME, $0)
-                            }
                             cleaned = cleaned seg
                         }
                         if (next_kind == "blade_close")   { pos = pos + next_at - 1 + length("--}}");      in_blade_comment = 0 }
@@ -1038,16 +1039,16 @@ tripwire_nested_style_include() {
                         if (next_at == 0) {
                             if (in_style) {
                                 tail = substr(cleaned, pos)
-                                if (is_plus && tail ~ /@(include|yield|stack|push|section|once)/) {
-                                    printf("    %s:+: %s\n", FILENAME, $0)
+                                if (is_plus && tail ~ directive_re) {
+                                    printf("    %s:+%d: %s\n", file, new_line, $0)
                                 }
                             }
                             break
                         }
                         if (in_style) {
                             seg = substr(cleaned, pos, next_at - 1)
-                            if (is_plus && seg ~ /@(include|yield|stack|push|section|once)/) {
-                                printf("    %s:+: %s\n", FILENAME, $0)
+                            if (is_plus && seg ~ directive_re) {
+                                printf("    %s:+%d: %s\n", file, new_line, $0)
                             }
                         }
                         if (next_kind == "style_close") {
@@ -1065,13 +1066,14 @@ tripwire_nested_style_include() {
                             }
                         }
                     }
+                    new_line++
                 }
             ')"
         if [ -n "$hits" ]; then
-            report "nested style include in $f" \
-                "  @include/@yield/@stack ADDED inside a <style> block:" \
+            report "nested Blade directive inside <style> in $f" \
+                "  Blade directive (@include/@yield/@stack/@if/@foreach/@for/…) ADDED inside a <style> block:" \
                 "$hits" \
-                "  Move the @include outside the <style> tag, or inline the CSS." \
+                "  Move the directive outside the <style> tag, or use CSS classes/variables instead." \
                 "  This is the round-10 defect class - see docs/BUGS.md."
             found=1
         fi
