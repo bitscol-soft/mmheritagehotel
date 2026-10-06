@@ -2,119 +2,81 @@
 
 @section('title','Notice List')
 
-@section('page-header')
-    <i class="fa fa-list"></i> Notice List
-@stop
-
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
-
-    <style type="text/css">
-        .rate-entry-table td, tr {
-            border: none !important;
-        }
-    </style>
 @stop
 
-
 @section('content')
+    <x-mm.styles />
+    <x-mm.page title="Notice List" description="Published company notices.">
+        <x-slot name="actions">
+            @if(hasPermission('notices.create', $slugs))
+                <a href="{{ route('notices.create') }}" class="btn btn-sm btn-primary">
+                    <i class="fa fa-plus"></i> Add New
+                </a>
+            @endif
+        </x-slot>
 
-    <div class="row">
-        <div class="col-sm-12">
+        <x-mm.panel class="tw-p-4">
+            <x-mm.data-table :columns="[
+                ['label' => 'Sl'],
+                ['label' => 'Date'],
+                ['label' => 'Company'],
+                ['label' => 'Title'],
+                ['label' => 'Action', 'width' => '130px', 'align' => 'center'],
+            ]" table-class="table table-bordered table-striped" label="Notice List">
+                @forelse($notices as $key => $notice)
+                    <tr class="text-{{ $notice->is_view == 1 ? ''  : 'primary' }}">
+                        <td>{{ $key + $notices->firstItem() }}  </td>
+                        <td>{{ fdate($notice->publish_at) }}</td>
+                        <td>{{ $notice->company->name }}</td>
+                        <td>{{ $notice->title }}</td>
+                        <td class="text-center">
+                            <div class="btn-group btn-corner">
+                                <span class="btn btn-info btn-xs popover-success"
+                                      data-rel="popover"
+                                      data-placement="top"
+                                      data-original-title="<i class='ace-icon fa fa-info-circle green'></i> Log Information"
+                                      data-content="<p>Created By: {{ optional($notice->created_user)->name }}.</p> <p> Created At : {{ $notice->created_at }} </p>
+                                       <hr/>
+                                       <p>Approved By: {{ optional($notice->approved_user)->name }}.</p> <p> Updated At : {{ $notice->update_at }} </p>">
+                                    <i class="fa fa-info-circle"></i>
+                                </span>
 
-            <!-- heading -->
-            <div class="widget-box widget-color-white ui-sortable-handle clearfix" id="widget-box-7">
-                <div class="widget-header widget-header-small">
-                    <h3 class="widget-title smaller text-primary">
-                        @yield('page-header')
+                                <a href="{{ route('notices.show', $notice->id) }}" target="__blank" class="btn btn-xs btn-primary"><i class="fa fa-eye"></i></a>
 
-                        @if(hasPermission('notices.create', $slugs))
-                            <span style="font-size: 14px; padding-right: 20px !important;" class="pull-right">|
-                                <a href="{{ route('notices.create') }}"><i class="fa fa-plus"></i> Add New</a>
-                            </span>
-                        @endif
-                    </h3>
-                </div>
+                                @if(hasPermission('notices.edit', $slugs))
+                                    <a href="{{ route('notices.edit', $notice->id) }}" class="btn btn-xs btn-blue"><i class="fa fa-edit"></i></a>
+                                @endif
 
-
-                <div class="space"></div>
-
-
-                <!-- entry form -->
-                <div class="row" style="width: 100%; margin: 0 !important;">
-                    <div class="col-sm-12">
-                        <table class="table table-bordered table-striped">
-                            <thead>
-                                <tr class="table-header-bg">
-                                    <th>Sl</th>
-                                    <th>Date</th>
-                                    <th>Company</th>
-                                    <th>Title</th>
-                                    <th style="width: 130px" class="text-center">Action</th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-                                @forelse($notices as $key => $notice)
-                                    <tr class="text-{{ $notice->is_view == 1 ? ''  : 'primary' }}">
-                                        <td>{{ $key + $notices->firstItem() }}  </td>
-                                        <td>{{ fdate($notice->publish_at) }}</td>
-                                        <td>{{ $notice->company->name }}</td>
-                                        <td>{{ $notice->title }}</td>
-                                        <td class="text-center">
-                                            <div class="btn-group btn-corner">
-                                                <span class="btn btn-info btn-xs popover-success"
-                                                      data-rel="popover"
-                                                      data-placement="top"
-                                                      data-original-title="<i class='ace-icon fa fa-info-circle green'></i> Log Information"
-                                                      data-content="<p>Created By: {{ optional($notice->created_user)->name }}.</p> <p> Created At : {{ $notice->created_at }} </p>
-                                                       <hr/>
-                                                       <p>Approved By: {{ optional($notice->approved_user)->name }}.</p> <p> Updated At : {{ $notice->update_at }} </p>">
-                                                    <i class="fa fa-info-circle"></i>
-                                                </span>
-
-                                                <a href="{{ route('notices.show', $notice->id) }}" target="__blank" class="btn btn-xs btn-primary"><i class="fa fa-eye"></i></a>
-
-                                                @if(hasPermission('notices.edit', $slugs))
-                                                    <a href="{{ route('notices.edit', $notice->id) }}" class="btn btn-xs btn-blue"><i class="fa fa-edit"></i></a>
-                                                @endif
-
-                                                @if(hasPermission('notices.delete', $slugs))
-                                                    <button class="btn btn-xs btn-danger" onclick="delete_item('{{ route('notices.destroy', $notice->id) }}')" type="button">
-                                                        <i class="fa fa-trash-o"></i>
-                                                    </button>
-                                                @endif
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="15" class="text-center text-danger">No records found!</td>
-                                    </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
-                        @include('partials._paginate', ['data' => $notices])
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+                                @if(hasPermission('notices.delete', $slugs))
+                                    <button class="btn btn-xs btn-danger" onclick="delete_item('{{ route('notices.destroy', $notice->id) }}')" type="button">
+                                        <i class="fa fa-trash-o"></i>
+                                    </button>
+                                @endif
+                            </div>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="15" class="text-center text-danger">No records found!</td>
+                    </tr>
+                @endforelse
+            </x-mm.data-table>
+            @include('partials._paginate', ['data' => $notices])
+        </x-mm.panel>
+    </x-mm.page>
 
     <!-- delete form -->
     <form action="" id="deleteItemForm" method="POST">
         @csrf @method("DELETE")
     </form>
-
 @endsection
 
 @section('js')
-    
-
     <script src="{{ asset('assets/js/chosen.jquery.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap-datepicker.min.js') }}"></script>
-
 
     <!--  User log popover -->
     <script type="text/javascript">
@@ -129,9 +91,4 @@
 
     <!--  date Picker-->
     <script type="text/javascript" src="{{ asset('assets/custom_js/date-picker.js') }}"></script>
-
-
-
 @endsection
-
-
