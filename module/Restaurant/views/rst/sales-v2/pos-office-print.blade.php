@@ -249,8 +249,8 @@
         <div class="container">
             <div class="company-logo">
                 {{-- <img src="{{ asset('uploads/company/' . $sale->company->logo) }}" alt="Logo" class="logo"> --}}
-                @if($sale->company->logo && file_exists('uploads/company/' . $sale->company->logo))
-                    <img src="{{ asset('uploads/company/' . $sale->company->logo) }}" alt="Logo" class="logo">
+                @if(optional($sale->company)->logo && file_exists('uploads/company/' . optional($sale->company)->logo))
+                    <img src="{{ asset('uploads/company/' . optional($sale->company)->logo) }}" alt="Logo" class="logo">
                 @endif
             </div>
 

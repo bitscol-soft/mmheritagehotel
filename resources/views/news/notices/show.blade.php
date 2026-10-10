@@ -28,7 +28,7 @@
                         <tr>
                             <td>Company</td>
                             <td style="width: 20px;" class="text-center">:</td>
-                            <td>{{ $notice->company->name }}</td>
+                            <td>{{ optional($notice->company)->name }}</td>
                         </tr>
                     </table>
                 </div>

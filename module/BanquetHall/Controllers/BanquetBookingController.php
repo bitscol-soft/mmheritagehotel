@@ -2,6 +2,7 @@
 
 namespace Module\BanquetHall\Controllers;
 
+use Carbon\Carbon;
 use Exception;
 use App\Models\Company;
 use App\Models\Country;
@@ -250,7 +251,7 @@ class BanquetBookingController extends Controller{
     {
         $this->hasAccess("bookings.view");
 
-        $data['booking']        = $booking = Booking::with('transection', 'hotelServiceSale.transactions', 'resturentServiceSale.RstTransactions', 'booking_members')->find($id);
+        $data['booking']        = $booking = Booking::with('transection', 'hotelServiceSale.transactions', 'resturentServiceSale.RstTransactions', 'booking_members')->findOrFail($id);
         $data['account_type']   = AccountType::where('status', 1)->pluck('name', 'id');
 
         $data['transactions']  = HotelTransection::with('source')
@@ -266,7 +267,7 @@ class BanquetBookingController extends Controller{
 
         $data['total_night']    = Carbon::parse($booking->check_out_date)->diffInDays(Carbon::parse($booking->check_in_date));
 
-        return view('booking/view', $data);
+        return view('hall_booking/view', $data);
     }
 
 
@@ -306,20 +307,22 @@ class BanquetBookingController extends Controller{
 
                 // UPDATE GUEST
                 $guest = Guest::find($booking->customer_id);
-                $guest->update([
-                    'company_id'    => $request->company_id
-                ]);
+                if ($guest) {
+                    $guest->update([
+                        'company_id'    => $request->company_id
+                    ]);
+                }
 
 
                 //--------- SEND SMS TO GUEST ---------//
-                if (isset($request->sms)) {
+                if (isset($request->sms) && $guest) {
                     $messages = 'Your booking have been successfully Reserved. Booking No. '.$this->service->booking->booking_number;
                     $this->sendSmsNotification($messages , $guest->phone_no);
                 }
 
 
                 //-------- SEND EMAIL TO GUEST --------//
-                if (isset($request->email)) {
+                if (isset($request->email) && $guest) {
                     $this->sendEmailNotification($booking->id, $guest->email);
                 }
 

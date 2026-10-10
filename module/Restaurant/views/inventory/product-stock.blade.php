@@ -101,8 +101,8 @@
                         <td>{{ $key+$item_stocks->firstItem() }}</td>
                         <td style="font-weight: bold !important;">{{ fdate($item->created_at) }}</td>
                         <td>{{ $item->name }}</td>
-                        <td>{{ $item->item_unit->name }}</td>
-                        <td>{{ $item->company->name }}</td>
+                        <td>{{ optional($item->item_unit)->name }}</td>
+                        <td>{{ optional($item->company)->name }}</td>
                         <td class="text-center">
                             @if ($item->current_stock > 0)
                                 <a target="_blank" href="{{ route('item_details') }}?&company_id={{ $item->company_id }}&item_id={{ $item->name }}&from_date={{ request('from_date') }}&to_date={{ request('to_date') }}">{{ $item->current_stock }}</a>

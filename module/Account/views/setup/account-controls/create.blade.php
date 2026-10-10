@@ -26,7 +26,7 @@
                             <select required name="company_id" class="chosen-select-100-percent" data-placeholder="- Select Account -">
                                 <option></option>
                                 @foreach($company as $key => $name)
-                                <option value="{{ $key }}" {{auth()->user()->company->id == $key ? 'selected' : ''}}>{{ $name }}</option>
+                                <option value="{{ $key }}" {{optional(auth()->user()->company)->id == $key ? 'selected' : ''}}>{{ $name }}</option>
                                 @endforeach
                             </select>
                         </div>

@@ -163,7 +163,7 @@ class DamageController extends Controller
     {
         $this->hasAccess("account-purchases.show");
 
-        $damage = Damage::with('details')->find($id);
+        $damage = Damage::with('details', 'company')->findOrFail($id);
 
         return view('product.damages.invoice', compact('damage'));
     }

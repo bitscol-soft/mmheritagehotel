@@ -103,7 +103,7 @@ class CustomerController extends Controller
     {
         $this->hasAccess("account-customers.edit");
 
-        $customer = Customer::query()->find($id);
+        $customer = Customer::query()->findOrFail($id);
 
         return view('party.customers.edit', compact('customer'));
     }

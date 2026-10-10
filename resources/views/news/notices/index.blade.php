@@ -30,7 +30,7 @@
                     <tr class="text-{{ $notice->is_view == 1 ? ''  : 'primary' }}">
                         <td>{{ $key + $notices->firstItem() }}  </td>
                         <td>{{ fdate($notice->publish_at) }}</td>
-                        <td>{{ $notice->company->name }}</td>
+                        <td>{{ optional($notice->company)->name }}</td>
                         <td>{{ $notice->title }}</td>
                         <td class="text-center">
                             <div class="btn-group btn-corner">

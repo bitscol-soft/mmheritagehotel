@@ -159,7 +159,7 @@ class ContraVoucherController extends Controller
     {
         $this->hasAccess("voucher-contras.view");
 
-        $voucher = Voucher::with('details', 'company')->find($id);
+        $voucher = Voucher::with('details', 'company')->findOrFail($id);
 
         return view('voucher.contras.invoice', compact('voucher'));
     }
@@ -185,7 +185,7 @@ class ContraVoucherController extends Controller
 
         if ($contra->is_approved == 1) {
 
-            return redirect()->back()->withInput()->with('error', 'This Vocuher Already Approved');
+            return redirect()->back()->withInput()->with('error', 'This Voucher Already Approved');
         }
 
         try {

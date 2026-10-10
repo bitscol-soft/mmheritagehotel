@@ -5,6 +5,16 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\View;
 use Illuminate\Http\Request;
+use Module\Hotel\Models\Aminities;
+use Module\Hotel\Models\RoomCategory;
+use Module\HotelWebsite\Models\AboutSection;
+use Module\HotelWebsite\Models\HotelFeature;
+use Module\HotelWebsite\Models\HotelFeatureList;
+use Module\HotelWebsite\Models\HotelGallery;
+use Module\HotelWebsite\Models\OurService;
+use Module\HotelWebsite\Models\OurServiceList;
+use Module\HotelWebsite\Models\Page;
+use Module\HotelWebsite\Models\PrivacyPolicy;
 
 /**
  * Render the migrated public-site views (frontend.*) against the seeded database and write the
@@ -39,16 +49,51 @@ class MmRenderPublicFixtures extends Command
     /** @return array<string, array{view:string, url:string, data:array}> */
     private function cases(): array
     {
+        $featureHead  = HotelFeature::first() ?? new HotelFeature();
+        $featureList  = HotelFeatureList::where('status', 1)->get();
+        $about        = AboutSection::first() ?? new AboutSection();
+        $service      = OurService::first() ?? new OurService();
+        $serviceList  = OurServiceList::where('status', 1)->take(2)->get();
+        $roomCategory = RoomCategory::where('status', 1)->get();
+        $gallery      = HotelGallery::where('status', 1)->get();
+        $firstRoom    = $roomCategory->first() ?? new RoomCategory(['id' => 1, 'name' => 'Sample Suite', 'price' => 0]);
+        $aminities    = Aminities::whereIn('id', collect(explode(',', (string) $firstRoom->room_aminities))->filter()->toArray())->get();
+        $privacy      = PrivacyPolicy::first() ?? new PrivacyPolicy();
+        $firstPage    = Page::first() ?? new Page(['title' => 'Sample Page', 'short_description' => '', 'description' => '', 'image' => '']);
+        $sampleReq    = new Request([
+            'room_category' => $firstRoom->id ?? 1,
+            'room_id'       => 1,
+            'check_in'      => '2026-10-01',
+            'check_out'     => '2026-10-02',
+            'name'          => 'Sample Guest',
+            'email'         => 'guest@example.com',
+            'phone_no'      => '01700000000',
+            'address'       => 'Dhaka',
+            'nid_no'        => '123456',
+            'spouse_name'   => '',
+        ]);
+
         return [
             'home' => [
                 'view' => 'frontend.home',
                 'url' => '/',
-                'data' => [],
+                'data' => [
+                    'feature_head'  => $featureHead,
+                    'feature_list'  => $featureList,
+                    'about'         => $about,
+                    'service'       => $service,
+                    'service_list'  => $serviceList,
+                    'room_category' => $roomCategory,
+                    'gallery'       => $gallery,
+                ],
             ],
             'room_view' => [
                 'view' => 'frontend.room_view',
                 'url' => '/room/sample-suite',
-                'data' => [],
+                'data' => [
+                    'room'      => $firstRoom,
+                    'aminities' => $aminities,
+                ],
             ],
             'booking_cart' => [
                 'view' => 'frontend.booking-cart',
@@ -58,37 +103,56 @@ class MmRenderPublicFixtures extends Command
             'search_all_room' => [
                 'view' => 'frontend.search_all_room',
                 'url' => '/search-all-room',
-                'data' => [],
+                'data' => [
+                    'room_categories' => $roomCategory,
+                ],
             ],
             'search_room' => [
                 'view' => 'frontend.search_room',
                 'url' => '/search-room',
-                'data' => [],
+                'data' => [
+                    'category'           => $firstRoom,
+                    'aminities'          => $aminities,
+                    'totalAvailableRoom' => 1,
+                    'room_id'            => 1,
+                    'check_in'           => '2026-10-01',
+                    'check_out'          => '2026-10-02',
+                ],
             ],
             'guest_register' => [
                 'view' => 'frontend.guest-register',
                 'url' => '/guest-register',
-                'data' => [],
+                'data' => [
+                    'request' => $sampleReq,
+                ],
             ],
             'booking_register' => [
                 'view' => 'frontend.booking-register',
                 'url' => '/booking-register',
-                'data' => [],
+                'data' => [
+                    'request' => $sampleReq,
+                ],
             ],
             'terms' => [
                 'view' => 'frontend.terms',
                 'url' => '/terms-condition',
-                'data' => [],
+                'data' => [
+                    'data' => $privacy,
+                ],
             ],
             'privacy_policy' => [
                 'view' => 'frontend.privacy_policy',
                 'url' => '/privacy-policy',
-                'data' => [],
+                'data' => [
+                    'data' => $privacy,
+                ],
             ],
             'single_page_view' => [
                 'view' => 'frontend.single-page-view',
                 'url' => '/pages/sample',
-                'data' => [],
+                'data' => [
+                    'page' => $firstPage,
+                ],
             ],
         ];
     }

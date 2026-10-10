@@ -2,7 +2,7 @@
 
     @php
         $group = App\Models\Group::first();
-        $fav_icon = file_exists($group->fav_icon) ? asset($group->fav_icon) : '/icon.png';
+        $fav_icon = optional($group)->fav_icon && file_exists(optional($group)->fav_icon) ? asset(optional($group)->fav_icon) : '/icon.png';
     @endphp
     <title>@yield('website_header')&nbsp;{{ websiteInfo()->site_first_name. ' '.websiteInfo()->site_last_name }}</title>
     <!-- for-mobile-apps -->

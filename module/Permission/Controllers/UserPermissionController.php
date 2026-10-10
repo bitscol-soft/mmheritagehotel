@@ -424,7 +424,8 @@ class UserPermissionController extends Controller
 
         $this->hasAccess("permission.accesses.edit");     // check permission
 
-        $data['user']         = User::find($id);
+        $user                 = User::findOrFail($id);
+        $data['user']         = $user;
         $data['modules']      = Module::where('name', '!=', 'Employee Permission')->with('submodules.parent_permissions.permissions')->active()->get();
         $data['companies']    = Company::pluck('name', 'id');
 
@@ -460,15 +461,15 @@ class UserPermissionController extends Controller
 
 
 
-        $data['isPermitted']            = User::find($id)->permissions()->pluck('slug')->toArray();
-        $data['hasCompanies']           = User::find($id)->companies()->pluck('name')->toArray();
+        $data['isPermitted']            = $user->permissions()->pluck('slug')->toArray();
+        $data['hasCompanies']           = $user->companies()->pluck('name')->toArray();
 
         Schema::hasTable('departments')
-            ? $data['hasDepartments']        = User::find($id)->departments()->pluck('name')->toArray()
+            ? $data['hasDepartments']        = $user->departments()->pluck('name')->toArray()
             : $data['hasDepartments'] = [];
 
             Schema::hasTable('designations')
-            ? $data['hasDesignations']        = User::find($id)->designations()->pluck('name')->toArray()
+            ? $data['hasDesignations']        = $user->designations()->pluck('name')->toArray()
             : $data['hasDesignations'] = [];
 
 
@@ -502,7 +503,7 @@ class UserPermissionController extends Controller
 
         try {
 
-            $user_created = User::find($id);
+            $user_created = User::findOrFail($id);
 
 
             $hasFeatures  = PermissionFeature::where('status', 1)->pluck('name')->toArray();

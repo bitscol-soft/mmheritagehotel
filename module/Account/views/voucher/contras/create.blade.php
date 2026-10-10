@@ -39,7 +39,7 @@
 
                                                 @foreach ($company as $key => $name)
                                                     <option value="{{ $key }}"
-                                                        {{ auth()->user()->company->id == $key ? 'selected' : '' }}>
+                                                        {{ optional(auth()->user()->company)->id == $key ? 'selected' : '' }}>
                                                         {{ $name }}</option>
                                                 @endforeach
                                             </select>

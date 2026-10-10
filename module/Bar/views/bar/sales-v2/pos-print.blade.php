@@ -240,7 +240,7 @@
     <section id="invoice">
         <div class="container">
             <div class="company-logo">
-                <img src="{{ asset('uploads/company/' . $sale->company->logo) }}" alt="Logo" class="logo">
+                <img src="{{ asset('uploads/company/' . optional($sale->company)->logo) }}" alt="Logo" class="logo">
             </div>
 
 

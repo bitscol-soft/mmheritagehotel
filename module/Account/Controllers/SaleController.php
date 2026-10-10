@@ -113,7 +113,7 @@ class SaleController extends Controller
      | STORE/SAVE METHOD
      |--------------------------------------------------------------------------
     */
-    public function store(Request $request)
+    public function store(Request $request, int $retryCount = 0)
     {
         // dd($request->all());
 
@@ -143,10 +143,10 @@ class SaleController extends Controller
 
         } catch (Exception $ex) {
 
-            if ($ex->getCode() == '23000') {
+            if ($ex->getCode() == '23000' && $retryCount < 1) {
                 $this->saleService->invoiceNumberService->setNextInvoiceNo($request->company_id, 'Sale', date('Y'));
 
-                $this->store($request);
+                return $this->store($request, $retryCount + 1);
             }
 
             return redirect()->back()->withInput()->with('error', $ex->getMessage());
@@ -175,7 +175,7 @@ class SaleController extends Controller
     {
         $this->hasAccess("account-sales.show");
 
-        $sale = Sale::with('details', 'company')->find($id);
+        $sale = Sale::with('details', 'company')->findOrFail($id);
 
         return view('sale.sales.invoice', compact('sale'));
     }
@@ -198,7 +198,7 @@ class SaleController extends Controller
     {
         $this->hasAccess("account-sales.edit");
 
-        $data['sale']       = Sale::find($id);
+        $data['sale']       = Sale::findOrFail($id);
         $data['products']   = Product::select('id', 'name', 'selling_price')->get();
         $data['companies']  = Company::pluck('name', 'id');
         $data['customers']  = Customer::pluck('name', 'id');
@@ -303,7 +303,7 @@ class SaleController extends Controller
                     $detail->pos_stocks()->delete();
 
 
-                    $this->service->productStockService->updateStockInHand($detail->product_id, $sale->company_id, $sale->branch_id, date('Y-m-d'));
+                    $this->saleService->productStockService->updateStockInHand($detail->product_id, $sale->company_id, $sale->branch_id, date('Y-m-d'));
 
 
                     // $this->stockService->deleteStock($detail->product_id, SaleDetail::class, $detail->id, 'Out');

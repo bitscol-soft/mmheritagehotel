@@ -215,22 +215,23 @@ class BookingController extends Controller
 
                 // UPDATE GUEST WITH BOOKING ID
                 $guest = Guest::find($request->customer_id);
-
-                $guest->update([
-                    'booking_id'    => $this->service->booking->id,
-                    'company_id'    => $request->company_id
-                ]);
+                if ($guest) {
+                    $guest->update([
+                        'booking_id'    => $this->service->booking->id,
+                        'company_id'    => $request->company_id
+                    ]);
+                }
 
 
                 //--------- SEND SMS TO GUEST ---------//
-                if (isset($request->sms)) {
+                if (isset($request->sms) && $guest) {
                     $messages = 'Your booking have been successfully Reserved. Booking No. '.$this->service->booking->booking_number;
                     $this->sendSmsNotification($messages , $guest->phone_no);
                 }
 
 
                 //-------- SEND EMAIL TO GUEST --------//
-                if (isset($request->email)) {
+                if (isset($request->email) && $guest) {
                     $this->sendEmailNotification($this->service->booking->id, $guest->email);
                 }
 
@@ -361,20 +362,22 @@ class BookingController extends Controller
 
                 // UPDATE GUEST
                 $guest = Guest::find($booking->customer_id);
-                $guest->update([
-                    'company_id'    => $request->company_id
-                ]);
+                if ($guest) {
+                    $guest->update([
+                        'company_id'    => $request->company_id
+                    ]);
+                }
 
 
                 //--------- SEND SMS TO GUEST ---------//
-                if (isset($request->sms)) {
+                if (isset($request->sms) && $guest) {
                     $messages = 'Your booking have been successfully Reserved. Booking No. '.$this->service->booking->booking_number;
                     $this->sendSmsNotification($messages , $guest->phone_no);
                 }
 
 
                 //-------- SEND EMAIL TO GUEST --------//
-                if (isset($request->email)) {
+                if (isset($request->email) && $guest) {
                     $this->sendEmailNotification($booking->id, $guest->email);
                 }
 
@@ -458,20 +461,22 @@ class BookingController extends Controller
 
                 // UPDATE GUEST
                 $guest = Guest::find($booking->customer_id);
-                $guest->update([
-                    'company_id'    => $request->company_id
-                ]);
+                if ($guest) {
+                    $guest->update([
+                        'company_id'    => $request->company_id
+                    ]);
+                }
 
 
                 //--------- SEND SMS TO GUEST ---------//
-                if (isset($request->sms)) {
+                if (isset($request->sms) && $guest) {
                     $messages = 'Your booking have been successfully Reserved. Booking No. '.$this->service->booking->booking_number;
                     $this->sendSmsNotification($messages , $guest->phone_no);
                 }
 
 
                 //-------- SEND EMAIL TO GUEST --------//
-                if (isset($request->email)) {
+                if (isset($request->email) && $guest) {
                     $this->sendEmailNotification($booking->id, $guest->email);
                 }
 
