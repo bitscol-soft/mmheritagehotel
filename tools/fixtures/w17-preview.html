@@ -2200,6 +2200,11 @@ module/Restaurant/views/kitchen/index.blade.php
     </ul>
 </section>
 
+<section class="preview-section" id="w17-w2-ci-fix">
+    <h2>W1.7 / W2 / CI Fix — Restore <code>guests/index.blade.php</code> &amp; Sync Tailwind Build (<code>39a4aa54</code>)</h2>
+    <p style="color:#526578">Restores the W1.7 Guest List proving screen (<code>module/Hotel/views/guests/index.blade.php</code>) whose <code>@section('content')</code> body was accidentally stripped in <code>7efd787d</code>, ports the W1.7b / W2.1 / W2.4 / W2.5 rules into <code>resources/css/{ui,shell}.css</code> so <code>npm run ui:build</code> produces zero diff on <code>public/assets/custom_css/{ui,shell}.css</code>, and adds <code>--ignore-platform-reqs</code> to <code>.github/workflows/frontend-fixtures.yml</code>.</p>
+</section>
+
 </body>
 
 </html>
