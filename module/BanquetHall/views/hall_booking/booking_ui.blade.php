@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title', 'Add Booking')
-@section('page-header')
-    <i class="fa fa-plus-circle"></i> Add New Booking
-@stop
 
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
@@ -47,29 +44,19 @@
 
     @endphp
 
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="widget-box">
-                <div class="widget-header">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
+    <x-mm.styles />
+    <x-mm.page class="mm-booking-form" title="Add New Booking">
+        <x-slot name="actions">
+            <a href="{{ route('booking.index') }}" class="btn btn-sm btn-default">
+                <i class="ace-icon fa fa-list-alt"></i> Booking List
+            </a>
+        </x-slot>
 
-                    <span class="widget-toolbar">
-                        <a href="{{ route('booking.index') }}">
-                            <i class="ace-icon fa fa-list-alt"></i> Booking List
-                        </a>
-                    </span>
-
-                </div>
-
-                <div class="widget-body">
-                    <div class="widget-main">
-                        <x-alert-message />
-                        <x-room-manage :categories="$categories" :mixdate="$booking_date" />
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+        <x-mm.panel>
+            <x-alert-message />
+            <x-room-manage :categories="$categories" :mixdate="$booking_date" />
+        </x-mm.panel>
+    </x-mm.page>
 
 
 @endsection

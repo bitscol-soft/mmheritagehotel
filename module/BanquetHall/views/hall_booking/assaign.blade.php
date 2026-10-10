@@ -2,10 +2,6 @@
 
 @section('title', 'Assign Booking')
 
-@section('page-header')
-    <i class="fa fa-edit"></i> Assign Booking
-@endsection
-
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -68,8 +64,6 @@
 
 @section('content')
 
-    <div class="row">
-
         @php
             $date = date('Y-m-d');
             $date1 = str_replace('-', '/', $date);
@@ -77,21 +71,16 @@
 
         @endphp
 
-        <div class="col-sm-12">
-            <div class="widget-box">
-                <div class="widget-header">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
+    <x-mm.styles />
+    <x-mm.page class="mm-booking-form" title="Assign Booking">
+        <x-slot name="actions">
+            <a href="{{ route('booking.index') }}" class="btn btn-sm btn-default">
+                <i class="ace-icon fa fa-list-alt"></i> Booking List
+            </a>
+        </x-slot>
 
-                    <span class="widget-toolbar">
-                        <a href="{{ route('booking.index') }}">
-                            <i class="ace-icon fa fa-list-alt"></i> Booking List
-                        </a>
-                    </span>
-
-                </div>
-
-                <div class="widget-body">
-                    <div class="widget-main" style="padding-bottom: 44px;">
+        <x-mm.panel>
+                    <div style="padding-bottom: 44px;">
 
                         <!-- Include Alert Message -->
                         <x-alert-message />
@@ -293,12 +282,8 @@
                         </div>
 
                     </div>
-                </div>
-            </div>
-
-
-        </div>
-    </div>
+        </x-mm.panel>
+    </x-mm.page>
     @include('partials/modal/edit_guest_modal')
 
 @endsection

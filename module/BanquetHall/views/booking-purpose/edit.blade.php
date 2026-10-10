@@ -1,12 +1,5 @@
 @extends('layouts.master')
 @section('title', 'Edit Booking Purpose')
-@section('page-header')
-    <i class="fa fa-plus-circle"></i> Edit Booking @if (request('type') == 'purpose')
-        Purpose
-    @else
-        Platform
-    @endif
-@stop
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <!-- page specific plugin styles -->
@@ -15,24 +8,15 @@
 @stop
 
 @section('content')
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="widget-box">
-                <div class="widget-header">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
-                    <span class="widget-toolbar">
+    <x-mm.styles />
+    <x-mm.page class="mm-crud-form" :title="'Edit Booking ' . (request('type') == 'purpose' ? 'Purpose' : 'Platform')">
+        <x-slot name="actions">
+            <a href="{{ route('booking-purpose.index') }}?type={{ request('type') == 'purpose' ? 'purpose' : 'platform' }}" class="btn btn-sm btn-default">
+                <i class="ace-icon fa fa-list-alt"></i> List
+            </a>
+        </x-slot>
 
-                        <a
-                            href="{{ route('booking-purpose.index') }}?type={{ request('type') == 'purpose' ? 'purpose' : 'platform' }}">
-                            <i class="ace-icon fa fa-list-alt"></i> List
-                        </a>
-
-                    </span>
-                </div>
-
-                <div class="widget-body">
-                    <div class="widget-main no-padding">
-
+        <x-mm.panel>
                         <div style="margin: 20px;">
                             @include('partials._alert_message')
                         </div>
@@ -71,13 +55,8 @@
                                 </button>
                             </div>
                         </form>
-
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </div>
+        </x-mm.panel>
+    </x-mm.page>
 @endsection
 
 @section('js')

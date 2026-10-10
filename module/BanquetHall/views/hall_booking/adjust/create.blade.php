@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title', 'Booking Migration')
-@section('page-header')
-    <i class="fa fa-plus-circle"></i> Booking Migration
-@stop
 
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
@@ -25,23 +22,15 @@
 
     @endphp
 
-    <div class="row">
+    <x-mm.styles />
+    <x-mm.page class="mm-booking-form" title="Booking Migration">
+        <x-slot name="actions">
+            <a href="{{ route('booking.index') }}" class="btn btn-sm btn-default">
+                <i class="ace-icon fa fa-list-alt"></i> Booking List
+            </a>
+        </x-slot>
 
-        <div class="col-sm-12">
-            <div class="widget-box">
-                <div class="widget-header">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
-
-                    <span class="widget-toolbar">
-                        <a href="{{ route('booking.index') }}">
-                            <i class="ace-icon fa fa-list-alt"></i> Booking List
-                        </a>
-                    </span>
-
-                </div>
-
-                <div class="widget-body">
-
+        <x-mm.panel>
                     <!-- Adjust Booking Form -->
                     <form action="{{ route('booking-adjusts.store') }}" class="store-form" method="POST" id="store-form">
                         @csrf
@@ -51,7 +40,7 @@
                         <input type="hidden" name="type" value="{{ request('type') }}" required>
                         <input type="hidden" name="from_booking_migration" value="1">
 
-                        <div class="widget-main">
+                        <div>
 
                             <x-alert-message />
 
@@ -276,13 +265,8 @@
                         </div>
 
                     </form>
-
-                </div>
-
-
-            </div>
-        </div>
-    </div>
+        </x-mm.panel>
+    </x-mm.page>
 
 
 @endsection
