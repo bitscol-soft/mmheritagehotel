@@ -2136,6 +2136,16 @@ module/Restaurant/views/kitchen/index.blade.php
     </ul>
 </section>
 
+<section class="preview-section" id="w6-1bd">
+    <h2>W6.1b/d — Account voucher &amp; fund-transfer create/edit form chrome + inline <code>&lt;style&gt;</code> removal (<code>eecec394</code>)</h2>
+    <p style="color:#526578">Completes W6.1b/d (and closes all of W6) across <code>module/Account/views/voucher/{contras,journals,payments,receives}/create.blade.php</code>, <code>module/Account/views/voucher/{contras,journals}/edit.blade.php</code>, and <code>module/Account/views/fund-transfers/{create,edit}.blade.php</code>.</p>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>Removed 8 inline <code>&lt;style&gt;</code> blocks</strong>: moved <code>counter-reset: section</code>, <code>.count::before</code>, compact <code>td</code> padding, and <code>select:invalid</code> positioning into <code>.mm-ui.mm-acc.mm-rst-form</code> in <code>resources/css/ui.css</code> and <code>public/assets/custom_css/ui.css</code>.</li>
+        <li><strong>Responsive <code>.mm-voucher-meta</code> &amp; <code>.mm-voucher-footer</code></strong>: normalized the top Company / Reference / Date header row and bottom Narration/Description + Attachment + Draft/Save/Update footer bar across all 6 voucher create/edit views.</li>
+        <li><strong>Markup &amp; URL fixes</strong>: closed unclosed <code>&lt;label&gt;</code> tags around <code>#id-input-file-3</code>, fixed <code>&lt;label&gt;No file uploaded!&lt;/label&gt;</code> and hardcoded <code>http://127.0.0.1:8000/</code> attachment links in <code>contras/edit</code> and <code>journals/edit</code>, and preserved all ledger repeater rows and totals JS byte-identical.</li>
+    </ul>
+</section>
+
 </body>
 
 </html>
