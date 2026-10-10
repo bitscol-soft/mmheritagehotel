@@ -440,7 +440,13 @@
     border-color: rgba(96, 165, 250, 0.45);
     color: #fff;
 }
-.mm-shell.mm-dark .mm-panel,
+.mm-shell.mm-dark .mm-panel {
+    background-color: #18232f;
+    background-image: linear-gradient(145deg, rgba(30, 44, 64, 0.82) 0%, rgba(19, 29, 43, 0.78) 100%);
+    border-color: rgba(148, 163, 184, 0.22);
+    color: #e8f0fa;
+    box-shadow: 0 12px 32px -4px rgba(2, 6, 23, 0.50), inset 0 1px 0 rgba(255, 255, 255, 0.09);
+}
 .mm-shell.mm-dark .widget-box,
 .mm-shell.mm-dark .well,
 .mm-shell.mm-dark .panel,
