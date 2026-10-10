@@ -2191,6 +2191,15 @@ module/Restaurant/views/kitchen/index.blade.php
     </ul>
 </section>
 
+<section class="preview-section" id="w23-w6-breadcrumbs-invoices">
+    <h2>W2.3 / W6 Closeout — 5 Restaurant <code>stock-adjustment/*</code> &amp; 10 Account Invoice/Print views (<code>90f37a04</code>)</h2>
+    <p style="color:#526578">Closes out the remaining 15 <code>@extends('layouts.master')</code> views in <code>module/Restaurant/</code> and <code>module/Account/</code> that were not yet wrapped in <code>&lt;x-mm.page&gt;</code> or <code>&lt;x-mm.print-sheet&gt;</code>.</p>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>Restaurant <code>stock-adjustment/*</code> (5 views)</strong>: <code>inventory/stock-adjustment/{approve,create,edit,receive,view}</code> migrated off legacy <code>.breadcrumbs.ace-save-state</code> + <code>.widget-body/.widget-main</code> onto <code>&lt;x-mm.styles /&gt;</code> + <code>&lt;x-mm.page&gt;</code> + <code>&lt;x-mm.panel&gt;</code>.</li>
+        <li><strong>Account invoices &amp; category print (10 views)</strong>: <code>product/damages/invoice</code>, <code>purchase/purchase-returns/invoice</code>, <code>purchase/purchases/invoice</code>, <code>sale/sale-returns/invoice</code>, <code>sale/sales/invoice</code>, <code>voucher/{contras,journals,payments,receives}/invoice</code>, and <code>reports/transaction-ledger/category-print</code> wrapped in <code>&lt;x-mm.styles /&gt;</code> + <code>&lt;x-mm.print-sheet&gt;</code> + <code>&lt;x-mm.panel class="tw-p-4"&gt;</code>.</li>
+    </ul>
+</section>
+
 </body>
 
 </html>
