@@ -106,9 +106,9 @@
             <div class="ab-w3l-spa">
                 <h3 class="title-w3-agileits title-black-wthree">{{ $about->about_heading }}</h3>
                 <p class="about-para-w3ls">{{ $about->about_description }}</p>
-                <img src="{{ asset($about->first_image) }}" class="img-responsive about-first-image" alt="Hair Salon">
+                <img src="{{ asset($about->first_image) }}" class="img-responsive about-first-image" alt="Hair Salon" loading="lazy">
                 <div class="w3l-slider-img">
-                    <img src="{{ asset($about->second_image) }}" class="img-responsive" alt="Hair Salon">
+                    <img src="{{ asset($about->second_image) }}" class="img-responsive" alt="Hair Salon" loading="lazy">
                 </div>
                 <div class="w3ls-info-about">
                     <h4>{{ $about->offer_title }}</h4>
@@ -136,10 +136,10 @@
                                         @if (file_exists(optional($category->roomSingleImg)->relative_path . optional($category->roomSingleImg)->name))
                                             <img src="{{ asset(optional($category->roomSingleImg)->relative_path . optional($category->roomSingleImg)->name) }}"
                                                 alt="{{ optional($category->roomSingleImg)->name }}"
-                                                class="img-responsive" />
+                                                class="img-responsive" loading="lazy" />
                                         @else
                                             <img src="{{ asset('frontend/assets/images/1.jpg') }}" alt=" "
-                                                class="img-responsive">
+                                                class="img-responsive" loading="lazy">
                                         @endif
                                         <h4>{{ $category->name }}</h4>
                                     </a>
@@ -178,10 +178,10 @@
                                         @if (file_exists(optional($category->roomSingleImg)->relative_path . optional($category->roomSingleImg)->name))
                                             <img src="{{ asset(optional($category->roomSingleImg)->relative_path . optional($category->roomSingleImg)->name) }}"
                                                 alt="{{ optional($category->roomSingleImg)->name }}" class="img-responsive"
-                                                style="width: 538px; height: 250px;" />
+                                                style="width: 538px; height: 250px;" loading="lazy" />
                                         @else
                                             <img src="{{ asset('frontend/assets/images/1.jpg') }}" alt=" "
-                                                class="img-responsive" style="width: 538px; height: 250px;">
+                                                class="img-responsive" style="width: 538px; height: 250px;" loading="lazy">
                                         @endif
 
                                         <div class="booking-details">
@@ -318,7 +318,7 @@
                     <div class="col-md-3 gallery-grid gallery1">
                         <a class="venobox" data-gall="gallery01" href="{{ asset($galleries->name) }}"
                             alt="{{ $galleries->gallery_text }}" width="100%" height="100%">
-                            <img src="{{ asset($galleries->name) }}" class="gallery-image img-responsive">
+                            <img src="{{ asset($galleries->name) }}" class="gallery-image img-responsive" loading="lazy">
     
                             <div class="textbox">
                                 <h4>{{ $galleries->gallery_text }}</h4>

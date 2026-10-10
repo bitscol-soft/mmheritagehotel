@@ -1109,3 +1109,26 @@ console.log('PASS: note list/edit expressions, forms and status scripts; legacy 
   assert.equal(untouched,'','HotelWebsite controllers, routes and models must stay unchanged');
   console.log('PASS: hotel website (20 views) keeps fields, expressions, directives, components and scripts; controllers and routes untouched');
 }
+
+{
+  // W7 Public site: --web-* token set, mm-web shell on all 12 routed frontend views, no admin frame leak, perf budget (non-blocking webfonts + lazy images).
+  const tokens=fs.readFileSync('public/assets/custom_css/tokens.css','utf8');
+  for(const tok of ['--web-brand:','--web-brand-dark:','--web-accent:','--web-gold:','--web-ink:','--web-muted:','--web-surface:','--web-bg:','--web-line:','--web-radius:','--web-shadow:','--web-font-display:','--web-font-sans:']){
+    assert(tokens.includes(tok),`tokens.css missing W7 public token ${tok}`);
+  }
+  const pubHeader=fs.readFileSync('resources/views/frontend/layouts/includes/header.blade.php','utf8');
+  assert(!pubHeader.includes('http://fonts.googleapis.com'),'Public header must not use render-blocking http:// Google Fonts');
+  assert(pubHeader.includes('display=swap') && pubHeader.includes('media="print"'), 'Public header webfonts must use display=swap and non-blocking media="print" swap');
+  const pubViews=['home','room_view','booking-cart','search_all_room','search_room','guest-register','booking-register','terms','privacy_policy','single-page-view','food-menu','bar-menu'];
+  for(const v of pubViews){
+    const src=fs.readFileSync(`resources/views/frontend/${v}.blade.php`,'utf8');
+    assert(src.includes("@extends('frontend.layouts.mm-web')"),`frontend/${v}.blade.php must extend frontend.layouts.mm-web`);
+    assert(!/<x-mm\.page\b|@section\(['"]page-header['"]\)|\bmm-shell\b|\bwidget-box\b/.test(src),`frontend/${v}.blade.php must not leak admin shell/page frame`);
+  }
+  for(const v of ['home','room_view','search_all_room','search_room','single-page-view','food-menu','bar-menu']){
+    const src=fs.readFileSync(`resources/views/frontend/${v}.blade.php`,'utf8');
+    assert(src.includes('loading="lazy"'),`frontend/${v}.blade.php must lazy-load below-the-fold images`);
+  }
+  console.log('PASS: W7 public site (12 frontend views) uses mm-web shell and --web-* tokens, lazy-loads images, avoids render-blocking webfonts, and never leaks admin frame');
+}
+

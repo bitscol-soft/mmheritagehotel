@@ -17,7 +17,7 @@ async function open(page, name, width = 1280) {
     await page.route(/^https?:\/\/(?!mm-web\.test\/)/, route => route.fulfill({ status: 204, body: '' }));
     await page.route('http://mm-web.test/**', route => {
         const url = new URL(route.request().url());
-        if (url.pathname.startsWith('/assets/') || url.pathname.startsWith('/frontend/')) {
+        if (url.pathname.startsWith('/assets/') || url.pathname.startsWith('/frontend/') || url.pathname.startsWith('/food_menu/')) {
             const file = path.join(process.cwd(), 'public', url.pathname);
             return fs.existsSync(file) ? route.fulfill({ path: file }) : route.fulfill({ status: 404, body: '' });
         }
@@ -38,6 +38,8 @@ const screens = {
     'terms': 'Public terms & conditions through the shared mm-web shell',
     'privacy_policy': 'Public privacy policy through the shared mm-web shell',
     'single_page_view': 'Public CMS page through the shared mm-web shell',
+    'food_menu': 'Public restaurant food menu through the shared mm-web shell',
+    'bar_menu': 'Public bar drink menu through the shared mm-web shell',
 };
 
 for (const [name, title] of Object.entries(screens)) {
@@ -109,4 +111,12 @@ test('terms and privacy_policy: long-form content keeps its static markup', asyn
 test('single_page_view: CMS page renders its title inside the menu (and not as an admin mm-page-title)', async ({ page }) => {
     await open(page, 'single_page_view');
     await expect(page.locator('.menu__item--current, .menu__item').first()).toBeVisible();
+});
+
+test('food_menu and bar_menu: filterable menu sections render inside the shared mm-web shell', async ({ page }) => {
+    for (const name of ['food_menu', 'bar_menu']) {
+        await open(page, name);
+        await expect(page.locator('.food_section').first()).toBeVisible();
+        await expect(page.locator('.filters_menu').first()).toBeVisible();
+    }
 });

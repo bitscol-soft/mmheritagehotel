@@ -92,7 +92,7 @@
             <div class="category-slider @if($img_count > 1) slider-active @endif">
                 @foreach ($room->roomMultipleImg as $image)
                     <div class="slider-img">
-                        <img class="img-fluid" src="{{ asset($image->relative_path.$image->name) }}" alt="">
+                        <img class="img-fluid" src="{{ asset($image->relative_path.$image->name) }}" alt="" loading="lazy">
                     </div>
                 @endforeach
             </div>
@@ -113,7 +113,7 @@
                             <li>
                                 @if ($item->aminities_icon != null)
                                     <div class="aminity-img">
-                                        <img class="img-fluid" src="{{ asset($item->aminities_icon) }}" alt="">
+                                        <img class="img-fluid" src="{{ asset($item->aminities_icon) }}" alt="" loading="lazy">
                                     </div>
                                 @endif
                                 <p>{{ $item->name }}</p>
@@ -151,9 +151,9 @@
                     <h4 class="roomCategory">{{ $room->name }}</h4>
 
                     @if (file_exists(optional($room->roomSingleImg)->relative_path.optional($room->roomSingleImg)->name))
-                        <img src="{{ asset(optional($room->roomSingleImg)->relative_path.optional($room->roomSingleImg)->name) }}" alt="{{ optional($room->roomSingleImg)->name }}" class="img-responsive category-img" style="width: 538px; height: 250px;"/>
+                        <img src="{{ asset(optional($room->roomSingleImg)->relative_path.optional($room->roomSingleImg)->name) }}" alt="{{ optional($room->roomSingleImg)->name }}" class="img-responsive category-img" style="width: 538px; height: 250px;" loading="lazy"/>
                     @else
-                        <img src="{{ asset('frontend/assets/images/1.jpg') }}" alt=" " class="img-responsive category-img" style="width: 538px; height: 250px;">
+                        <img src="{{ asset('frontend/assets/images/1.jpg') }}" alt=" " class="img-responsive category-img" style="width: 538px; height: 250px;" loading="lazy">
                     @endif
 
                     <div class="booking-details">

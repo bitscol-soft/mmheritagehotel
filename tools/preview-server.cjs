@@ -243,7 +243,7 @@ const pages={
  '/preview/web-settings':{file:'preview/web-settings.html',title:'Website Settings',crumbs:['Website','Website Settings']},
  '/preview/acc-contras':{file:'preview/acc-contras.html',title:'Contra Vouchers',crumbs:['Account','Contra Vouchers']},
  '/preview/acc-form-contras-create':{file:'preview/acc-form-contras-create.html',title:'Create Contra Voucher',crumbs:['Account','Create Contra Voucher']},
- '/preview/acc-form-contras-edit':{file:'preview/acc-form-contras-edit.html',title:'Create Contra Voucher',crumbs:['Account','Create Contra Voucher']},
+ '/preview/acc-form-contras-edit':{file:'preview/acc-form-contras-edit.html',title:'Edit Contra Voucher',crumbs:['Account','Edit Contra Voucher']},
  '/preview/acc-form-fund-transfer-create':{file:'preview/acc-form-fund-transfer-create.html',title:'Fund Transfer Create',crumbs:['Account','Fund Transfer Create']},
  '/preview/acc-form-fund-transfer-edit':{file:'preview/acc-form-fund-transfer-edit.html',title:'Fund Transfer Edit',crumbs:['Account','Fund Transfer Edit']},
  '/preview/acc-form-journals-create':{file:'preview/acc-form-journals-create.html',title:'Create Journal Voucher',crumbs:['Account','Create Journal Voucher']},

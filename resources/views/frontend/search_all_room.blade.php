@@ -103,20 +103,20 @@
                         <div class="category-slider slider-active">
                             @foreach ($category->roomMultipleImg as $image)
                                 <div class="slider-img">
-                                    <img class="img-fluid category-img" src="{{ asset($image->relative_path.$image->name) }}" alt="">
+                                    <img class="img-fluid category-img" src="{{ asset($image->relative_path.$image->name) }}" alt="" loading="lazy">
                                 </div>
                             @endforeach
                         </div>
                     @elseif ($img_count == 1)
                         @if (file_exists(optional($category->roomSingleImg)->relative_path.optional($category->roomSingleImg)->name))
-                            <img src="{{ asset(optional($category->roomSingleImg)->relative_path.optional($category->roomSingleImg)->name) }}" alt="{{ optional($category->roomSingleImg)->name }}" class="img-responsive category-img" style="width: 100%" />
+                            <img src="{{ asset(optional($category->roomSingleImg)->relative_path.optional($category->roomSingleImg)->name) }}" alt="{{ optional($category->roomSingleImg)->name }}" class="img-responsive category-img" style="width: 100%" loading="lazy" />
                         @else
-                            <img src="{{ asset('frontend/assets/images/1.jpg') }}" alt="{{ optional($category->roomSingleImg)->name }}" class="img-responsive category-img" style="width: 100%;" />
+                            <img src="{{ asset('frontend/assets/images/1.jpg') }}" alt="{{ optional($category->roomSingleImg)->name }}" class="img-responsive category-img" style="width: 100%;" loading="lazy" />
                         @endif
                     @else
                         <div class="category-slider">
                             <div class="slider-img">
-                                <img class="img-fluid category-img" src="{{ asset('frontend/assets/images/1.jpg') }}" alt="">
+                                <img class="img-fluid category-img" src="{{ asset('frontend/assets/images/1.jpg') }}" alt="" loading="lazy">
                             </div>
                         </div>
                     @endif
@@ -138,7 +138,7 @@
                                     <li>
                                         @if ($item->aminities_icon != null)
                                             <div class="aminity-img">
-                                                <img class="img-fluid" src="{{ asset($item->aminities_icon) }}" alt="">
+                                                <img class="img-fluid" src="{{ asset($item->aminities_icon) }}" alt="" loading="lazy">
                                             </div>
                                         @endif
                                         <p>{{ $item->name }}</p>
@@ -173,9 +173,9 @@
                             <h4 class="roomCategory">{{ $category->name }}</h4>
 
                             @if (file_exists(optional($category->roomSingleImg)->relative_path.optional($category->roomSingleImg)->name))
-                                <img src="{{ asset(optional($category->roomSingleImg)->relative_path.optional($category->roomSingleImg)->name) }}" alt="{{ optional($category->roomSingleImg)->name }}" class="img-responsive category-img" style="width: 538px; height: 250px;" />
+                                <img src="{{ asset(optional($category->roomSingleImg)->relative_path.optional($category->roomSingleImg)->name) }}" alt="{{ optional($category->roomSingleImg)->name }}" class="img-responsive category-img" style="width: 538px; height: 250px;" loading="lazy" />
                             @else
-                                <img src="{{ asset('frontend/assets/images/1.jpg') }}" alt=" " class="img-responsive category-img" style="width: 538px; height: 250px;">
+                                <img src="{{ asset('frontend/assets/images/1.jpg') }}" alt=" " class="img-responsive category-img" style="width: 538px; height: 250px;" loading="lazy">
                             @endif
 
                             <div class="booking-details">

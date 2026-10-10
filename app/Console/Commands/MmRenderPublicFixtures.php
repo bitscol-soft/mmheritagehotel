@@ -154,6 +154,22 @@ class MmRenderPublicFixtures extends Command
                     'page' => $firstPage,
                 ],
             ],
+            'food_menu' => [
+                'view' => 'frontend.food-menu',
+                'url' => '/restaurant-menu',
+                'data' => [
+                    'categories' => collect([(object) ['id' => 1, 'name' => 'main']]),
+                    'products'   => collect([(object) ['name' => 'Grilled Salmon', 'sale_price' => 850, 'category' => (object) ['name' => 'main']]]),
+                ],
+            ],
+            'bar_menu' => [
+                'view' => 'frontend.bar-menu',
+                'url' => '/bar-menu',
+                'data' => [
+                    'categories' => collect([(object) ['id' => 1, 'name' => 'drinks']]),
+                    'products'   => collect([(object) ['name' => 'Classic Mojito', 'sale_price' => 450, 'category' => (object) ['name' => 'drinks']]]),
+                ],
+            ],
         ];
     }
 
@@ -202,7 +218,7 @@ class MmRenderPublicFixtures extends Command
             // Normalise: strip CSRF tokens and asset hostnames so the bytes are deterministic across
             // hosts. The same normalisations live in tools/ui-blade-check.php for the admin suite.
             $html = preg_replace('/(name="_token" value=")[A-Za-z0-9]+"/', '$1fixture-csrf-token"', $html);
-            $html = str_replace(['http://localhost/assets', 'http://mm-heritage-hotel.dizihotel.com/'], '/assets', $html);
+            $html = str_replace(['http://localhost/assets', 'http://localhost/frontend', 'http://localhost/food_menu', 'http://mm-heritage-hotel.dizihotel.com/'], ['/assets', '/frontend', '/food_menu', '/assets'], $html);
 
             // No PHP warnings should leak into fixtures.
             if (strpos($html, '<b>Warning</b>') !== false || strpos($html, '<b>Notice</b>') !== false) {

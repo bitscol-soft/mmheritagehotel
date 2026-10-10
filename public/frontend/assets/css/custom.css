@@ -456,7 +456,25 @@ body.mm-public,
     max-width: 100%;
     overflow-x: hidden;
 }
+body.mm-public {
+    color: var(--web-ink, #1f2a33);
+    font-family: var(--web-font-sans, 'Lato', system-ui, -apple-system, sans-serif);
+}
+body.mm-public .w3_navigation {
+    background: var(--web-brand, #803d98);
+}
+body.mm-public .btn-checkout {
+    background-color: var(--web-gold, #c9a96a);
+}
+body.mm-public .guest-registration .submit-registration-btn {
+    background: var(--web-brand-dark, #0f2453);
+    border-radius: var(--web-radius-sm, 6px);
+}
 body.mm-public .cart-table {
     overflow-x: auto;
 }
+body.mm-public .food_section.layout_padding {
+    padding: 48px 0;
+}
+
 

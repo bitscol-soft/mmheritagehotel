@@ -100,3 +100,30 @@
         transition: none !important;
     }
 }
+
+/* =============================================================================
+   W7 Public-site token set (--web-*)
+   -----------------------------------------------------------------------------
+   Per docs/FRONTEND-DEV-PLAN.md §5 (W7 · issue #12). Separate brand-led token
+   set scoped to `body.mm-public` and `.mm-public-panel` so admin waves (.mm-ui)
+   never leak into guest-facing public pages.
+   ============================================================================= */
+body.mm-public,
+.mm-public-panel {
+    --web-brand:        #803d98;
+    --web-brand-hover:  #68307c;
+    --web-brand-dark:   #0f2453;
+    --web-accent:       #ffce14;
+    --web-gold:         #c9a96a;
+    --web-ink:          #1f2a33;
+    --web-muted:        #526578;
+    --web-surface:      #ffffff;
+    --web-bg:           #faf8fc;
+    --web-line:         #e6dff0;
+    --web-radius:       10px;
+    --web-radius-sm:    6px;
+    --web-shadow:       0 10px 30px rgba(15, 36, 83, 0.08);
+    --web-font-display: 'Federo', Georgia, serif;
+    --web-font-sans:    'Lato', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+

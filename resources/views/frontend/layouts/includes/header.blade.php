@@ -41,10 +41,11 @@
      <!-- toster -->
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/toastr.min.css') }}">
 
-    <!--fonts-->
-    <link href="http://fonts.googleapis.com/css?family=Oswald:300,400,700" rel="stylesheet">
-    <link href="http://fonts.googleapis.com/css?family=Federo" rel="stylesheet">
-    <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,900" rel="stylesheet">
+    <!--fonts (W7 perf budget: non-render-blocking HTTPS webfont load with display=swap)-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css?family=Oswald:300,400,700|Federo|Lato:300,400,700,900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css?family=Oswald:300,400,700|Federo|Lato:300,400,700,900&display=swap" rel="stylesheet"></noscript>
 
 
 

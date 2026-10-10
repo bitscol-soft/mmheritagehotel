@@ -1769,7 +1769,7 @@ echo "PASS hotel website screens render\n";
 // touch DB-backed helpers `pages()`, `getBanner()`, `websiteInfo()` etc., so full rendering belongs
 // in the Playwright suite that runs against the real preview server, not in this DB-free harness).
 $frontendShared = [$root . '/resources/views/frontend/layouts/master.blade.php', $root . '/resources/views/frontend/layouts/mm-web.blade.php', $root . '/resources/views/frontend/layouts/includes/public_head.blade.php', $root . '/resources/views/frontend/layouts/includes/public_nav.blade.php', $root . '/resources/views/frontend/layouts/includes/public_footer.blade.php'];
-$frontendMigrated = [$root . '/resources/views/frontend/home.blade.php', $root . '/resources/views/frontend/room_view.blade.php', $root . '/resources/views/frontend/booking-cart.blade.php', $root . '/resources/views/frontend/search_all_room.blade.php', $root . '/resources/views/frontend/search_room.blade.php', $root . '/resources/views/frontend/guest-register.blade.php', $root . '/resources/views/frontend/booking-register.blade.php', $root . '/resources/views/frontend/terms.blade.php', $root . '/resources/views/frontend/privacy_policy.blade.php', $root . '/resources/views/frontend/single-page-view.blade.php'];
+$frontendMigrated = [$root . '/resources/views/frontend/home.blade.php', $root . '/resources/views/frontend/room_view.blade.php', $root . '/resources/views/frontend/booking-cart.blade.php', $root . '/resources/views/frontend/search_all_room.blade.php', $root . '/resources/views/frontend/search_room.blade.php', $root . '/resources/views/frontend/guest-register.blade.php', $root . '/resources/views/frontend/booking-register.blade.php', $root . '/resources/views/frontend/terms.blade.php', $root . '/resources/views/frontend/privacy_policy.blade.php', $root . '/resources/views/frontend/single-page-view.blade.php', $root . '/resources/views/frontend/food-menu.blade.php', $root . '/resources/views/frontend/bar-menu.blade.php'];
 foreach (array_merge($frontendShared, $frontendMigrated) as $ffFile) { token_get_all($compiler->compileString(file_get_contents($ffFile)), TOKEN_PARSE); }
 echo "PASS compile public mm-web shell and shared partials\n";
 
@@ -1833,6 +1833,8 @@ $ffCases = [
     'terms' => ['frontend.terms', '/terms-condition', ['data' => $ffPrivacy]],
     'privacy_policy' => ['frontend.privacy_policy', '/privacy-policy', ['data' => $ffPrivacy]],
     'single_page_view' => ['frontend.single-page-view', '/pages/sample', ['page' => $ffPage]],
+    'food_menu' => ['frontend.food-menu', '/restaurant-menu', ['categories' => $hwOpt([['id' => 1, 'name' => 'main']]), 'products' => $hwOpt([['name' => 'Grilled Salmon', 'sale_price' => 850, 'category' => $riRow(['name' => 'main'])]])]],
+    'bar_menu' => ['frontend.bar-menu', '/bar-menu', ['categories' => $hwOpt([['id' => 1, 'name' => 'drinks']]), 'products' => $hwOpt([['name' => 'Classic Mojito', 'sale_price' => 450, 'category' => $riRow(['name' => 'drinks'])]])]],
 ];
 @mkdir(__DIR__ . '/fixtures/frontend', 0777, true);
 foreach ($ffCases as $ffName => [$ffViewName, $ffUrl, $ffData]) {
@@ -1841,7 +1843,7 @@ foreach ($ffCases as $ffName => [$ffViewName, $ffUrl, $ffData]) {
     $app->instance('request', $ffRequest);
     $app->instance('url', new Illuminate\Routing\UrlGenerator($rsRoutes, $ffRequest));
     $ffHtml = $app->make('view')->make($ffViewName, array_merge(['errors' => new Illuminate\Support\ViewErrorBag()], $ffData))->render();
-    $ffHtml = preg_replace('/(name="_token" value=")[A-Za-z0-9]+"/', '$1fixture-csrf-token"', str_replace(['http://localhost/assets', 'http://localhost/frontend'], ['/assets', '/frontend'], $ffHtml));
+    $ffHtml = preg_replace('/(name="_token" value=")[A-Za-z0-9]+"/', '$1fixture-csrf-token"', str_replace(['http://localhost/assets', 'http://localhost/frontend', 'http://localhost/food_menu'], ['/assets', '/frontend', '/food_menu'], $ffHtml));
     foreach (['mm-public-main', 'mm-panel', 'banner-top', 'w3_navigation'] as $ffMarker) {
         if (strpos($ffHtml, $ffMarker) === false) throw new RuntimeException('Public screen ' . $ffName . ' missing ' . $ffMarker);
     }
