@@ -5,38 +5,16 @@
 
 
 @section('content')
-    <div class="row">
+    <x-mm.styles />
+    <x-mm.page class="mm-crud-form mm-rst" title="Edit Product">
+        <x-slot name="actions">
+            <a href="{{ route('rst.products.index') }}" class="btn btn-sm btn-default">
+                <i class="ace-icon fa fa-list-alt"></i>
+                Product List
+            </a>
+        </x-slot>
 
-        <div class="col-sm-12">
-            <div class="widget-box">
-
-
-
-                <!-- Header -->
-                <div class="widget-header">
-                    <h4 class="widget-title">
-                        <i class="fa fa-plus-circle"></i> Edit Product
-                    </h4>
-
-                    <span class="widget-toolbar">
-                        <a href="{{ route('rst.products.index') }}">
-                            <i class="ace-icon fa fa-list-alt"></i>
-                            Product List
-                        </a>
-                    </span>
-                </div>
-
-
-
-
-
-
-                <!-- Body -->
-                <div class="widget-body">
-                    <div class="widget-main">
-
-
-
+        <x-mm.panel>
                         <div class="row">
                             <div class="col-sm-11 col-sm-offset-1">
 
@@ -333,10 +311,6 @@
 
                             </div>
                         </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+        </x-mm.panel>
+    </x-mm.page>
 @endsection

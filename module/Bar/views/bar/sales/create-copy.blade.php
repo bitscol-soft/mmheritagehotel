@@ -8,30 +8,16 @@
 
 
     @include('sales/_inc/guest-modal')
-    <div class="row">
+    <x-mm.styles />
+    <x-mm.page class="mm-sale-form mm-bar" title="New Sale">
+        <x-slot name="actions">
+            <a href="{{ route('bar.sales.index') }}" class="btn btn-sm btn-default">
+                <i class="ace-icon fa fa-list-alt"></i>
+                Sale List
+            </a>
+        </x-slot>
 
-        <div class="col-sm-12">
-            <div class="widget-box">
-
-
-
-                <!-- Header -->
-                <div class="widget-header">
-                    <h4 class="widget-title">
-                        <i class="fa fa-plus-circle"></i> New Sale
-                    </h4>
-
-                    <span class="widget-toolbar">
-                        <a href="{{ route('bar.sales.index') }}">
-                            <i class="ace-icon fa fa-list-alt"></i>
-                            Sale List
-                        </a>
-                    </span>
-                </div>
-
-                <!-- Body -->
-                <div class="widget-body">
-                    <div class="widget-main">
+        <x-mm.panel>
 
                         <!-- Form -->
                         <form method="POST" action="{{ route('bar.sales.store') }}" accept-charset="UTF-8"
@@ -322,13 +308,8 @@
 
                         </form>
                         <!-- End Form -->
-
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+        </x-mm.panel>
+    </x-mm.page>
 
 @endsection
 

@@ -16,21 +16,17 @@
 @endsection
 
 @section('content')
-    <div class="row">
-        <div class="widget-box">
-            <div class="widget-header">
-                <h4 class="widget-title"> <i class="fa fa-bars"></i> @yield('title')</h4>
-                @if (hasPermission('service.view', $slugs))
-                    <span class="widget-toolbar">
-                        <a class="" href=" {{ route('hotelservice.service-sales.create') }}">
-                            <i class="fa fa-plus"></i> New Hotel Service
-                        </a>
-                    </span>
-                @endif
+    <x-mm.styles />
+    <x-mm.page class="mm-crud-index" title="Hotel Service Sales List">
+        <x-slot name="actions">
+            @if (hasPermission('service.view', $slugs))
+                <a class="btn btn-sm btn-primary" href=" {{ route('hotelservice.service-sales.create') }}">
+                    <i class="fa fa-plus"></i> New Hotel Service
+                </a>
+            @endif
+        </x-slot>
 
-            </div>
-            <div class="widget-body">
-                <div class="widget-main">
+        <x-mm.panel>
                     <div class="row search-samples">
                         <form>
                             <div class="col-sm-8 col-sm-offset-1">
@@ -193,13 +189,9 @@
                         </tbody>
                     </table>
                     {{ $services->appends(['invoice_no' => request('invoice_no'), 'customer_id' => request('customer_id')])->render() }}
-                </div>
-            </div>
-        </div>
-    </div>
+        </x-mm.panel>
     @include('services.sales.due-payment-modal')
-
-    </div>
+    </x-mm.page>
 @endsection
 
 

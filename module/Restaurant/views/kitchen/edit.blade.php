@@ -1,19 +1,9 @@
-<div class="widget-box">
-
-    <div class="widget-header">
-        <h4 class="widget-title">
-            <i class="fa fa-edit"></i> Edit
-        </h4>
-        <span class="widget-toolbar">
-            <a href="#" onclick="render(`{{ route('currency-conversions.create') }}`)" class="render-view">
-                <i class="fa fa-plus-circle"></i> Currency Conversions Create
-            </a>
-        </span>
-
-    </div>
-
-    <div class="widget-body">
-        <div class="no-padding">
+<x-mm.panel title="Edit">
+    <x-slot name="actions">
+        <a href="#" onclick="render(`{{ route('currency-conversions.create') }}`)" class="btn btn-sm btn-default render-view">
+            <i class="fa fa-plus-circle"></i> Currency Conversions Create
+        </a>
+    </x-slot>
 
             <div style="margin: 20px;">
                 @include('partials._alert_message')
@@ -80,7 +70,4 @@
                     </button>
                 </div>
             </form>
-
-        </div>
-    </div>
-</div>
+</x-mm.panel>

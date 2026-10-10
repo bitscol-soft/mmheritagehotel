@@ -365,14 +365,9 @@
                 </div>
 
                 <div id="employee-attendance3">
-                    <div class="widget-box">
-
-                        <div class="widget-body">
-                            <div class="widget-main">
-                                <div id="piechart-placeholder"></div>
-                            </div>
-                        </div>
-                    </div>
+                    <x-mm.panel>
+                        <div id="piechart-placeholder"></div>
+                    </x-mm.panel>
                 </div>
             </div>
         </div>
@@ -391,14 +386,9 @@
                 </div>
 
                 <div id="employee-attendance3">
-                    <div class="widget-box">
-
-                        <div class="widget-body">
-                            <div class="widget-main">
-                                <div id="calendar"></div>
-                            </div>
-                        </div>
-                    </div>
+                    <x-mm.panel>
+                        <div id="calendar"></div>
+                    </x-mm.panel>
                 </div>
             </div>
         </div>
