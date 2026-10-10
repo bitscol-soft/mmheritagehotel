@@ -346,3 +346,29 @@
 .mm-shell.mm-dark .daterangepicker select { background: #131d28; color: #e4ecf5; border-color: #2f4256; }
 .mm-shell.mm-dark .daterangepicker .calendar-table .next span, .mm-shell.mm-dark .daterangepicker .calendar-table .prev span { border-color: #e4ecf5; }
 .mm-shell.mm-dark .mm-range-error { color: #ff9b91; }
+
+/* W2.1: sidebar icon-rail (68px, persisted in localStorage) */
+.mm-shell.mm-nav-rail { --mm-nav-width: 68px; }
+.mm-shell.mm-nav-rail #sidebar { overflow-x: hidden; overflow-y: auto; }
+.mm-shell.mm-nav-rail .mm-shell-nav-tools { display: none; }
+.mm-shell.mm-nav-rail #sidebar .nav-list { padding: 8px 8px 24px; }
+.mm-shell.mm-nav-rail #sidebar .nav-list > li { margin: 2px 0; }
+.mm-shell.mm-nav-rail #sidebar .nav-list > li > a { justify-content: center; min-height: 44px; padding: 8px 6px !important; }
+.mm-shell.mm-nav-rail #sidebar .nav-list > li > a > .menu-icon { flex: 0 0 32px; font-size: 17px; height: 32px; width: 32px; }
+.mm-shell.mm-nav-rail #sidebar .nav-list .menu-text,
+.mm-shell.mm-nav-rail #sidebar .nav-list a > .arrow { clip: rect(0, 0, 0, 0); border: 0; height: 1px; margin: -1px; overflow: hidden; padding: 0; position: absolute; white-space: nowrap; width: 1px; }
+.mm-shell.mm-nav-rail #sidebar .nav-list .submenu { border-left: 0; margin: 0 0 6px 16px; padding: 0 0 0 6px; }
+.mm-shell.mm-nav-rail #sidebar .nav-list a[aria-current="page"],
+.mm-shell.mm-nav-rail #sidebar .nav-list li.active > a { box-shadow: inset 0 -1px #2f63a8; }
+.mm-shell.mm-nav-rail #sidebar .nav-list > li + li { margin-top: 2px; }
+.mm-shell.mm-nav-rail #sidebar .nav-list > li > div > .nav-list > li > a { padding-left: 8px !important; padding-right: 8px !important; }
+.mm-shell.mm-nav-rail .mm-shell-rail-toggle { background: transparent; border: 1px solid transparent; border-radius: 6px; color: #37536a; cursor: pointer; height: 32px; width: 32px; }
+.mm-shell.mm-nav-rail .mm-shell-rail-toggle:hover { background: #f0f5fa; border-color: #dbe5f1; }
+.mm-shell.mm-nav-rail #sidebar .mm-shell-rail-toggle-wrap { padding: 0 0 8px; display: flex; justify-content: center; }
+@media (max-width: 991px) {
+    .mm-shell.mm-nav-rail #sidebar { visibility: visible; width: var(--mm-nav-width) !important; }
+    .mm-shell.mm-nav-rail.mm-nav-open #sidebar { visibility: visible; }
+}
+.mm-shell.mm-dark.mm-nav-rail .mm-shell-rail-toggle { color: #c4d3e3; }
+.mm-shell.mm-dark.mm-nav-rail .mm-shell-rail-toggle:hover { background: #1c2a38; border-color: #2f4256; }
+

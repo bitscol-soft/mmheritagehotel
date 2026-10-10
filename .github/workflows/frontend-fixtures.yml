@@ -69,7 +69,7 @@ jobs:
           restore-keys: composer-${{ runner.os }}-
 
       - name: Install composer dependencies
-        run: composer install --no-interaction --prefer-dist --no-progress
+        run: composer install --no-interaction --prefer-dist --no-progress --ignore-platform-reqs
 
       - name: Set up Node
         uses: actions/setup-node@v4

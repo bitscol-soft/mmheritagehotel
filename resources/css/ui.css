@@ -1090,3 +1090,16 @@
 @media print {
     .mm-ui .mm-print-sheet-a4-landscape { max-width: none; }
 }
+
+/* --- W1.7b / W2.4 / W2.5 container, stack & contrast utilities --- */
+.mm-ui .mm-text-center { text-align: center; }
+.mm-ui .mm-container { box-sizing: border-box; margin-left: auto; margin-right: auto; max-width: 1440px; padding-left: 24px; padding-right: 24px; width: 100%; }
+@media (max-width: 767px) { .mm-ui .mm-container { padding-left: 16px; padding-right: 16px; } }
+.mm-ui .mm-container-fluid { margin-left: auto; margin-right: auto; padding-left: 24px; padding-right: 24px; width: 100%; }
+@media (max-width: 767px) { .mm-ui .mm-container-fluid { padding-left: 16px; padding-right: 16px; } }
+.mm-ui .mm-section { margin: 0 0 24px; }
+.mm-ui .mm-stack { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.mm-ui .mm-stack-tight { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.mm-ui .mm-booking-board-page .board-stay-strip .stay-chip { color: var(--mm-ink-soft); }
+.mm-ui .mm-booking-board-page .board-stay-strip .stay-chip b { color: var(--mm-ink); }
+
