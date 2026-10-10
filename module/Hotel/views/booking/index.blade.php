@@ -32,11 +32,11 @@
              (see next line) so the guard's "money-line" tripwire doesn't
              see the badge being moved across a hunk boundary. --}}
         <x-mm.toolbar label="Booking list actions">
-            <x-slot:trailing>
+            <x-slot name="trailing">
                 <button type="reset" form="searchForm" class="mm-button mm-button-ghost">
                     <i class="fa fa-undo" aria-hidden="true"></i> Reset
                 </button>
-            </x-slot:trailing>
+            </x-slot>
         </x-mm.toolbar>
 
         <x-mm.badge>Total: {{ $booking->total() }}</x-mm.badge>

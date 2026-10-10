@@ -46,9 +46,9 @@
     <x-mm.panel id="toolbar">
         <h2 class="tw-m-0 tw-mb-4 tw-text-xl tw-font-semibold">Toolbar</h2>
         <x-mm.toolbar label="List actions">
-            <x-slot:leading>
+            <x-slot name="leading">
                 <input type="search" class="mm-input" placeholder="Search…">
-            </x-slot:leading>
+            </x-slot>
             <button type="button" class="mm-button mm-button-secondary">Export</button>
             <button type="button" class="mm-button">+ New booking</button>
         </x-mm.toolbar>
@@ -74,9 +74,9 @@
             <x-mm.field label="Guest name" id="flt-name" name="name" />
             <x-mm.field label="Reference" id="flt-ref" name="ref" />
             <x-mm.select name="status" placeholder="Any status" :options="['pending' => 'Pending', 'confirmed' => 'Confirmed', 'cancelled' => 'Cancelled']" />
-            <x-slot:reset>
+            <x-slot name="reset">
                 <button type="reset" class="mm-button mm-button-ghost">Reset</button>
-            </x-slot:reset>
+            </x-slot>
         </x-mm.filter-bar>
     </x-mm.panel>
 
@@ -113,10 +113,10 @@
         <x-mm.modal id="demo-modal" title="Add a note" size="m">
             <p class="tw-m-0 tw-mb-3">A short form goes here.</p>
             <x-mm.field label="Note" id="note" name="note" />
-            <x-slot:footer>
+            <x-slot name="footer">
                 <button type="button" class="mm-button mm-button-ghost" data-mm-modal-close>Cancel</button>
                 <button type="button" class="mm-button">Save</button>
-            </x-slot:footer>
+            </x-slot>
         </x-mm.modal>
     </x-mm.panel>
 

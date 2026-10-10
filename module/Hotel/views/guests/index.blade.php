@@ -18,11 +18,11 @@
              a trailing reset control for the filter form. The row count
              badge stays below the toolbar in its original location. --}}
         <x-mm.toolbar label="Guest list actions">
-            <x-slot:trailing>
+            <x-slot name="trailing">
                 <button type="reset" form="searchForm" class="mm-button mm-button-ghost">
                     <i class="fa fa-undo" aria-hidden="true"></i> Reset
                 </button>
-            </x-slot:trailing>
+            </x-slot>
         </x-mm.toolbar>
 
         <x-mm.badge>Total: {{ $guests->total() }}</x-mm.badge>
