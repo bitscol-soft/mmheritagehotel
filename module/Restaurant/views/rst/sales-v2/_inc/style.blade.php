@@ -3,10 +3,6 @@
         --header: rgb(143, 143, 218);
     }
 
-    .widget-header {
-        border-bottom: 2px solid var(--header) !important;
-    }
-
     .card {
         border-top-left-radius: 5px;
         border-top-right-radius: 5px;
