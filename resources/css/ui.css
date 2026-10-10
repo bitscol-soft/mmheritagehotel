@@ -4,8 +4,61 @@
 @tailwind utilities;
 
 /* Design tokens (colors, radii, sizing, typography, motion, z-index) live in
-   public/assets/custom_css/tokens.css. They are loaded by <x-mm.styles />
-   BEFORE this file. Only consumer rules live here. */
+   public/assets/custom_css/tokens.css and are mirrored here on .mm-ui so any
+   page, preview shell, or standalone fixture that loads ui.css directly still
+   resolves every var(--mm-*) custom property. */
+.mm-ui {
+    --mm-brand:        #2f63a8;
+    --mm-brand-hover:  #275188;
+    --mm-brand-soft:   #eef3f9;
+    --mm-ink:          #1f2a33;
+    --mm-ink-soft:     #344558;
+    --mm-muted:        #526578;
+    --mm-line:         #dbe5f1;
+    --mm-bg:           #f7fafd;
+    --mm-surface:      #ffffff;
+    --mm-danger:       #b42318;
+    --mm-danger-soft:  #fde7e4;
+    --mm-success:      #2c6c33;
+    --mm-success-soft: #ecf6ee;
+    --mm-warning:      #b8860b;
+    --mm-warning-soft: #fdf3d6;
+    --mm-radius:           10px;
+    --mm-radius-sm:        6px;
+    --mm-input-min-height: 40px;
+    --mm-button-min-height:40px;
+    --mm-pad-1: 4px;
+    --mm-pad-2: 8px;
+    --mm-pad-3: 12px;
+    --mm-pad-4: 16px;
+    --mm-pad-5: 20px;
+    --mm-pad-6: 24px;
+    --mm-font:   system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --mm-font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+    --mm-text-xs:  12px;
+    --mm-text-sm:  14px;
+    --mm-text-md:  14px;
+    --mm-text-lg:  16px;
+    --mm-text-xl:  20px;
+    --mm-text-2xl: 24px;
+    --mm-text-3xl: 30px;
+    --mm-line-tight:  1.25;
+    --mm-line-normal: 1.5;
+    --mm-focus-ring: 3px solid var(--mm-brand);
+    --mm-focus-offset: 1px;
+    --mm-motion-fast: 120ms ease;
+    --mm-motion:      200ms ease;
+    --mm-motion-slow: 320ms ease;
+    --mm-z-dropdown: 100;
+    --mm-z-modal:    1000;
+    --mm-z-toast:    1100;
+    color: var(--mm-ink);
+    font-family: var(--mm-font);
+    font-size: var(--mm-text-md);
+    line-height: var(--mm-line-normal);
+    min-width: 0;
+}
+.mm-ui *, .mm-ui *::before, .mm-ui *::after { box-sizing: border-box; }
 .mm-ui .mm-panel { border: 1px solid var(--mm-line); border-radius: var(--mm-radius); background: var(--mm-surface); }
 .mm-ui .mm-button {
     display: inline-flex; align-items: center; justify-content: center; gap: 8px;
@@ -1045,18 +1098,25 @@
 .mm-ui .mm-daterange-quick .mm-button[aria-pressed="true"] { background: var(--mm-brand); color: white; border-color: var(--mm-brand); }
 
 /* --- mm-stepper --- */
-.mm-ui .mm-stepper { display: flex; list-style: none; margin: 0; padding: 0; gap: 0; counter-reset: step; border: 1px solid var(--mm-line); border-radius: var(--mm-radius); overflow: hidden; background: var(--mm-surface); }
-.mm-ui .mm-step { flex: 1 1 0; min-width: 0; position: relative; }
+.mm-ui .mm-stepper,
+.mm-ui .mm-steps ol.mm-stepper { display: flex; flex-wrap: nowrap; list-style: none; margin: 0; padding: 0; gap: 0; counter-reset: step; border: 1px solid var(--mm-line); border-radius: var(--mm-radius); overflow: hidden; background: var(--mm-surface); }
+.mm-ui .mm-step,
+.mm-ui .mm-steps li.mm-step { flex: 1 1 0; min-width: 0; position: relative; display: flex; }
 .mm-ui .mm-step + .mm-step::before { content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 1px; height: 60%; background: var(--mm-line); }
-.mm-ui .mm-step-link { display: flex; align-items: center; gap: var(--mm-pad-3); padding: var(--mm-pad-3) var(--mm-pad-4); color: var(--mm-muted); text-decoration: none; transition: background var(--mm-motion-fast), color var(--mm-motion-fast); }
+.mm-ui .mm-step-link { flex: 1 1 0; min-width: 0; display: flex; align-items: center; gap: var(--mm-pad-2); padding: var(--mm-pad-3) var(--mm-pad-3); color: var(--mm-muted); text-decoration: none; transition: background var(--mm-motion-fast), color var(--mm-motion-fast); }
 .mm-ui .mm-step-link:hover { background: var(--mm-bg); color: var(--mm-ink); }
 .mm-ui .mm-step-mark { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; background: var(--mm-bg); color: var(--mm-muted); font-weight: 700; font-size: var(--mm-text-sm); border: 1px solid var(--mm-line); flex-shrink: 0; }
 .mm-ui .mm-step-label { font-weight: 600; font-size: var(--mm-text-sm); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.mm-ui .mm-step.is-current .mm-step-link { background: var(--mm-brand-soft); color: var(--mm-brand); }
-.mm-ui .mm-step.is-current .mm-step-mark { background: var(--mm-brand); color: white; border-color: var(--mm-brand); }
-.mm-ui .mm-step.is-done .mm-step-link { color: var(--mm-success); }
-.mm-ui .mm-step.is-done .mm-step-mark { background: var(--mm-success); color: white; border-color: var(--mm-success); }
-.mm-ui .mm-step.is-upcoming .mm-step-mark { color: var(--mm-muted); }
+.mm-ui .mm-step.is-current .mm-step-link,
+.mm-ui .mm-step.mm-step-is-current .mm-step-link { background: var(--mm-brand-soft); color: var(--mm-brand); }
+.mm-ui .mm-step.is-current .mm-step-mark,
+.mm-ui .mm-step.mm-step-is-current .mm-step-mark { background: var(--mm-brand); color: white; border-color: var(--mm-brand); }
+.mm-ui .mm-step.is-done .mm-step-link,
+.mm-ui .mm-step.mm-step-is-done .mm-step-link { color: var(--mm-success); }
+.mm-ui .mm-step.is-done .mm-step-mark,
+.mm-ui .mm-step.mm-step-is-done .mm-step-mark { background: var(--mm-success); color: white; border-color: var(--mm-success); }
+.mm-ui .mm-step.is-upcoming .mm-step-mark,
+.mm-ui .mm-step.mm-step-is-upcoming .mm-step-mark { color: var(--mm-muted); }
 
 /* --- mm-modal --- */
 .mm-ui .mm-modal { position: fixed; inset: 0; z-index: var(--mm-z-modal); display: flex; align-items: center; justify-content: center; padding: var(--mm-pad-4); }

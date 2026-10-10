@@ -18,7 +18,7 @@
          full / rail / collapsed. The current mode is reflected
          on aria-pressed; the JS in mm-ui.js persists the
          choice in localStorage. --}}
-    <button type="button" class="mm-hdr-btn" data-mm-nav-toggle aria-pressed="false" aria-label="Toggle sidebar layout" title="Toggle sidebar layout">
+    <button type="button" class="mm-hdr-btn mm-hdr-optional" data-mm-nav-toggle aria-pressed="false" aria-label="Toggle sidebar layout" title="Toggle sidebar layout">
         <i class="fa fa-bars" aria-hidden="true"></i>
     </button>
     <button type="button" class="mm-hdr-btn" data-mm-theme-toggle aria-pressed="false" aria-label="Dark theme" title="Dark theme" hidden>

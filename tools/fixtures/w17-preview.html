@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>W1.7 proving screens — visual preview</title>
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="/assets/css/ace.min.css">
-    <link rel="stylesheet" href="/assets/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/assets/custom_css/style.css">
     <link rel="stylesheet" href="/assets/custom_css/tokens.css">
     <link rel="stylesheet" href="/assets/custom_css/ui.css">
     <link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">
@@ -15,7 +17,7 @@
         .preview-banner strong { display: block; margin-bottom: 4px; }
         .preview-section { max-width: 1100px; margin: 0 auto 32px; background: #fff; border: 1px solid #dbe5f1; border-radius: 8px; padding: 24px; }
         .preview-section h2 { margin-top: 0; padding-bottom: 8px; border-bottom: 1px solid #dbe5f1; }
-        .preview-section .breadcrumb { color: #526578; font-size: 13px; margin-bottom: 16px; }
+        .preview-section .breadcrumb { color: #526578; font-size: 13px; margin-bottom: 16px; background: transparent; padding: 0; }
         .preview-section .breadcrumb a { color: #2f63a8; }
         .page-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin: 0 0 20px; }
         .page-head .meta h1 { margin: 0 0 4px; font-size: 24px; color: #1f2a33; }
@@ -34,7 +36,7 @@
         .label-warning { background-color: #ffb752; color: #fff; }
     </style>
 </head>
-<body>
+<body class="no-skin mm-ui">
 
 <div class="preview-banner">
     <strong>W1.7 proving screens — visual preview</strong>
@@ -83,7 +85,7 @@
 </div>
 
 <!-- ==================== BOOKING BOARD ==================== -->
-<section class="preview-section" id="booking-board">
+<section class="preview-section mm-ui mm-booking-board-page" id="booking-board">
     <h2>Booking board — <code>booking_ui.blade.php</code></h2>
     <div class="breadcrumb">Hotel → Booking → Board</div>
     <p style="color:#526578">Already wrapped in <code>&lt;x-mm.styles /&gt;</code> + <code>&lt;x-mm.page&gt;</code> in W1 (<code>5d56e904</code>); the W1.7 commit made no change to this view. The action slot carries a single "Booking List" link. The room board panel is the existing <code>&lt;x-room-manage&gt;</code> component (not reproduced in this preview).</p>
@@ -107,7 +109,7 @@
 </section>
 
 <!-- ==================== W2.4 + W2.5 ==================== -->
-<section class="preview-section" id="w2-4-5">
+<section class="preview-section mm-ui mm-booking-board-page" id="w2-4-5">
     <h2>W2.4 + W2.5 — fluid container, a11y tokens, contrast sweep</h2>
     <p style="color:#526578">W2 is the app-shell lane from <code>docs/FRONTEND-DEV-PLAN.md</code>. This commit is the CSS-only sub-tasks: a fluid container with a max-1440 width cap, the <code>prefers-reduced-motion</code> and <code>:focus-visible</code> tokens (already shipped in W1), and a contrast sweep that introduces a new <code>--mm-ink-soft</code> token for sub-12px text on colored backgrounds.</p>
 
@@ -171,7 +173,7 @@
 </section>
 
 <!-- ==================== BOOKING LIST ==================== -->
-<section class="preview-section" id="booking-list">
+<section class="preview-section mm-ui mm-bookings" id="booking-list">
     <h2>Booking list — <code>booking/index.blade.php</code></h2>
     <div class="breadcrumb">Hotel → Booking → List</div>
     <p style="color:#526578">W1.7 added a list-level <code>x-mm.toolbar</code> with a trailing Reset button (form-bound to <code>id="searchForm"</code>). The 12-column booking table is now <code>x-mm.data-table</code> (W1.7c): the rows live in <code>_booking-rows.blade.php</code> (a partial that emits only <code>&lt;tr&gt;</code> elements, not a full <code>&lt;table&gt;</code>); the parent <code>booking/index.blade.php</code> builds the columns list and passes it to <code>&lt;x-mm.data-table :columns="$bookingTableColumns"&gt;</code>. The "Reference By" column is conditional on the <code>booking.referred-booking</code> route, mirroring the original partial's behaviour. All hook strings (form ids, onclick handlers, route() calls, JS-bound class names like <code>.adjustBtn</code>, <code>.bar-charge-btn</code>, <code>.extra-charge-btn</code>, <code>.extend-date-btn</code>) are byte-identical to the pre-W1.7 view.</p>
@@ -356,7 +358,7 @@
 </section>
 
 <!-- ==================== GUEST LIST ==================== -->
-<section class="preview-section" id="guest-list">
+<section class="preview-section mm-ui" id="guest-list">
     <h2>Guest list — <code>guests/index.blade.php</code></h2>
     <div class="breadcrumb">Hotel → Guests → List</div>
     <p style="color:#526578">Full W1.7 conversion. The table is now <code>x-mm.data-table</code> in "default-slot-wins" mode (the caller's <code>@forelse / @empty</code> sits in the body slot). The first header cell uses the new <code>raw =&gt; true</code> column option so the "select all" checkbox keeps its hooks byte-identical (<code>id="selectAll"</code>, <code>class="ace"</code>, <code>class="lbl"</code>, <code>aria-label="Select all visible guests"</code>). Legacy Bootstrap classes are preserved via <code>table-class</code>.</p>
@@ -2217,6 +2219,7 @@ module/Restaurant/views/kitchen/index.blade.php
     <p style="color:#526578">Restores the W1.7 Guest List proving screen (<code>module/Hotel/views/guests/index.blade.php</code>) whose <code>@section('content')</code> body was accidentally stripped in <code>7efd787d</code>, ports the W1.7b / W2.1 / W2.4 / W2.5 rules into <code>resources/css/{ui,shell}.css</code> so <code>npm run ui:build</code> produces zero diff on <code>public/assets/custom_css/{ui,shell}.css</code>, and adds <code>--ignore-platform-reqs</code> to <code>.github/workflows/frontend-fixtures.yml</code>.</p>
 </section>
 
+<script src="/assets/custom_js/mm-ui.js"></script>
 </body>
 
 </html>

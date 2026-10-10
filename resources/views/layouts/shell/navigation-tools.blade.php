@@ -5,13 +5,7 @@
             <i class="fa fa-times" aria-hidden="true"></i>
         </button>
     </div>
-    {{-- W2.1: nav-mode picker. Three buttons map to the three
-         sidebar states. Each button is a [data-mm-nav-toggle] with
-         data-mm-nav-mode set to the target class; the JS in
-         mm-ui.js applies the class to <body> and persists it
-         to localStorage. The current mode is reflected on the
-         button via aria-pressed. --}}
-    <div class="tw-mb-4" role="group" aria-label="Sidebar layout">
+    <div class="mm-shell-nav-mode tw-mb-4" role="group" aria-label="Sidebar layout">
         <span class="tw-block tw-text-sm tw-font-semibold tw-mb-2">Sidebar layout</span>
         <div class="tw-flex tw-gap-1" role="group">
             <button type="button" class="mm-button mm-button-secondary" data-mm-nav-toggle data-mm-nav-mode="mm-nav-full" aria-label="Full sidebar with text labels">

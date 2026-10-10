@@ -264,27 +264,32 @@
         try {
             var v = localStorage.getItem(NAV_MODE_KEY);
             if (v && NAV_MODES.indexOf(v) !== -1) return v;
+            if (localStorage.getItem('mm-shell-collapsed') === '1') return 'mm-nav-collapsed';
         } catch (e) { /* localStorage may be unavailable; fall through */ }
+        if (document.body && document.body.classList.contains('mm-nav-collapsed')) return 'mm-nav-collapsed';
         // Default to mm-nav-full when nothing is stored.
         return 'mm-nav-full';
     }
     function writeNavMode(mode) {
-        try { localStorage.setItem(NAV_MODE_KEY, mode); } catch (e) {}
+        try {
+            localStorage.setItem(NAV_MODE_KEY, mode);
+            localStorage.setItem('mm-shell-collapsed', mode === 'mm-nav-collapsed' ? '1' : '0');
+        } catch (e) {}
     }
     function applyNavMode(mode) {
         var body = document.body;
-        if (!body) return;
+        if (!body || !body.classList.contains('mm-shell')) return;
         NAV_MODES.forEach(function (m) { body.classList.remove(m); });
-        // The base .mm-shell class is always present; the
-        // .mm-nav-collapsed modifier is already used by the existing
-        // shell, so this code is additive.
-        body.classList.add('mm-shell');
         body.classList.add(mode);
         // Update the active-state aria on every toggle button so
         // screen readers know which mode is current.
         var btns = document.querySelectorAll('[data-mm-nav-toggle]');
         btns.forEach(function (b) {
-            b.setAttribute('aria-pressed', String(b.dataset.mmNavMode === mode));
+            if (b.dataset.mmNavMode) {
+                b.setAttribute('aria-pressed', String(b.dataset.mmNavMode === mode));
+            } else {
+                b.setAttribute('aria-pressed', String(mode !== 'mm-nav-full'));
+            }
         });
     }
     function bindNavToggle(root) {
