@@ -3,10 +3,6 @@
 
 @section('title', 'Edit Supplier')
 
-@section('page-header')
-    <i class="fa fa-gear"></i> Edit Supplier
-@stop
-
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
@@ -21,26 +17,17 @@
 
 
 @section('content')
+    <x-mm.styles />
+    <x-mm.page class="mm-crud-form" title="Edit Supplier">
+        <x-slot name="actions">
+            @if (hasPermission("suppliers.view", $slugs))
+                <a href="{{ route('suppliers.index') }}" class="btn btn-sm btn-default">
+                    <i class="ace-icon fa fa-list-alt"></i> Supplier List
+                </a>
+            @endif
+        </x-slot>
 
-    <div class="row">
-
-        <div class="col-sm-12">
-            <div class="widget-box">
-                <div class="widget-header">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
-
-                    @if (hasPermission("suppliers.view", $slugs))
-                        <span class="widget-toolbar">
-                            <a href="{{ route('suppliers.index') }}">
-                                <i class="ace-icon fa fa-list-alt"></i> Supplier List
-                            </a>
-                        </span>
-                    @endif
-
-                </div>
-
-                <div class="widget-body">
-                    <div class="widget-main">
+        <x-mm.panel>
                         <form class="form-horizontal" action="{{ route('suppliers.update', $Supplier->id) }}" method="post">
                             @csrf
                             @method('PUT')
@@ -252,11 +239,8 @@
                                 </div>
                             </div>
                         </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+        </x-mm.panel>
+    </x-mm.page>
 @endsection
 
 @section('js')

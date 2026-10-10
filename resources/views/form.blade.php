@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title','Form')
-@section('page-header')
-    <i class="fa fa-plus-circle"></i> Form
-@stop
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/jquery.gritter.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/jquery-ui.min.css') }}" />
@@ -19,23 +16,15 @@
 
 
 @section('content')
+    <x-mm.styles />
+    <x-mm.page class="mm-crud-form" title="Form">
+        <x-slot name="actions">
+            <a href="" class="btn btn-sm btn-default">
+                <i class="ace-icon fa fa-list-alt"></i> Item List
+            </a>
+        </x-slot>
 
-    <div class="row">
-        <div class="col-sm-8 col-sm-offset-2">
-            <div class="widget-box">
-                <div class="widget-header">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
-
-                    <span class="widget-toolbar">
-                                <a href="">
-                                    <i class="ace-icon fa fa-list-alt"></i> Item List
-                                </a>
-                            </span>
-
-                </div>
-
-                <div class="widget-body">
-                    <div class="widget-main">
+        <x-mm.panel>
                         <form class="form-horizontal" role="form">
 
 
@@ -237,13 +226,8 @@
                             </div>
 
                         </form>
-                    </div>
-                </div>
-            </div>
-
-
-        </div>
-    </div>
+        </x-mm.panel>
+    </x-mm.page>
 
 
 

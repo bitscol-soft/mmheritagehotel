@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title','Payments')
-@section('page-header')
-    <i class="fa fa-list"></i> Payment Schedule
-@stop
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/jquery-ui.min.css') }}"/>
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}">
@@ -27,42 +24,18 @@
 @endpush
 
 @section('content')
-    <div class="row">
-        <div class="col-md-12">
+    <x-mm.styles />
+    <x-mm.page class="mm-crud-index" title="Payment Schedule">
+        <x-slot name="actions">
+            <a href="{{ request()->url() }}" class="btn btn-sm btn-default" title="Refresh Page" data-toggle="tooltip">
+                <i class="fa fa-refresh bigger-110"></i> Refresh
+            </a>
+            <a target="_blank" href="#" id="id-btn-dialog1" class="btn btn-sm btn-primary" title="Add Payment Schedule" data-toggle="tooltip">
+                <i class="fa fa-plus bigger-110"></i> Add New
+            </a>
+        </x-slot>
 
-            <div class="widget-box widget-color-white ui-sortable-handle clearfix" id="widget-box-7">
-                <div class="widget-header widget-header-small">
-                    <h3 class="widget-title smaller text-primary">
-                        @yield('page-header')
-                    </h3>
-
-                    <div class="widget-toolbar border smaller" style="padding-right: 0 !important">
-
-                        <div class="pull-right tableTools-container" style="margin: 0 !important">
-                            <div class="dt-buttons btn-overlap btn-group">
-                                <a href="{{ request()->url() }}" class="dt-button btn btn-white btn-info btn-bold"
-                                   title="Refresh Page" data-toggle="tooltip" tabindex="0">
-                                    <span>
-                                        <i class="fa fa-refresh bigger-110"></i>
-                                    </span>
-                                </a>
-
-                                <a target="_blank" href="#" id="id-btn-dialog1"
-                                   class="dt-button btn btn-white btn-primary btn-bold"
-                                   title="Print Data" data-toggle="tooltip">
-                                    <span>
-                                        <i class="fa fa-plus bigger-110"></i>
-                                    </span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="space"></div>
-
-
+        <x-mm.panel>
                 <div class="row" style="width: 100%; margin: 0 !important;">
                     <div class="col-md-12">
                         <table class="table table-bordered table-striped">
@@ -113,9 +86,8 @@
                         </table>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
+        </x-mm.panel>
+    </x-mm.page>
 
     <div id="add-new" class="modal in" tabindex="-1" style="display: none; padding-right: 17px;">
         <div class="modal-dialog">
