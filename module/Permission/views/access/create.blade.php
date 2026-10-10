@@ -4,44 +4,8 @@
     <link rel="stylesheet" href="{{ asset('assets/css/jquery-ui.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/jquery-ui.custom.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-multiselect.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-multiselect.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/select2.min.css') }}">
-
-<style>
-
-    .chosen-container
-    {
-        width: 100% !important;
-    }
-
-	.panel-group .panel {
-		border-radius: 5px;
-		border-color: #EEEEEE;
-        padding:0;
-	}
-
-	.panel-default > .panel-heading {
-        color: #010101;
-        background-color: #f2f2f2;
-		border-color: ##EEEEEE;
-	}
-
-	.panel-title {
-		font-size: 14px;
-	}
-
-	.panel-title > a {
-		display: block;
-		padding: 2px;
-		text-decoration: none;
-	}
-
-	.short-full {
-		float: right;
-        color: #010101;
-	}
-</style>
 @stop
 
 @section('content')
@@ -433,7 +397,21 @@
 
                             <!-- access control -->
                             @if ($modules->count() > 0)
-                                <div class="well text-center" style="margin-top:30px; margin-left:auto; margin-right:auto; font-size:20px; padding:10px; font-weight:bold">Access Control</div>
+                                <div class="mm-perm-bulk-bar">
+                                    <h3 class="mm-perm-bulk-title">Access Control</h3>
+                                    <div class="mm-perm-bulk-actions">
+                                        <label class="mm-perm-bulk-check">
+                                            <input type="checkbox" class="ace mm-perm-select-all">
+                                            <span class="lbl"> Select All Permissions </span>
+                                        </label>
+                                        <button type="button" class="mm-button mm-button-secondary mm-button-small" data-mm-perm-expand="all">
+                                            <i class="fa fa-expand"></i> Expand All
+                                        </button>
+                                        <button type="button" class="mm-button mm-button-secondary mm-button-small" data-mm-perm-collapse="all">
+                                            <i class="fa fa-compress"></i> Collapse All
+                                        </button>
+                                    </div>
+                                </div>
                             @endif
 
                             <!-- menus -->
@@ -628,6 +606,44 @@
             $(this).closest('tr').find('.permission_module').val(0);
         }
 
+        syncPermissionMatrixState();
+    });
+
+    function syncPermissionMatrixState() {
+        $('.access-control table').each(function () {
+            var $boxes = $(this).find('tbody input[type=checkbox]');
+            var allChecked = $boxes.length > 0 && $boxes.filter(':not(:checked)').length === 0;
+            $(this).find('thead .parentCheckBox').prop('checked', allChecked);
+        });
+        $('.access-control > ul > li.list-group-item').each(function () {
+            var $boxes = $(this).find('table tbody input[type=checkbox]');
+            var allChecked = $boxes.length > 0 && $boxes.filter(':not(:checked)').length === 0;
+            $(this).find('.module-checkbox-control').prop('checked', allChecked);
+        });
+        var $allPermBoxes = $('.access-control table tbody input[type=checkbox]');
+        var everythingChecked = $allPermBoxes.length > 0 && $allPermBoxes.filter(':not(:checked)').length === 0;
+        $('.mm-perm-select-all').prop('checked', everythingChecked);
+    }
+
+    $('.mm-perm-select-all').click(function () {
+        var checked = $(this).is(':checked');
+        $('.access-control').find('.module-checkbox-control, .parentCheckBox, .rowChildCheckBox, .childCheckBox').prop('checked', checked);
+    });
+
+    $('.module-checkbox-control, .parentCheckBox, .childCheckBox, .module_row').on('change', syncPermissionMatrixState);
+
+    $('[data-mm-perm-expand="all"]').click(function () {
+        $('.access-control .panel-collapse').addClass('in').css('height', 'auto').attr('aria-expanded', 'true');
+        $('.access-control .panel-heading .short-full').removeClass('glyphicon-plus').addClass('glyphicon-minus');
+    });
+
+    $('[data-mm-perm-collapse="all"]').click(function () {
+        $('.access-control .panel-collapse').removeClass('in').attr('aria-expanded', 'false');
+        $('.access-control .panel-heading .short-full').removeClass('glyphicon-minus').addClass('glyphicon-plus');
+    });
+
+    jQuery(function ($) {
+        syncPermissionMatrixState();
     });
 </script>
 

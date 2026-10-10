@@ -712,6 +712,15 @@
 .mm-ui.mm-perm .mm-panel { display: flow-root; }
 .mm-ui.mm-perm-user .form-group.row::before, .mm-ui.mm-perm-user .form-group.row::after { display: none; content: none; }
 .mm-ui.mm-perm-access .input-group-btn { display: block; width: auto; flex: 0 0 auto; font-size: 14px; }
+.mm-ui.mm-perm-access .chosen-container { width: 100% !important; }
+.mm-ui.mm-perm-access .panel-group .panel { border-radius: 6px; border-color: var(--mm-line); padding: 0; }
+.mm-ui.mm-perm-access .panel-title { font-size: 14px; }
+.mm-ui.mm-perm-access .panel-title > a { display: block; padding: 4px 2px; text-decoration: none; color: var(--mm-ink); }
+.mm-ui.mm-perm-access .short-full { float: right; color: var(--mm-ink); }
+.mm-ui.mm-perm-access .mm-perm-bulk-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin: 24px 0 12px; padding: 12px 16px; background: var(--mm-bg); border: 1px solid var(--mm-line); border-radius: var(--mm-radius); }
+.mm-ui.mm-perm-access .mm-perm-bulk-title { font-size: 16px; font-weight: 700; color: var(--mm-ink); margin: 0; }
+.mm-ui.mm-perm-access .mm-perm-bulk-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.mm-ui.mm-perm-access .mm-perm-bulk-check { display: inline-flex; align-items: center; gap: 6px; margin: 0; font-weight: 600; color: var(--mm-ink); cursor: pointer; }
 @media (max-width: 991px) { .mm-ui.mm-perm-access .row > [class*="col-md-4"] { float: none !important; width: 100%; } }
 
 /* Restaurant (module/Restaurant/views): report filters, the shared Bar inventory filter, the kitchen board; scoped to .mm-rst */
