@@ -2155,6 +2155,15 @@ module/Restaurant/views/kitchen/index.blade.php
     </ul>
 </section>
 
+<section class="preview-section" id="w23-banquet-hall">
+    <h2>W2.3 Encountered-Pool — Remaining 16 BanquetHall views (<code>ccc1b8f2</code>)</h2>
+    <p style="color:#526578">Closes out all 16 remaining <code>@section('page-header')</code> views in <code>module/BanquetHall/</code>, bringing <code>module/BanquetHall/</code> to 0 remaining and reducing the repo-wide encountered-pool count from 59 &rarr; <strong>43</strong>.</p>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>Booking Purpose &amp; Services (7 views)</strong>: <code>booking-purpose/{create,edit,index}</code>, <code>hotel-service-night-audits/index</code>, <code>services/category/index</code>, and <code>services/sales/{create,show}</code> migrated off <code>@section('page-header')</code> + <code>widget-box</code> onto <code>&lt;x-mm.styles /&gt;</code> + <code>&lt;x-mm.page&gt;</code> + <code>&lt;x-mm.panel&gt;</code>.</li>
+        <li><strong>Hall Booking &amp; Invoices (9 views)</strong>: <code>hall_booking/{adjust/create,assaign,booking_next,booking_ui,checkout-invoice-v2,checkout_invoice,edit,get_invoice,view}</code> migrated off <code>@section('page-header')</code> + <code>widget-box</code> onto <code>&lt;x-mm.styles /&gt;</code> + <code>&lt;x-mm.page&gt;</code> + <code>&lt;x-mm.panel&gt;</code> with all invoice math, booking repeaters, and JS hooks preserved byte-identical.</li>
+    </ul>
+</section>
+
 </body>
 
 </html>
