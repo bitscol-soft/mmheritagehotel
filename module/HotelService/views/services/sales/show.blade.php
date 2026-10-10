@@ -249,5 +249,3 @@
          <x-mm.print-sheet>'s footer (data-mm-print hook calls
          window.print()). --}}
 @stop
-    </script>
-@stop
