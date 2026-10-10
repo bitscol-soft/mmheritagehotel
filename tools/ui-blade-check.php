@@ -4,6 +4,9 @@ set_error_handler(function ($no, $msg, $file, $line) { if (!(error_reporting() &
 // Standalone Blade smoke check: no database, .env or application boot needed.
 $root = dirname(__DIR__);
 require $root . '/vendor/autoload.php';
+if (!class_exists('Str')) {
+    class_alias(Illuminate\Support\Str::class, 'Str');
+}
 // Freeze time for the whole run: several views and fixtures read now()/date(), and the check must not depend on the day it runs.
 Carbon\Carbon::setTestNow(Carbon\Carbon::parse('2026-10-01 09:30:00', 'Asia/Dhaka'));
 $app = new Illuminate\Foundation\Application($root . '');
