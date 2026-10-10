@@ -4,21 +4,6 @@
 <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
 <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
 <link rel="stylesheet" href="{{ asset('assets/custom_css/chosen-required.css') }}" />
-<style>
-    td {
-        padding-bottom: 3px !important;
-        padding-top: 3px !important;
-    }
-
-    table {
-        counter-reset: section;
-    }
-
-    .count:before {
-        counter-increment: section;
-        content: counter(section);
-    }
-</style>
 @endpush
 
 @section('content')
@@ -38,8 +23,8 @@
             <div class="row">
                 <div class="col-sm-12 px-4">
 
-                    <div class="row">
-                        <div class="col-md-9" style="padding-left: 0px;">
+                    <div class="row mm-voucher-meta">
+                        <div class="col-md-9">
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-xs-4 col-sm-12">
@@ -57,7 +42,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-3" style="padding-right: 0px;">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-xs-4 col-sm-12">
@@ -151,8 +136,8 @@
                             </x-mm.table-scroll>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="input-group " style="width: 100%!important; float: left; ">
+                    <div class="row mm-voucher-footer">
+                        <div class="input-group">
                             <label class="input-group-addon">Narration/Description</label>
                             <input type="text" required class="form-control" name="description" value="{{ old('description') ?: $voucher->description }}" placeholder="Narration / Description">
 
@@ -160,40 +145,31 @@
                             <span class="text-danger"> {{ $message }}</span>
                             @enderror
                         </div>
-                    </div>
-                    <div class="row mt-2">
-                        <div class="col-xs-12 col-sm-7" style="padding-left: 0px;">
+
+                        <div class="mm-voucher-actions">
                             <label class="ace-file-input ace-file-multiple">
                                 <input type="file" name="attachment" id="footer">
                                 <a class="remove" href="#"><i class=" ace-icon fa fa-times"></i></a>
                             </label>
-                        </div>
 
-                        <div class="col-md-3">
-                            <div class="form-group">
-                            <div class="col-xs-12 col-sm-12">
-                                    @if($voucher->attachment)
-                                    <label class="ace-file-input ace-file-multiple">
-                                        <a href="{{ asset('http://127.0.0.1:8000/' .$voucher->attachment) }}" target="_blank">
-                                        <img src="{{ asset($voucher->attachment) }}" style="width: 100px" alt="It's A File..."><br>
-                                        <span>Click Here To Preview</span>
-                                    </a>
-                                    </label>
-                                    @else
-                                    <label>No file uploaded!<label>
-                                    @endif
-                                </div>
+                            <div>
+                                @if($voucher->attachment)
+                                <label class="ace-file-input ace-file-multiple">
+                                    <a href="{{ asset($voucher->attachment) }}" target="_blank">
+                                    <img src="{{ asset($voucher->attachment) }}" style="width: 100px" alt="It's A File..."><br>
+                                    <span>Click Here To Preview</span>
+                                </a>
+                                </label>
+                                @else
+                                <label>No file uploaded!</label>
+                                @endif
                             </div>
-                        </div>
-                        <div class="col-md-2" style="padding-right: 0px;">
-                            <div class="form-group">
-                                <div class="pull-right mt-5">
-                                    <button type="submit" class="btn btn-sm btn-success save-btn">
-                                        <i class="fa fa fa-save"></i>
-                                        Update
-                                    </button>
-                                </div>
 
+                            <div>
+                                <button type="submit" class="btn btn-sm btn-success save-btn">
+                                    <i class="fa fa fa-save"></i>
+                                    Update
+                                </button>
                             </div>
                         </div>
                     </div>

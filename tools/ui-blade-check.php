@@ -1450,11 +1450,11 @@ $a2Cases = [
 ];
 foreach (['receives' => ['Receive', 'voucher-receives'], 'payments' => ['Payment', 'voucher-payments'], 'journals' => ['Journal', 'voucher-journals'], 'contras' => ['Contra', 'voucher-contras']] as $a2Kind => [$a2Type, $a2Slug]) {
     $a2Cases[$a2Kind] = ['acc.voucher.' . $a2Kind . '.index', '/acc/' . $a2Slug . '?invoice_no=1', $a2Index('vouchers'), ['mm-acc', 'mm-report-filter', 'name="invoice_no"', 'name="reference"', 'name="from_date"', 'name="to_date"', 'V-0004', 'V-0005', 'Unapproved'], ['Ref <i>1</i>']];
-    $a2Cases['form-' . $a2Kind . '-create'] = ['acc.voucher.' . $a2Kind . '.create', '/acc/' . $a2Slug . '/create', $a2Create, ['mm-rst-form', 'name="company_id"', 'name="voucher_type"'], []];
+    $a2Cases['form-' . $a2Kind . '-create'] = ['acc.voucher.' . $a2Kind . '.create', '/acc/' . $a2Slug . '/create', $a2Create, ['mm-rst-form', 'mm-voucher-meta', 'mm-voucher-footer', 'mm-voucher-actions', 'name="company_id"', 'name="voucher_type"'], ['<style>']];
     $a2Cases[$a2Kind . '-show'] = ['acc.voucher.' . $a2Kind . '.show', '/acc/' . $a2Slug . '/4', ['voucher' => $a2Voucher($a2Type)], ['mm-invoice-page', 'V-0004', 'Rent &lt;b&gt;expense&lt;/b&gt;'], ['Rent <b>expense</b>']];
 }
 foreach (['journals', 'contras'] as $a2Kind) {
-    $a2Cases['form-' . $a2Kind . '-edit'] = ['acc.voucher.' . $a2Kind . '.edit', '/acc/voucher-' . $a2Kind . '/4/edit', $a2Create + ['voucher' => $a2Voucher($a2Kind)], ['mm-rst-form', 'name="_method"', 'name="date"', 'name="reference"'], []];
+    $a2Cases['form-' . $a2Kind . '-edit'] = ['acc.voucher.' . $a2Kind . '.edit', '/acc/voucher-' . $a2Kind . '/4/edit', $a2Create + ['voucher' => $a2Voucher($a2Kind)], ['mm-rst-form', 'mm-voucher-meta', 'mm-voucher-footer', 'mm-voucher-actions', 'name="_method"', 'name="date"', 'name="reference"'], ['<style>', '127.0.0.1:8000', '<label>No file uploaded!<label>']];
 }
 @mkdir(__DIR__ . '/fixtures/account', 0777, true);
 foreach ($a2Cases as $a2Name => [$a2ViewName, $a2Url, $a2Data, $a2Markers, $a2Absent]) {

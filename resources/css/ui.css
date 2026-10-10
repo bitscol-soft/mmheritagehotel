@@ -843,6 +843,17 @@
 .mm-ui.mm-bar .mm-panel.mm-report-filter .row { display: flex; }
 .mm-ui.mm-acc .mm-panel .row { display: flow-root; }
 .mm-ui.mm-acc.mm-rst-form .form-group > [class*="col-"] { float: none; width: 100%; }
+.mm-ui.mm-acc.mm-rst-form table { counter-reset: section; }
+.mm-ui.mm-acc.mm-rst-form .count::before { counter-increment: section; content: counter(section); }
+.mm-ui.mm-acc.mm-rst-form td { padding-top: 3px !important; padding-bottom: 3px !important; }
+.mm-ui.mm-acc.mm-rst-form select:invalid { height: 0 !important; opacity: 0 !important; position: absolute !important; display: flex !important; }
+.mm-ui.mm-acc.mm-rst-form select:invalid[multiple] { margin-top: 15px !important; }
+.mm-ui.mm-acc.mm-rst-form .mm-voucher-meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-bottom: 16px; }
+.mm-ui.mm-acc.mm-rst-form .mm-voucher-meta > [class*="col-"] { width: 100%; float: none; padding: 0 !important; margin: 0 !important; }
+.mm-ui.mm-acc.mm-rst-form .mm-voucher-meta .form-group { margin: 0; }
+.mm-ui.mm-acc.mm-rst-form .mm-voucher-footer { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; margin-top: 16px; }
+.mm-ui.mm-acc.mm-rst-form .mm-voucher-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+.mm-ui.mm-acc.mm-rst-form .mm-voucher-actions .ace-file-input { margin-bottom: 0; max-width: 480px; }
 .mm-ui.mm-acc .mm-table-scroll { position: relative; }
 .mm-ui.mm-acc.mm-report .mm-table-scroll .table-bordered td .input-group { width: auto !important; max-width: 100%; }
 .mm-ui.mm-acc.mm-report .mm-table-scroll .table-bordered td .input-group .form-control { min-width: 90px; }

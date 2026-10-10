@@ -3,38 +3,9 @@
 @section('title', 'Contra Voucher')
 
 @push('style')
-
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/custom_css/chosen-required.css') }}" />
-
-    <style>
-        td {
-            padding-bottom: 3px !important;
-            padding-top: 3px !important;
-        }
-
-        table {
-            counter-reset: section;
-        }
-
-        .count:before {
-            counter-increment: section;
-            content: counter(section);
-        }
-
-        select:invalid {
-            height: 0px !important;
-            opacity: 0 !important;
-            position: absolute !important;
-            display: flex !important;
-        }
-
-        select:invalid[multiple] {
-            margin-top: 15px !important;
-        }
-
-    </style>
 @endpush
 
 @section('content')
@@ -53,8 +24,8 @@
             <div class="row">
                 <div class="col-sm-12 px-4">
 
-                    <div class="row">
-                        <div class="col-md-9" style="padding-left: 0px;">
+                    <div class="row mm-voucher-meta">
+                        <div class="col-md-5">
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-xs-4 col-sm-12">
@@ -80,7 +51,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-9" style="padding-left: 0px;">
+                        <div class="col-md-4">
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-xs-4 col-sm-12">
@@ -96,7 +67,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-3" style="padding-right: 0px;">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-xs-4 col-sm-12">
@@ -288,8 +259,8 @@
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="input-group " style="width: 100%!important; float: left; ">
+                    <div class="row mm-voucher-footer">
+                        <div class="input-group">
                             <label class="input-group-addon">Narration/Description</label>
                             <input type="text" required class="form-control" name="description"
                                 value="{{ old('description') }}" placeholder="Narration / Description">
@@ -299,24 +270,22 @@
                             @enderror
                         </div>
 
-                        <div class="input-group input-group-sm"
-                            style="width: 80%!important; height: 40%!important; float: left; margin-top: 10px;">
-                            <div class="col-xs-6" style="padding-left: 0px;;">
-                                <label class="ace-file-input ace-file-multiple">
-                                    <input type="file" name="attachment" id="id-input-file-3" />
-                            </div>
-                        </div>
+                        <div class="mm-voucher-actions">
+                            <label class="ace-file-input ace-file-multiple">
+                                <input type="file" name="attachment" id="id-input-file-3" />
+                            </label>
 
-                        <div class="pull-right mt-5">
-                            <button type="button" id="draft" class="btn btn-sm btn-primary save-btn" disabled>
-                                Draft
-                                <i class="fa fa-file"></i>
-                                <input type="hidden" name="draft" class="draft-value" value="0">
-                            </button>
-                            <button type="submit" class="btn btn-sm btn-success save-btn" disabled>
-                                <i class="fa fa fa-save"></i>
-                                Save
-                            </button>
+                            <div class="btn-group">
+                                <button type="button" id="draft" class="btn btn-sm btn-primary save-btn" disabled>
+                                    Draft
+                                    <i class="fa fa-file"></i>
+                                    <input type="hidden" name="draft" class="draft-value" value="0">
+                                </button>
+                                <button type="submit" class="btn btn-sm btn-success save-btn" disabled>
+                                    <i class="fa fa fa-save"></i>
+                                    Save
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

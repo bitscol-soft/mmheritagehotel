@@ -1,38 +1,8 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
 <link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
-<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">
-    <link rel="stylesheet" href="/assets/css/chosen.min.css" />
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">    <link rel="stylesheet" href="/assets/css/chosen.min.css" />
     <link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css" />
     <link rel="stylesheet" href="/assets/custom_css/chosen-required.css" />
-
-
-    <style>
-        td {
-            padding-bottom: 3px !important;
-            padding-top: 3px !important;
-        }
-
-        table {
-            counter-reset: section;
-        }
-
-        .count:before {
-            counter-increment: section;
-            content: counter(section);
-        }
-
-        select:invalid {
-            height: 0px !important;
-            opacity: 0 !important;
-            position: absolute !important;
-            display: flex !important;
-        }
-
-        select:invalid[multiple] {
-            margin-top: 15px !important;
-        }
-
-    </style>
 <!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
 <section class="mm-ui mm-acc mm-rst mm-rst-inv mm-rst-form">
     <div class="tw-space-y-4 tw-py-2">
@@ -54,7 +24,7 @@
 
 
                     <!-- Filter -->
-                    <div class="row">
+                    <div class="row mm-voucher-meta">
 
                         <!-- Company -->
                         <div class="col-sm-5 my-1">
@@ -237,28 +207,20 @@
 
                 <div class="col-sm-12 px-4 mt-2 mb-2">
 
-                    <div class="row">
-                        <div class="input-group " style="width: 100%!important; float: left; ">
+                    <div class="row mm-voucher-footer">
+                        <div class="input-group">
                             <label class="input-group-addon">Narration/Description</label>
                             <input type="text" required class="form-control" name="description"
                                 value="" placeholder="Narration / Description">
 
                                                     </div>
 
-                        <div class="input-group input-group-sm"
-                            style="width: 80%!important; height: 40%!important; float: left; margin-top: 10px;">
-                            <div class="col-xs-6" style="padding-left: 0px;;">
-                                <label class="ace-file-input ace-file-multiple">
-                                    <input type="file" name="attachment" id="id-input-file-3" />
-                            </div>
-                        </div>
-
-
-
-
-
                         <!-- Action -->
-                        <div class="pull-right mt-5">
+                        <div class="mm-voucher-actions">
+                            <label class="ace-file-input ace-file-multiple">
+                                <input type="file" name="attachment" id="id-input-file-3" />
+                            </label>
+
                             <div class="btn-group">
                                 <button type="button" id="draft" class="btn btn-sm btn-primary save-btn" disabled>
                                     <i class="fa fa-file"></i>

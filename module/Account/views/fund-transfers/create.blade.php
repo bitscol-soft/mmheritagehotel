@@ -4,12 +4,6 @@
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}"/>
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}"/>
     <link rel="stylesheet" href="{{ asset('assets/custom_css/chosen-required.css') }}"/>
-    <style>
-        td {
-            padding-bottom: 3px !important;
-            padding-top: 3px !important;
-        }
-    </style>
 @endpush
 
 @section('content')
