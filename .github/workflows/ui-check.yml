@@ -29,6 +29,18 @@ jobs:
       - run: npm run ui:build
       - run: git diff --exit-code -- public/assets/custom_css/ui.css public/assets/custom_css/shell.css
       - run: npm run ui:check
-      - run: php tools/ui-blade-check.php
+      - run: |
+          if ! php tools/ui-blade-check.php > /tmp/blade-check.log 2>&1; then
+            cat /tmp/blade-check.log
+            echo "::error::$(tail -n 12 /tmp/blade-check.log | tr '\n' ' ')"
+            exit 1
+          fi
+          cat /tmp/blade-check.log
       - run: npx playwright install --with-deps chromium
-      - run: npm run ui:browser
+      - run: |
+          if ! npm run ui:browser > /tmp/browser-check.log 2>&1; then
+            cat /tmp/browser-check.log
+            echo "::error::$(tail -n 20 /tmp/browser-check.log | tr '\n' ' ')"
+            exit 1
+          fi
+          cat /tmp/browser-check.log
