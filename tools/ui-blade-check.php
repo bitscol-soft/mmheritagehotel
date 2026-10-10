@@ -597,7 +597,7 @@ $rpCases = [
     'vat-report-monthly' => ['/hotel/reports/vat-report-monthly?x=1', ['monthly_vats' => $rpEmpty], ['name="from_date"', 'No records found'], []],
     'cash-flow' => ['/hotel/reports/cash-flow?from_date=2026-10-01', ['cashFlows' => collect([$rpMoney('0103', 'Booking', 900)])], ['name="invoice_no"', 'name="from_time"', 'name="to_time"', 'id="time_start"', 'id="time_end"', '0103', '900.00', "timepicker({"], []],
     'all-reports' => ['/hotel/reports/all-reports?invoice_no=1', ['transactions' => $rpEmpty, 'account_types' => collect([1 => 'Cash'])], ['name="invoice_no"', 'name="from_date"', 'No records found'], []],
-    'today-activities' => ['/hotel/reports/today-activities?date=2026-10-01', ['date' => '2026-10-01', 'booking_count' => 2, 'total_check_in' => 2, 'total_reservation' => 3, 'total_check_out' => 1, 'total_cancel' => 0, 'total_room' => 32, 'total_booked_room' => 7, 'total_dirty_room' => 4, 'total_maintenance_room' => 1, 'transactions' => collect([$rpTx(11, 'Booking', '0007', 7300, 5300)])],
+    'today-activities' => ['/hotel/reports/today-activities?date=2026-10-01', ['date' => '2026-10-01', 'booking_count' => 2, 'total_check_in' => 2, 'total_reservation' => 3, 'total_check_out' => 1, 'total_cancel' => 0, 'total_room' => 32, 'total_booked_room' => 7, 'total_dirty_room' => 4, 'total_maintenance_room' => 1, 'total_collection' => 0, 'transactions' => collect([$rpTx(11, 'Booking', '0007', 7300, 5300)])],
         ['name="date"', 'name="total_check_in"', 'class="header-input"', 'name="transaction_ids[]"', 'INV-0007', 'mm-report'], []],
     'today-check-in' => ['/hotel/reports/today-check-in', ['date' => '2026-10-01', 'today_booking' => collect([$rpBooking('B-0011', 'Tania')])], ['name="date"', 'Today Check-In Report', 'B-0011', 'Tania'], []],
     'today-check-out' => ['/hotel/reports/today-check-out', ['date' => '2026-10-01', 'today_booking' => collect([$rpBooking('B-0012', 'Imran')])], ['name="date"', 'B-0012', 'Imran'], []],
@@ -610,6 +610,7 @@ foreach ($rpCases as $rpName => [$rpUrl, $rpData, $rpMarkers, $rpAbsent]) {
     $rpIndex = $rpName === 'night-closing' ? 'indexV2' : 'index';
     file_put_contents($coViews . '/hotel/reports/' . $rpDir . '/' . $rpIndex . '.blade.php', $rpSub('hotel/reports/' . $rpDir . '/' . $rpIndex));
     file_put_contents($coViews . '/hotel/reports/' . $rpDir . '/export/excel.blade.php', $rpSub('hotel/reports/' . $rpDir . '/export/excel'));
+    if ($rpName === 'today-activities') file_put_contents($coViews . '/hotel/reports/today-activities/transactions.blade.php', $rpSub('hotel/reports/today-activities/transactions'));
     if ($rpName === 'night-closing') file_put_contents($coViews . '/hotel/reports/night-closing/details.blade.php', $rpSub('hotel/reports/night-closing/details'));
 }
 foreach ($rpCases as $rpName => [$rpUrl, $rpData, $rpMarkers, $rpAbsent]) {
