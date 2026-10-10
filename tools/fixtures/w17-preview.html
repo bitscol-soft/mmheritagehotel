@@ -2146,6 +2146,15 @@ module/Restaurant/views/kitchen/index.blade.php
     </ul>
 </section>
 
+<section class="preview-section" id="w23-account-hotel">
+    <h2>W2.3 Encountered-Pool — Remaining 14 Account &amp; Hotel views (<code>3f96fe89</code>)</h2>
+    <p style="color:#526578">Closes out all remaining <code>@section('page-header')</code> views in <code>module/Account/</code> (5 views) and <code>module/Hotel/</code> (9 views), reducing the repo-wide encountered-pool count from 73 &rarr; <strong>59</strong>.</p>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>Account (5 views &rarr; 0 remaining)</strong>: <code>reports/inventory-report/index</code>, <code>purchase/purchases/show</code>, <code>sale/sales/show</code>, <code>reports/chart-of-account/index-[WITHOUT-FILTER]</code>, and <code>reports/supplier/index-old</code> migrated off <code>@section('page-header')</code> + <code>widget-box</code> onto <code>&lt;x-mm.styles /&gt;</code> + <code>&lt;x-mm.page&gt;</code> + <code>&lt;x-mm.panel&gt;</code> (also removing the stray <code>@dd('sfkfj')</code> in <code>purchase/purchases/show</code>).</li>
+        <li><strong>Hotel (9 views &rarr; 0 remaining)</strong>: <code>booking-note/create</code>, <code>guest-registration-terms/create</code>, <code>booking/assaign</code>, <code>hotel/reports/monthly</code>, <code>hotel/reports/night-closing/index</code>, and <code>night-audits/{create,create-v3,create-v4,index-details}</code> migrated off <code>@section('page-header')</code> + <code>widget-box</code> onto <code>&lt;x-mm.styles /&gt;</code> + <code>&lt;x-mm.page&gt;</code> + <code>&lt;x-mm.panel&gt;</code> with all money math, form names, and JS hooks preserved byte-identical.</li>
+    </ul>
+</section>
+
 </body>
 
 </html>
