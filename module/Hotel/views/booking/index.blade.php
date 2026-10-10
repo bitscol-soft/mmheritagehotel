@@ -68,13 +68,8 @@
                      booking.referred-booking route, mirroring the
                      conditional <th> in the original
                      _booking-table.blade.php partial. --}}
+                {{-- money-travel-on-block: column labels for the booking list table. None of these are money math; the tripwire flags them only because the file path contains "booking". The block marker opts the @php/@endphp region out of the tripwire. --}}
                 @php
-                    {{-- money-travel-on-block: column labels for the
-                         booking list table. None of these are money
-                         math; the tripwire flags them only because
-                         the file path contains "booking". The block
-                         marker opts the @php/@endphp region out of
-                         the tripwire. --}}
                     $bookingTableColumns = [
                         ['label' => 'Booking ID', 'width' => '9%', 'align' => 'center'],
                         ['label' => 'Customer'],
@@ -90,8 +85,8 @@
                     if (url()->current() == route('booking.referred-booking')) {
                         array_splice($bookingTableColumns, 1, 0, [['label' => 'Reference By', 'align' => 'center']]);
                     }
-                    {{-- money-travel-on-end --}}
                 @endphp
+                {{-- money-travel-on-end --}}
                 <x-mm.data-table label="Booking results"
                     table-class="table table-striped table-bordered table-hover"
                     :columns="$bookingTableColumns">
