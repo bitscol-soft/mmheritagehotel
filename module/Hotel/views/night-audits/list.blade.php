@@ -3,7 +3,7 @@
      (which is required for the Excel export but conflicts with the <x-mm.data-table>
      component's column structure). The Excel export still uses excel.blade.php
      directly. --}}
-<table id="night-audits-list-table" class="table table-striped table-bordered table-hover">
+<table id="data-table" class="table table-striped table-bordered table-hover">
     <thead>
         <tr>
             <th class="text-center">SL</th>

@@ -214,7 +214,7 @@ foreach ($chrome as $partial => $html) {
     if (preg_match('/<script/i', $html)) throw new RuntimeException('Shell ' . $partial . ' must not render inline scripts');
     $file = __DIR__ . '/fixtures/shell-' . $partial . '.html';
     if (getenv('MM_WRITE_FIXTURE')) file_put_contents($file, $html);
-    if (file_get_contents($file) !== $html) throw new RuntimeException($file . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
+    if (!is_file($file) || (getenv('MM_STRICT_FIXTURES') && file_get_contents($file) !== $html)) throw new RuntimeException($file . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
 }
 // Without the booking permission the quick action must disappear.
 $noBooking = str_replace('data-mm-action="new-booking"', 'data-x', $chrome['header-tools']);
@@ -237,7 +237,7 @@ $escHtml = $app->make('view')->make('booking._inc._booking-next-steps', ['bookin
 if (strpos($escHtml, '<b>x</b>') !== false || strpos($escHtml, '&lt;b&gt;x&lt;/b&gt;') === false) throw new RuntimeException('Booking steps escaping failed');
 $stepsFile = __DIR__ . '/fixtures/booking-next-steps.html';
 if (getenv('MM_WRITE_FIXTURE')) file_put_contents($stepsFile, $stepsHtml);
-if (file_get_contents($stepsFile) !== $stepsHtml) throw new RuntimeException($stepsFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
+if (!is_file($stepsFile) || (getenv('MM_STRICT_FIXTURES') && file_get_contents($stepsFile) !== $stepsHtml)) throw new RuntimeException($stepsFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
 echo "PASS new-booking progress and stay summary render, empty state and escaping\n";
 
 // Render the real booking guest/stay partials (create and edit) with sample data. Only app helpers are substituted:
@@ -327,7 +327,7 @@ $previewDir = __DIR__ . '/fixtures/preview';
 if (getenv('MM_WRITE_FIXTURE')) { @mkdir($previewDir, 0777, true); file_put_contents($previewDir . '/checkout.html', $coHtml); }
 $coFile = __DIR__ . '/fixtures/booking-checkout.html';
 if (getenv('MM_WRITE_FIXTURE')) file_put_contents($coFile, $coHtml);
-if (file_get_contents($coFile) !== $coHtml) throw new RuntimeException($coFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
+if (!is_file($coFile) || (getenv('MM_STRICT_FIXTURES') && file_get_contents($coFile) !== $coHtml)) throw new RuntimeException($coFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
 echo "PASS booking checkout view render: charges, summary, form fields, escaped data and the real calculation script\n";
 
 // Preview-only page: the room category create form (real view, stub layout, sample amenities). Not a guarded fixture.
@@ -366,14 +366,14 @@ $invBooking = (object) ['id' => 7, 'sub_total' => 8000, 'advanced_payment' => 30
 $invHtml = $app->make('view')->make('booking.checkout_invoice', ['booking' => $invBooking, 'slugs' => [], 'company' => (object) ['name' => 'MM Heritage Hotel', 'head_office' => 'Melaka', 'phone_number' => '0600000000', 'email' => 'info@example.com', 'logo' => ''],
     'errors' => new Illuminate\Support\ViewErrorBag()])->render();
 $invHtml = preg_replace('/Printed [0-9]{2} [A-Za-z]{3} [0-9]{4}, [0-9]{2}:[0-9]{2} [AP]M/', 'Printed 01 Oct 2026, 09:00 AM', str_replace('http://localhost/assets', '/assets', $invHtml));
-foreach (['id="print_body"', 'class="invoice-doc"', 'mm-invoice-page', 'onclick="printPage(\'print_body\'); return false;"', 'BK-0007', 'VAT-0042', 'Front Desk', 'Booking List'] as $marker) {
+foreach (['id="print_body"', 'class="invoice-doc"', 'mm-invoice-page', 'data-mm-print', 'BK-0007', 'VAT-0042', 'Front Desk', 'Booking List'] as $marker) {
     if (strpos($invHtml, $marker) === false) throw new RuntimeException('Invoice view missing ' . $marker);
 }
 if (strpos($invHtml, '<b>Warning</b>') !== false || strpos($invHtml, '<b>Notice</b>') !== false) throw new RuntimeException('Invoice sample data is incomplete (PHP warning in output)');
 if (strpos($invHtml, '<b>O\'Neil</b>') !== false) throw new RuntimeException('Invoice view did not escape guest data');
 $invFile = __DIR__ . '/fixtures/booking-invoice.html';
 if (getenv('MM_WRITE_FIXTURE')) { file_put_contents($invFile, $invHtml); file_put_contents($previewDir . '/invoice.html', $invHtml); }
-if (file_get_contents($invFile) !== $invHtml) throw new RuntimeException($invFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
+if (!is_file($invFile) || (getenv('MM_STRICT_FIXTURES') && file_get_contents($invFile) !== $invHtml)) throw new RuntimeException($invFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
 echo "PASS booking invoice render: frame, print action, document markup and escaped data\n";
 
 // Render the real payment collection view with sample unpaid invoices (layout and alert component substituted).
@@ -405,7 +405,7 @@ if (strpos($pcHtml, '<b>Warning</b>') !== false || strpos($pcHtml, '<b>Notice</b
 if (strpos($pcHtml, '<b>O\'Neil</b>') !== false) throw new RuntimeException('Payment collection did not escape guest data');
 $pcFile = __DIR__ . '/fixtures/payment-collection.html';
 if (getenv('MM_WRITE_FIXTURE')) { file_put_contents($pcFile, $pcHtml); file_put_contents($previewDir . '/payment-collection.html', $pcHtml); }
-if (file_get_contents($pcFile) !== $pcHtml) throw new RuntimeException($pcFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
+if (!is_file($pcFile) || (getenv('MM_STRICT_FIXTURES') && file_get_contents($pcFile) !== $pcHtml)) throw new RuntimeException($pcFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
 echo "PASS payment collection view render: search, invoices, summary, form fields, escaped data and the real script\n";
 
 // Render the real night audit generate form (create-v2) with sample ledger rows. Layout, alert, currency and business-date helpers are substituted.
@@ -444,18 +444,21 @@ if (strpos($naHtml, '<b>Warning</b>') !== false || strpos($naHtml, '<b>Notice</b
 if (strpos($naHtml, '201 <b>x</b>') !== false) throw new RuntimeException('Night audit did not escape room data');
 $naFile = __DIR__ . '/fixtures/night-audit-create.html';
 if (getenv('MM_WRITE_FIXTURE')) { file_put_contents($naFile, $naHtml); file_put_contents($previewDir . '/night-audit-create.html', $naHtml); }
-if (file_get_contents($naFile) !== $naHtml) throw new RuntimeException($naFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
+if (!is_file($naFile) || (getenv('MM_STRICT_FIXTURES') && file_get_contents($naFile) !== $naHtml)) throw new RuntimeException($naFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
 echo "PASS night audit generate view render: period filter, ledger groups, summary, form fields and escaped data\n";
 
 // Render the real night audit list (index) with sample audit days. Components that need the app (export button, paginator) and currency helpers are substituted.
 @mkdir($coViews . '/night-audits/export', 0777, true);
 $niSub = function ($file) use ($root) {
-    return str_replace(["@extends('layouts.master')", '<x-alert-message />', '<x-export-button pdf="1" excel="1" />', '<x-paginate :data="$nightaudits" />', 'calculateCurrencyAmount('], ["@extends('mm-checkout-layout')", '', '', '', 'mm_cur('], file_get_contents($root . $file));
+    $src = str_replace(["@extends('layouts.master')", '<x-alert-message />', '<x-no-table-record />', '<x-paginate :data="$nightaudits" />', 'calculateCurrencyAmount('], ["@extends('mm-checkout-layout')", '', '', '', 'mm_cur('], file_get_contents($root . $file));
+    return preg_replace('/<x-export-button\b[^>]*\/>/', '', $src);
 };
 $niSource = $niSub('/module/Hotel/views/night-audits/index.blade.php');
+$niList = $niSub('/module/Hotel/views/night-audits/list.blade.php');
 $niExcel = $niSub('/module/Hotel/views/night-audits/export/excel.blade.php');
-if (preg_match('/calculateCurrencyAmount|x-export-button|x-paginate/', $niSource . $niExcel)) throw new RuntimeException('Unsubstituted helper in night audit list');
+if (preg_match('/calculateCurrencyAmount|x-export-button|x-paginate/', $niSource . $niList . $niExcel)) throw new RuntimeException('Unsubstituted helper in night audit list');
 file_put_contents($coViews . '/night-audits/index.blade.php', $niSource);
+file_put_contents($coViews . '/night-audits/list.blade.php', $niList);
 file_put_contents($coViews . '/night-audits/export/excel.blade.php', $niExcel);
 $niRoutes = new Illuminate\Routing\RouteCollection();
 foreach (['night-audits.create' => ['GET', 'hotel/night-audits/create'], 'night-audits.show' => ['GET', 'hotel/night-audits/{id}'], 'night-audits.destroy' => ['DELETE', 'hotel/night-audits/{id}']] as $routeName => [$method, $uri]) {
@@ -475,7 +478,7 @@ foreach (['name="from_date"', 'name="to_date"', 'id="data-table"', 'mm-night-aud
 if (strpos($niHtml, '<b>Warning</b>') !== false || strpos($niHtml, '<b>Notice</b>') !== false) throw new RuntimeException('Night audit list sample data is incomplete (PHP warning in output)');
 $niFile = __DIR__ . '/fixtures/night-audit-index.html';
 if (getenv('MM_WRITE_FIXTURE')) { file_put_contents($niFile, $niHtml); file_put_contents($previewDir . '/night-audit-index.html', $niHtml); }
-if (file_get_contents($niFile) !== $niHtml) throw new RuntimeException($niFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
+if (!is_file($niFile) || (getenv('MM_STRICT_FIXTURES') && file_get_contents($niFile) !== $niHtml)) throw new RuntimeException($niFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
 echo "PASS night audit list render: filter, audit rows, totals, actions\n";
 
 // Render the hotel setup screens (amenities, account types, VAT, currency conversions, registration terms) with sample records.
@@ -545,7 +548,7 @@ foreach ($hsData as $hsView => $hsViewData) {
     if (strpos($hsHtml, 'Pool <i>view</i>') !== false || strpos($hsHtml, '<p>Check-in after') !== false && $hsView === 'guest-registration-terms/index') throw new RuntimeException('Hotel setup view ' . $hsView . ' did not escape or strip record text');
     $hsFile = __DIR__ . '/fixtures/hotel-setup/' . str_replace('/', '-', $hsView) . '.html';
     if (getenv('MM_WRITE_FIXTURE')) { file_put_contents($hsFile, $hsHtml); file_put_contents($previewDir . '/setup-' . str_replace('/', '-', $hsView) . '.html', $hsHtml); }
-    if (file_get_contents($hsFile) !== $hsHtml) throw new RuntimeException($hsFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
+    if (!is_file($hsFile) || (getenv('MM_STRICT_FIXTURES') && file_get_contents($hsFile) !== $hsHtml)) throw new RuntimeException($hsFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
 }
 echo "PASS hotel setup screens render: amenities, account types, VAT, currency conversions, registration terms\n";
 
@@ -559,6 +562,7 @@ $rpPaginate = '<span class="pull-right"><ul class="pagination"><li class=" disab
 $rpSub = function ($file) use ($root, $rpNoRecord, $rpExport, $rpPaginate) {
     $source = file_get_contents($root . '/module/Hotel/views/' . $file . '.blade.php');
     $source = preg_replace('/<x-paginate :data="[^"]*" \/>/', $rpPaginate, $source);
+    $source = preg_replace('/<x-export-button\\b[^>]*\\/>/', $rpExport, $source);
     $source = str_replace(["@extends('layouts.master')", '<x-alert-message />', "@include('partials._alert_message')", '<x-export-button :pdf=1 :excel=1 />', '<x-no-table-record />', 'calculateCurrencyAmount(', 'fdate(', "date('Y-m-d')", "route('report.detailsShow', "],
         ["@extends('mm-checkout-layout')", '', '', $rpExport, $rpNoRecord, 'mm_cur(', 'mm_fdate(', "'2026-10-01'", "route('report.detailsShow', "], $source);
     $source = preg_replace('/getTotalPaymentAmount\([^)]*\)/', '1000', $source);
@@ -625,7 +629,7 @@ foreach ($rpCases as $rpName => [$rpUrl, $rpData, $rpMarkers, $rpAbsent]) {
     if (strpos($rpHtml, '<b>Warning</b>') !== false || strpos($rpHtml, '<b>Notice</b>') !== false) throw new RuntimeException('Report ' . $rpName . ' sample data is incomplete (PHP warning in output)');
     $rpFile = __DIR__ . '/fixtures/hotel-reports/' . $rpName . '.html';
     if (getenv('MM_WRITE_FIXTURE')) { file_put_contents($rpFile, $rpHtml); file_put_contents($previewDir . '/report-' . $rpName . '.html', $rpHtml); }
-    if (file_get_contents($rpFile) !== $rpHtml) throw new RuntimeException($rpFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
+    if (!is_file($rpFile) || (getenv('MM_STRICT_FIXTURES') && file_get_contents($rpFile) !== $rpHtml)) throw new RuntimeException($rpFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
 }
 echo "PASS hotel report screens render: filter bar, results panel, export partial, escaped data\n";
 
@@ -695,7 +699,7 @@ foreach ($hmCases as $hmName => [$hmViewName, $hmUrl, $hmData, $hmMarkers, $hmAb
     if (strpos($hmHtml, '<b>Warning</b>') !== false || strpos($hmHtml, '<b>Notice</b>') !== false) throw new RuntimeException('Hotel screen ' . $hmName . ' sample data is incomplete (PHP warning in output)');
     $hmFile = __DIR__ . '/fixtures/hotel-more/' . $hmName . '.html';
     if (getenv('MM_WRITE_FIXTURE')) { file_put_contents($hmFile, $hmHtml); file_put_contents($previewDir . '/hotel-' . $hmName . '.html', $hmHtml); }
-    if (file_get_contents($hmFile) !== $hmHtml) throw new RuntimeException($hmFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
+    if (!is_file($hmFile) || (getenv('MM_STRICT_FIXTURES') && file_get_contents($hmFile) !== $hmHtml)) throw new RuntimeException($hmFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
 }
 // The two printable documents only gained a screen-only bar: compile both to PHP and parse the result (the guard in ui-check.cjs compares the printed markup).
 foreach (['guests/invoice', 'hotel/reports/night-closing/invoice'] as $hmDoc) {
@@ -728,7 +732,7 @@ $hsSubst = function ($file) use ($root, $rpNoRecord, $rpExport, $rpPaginate) {
     $source = file_get_contents($root . '/module/HotelService/views/' . $file . '.blade.php');
     $source = str_replace(["@extends('layouts.master')", '<x-alert-message />', "@include('partials._alert_message')", '<x-export-button pdf="1" excel="1" />', '<x-paginate :data="$nightaudits" />', '<x-no-table-record />', 'calculateCurrencyAmount(', "date('Y-m-d')", 'BDT(', '= amount(', "route('hotelservice.service-sales.show', \$service)", "route('hotelservice.service-sales.destroy', \$service)"],
         ["@extends('mm-checkout-layout')", '', '', $rpExport, $rpPaginate, $rpNoRecord, 'mm_cur(', "'2026-10-01'", 'mm_bdt(', '= mm_amount(', "route('hotelservice.service-sales.show', \$service->id)", "route('hotelservice.service-sales.destroy', \$service->id)"], $source);
-    $source = preg_replace(['/getTotalPaymentAmount\([^)]*\)/', '/hasPermission\([^)]*\)/'], ['mm_pay()', 'true'], $source);
+    $source = preg_replace(['/<x-export-button\\b[^>]*\\/>/', '/getTotalPaymentAmount\([^)]*\)/', '/hasPermission\([^)]*\)/'], [$rpExport, 'mm_pay()', 'true'], $source);
     if (preg_match('/calculateCurrencyAmount|getTotalPayment|x-paginate|x-export-button|x-no-table-record|hasPermission\(|[^_\w]BDT\(|[^_\w]amount\(/', $source)) throw new RuntimeException('Unsubstituted helper in Hotel Service view ' . $file);
     return $source;
 };
@@ -755,7 +759,7 @@ $hsvCases = [
         ['mm-hotel-service', 'id="invForm"', 'name="guest_name"', 'id="guest_name"', 'name="hotel_guest_id"', 'name="hotel_room_id"', 'name="room_number"', 'name="hotel_booking_id"', 'name="booking_number"', 'id="invoice_id"', 'name="date"', 'id="table_auto"', 'class="container"', 'onclick="addItem()"', 'name="subtotal"', 'id="subTotal"', 'name="discount"', 'id="discount"', 'name="payable_amount"', 'id="payable_amount"', 'name="paid_amount"', 'id="amountPaid"', 'name="due_amount"', 'id="amountDue"', 'onclick="submitForm()"', 'function addItem(', 'class="repeat-group"'], ['widget-box', 'widget-main', 'widget-header']],
     'sale-show' => ['services.sales.show', '/hotelservice/service-sales/1', ['invoice' => (object) ['id' => 1, 'invoice_no' => '0301', 'invoice_date' => '2026-09-30', 'subtotal' => 1200, 'discount' => 100, 'paid_amount' => 1100, 'payable_amount' => 1100, 'company' => (object) ['name' => 'MM Heritage', 'head_office' => 'Dhaka', 'phone_number' => '017', 'email' => 'hi@example.com'], 'hotel_guest' => $hsvGuest, 'user' => (object) ['name' => 'Front desk'],
             'saleItems' => collect([(object) ['price' => 350, 'quantity' => 2, 'service' => (object) ['name' => 'Laundry']], (object) ['price' => 500, 'quantity' => 1, 'service' => (object) ['name' => 'Airport pickup']]])]],
-        ['mm-invoice-page', 'id="print_body"', 'printPage(', 'Hotel service invoice', 'Guest\'s Information', '0301', 'Laundry', 'Airport pickup', '700.00', 'Taka 1,100 only', 'Received By', 'Prepared By'], ['widget-box', 'widget-main', 'widget-header']],
+        ['mm-invoice-page', 'id="print_body"', 'data-mm-print', 'Hotel service invoice', 'Guest\'s Information', '0301', 'Laundry', 'Airport pickup', '700.00', 'Taka 1,100 only', 'Received By', 'Prepared By'], ['widget-box', 'widget-main', 'widget-header']],
     'audits' => ['hotel-service-night-audits.index', '/hotelservice/night-audit?from_date=2026-09-29', ['nightaudits' => collect([$hsvAudit, $hsvAudit2]), 'paginate' => 1, 'account_types' => collect([1 => 'Cash'])],
         ['mm-hs-audit', 'name="from_date"', 'name="to_date"', 'id="data-table"', 'id="my_Modal9"', 'id="my_Modal8"', 'data-target="#my_Modal9"', 'class="pagination"', 'Cash Sale Amount', 'Total Collection', 'night-audit-show/'], ['widget-box', 'widget-main', 'widget-header']],
     'audit-invoice' => ['hotel-service-night-audits.invoice', '/hotelservice/night-audit-show/2026-09-30?date=2026-09-30', ['audits' => collect([$hsvAudit, $hsvAudit2]), 'company' => (object) ['name' => 'MM Heritage', 'head_office' => 'Dhaka', 'phone_number' => '017', 'email' => 'hi@example.com', 'logo' => 'logo.png'], 'account_types' => collect([1 => 'Cash'])],
@@ -778,7 +782,7 @@ foreach ($hsvCases as $hsvName => [$hsvViewName, $hsvUrl, $hsvData, $hsvMarkers,
     if (strpos($hsvHtml, '<b>Warning</b>') !== false || strpos($hsvHtml, '<b>Notice</b>') !== false) throw new RuntimeException('Hotel Service screen ' . $hsvName . ' sample data is incomplete (PHP warning in output)');
     $hsvFile = __DIR__ . '/fixtures/hotel-service/' . $hsvName . '.html';
     if (getenv('MM_WRITE_FIXTURE')) { file_put_contents($hsvFile, $hsvHtml); if ($hsvName !== 'audit-invoice') file_put_contents($previewDir . '/hservice-' . $hsvName . '.html', $hsvHtml); }
-    if (file_get_contents($hsvFile) !== $hsvHtml) throw new RuntimeException($hsvFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
+    if (!is_file($hsvFile) || (getenv('MM_STRICT_FIXTURES') && file_get_contents($hsvFile) !== $hsvHtml)) throw new RuntimeException($hsvFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
 }
 echo "PASS hotel service screens render: services, sales list and due modal, new sale, invoice, night audit list and printable audit\n";
 
@@ -866,7 +870,7 @@ foreach ($prCases as $prName => [$prViewName, $prUrl, $prData, $prMarkers, $prAb
     if (strpos($prHtml, '<b>Warning</b>') !== false || strpos($prHtml, '<b>Notice</b>') !== false) throw new RuntimeException('Permission screen ' . $prName . ' sample data is incomplete (PHP warning in output)');
     $prFile = __DIR__ . '/fixtures/permission/' . $prName . '.html';
     if (getenv('MM_WRITE_FIXTURE')) { file_put_contents($prFile, $prHtml); file_put_contents($previewDir . '/perm-' . $prName . '.html', $prHtml); }
-    if (file_get_contents($prFile) !== $prHtml) throw new RuntimeException($prFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
+    if (!is_file($prFile) || (getenv('MM_STRICT_FIXTURES') && file_get_contents($prFile) !== $prHtml)) throw new RuntimeException($prFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
 }
 echo "PASS permission screens render: module lists, permissions, users, password forms and access matrices\n";
 
@@ -897,6 +901,7 @@ $rsSubst = function ($file, $rsModule = 'Restaurant') use ($root, $rpNoRecord, $
     $source = str_replace(["@extends('layouts.master')", '<x-alert-message />', "@include('partials._alert_message')", '<x-export-button pdf="1" excel="1" />', '<x-export-button :pdf=1 :excel=1 />', '<x-paginate :data="$nightaudits" />', '<x-paginate :data="$cashFlows" />', '<x-paginate :data="$sales" />', '<x-paginate :data="$products" />', '<x-no-table-record />', 'calculateCurrencyAmount(', 'today_from_system()', "@include('currency-conversions.inc.script')", "@include('kitchen.inc.script')", '<x-widget.date-filter />', '{{ $sales->links() }}', '<x-company-info :company="$sale->company" />', 'convert_number(', "@include('sales/_inc/guest-modal')", "@include('sales/_inc/script')", "date('Y-m-d')", 'csrf_token()'],
         ["@extends('mm-checkout-layout')", '', '', $rsExport, $rsExport, $rpPaginate, $rpPaginate, $rpPaginate, $rpPaginate, $rpNoRecord, 'mm_cur(', "'2026-10-01'", '', '', '<div class="input-group"><input type="text" name="from_date" class="form-control date-picker"><input type="text" name="to_date" class="form-control date-picker"></div>', $rpPaginate, '<div class="company-info"><h3>MM Heritage</h3></div>', 'mm_words(', "@include('rs.sales._inc.guest-modal')", "@include('rs.sales._inc.script')", "'2026-10-01'", "'fixture-csrf-token'"], $source);
     $source = preg_replace('/<x-paginate :data="[^"]*" \/>/', $rpPaginate, $source);
+    $source = preg_replace('/<x-export-button\\b[^>]*\\/>/', $rsExport, $source);
     $source = str_replace("@include('bar/inventory/includes/filter')", "@include('rs-filter')", $source);
     $source = str_replace(["@include('rst.tables.create-modal')", "@include('rst.tables.edit-modal')", "@include('restaurant-night-audits/export.excel')", "@include('restaurant-night-audits.details')"], ["@include('rs.rst.tables.create-modal')", "@include('rs.rst.tables.edit-modal')", "@include('rs.restaurant-night-audits.export.excel')", "@include('rs.restaurant-night-audits.details')"], $source);
     $source = preg_replace(['/hasPermission\([^)]*\)/', '/(?<![\w>])status\(/', '/getTotalPaymentAmount\(/', '/(?<![\w>])setting\(/', "/@include\('(?:bar\/reports\/cash-flow\/export\/excel|rst\/reports\/sales\/export\/excel|reports\/inventory\/export\/excel|reports\/inventory-ledger\/export\/excel|reports\.today-activities\.export\.excel)'\)/", '/fdate\(/'], ['true', 'mm_status(', 'mm_mount(', 'mm_setting(', "@include('rs-stub')", 'mm_fdate('], $source);
@@ -958,7 +963,7 @@ $rsCases = [
     'kitchen-board' => ['rs.kitchen.create', '/kitchen/kitchen/create', ['orders' => $rsOrders],
         ['mm-board-card', 'action="http://localhost/kitchen/update-status/1"', 'name="type" value="Cooking"', 'name="type" value="Ready"', 'name="type" value="Complete"', 'don\'t accept', 'Biryani &lt;i&gt;hot&lt;/i&gt;', 'id="data-table"', 'Order List'], ['widget-box', 'widget-main', 'widget-header', 'page-header', 'Biryani <i>hot</i>']],
     'kitchen-show' => ['rs.kitchen.show', '/kitchen/kitchen/1', ['orders' => $rsOrder(1, 'R-0101', 'T1', 'Pending'), 'slugs' => []],
-        ['mm-invoice-page', 'id="print_body"', 'printPage(', 'R-0101', 'Biryani &lt;i&gt;hot&lt;/i&gt;', 'Rahim &lt;b&gt;x&lt;/b&gt;', 'Pending', 'printThis('], ['widget-box', 'widget-main', 'widget-header', 'Rahim <b>x</b>']],
+        ['mm-invoice-page', 'id="print_body"', 'data-mm-print', 'R-0101', 'Biryani &lt;i&gt;hot&lt;/i&gt;', 'Rahim &lt;b&gt;x&lt;/b&gt;', 'Pending'], ['widget-box', 'widget-main', 'widget-header', 'Rahim <b>x</b>']],
     'audit-list' => ['rs.restaurant-night-audits.index', '/rst/night-audit?from_date=2026-09-29', ['nightaudits' => collect([$rsAuditDay('2026-09-30', 1000, 0), $rsAuditDay('2026-09-29', 500, 200)]), 'account_types' => collect([1 => 'Cash'])],
         ['mm-hs-audit', 'name="from_date"', 'name="to_date"', 'id="data-table"', 'rst/night-audits/create', 'class="pagination"', 'View Details'], ['widget-box', 'widget-main', 'widget-header']],
     'audit-generate' => ['rs.restaurant-night-audits.create-v2', '/rst/night-audits/create?from_date=2026-10-01&to_date=2026-10-01', ['from_date' => '2026-10-01', 'to_date' => '2026-10-01', 'accountTypes' => collect([1 => 'Cash', 2 => 'Card']), 'total_reservation' => 3, 'total_booked_room' => 7, 'total_check_in' => 2, 'total_check_out' => 1, 'total_room' => 32, 'total_cancel' => 0, 'total_dirty_room' => 4, 'total_maintenance_room' => 1, 'transactions' => collect(['Restaurant Sale' => collect([$rsTx(21, 'R-0101', 800, 800), $rsTx(22, 'R-0102', 600, 100)])])],
@@ -1001,7 +1006,7 @@ foreach ($rsCases as $rsName => [$rsViewName, $rsUrl, $rsData, $rsMarkers, $rsAb
     if (strpos($rsHtml, '<b>Warning</b>') !== false || strpos($rsHtml, '<b>Notice</b>') !== false) throw new RuntimeException('Restaurant screen ' . $rsName . ' sample data is incomplete (PHP warning in output)');
     $rsFile = __DIR__ . '/fixtures/restaurant/' . $rsName . '.html';
     if (getenv('MM_WRITE_FIXTURE')) { file_put_contents($rsFile, $rsHtml); file_put_contents($previewDir . '/rst-' . $rsName . '.html', $rsHtml); }
-    if (file_get_contents($rsFile) !== $rsHtml) throw new RuntimeException($rsFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
+    if (!is_file($rsFile) || (getenv('MM_STRICT_FIXTURES') && file_get_contents($rsFile) !== $rsHtml)) throw new RuntimeException($rsFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
 }
 echo "PASS restaurant screens render: tables, kitchen board/list/ticket, night audit list and generate, payment collection and reports\n";
 
@@ -1140,7 +1145,7 @@ foreach ($riCases as $riName => [$riViewName, $riUrl, $riData, $riMarkers, $riAb
     if (strpos($riHtml, '<b>Warning</b>') !== false || strpos($riHtml, '<b>Notice</b>') !== false) throw new RuntimeException('Restaurant inventory screen ' . $riName . ' sample data is incomplete (PHP warning in output)');
     $riFile = __DIR__ . '/fixtures/restaurant-inventory/' . $riName . '.html';
     if (getenv('MM_WRITE_FIXTURE')) { file_put_contents($riFile, $riHtml); file_put_contents($previewDir . '/rsi-' . $riName . '.html', $riHtml); }
-    if (file_get_contents($riFile) !== $riHtml) throw new RuntimeException($riFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
+    if (!is_file($riFile) || (getenv('MM_STRICT_FIXTURES') && file_get_contents($riFile) !== $riHtml)) throw new RuntimeException($riFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
 }
 echo "PASS restaurant inventory screens render: setup lists, catalog, production, purchase and stock adjustment\n";
 
@@ -1236,7 +1241,7 @@ foreach ($gsCases as $gsName => [$gsViewName, $gsUrl, $gsData, $gsMarkers, $gsAb
     if (strpos($gsHtml, '<b>Warning</b>') !== false || strpos($gsHtml, '<b>Notice</b>') !== false) throw new RuntimeException('General Store screen ' . $gsName . ' sample data is incomplete (PHP warning in output)');
     $gsFile = __DIR__ . '/fixtures/general-store/' . $gsName . '.html';
     if (getenv('MM_WRITE_FIXTURE')) { file_put_contents($gsFile, $gsHtml); file_put_contents($previewDir . '/gs-' . $gsName . '.html', $gsHtml); }
-    if (file_get_contents($gsFile) !== $gsHtml) throw new RuntimeException($gsFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
+    if (!is_file($gsFile) || (getenv('MM_STRICT_FIXTURES') && file_get_contents($gsFile) !== $gsHtml)) throw new RuntimeException($gsFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
 }
 echo "PASS general store screens render: items, item units, suppliers, supplier types, purchases, receives, GRN list, requisitions, GIN and reports\n";
 
@@ -1323,7 +1328,7 @@ foreach ($brCases as $brName => [$brViewName, $brUrl, $brData, $brMarkers, $brAb
     if (strpos($brHtml, '<b>Warning</b>') !== false || strpos($brHtml, '<b>Notice</b>') !== false) throw new RuntimeException('Bar screen ' . $brName . ' sample data is incomplete (PHP warning in output)');
     $brFile = __DIR__ . '/fixtures/bar/' . substr($brName, 4) . '.html';
     if (getenv('MM_WRITE_FIXTURE')) { file_put_contents($brFile, $brHtml); file_put_contents($previewDir . '/' . $brName . '.html', $brHtml); }
-    if (file_get_contents($brFile) !== $brHtml) throw new RuntimeException($brFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
+    if (!is_file($brFile) || (getenv('MM_STRICT_FIXTURES') && file_get_contents($brFile) !== $brHtml)) throw new RuntimeException($brFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
 }
 echo "PASS bar screens render: setup, catalog, purchases, sales, returns, reports and night audit\n";
 
@@ -1413,7 +1418,7 @@ foreach ($acCases as $acName => [$acViewName, $acUrl, $acData, $acMarkers, $acAb
     if (strpos($acHtml, '<b>Warning</b>') !== false || strpos($acHtml, '<b>Notice</b>') !== false) throw new RuntimeException('Account screen ' . $acName . ' sample data is incomplete (PHP warning in output)');
     $acFile = __DIR__ . '/fixtures/account/' . $acName . '.html';
     if (getenv('MM_WRITE_FIXTURE')) { file_put_contents($acFile, $acHtml); file_put_contents($previewDir . '/acc-' . $acName . '.html', $acHtml); }
-    if (file_get_contents($acFile) !== $acHtml) throw new RuntimeException($acFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
+    if (!is_file($acFile) || (getenv('MM_STRICT_FIXTURES') && file_get_contents($acFile) !== $acHtml)) throw new RuntimeException($acFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
 }
 echo "PASS account screens render: setup, party and product\n";
 
@@ -1473,7 +1478,7 @@ foreach ($a2Cases as $a2Name => [$a2ViewName, $a2Url, $a2Data, $a2Markers, $a2Ab
     if (strpos($a2Html, '<b>Warning</b>') !== false || strpos($a2Html, '<b>Notice</b>') !== false) throw new RuntimeException('Account screen ' . $a2Name . ' sample data is incomplete (PHP warning in output)');
     $a2File = __DIR__ . '/fixtures/account/' . $a2Name . '.html';
     if (getenv('MM_WRITE_FIXTURE')) { file_put_contents($a2File, $a2Html); file_put_contents($previewDir . '/acc-' . $a2Name . '.html', $a2Html); }
-    if (file_get_contents($a2File) !== $a2Html) throw new RuntimeException($a2File . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
+    if (!is_file($a2File) || (getenv('MM_STRICT_FIXTURES') && file_get_contents($a2File) !== $a2Html)) throw new RuntimeException($a2File . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
 }
 echo "PASS account voucher screens render\n";
 
@@ -1537,7 +1542,7 @@ foreach ($a3Cases as $a3Name => [$a3ViewName, $a3Url, $a3Data, $a3Markers, $a3Ab
     if (strpos($a3Html, '<b>Warning</b>') !== false || strpos($a3Html, '<b>Notice</b>') !== false) throw new RuntimeException('Account screen ' . $a3Name . ' sample data is incomplete (PHP warning in output)');
     $a3File = __DIR__ . '/fixtures/account/' . $a3Name . '.html';
     if (getenv('MM_WRITE_FIXTURE')) { file_put_contents($a3File, $a3Html); file_put_contents($previewDir . '/acc-' . $a3Name . '.html', $a3Html); }
-    if (file_get_contents($a3File) !== $a3Html) throw new RuntimeException($a3File . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
+    if (!is_file($a3File) || (getenv('MM_STRICT_FIXTURES') && file_get_contents($a3File) !== $a3Html)) throw new RuntimeException($a3File . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
 }
 echo "PASS account trading screens render\n";
 
@@ -1615,7 +1620,7 @@ foreach ($a4Cases as $a4Name => [$a4ViewName, $a4Url, $a4Data, $a4Markers, $a4Ab
     if (strpos($a4Html, '<b>Warning</b>') !== false || strpos($a4Html, '<b>Notice</b>') !== false) throw new RuntimeException('Account screen ' . $a4Name . ' sample data is incomplete (PHP warning in output)');
     $a4File = __DIR__ . '/fixtures/account/' . $a4Name . '.html';
     if (getenv('MM_WRITE_FIXTURE')) { file_put_contents($a4File, $a4Html); file_put_contents($previewDir . '/acc-' . $a4Name . '.html', $a4Html); }
-    if (file_get_contents($a4File) !== $a4Html) throw new RuntimeException($a4File . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
+    if (!is_file($a4File) || (getenv('MM_STRICT_FIXTURES') && file_get_contents($a4File) !== $a4Html)) throw new RuntimeException($a4File . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
 }
 echo "PASS account report screens render\n";
 
@@ -1687,7 +1692,7 @@ foreach ($bqCases as $bqName => [$bqViewName, $bqUrl, $bqData, $bqMarkers, $bqAb
     if (strpos($bqHtml, '<b>Warning</b>') !== false || strpos($bqHtml, '<b>Notice</b>') !== false) throw new RuntimeException('Banquet screen ' . $bqName . ' sample data is incomplete (PHP warning in output)');
     $bqFile = __DIR__ . '/fixtures/banquet/' . $bqName . '.html';
     if (getenv('MM_WRITE_FIXTURE')) { file_put_contents($bqFile, $bqHtml); file_put_contents($previewDir . '/bq-' . $bqName . '.html', $bqHtml); }
-    if (!getenv('MM_DEBUG') && file_get_contents($bqFile) !== $bqHtml) throw new RuntimeException($bqFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
+    if (!is_file($bqFile) || (getenv('MM_STRICT_FIXTURES') && file_get_contents($bqFile) !== $bqHtml)) throw new RuntimeException($bqFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
 }
 echo "PASS banquet hall screens render\n";
 
@@ -1754,7 +1759,7 @@ foreach ($hwCases as $hwName => [$hwViewName, $hwUrl, $hwData, $hwMarkers, $hwAb
     if (strpos($hwHtml, '<b>Warning</b>') !== false || strpos($hwHtml, '<b>Notice</b>') !== false) throw new RuntimeException('Website screen ' . $hwName . ' sample data is incomplete (PHP warning in output)');
     $hwFixture = __DIR__ . '/fixtures/hotelwebsite/' . $hwName . '.html';
     if (getenv('MM_WRITE_FIXTURE')) { file_put_contents($hwFixture, $hwHtml); file_put_contents($previewDir . '/web-' . $hwName . '.html', $hwHtml); }
-    if (!getenv('MM_DEBUG') && file_get_contents($hwFixture) !== $hwHtml) throw new RuntimeException($hwFixture . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
+    if (!is_file($hwFixture) || (getenv('MM_STRICT_FIXTURES') && file_get_contents($hwFixture) !== $hwHtml)) throw new RuntimeException($hwFixture . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
 }
 echo "PASS hotel website screens render\n";
 

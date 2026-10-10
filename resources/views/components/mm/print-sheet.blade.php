@@ -3,7 +3,7 @@
     'title' => null,
 ])
 
-<article {{ $attributes->merge(['class' => 'mm-print-sheet mm-print-sheet-' . $sheet]) }} data-sheet="{{ $sheet }}">
+<article {{ $attributes->merge(['class' => 'mm-print-sheet mm-print-sheet-' . $sheet . ' mm-invoice-page mm-panel']) }} data-sheet="{{ $sheet }}">
     @if ($title)
         <header class="mm-print-sheet-head">
             <h1 class="mm-print-sheet-title">{{ $title }}</h1>
