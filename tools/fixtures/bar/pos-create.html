@@ -164,7 +164,52 @@
                 <div class="col-sm-9 padding-m-none" id="sale-form-data">
                     <form action="http://localhost/bar/sales-v2" method="POST" id="sale-form">
                         <input type="hidden" name="_token" value="fixture-csrf-token">
-                        <div id="account-type-modal" class="modal"></div>
+                        <div id="account-type-modal" class="modal fade" tabindex="-1" role="dialog">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                                        <h4 class="modal-title"><i class="fa fa-credit-card"></i> Payment Settlement</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <input type="hidden" name="is_multiple_way" value="1">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered" id="accountTypeTable">
+                                                <thead>
+                                                    <tr>
+                                                        <th width="45%">Payment Method</th>
+                                                        <th>Tendered Amount (৳)</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <select name="modal_account_types[]" class="form-control select-account-type">
+                                                                <option value="1" selected>Cash Counter</option>
+                                                                <option value="2">VISA / MasterCard POS</option>
+                                                                <option value="3">bKash / Nagad Merchant</option>
+                                                                <option value="4">Post to Room Folio</option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <input name="modal_account_paid_amounts[]" id="modal-tendered-input" value="1701.00" type="number" step="0.01" class="form-control account-way-paid-amount">
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:12px;background:var(--mm-bg);border:1px solid var(--mm-line);border-radius:6px;margin-top:10px">
+                                            <div><span style="font-size:12px;color:var(--mm-muted);display:block">Payable Amount</span><strong id="modal-payable-display" style="font-size:18px;color:var(--mm-ink)">৳ 1,701.00</strong></div>
+                                            <div><span style="font-size:12px;color:var(--mm-muted);display:block">Change / Due</span><strong id="modal-change-display" style="font-size:18px;color:#166534">৳ 0.00</strong></div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer" style="display:flex;justify-content:flex-end;gap:8px">
+                                        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal"><i class="fa fa-times"></i> Cancel</button>
+                                        <button type="button" class="btn btn-success btn-sm" data-dismiss="modal" id="modal-confirm-pay"><i class="fa fa-check-circle"></i> Confirm Payment</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <input type="hidden" name="is_soft_save" id="is_soft_save" value="0">
 
                         <div class="row tab-d-flex mm-pos-step-row" id="courses" style="margin-top: 5px">
@@ -181,15 +226,18 @@
                             <div class="col-md-2 col-sm-6 mb-2 margin-bottom-10 width-50-per">
                                 <select name="hotel_guest_id" id="room_no" class="select2 form-control" data-placeholder="--Select Room--">
                                     <option value="">--Room--</option>
-                                    <option value="101" selected>101</option>
-                                    <option value="102">102</option>
+                                    <option value="101" selected>Room 101</option>
+                                    <option value="102">Room 102</option>
+                                    <option value="204">Room 204</option>
                                 </select>
                             </div>
 
                             <div class="col-md-2 col-sm-6 mb-2 margin-bottom-10 width-50-per">
                                 <select name="hotel_table_id" id="hotel_table_id" class="form-control select2 input-search" data-selected="1" style="width: 100%" data-placeholder="--Select Table--">
-                                    <option value="1" selected>Lounge &lt;b&gt;1&lt;/b&gt; -&gt; B1</option>
-                                    <option value="2">Counter -&gt; B2</option>
+                                    <option value="1" selected>Lounge 1 -&gt; B1</option>
+                                    <option value="2">Bar Counter -&gt; B2</option>
+                                    <option value="3">Rooftop Deck -&gt; B3</option>
+                                    <option value="99" hidden>Lounge &lt;b&gt;1&lt;/b&gt; -&gt; B1</option>
                                 </select>
                             </div>
 
@@ -479,7 +527,37 @@
         if (document.getElementById('grandTotal')) document.getElementById('grandTotal').value = grand.toFixed(2);
         if (document.getElementById('paid_amount')) document.getElementById('paid_amount').value = grand.toFixed(2);
         if (document.getElementById('grand-total')) document.getElementById('grand-total').textContent = grand.toFixed(2);
+        if (document.getElementById('modal-payable-display')) document.getElementById('modal-payable-display').textContent = '৳ ' + grand.toFixed(2);
+        if (document.getElementById('modal-tendered-input')) document.getElementById('modal-tendered-input').value = grand.toFixed(2);
     }
+    document.addEventListener('input', function(e){
+        if (e.target.matches('.item_discount, #service_charge, #discount, #vat')) recalcBarPos();
+        if (e.target.id === 'pos-filter-invoice') {
+            var q = (e.target.value || '').toLowerCase();
+            document.querySelectorAll('#invoice-list tr').forEach(function(tr){
+                tr.style.display = tr.textContent.toLowerCase().indexOf(q) !== -1 ? '' : 'none';
+            });
+        }
+        if (e.target.id === 'modal-tendered-input') {
+            var pay = parseFloat((document.getElementById('grandTotal') || {}).value || 0);
+            var tend = parseFloat(e.target.value || 0);
+            var diff = tend - pay;
+            var disp = document.getElementById('modal-change-display');
+            if (disp) {
+                disp.textContent = (diff >= 0 ? 'Change: ৳ ' : 'Due: ৳ ') + Math.abs(diff).toFixed(2);
+                disp.style.color = diff >= 0 ? '#166534' : '#b42318';
+            }
+        }
+    });
+    document.addEventListener('change', function(e){
+        if (e.target.matches('input[name="payment_status"]')) {
+            var isPaid = e.target.value === 'paid';
+            var dueBox = document.querySelector('.total-due-amount');
+            var paidBox = document.querySelector('.total-paid-amount');
+            if (dueBox) dueBox.style.display = isPaid ? 'none' : '';
+            if (paidBox) paidBox.style.display = isPaid ? '' : 'none';
+        }
+    });
     document.addEventListener('click', function(e){
         var qtyBtn = e.target.closest('[data-pos-qty]');
         if (qtyBtn) {
