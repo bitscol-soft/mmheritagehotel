@@ -1773,6 +1773,85 @@ $frontendMigrated = [$root . '/resources/views/frontend/home.blade.php', $root .
 foreach (array_merge($frontendShared, $frontendMigrated) as $ffFile) { token_get_all($compiler->compileString(file_get_contents($ffFile)), TOKEN_PARSE); }
 echo "PASS compile public mm-web shell and shared partials\n";
 
+$ffSubst = function (string $src): string {
+    return str_replace(
+        [
+            'App\Models\Group::first()',
+            'websiteInfo()',
+            'pages()',
+            'getBanner()',
+            'roomCategory()',
+            'roomAminities($category->id)',
+            'hotelVat()',
+            "Cookie::get('booking_cart')",
+            'Session::has(',
+            "setting('root_currency')",
+            'calculateCurrencyAmount(',
+            'companyInfo()',
+        ],
+        [
+            "((object)['fav_icon' => null])",
+            "((object)['site_first_name' => 'MM', 'site_last_name' => 'Heritage', 'site_slogan' => 'Boutique Hotel', 'meta_keyword' => '', 'meta_description' => '', 'facebook_url' => '#', 'twitter_url' => '#', 'linkedin_url' => '#', 'email' => 'info@example.com', 'phone_no' => '+8801700000000', 'address' => 'Dhaka', 'location_map' => ''])",
+            "collect([(object)['slug' => 'sample', 'title' => 'Sample Page']])",
+            "collect([(object)['banner_image' => 'frontend/assets/images/1.jpg', 'banner_title' => 'Welcome', 'banner_sub_title' => 'To MM Heritage', 'banner_short_desc' => 'Luxury stay']])",
+            "collect([(object)['id' => 1, 'name' => 'Sample Suite', 'url_slug' => 'sample-suite']])",
+            "collect([(object)['name' => 'Free WiFi', 'aminities_icon' => null]])",
+            "((object)['hotel_vat' => 15])",
+            'null',
+            'false && (',
+            '1',
+            'number_format((float) ',
+            'null',
+        ],
+        $src
+    );
+};
+foreach (array_merge(glob($root . '/resources/views/frontend/*.blade.php'), glob($root . '/resources/views/frontend/layouts/*.blade.php'), glob($root . '/resources/views/frontend/layouts/includes/*.blade.php')) as $ffSrcFile) {
+    $ffRel = substr($ffSrcFile, strlen($root . '/resources/views/'));
+    @mkdir(dirname($coViews . '/' . $ffRel), 0777, true);
+    $ffCode = $ffSubst(file_get_contents($ffSrcFile));
+    file_put_contents($coViews . '/' . $ffRel, $ffCode);
+    preg_match_all("/route\\('([\\w.-]+)'/", $ffCode, $ffRoutes);
+    foreach ($ffRoutes[1] as $ffRoute) {
+        if ($rsRoutes->getByName($ffRoute)) continue;
+        $rsRoutes->add((new Illuminate\Routing\Route(['GET', 'POST'], 'web/' . str_replace('.', '/', $ffRoute) . '/{slug?}', function () {}))->name($ffRoute));
+    }
+}
+$ffRoom = $riRow(['id' => 1, 'name' => 'Sample Suite', 'url_slug' => 'sample-suite', 'price' => 4500, 'description' => 'Spacious suite', 'roomMultipleImg' => collect([]), 'roomSingleImg' => null]);
+$ffAminities = $hwOpt([['name' => 'Free WiFi', 'aminities_icon' => null]]);
+$ffPrivacy = $riRow(['terms_header_title' => 'Terms & Conditions', 'terms_condition' => '<p>Sample terms</p>', 'privacy_header_title' => 'Privacy Policy', 'privacy_policy' => '<p>Sample privacy</p>']);
+$ffPage = $riRow(['title' => 'Sample Page', 'slug' => 'sample', 'image' => '', 'short_description' => '<p>Short</p>', 'description' => '<p>Long</p>']);
+$ffReq = $riRow(['room_category' => 1, 'room_id' => 1, 'check_in' => '2026-10-01', 'check_out' => '2026-10-02', 'name' => 'Sample Guest', 'email' => 'guest@example.com', 'phone_no' => '01700000000', 'address' => 'Dhaka', 'nid_no' => '123456', 'spouse_name' => '']);
+$ffCases = [
+    'home' => ['frontend.home', '/', ['feature_head' => $riRow(['title' => 'Experience', 'sub_title' => 'a good stay']), 'feature_list' => $hwOpt([['feature_icon' => 'fa fa-bed', 'title' => 'Master Bedrooms', 'sub_title' => 'MM']]), 'about' => $riRow(['about_heading' => 'About MM', 'about_description' => 'Story', 'first_image' => 'frontend/assets/images/about.jpg', 'second_image' => 'frontend/assets/images/a1.jpg', 'offer_title' => 'Rooms', 'offer_description' => 'Stay']), 'service' => $riRow(['service_heading' => 'Our Services', 'service_background_img' => 'frontend/assets/images/service.jpg']), 'service_list' => $hwOpt([['service_icon' => 'fa-credit-card', 'service_title' => 'Stay First', 'service_description' => 'Desc', 'service_list' => 'WiFi, Balcony']]), 'room_category' => collect([$ffRoom]), 'gallery' => $hwOpt([['name' => 'frontend/assets/images/g1.jpg', 'gallery_text' => 'MM']])]],
+    'room_view' => ['frontend.room_view', '/room/sample-suite', ['room' => $ffRoom, 'aminities' => $ffAminities]],
+    'booking_cart' => ['frontend.booking-cart', '/booking-cart', []],
+    'search_all_room' => ['frontend.search_all_room', '/search-all-room', ['room_categories' => collect([$ffRoom])]],
+    'search_room' => ['frontend.search_room', '/search-room', ['category' => $ffRoom, 'aminities' => $ffAminities, 'totalAvailableRoom' => 1, 'room_id' => 1, 'check_in' => '2026-10-01', 'check_out' => '2026-10-02']],
+    'guest_register' => ['frontend.guest-register', '/guest-register', ['request' => $ffReq]],
+    'booking_register' => ['frontend.booking-register', '/booking-register', ['request' => $ffReq]],
+    'terms' => ['frontend.terms', '/terms-condition', ['data' => $ffPrivacy]],
+    'privacy_policy' => ['frontend.privacy_policy', '/privacy-policy', ['data' => $ffPrivacy]],
+    'single_page_view' => ['frontend.single-page-view', '/pages/sample', ['page' => $ffPage]],
+];
+@mkdir(__DIR__ . '/fixtures/frontend', 0777, true);
+foreach ($ffCases as $ffName => [$ffViewName, $ffUrl, $ffData]) {
+    $ffRequest = Illuminate\Http\Request::create($ffUrl);
+    $ffRequest->setLaravelSession(new Illuminate\Session\Store('mm', new Illuminate\Session\ArraySessionHandler(10)));
+    $app->instance('request', $ffRequest);
+    $app->instance('url', new Illuminate\Routing\UrlGenerator($rsRoutes, $ffRequest));
+    $ffHtml = $app->make('view')->make($ffViewName, array_merge(['errors' => new Illuminate\Support\ViewErrorBag()], $ffData))->render();
+    $ffHtml = preg_replace('/(name="_token" value=")[A-Za-z0-9]+"/', '$1fixture-csrf-token"', str_replace(['http://localhost/assets', 'http://localhost/frontend'], ['/assets', '/frontend'], $ffHtml));
+    foreach (['mm-public-main', 'mm-panel', 'banner-top', 'w3_navigation'] as $ffMarker) {
+        if (strpos($ffHtml, $ffMarker) === false) throw new RuntimeException('Public screen ' . $ffName . ' missing ' . $ffMarker);
+    }
+    $ffFixture = __DIR__ . '/fixtures/frontend/' . $ffName . '.html';
+    if (getenv('MM_WRITE_FIXTURE') || !is_file($ffFixture) || strlen((string) file_get_contents($ffFixture)) < 250) {
+        file_put_contents($ffFixture, $ffHtml);
+    }
+}
+echo "PASS public mm-web screens render\n";
+
 // ---- Auth cluster (resources/views/auth/*) ----
 // The auth views reference App\Models\SystemSetting / App\Models\Group, so the views are
 // compile-checked only here (no render — those queries are DB-backed). The new layouts.app

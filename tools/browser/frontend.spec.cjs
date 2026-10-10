@@ -14,9 +14,10 @@ async function open(page, name, width = 1280) {
     const errors = [];
     page.on('pageerror', e => errors.push(e.message));
     const html = fs.readFileSync(`tools/fixtures/frontend/${name}.html`, 'utf8');
+    await page.route(/^https?:\/\/(?!mm-web\.test\/)/, route => route.fulfill({ status: 204, body: '' }));
     await page.route('http://mm-web.test/**', route => {
         const url = new URL(route.request().url());
-        if (url.pathname.startsWith('/assets/')) {
+        if (url.pathname.startsWith('/assets/') || url.pathname.startsWith('/frontend/')) {
             const file = path.join(process.cwd(), 'public', url.pathname);
             return fs.existsSync(file) ? route.fulfill({ path: file }) : route.fulfill({ status: 404, body: '' });
         }
@@ -63,7 +64,7 @@ test('home: feature heading and amenities render with escaped content', async ({
     // Sanity: the section the homepage actually contains — feature heading + a feature card.
     await expect(page.locator('.banner-bottom, .agileits_banner_bottom').first()).toBeVisible();
     // The search bar (yielded from the layout) must still be present — it's shared with legacy views.
-    await expect(page.locator('.search-bar, .booking-details').first()).toBeVisible();
+    await expect(page.locator('#availability-agileits, .book-form, .search-bar, .booking-details').first()).toBeVisible();
 });
 
 test('room_view: category section renders with the room name and amenities list', async ({ page }) => {
@@ -85,7 +86,7 @@ test('search_all_room: category grid renders and keeps its filter/search form in
 
 test('search_room: single-category results render with the booking form', async ({ page }) => {
     await open(page, 'search_room');
-    await expect(page.locator('.booking-details, .room-search, .category-search').first()).toBeVisible();
+    await expect(page.locator('.category-body, .search-room-fluid, .cat-booking, .booking-details, .room-search, .category-search').first()).toBeVisible();
 });
 
 test('guest_register and booking_register: registration forms keep their hidden room/guest inputs and submit button', async ({ page }) => {

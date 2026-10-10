@@ -449,3 +449,14 @@ transition-timing-function: ease-out;
     max-height: 140px;
     overflow: hidden;
 }
+html,
+body.mm-public,
+.mm-public-main,
+.mm-public-panel {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+body.mm-public .cart-table {
+    overflow-x: auto;
+}
+

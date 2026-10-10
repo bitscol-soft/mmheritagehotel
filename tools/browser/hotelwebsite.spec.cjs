@@ -8,6 +8,7 @@ async function open(page, name, width = 1280) {
     const errors = [];
     page.on('pageerror', e => errors.push(e.message));
     const html = fs.readFileSync(`tools/fixtures/hotelwebsite/${name}.html`, 'utf8');
+    await page.route(/^https?:\/\/(?!mm-web\.test\/)/, route => route.fulfill({ status: 204, body: '' }));
     await page.route('http://mm-web.test/**', route => {
         const url = new URL(route.request().url());
         if (url.pathname.startsWith('/assets/')) {
