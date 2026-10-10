@@ -627,6 +627,18 @@ writeNavMode(next);</code></pre>
     <p style="color:#526578">That's a W6 or later ticket (depends on the existing notification system in <code>app/Services/AppNotificationService.php</code>), not a W2 ticket.</p>
 </section>
 
+<!-- ==================== Round-4 App & CI Bug Sweep ==================== -->
+<section class="preview-section" id="round4-app-ci-fixes">
+    <h2>Round-4 Application &amp; CI Bug Sweep (<code>a9fea891</code> + <code>29d3498d</code>)</h2>
+    <p style="color:#526578">Hardened 43 application files across controllers, models, helpers, views, and CI workflows (`docs/BUGS.md` #50–#56):</p>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>Public-site fixture command (<code>app/Console/Commands/MmRenderPublicFixtures.php</code> &amp; <code>app/Helpers/HomepageHelper.php</code>)</strong>: Populated <code>cases()</code> with the Eloquent queries and <code>?? new Model(...)</code> fallbacks matching <code>HomePageController</code> / <code>FrontendBookingController</code> so all 10 <code>frontend.*</code> views render cleanly in <code>.github/workflows/frontend-fixtures.yml</code>.</li>
+        <li><strong>Account controllers &amp; views (#50, #52, #56)</strong>: Switched <code>SaleController</code>, <code>PurchaseController</code>, <code>ReceiveVoucherController</code>, <code>PaymentVoucherController</code>, <code>JournalVoucherController</code>, <code>ContraVoucherController</code>, <code>DamageController</code>, <code>PurchaseReturnController</code>, <code>SaleReturnController</code>, <code>CustomerController</code>, and <code>SupplierController</code> <code>show()</code>/<code>edit()</code> methods from <code>find($id)</code> to <code>findOrFail($id)</code>; fixed <code>SaleController::destroy()</code> undefined <code>$this-&gt;service</code> property and capped <code>SaleController::store()</code> SQL <code>23000</code> retry recursion; guarded <code>optional(...-&gt;company)</code> across Account, Bar, Restaurant, and Notice views and model <code>boot()</code> hooks.</li>
+        <li><strong>Hotel &amp; BanquetHall controllers (#53, #54)</strong>: Fixed <code>BookingNoteController</code> and <code>GuestRegistrationTermsController</code> filter column from <code>queryLike('name')</code> to <code>queryLike('title')</code> and narrowed routes to <code>only(['index', 'edit', 'update'])</code>; added missing <code>use Carbon\Carbon;</code> import in <code>BanquetBookingController</code> and guarded <code>Guest::find(...)</code> updates across Hotel and BanquetHall booking flows.</li>
+        <li><strong>Permission &amp; Auth (#55, #56)</strong>: Consolidated 5 redundant <code>User::find($id)</code> queries into a single <code>User::findOrFail($id)</code> in <code>UserPermissionController::edit()</code>; guarded <code>PasswordResetMailable::build()</code> against null intermediate <code>company</code>/<code>group</code> relations.</li>
+    </ul>
+</section>
+
 <!-- ==================== W2.3 ==================== -->
 <section class="preview-section" id="w2-3">
     <h2>W2.3 — <code>x-page</code> is the only header pattern</h2>
