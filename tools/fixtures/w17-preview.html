@@ -39,9 +39,13 @@
 <body class="no-skin mm-ui">
 
 <div class="preview-banner">
-    <strong>W1.7 proving screens — visual preview</strong>
-    Hand-rendered HTML mock of the three screens the W1.7 commit touched, using the same classes, slot structure, and form hooks that the Blade templates emit. Not the live Laravel render.
+    <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin-bottom:8px;">
+        <strong>W1–W7 visual preview + Live Restaurant POS</strong>
+        <a href="/pos" class="mm-button" style="text-decoration:none;"><i class="fa fa-cutlery"></i> Launch Live Restaurant POS</a>
+    </div>
+    Hand-rendered HTML mock of the proving screens and W5 Restaurant POS, using the same classes, slot structure, and form hooks that the Blade templates emit.
     <ul style="margin: 8px 0 0 20px; padding: 0;">
+        <li><a href="/pos"><strong>Restaurant POS (<code>rst/sales-v2/create</code>)</strong></a> — renovated with <code>&lt;x-mm.page&gt;</code>, <code>&lt;x-mm.stepper&gt;</code> (<code>1. Guest, Room &amp; Table</code> &rarr; <code>2. Dishes &amp; Courses</code> &rarr; <code>3. Bill &amp; Payment</code>), 2-pane responsive grid (<code>.mm-pos-layout</code>), interactive dish adder, quantity <code>+/-</code>, and live bill calculator.</li>
         <li><a href="#booking-board">Booking board</a> — wrapped in <code>x-mm.page</code> since W1 (visually a no-op).</li>
         <li><a href="#booking-list">Booking list</a> — W1.7 added an <code>x-mm.toolbar</code>; W1.7c ports the 12-column table to <code>x-mm.data-table</code> with all hooks preserved.</li>
         <li><a href="#guest-list">Guest list</a> — full W1.7 conversion: <code>x-mm.toolbar</code> + <code>x-mm.data-table</code> with all form hooks preserved.</li>

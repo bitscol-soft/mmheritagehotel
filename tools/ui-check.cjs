@@ -1132,3 +1132,21 @@ console.log('PASS: note list/edit expressions, forms and status scripts; legacy 
   console.log('PASS: W7 public site (12 frontend views) uses mm-web shell and --web-* tokens, lazy-loads images, avoids render-blocking webfonts, and never leaks admin frame');
 }
 
+{
+  // W5 Restaurant POS v2 (module/Restaurant/views/rst/sales-v2): shared page frame, x-mm.stepper (courses -> fire -> pay), preserved form/JS hooks, and clean print views.
+  const posCreate=fs.readFileSync('module/Restaurant/views/rst/sales-v2/create.blade.php','utf8');
+  const posLeft=fs.readFileSync('module/Restaurant/views/rst/sales-v2/_inc/left-side.blade.php','utf8');
+  const posRight=fs.readFileSync('module/Restaurant/views/rst/sales-v2/_inc/right-side.blade.php','utf8');
+  const posEdit=fs.readFileSync('module/Restaurant/views/rst/sales-v2/_inc/edit-sale.blade.php','utf8');
+  const posShow=fs.readFileSync('module/Restaurant/views/rst/sales-v2/show.blade.php','utf8');
+  assert(posCreate.includes('<x-mm.page') && posCreate.includes('mm-rst-pos') && posCreate.includes('<x-mm.stepper'), 'rst/sales-v2/create.blade.php must use x-mm.page and x-mm.stepper');
+  for(const step of ["'courses'","'fire'","'pay'"]) assert(posCreate.includes(step), `rst/sales-v2/create.blade.php missing stepper step ${step}`);
+  assert(!posLeft.includes('widget-header') && !posLeft.includes('form-grpup'), 'rst/sales-v2/_inc/left-side.blade.php must not contain legacy widget-header or form-grpup typo');
+  for(const hook of ['id="invoice-list"','duePaymentStatus','paidPaymentStatus','invoice-date','invoice_no','total-due-sum','total-paid-sum']) assert(posLeft.includes(hook), `left-side.blade.php missing ${hook}`);
+  for(const hook of ['id="sale-form"','id="courses"','id="fire"','id="pay"','id="room_no"','id="waiter_no"','id="invoice_id"','id="product-details"','id="grand-total"','id="service_charge"','id="subTotal"','id="discount"','id="grandTotal"','id="vat"','id="paid_amount"','save-only','save-sale']) assert(posRight.includes(hook), `right-side.blade.php missing ${hook}`);
+  assert(posEdit.includes('name="guest_name"') && posEdit.includes('id="pay"'), 'edit-sale.blade.php must preserve guest_name input and #pay step section');
+  assert(posShow.includes('<x-mm.print-sheet') && !posShow.includes('</body onclick='), 'rst/sales-v2/show.blade.php must use x-mm.print-sheet and valid </body> closing tag');
+  console.log('PASS: W5 Restaurant POS (rst/sales-v2) uses x-mm.page, x-mm.stepper (courses -> fire -> pay), x-mm.print-sheet, and preserves all POS form and calculation hooks');
+}
+
+

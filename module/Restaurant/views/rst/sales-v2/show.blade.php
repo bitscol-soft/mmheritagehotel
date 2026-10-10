@@ -41,11 +41,25 @@
             border: none !important;
         }
     </style>
+    <x-mm.styles />
 </head>
 
 <body>
+    <div class="mm-ui mm-rst mm-invoice-page" style="padding: 16px;">
+        <div class="d-print-none" style="max-width: 800px; margin: 0 auto 12px; display: flex; justify-content: flex-end; gap: 8px;">
+            <a href="{{ route('rst.sales-v2.create') }}" class="mm-button mm-button-secondary">
+                <i class="fa fa-cutlery"></i> Back to POS
+            </a>
+            <a href="{{ route('rst.sales-v2.show', $sale->id) }}?invoice_type=pos" class="mm-button mm-button-secondary">
+                <i class="fa fa-file-text-o"></i> POS Receipt
+            </a>
+            <a href="javascript:void(0)" onclick="window.print()" class="mm-button">
+                <i class="fa fa-print"></i> Print
+            </a>
+        </div>
+        <x-mm.print-sheet title="Sale Invoice">
     <div class="row">
-        <div class="col-sm-8 col-sm-offset-2 margin-top" style="margin-top: 60px">
+        <div class="col-sm-12 margin-top" style="margin-top: 10px">
             <div id="customer_info" style="padding: 0 10px;">
                 <div class="row">
 
@@ -206,11 +220,13 @@
             </div>
         </div>
     </div>
+        </x-mm.print-sheet>
+    </div>
 
     <script type="text/javascript">
         window.onafterprint = window.close;
         window.print();
     </script>
-</body onclick="window.close();">
+</body>
 
 </html>

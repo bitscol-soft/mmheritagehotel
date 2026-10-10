@@ -10,49 +10,41 @@
 @endsection
 @section('content')
 
+    <x-mm.styles />
     <x-widget.guest-create-modal />
 
-    <div class="row" style="margin: -10px -20px 0 -20px !important">
-        <div class="card">
-            <div id="sidebadr2" class="sidebar h-sidebar navbar-collapse collapse ace-save-state" data-sidebar="true"
-                data-sidebar-scroll="true" data-sidebar-hover="true" bis_skin_checked="1">
-                <ul class="nav nav-list" style="top: 0px;">
-                    {{-- <li class="{{ request()->is('hospital-dashboard') ? 'active' : '' }}">
-                        <a href="{{ route('home') }}">
-                            <i class="menu-icon fa fa-tachometer"></i>
-                            <span class="menu-text"> Dashboard </span>
-                        </a>
+    <x-mm.page class="mm-rst mm-rst-pos mm-rst-sale" title="Restaurant POS" description="Select guest, room or table, add dishes, fire order or collect payment.">
+        <x-slot name="actions">
+            <a href="{{ route('rst.table-manages.index') }}" class="mm-button mm-button-secondary">
+                <i class="ace-icon fa fa-th-large" aria-hidden="true"></i> Tables
+            </a>
+            <a href="{{ route('kit.kitchen.create') }}" class="mm-button mm-button-secondary">
+                <i class="ace-icon fa fa-fire" aria-hidden="true"></i> Kitchen Board
+            </a>
+            <a href="{{ route('rst.sales.index') }}" class="mm-button mm-button-secondary">
+                <i class="ace-icon fa fa-list-alt" aria-hidden="true"></i> Sale List
+            </a>
+        </x-slot>
 
-                        <b class="arrow"></b>
-                    </li> --}}
-                    <li style="width: 100%">
-                        <a href="{{ route('rst.sales.index') }}"
-                            style="width: 100%; background-color: {{ setting('topbar_background_color') }} !important; color:{{ setting('topbar_text_color') }}">
+        <x-alert-message />
 
-                            <span class="menu-text" style="font-size: 35px;font-weight:900">Restaurant Sale</span>
-                            {{-- <span class="menu-text" style="font-size: 35px;font-weight:900"> {{ optional(optional(optional(auth()->user())->company)->group)->name }} </span> --}}
-                        </a>
-                        <b class="arrow"></b>
-                    </li>
-                </ul>
+        <x-mm.stepper :steps="[
+            ['key' => 'courses', 'label' => '1. Guest, Room & Table'],
+            ['key' => 'fire', 'label' => '2. Dishes & Courses'],
+            ['key' => 'pay', 'label' => '3. Bill & Payment'],
+        ]" current="courses" />
+
+        <x-mm.panel class="mm-pos-workspace tw-p-4">
+            <div class="row mm-pos-layout">
+                {{-- FOR UPDATING ROUTE ON [EDIT-SALE.BLADE.PHP] WHILE SAVING/SUBMITTING SALE WITHOUT ANY PAGE RELOAD --}}
+                <input type="hidden" value="{{ route('rst.sales-v2.store') }}" id="storeSaleUrl">
+
+                @include('rst/sales-v2/_inc/left-side')
+
+                @include('rst/sales-v2/_inc/right-side')
             </div>
-
-            <x-alert-message />
-
-            <div class="card-body">
-                <div class="col-sm-12">
-
-                    {{-- FOR UPDATING ROUTE ON [EDIT-SALE.BLADE.PHP] WHILE SAVING/SUBMITTING SALE WITHOUT ANY PAGE RELOAD --}}
-                    <input type="hidden" value="{{ route('rst.sales-v2.store') }}" id="storeSaleUrl">
-
-                    @include('rst/sales-v2/_inc/left-side')
-
-                    @include('rst/sales-v2/_inc/right-side')
-
-                </div>
-            </div>
-        </div>
-    </div>
+        </x-mm.panel>
+    </x-mm.page>
 
 @endsection
 
@@ -70,7 +62,8 @@
 
         function myTimer() {
             var d = new Date();
-            document.getElementById("current-time").innerHTML = d.toLocaleTimeString();
+            var el = document.getElementById("current-time");
+            if (el) el.innerHTML = d.toLocaleTimeString();
         }
     </script>
 

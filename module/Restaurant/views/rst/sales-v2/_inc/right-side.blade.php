@@ -6,7 +6,7 @@
 
         <input type="hidden" name="is_soft_save" id="is_soft_save" value="0">
 
-        <div class="row tab-d-flex" style="margin-top: 5px">
+        <div class="row tab-d-flex mm-pos-step-row" id="courses" style="margin-top: 5px">
             <!-- Search Guest Name -->
             <div class="col-md-3 col-sm-6 mb-2 margin-bottom-10 width-50-per">
                 {{-- <x-widget.text-input-group title="Guest" name="guest_name" /> --}}
@@ -25,7 +25,7 @@
 
             {{-- Search By Room --}}
             <div class="col-md-2 col-sm-6 mb-2 margin-bottom-10 width-50-per">
-                <x-widget.table-select :tables="$tables" />
+                <x-widget.table-select :tables="$tables" :value="request('table_id')" />
             </div>
 
 
@@ -55,7 +55,7 @@
             </div>
         </div>
 
-        <div class="row" style="display: nones">
+        <div class="row mm-pos-step-row" id="fire">
             <div class="col-md-6 col-sm-12 mb-2 margin-bottom-10 width-50-per">
                 <x-widget.product-select />
             </div>
@@ -122,7 +122,7 @@
             </div>
         </div>
 
-        <div class="col-sm-12" style="background: aliceblue; border: 2px solid;margin-top:20px">
+        <div class="col-sm-12 mm-pos-totals-box" id="pay">
 
             <div class="row mt-1 mb-1">
                 {{-- <div class="col-sm-6">

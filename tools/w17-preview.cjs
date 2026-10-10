@@ -30,6 +30,18 @@ const types = {
 http.createServer((req, res) => {
     const url = new URL(req.url, 'http://w17');
 
+    // /pos  ->  the Restaurant POS (sales-v2) interactive preview
+    if (url.pathname === '/pos' || url.pathname === '/preview/rst-pos' || url.pathname === '/restaurant/sales-v2/create') {
+        try {
+            const html = fs.readFileSync(path.join(root, 'tools/fixtures/restaurant/pos-create.html'), 'utf8');
+            res.writeHead(200, { 'Content-Type': types['.html'], 'Cache-Control': 'no-store' });
+            return res.end(html);
+        } catch (e) {
+            res.writeHead(500);
+            return res.end(String(e));
+        }
+    }
+
     // /  ->  the W1.7 preview HTML
     if (url.pathname === '/' || url.pathname === '/index.html') {
         try {

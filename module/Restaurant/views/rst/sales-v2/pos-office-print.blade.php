@@ -242,6 +242,7 @@
 
     <div class="no-print">
         <a href="javascript:void(0)" onclick="window.print()" class="btn btn-print"> Print</a>
+        <a href="{{ route('rst.sales-v2.create') }}" class="btn btn-back">POS</a>
         <a href="{{ route('rst.sales.index') }}" class="btn btn-back">Back</a>
     </div>
 
