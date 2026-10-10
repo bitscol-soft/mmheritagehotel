@@ -8,6 +8,7 @@
     'tableClass' => '',  // extra classes to append to the <table> (e.g. legacy Bootstrap
                           // classes when migrating an existing table without dropping its
                           // visual styling). The default mm-data-table class is always added.
+    'id' => 'data-table',
 ])
 
 @php
@@ -20,7 +21,7 @@
         <x-mm.empty :text="$empty['text'] ?? 'No records'" :action="$empty['action'] ?? null" />
     @else
         <x-mm.table-scroll :label="$label">
-            <table class="{{ $finalTableClass }}">
+            <table @if($id) id="{{ $id }}" @endif class="{{ $finalTableClass }}">
                 <thead>
                     <tr>
                         @foreach ($columns as $col)

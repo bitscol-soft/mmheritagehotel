@@ -42,10 +42,6 @@
         <option value="">{{ $placeholder }}</option>
     @endif
     @foreach ($normalised as $opt)
-        <option value="{{ $opt['value'] }}"
-                @if(isset($selectedSet[(string) $opt['value']])) selected @endif
-                @if($opt['disabled']) disabled @endif>
-            {{ $opt['label'] }}
-        </option>
+        <option value="{{ $opt['value'] }}"{!! isset($selectedSet[(string) $opt['value']]) ? ' selected' : '' !!}{!! $opt['disabled'] ? ' disabled' : '' !!}>{{ $opt['label'] }}</option>
     @endforeach
 </select>

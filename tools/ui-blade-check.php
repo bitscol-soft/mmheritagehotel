@@ -526,7 +526,7 @@ $hsData = [
     'guest-registration-terms/edit' => ['bookingNote' => (object) ['id' => 1, 'title' => 'Check-in after 2pm']],
 ];
 $hsMarkers = [
-    'aminities/index' => ['mm-hotel-setup', 'id="data-table"', 'Free WiFi', 'delete_check(1)', 'id="deleteCheck_1"', 'aminities.create' === 0 ? '' : 'Add New Aminities'],
+    'aminities/index' => ['mm-hotel-setup', 'id="data-table"', 'Free WiFi', 'delete_check(1)', 'id="deleteCheck_1"', 'aminities.create' === 0 ? '' : 'Add New Amenities'],
     'aminities/create' => ['name="name"', 'name="aminiti_icon"', 'name="status"', 'method="post"'],
     'aminities/edit' => ['name="_method"', 'name="aminiti_icon"', '<option value="1" selected>Active</option>'],
     'account_type/index' => ['id="deleteCheck_2"', 'name="name"', 'Add account type'],
