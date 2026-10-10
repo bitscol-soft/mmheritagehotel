@@ -1,10 +1,6 @@
 @extends('layouts.master')
 @section('title', 'Sale Return Details')
 
-@section('page-header')
-    <i class="fa fa-bars"></i> Sale Return Details
-@stop
-
 @section('css')
     <style>
         @media print {
@@ -31,39 +27,23 @@
 
 
 @section('content')
-    <div class="row">
+    <x-mm.styles />
+    <x-mm.page class="mm-invoice-page mm-bar" title="Sale Return Details">
+        <x-slot name="actions">
+            @if (hasPermission('pharmacy.view', $slugs))
+                <a href="{{ route('bar.sales.create') }}" class="btn btn-sm btn-primary hidden-print">
+                    <i class="fa fa-plus-circle"></i> Create
+                </a>
+                <a href="{{ route('bar.sales.index') }}" class="btn btn-sm btn-default hidden-print">
+                    <i class="fa fa-list-alt"></i> Return List
+                </a>
+                <a href="javascript:void(0)" onclick="printPage('print_body')" class="btn btn-sm btn-default hidden-print">
+                    <i class="fa fa-print"></i> Print
+                </a>
+            @endif
+        </x-slot>
 
-        <div class="col-sm-12">
-            <div class="widget-box">
-
-
-                <!-- Widget Header -->
-                <div class="widget-header hidden-print">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
-                    @if (hasPermission('pharmacy.view', $slugs))
-                        <span class="widget-toolbar">
-                            <a href="{{ route('bar.sales.create') }}">
-                                <i class="fa fa-plus-circle"></i> Create
-                            </a>
-                            <a href="{{ route('bar.sales.index') }}">
-                                <i class="fa fa-list-alt"></i> Return List
-                            </a>
-
-                            <a href="javascript:void(0)" onclick="printPage('print_body')">
-                                <i class="fa fa-print"></i>
-                                Print
-                            </a>
-                        </span>
-                    @endif
-
-                </div>
-
-
-
-                <!-- Widget Body -->
-                <div class="widget-body">
-                    <div class="widget-main">
-
+        <x-mm.panel>
                         <!-- Alert Message -->
                         @include('partials._alert_message')
 
@@ -224,11 +204,8 @@
                             </div>
 
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+        </x-mm.panel>
+    </x-mm.page>
 
 
 @endsection

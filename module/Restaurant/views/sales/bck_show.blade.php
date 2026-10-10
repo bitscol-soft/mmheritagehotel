@@ -1,10 +1,6 @@
 @extends('layouts.master')
 @section('title', 'Sale Details')
 
-@section('page-header')
-    <i class="fa fa-bars"></i> Sale Details
-@stop
-
 @section('css')
     <style>
         .table {
@@ -55,36 +51,23 @@
 $total_amount = 0;
 ?>
 
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="widget-box">
-                <!-- Widget Header -->
-                <div class="widget-header hidden-print">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
-                    @if (hasPermission('pharmacy.view', $slugs))
-                        <span class="widget-toolbar">
-                            <a href="{{ route('rst.sales.create') }}">
-                                <i class="fa fa-plus-circle"></i> Add New Sale
-                            </a>
-                            <a href="{{ route('rst.sales.index') }}">
-                                <i class="fa fa-list-alt"></i> Sale List
-                            </a>
+    <x-mm.styles />
+    <x-mm.page class="mm-invoice-page mm-rst" title="Sale Details">
+        <x-slot name="actions">
+            @if (hasPermission('pharmacy.view', $slugs))
+                <a href="{{ route('rst.sales.create') }}" class="btn btn-sm btn-primary hidden-print">
+                    <i class="fa fa-plus-circle"></i> Add New Sale
+                </a>
+                <a href="{{ route('rst.sales.index') }}" class="btn btn-sm btn-default hidden-print">
+                    <i class="fa fa-list-alt"></i> Sale List
+                </a>
+                <a href="javascript:void(0)" onclick="printPage('print_body')" class="btn btn-sm btn-default hidden-print">
+                    <i class="fa fa-print"></i> Print
+                </a>
+            @endif
+        </x-slot>
 
-                            <a href="javascript:void(0)" onclick="printPage('print_body')">
-                                <i class="fa fa-print"></i>
-                                Print
-                            </a>
-                        </span>
-                    @endif
-
-                </div>
-
-
-
-                <!-- Widget Body -->
-                <div class="widget-body">
-                    <div class="widget-main">
-
+        <x-mm.panel>
                         <!-- Alert Message -->
                         @include('partials._alert_message')
 
@@ -344,11 +327,8 @@ $total_amount = 0;
                             </div>
 
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+        </x-mm.panel>
+    </x-mm.page>
 
 
 @endsection

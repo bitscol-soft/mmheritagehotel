@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title', 'Create Purchase')
-@section('page-header')
-    <i class="fa fa-gear"></i> Create Purchase Requisition
-@stop
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     {{-- <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" /> --}}
@@ -29,24 +26,16 @@
 
 
 @section('content')
+    <x-mm.styles />
+    <x-mm.page class="mm-purchase-form mm-rst" title="Create Purchase Requisition">
+        <x-slot name="actions">
+            <a href="{{ route('rst.purchase.index') }}" class="btn btn-sm btn-default only-print">
+                <i class="ace-icon fa fa-list-alt"></i> Purchase List
+            </a>
+        </x-slot>
 
-    <div class="row" id="purchase_form">
-
-        <div class="col-sm-12">
-            <div class="widget-box">
-                <div class="widget-header">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
-
-                    <span class="widget-toolbar only-print">
-                        <a href="{{ route('rst.purchase.index') }}">
-                            <i class="ace-icon fa fa-list-alt"></i> Purchase List
-                        </a>
-                    </span>
-
-                </div>
-
-                <div class="widget-body">
-                    <div class="widget-main">
+        <x-mm.panel>
+            <div id="purchase_form">
                         <form class="form-horizontal" action="{{ route('rst.purchase.store') }}" method="post"
                             enctype="multipart/form-data">
                             @csrf
@@ -268,13 +257,9 @@
                             </div>
 
                         </form>
-                    </div>
-                </div>
             </div>
-
-
-        </div>
-    </div>
+        </x-mm.panel>
+    </x-mm.page>
 
 
 @endsection

@@ -1,10 +1,6 @@
 @extends('layouts.master')
 @section('title', 'Sale Return List')
 
-@section('page-header')
-    <i class="fa fa-info-circle"></i> Sale Return List
-@stop
-
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -19,24 +15,17 @@
 
 
 @section('content')
-    <div class="row">
+    <x-mm.styles />
+    <x-mm.page class="mm-crud-index mm-rst" title="Sale Return List">
+        <x-slot name="actions">
+            @if (hasPermission('pharmacy.view', $slugs))
+                <a href="{{ route('rst.sale-returns.create') }}" class="btn btn-sm btn-primary">
+                    <i class="fa fa-plus"></i> Add New
+                </a>
+            @endif
+        </x-slot>
 
-
-        <div class="col-sm-12">
-            <div class="widget-box">
-                <div class="widget-header">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
-                    @if (hasPermission('pharmacy.view', $slugs))
-                        <span class="widget-toolbar">
-                            <a href="{{ route('rst.sale-returns.create') }}">
-                                <i class="fa fa-plus"></i> Add New
-                            </a>
-                        </span>
-                    @endif
-
-                </div>
-                <div class="widget-body">
-                    <div class="widget-main">
+        <x-mm.panel>
                         @include('partials._alert_message')
 
                         <!-- Search -->
@@ -158,14 +147,8 @@
                             </div>
                         </div>
                         {{ $sales->links() }}
-
-                    </div>
-                </div>
-            </div>
-
-
-        </div>
-    </div>
+        </x-mm.panel>
+    </x-mm.page>
 
 
 @endsection
