@@ -867,16 +867,27 @@
 .mm-ui.mm-auth .mm-auth-panel { width: 100%; max-width: 480px; padding: 32px; }
 .mm-ui.mm-auth .mm-auth-card { display: flex; flex-direction: column; gap: 20px; }
 .mm-ui.mm-auth .mm-auth-brand { font-size: 22px; font-weight: 600; margin: 0; text-align: center; color: var(--mm-brand); }
-.mm-ui.mm-auth .form-group.row { margin-bottom: 16px; }
+.mm-ui.mm-auth .container { width: 100%; max-width: 100%; padding: 0; margin: 0; }
+.mm-ui.mm-auth .row.justify-content-center { margin: 0; }
+.mm-ui.mm-auth .col-md-8 { flex: 0 0 100%; max-width: 100%; width: 100%; padding: 0; }
+.mm-ui.mm-auth .card { background: transparent; border: 0; box-shadow: none; }
+.mm-ui.mm-auth .card-header { background: transparent; border-bottom: 1px solid var(--mm-line); color: var(--mm-ink); font-size: var(--mm-text-lg); font-weight: 600; padding: 0 0 12px; margin-bottom: 16px; text-align: center; }
+.mm-ui.mm-auth .card-body { padding: 0; color: var(--mm-ink); font-size: var(--mm-text-sm); line-height: 1.6; }
+.mm-ui.mm-auth .form-group.row { display: flex; flex-direction: column; margin: 0 0 16px; }
+.mm-ui.mm-auth .form-group.row.mb-0 { margin-bottom: 0; }
+.mm-ui.mm-auth .form-group.row > label { flex: 0 0 auto; max-width: 100%; width: 100%; padding: 0 0 6px; text-align: left !important; font-size: var(--mm-text-sm); font-weight: 600; color: var(--mm-ink); }
+.mm-ui.mm-auth .form-group.row > .col-md-6,
+.mm-ui.mm-auth .form-group.row > .col-md-6.offset-md-4 { flex: 0 0 100%; max-width: 100%; width: 100%; margin-left: 0; padding: 0; }
 .mm-ui.mm-auth .form-control { background: #fff; border: 1px solid #aab9ca; border-radius: 6px; color: var(--mm-ink); display: block; font: inherit; min-height: 40px; padding: 8px 12px; width: 100%; }
 .mm-ui.mm-auth .form-control:focus { border-color: var(--mm-brand); outline: 3px solid var(--mm-brand); outline-offset: 1px; }
 .mm-ui.mm-auth .form-control.is-invalid { border-color: #b42318; }
-.mm-ui.mm-auth .invalid-feedback { color: #b42318; font-size: 13px; }
+.mm-ui.mm-auth .invalid-feedback { color: #b42318; font-size: 13px; display: block; margin-top: 4px; }
 .mm-ui.mm-auth .btn { background: #fff; border: 1px solid var(--mm-line); border-radius: 6px; color: var(--mm-brand); cursor: pointer; font: inherit; font-weight: 600; min-height: 40px; padding: 8px 16px; }
-.mm-ui.mm-auth .btn-primary { background: var(--mm-brand); border-color: var(--mm-brand); color: #fff; }
+.mm-ui.mm-auth .btn-primary { background: var(--mm-brand); border-color: var(--mm-brand); color: #fff; width: 100%; }
 .mm-ui.mm-auth .btn-primary:hover { background: #275188; border-color: #275188; color: #fff; }
-.mm-ui.mm-auth .alert { border-radius: 6px; padding: 12px 16px; }
+.mm-ui.mm-auth .alert { border-radius: 6px; padding: 12px 16px; margin-bottom: 16px; }
 .mm-ui.mm-auth .alert-success { background: #ecf6ee; border: 1px solid #b8e0bf; color: #2c6c33; }
+.mm-ui.mm-auth .mm-auth-foot { border-top: 1px solid var(--mm-line); margin-top: 16px; padding-top: 12px; text-align: center; font-size: var(--mm-text-sm); }
 .mm-ui.mm-auth a { color: var(--mm-brand); }
 /* auth.login (Ace 4.5 .login-layout): the page used to set body.login-layout which Ace
    styles with a dark background. Now the .login-layout div is nested inside mm-auth,
@@ -887,12 +898,6 @@
 .mm-ui.mm-auth .login-layout .widget-box .widget-main { background: transparent; padding: 0; }
 .mm-ui.mm-auth .login-layout .widget-box .widget-body { background: transparent; }
 .mm-ui.mm-auth .login-layout .toolbar { border-top: 1px solid var(--mm-line); padding-top: 12px; margin-top: 12px; }
-@media (max-width: 575px) {
-    .mm-ui.mm-auth .form-group.row { display: flex; flex-direction: column; }
-    .mm-ui.mm-auth .form-group.row > label { padding: 0 0 4px; text-align: left !important; }
-    .mm-ui.mm-auth .form-group.row > .col-md-6,
-    .mm-ui.mm-auth .form-group.row > .col-md-6.offset-md-4 { max-width: 100%; width: 100%; padding: 0; }
-}
 
 /* =============================================================================
    mm-web components (W1)
