@@ -233,6 +233,7 @@
 
     <div class="no-print">
         <a href="javascript:void(0)" onclick="window.print()" class="btn btn-print"> Print</a>
+        <a href="{{ route('bar.sales-v2.create') }}" class="btn btn-back">POS</a>
         <a href="{{ route('bar.sales.index') }}" class="btn btn-back">Back</a>
         {{-- <a href="{{ request()->url() }}" class="btn btn-back">Back</a> --}}
     </div>

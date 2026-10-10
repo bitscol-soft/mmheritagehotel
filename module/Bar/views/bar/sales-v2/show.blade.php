@@ -6,10 +6,12 @@
     <meta name="viewport"
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Print production Receive</title>
+    <title>Bar Sale Invoice — {{ $sale->invoice_no }}</title>
     <!-- bootstrap & fontawesome -->
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/font-awesome/4.5.0/css/font-awesome.min.css') }}" />
+    <x-mm.styles />
+    @stack('ui-styles')
 
     <style>
         @media print {
@@ -44,9 +46,23 @@
     </style>
 </head>
 
-<body>
+<body class="mm-ui mm-bar mm-rst mm-invoice-page">
+    <div class="d-print-none tw-mx-auto tw-max-w-4xl tw-px-4 tw-pt-4 tw-flex tw-items-center tw-justify-between tw-gap-2">
+        <div class="tw-flex tw-gap-2">
+            <a href="{{ route('bar.sales-v2.create') }}" class="mm-button mm-button-secondary">
+                <i class="fa fa-glass" aria-hidden="true"></i> Bar POS
+            </a>
+            <a href="{{ route('bar.sales.index') }}" class="mm-button mm-button-secondary">
+                <i class="fa fa-list-alt" aria-hidden="true"></i> Sale List
+            </a>
+        </div>
+        <button type="button" class="mm-button" onclick="window.print()">
+            <i class="fa fa-print" aria-hidden="true"></i> Print
+        </button>
+    </div>
+    <x-mm.print-sheet title="Sale Invoice">
     <div class="row">
-        <div class="col-sm-8 col-sm-offset-2 margin-top" style="margin-top: 60px">
+        <div class="col-sm-12 margin-top">
             <div id="customer_info" style="padding: 0 10px;">
                 <div class="row">
 
@@ -206,11 +222,12 @@
             </div>
         </div>
     </div>
+    </x-mm.print-sheet>
 
     <script type="text/javascript">
         window.onafterprint = window.close;
         window.print();
     </script>
-</body onclick="window.close();">
+</body>
 
 </html>

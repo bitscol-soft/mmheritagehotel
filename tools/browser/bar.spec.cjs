@@ -28,7 +28,7 @@ const screens = {
     'categories': 'Product categories', 'units': 'Units', 'manufacturers': 'Manufacturers', 'suppliers': 'Suppliers', 'tables': 'Tables',
     'products': 'Products', 'product-create': 'Add product', 'product-edit': 'Edit product', 'inventory-report': 'Product inventory',
     'purchase-list': 'Purchase list', 'purchase-show': 'Purchase details',
-    'sales-list': 'Sale list', 'sales-show': 'Sale invoice', 'sales-create': 'New sale',
+    'sales-list': 'Sale list', 'sales-show': 'Sale invoice', 'sales-create': 'New sale', 'pos-create': 'Bar POS',
     'return-list': 'Sale return list', 'return-show': 'Sale return details', 'return-create': 'New sale return',
     'report-cash-flow': 'Cash flow', 'report-sales': 'Sales report', 'report-today': 'Today', 'report-inventory': 'Product inventory',
     'audit-list': 'Bar night audit', 'audit-generate': 'Generate bar night audit',
@@ -155,3 +155,17 @@ test('forms and lists stack on a phone without clipping the fields', async ({ pa
         expect(bad, name).toBe(0);
     }
 });
+
+test('bar POS (sales-v2) renders stepper, invoice sidebar, order lines table, and totals box', async ({ page }) => {
+    await open(page, 'pos-create');
+    await expect(page.locator('.mm-stepper [data-mm-step]')).toHaveCount(3);
+    await expect(page.locator('#sale-form')).toHaveCount(1);
+    await expect(page.locator('#invoice-list')).toHaveCount(1);
+    await expect(page.locator('#product-details')).toHaveCount(1);
+    for (const name of ['guest_name', 'hotel_guest_id', 'hotel_table_id', 'waiter_no', 'invoice_no', 'service_charge', 'subtotal', 'discount', 'payable_amount', 'vat', 'paid_amount', 'print_mode']) {
+        await expect(page.locator(`#sale-form [name="${name}"]`).first()).toHaveCount(1);
+    }
+    await expect(page.locator('#hotel_table_id')).toContainText('Lounge <b>1</b>');
+    await expect(page.locator('#hotel_table_id b')).toHaveCount(0);
+});
+

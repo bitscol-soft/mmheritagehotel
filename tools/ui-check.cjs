@@ -679,7 +679,7 @@ console.log('PASS: note list/edit expressions, forms and status scripts; legacy 
   assert(!after.includes('widget-box')&&!after.includes('widget-main')&&!after.includes('widget-header'),`${f}: legacy widget frame should be gone`);
  }
  // the shared partials, controllers and routes stay untouched
- const untouched=execFileSync('git',['diff','--name-only',base,'--','module/Restaurant/Controllers','module/Restaurant/routes','module/Bar/views/bar/_inc','module/Bar/views/bar/purchase-v2/create/','module/Bar/views/bar/purchase-v2/inc','module/Bar/views/bar/inventory/product/_inc/script.blade.php','module/Bar/views/bar/inventory/product/create/','module/Bar/views/bar/inventory/includes','module/Bar/views/bar/sales/_inc','module/Bar/views/bar/sales-v2/_inc','module/Bar/views/partials','module/Restaurant/views/reports/inventory/export','module/Restaurant/views/rst/reports/sales/export','module/Restaurant/views/restaurant-night-audits/export','module/Restaurant/views/restaurant-night-audits/details.blade.php'],{encoding:'utf8'}).trim();
+ const untouched=execFileSync('git',['diff','--name-only',base,'--','module/Restaurant/Controllers','module/Restaurant/routes','module/Bar/views/bar/_inc','module/Bar/views/bar/purchase-v2/create/','module/Bar/views/bar/purchase-v2/inc','module/Bar/views/bar/inventory/product/_inc/script.blade.php','module/Bar/views/bar/inventory/product/create/','module/Bar/views/bar/inventory/includes','module/Bar/views/bar/sales/_inc','module/Bar/views/partials','module/Restaurant/views/reports/inventory/export','module/Restaurant/views/rst/reports/sales/export','module/Restaurant/views/restaurant-night-audits/export','module/Restaurant/views/restaurant-night-audits/details.blade.php'],{encoding:'utf8'}).trim();
  assert.equal(untouched,'','Restaurant controllers, routes, shared Bar views and export partials must stay unchanged');
  // routes used by the rewritten screens
  const night=fs.readFileSync(`${dir}restaurant-night-audits/create-v2.blade.php`,'utf8');
@@ -719,7 +719,7 @@ console.log('PASS: note list/edit expressions, forms and status scripts; legacy 
  const create=fs.readFileSync(`${dir}purchase-v2/create.blade.php`,'utf8');
  for(const inc of ["purchase-v2.inc.common","purchase-v2.create.left-side","purchase-v2.create.right-side","purchase-v2/inc/script"]) assert(create.includes(`@include('${inc}')`),`purchase create must include ${inc}`);
  assert(!create.includes('bar.purchase-v2'),'purchase create must not include the Bar partials');
- const untouched=execFileSync('git',['diff','--name-only',base,'--','module/Restaurant/Controllers','module/Restaurant/routes','module/Bar/views/bar/_inc','module/Bar/views/bar/purchase-v2/create/','module/Bar/views/bar/purchase-v2/inc','module/Bar/views/bar/inventory/product/_inc/script.blade.php','module/Bar/views/bar/inventory/product/create/','module/Bar/views/bar/inventory/includes','module/Bar/views/bar/sales/_inc','module/Bar/views/bar/sales-v2/_inc','module/Bar/views/partials','module/Restaurant/views/purchase-v2/inc','module/Restaurant/views/purchase-v2/create'],{encoding:'utf8'}).trim();
+ const untouched=execFileSync('git',['diff','--name-only',base,'--','module/Restaurant/Controllers','module/Restaurant/routes','module/Bar/views/bar/_inc','module/Bar/views/bar/purchase-v2/create/','module/Bar/views/bar/purchase-v2/inc','module/Bar/views/bar/inventory/product/_inc/script.blade.php','module/Bar/views/bar/inventory/product/create/','module/Bar/views/bar/inventory/includes','module/Bar/views/bar/sales/_inc','module/Bar/views/partials','module/Restaurant/views/purchase-v2/inc','module/Restaurant/views/purchase-v2/create'],{encoding:'utf8'}).trim();
  assert.equal(untouched,'','Restaurant controllers, routes, Bar views and the unused purchase-v2 partials must stay unchanged');
  console.log('PASS: restaurant purchases (purchase-v2) keep fields, expressions, directives and scripts; controllers, routes and shared Bar partials untouched');
 }
@@ -762,7 +762,7 @@ console.log('PASS: note list/edit expressions, forms and status scripts; legacy 
   assert.deepEqual(only(forms(before),forms(after)), [],`${f}: filter form changed`);
  }
  // controllers, routes and the shared partials/scripts stay untouched
- const untouched=execFileSync('git',['diff','--name-only',base,'--','module/Restaurant/Controllers','module/Restaurant/routes','module/Bar/views/bar/_inc','module/Bar/views/bar/purchase-v2/create/','module/Bar/views/bar/purchase-v2/inc','module/Bar/views/bar/inventory/product/_inc/script.blade.php','module/Bar/views/bar/inventory/product/create/','module/Bar/views/bar/inventory/includes','module/Bar/views/bar/sales/_inc','module/Bar/views/bar/sales-v2/_inc','module/Bar/views/partials','module/Restaurant/views/inventory/product/_inc/script.blade.php','module/Restaurant/views/inventory/production/purchase-v2/inc','module/Restaurant/views/inventory/adjustment-v2/inc','module/Restaurant/views/inventory/adjustment-v2/create','module/Restaurant/views/inventory/production/purchase-v2/create'],{encoding:'utf8'}).trim();
+ const untouched=execFileSync('git',['diff','--name-only',base,'--','module/Restaurant/Controllers','module/Restaurant/routes','module/Bar/views/bar/_inc','module/Bar/views/bar/purchase-v2/create/','module/Bar/views/bar/purchase-v2/inc','module/Bar/views/bar/inventory/product/_inc/script.blade.php','module/Bar/views/bar/inventory/product/create/','module/Bar/views/bar/inventory/includes','module/Bar/views/bar/sales/_inc','module/Bar/views/partials','module/Restaurant/views/inventory/product/_inc/script.blade.php','module/Restaurant/views/inventory/production/purchase-v2/inc','module/Restaurant/views/inventory/adjustment-v2/inc','module/Restaurant/views/inventory/adjustment-v2/create','module/Restaurant/views/inventory/production/purchase-v2/create'],{encoding:'utf8'}).trim();
  assert.equal(untouched,'','Restaurant controllers, routes, Bar views and the inventory script/form partials must stay unchanged');
  console.log('PASS: restaurant inventory (R4) keeps fields, expressions, directives and scripts; controllers, routes and shared partials untouched');
 }
@@ -1146,7 +1146,22 @@ console.log('PASS: note list/edit expressions, forms and status scripts; legacy 
   for(const hook of ['id="sale-form"','id="courses"','id="fire"','id="pay"','id="room_no"','id="waiter_no"','id="invoice_id"','id="product-details"','id="grand-total"','id="service_charge"','id="subTotal"','id="discount"','id="grandTotal"','id="vat"','id="paid_amount"','save-only','save-sale']) assert(posRight.includes(hook), `right-side.blade.php missing ${hook}`);
   assert(posEdit.includes('name="guest_name"') && posEdit.includes('id="pay"'), 'edit-sale.blade.php must preserve guest_name input and #pay step section');
   assert(posShow.includes('<x-mm.print-sheet') && !posShow.includes('</body onclick='), 'rst/sales-v2/show.blade.php must use x-mm.print-sheet and valid </body> closing tag');
-  console.log('PASS: W5 Restaurant POS (rst/sales-v2) uses x-mm.page, x-mm.stepper (courses -> fire -> pay), x-mm.print-sheet, and preserves all POS form and calculation hooks');
+
+  // W5 Bar POS v2 (module/Bar/views/bar/sales-v2): twin of Restaurant POS v2
+  const barPosCreate=fs.readFileSync('module/Bar/views/bar/sales-v2/create.blade.php','utf8');
+  const barPosLeft=fs.readFileSync('module/Bar/views/bar/sales-v2/_inc/left-side.blade.php','utf8');
+  const barPosRight=fs.readFileSync('module/Bar/views/bar/sales-v2/_inc/right-side.blade.php','utf8');
+  const barPosEdit=fs.readFileSync('module/Bar/views/bar/sales-v2/_inc/edit-sale.blade.php','utf8');
+  const barPosShow=fs.readFileSync('module/Bar/views/bar/sales-v2/show.blade.php','utf8');
+  assert(barPosCreate.includes('<x-mm.page') && barPosCreate.includes('mm-bar') && barPosCreate.includes('mm-rst-pos') && barPosCreate.includes('<x-mm.stepper'), 'bar/sales-v2/create.blade.php must use x-mm.page and x-mm.stepper');
+  for(const step of ["'courses'","'fire'","'pay'"]) assert(barPosCreate.includes(step), `bar/sales-v2/create.blade.php missing stepper step ${step}`);
+  assert(!barPosLeft.includes('widget-header') && !barPosLeft.includes('form-grpup'), 'bar/sales-v2/_inc/left-side.blade.php must not contain legacy widget-header or form-grpup typo');
+  for(const hook of ['id="invoice-list"','duePaymentStatus','paidPaymentStatus','invoice-date','invoice_no','total-due-sum','total-paid-sum']) assert(barPosLeft.includes(hook), `bar left-side.blade.php missing ${hook}`);
+  for(const hook of ['id="sale-form"','id="courses"','id="fire"','id="pay"','id="room_no"','id="waiter_no"','id="invoice_id"','id="product-details"','id="grand-total"','id="service_charge"','id="subTotal"','id="discount"','id="grandTotal"','id="vat"','id="paid_amount"','save-only','save-sale']) assert(barPosRight.includes(hook), `bar right-side.blade.php missing ${hook}`);
+  assert(barPosEdit.includes('name="guest_name"') && barPosEdit.includes('id="pay"'), 'bar edit-sale.blade.php must preserve guest_name input and #pay step section');
+  assert(barPosShow.includes('<x-mm.print-sheet') && !barPosShow.includes('</body onclick='), 'bar/sales-v2/show.blade.php must use x-mm.print-sheet and valid </body> closing tag');
+  assert(!fs.existsSync('module/Bar/views/bar/sales-v2/edit.blade.php'), 'empty module/Bar/views/bar/sales-v2/edit.blade.php should be removed');
+  console.log('PASS: W5 Restaurant & Bar POS (rst/sales-v2 & bar/sales-v2) use x-mm.page, x-mm.stepper (courses -> fire -> pay), x-mm.print-sheet, and preserve all POS form and calculation hooks');
 }
 
 

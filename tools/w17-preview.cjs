@@ -42,6 +42,18 @@ http.createServer((req, res) => {
         }
     }
 
+    // /bar-pos  ->  the Bar POS (sales-v2) interactive preview
+    if (url.pathname === '/bar-pos' || url.pathname === '/preview/bar-pos' || url.pathname === '/bar/sales-v2/create') {
+        try {
+            const html = fs.readFileSync(path.join(root, 'tools/fixtures/bar/pos-create.html'), 'utf8');
+            res.writeHead(200, { 'Content-Type': types['.html'], 'Cache-Control': 'no-store' });
+            return res.end(html);
+        } catch (e) {
+            res.writeHead(500);
+            return res.end(String(e));
+        }
+    }
+
     // /  ->  the W1.7 preview HTML
     if (url.pathname === '/' || url.pathname === '/index.html') {
         try {
