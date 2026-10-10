@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title', 'Inventory Reports')
-@section('page-header')
-    <i class="fa fa-list"></i> Inventory Reports
-@stop
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/custom_css/chosen-required.css') }}" />
@@ -11,31 +8,17 @@
 
 
 @section('content')
-    <div class="row">
-        <div class="col-sm-12">
+    <x-mm.styles />
+    <x-mm.page class="mm-report mm-acc" title="Inventory Reports">
+        <x-slot name="actions">
+            <a href="{{ request()->url() }}" class="mm-button mm-button-secondary" title="Refresh Data">
+                <i class="fa fa-refresh"></i> Refresh
+            </a>
+        </x-slot>
 
         @include('partials._alert_message')
 
-        <!-- heading -->
-            <div class="widget-box widget-color-white ui-sortable-handle clearfix" id="widget-box-7">
-                <div class="widget-header widget-header-small">
-                    <h3 class="widget-title smaller text-primary">
-                        @yield('page-header')
-                    </h3>
-                    <div class="widget-toolbar border smaller" style="padding-right: 0 !important">
-                        <div class="pull-right tableTools-container" style="margin: 0 !important">
-                            <div class="dt-buttons btn-overlap btn-group">
-                                <a href="{{ request()->url() }}" class="dt-button btn btn-white btn-primary btn-bold"
-                                   title="Refresh Data" data-toggle="tooltip">
-                                    <span>
-                                        <i class="fa fa-refresh bigger-110"></i>
-                                    </span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="space"></div>
+        <x-mm.panel>
                 <div class="row">
                     <div class="col-sm-12 px-5">
                         <form action="{{ route('report.inventory-report') }}" method="get">
@@ -183,10 +166,8 @@
                         @endif
                     </div>
                 </div>
-
-            </div>
-        </div>
-    </div>
+        </x-mm.panel>
+    </x-mm.page>
 
     <!-- delete form -->
     <form action="" id="deleteItemForm" method="POST">

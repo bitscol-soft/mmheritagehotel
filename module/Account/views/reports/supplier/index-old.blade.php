@@ -2,11 +2,6 @@
 
 @section('title', 'Supplier Report')
 
-@section('page-header')
-    <i class="fa fa-info-circle"></i> Supplier Report
-@stop
-
-
 
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
@@ -36,41 +31,20 @@
 
 
 @section('content')
-    <div class="row">
-        <div class="col-sm-12">
+    <x-mm.styles />
+    <x-mm.page class="mm-report mm-acc" title="Supplier Report">
+        <x-slot name="actions">
+            <a href="{{ request()->url() }}" class="mm-button mm-button-secondary" title="Refresh Data">
+                <i class="fa fa-refresh"></i> Refresh
+            </a>
+            <a href="{{ request()->getRequestUri() }}&print=print" class="mm-button" title="Print Data">
+                <i class="fa fa-print"></i> Print
+            </a>
+        </x-slot>
 
-            @include('partials._alert_message')
+        @include('partials._alert_message')
 
-            <!-- heading -->
-            <div class="widget-box widget-color-white ui-sortable-handle clearfix" id="widget-box-7">
-                <div class="widget-header widget-header-small">
-                    <h3 class="widget-title smaller text-primary">
-                        @yield('page-header')
-                    </h3>
-
-                    <div class="widget-toolbar border smaller" style="padding-right: 0 !important">
-                        <div class="pull-right tableTools-container" style="margin: 0 !important">
-                            <div class="dt-buttons btn-overlap btn-group">
-                                <a href="{{ request()->url() }}" class="dt-button btn btn-white btn-primary btn-bold"
-                                    title="Refresh Data" data-toggle="tooltip">
-                                    <span>
-                                        <i class="fa fa-refresh bigger-110"></i>
-                                    </span>
-                                </a>
-
-                                <a href="{{ request()->getRequestUri() }}&print=print"
-                                    class="dt-button btn btn-white btn-info btn-bold" style="color: maroon !important;"
-                                    title="Print Data" data-toggle="tooltip" tabindex="0" aria-controls="dynamic-table">
-                                    <span>
-                                        <i class="fa fa-print bigger-110"></i>
-                                    </span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="space"></div>
-
+        <x-mm.panel>
                 <div class="row px-3 pb-2" style="width: 100%; margin: 0 !important;">
                     <form action="" method="get">
 
@@ -210,9 +184,8 @@
                         @include('partials._paginate', ['data' => $transaction_purchases])
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
+        </x-mm.panel>
+    </x-mm.page>
 @endsection
 
 @section('js')

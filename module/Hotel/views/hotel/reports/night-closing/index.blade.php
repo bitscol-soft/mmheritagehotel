@@ -1,24 +1,10 @@
 @extends('layouts.master')
 @section('title', ' Night Audit')
 
-@section('page-header')
-    <i class="fa fa-gear"></i> Total <span class="badge badge-info">{{ count($nightaudits ?? []) }}</span>
-@stop
-
 @section('content')
-
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="widget-box">
-                <div class="widget-header">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
-                </div>
-
-                <div class="widget-body">
-                    <div class="widget-main">
-
-
-
+    <x-mm.styles />
+    <x-mm.page class="mm-report" title="Night Audit">
+        <x-mm.panel>
                         <div class="row">
                             <div class="col-sm-8 col-sm-offset-2">
                                 <form>
@@ -69,14 +55,8 @@
                                 @endif
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-
+        </x-mm.panel>
+    </x-mm.page>
 @endsection
 
 @section('js')
