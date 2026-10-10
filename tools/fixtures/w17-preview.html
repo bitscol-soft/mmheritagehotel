@@ -2182,6 +2182,15 @@ module/Restaurant/views/kitchen/index.blade.php
     </ul>
 </section>
 
+<section class="preview-section" id="w23-widget-box-final">
+    <h2>W2.3 Legacy Frame Closeout — Final 11 <code>.widget-box</code> / <code>.page-header</code> views (<code>c5b83660</code>)</h2>
+    <p style="color:#526578">Closes out the last 11 views in the repository that used <code>.widget-box</code> or <code>.page-header</code> directly without <code>@section('page-header')</code>, bringing the entire repository to <strong>0 active <code>.widget-box</code> or <code>.page-header</code> page frames</strong>.</p>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>BanquetHall &amp; Bar (4 views)</strong>: <code>BanquetHall/views/services/sales/index</code>, <code>Bar/views/bar/sales/create-copy</code>, <code>Bar/views/bar/sales/exchange/create</code>, and <code>Bar/views/bar/sales/return/create-copy</code> migrated onto <code>&lt;x-mm.styles /&gt;</code> + <code>&lt;x-mm.page&gt;</code> + <code>&lt;x-mm.panel&gt;</code>.</li>
+        <li><strong>Restaurant &amp; HRM Dashboard (7 views)</strong>: <code>Restaurant/views/inventory/mat_product/uploads/edit</code>, <code>Restaurant/views/inventory/stock-adjustment/index</code>, <code>Restaurant/views/kitchen/edit</code>, <code>Restaurant/views/purchase/show</code>, <code>Restaurant/views/sales/exchange/create</code>, <code>Restaurant/views/sales/return/create-copy</code>, and the two inner <code>.widget-box</code> cards in <code>resources/views/home/hrm-dashboard</code> migrated onto <code>&lt;x-mm.styles /&gt;</code> + <code>&lt;x-mm.page&gt;</code> + <code>&lt;x-mm.panel&gt;</code>.</li>
+    </ul>
+</section>
+
 </body>
 
 </html>
