@@ -32,6 +32,9 @@
 @endpush
 
 @section('content')
+    <x-mm.styles />
+    <x-mm.print-sheet title="Category Wise Transaction Ledger">
+        <x-mm.panel class="tw-p-4">
     <div class="row">
 
         <div class="col-sm-12" style="z-index: 999;">
@@ -146,6 +149,8 @@
 
         </div>
     </div>
+        </x-mm.panel>
+    </x-mm.print-sheet>
 
 
 

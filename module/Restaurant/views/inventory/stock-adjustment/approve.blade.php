@@ -2,20 +2,15 @@
 @section('title', 'Invoice No: ' . $stockAdjustment->invoice_no . ' Approve Tranfer')
 
 @section('content')
-    <div class="row">
-        <div class="col-12">
-            <div class="breadcrumbs ace-save-state" id="breadcrumbs">
-                <h4 class="pl-2"><i class="fa fa-file-text-o"></i> @yield('title')</h4>
+    <x-mm.styles />
+    <x-mm.page class="mm-rst-adjust mm-rst-form" :title="'Invoice No: ' . $stockAdjustment->invoice_no . ' Approve Tranfer'">
+        <x-slot name="actions">
+            <a class="btn btn-sm btn-default" href="{{ route('inv.purchases.index') }}">
+                <i class="fa fa-bars"></i> Purchase List
+            </a>
+        </x-slot>
 
-                <ul class="breadcrumb mb-1">
-                    <li><a href="{{ route('home') }}"><i class="ace-icon fa fa-home"></i></a></li>
-                    <li><a class="text-muted" href="{{ route('inv.purchases.index') }}">Purchase</a></li>
-                    <li>{{ $stockAdjustment->invoice_no }}</li>
-                </ul>
-            </div>
-
-            <div class="widget-body">
-                <div class="widget-main">
+        <x-mm.panel>
                     <!-- PURCHASE APPROVE FORM -->
                     <form class="form-horizontal" action="{{ route('inv.stock-adjustments-approve', $stockAdjustment->id) }}" onsubmit="return confirm('Are You Sure to Approve This Transfer?')" method="POST" enctype="multipart/form-data">
                         @csrf
@@ -132,10 +127,8 @@
 
 
                     </form>
-                </div>
-            </div>
-        </div>
-    </div>
+        </x-mm.panel>
+    </x-mm.page>
 @endsection
 
 
