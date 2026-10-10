@@ -1,10 +1,6 @@
 @extends('layouts.master')
 @section('title', 'Manufacturer List')
 
-@section('page-header')
-    <i class="fa fa-bars"></i> Manufacturer List
-@stop
-
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -16,7 +12,6 @@
 
     </style>
 @stop
-
 
 @section('content')
 
@@ -54,14 +49,12 @@
 
                                     <div class="btn-group btn-corner">
 
-
                                         @if (hasPermission('pharmacy.edit', $slugs))
                                             <a href="#modal-dialog{{ $item->id }}" data-toggle="modal"
                                                 class="btn btn-sm btn-success" title="Edit">
                                                 <i class="fa fa-pencil-square-o"></i>
                                             </a>
                                         @endif
-
 
                                         @if (hasPermission('pharmacy.delete', $slugs))
                                             <button type="button"
@@ -70,7 +63,6 @@
                                                 <i class="fa fa-trash-o"></i>
                                             </button>
                                         @endif
-
 
                                     </div>
                                     @include('bar.inventory.manufacturers.edit-modal')

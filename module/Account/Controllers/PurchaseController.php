@@ -132,7 +132,7 @@ class PurchaseController extends Controller
     {
         $this->hasAccess("account-purchases.show");
 
-        $purchase = Purchase::with('details', 'company')->find($purchase);
+        $purchase = Purchase::with('details', 'company')->findOrFail($purchase);
 
         return view('purchase.purchases.invoice', compact('purchase'));
     }
@@ -148,7 +148,7 @@ class PurchaseController extends Controller
     {
         $this->hasAccess("account-purchases.edit");
 
-        $data['purchase']       = Purchase::find($id);
+        $data['purchase']       = Purchase::findOrFail($id);
         $data['products']       = Product::select('id', 'name', 'purchase_price')->get();
         $data['companies']      = Company::pluck('name', 'id');
         $data['suppliers']      = Supplier::pluck('name', 'id');

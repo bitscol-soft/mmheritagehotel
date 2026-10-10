@@ -1,10 +1,6 @@
 @extends('layouts.master')
 @section('title', 'Product Upload List')
 
-@section('page-header')
-    <i class="fa fa-bars"></i> Product Upload List
-@stop
-
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -19,39 +15,27 @@
 
 
 @section('content')
-    <div class="row">
-
-        <div class="page-header">
-
-            <button class="btn btn-xs btn-danger" onclick="delete_item(`{{ route('rst.product.upload-list.delete') }}`)"
-                style="float: right; margin: 0 2px;" type="button"> <i class="fa fa-trash-o"></i> Delete All From This List
-            </button>
-
-            <a href="{{ route('rst.products.create', ['type' => 'upload']) }}" class="btn btn-xs btn-pink"
-                style="float: right; margin: 0 2px;"><i class="fa fa-upload"></i> Upload CSV</a>
-
-            <a href="{{ route('rst.products.index') }}" class="btn btn-xs btn-success"
-                style="float: right; margin: 0 2px;"><i class="fa fa-list-ol"></i> Product List</a>
-
-            <form action="{{ route('rst.product.add-confirm-list') }}" method="post">
+    <x-mm.styles />
+    <x-mm.page class="mm-crud-index mm-rst" title="Product Upload List" :subtitle="$products->total() . ' products'">
+        <x-slot name="actions">
+            <form action="{{ route('rst.product.add-confirm-list') }}" method="post" style="display: inline;">
                 @csrf
-                <button class="btn btn-xs btn-info" style="float: right; margin: 0 2px;">
-                    <i class="fa fa-plus"></i>
-                    Add First 50 Row Confirm List
+                <button class="btn btn-sm btn-info" type="submit">
+                    <i class="fa fa-plus"></i> Add First 50 Row Confirm List
                 </button>
             </form>
+            <a href="{{ route('rst.products.index') }}" class="btn btn-sm btn-success">
+                <i class="fa fa-list-ol"></i> Product List
+            </a>
+            <a href="{{ route('rst.products.create', ['type' => 'upload']) }}" class="btn btn-sm btn-pink">
+                <i class="fa fa-upload"></i> Upload CSV
+            </a>
+            <button class="btn btn-sm btn-danger" onclick="delete_item(`{{ route('rst.product.upload-list.delete') }}`)" type="button">
+                <i class="fa fa-trash-o"></i> Delete All From This List
+            </button>
+        </x-slot>
 
-            <h1>
-                @yield('page-header') <span class="badge badge-success">{{ $products->total() }}</span>
-            </h1>
-        </div>
-
-
-        <div class="col-sm-12">
-            <div class="widget-box">
-
-                <div class="widget-body">
-                    <div class="widget-main">
+        <x-mm.panel>
                         @include('partials._alert_message')
 
                         <div class="table-responsive">
@@ -166,14 +150,8 @@
                         </div>
 
                         {{ $products->links() }}
-
-                    </div>
-                </div>
-            </div>
-
-
-        </div>
-    </div>
+        </x-mm.panel>
+    </x-mm.page>
 
 
 @endsection

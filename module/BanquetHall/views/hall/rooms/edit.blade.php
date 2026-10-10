@@ -2,9 +2,6 @@
 
 @section('title', 'Room Manage')
 
-@section('page-header')
-    <i class="fa fa-gears"></i> Room Manage
-@stop
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -33,6 +30,10 @@
                                     style="color: deeppink">*</span></label>
 
                             <div class="col-xs-12 col-sm-8 @error('name') has-error @enderror">
+                                {{-- W4.2: kept raw. The onkeyup JS hook in the file
+                                     binds checkRoomNumber() to this <input>, and the
+                                     <input> shares id="roomNumber" with the Hall Number
+                                     <input> below — a refactor would need a follow-up. --}}
                                 <input type="text" class="form-control input-sm" name="name"
                                     id="roomNumber" value="{{ $room->name }}" required>
                                 <p id="duplicateRoomError" style="color: red; display: none;"></p>
@@ -70,6 +71,8 @@
                                     style="color: deeppink">*</span></label>
 
                             <div class="col-xs-12 col-sm-8 @error('room_number') has-error @enderror">
+                                {{-- W4.2: kept raw. The checkRoomNumber() JS hook binds
+                                     to onkeyup="checkRoomNumber(this)". --}}
                                 <input type="text" class="form-control input-sm" name="hall_number"
                                     id="roomNumber" value="{{ $room->room_number }}"
                                     placeholder="Enter Room Number" required
@@ -83,56 +86,18 @@
                     </div>
 
                     <div class="col-sm-12">
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label" for="form-field-1-1"> Size SQ
-                            </label>
-                            <div class="col-xs-12 col-sm-8 @error('hall_sqft') has-error @enderror">
-                                <input type="text" class="form-control input-sm" name="hall_sqft"
-                                    value="{{ old('hall_sqft', $room->hall_sqft) }}"
-                                    placeholder="Enter Size SQ">
-
-                                @error('hall_sqft')
-                                    <span class="text-danger"> {{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
+                        <x-mm.field label="Size SQ" id="hall-sqft" name="hall_sqft" value="{{ old('hall_sqft', $room->hall_sqft) }}" placeholder="Enter Size SQ" />
                     </div>
 
                     {{-- Rent  --}}
                     <div class="col-sm-12">
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label" for="form-field-1-1"> Rent
-                            </label>
-                            <div class="col-xs-12 col-sm-8 @error('price') has-error @enderror">
-                                <input type="text" class="form-control input-sm" name="price"
-                                    value="{{ old('price', $room->price) }}" placeholder="Price">
-
-                                @error('price')
-                                    <span class="text-danger"> {{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
+                        <x-mm.field label="Rent" id="hall-price" name="price" value="{{ old('price', $room->price) }}" placeholder="Price" />
                     </div>
-
-
 
                     {{-- Max Guests  --}}
                     <div class="col-sm-12">
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label" for="form-field-1-1"> Max Guests
-                            </label>
-                            <div class="col-xs-12 col-sm-8 @error('max_guests') has-error @enderror">
-                                <input type="text" class="form-control input-sm" name="max_guests"
-                                    value="{{ old('max_guests', $room->max_guests) }}"
-                                    placeholder="Enter Max Guests">
-
-                                @error('max_guests')
-                                    <span class="text-danger"> {{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
+                        <x-mm.field label="Max Guests" id="hall-max-guests" name="max_guests" value="{{ old('max_guests', $room->max_guests) }}" placeholder="Enter Max Guests" />
                     </div>
-
 
                     <div class="col-sm-12">
                         <div class="form-group">
@@ -158,7 +123,6 @@
                         </div>
                     </div>
 
-
                     {{-- <div class="col-sm-12">
                         <div class="form-group">
                             <label class="col-sm-3 control-label" for="form-field-1-1">Smoking
@@ -178,7 +142,6 @@
                             </div>
                         </div>
                     </div> --}}
-
 
                     <div class="col-sm-12" style="display: none">
                         <div class="form-group">
@@ -203,10 +166,7 @@
                         </div>
                     </div>
 
-
-
                 </div>
-
 
                 <div class="form-actions center" style="text-align: right !important;">
                     <button type="submit" class="mm-button" id="submitRoomFormBtn"
@@ -222,13 +182,9 @@
 
 @section('js')
 
-    <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('assets/js/jquery.dataTables.bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/custom_js/date-picker.js') }}"></script>
 
-
     @include('rooms.inc.script')
-
 
     <!-- inline scripts related to this page -->
     <script type="text/javascript">

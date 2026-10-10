@@ -2,10 +2,6 @@
 
 @section('title', 'Kitchen Order List')
 
-@section('page-header')
-    <i class="fa fa-gears"></i> Kitchen Order List
-@stop
-
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -75,7 +71,6 @@
                     @endforeach
                 </tbody>
 
-
             </table>
         </x-mm.table-scroll>
     </x-mm.panel>
@@ -103,15 +98,11 @@
 
 @section('js')
 
-    <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('assets/js/jquery.dataTables.bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/custom_js/date-picker.js') }}"></script>
-
 
     @include('currency-conversions.inc.script')
     @include('kitchen.inc.script')
     {{-- @include('kitchen.inc.extend-date-modal') --}}
-
 
     <!-- inline scripts related to this page -->
     <script type="text/javascript">

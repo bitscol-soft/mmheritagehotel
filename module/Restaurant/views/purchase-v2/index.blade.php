@@ -87,7 +87,7 @@
                                 {{ $purchase->challan_id }}
                             </td>
                             {{-- <td>{{ $purchase->purchase_reference }}</td> --}}
-                            <td>{{ $purchase->company->name }}</td>
+                            <td>{{ optional($purchase->company)->name }}</td>
                             <td>{{ $purchase->purchase_details->sum('quantity') }}</td>
                             <td>{{ $purchase->is_approved ? $purchase->purchase_details->sum('quantity') : 0 }}</td>
 

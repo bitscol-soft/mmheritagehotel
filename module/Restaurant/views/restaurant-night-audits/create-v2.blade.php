@@ -2,15 +2,9 @@
 
 @section('title', 'Night Audit')
 
-@section('page-header')
-    <i class="fa fa-plus-circle"></i> Night Audit
-@stop
-
-
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datetimepicker.min.css') }}">
 @endpush
-
 
 @section('content')
 
@@ -239,7 +233,6 @@
                                                     @endforeach
                                                 </tbody>
 
-
                                                 <tfoot>
                                                     <tr>
                                                         <th class="text-right" colspan="{{ $key == 'Booking' ? 7 : 5 }}">
@@ -259,7 +252,6 @@
                                                                 style="font-size: 18px">{{ calculateCurrencyAmount($total_due_amount - $total_discount, 1) }}</strong>
                                                         </th>
                                                     </tr>
-
 
                                                 </tfoot>
                                             </table>
@@ -354,7 +346,6 @@
             }, 10000);
 
         })
-
 
         $('.date-picker-v2').datetimepicker({
             //  format: 'YYYY-MM-DD H:mm:ss',//use this option to display seconds

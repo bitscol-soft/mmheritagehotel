@@ -1,9 +1,6 @@
 @extends('layouts.master')
 @section('title','Stock In Hand')
 
-@section('page-header')
-    <i class="fa fa-list"></i> Stock In Hand
-@stop
 <!-- <i class="fa fa-list"></i> Inventory Reports -->
 
 @section('css')
@@ -11,7 +8,6 @@
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/jquery-ui.min.css') }}" />
 @stop
-
 
 @section('content')
 
@@ -84,8 +80,6 @@
                     </div>
                 </form>
             </div>
-
-
 
         <div class="clearfix"></div>
 
@@ -167,15 +161,12 @@
 
 <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
 
-
 <script src="{{ asset('assets/js/chosen.jquery.min.js') }}"></script>
 
 <script src="{{ asset('assets/js/bootstrap-datepicker.min.js') }}"></script>
 
-
 <script src="{{ asset('assets/js/ace-elements.min.js') }}"></script>
 <script src="{{ asset('assets/js/ace.min.js') }}"></script>
-
 
 <script src="{{ asset('assets/custom_js/chosen-box.js') }}"></script>
 
@@ -185,7 +176,6 @@
         $('.exportForm').attr('action', url).submit();
     }
 </script>
-
 
 <!--  Select Box Search-->
 <script type="text/javascript">
@@ -202,7 +192,6 @@
         format:'yyyy-mm-dd',
     });
 
-
     function loadCompanyItems()
     {
         let company_id = comppanyId.val()
@@ -218,8 +207,6 @@
         });
     }
 
-
 </script>
-
 
 @stop

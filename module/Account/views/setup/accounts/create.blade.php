@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title','Account')
-@section('page-header')
-    <i class="fa fa-list"></i> Account
-@stop
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}"/>
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}"/>
@@ -25,26 +22,20 @@
             <div class="row" style="width: 100%; margin: 0 0 20px !important;">
                 <div class="col-sm-12 px-4">
 
-
                     <!-- Name -->
                     @include('includes.inputs.input-field', ['name' => 'name', 'is_required' => 'required'])
-
 
                     <!-- Account Group -->
                     @include('includes.inputs.option-select', ['modelVariable' => 'accountGroups', 'is_required' => true])
 
-
                     <!-- Account Controls -->
                     @include('includes.inputs.option-select', ['modelVariable' => 'accountControls', 'is_required' => true])
-
 
                     <!-- Account Subsidiaries -->
                     @include('includes.inputs.option-select', ['modelVariable' => 'accountSubsidiaries', 'is_required' => true])
 
-
                     <!-- Opening Balance -->
                     {{-- @include('includes.inputs.input-field', ['name' => 'opening_balance', 'is_number' => true, 'title' => 'Opening Balance']) --}}
-
 
                     <!-- Remarks -->
                     @include('includes.inputs.input-field', ['name' => 'remarks'])
@@ -62,7 +53,6 @@
 @section('js')
     <script src="{{ asset('assets/js/chosen.jquery.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap-datepicker.min.js') }}"></script>
-
 
     <script src="{{ asset('assets/custom_js/chosen-box.js') }}"></script>
 
@@ -99,5 +89,4 @@
     </script>
 
 @endsection
-
 

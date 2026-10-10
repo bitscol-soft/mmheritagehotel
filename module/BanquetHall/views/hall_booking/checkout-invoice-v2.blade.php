@@ -1,10 +1,6 @@
 @extends('layouts.master')
 @section('title', 'Booking Invoice')
 
-@section('page-header')
-    <i class="fa fa-info-circle"></i> Booking Invoice
-@stop
-
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -45,26 +41,17 @@
 @stop
 
 @section('content')
+    <x-mm.styles />
+    <x-mm.page class="mm-invoice-page" title="Booking Invoice">
+        <x-slot name="actions">
+            @if (hasPermission('service.view', $slugs))
+                <a href="#" onclick="printPage('print_body')" class="btn btn-sm btn-default hidden-print">
+                    <i class="fa fa-print"></i> Print
+                </a>
+            @endif
+        </x-slot>
 
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="widget-box">
-                <div class="widget-header hidden-print">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
-                    @if (hasPermission('service.view', $slugs))
-                        <span class="widget-toolbar">
-
-                            <a href="#" onclick="printPage('print_body')">
-                                <i class="fa fa-print"></i>
-                                Print
-                            </a>
-                        </span>
-                    @endif
-
-                </div>
-                <div class="widget-body">
-                    <div class="widget-main">
-
+        <x-mm.panel>
                         <div class="row">
                             <div id="print_body">
                                 <div id="customer_info" style="padding: 0 10px;">
@@ -282,11 +269,8 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+        </x-mm.panel>
+    </x-mm.page>
 @endsection
 
 @section('js')

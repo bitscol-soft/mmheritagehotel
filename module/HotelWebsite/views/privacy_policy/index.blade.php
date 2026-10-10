@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title','Privacy Policy')
-@section('page-header')
-    <i class="fa fa-gears"></i> Privacy Policy
-@stop
 @push('style')
 <link rel="stylesheet" href="{{ asset('assets/css/dropzone.min.css') }}" />
 <style>
@@ -74,7 +71,6 @@
                     </div>
                 </div>
             </div>
-
 
             <div class="form-group">
                 <label for="inputError" class="col-xs-12 col-sm-3 col-md-3 control-label"></label>

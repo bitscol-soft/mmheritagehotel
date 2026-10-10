@@ -1,15 +1,10 @@
 @extends('layouts.master')
 @section('title',' Change Password')
-@section('page-header')
-    <i class="fa fa-lock"></i>  Change Password
-@stop
 @section('css')
 
 @stop
 
-
 @section('content')
-
 
          
     <x-mm.styles />
@@ -85,7 +80,6 @@
 @endsection
 
 @section('js')
-
 
     
 

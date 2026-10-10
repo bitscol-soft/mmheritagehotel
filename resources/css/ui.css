@@ -3,31 +3,79 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Design tokens (colors, radii, sizing, typography, motion, z-index) live in
+   public/assets/custom_css/tokens.css and are mirrored here on .mm-ui so any
+   page, preview shell, or standalone fixture that loads ui.css directly still
+   resolves every var(--mm-*) custom property. */
 .mm-ui {
-    --mm-brand: #2f63a8;
-    --mm-ink: #1f2a33;
-    --mm-muted: #526578;
-    --mm-line: #dbe5f1;
-    --mm-bg: #f7fafd;
-    --mm-surface: #ffffff;
+    --mm-brand:        #2f63a8;
+    --mm-brand-hover:  #275188;
+    --mm-brand-soft:   #eef3f9;
+    --mm-ink:          #1f2a33;
+    --mm-ink-soft:     #344558;
+    --mm-muted:        #526578;
+    --mm-line:         #dbe5f1;
+    --mm-bg:           #f7fafd;
+    --mm-surface:      #ffffff;
+    --mm-danger:       #b42318;
+    --mm-danger-soft:  #fde7e4;
+    --mm-success:      #2c6c33;
+    --mm-success-soft: #ecf6ee;
+    --mm-warning:      #b8860b;
+    --mm-warning-soft: #fdf3d6;
+    --mm-radius:           10px;
+    --mm-radius-sm:        6px;
+    --mm-input-min-height: 40px;
+    --mm-button-min-height:40px;
+    --mm-pad-1: 4px;
+    --mm-pad-2: 8px;
+    --mm-pad-3: 12px;
+    --mm-pad-4: 16px;
+    --mm-pad-5: 20px;
+    --mm-pad-6: 24px;
+    --mm-font:   system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --mm-font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+    --mm-text-xs:  12px;
+    --mm-text-sm:  14px;
+    --mm-text-md:  14px;
+    --mm-text-lg:  16px;
+    --mm-text-xl:  20px;
+    --mm-text-2xl: 24px;
+    --mm-text-3xl: 30px;
+    --mm-line-tight:  1.25;
+    --mm-line-normal: 1.5;
+    --mm-focus-ring: 3px solid var(--mm-brand);
+    --mm-focus-offset: 1px;
+    --mm-motion-fast: 120ms ease;
+    --mm-motion:      200ms ease;
+    --mm-motion-slow: 320ms ease;
+    --mm-z-dropdown: 100;
+    --mm-z-modal:    1000;
+    --mm-z-toast:    1100;
     color: var(--mm-ink);
-    font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
-    font-size: 14px;
-    line-height: 1.5;
+    font-family: var(--mm-font);
+    font-size: var(--mm-text-md);
+    line-height: var(--mm-line-normal);
     min-width: 0;
 }
 .mm-ui *, .mm-ui *::before, .mm-ui *::after { box-sizing: border-box; }
-.mm-ui .mm-panel { border: 1px solid var(--mm-line); border-radius: 10px; background: var(--mm-surface); }
+.mm-ui .mm-panel { border: 1px solid var(--mm-line); border-radius: var(--mm-radius); background: var(--mm-surface); }
 .mm-ui .mm-button {
     display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-    min-height: 40px; padding: 8px 16px; border: 1px solid var(--mm-brand);
-    border-radius: 6px; background: var(--mm-brand); color: white;
+    min-height: var(--mm-button-min-height); padding: var(--mm-pad-2) var(--mm-pad-4); border: 1px solid var(--mm-brand);
+    border-radius: var(--mm-radius-sm); background: var(--mm-brand); color: white;
     font: inherit; font-weight: 600; text-decoration: none; cursor: pointer;
+    transition: background var(--mm-motion-fast), border-color var(--mm-motion-fast), color var(--mm-motion-fast);
 }
-.mm-ui .mm-button:hover { background: #275188; border-color: #275188; color: white; }
+.mm-ui .mm-button:hover { background: var(--mm-brand-hover); border-color: var(--mm-brand-hover); color: white; }
 .mm-ui .mm-button-secondary { background: white; color: var(--mm-brand); border-color: var(--mm-line); }
-.mm-ui .mm-button-secondary:hover { background: #eef3f9; color: var(--mm-brand); }
-.mm-ui :focus-visible { outline: 3px solid var(--mm-brand); outline-offset: 3px; }
+.mm-ui .mm-button-secondary:hover { background: var(--mm-brand-soft); color: var(--mm-brand); }
+.mm-ui .mm-button-danger { background: var(--mm-danger); border-color: var(--mm-danger); color: white; }
+.mm-ui .mm-button-danger:hover { background: #931c12; border-color: #931c12; color: white; }
+.mm-ui .mm-button-ghost { background: transparent; border-color: transparent; color: var(--mm-brand); }
+.mm-ui .mm-button-ghost:hover { background: var(--mm-brand-soft); color: var(--mm-brand); border-color: transparent; }
+.mm-ui .mm-button[disabled], .mm-ui .mm-button[aria-disabled="true"] { opacity: 0.5; cursor: not-allowed; }
+.mm-ui :focus-visible { outline: var(--mm-focus-ring); outline-offset: var(--mm-focus-offset); }
 .mm-ui .mm-input {
     display: block; width: 100%; min-height: 40px; padding: 8px 12px;
     border: 1px solid #aab9ca; border-radius: 6px; color: var(--mm-ink);
@@ -717,6 +765,15 @@
 .mm-ui.mm-perm .mm-panel { display: flow-root; }
 .mm-ui.mm-perm-user .form-group.row::before, .mm-ui.mm-perm-user .form-group.row::after { display: none; content: none; }
 .mm-ui.mm-perm-access .input-group-btn { display: block; width: auto; flex: 0 0 auto; font-size: 14px; }
+.mm-ui.mm-perm-access .chosen-container { width: 100% !important; }
+.mm-ui.mm-perm-access .panel-group .panel { border-radius: 6px; border-color: var(--mm-line); padding: 0; }
+.mm-ui.mm-perm-access .panel-title { font-size: 14px; }
+.mm-ui.mm-perm-access .panel-title > a { display: block; padding: 4px 2px; text-decoration: none; color: var(--mm-ink); }
+.mm-ui.mm-perm-access .short-full { float: right; color: var(--mm-ink); }
+.mm-ui.mm-perm-access .mm-perm-bulk-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin: 24px 0 12px; padding: 12px 16px; background: var(--mm-bg); border: 1px solid var(--mm-line); border-radius: var(--mm-radius); }
+.mm-ui.mm-perm-access .mm-perm-bulk-title { font-size: 16px; font-weight: 700; color: var(--mm-ink); margin: 0; }
+.mm-ui.mm-perm-access .mm-perm-bulk-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.mm-ui.mm-perm-access .mm-perm-bulk-check { display: inline-flex; align-items: center; gap: 6px; margin: 0; font-weight: 600; color: var(--mm-ink); cursor: pointer; }
 @media (max-width: 991px) { .mm-ui.mm-perm-access .row > [class*="col-md-4"] { float: none !important; width: 100%; } }
 
 /* Restaurant (module/Restaurant/views): report filters, the shared Bar inventory filter, the kitchen board; scoped to .mm-rst */
@@ -744,6 +801,20 @@
 .mm-ui.mm-rst-board .mm-board-card-foot form { margin: 0; }
 .mm-ui.mm-rst-board .mm-board-card-foot .btn { float: none !important; min-height: 32px; }
 @media (max-width: 991px) { .mm-ui.mm-rst-board .mm-board-layout { grid-template-columns: minmax(0, 1fr); } }
+
+/* Restaurant / Bar table map: tile grid for live status (rst/tables + bar/tables indexes). */
+.mm-ui .mm-table-map { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 12px; }
+.mm-ui .mm-table-tile { display: flex; flex-direction: column; min-width: 0; background: var(--mm-surface); border: 1px solid var(--mm-line); border-radius: 8px; overflow: hidden; transition: box-shadow .15s ease, transform .15s ease; }
+.mm-ui .mm-table-tile:hover { box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); transform: translateY(-1px); }
+.mm-ui .mm-table-tile-head { padding: 10px 12px; border-bottom: 1px solid var(--mm-line); display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.mm-ui .mm-table-tile-head h6 { margin: 0; font-size: 14px; font-weight: 700; color: var(--mm-ink); }
+.mm-ui .mm-table-tile-body { flex: 1 1 auto; padding: 12px; }
+.mm-ui .mm-table-tile-foot { padding: 8px 12px; border-top: 1px solid var(--mm-line); display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.mm-ui .mm-table-tile-foot .btn { float: none !important; min-height: 30px; }
+.mm-ui .mm-table-tile-status { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; line-height: 1.4; }
+.mm-ui .mm-table-tile-status-1 { background: #d1f4d8; color: #166534; }
+.mm-ui .mm-table-tile-status-0 { background: #fee2e2; color: #991b1b; }
+.mm-ui .mm-table-tile-no { font-size: 22px; font-weight: 700; color: var(--mm-ink); margin: 0; line-height: 1.2; }
 @media (max-width: 575px) { .mm-ui.mm-rst .mm-report-check { flex-basis: 100%; } .mm-ui.mm-rst-inventory .mm-report-filter .row > [class*="col-"] { flex-basis: 100%; max-width: none; } }
 .mm-ui.mm-rst .mm-setup-title { margin: 0 0 16px; font-size: 18px; font-weight: 700; color: var(--mm-ink); }
 
@@ -825,6 +896,17 @@
 .mm-ui.mm-bar .mm-panel.mm-report-filter .row { display: flex; }
 .mm-ui.mm-acc .mm-panel .row { display: flow-root; }
 .mm-ui.mm-acc.mm-rst-form .form-group > [class*="col-"] { float: none; width: 100%; }
+.mm-ui.mm-acc.mm-rst-form table { counter-reset: section; }
+.mm-ui.mm-acc.mm-rst-form .count::before { counter-increment: section; content: counter(section); }
+.mm-ui.mm-acc.mm-rst-form td { padding-top: 3px !important; padding-bottom: 3px !important; }
+.mm-ui.mm-acc.mm-rst-form select:invalid { height: 0 !important; opacity: 0 !important; position: absolute !important; display: flex !important; }
+.mm-ui.mm-acc.mm-rst-form select:invalid[multiple] { margin-top: 15px !important; }
+.mm-ui.mm-acc.mm-rst-form .mm-voucher-meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 12px; margin-bottom: 16px; }
+.mm-ui.mm-acc.mm-rst-form .mm-voucher-meta > [class*="col-"] { width: 100%; float: none; padding: 0 !important; margin: 0 !important; }
+.mm-ui.mm-acc.mm-rst-form .mm-voucher-meta .form-group { margin: 0; }
+.mm-ui.mm-acc.mm-rst-form .mm-voucher-footer { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; margin-top: 16px; }
+.mm-ui.mm-acc.mm-rst-form .mm-voucher-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; }
+.mm-ui.mm-acc.mm-rst-form .mm-voucher-actions .ace-file-input { margin-bottom: 0; max-width: 480px; }
 .mm-ui.mm-acc .mm-table-scroll { position: relative; }
 .mm-ui.mm-acc.mm-report .mm-table-scroll .table-bordered td .input-group { width: auto !important; max-width: 100%; }
 .mm-ui.mm-acc.mm-report .mm-table-scroll .table-bordered td .input-group .form-control { min-width: 90px; }
@@ -846,3 +928,238 @@
 .mm-ui.mm-acc .mm-panel.mm-report-filter .row .input-group .form-control { flex: 1 1 0; min-width: 0; width: 100%; float: none; min-height: 40px; }
 .mm-ui.mm-acc .mm-panel.mm-report-filter .row .input-group .chosen-container { flex: 1 1 0; min-width: 0; width: auto !important; }
 .mm-ui.mm-web .mm-web-narrow { max-width: 760px; }
+
+/* --- Auth surface (resources/views/layouts/app.blade.php) --------------------
+   Centred card on a tinted background. Stock Laravel auth scaffolding pages
+   (auth.register, auth.passwords.email, auth.passwords.reset, auth.verify) use
+   Bootstrap 4 .container / .row / .col / .card markup, so the auth surface
+   preserves that contract and only the chrome (panel, button, input) gets
+   upgraded to the mm-web tokens. */
+.mm-ui.mm-auth { background: var(--mm-bg); min-height: 100vh; }
+.mm-ui.mm-auth .mm-auth-main { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 32px 16px; }
+.mm-ui.mm-auth .mm-auth-panel { width: 100%; max-width: 480px; padding: 32px; }
+.mm-ui.mm-auth .mm-auth-card { display: flex; flex-direction: column; gap: 20px; }
+.mm-ui.mm-auth .mm-auth-brand { font-size: 22px; font-weight: 600; margin: 0; text-align: center; color: var(--mm-brand); }
+.mm-ui.mm-auth .container { width: 100%; max-width: 100%; padding: 0; margin: 0; }
+.mm-ui.mm-auth .row.justify-content-center { margin: 0; }
+.mm-ui.mm-auth .col-md-8 { flex: 0 0 100%; max-width: 100%; width: 100%; padding: 0; }
+.mm-ui.mm-auth .card { background: transparent; border: 0; box-shadow: none; }
+.mm-ui.mm-auth .card-header { background: transparent; border-bottom: 1px solid var(--mm-line); color: var(--mm-ink); font-size: var(--mm-text-lg); font-weight: 600; padding: 0 0 12px; margin-bottom: 16px; text-align: center; }
+.mm-ui.mm-auth .card-body { padding: 0; color: var(--mm-ink); font-size: var(--mm-text-sm); line-height: 1.6; }
+.mm-ui.mm-auth .form-group.row { display: flex; flex-direction: column; margin: 0 0 16px; }
+.mm-ui.mm-auth .form-group.row.mb-0 { margin-bottom: 0; }
+.mm-ui.mm-auth .form-group.row > label { flex: 0 0 auto; max-width: 100%; width: 100%; padding: 0 0 6px; text-align: left !important; font-size: var(--mm-text-sm); font-weight: 600; color: var(--mm-ink); }
+.mm-ui.mm-auth .form-group.row > .col-md-6,
+.mm-ui.mm-auth .form-group.row > .col-md-6.offset-md-4 { flex: 0 0 100%; max-width: 100%; width: 100%; margin-left: 0; padding: 0; }
+.mm-ui.mm-auth .form-control { background: #fff; border: 1px solid #aab9ca; border-radius: 6px; color: var(--mm-ink); display: block; font: inherit; min-height: 40px; padding: 8px 12px; width: 100%; }
+.mm-ui.mm-auth .form-control:focus { border-color: var(--mm-brand); outline: 3px solid var(--mm-brand); outline-offset: 1px; }
+.mm-ui.mm-auth .form-control.is-invalid { border-color: #b42318; }
+.mm-ui.mm-auth .invalid-feedback { color: #b42318; font-size: 13px; display: block; margin-top: 4px; }
+.mm-ui.mm-auth .btn { background: #fff; border: 1px solid var(--mm-line); border-radius: 6px; color: var(--mm-brand); cursor: pointer; font: inherit; font-weight: 600; min-height: 40px; padding: 8px 16px; }
+.mm-ui.mm-auth .btn-primary { background: var(--mm-brand); border-color: var(--mm-brand); color: #fff; width: 100%; }
+.mm-ui.mm-auth .btn-primary:hover { background: #275188; border-color: #275188; color: #fff; }
+.mm-ui.mm-auth .alert { border-radius: 6px; padding: 12px 16px; margin-bottom: 16px; }
+.mm-ui.mm-auth .alert-success { background: #ecf6ee; border: 1px solid #b8e0bf; color: #2c6c33; }
+.mm-ui.mm-auth .mm-auth-foot { border-top: 1px solid var(--mm-line); margin-top: 16px; padding-top: 12px; text-align: center; font-size: var(--mm-text-sm); }
+.mm-ui.mm-auth a { color: var(--mm-brand); }
+/* auth.login (Ace 4.5 .login-layout): the page used to set body.login-layout which Ace
+   styles with a dark background. Now the .login-layout div is nested inside mm-auth,
+   so we cancel the dark fill and let the mm-auth surface show through. The conditional
+   background-image override pushed to ui-styles still applies. */
+.mm-ui.mm-auth .login-layout { background: transparent; }
+.mm-ui.mm-auth .login-layout .widget-box { background: transparent; box-shadow: none; border: 0; }
+.mm-ui.mm-auth .login-layout .widget-box .widget-main { background: transparent; padding: 0; }
+.mm-ui.mm-auth .login-layout .widget-box .widget-body { background: transparent; }
+.mm-ui.mm-auth .login-layout .toolbar { border-top: 1px solid var(--mm-line); padding-top: 12px; margin-top: 12px; }
+
+/* =============================================================================
+   mm-web components (W1)
+   -----------------------------------------------------------------------------
+   All new components added in the W1 design-system wave. Each rule uses the
+   tokens declared in tokens.css. No new colors, radii, or sizing magic-numbers
+   below — every value resolves through a CSS custom property.
+   ============================================================================= */
+
+/* --- mm-input (formerly inline) — keep the existing rule for backward compat
+   with views that pre-date the W1 refactor. The new canonical input class is
+   also .mm-input. */
+.mm-ui .mm-input {
+    display: block; width: 100%; min-height: var(--mm-input-min-height);
+    padding: var(--mm-pad-2) var(--mm-pad-3);
+    border: 1px solid #aab9ca; border-radius: var(--mm-radius-sm);
+    color: var(--mm-ink); background: var(--mm-surface);
+    font: inherit;
+    transition: border-color var(--mm-motion-fast), outline-color var(--mm-motion-fast);
+}
+.mm-ui .mm-input:focus { border-color: var(--mm-brand); outline: var(--mm-focus-ring); outline-offset: var(--mm-focus-offset); }
+.mm-ui .mm-input[aria-invalid="true"], .mm-ui .mm-input.is-invalid { border-color: var(--mm-danger); }
+.mm-ui textarea.mm-input { min-height: 80px; padding: var(--mm-pad-3); resize: vertical; }
+.mm-ui select.mm-input { appearance: none; background-image: linear-gradient(45deg, transparent 50%, var(--mm-muted) 50%), linear-gradient(135deg, var(--mm-muted) 50%, transparent 50%); background-position: calc(100% - 18px) 50%, calc(100% - 12px) 50%; background-size: 6px 6px; background-repeat: no-repeat; padding-right: 32px; }
+
+/* --- mm-button — small variant for chips and inline actions --- */
+.mm-ui .mm-button-small { min-height: 32px; padding: var(--mm-pad-1) var(--mm-pad-3); font-size: var(--mm-text-xs); }
+
+/* --- mm-tile --- */
+.mm-ui .mm-tile { background: var(--mm-surface); border: 1px solid var(--mm-line); border-radius: var(--mm-radius); padding: var(--mm-pad-4) var(--mm-pad-5); display: flex; flex-direction: column; gap: var(--mm-pad-1); }
+.mm-ui .mm-tile-label { color: var(--mm-muted); font-size: var(--mm-text-xs); text-transform: uppercase; letter-spacing: 0.04em; font-weight: 600; }
+.mm-ui .mm-tile-value { color: var(--mm-ink); font-size: var(--mm-text-2xl); font-weight: 700; line-height: var(--mm-line-tight); }
+.mm-ui .mm-tile-hint { color: var(--mm-muted); font-size: var(--mm-text-sm); }
+.mm-ui .mm-tile-brand { border-top: 3px solid var(--mm-brand); }
+.mm-ui .mm-tile-success { border-top: 3px solid var(--mm-success); }
+.mm-ui .mm-tile-warning { border-top: 3px solid var(--mm-warning); }
+.mm-ui .mm-tile-danger { border-top: 3px solid var(--mm-danger); }
+
+/* --- mm-empty --- */
+.mm-ui .mm-empty { display: flex; flex-direction: column; align-items: center; gap: var(--mm-pad-3); padding: var(--mm-pad-6) var(--mm-pad-5); background: var(--mm-surface); border: 1px dashed var(--mm-line); border-radius: var(--mm-radius); text-align: center; }
+.mm-ui .mm-empty-text { margin: 0; color: var(--mm-muted); }
+
+/* --- mm-chip --- */
+.mm-ui .mm-chip { display: inline-flex; align-items: center; gap: var(--mm-pad-1); padding: 2px var(--mm-pad-2); border-radius: 9999px; background: var(--mm-brand-soft); color: var(--mm-brand); font-size: var(--mm-text-xs); font-weight: 600; line-height: 1.6; }
+.mm-ui .mm-chip-default { background: var(--mm-bg); color: var(--mm-ink); }
+.mm-ui .mm-chip-success { background: var(--mm-success-soft); color: var(--mm-success); }
+.mm-ui .mm-chip-warning { background: var(--mm-warning-soft); color: var(--mm-warning); }
+.mm-ui .mm-chip-danger { background: var(--mm-danger-soft); color: var(--mm-danger); }
+.mm-ui .mm-chip-muted { background: var(--mm-bg); color: var(--mm-muted); }
+.mm-ui .mm-chip-remove { background: transparent; border: 0; color: inherit; cursor: pointer; font-size: var(--mm-text-md); line-height: 1; padding: 0 var(--mm-pad-1); }
+.mm-ui .mm-chip-remove:hover { color: var(--mm-danger); }
+
+/* --- mm-toolbar --- */
+.mm-ui .mm-toolbar { display: flex; align-items: center; gap: var(--mm-pad-3); padding: var(--mm-pad-3) 0; flex-wrap: wrap; }
+.mm-ui .mm-toolbar-leading { display: flex; gap: var(--mm-pad-3); align-items: center; flex: 1 1 auto; }
+.mm-ui .mm-toolbar-actions { display: flex; gap: var(--mm-pad-2); align-items: center; flex-wrap: wrap; }
+.mm-ui .mm-toolbar-trailing { display: flex; gap: var(--mm-pad-3); align-items: center; }
+
+/* W2.4 mobile action-bar: at ≤767px, the actions row detaches from the
+   inline toolbar and sticks to the bottom of the viewport as a fixed
+   action bar. The leading + trailing sections stay inline at the top
+   of the toolbar (search, filters, page meta). The body gets bottom
+   padding equal to the action-bar height so the last row of the page
+   content is not hidden behind the bar. The bar uses mm-no-print so
+   it does not appear in print. */
+@media (max-width: 767px) {
+    .mm-ui .mm-toolbar { padding-bottom: calc(var(--mm-pad-3) + 56px); }
+    .mm-ui .mm-toolbar-actions {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: var(--mm-z-toolbar, 30);
+        background: var(--mm-surface);
+        border-top: 1px solid var(--mm-line);
+        box-shadow: 0 -2px 8px rgba(15, 23, 42, 0.08);
+        padding: var(--mm-pad-2) var(--mm-pad-4);
+        margin: 0;
+        gap: var(--mm-pad-2);
+        justify-content: flex-end;
+    }
+    .mm-ui .mm-toolbar-actions .mm-button { min-height: 40px; flex: 1 1 auto; }
+    .mm-ui .mm-toolbar-actions .mm-button:not(.mm-button-primary):last-child { flex: 0 0 auto; }
+    .mm-ui .mm-toolbar-actions { print-color-adjust: exact; }
+}
+@media (max-width: 767px) {
+    .mm-ui .mm-toolbar-actions { page-break-inside: avoid; }
+}
+@media print {
+    .mm-ui .mm-toolbar-actions { display: none !important; }
+}
+
+/* --- mm-data-table --- */
+.mm-ui .mm-data-table-wrap { width: 100%; }
+.mm-ui .mm-data-table { width: 100%; margin: 0; border-collapse: collapse; font-size: var(--mm-text-sm); }
+.mm-ui .mm-data-table thead th { background: var(--mm-bg); color: var(--mm-muted); font-size: var(--mm-text-xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; white-space: nowrap; padding: var(--mm-pad-3) var(--mm-pad-4); text-align: left; border-bottom: 1px solid var(--mm-line); }
+.mm-ui .mm-data-table tbody td { padding: var(--mm-pad-3) var(--mm-pad-4); border-bottom: 1px solid var(--mm-line); vertical-align: middle; color: var(--mm-ink); }
+.mm-ui .mm-data-table tbody tr:hover { background: #f0f5fa; }
+.mm-ui .mm-data-table .mm-text-right { text-align: right; }
+.mm-ui .mm-data-table .mm-text-center { text-align: center; }
+.mm-ui .mm-data-table tfoot.mm-data-table-tfoot th,
+.mm-ui .mm-data-table tfoot.mm-data-table-tfoot td { background: var(--mm-bg); color: var(--mm-ink); font-weight: 600; padding: var(--mm-pad-3) var(--mm-pad-4); border-top: 1px solid var(--mm-line); border-bottom: none; }
+.mm-ui .mm-data-table.mm-sticky-header thead th { position: sticky; top: 0; z-index: 1; }
+/* Priority fold at ≤767px: hide columns where data-priority >= 2. The default
+   no-priority column is also hidden on mobile to keep the table narrow. */
+@media (max-width: 767px) {
+    .mm-ui .mm-data-table th[data-priority="2"],
+    .mm-ui .mm-data-table td:nth-child( var(--mm-priority-2-col, auto) ) { display: none; }
+    .mm-ui .mm-data-table th[data-priority="3"],
+    .mm-ui .mm-data-table td:nth-child( var(--mm-priority-3-col, auto) ) { display: none; }
+    .mm-ui .mm-data-table th:not([data-priority]) { display: none; }
+    .mm-ui .mm-data-table tbody td:nth-child(1) { font-weight: 600; }
+}
+
+/* --- mm-filter-bar --- */
+.mm-ui .mm-filter-bar { display: flex; gap: var(--mm-pad-3); align-items: flex-end; flex-wrap: wrap; padding: var(--mm-pad-4); background: var(--mm-bg); border: 1px solid var(--mm-line); border-radius: var(--mm-radius); }
+.mm-ui .mm-filter-bar-fields { display: grid; gap: var(--mm-pad-3); flex: 1 1 320px; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+.mm-ui .mm-filter-bar-actions { display: flex; gap: var(--mm-pad-2); }
+
+/* --- mm-daterange --- */
+.mm-ui .mm-daterange { display: flex; gap: var(--mm-pad-3); align-items: flex-end; flex-wrap: wrap; }
+.mm-ui .mm-daterange-field { display: flex; flex-direction: column; gap: var(--mm-pad-1); flex: 1 1 160px; }
+.mm-ui .mm-daterange-label { font-size: var(--mm-text-xs); color: var(--mm-muted); font-weight: 600; }
+.mm-ui .mm-daterange-quick { display: flex; gap: var(--mm-pad-1); flex-wrap: wrap; }
+.mm-ui .mm-daterange-quick .mm-button[aria-pressed="true"] { background: var(--mm-brand); color: white; border-color: var(--mm-brand); }
+
+/* --- mm-stepper --- */
+.mm-ui .mm-stepper,
+.mm-ui .mm-steps ol.mm-stepper { display: flex; flex-wrap: nowrap; list-style: none; margin: 0; padding: 0; gap: 0; counter-reset: step; border: 1px solid var(--mm-line); border-radius: var(--mm-radius); overflow: hidden; background: var(--mm-surface); }
+.mm-ui .mm-step,
+.mm-ui .mm-steps li.mm-step { flex: 1 1 0; min-width: 0; position: relative; display: flex; }
+.mm-ui .mm-step + .mm-step::before { content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 1px; height: 60%; background: var(--mm-line); }
+.mm-ui .mm-step-link { flex: 1 1 0; min-width: 0; display: flex; align-items: center; gap: var(--mm-pad-2); padding: var(--mm-pad-3) var(--mm-pad-3); color: var(--mm-muted); text-decoration: none; transition: background var(--mm-motion-fast), color var(--mm-motion-fast); }
+.mm-ui .mm-step-link:hover { background: var(--mm-bg); color: var(--mm-ink); }
+.mm-ui .mm-step-mark { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; background: var(--mm-bg); color: var(--mm-muted); font-weight: 700; font-size: var(--mm-text-sm); border: 1px solid var(--mm-line); flex-shrink: 0; }
+.mm-ui .mm-step-label { font-weight: 600; font-size: var(--mm-text-sm); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mm-ui .mm-step.is-current .mm-step-link,
+.mm-ui .mm-step.mm-step-is-current .mm-step-link { background: var(--mm-brand-soft); color: var(--mm-brand); }
+.mm-ui .mm-step.is-current .mm-step-mark,
+.mm-ui .mm-step.mm-step-is-current .mm-step-mark { background: var(--mm-brand); color: white; border-color: var(--mm-brand); }
+.mm-ui .mm-step.is-done .mm-step-link,
+.mm-ui .mm-step.mm-step-is-done .mm-step-link { color: var(--mm-success); }
+.mm-ui .mm-step.is-done .mm-step-mark,
+.mm-ui .mm-step.mm-step-is-done .mm-step-mark { background: var(--mm-success); color: white; border-color: var(--mm-success); }
+.mm-ui .mm-step.is-upcoming .mm-step-mark,
+.mm-ui .mm-step.mm-step-is-upcoming .mm-step-mark { color: var(--mm-muted); }
+
+/* --- mm-modal --- */
+.mm-ui .mm-modal { position: fixed; inset: 0; z-index: var(--mm-z-modal); display: flex; align-items: center; justify-content: center; padding: var(--mm-pad-4); }
+.mm-ui .mm-modal[hidden] { display: none; }
+.mm-ui .mm-modal[data-open] { display: flex; }
+.mm-ui .mm-modal-backdrop { position: absolute; inset: 0; background: rgba(15, 23, 42, 0.5); }
+.mm-ui .mm-modal-card { position: relative; background: var(--mm-surface); border-radius: var(--mm-radius); box-shadow: 0 12px 32px rgba(15, 23, 42, 0.18); max-height: calc(100vh - 64px); display: flex; flex-direction: column; width: 100%; }
+.mm-ui .mm-modal-s { max-width: 360px; }
+.mm-ui .mm-modal-m { max-width: 560px; }
+.mm-ui .mm-modal-l { max-width: 800px; }
+.mm-ui .mm-modal-xl { max-width: 1100px; }
+.mm-ui .mm-modal-head { display: flex; align-items: center; justify-content: space-between; padding: var(--mm-pad-4) var(--mm-pad-5); border-bottom: 1px solid var(--mm-line); }
+.mm-ui .mm-modal-title { margin: 0; font-size: var(--mm-text-lg); font-weight: 600; }
+.mm-ui .mm-modal-close { background: transparent; border: 0; font-size: var(--mm-text-2xl); line-height: 1; color: var(--mm-muted); cursor: pointer; padding: 0 var(--mm-pad-2); }
+.mm-ui .mm-modal-close:hover { color: var(--mm-ink); }
+.mm-ui .mm-modal-body { padding: var(--mm-pad-5); overflow-y: auto; }
+.mm-ui .mm-modal-foot { display: flex; gap: var(--mm-pad-2); justify-content: flex-end; padding: var(--mm-pad-3) var(--mm-pad-5); border-top: 1px solid var(--mm-line); background: var(--mm-bg); border-bottom-left-radius: var(--mm-radius); border-bottom-right-radius: var(--mm-radius); }
+
+/* --- mm-print-sheet --- */
+.mm-ui .mm-print-sheet { background: var(--mm-surface); border: 1px solid var(--mm-line); border-radius: var(--mm-radius); padding: var(--mm-pad-5); max-width: 800px; margin: 0 auto; }
+.mm-ui .mm-print-sheet-head { border-bottom: 1px solid var(--mm-line); padding-bottom: var(--mm-pad-3); margin-bottom: var(--mm-pad-4); }
+.mm-ui .mm-print-sheet-title { margin: 0; font-size: var(--mm-text-xl); font-weight: 600; }
+.mm-ui .mm-print-sheet-foot { margin-top: var(--mm-pad-4); padding-top: var(--mm-pad-3); border-top: 1px solid var(--mm-line); display: flex; justify-content: flex-end; }
+@media print {
+    .mm-ui .mm-print-sheet { border: 0; max-width: none; padding: 0; }
+    .mm-ui .mm-print-sheet-foot { display: none; }
+}
+.mm-ui .mm-print-sheet-thermal-80mm { width: 80mm; max-width: 80mm; padding: var(--mm-pad-2); font-family: var(--mm-font-mono); font-size: var(--mm-text-xs); }
+.mm-ui .mm-print-sheet-thermal-58mm { width: 58mm; max-width: 58mm; padding: var(--mm-pad-2); font-family: var(--mm-font-mono); font-size: var(--mm-text-xs); }
+.mm-ui .mm-print-sheet-a4-landscape { max-width: 1100px; }
+@media print {
+    .mm-ui .mm-print-sheet-a4-landscape { max-width: none; }
+}
+
+/* --- W1.7b / W2.4 / W2.5 container, stack & contrast utilities --- */
+.mm-ui .mm-text-center { text-align: center; }
+.mm-ui .mm-container { box-sizing: border-box; margin-left: auto; margin-right: auto; max-width: 1440px; padding-left: 24px; padding-right: 24px; width: 100%; }
+@media (max-width: 767px) { .mm-ui .mm-container { padding-left: 16px; padding-right: 16px; } }
+.mm-ui .mm-container-fluid { margin-left: auto; margin-right: auto; padding-left: 24px; padding-right: 24px; width: 100%; }
+@media (max-width: 767px) { .mm-ui .mm-container-fluid { padding-left: 16px; padding-right: 16px; } }
+.mm-ui .mm-section { margin: 0 0 24px; }
+.mm-ui .mm-stack { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.mm-ui .mm-stack-tight { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.mm-ui .mm-booking-board-page .board-stay-strip .stay-chip { color: var(--mm-ink-soft); }
+.mm-ui .mm-booking-board-page .board-stay-strip .stay-chip b { color: var(--mm-ink); }
+

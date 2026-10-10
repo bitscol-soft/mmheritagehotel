@@ -4,29 +4,11 @@
 @php
     $checkNUll = $nightaudits[0] != null || $nightaudits[0] != '';
 @endphp
-@section('page-header')
-    <i class="fa fa-info-circle"></i>Hotel Service Night Audit <span class="badge badge-info">{{ $checkNUll ? $nightaudits[0]->details->count() : 0 }}</span>
-@stop
 
 @section('content')
-
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="widget-box">
-                <div class="widget-header">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
-
-                    {{-- <span class="widget-toolbar">
-                        <a href="{{ route('night-audits.create') }}">
-                            <i class="ace-icon fa fa-plus"></i> Generate
-                        </a>
-                    </span> --}}
-
-                </div>
-
-                <div class="widget-body">
-                    <div class="widget-main">
-
+    <x-mm.styles />
+    <x-mm.page class="mm-night-audit" title="Hotel Service Night Audit" :subtitle="($checkNUll ? $nightaudits[0]->details->count() : 0) . ' records'">
+        <x-mm.panel>
                         @if( $checkNUll && count($nightaudits[0]->details) > 0)
                             <div class="row mb-2">
                                 <form action="" method="GET">
@@ -73,11 +55,8 @@
                                 {{-- @include('partials._paginate', ['data' => $nightaudits]) --}}
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+        </x-mm.panel>
+    </x-mm.page>
 
     @foreach ($nightaudits as $audit)
         @include('hotel-service-night-audits.details')

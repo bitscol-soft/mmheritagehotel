@@ -1,10 +1,6 @@
 @extends('layouts.master')
 @section('title', 'Hotel Service List')
 
-@section('page-header')
-    <i class="fa fa-bars"></i> Hotel Service List
-@stop
-
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -19,27 +15,19 @@
 
 
 @section('content')
-    <div class="row">
+    <x-mm.styles />
+    <x-mm.page class="mm-crud-index" title="Hotel Service List">
+        <x-slot name="actions">
+            @if (hasPermission('service.view', $slugs))
+                <a href="#modal-dialog" data-toggle="modal" class="btn btn-sm btn-primary">
+                    <i class="fa fa-plus-circle"></i> Add New Service
+                </a>
+            @endif
+        </x-slot>
 
-        <div class="col-sm-12">
-            <div class="widget-box">
-                <div class="widget-header">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
+        @include('services.category.add-modal')
 
-                    @if (hasPermission('service.view', $slugs))
-                        <span class="widget-toolbar">
-                            <a href="#modal-dialog" data-toggle="modal">
-                                <i class="fa fa-plus-circle"></i> Add New Service
-                            </a>
-                        </span>
-                    @endif
-
-                </div>
-
-                @include('services.category.add-modal')
-
-                <div class="widget-body">
-                    <div class="widget-main">
+        <x-mm.panel>
                         @include('partials._alert_message')
 
                         <div class="row">
@@ -102,15 +90,8 @@
                                 </tbody>
                             </table>
                         </div>
-                    </div>
-                </div>
-            </div>
-
-
-        </div>
-    </div>
-
-
+        </x-mm.panel>
+    </x-mm.page>
 @endsection
 
 @section('js')

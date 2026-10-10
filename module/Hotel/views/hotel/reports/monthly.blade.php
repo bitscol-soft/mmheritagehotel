@@ -2,10 +2,6 @@
 
 @section('title', 'Hotel Monthly Report')
 
-@section('page-header')
-    <i class="fa fa-users"></i>&nbsp;Hotel Monthly Report
-@stop
-
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/jquery-ui.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
@@ -298,24 +294,13 @@
 
     ?>
 
-    <div class="row">
-        <div class="col-sm-12 none-print">
+    <x-mm.styles />
+    <x-mm.page class="mm-report mm-report-monthly" title="Hotel Monthly Report">
+        <x-slot name="actions">
+            <a href="" class="mm-button mm-button-secondary"><i class="fa fa-file-excel-o"></i> Excel</a>
+        </x-slot>
 
-            <div class="col-sm-12 widget-container-col ui-sortable" id="widget-container-col-7">
-                <div class="widget-box widget-color-grey ui-sortable-handle" id="widget-box-7">
-                    <div class="widget-header widget-header-small">
-                        <h5 class="widget-title smaller">
-                            @yield('page-header') <span class="badge badge-primary">Total:
-                                {{ request('company_id') ? $employees->total() : 0 }}</span>
-                        </h5>
-                        <div class="widget-toolbar">
-                            <div class="btn-group">
-                                {{-- <span class="btn btn-sm btn-danger" style="cursor: pointer" onclick="print()"><i class="fa fa-print"></i> Print</span> --}}
-                                <a href="" class="btn btn-sm btn-success"><i class="fa fa-file-excel-o"></i> Excel</a>
-                            </div>
-                        </div>
-                    </div>
-
+        <x-mm.panel>
                     <div class="widget-body">
                         <div class="widget-main">
 
@@ -533,12 +518,8 @@
 
                         </div>
                     </div>
-                </div>
-            </div>
-
-        </div>
-
-    </div>
+        </x-mm.panel>
+    </x-mm.page>
 
 @endsection
 

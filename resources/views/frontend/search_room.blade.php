@@ -1,4 +1,4 @@
-@extends('frontend.layouts.master')
+@extends('frontend.layouts.mm-web')
 
 @push('custom_css')
 
@@ -26,7 +26,7 @@
             <div class="category-slider  @if($img_count > 1) slider-active @endif">
                 @foreach ($category->roomMultipleImg as $image)
                     <div class="slider-img">
-                        <img class="img-fluid" src="{{ asset($image->relative_path.$image->name) }}" alt="">
+                        <img class="img-fluid" src="{{ asset($image->relative_path.$image->name) }}" alt="" loading="lazy">
                     </div>
                 @endforeach
             </div>
@@ -66,7 +66,7 @@
                         <li>
                             @if ( $item != null && $item->aminities_icon != null)
                                 <div class="aminity-img">
-                                    <img class="img-fluid" src="{{ asset($item->aminities_icon) }}" alt="">
+                                    <img class="img-fluid" src="{{ asset($item->aminities_icon) }}" alt="" loading="lazy">
                                 </div>
                             @endif
                             <p>{{ $item != null ? $item->name : ''}}</p>

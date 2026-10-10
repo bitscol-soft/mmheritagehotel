@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title','Add New Category')
-@section('page-header')
-    <i class="fa fa-plus-circle"></i> Add New Category
-@stop
 @push('style')
 <link rel="stylesheet" href="{{ asset('assets/css/dropzone.min.css') }}" />
 <style>
@@ -28,25 +25,14 @@
 
                         <x-alert-message />
 
-
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label" for="cat_name"> Name <sup class="text-danger">*</sup> </label>
-                                            <div class="col-xs-12 col-sm-8 ">
-                                                <input type="text" id="cat_name" name="cat_name" placeholder="Enter Category Name" class="form-control" required>
-                                            </div>
-                                        </div>
+                                        <x-mm.field label="Name" id="cat_name" name="cat_name" placeholder="Enter Category Name" required />
                                     </div>
                                     <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label" for="capacity"> Guest Capacity <sup class="text-danger">*</sup></label>
-                                            <div class="col-xs-12 col-sm-8 ">
-                                                <input type="number" id="capacity" name="guest_capacity" placeholder="Enter Guest Capacity" class="form-control" required>
-                                            </div>
-                                        </div>
+                                        <x-mm.field label="Guest Capacity" id="capacity" name="guest_capacity" type="number" placeholder="Enter Guest Capacity" required />
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
@@ -61,28 +47,13 @@
                                         </div>
                                     </div>
                                     <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label" for="can_sleep">Can Sleep </label>
-                                            <div class="col-xs-12 col-sm-8 ">
-                                                <input type="number" id="can_sleep" name="can_sleep" placeholder="Ex - 1 person" class="form-control">
-                                            </div>
-                                        </div>
+                                        <x-mm.field label="Can Sleep" id="can_sleep" name="can_sleep" type="number" placeholder="Ex - 1 person" />
                                     </div>
                                     <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label" for="bed_details">Bed Details </label>
-                                            <div class="col-xs-12 col-sm-8 ">
-                                                <input type="text" id="bed_details" name="bed_details" placeholder="EX - Double Bed" class="form-control">
-                                            </div>
-                                        </div>
+                                        <x-mm.field label="Bed Details" id="bed_details" name="bed_details" placeholder="EX - Double Bed" />
                                     </div>
                                     <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label" for="room_size">Room Sqft</label>
-                                            <div class="col-xs-12 col-sm-8 ">
-                                                <input type="number" id="room_size" name="room_size" placeholder="EX - 2400sqft" class="form-control">
-                                            </div>
-                                        </div>
+                                        <x-mm.field label="Room Sqft" id="room_size" name="room_size" type="number" placeholder="EX - 2400sqft" />
                                     </div>
 
                                     <div class="col-md-12">
@@ -99,7 +70,6 @@
                                         </div>
                                     </div>
 
-
                                     {{-- <div class="col-md-12">
                                         <div class="form-group">
                                             <label class="col-sm-3 control-label" for="capacity">Room Photos</label>
@@ -113,20 +83,10 @@
                             <div class="col-md-6">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label" for="price"> Default Price<span class="currency-sign"></span> <sup class="text-danger">*</sup> </label>
-                                            <div class="col-xs-12 col-sm-8 ">
-                                                <input type="number" name="price" id="price" placeholder="Enter Price" class="form-control" required>
-                                            </div>
-                                        </div>
+                                        <x-mm.field label="Default Price" id="price" name="price" type="number" placeholder="Enter Price" required help="Currency" />
                                     </div>
                                     <div class="col-md-12">
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label" for="vat"> Vat (%) </label>
-                                            <div class="col-xs-12 col-sm-8 ">
-                                                <input type="number" id="vat" name="vat" value="0" placeholder="Enter Vat Amount" class="form-control" required>
-                                            </div>
-                                        </div>
+                                        <x-mm.field label="Vat (%)" id="vat" name="vat" type="number" value="0" placeholder="Enter Vat Amount" required />
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
@@ -139,7 +99,7 @@
                                                             <span class="lbl">&nbsp;{{ $item->name }}</span>
                                                         </label>
                                                     @endforeach
-												</div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -172,7 +132,6 @@
                             </div>
                         </div>
 
-
                         <div class="col-md-12 guest-wise-price-div" style="display: none">
                             <div class="form-group">
                                 <h4 style="font-weight: bolder">Guest Wise Price</h4>
@@ -182,8 +141,6 @@
                                 </div>
                             </div>
                         </div>
-
-
 
                         <div class="form-group category-form-actions">
                             <div class="col-xs-12 col-sm-12 text-right">
@@ -197,8 +154,6 @@
         </x-mm.panel>
     </x-mm.page>
 @endsection
-
-
 
 @section('js')
     <script src="{{ asset('assets/js/ace-elements.min.js') }}"></script>

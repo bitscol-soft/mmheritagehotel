@@ -1,10 +1,6 @@
 @extends('layouts.master')
 @section('title', 'Product Package List')
 
-@section('page-header')
-    <i class="fa fa-bars"></i> Product Package List
-@stop
-
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -15,7 +11,6 @@
         }
     </style>
 @stop
-
 
 @section('content')
 
@@ -61,7 +56,6 @@
                                     <td class="text-center">
                                         0
                                     </td>
-
 
                                     <td class="text-center">
 

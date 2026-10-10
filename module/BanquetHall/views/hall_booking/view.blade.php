@@ -1,10 +1,6 @@
 @extends('layouts.master')
 @section('title', 'Booking')
 
-@section('page-header')
-    <i class="fa fa-info-circle"></i> Booking
-@stop
-
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -95,22 +91,16 @@
         $current_due = $total_amount - $adv_amount;
     @endphp
 
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="widget-box">
-                <div class="widget-header">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
+    <x-mm.styles />
+    <x-mm.page class="mm-booking-view" title="Booking">
+        <x-slot name="actions">
+            <a href="{{ route('booking.index') }}" class="btn btn-sm btn-default">
+                <i class="ace-icon fa fa-list-alt"></i> Booking List
+            </a>
+        </x-slot>
 
-                    <span class="widget-toolbar">
-                        <a href="{{ route('booking.index') }}">
-                            <i class="ace-icon fa fa-list-alt"></i> Booking List
-                        </a>
-                    </span>
-
-                </div>
-
-                <div class="widget-body">
-                    <div class="widget-main booking-view">
+        <x-mm.panel>
+                    <div class="booking-view">
                         <form class="form-horizontal" action="{{ route('booking.checkout', $booking->id) }}" method="post"
                             enctype="multipart/form-data">
                             @csrf
@@ -520,12 +510,8 @@
 
                         </form>
                     </div>
-                </div>
-            </div>
-
-
-        </div>
-    </div>
+        </x-mm.panel>
+    </x-mm.page>
 
 
 @endsection

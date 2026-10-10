@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title','Account Subsidiary Edit')
-@section('page-header')
-    <i class="fa fa-list"></i> Account Subsidiary Edit
-@stop
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}"/>
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}"/>
@@ -57,7 +54,6 @@
     <script src="{{ asset('assets/js/chosen.jquery.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap-datepicker.min.js') }}"></script>
 
-
     <script src="{{ asset('assets/custom_js/chosen-box.js') }}"></script>
 
     <script>
@@ -79,5 +75,4 @@
     </script>
 
 @endsection
-
 

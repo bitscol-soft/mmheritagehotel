@@ -1,10 +1,6 @@
 @extends('layouts.master')
 @section('title', 'Hotel Service Invoice')
 
-@section('page-header')
-    <i class="fa fa-gear"></i> Hotel Service Invoice
-@stop
-
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -78,16 +74,16 @@
             <a class="mm-button mm-button-secondary" href="{{ route('hotelservice.service-sales.index') }}">
                 <i class="fa fa-list" aria-hidden="true"></i> All Sales
             </a>
-            <a href="#" class="mm-button" onclick="printPage('print_body'); return false;">
-                <i class="fa fa-print" aria-hidden="true"></i> Print
-            </a>
+            {{-- W4.3a: the print button is now provided by <x-mm.print-sheet>'s footer
+                 (the data-mm-print hook calls window.print()). The old jQuery
+                 printPage('print_body') link is removed. --}}
         @endif
     </x-slot>
     <x-mm.panel class="tw-p-4">
+        <x-mm.print-sheet>
                             <div id="print_body">
                                 <div id="customer_info" style="padding: 0 10px;">
                                     <div class="row">
-
 
                                         <div class="company-info text-center">
                                             <h4>{{ optional($invoice->company)->name }}</h4>
@@ -114,7 +110,6 @@
                                             <p class="patient"><b>Mobile : </b>
                                                 {{ optional($invoice->hotel_guest)->phone_no }}
                                             </p>
-
 
                                         </div>
                                         <div class="invoiceInfo" style="width: 40%;float: left;margin-top: 5px;">
@@ -243,20 +238,14 @@
                                     <br>
                                 </div>
                             </div>
+        </x-mm.print-sheet>
     </x-mm.panel>
 </x-mm.page>
 @endsection
 
 @section('js')
-    <script src="{{ asset('assets/custom_js/printThis.js') }}"></script>
-    <script type="text/javascript">
-        function printPage(id) {
-            $('#' + id).printThis({
-                importStyle: true
-            });
-        };
-        window.onreadystatechange = $('#print_body').printThis({
-            importStyle: true
-        });
-    </script>
+    {{-- W4.3a: the printThis.js script and the printPage() function
+         are no longer used. The print button is now provided by
+         <x-mm.print-sheet>'s footer (data-mm-print hook calls
+         window.print()). --}}
 @stop

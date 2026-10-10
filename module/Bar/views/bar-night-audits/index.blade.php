@@ -4,10 +4,6 @@
 @php
     $checkNUll = $nightaudits[0] != null || $nightaudits[0] != '';
 @endphp
-@section('page-header')
-    <i class="fa fa-info-circle"></i>Bar Night Audit <span
-        class="badge badge-info">{{ $checkNUll ? $nightaudits[0]->details->count() : 0 }}</span>
-@stop
 
 @section('content')
 
@@ -56,7 +52,6 @@
 
             <div class="col-xs-12">
 
-
                 @include('bar-night-audits.export.excel')
 
                 @if ($checkNUll && count($nightaudits[0]->details) > 0)
@@ -69,11 +64,9 @@
         </div>
     </x-mm.panel>
 
-
     @foreach ($nightaudits as $audit)
         @include('bar-night-audits.details')
     @endforeach
-
 
 </x-mm.page>
 

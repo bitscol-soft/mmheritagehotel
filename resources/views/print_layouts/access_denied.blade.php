@@ -1,9 +1,6 @@
 
 @extends('layouts.master')
 @section('title','Dashboard')
-@section('page-header')
-    <i class="fa fa-tachometer"></i> Dashboard
-@stop
 @section('css')
     <link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css" />
     <link rel="stylesheet" href="/assets/css/bootstrap-timepicker.min.css" />
@@ -13,8 +10,9 @@
 
 
 @section('content')
-
-
+    <x-mm.styles />
+    <x-mm.page class="mm-dashboard" title="Access Denied">
+        <x-mm.panel>
     <div class="row">
         <div class="col-xs-12">
 
@@ -100,6 +98,8 @@
             
         </div><!-- /.col -->
     </div>
+        </x-mm.panel>
+    </x-mm.page>
 
 
 @endsection

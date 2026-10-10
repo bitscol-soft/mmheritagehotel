@@ -2,10 +2,6 @@
 
 @section('title','Send Sms')
 
-@section('page-header')
-    <i class="fa fa-list"></i> Send Sms
-@stop
-
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -23,18 +19,9 @@
 
 
 @section('content')
-
-    <div class="row">
-        <div class="col-sm-12">
-
-            <!-- heading -->
-            <div class="widget-box widget-color-white ui-sortable-handle clearfix" id="widget-box-7">
-                <div class="widget-header widget-header-small">
-                    <h3 class="widget-title smaller text-primary">
-                        @yield('page-header')
-                    </h3>
-                </div>
-
+    <x-mm.styles />
+    <x-mm.page title="Send Sms" description="Filter employees and send bulk SMS messages.">
+        <x-mm.panel class="tw-p-4">
 
                 <!-- filter -->
                 <div class="row">
@@ -160,11 +147,8 @@
                         </table>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-
-
+        </x-mm.panel>
+    </x-mm.page>
 @endsection
 
 @section('js')

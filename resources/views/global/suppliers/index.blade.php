@@ -1,25 +1,23 @@
 
 @extends('layouts.master')
 @section('title',' Supplier')
-@section('page-header')
-    <i class="fa fa-list"></i>  Suppliers
-@stop
 @section('css')
 
 @stop
 
 
 @section('content')
+    <x-mm.styles />
+    <x-mm.page class="mm-crud-index" title="Suppliers">
+        <x-slot name="actions">
+            @if (hasPermission("suppliers.view", $slugs))
+                <a class="btn btn-sm btn-primary" href="{{ route('suppliers.create') }}">
+                    <i class="fa fa-plus"></i> Add @yield('title')
+                </a>
+            @endif
+        </x-slot>
 
-    <div class="page-header">
-        @if (hasPermission("suppliers.view", $slugs))
-            <a class="btn btn-xs btn-info" href="{{ route('suppliers.create') }}" style="float: right; margin: 0 2px;"> <i class="fa fa-plus"></i> Add @yield('title') </a>
-        @endif
-        <h1>
-            @yield('page-header')
-        </h1>
-    </div>
-
+        <x-mm.panel>
     @include('partials._alert_message')
 
     <div class="row">
@@ -85,6 +83,8 @@
 
         </div>
     </div>
+        </x-mm.panel>
+    </x-mm.page>
 
     
     @foreach($suppliers as $supplier)

@@ -1,9 +1,5 @@
 @extends('layouts.master')
 @section('title','Inventory Report')
-
-@section('page-header')
-    <i class="fa fa-list"></i> Inventory Report
-@stop
 <!-- <i class="fa fa-list"></i> Inventory Reports -->
 
 @section('css')
@@ -14,16 +10,9 @@
 
 
 @section('content')
-
-
-    <div class="page-header">
-        <h1>
-            @yield('page-header')&nbsp;
-            <span style="font-size: 15px;">(<b>{{ $item_stocks->total() }} </b>Records Found, page <b>{{ request('page') ?? 1 }}</b> of <b>{{ $item_stocks->lastPage() }}</b>, Data Show per page <b>{{ $item_stocks->perPage() }}</b> ) </span>
-        </h1>
-    </div>
-
-
+    <x-mm.styles />
+    <x-mm.page class="mm-report-page mm-bar" title="Inventory Report" :subtitle="'(' . $item_stocks->total() . ' Records Found, page ' . (request('page') ?? 1) . ' of ' . $item_stocks->lastPage() . ', Data Show per page ' . $item_stocks->perPage() . ')'">
+        <x-mm.panel>
     <div class="row">
         <form class="form-horizontal" action="{{ route('items_stock') }}" method="get">
 
@@ -112,8 +101,8 @@
                         <td>{{ $key+$item_stocks->firstItem() }}</td>
                         <td style="font-weight: bold !important;">{{ fdate($item->created_at) }}</td>
                         <td>{{ $item->name }}</td>
-                        <td>{{ $item->item_unit->name }}</td>
-                        <td>{{ $item->company->name }}</td>
+                        <td>{{ optional($item->item_unit)->name }}</td>
+                        <td>{{ optional($item->company)->name }}</td>
                         <td class="text-center">
                             @if ($item->current_stock > 0)
                                 <a target="_blank" href="{{ route('item_details') }}?&company_id={{ $item->company_id }}&item_id={{ $item->name }}&from_date={{ request('from_date') }}&to_date={{ request('to_date') }}">{{ $item->current_stock }}</a>
@@ -159,6 +148,8 @@
 
     </div>
 </div>
+        </x-mm.panel>
+    </x-mm.page>
 
 
 @endsection

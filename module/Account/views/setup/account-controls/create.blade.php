@@ -1,13 +1,9 @@
 @extends('layouts.master')
 @section('title','Account Controls')
-@section('page-header')
-<i class="fa fa-list"></i> Account Controls
-@stop
 @push('style')
 <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
 <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
 @endpush
-
 
 @section('content')
 
@@ -30,7 +26,7 @@
                             <select required name="company_id" class="chosen-select-100-percent" data-placeholder="- Select Account -">
                                 <option></option>
                                 @foreach($company as $key => $name)
-                                <option value="{{ $key }}" {{auth()->user()->company->id == $key ? 'selected' : ''}}>{{ $name }}</option>
+                                <option value="{{ $key }}" {{optional(auth()->user()->company)->id == $key ? 'selected' : ''}}>{{ $name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -61,7 +57,6 @@
 @section('js')
 <script src="{{ asset('assets/js/chosen.jquery.min.js') }}"></script>
 <script src="{{ asset('assets/js/bootstrap-datepicker.min.js') }}"></script>
-
 
 <script src="{{ asset('assets/custom_js/chosen-box.js') }}"></script>
 

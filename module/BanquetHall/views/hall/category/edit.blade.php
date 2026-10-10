@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title', 'Edit Category')
-@section('page-header')
-    <i class="fa fa-edit"></i> Edit Category
-@stop
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/dropzone.min.css') }}" />
     <style>
@@ -50,30 +47,14 @@
                 @method('PUT')
                 @include('partials._alert_message')
 
-
                 <div class="row">
                     <div class="col-md-6">
                         <div class="row">
                             <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label" for="cat_name"> Category Name </label>
-                                    <div class="col-xs-12 col-sm-8 ">
-                                        <input type="text" id="cat_name" name="cat_name"
-                                            value="{{ $category->name }}" placeholder="Enter Category Name"
-                                            class="form-control">
-                                    </div>
-                                </div>
+                                <x-mm.field label="Category Name" id="cat_name" name="cat_name" value="{{ $category->name }}" placeholder="Enter Category Name" />
                             </div>
                             <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label" for="capacity"> Guest Capacity
-                                    </label>
-                                    <div class="col-xs-12 col-sm-8 ">
-                                        <input type="number" id="capacity" name="guest_capacity"
-                                            value="{{ $category->guest_capacity }}"
-                                            placeholder="Enter Guest Capacity" class="form-control">
-                                    </div>
-                                </div>
+                                <x-mm.field label="Guest Capacity" id="capacity" name="guest_capacity" type="number" value="{{ $category->guest_capacity }}" placeholder="Enter Guest Capacity" />
                             </div>
                             <div class="col-md-12">
                                 <div class="form-group">
@@ -87,8 +68,6 @@
                                     </div>
                                 </div>
                             </div>
-
-
 
                         </div>
                     </div>
@@ -134,7 +113,6 @@
                     </div>
                 </div>
 
-
                 <div class="form-group">
                     <label for="inputError" class="col-xs-12 col-sm-3 col-md-3 control-label"></label>
                     <div class="col-xs-12 col-sm-12 text-right">
@@ -148,8 +126,6 @@
         </x-mm.panel>
     </x-mm.page>
 @endsection
-
-
 
 @section('js')
     <script src="{{ asset('assets/js/ace-elements.min.js') }}"></script>

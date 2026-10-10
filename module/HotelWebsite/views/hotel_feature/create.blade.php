@@ -1,9 +1,6 @@
 @extends('layouts.master')
 
 @section('title',' Edit Feature Header')
-@section('page-header')
-<i class="fa fa-info-circle"></i> Homepage Feature Heading
-@stop
 @section('css')
 <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
 @stop
@@ -48,7 +45,6 @@
                 </div>
             </div>
 
-
             <div class="form-actions center" style="text-align: right !important; margin: 0;">
                 <button type="submit" class="mm-button">
                     <i class="ace-icon fa fa-save icon-on-right bigger-110"></i>
@@ -62,7 +58,5 @@
 
 @section('js')
 
-<script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
-<script src="{{ asset('assets/js/jquery.dataTables.bootstrap.min.js') }}"></script>
 
 @stop

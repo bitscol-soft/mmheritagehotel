@@ -1,10 +1,6 @@
 @extends('layouts.master')
 @section('title', 'Add Booking')
 
-@section('page-header')
-    <i class="fa fa-plus-circle"></i> Add New Booking
-@stop
-
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -37,7 +33,6 @@
 
     @include('booking._css.css')
 @endpush
-
 
 @section('content')
 
@@ -73,14 +68,10 @@
                                         $date = array_map('trim', explode('-', $range));
                                     @endphp
 
-
-
                                     <!------------ INCLUDE GUEST INPUT FIELDS ------------>
                                     <div class="row">
                                         @include('booking._inc._booking-next-input-info')
                                     </div>
-
-
 
                                 </div>
                             </div>
@@ -265,7 +256,6 @@
                                                     // $grand_total = $total_without_vat + $vat_amount;
                                                     $grand_total = $sub_total;
 
-
                                                     // var rate = (subtotal / room_rate) * 100;
                                                     // var service_amount = (rate * service_percent) / 100;
                                                     // var total_without_vat = rate + service_amount;
@@ -424,7 +414,6 @@
                                                 </td>
                                             </tr>
 
-
                                         </tfoot>
                                     </table>
                                 </div>
@@ -452,7 +441,6 @@
     @include('partials.modal.new_guest_modal')
     @include('partials/modal/edit_v1_guest_modal')
 
-
 @endsection
 
 @section('script')
@@ -462,8 +450,6 @@
     <script src="{{ asset('assets/custom_js/date-picker.js') }}"></script>
     <script src="{{ asset('assets/custom_js/chosen-box.js') }}"></script>
 
-
     @include('booking._script.booking-next-script')
-
 
 @endsection

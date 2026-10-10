@@ -11,21 +11,15 @@
 @endsection
 
 @section('content')
-    <div class="row">
-        <div class="col-12">
-            <div class="breadcrumbs ace-save-state" id="breadcrumbs">
-                <h4 class="pl-2"><i class="fa fa-plus-circle"></i> @yield('title')</h4>
+    <x-mm.styles />
+    <x-mm.page class="mm-rst-adjust mm-rst-form" title="Add New Stock Adjsutment">
+        <x-slot name="actions">
+            <a class="btn btn-sm btn-default" href="{{ route('inv.purchases.index') }}">
+                <i class="fa fa-bars"></i> Stock Adjsutment
+            </a>
+        </x-slot>
 
-                <ul class="breadcrumb mb-1">
-                    <li><a href="{{ route('home') }}"><i class="ace-icon fa fa-home"></i></a></li>
-                    <li><a class="text-muted" href="{{ route('inv.purchases.index') }}">Stock Adjsutment</a></li>
-                    <li>Create</li>
-                </ul>
-            </div>
-
-            <div class="widget-body">
-                <div class="widget-main">
-
+        <x-mm.panel>
                     @include('partials._alert_message')
 
 
@@ -195,10 +189,8 @@
                             <a class="btn btn-sm btn-info" href="{{ route('inv.purchases.index') }}"> <i class="fa fa-bars"></i> LIST </a>
                         </div>
                     </form>
-                </div>
-            </div>
-        </div>
-    </div>
+        </x-mm.panel>
+    </x-mm.page>
 @endsection
 
 

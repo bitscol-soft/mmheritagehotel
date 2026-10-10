@@ -1,7 +1,9 @@
 <x-mm.panel class="tw-p-4 tw-mb-4">
-<form action="" method="get" class="mm-setup-filter">
-    <x-mm.field label="Title" id="booking-note-filter" name="title" :value="request('title')" />
-    <button type="submit" class="mm-button mm-button-primary">Search</button>
-    <a href="{{ request()->url() }}" class="mm-button mm-button-secondary">Reset</a>
-</form>
+    {{-- W3.3: filter-bar component. The <x-mm.filter-bar> wires
+         data-mm-filter-target="#searchForm" so the existing
+         searchForm (if/when the page wraps it) submits on change.
+         The form action defaults to the current URL when blank. --}}
+    <x-mm.filter-bar action="" method="GET" search-form-id="searchForm">
+        <x-mm.field label="Title" id="booking-note-filter" name="title" :value="request('title')" />
+    </x-mm.filter-bar>
 </x-mm.panel>

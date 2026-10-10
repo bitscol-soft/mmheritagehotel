@@ -96,6 +96,9 @@
 @endpush
 
 @section('content')
+    <x-mm.styles />
+    <x-mm.print-sheet title="Payment Voucher Invoice">
+        <x-mm.panel class="tw-p-4">
     {{-- <div class="row">
         <div class="col-md-12 text-center">
             <h1><strong>{{ optional($voucher->company)->name }}</strong></h1>
@@ -220,4 +223,6 @@
             Received By
         </div>
     </div>
+        </x-mm.panel>
+    </x-mm.print-sheet>
 @endsection

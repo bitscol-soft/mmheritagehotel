@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title', 'Product')
-@section('page-header')
-    <i class="fa fa-plus"></i> Product Create
-@stop
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}"/>
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}"/>
@@ -34,8 +31,6 @@
                                             <input id="name" name="name" type="text" required class="form-control input-sm" placeholder="Name" value="{{ old('name') }}">
                                         </div>
                                     </div>
-
-
 
                                     <!-- DESCRIPTION -->
                                     <div class="form-group row">
@@ -85,8 +80,6 @@
                                         </div>
                                     </div>
 
-
-
                                     <!-- Purchase Price -->
                                     <div class="form-group row">
                                         <label class="col-sm-2 control-label" for="name">
@@ -109,7 +102,6 @@
                                         </div>
                                     </div>                                    
                                     {{-- <input name="selling_price" type="hidden" class="form-control input-sm" placeholder="Product Sale Price" value="0"> --}}
-
 
                                     <!-- Opening Qty -->
         {{--                            <div class="form-group row">--}}
@@ -139,9 +131,7 @@
 @section('js')
     <script src="{{ asset('assets/js/chosen.jquery.min.js') }}"></script>
 
-
     <script src="{{ asset('assets/custom_js/chosen-box.js') }}"></script>
 
 @endsection
-
 

@@ -20,7 +20,7 @@ class GuestRegistrationTermsController extends Controller
 
     public function index()
     {
-        $bookingNotes = GuestRegistrationTerm::queryLike('name')->get();
+        $bookingNotes = GuestRegistrationTerm::queryLike('title')->get();
 
         return view('guest-registration-terms.index', compact('bookingNotes'));
     }
@@ -105,7 +105,7 @@ class GuestRegistrationTermsController extends Controller
     {
         // $this->hasAccess("guests.edit");
 
-        $bookingNote     = GuestRegistrationTerm::find($id);
+        $bookingNote     = GuestRegistrationTerm::findOrFail($id);
 
         return view('guest-registration-terms.edit', compact('bookingNote'));
     }
@@ -131,7 +131,7 @@ class GuestRegistrationTermsController extends Controller
         ]);
 
         try {
-            $bookingNote = GuestRegistrationTerm::find($id);
+            $bookingNote = GuestRegistrationTerm::findOrFail($id);
 
             $bookingNote->update([
                 'title'                  => $request->title,

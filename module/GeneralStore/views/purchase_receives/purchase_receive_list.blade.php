@@ -22,85 +22,76 @@
 
         <div class="row">
             <div class="col-xs-12">
-                    <x-mm.table-scroll label="Purchase receives">
-                        <table class="table table-striped table-bordered table-hover">
-                            <thead>
-                                <tr>
-                                    <th>SL</th>
-                                    <th>Date</th>
-                                    <th>GRN No.</th>
-                                    <th>Date</th>
-                                    <th>Purchase Number</th>
-                                    <th>Company</th>
-                                    <th>Required Qty</th>
-                                    <th>Received Qty</th>
-                                    <th>Challan Number</th>
-                                    <th>Received By</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
+                    <x-mm.data-table :columns="[
+                        ['label' => 'SL'],
+                        ['label' => 'Date'],
+                        ['label' => 'GRN No.'],
+                        ['label' => 'Date'],
+                        ['label' => 'Purchase Number'],
+                        ['label' => 'Company'],
+                        ['label' => 'Required Qty'],
+                        ['label' => 'Received Qty'],
+                        ['label' => 'Challan Number'],
+                        ['label' => 'Received By'],
+                        ['label' => ''],
+                    ]" table-class="table table-striped table-bordered table-hover" label="Purchase receives">
+                        @foreach($purchase_receives as $key => $purchase_receive)
+                            @php
+                                $total_received_quantity = 0;
+                                $total_required_quantity = 0;
+                                foreach ($purchase_receive->purchase_receive_details as $key => $purchase) {
+                                    $total_received_quantity += $purchase->quantity;
+                                    $total_required_quantity += $purchase_receive->purchase->purchase_details[$key]->quantity;
+                                }
+                            @endphp
+                        <tr>
+                            <td>{{ $key+1 }}</td>
+                            <td style="min-width: 90px">{{ $purchase_receive->purchase_receive_date }}</td>
+                            <td>{{ $purchase_receive->form_number }}</td>
+                            <td style="min-width: 90px">{{ $purchase_receive->purchase->purchase_date }}</td>
+                            <td>{{ $purchase_receive->purchase->form_number }}</td>
+                            <td>{{ $purchase_receive->company->name }}</td>
+                            <td>{{ $total_required_quantity }}</td>
+                            <td>{{ number_format($total_received_quantity, 2) }}</td>
+                            <td>{{ $purchase_receive->purchase_challan_number }}</td>
+                            <td>
+                                <p title="Update Time : {{ $purchase_receive->updated_at }}">{{ $purchase_receive->updated_user->name }}</p>
+                                <p style="margin-top:-10px !important; font-size: 10px !important;">{{ \Carbon\Carbon::parse($purchase_receive->updated_at)->format('Y-m-d') }}</p>
+                            </td>
+                            <td>
+                                <div class="btn-group btn-corner" style="min-width: 50px">
 
-                            <tbody>
+                                    <a href="{{ route('print.purchase-receive', $purchase_receive->id) }}" role="button" target="__blank" class="btn btn-xs btn-info" title="Print">
+                                        <i class="fa fa-print"></i>
+                                    </a>
+                                    <a  href="#purchase-receive-details{{ $purchase_receive->id }}" role="button" data-toggle="modal" class="btn btn-xs btn-purple" title="View Details">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
 
-                                @foreach($purchase_receives as $key => $purchase_receive)
                                     @php
-                                        $total_received_quantity = 0;
-                                        $total_required_quantity = 0;
-                                        foreach ($purchase_receive->purchase_receive_details as $key => $purchase) {
-                                            $total_received_quantity += $purchase->quantity;
-                                            $total_required_quantity += $purchase_receive->purchase->purchase_details[$key]->quantity;
+                                        $count = 0;
+                                        foreach ($purchase_receive->purchase_receive_details as $details ){
+                                            $count += count($details->is_in_stock);
                                         }
                                     @endphp
-                                <tr>
-                                    <td>{{ $key+1 }}</td>
-                                    <td style="min-width: 90px">{{ $purchase_receive->purchase_receive_date }}</td>
-                                    <td>{{ $purchase_receive->form_number }}</td>
-                                    <td style="min-width: 90px">{{ $purchase_receive->purchase->purchase_date }}</td>
-                                    <td>{{ $purchase_receive->purchase->form_number }}</td>
-                                    <td>{{ $purchase_receive->company->name }}</td>
-                                    <td>{{ $total_required_quantity }}</td>
-                                    <td>{{ number_format($total_received_quantity, 2) }}</td>
-                                    <td>{{ $purchase_receive->purchase_challan_number }}</td>
-                                    <td>
-                                        <p title="Update Time : {{ $purchase_receive->updated_at }}">{{ $purchase_receive->updated_user->name }}</p>
-                                        <p style="margin-top:-10px !important; font-size: 10px !important;">{{ \Carbon\Carbon::parse($purchase_receive->updated_at)->format('Y-m-d') }}</p>
-                                    </td>
-                                    <td>
-                                        <div class="btn-group btn-corner" style="min-width: 50px">
 
-                                            <a href="{{ route('print.purchase-receive', $purchase_receive->id) }}" role="button" target="__blank" class="btn btn-xs btn-info" title="Print">
-                                                <i class="fa fa-print"></i>
-                                            </a>
-                                            <a  href="#purchase-receive-details{{ $purchase_receive->id }}" role="button" data-toggle="modal" class="btn btn-xs btn-purple" title="View Details">
-                                                <i class="fa fa-eye"></i>
-                                            </a>
+                                    @if(hasPermission('purchase.receives.delete', $slugs) && $count == 0)
+                {{--                                @if(hasPermission('purchase.receives.delete', $slugs) && $purchase_receive->totalQuantity->first()->totalReceived >= $purchase_receive->totalQuantity->first()->totalRemaining)--}}
+                                    <button type="button" onclick="delete_check({{ $purchase_receive->id }})" class="btn btn-xs btn-danger" title="Delete">
+                                        <i class="fa fa-trash-o"></i>
+                                    </button>
+                                    @endif
+                                </div>
 
-                                            @php
-                                                $count = 0;
-                                                foreach ($purchase_receive->purchase_receive_details as $details ){
-                                                    $count += count($details->is_in_stock);
-                                                }
-                                            @endphp
+                                <form action="{{ route('purchase.receives.destroy',$purchase_receive->id)}}" id="deleteCheck_{{ $purchase_receive->id }}" method="POST">
+                                    @csrf
+                                    @method("DELETE")
+                                </form>
 
-                                            @if(hasPermission('purchase.receives.delete', $slugs) && $count == 0)
-            {{--                                @if(hasPermission('purchase.receives.delete', $slugs) && $purchase_receive->totalQuantity->first()->totalReceived >= $purchase_receive->totalQuantity->first()->totalRemaining)--}}
-                                            <button type="button" onclick="delete_check({{ $purchase_receive->id }})" class="btn btn-xs btn-danger" title="Delete">
-                                                <i class="fa fa-trash-o"></i>
-                                            </button>
-                                            @endif
-                                        </div>
-
-                                        <form action="{{ route('purchase.receives.destroy',$purchase_receive->id)}}" id="deleteCheck_{{ $purchase_receive->id }}" method="POST">
-                                            @csrf
-                                            @method("DELETE")
-                                        </form>
-
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </x-mm.table-scroll>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </x-mm.data-table>
 
                     @include('partials._paginate', ['data' => $purchase_receives])
                 </div>
@@ -193,9 +184,6 @@
 
 @section('js')
 
-<script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
-<script src="{{ asset('assets/js/jquery.dataTables.bootstrap.min.js') }}"></script>
-
 <script src="{{ asset('assets/js/ace-elements.min.js') }}"></script>
 <script src="{{ asset('assets/js/ace.min.js') }}"></script>
 
@@ -218,19 +206,5 @@
         })
 
     }
-</script>
-
-
-<script type="text/javascript">
-    jQuery(function($) {
-        $('#dynamic-table').DataTable({
-            "ordering": false,
-            "bPaginate": false,
-            "lengthChange": false,
-            "info": false,
-            'searching': false
-        });
-
-    })
 </script>
 @stop

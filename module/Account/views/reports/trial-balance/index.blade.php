@@ -1,13 +1,6 @@
 @extends('layouts.master')
 
-
 @section('title', 'Trial Balance')
-
-@section('page-header')
-    <i class="fa fa-info-circle"></i> Trial Balance
-@stop
-
-
 
 @push('style')
 
@@ -21,7 +14,6 @@
         tr {
             border: none !important;
         }
-
 
         @media print {
 
@@ -65,7 +57,6 @@
     </style>
 @endpush
 
-
 @section('content')
 @php
     $from = request('from', date('Y-m-d'));
@@ -107,7 +98,6 @@
         <h3 class="text-center d-print" style="margin-top: -30px !important;">TRIAL BALANCE</h3>
         <h4 class="text-center d-print">As On {{ fdate(request('from') ?? today(), 'd/m/Y') }}</h4>
 
-
         <!-- LIST -->
         <div class="row" style="width: 100%; margin: 0 !important; padding: 0 !important;">
             <div class="col-sm-12">
@@ -130,7 +120,6 @@
                                         FOUND!</td>
                                 </tr>
                             @endif
-
 
                             @php
                                 $totalDebit = 0;
@@ -161,7 +150,6 @@
                                     }
                                 @endphp
 
-
                                 <tr style="background: #a8c1c3; color: white;">
                                     <th colspan="4">
                                         <strong style="font-size: 16px">{{ $accountGroup->name }}</strong>
@@ -186,15 +174,11 @@
                                         </td>
                                     @endif
 
-
-
                                     @php
                                         $totalDebit += $creditAccountGroup;
                                         $totalCredit += $creditAccountGroup;
                                     @endphp
                                 </tr>
-
-
 
                                 @foreach ($accountGroup->accountControls as $accountControl)
                                     @php
@@ -278,7 +262,6 @@
                                                     <td width="20%" class="text-right pr-1 account-debit-{{ $accountSubsidiary->id }}">
                                                         {{ number_format($account->debit - $account->credit ?? 0, 2) }}
 
-
                                                     </td>
                                                     <td width="20%" class="text-right pr-1">0.00</td>
                                                 @else
@@ -296,7 +279,6 @@
                             @endforeach
                         </tbody>
 
-
                         <thead>
                             <tr class="bg-secondary"
                                 style="color: black !important; font-weight: bolder; font-size: 15px">
@@ -313,7 +295,6 @@
                 </x-mm.table-scroll>
                 <br>
 
-
                 <!-- EXCEL BUTTON -->
                 <a class="hidden-print" href="{{ url()->current() }}?export_type=excel&{{ request()->getQueryString() }}" target="_blank" style="margin: 18px 0 0 20px; display: inline-block;">
                     <img src="{{ asset('assets/images/export-icons/excel-icon.png') }}">
@@ -326,9 +307,6 @@
 </x-mm.page>
 
 @endsection
-
-
-
 
 @section('js')
 
@@ -344,10 +322,6 @@
 
             calculateAccountControlTotal()
         })
-
-
-
-
 
         // SUBSIDIARY
         function calculateSubsidiaryTotal() {
@@ -366,10 +340,6 @@
                 subsidiary.text(moneyFormat(total_subsidiary, 0))
             })
         }
-
-
-
-
 
         // SUBSIDIARY
         function calculateAccountControlTotal() {

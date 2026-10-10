@@ -1127,7 +1127,7 @@ class BookingService
             $this->roomLog(request('room_id'), 'Dirty', 'Checkout and Room status goes to dirty by @ '.auth()->user()->name, null);
 
 
-            Guest::find($booking->customer_id)->update([
+            optional(Guest::find($booking->customer_id))->update([
                 'booking_id'    => null
             ]);
 

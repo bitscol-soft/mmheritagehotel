@@ -15,39 +15,17 @@ $login_background_option = $settings
 $login_background_image = optional(App\Models\Group::first())->login_background_image;
 @endphp
 
-@if (optional($employee_login)->value == 1 && $intended_string == 'url-')
-    <input type="hidden" class="redirect-to-employee" value="1">
-    <input type="hidden">
-@endif
+@extends('layouts.app')
 
-<!DOCTYPE html>
-<html lang="en">
+@section('title', (request()->routeIs('password-reset.verify-token') ? 'Reset Password' : 'Login Page') . ' - ' . config('app.name'))
 
-<head>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta charset="utf-8" />
-    <title>{{ request()->routeIs('password-reset.verify-token') ? 'Reset Password' : 'Login Page' }} -
-        {{ config('app.name') }}</title>
-
-    <meta name="description" content="User login page" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-
-    <!-- bootstrap & fontawesome -->
-    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/font-awesome/4.5.0/css/font-awesome.min.css') }}" />
-
-    <!-- text fonts -->
-    <link rel="stylesheet" href="{{ asset('assets/css/fonts.googleapis.com.css') }}" />
-
-    <!-- ace styles -->
-    <link rel="stylesheet" href="{{ asset('assets/css/ace.min.css') }}" />
-
-
-    <link rel="stylesheet" href="{{ asset('assets/css/ace-rtl.min.css') }}" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css" />
-
+@push('ui-styles')
+    {{-- Conditional login background image. The legacy self-contained view had this as a
+         literal <style> block inside <head>; here we push it to the layout's ui-styles stack
+         so the rules still land inside <head> via @stack('ui-styles') in layouts.app. The
+         rules only emit when an admin has uploaded a background image AND enabled it via
+         the `login_background_image` SystemSetting. --}}
     @if (file_exists($login_background_image) && $login_background_option)
-
         <style>
             .login-layout {
                 background-image: url({{ $login_background_image }});
@@ -68,16 +46,27 @@ $login_background_image = optional(App\Models\Group::first())->login_background_
             .login-layout .widget-box .widget-main {
                 padding: 1px 30px 1px 30px;
             }
-
         </style>
     @endif
+@endpush
 
+@push('custom_css')
+    {{-- Legacy self-contained view loaded Bootstrap + font-awesome + Ace + noty here.
+         Bootstrap is now loaded by the auth shell, so the other three are pushed
+         via custom_css. Order preserved from the legacy view. --}}
+    <link rel="stylesheet" href="{{ asset('assets/css/fonts.googleapis.com.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/font-awesome/4.5.0/css/font-awesome.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/ace.min.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/css/ace-rtl.min.css') }}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css" />
+@endpush
 
-</head>
-
-
-
-<body class="login-layout light-login">
+@section('content')
+@if (optional($employee_login)->value == 1 && $intended_string == 'url-')
+    <input type="hidden" class="redirect-to-employee" value="1">
+    <input type="hidden">
+@endif
+<div class="login-layout light-login">
     <div class="main-container">
         <div class="main-content">
             <div class="row">
@@ -462,21 +451,20 @@ $login_background_image = optional(App\Models\Group::first())->login_background_
             </div>
         </div>
     </div>
+@endsection
 
-
-    <!--[if !IE]> -->
-    <script src="{{ asset('assets/js/jquery-2.1.4.min.js') }}"></script>
-
+@push('custom_js')
+    {{-- Legacy inline scripts. Order preserved: jQuery mobile custom (touch only) →
+         noty → box toggle → employee redirect → background switcher → noty flash. --}}
     <script type="text/javascript">
         if ('ontouchstart' in document.documentElement) document.write(
             "<script src='{{ asset('assets/js/jquery.mobile.custom.min.js') }}'>" + "<" + "/script>");
     </script>
 
-    <script src="{{ asset('assets/js/bootstrap.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js"
         integrity="sha512-lOrm9FgT1LKOJRUXF3tp6QaMorJftUjowOWiDcG5GFZ/q7ukof19V0HKx/GWzXCdt9zYju3/KhBNdCLzK8b90Q=="
         crossorigin="anonymous"></script>
-    <!-- inline scripts related to this page -->
+
     <script type="text/javascript">
         jQuery(function($) {
             $(document).on('click', '.toolbar a[data-target]', function(e) {
@@ -552,6 +540,4 @@ $login_background_image = optional(App\Models\Group::first())->login_background_
             @endif
         });
     </script>
-</body>
-
-</html>
+@endpush

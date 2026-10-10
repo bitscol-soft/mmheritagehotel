@@ -1,10 +1,6 @@
 @extends('layouts.master')
 @section('title', 'Cash Flow')
 
-@section('page-header')
-    <i class="fa fa-info-circle"></i> Cash Flow
-@stop
-
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -61,7 +57,7 @@
             </x-mm.table-scroll>
             <x-paginate :data="$cashFlows" />
 
-            <x-export-button :pdf=1 :excel=1 />
+            <x-export-button :pdf=1 :excel=1 :print=1 />
         </x-mm.panel>
     @endif
 </x-mm.page>

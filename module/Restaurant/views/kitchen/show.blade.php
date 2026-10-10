@@ -1,10 +1,6 @@
 @extends('layouts.master')
 @section('title', 'Order Details')
 
-@section('page-header')
-    <i class="fa fa-info-circle"></i> Order Details
-@stop
-
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -72,19 +68,21 @@
 <x-mm.page class="mm-invoice-page mm-rst" title="Order details" description="Kitchen copy of the order. Printing outputs the document only.">
     @if (hasPermission('service.view', $slugs))
         <x-slot name="actions">
-            <a href="#" class="mm-button" onclick="printPage('print_body'); return false;">
-                <i class="fa fa-print" aria-hidden="true"></i> Print
-            </a>
+            {{-- W5.1: the print button is now provided by <x-mm.print-sheet>'s footer
+                 (the data-mm-print hook calls window.print()). The old jQuery
+                 printPage('print_body') link is removed. The print sheet uses
+                 thermal-80mm width via the existing CSS class
+                 .mm-print-sheet-thermal-80mm. --}}
         </x-slot>
     @endif
 
     <x-mm.panel class="tw-p-4">
+        <x-mm.print-sheet sheet="thermal-80mm">
         <div class="row">
             <div id="print_body">
                 <div id="customer_info" style="padding: 0 10px; margin-bottom: 15px">
                     <div class="row">
                         <div class="customerInfo" style="width: 60%;float: left; ">
-
 
                             <p><b>Name : {{ $orders->customer_name ?? '' }}</b>&nbsp;
 
@@ -146,7 +144,6 @@
                                     </tr>
                                 @endforeach
 
-
                             </tbody>
                             {{-- <tr>
                                 <td colspan="4" style="text-align: right; border: none !important;">
@@ -172,20 +169,14 @@
 
             </div>
         </div>
+        </x-mm.print-sheet>
     </x-mm.panel>
 </x-mm.page>
 @endsection
 
 @section('js')
-    <script src="{{ asset('assets/custom_js/printThis.js') }}"></script>
-    <script type="text/javascript">
-        function printPage(id) {
-            $('#' + id).printThis({
-                importStyle: true
-            });
-        };
-        window.onreadystatechange = $('#print_body').printThis({
-            importStyle: true
-        });
-    </script>
+    {{-- W5.1: the printThis.js script and the printPage() function
+         are no longer used. The print button is now provided by
+         <x-mm.print-sheet>'s footer (data-mm-print hook calls
+         window.print()). --}}
 @stop

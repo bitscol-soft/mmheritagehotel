@@ -22,7 +22,7 @@ class UserController extends Controller
     // admin change any users password
     public function AdminChangePassword($id)
     {
-        return view('users.change_password_by_admin', ['user' => User::find($id)]);
+        return view('users.change_password_by_admin', ['user' => User::findOrFail($id)]);
     }
 
 
@@ -36,7 +36,7 @@ class UserController extends Controller
         ]);
 
         try {
-            User::find(auth()->user()->id)->update(['password' => Hash::make($request->new_password)]);
+            User::findOrFail(auth()->user()->id)->update(['password' => Hash::make($request->new_password)]);
             // UserCredential::updateOrCreate(['user_id' => auth()->id()], ['credential' => $request->new_password]);
             UserCredential::updateOrCreate(['user_id' => auth()->id()], ['secrete' => $request->new_password]);
 
@@ -58,14 +58,13 @@ class UserController extends Controller
         ]);
 
         try {
-            User::find($request->id)
+            User::findOrFail($request->id)
                 ->update([
                 'password' => Hash::make($request->new_password)
             ]);
             UserCredential::updateOrCreate(['user_id' => $request->id], ['secrete' => $request->new_password]);
             return redirect()->back()->with('message', 'Password change successfully');
         } catch (Exception $ex) {
-            return $ex->getMessage();
             return redirect()->back()->with('error', 'Some error please check');
         }
     }

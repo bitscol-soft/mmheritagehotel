@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title', 'Purchases')
-@section('page-header')
-    <i class="fa fa-info-circle"></i> Purchases
-@stop
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
@@ -18,26 +15,19 @@
 
 
 @section('content')
+    <x-mm.styles />
+    <x-mm.page class="mm-crud-index mm-rst" title="Purchases">
+        <x-slot name="actions">
+            @if (hasPermission('pharmacy.view', $slugs))
+                <a href="{{ route('rst.purchases.create') }}" class="btn btn-sm btn-primary">
+                    <i class="ace-icon fa fa-plus mr-1"></i>Add Purchases
+                </a>
+            @endif
+        </x-slot>
 
-    <div class="row">
-
-        <div class="col-sm-12">
-            <div class="widget-box">
-                <div class="widget-header">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
-                    @if (hasPermission('pharmacy.view', $slugs))
-                        <span class="widget-toolbar">
-                            <a href="{{ route('rst.purchases.create') }}"><i class="ace-icon fa fa-plus mr-1"></i>Add
-                                Purchases</a>
-                        </span>
-                    @endif
-
-                </div>
-
+        <x-mm.panel>
                 @include('partials._alert_message')
 
-                <div class="widget-body">
-                    <div class="widget-main">
                         <table class="table table-striped table-bordered table-hover">
                             <thead>
                                 <tr>
@@ -96,14 +86,8 @@
                             </tbody>
                         </table>
                         {{ $purchases->links() }}
-
-                    </div>
-                </div>
-            </div>
-
-
-        </div>
-    </div>
+        </x-mm.panel>
+    </x-mm.page>
 
 
 

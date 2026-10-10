@@ -237,7 +237,7 @@
 
 /* ---------- Dark theme (beta): shell chrome, shared components and common legacy widgets ---------- */
 .mm-shell.mm-dark { background: #0f1720; color: #dbe5f1; color-scheme: dark; }
-.mm-shell.mm-dark .mm-ui { --mm-brand: #6ea8f0; --mm-ink: #e4ecf5; --mm-muted: #a2b4c7; --mm-line: #2b3a4a; --mm-bg: #131d28; --mm-surface: #18232f; }
+.mm-shell.mm-dark .mm-ui { --mm-brand: #6ea8f0; --mm-brand-hover: #8bbbf5; --mm-brand-soft: #1e3148; --mm-ink: #e4ecf5; --mm-ink-soft: #c3d2e2; --mm-muted: #a2b4c7; --mm-line: #2b3a4a; --mm-bg: #131d28; --mm-surface: #18232f; }
 .mm-shell.mm-dark #navbar { background-color: #131d28 !important; box-shadow: 0 1px 0 #2b3a4a; }
 .mm-shell.mm-dark #navbar .hotel-title-name { color: #e4ecf5 !important; }
 .mm-shell.mm-dark #navbar .ace-nav > li > a, .mm-shell.mm-dark #navbar .mm-hdr-search, .mm-shell.mm-dark #navbar .mm-hdr-btn { background: #1c2a38 !important; border-color: #2f4256; color: #e4ecf5 !important; }
@@ -346,3 +346,35 @@
 .mm-shell.mm-dark .daterangepicker select { background: #131d28; color: #e4ecf5; border-color: #2f4256; }
 .mm-shell.mm-dark .daterangepicker .calendar-table .next span, .mm-shell.mm-dark .daterangepicker .calendar-table .prev span { border-color: #e4ecf5; }
 .mm-shell.mm-dark .mm-range-error { color: #ff9b91; }
+
+/* W2.1: sidebar icon-rail (68px, persisted in localStorage) */
+.mm-shell .mm-shell-nav-tools [data-mm-nav-toggle] { flex: 1 1 0; min-width: 0; min-height: 34px; padding: 6px 8px; gap: 5px; font-size: 12px; white-space: nowrap; }
+.mm-shell .mm-shell-nav-tools [data-mm-nav-toggle][aria-pressed="true"] { background: #eaf1fa; border-color: #2f63a8; color: #275188; }
+.mm-shell.mm-dark .mm-shell-nav-tools [data-mm-nav-toggle][aria-pressed="true"] { background: #1e3148; border-color: #6ea8f0; color: #e4ecf5; }
+@media (max-width: 991px) {
+    .mm-shell .mm-shell-nav-mode { display: none; }
+}
+.mm-shell.mm-nav-rail { --mm-nav-width: 68px; }
+.mm-shell.mm-nav-rail #sidebar { overflow-x: hidden; overflow-y: auto; }
+.mm-shell.mm-nav-rail .mm-shell-nav-tools { display: none; }
+.mm-shell.mm-nav-rail #sidebar .nav-list { padding: 8px 8px 24px; }
+.mm-shell.mm-nav-rail #sidebar .nav-list > li { margin: 2px 0; }
+.mm-shell.mm-nav-rail #sidebar .nav-list > li > a { justify-content: center; min-height: 44px; padding: 8px 6px !important; }
+.mm-shell.mm-nav-rail #sidebar .nav-list > li > a > .menu-icon { flex: 0 0 32px; font-size: 17px; height: 32px; width: 32px; }
+.mm-shell.mm-nav-rail #sidebar .nav-list .menu-text,
+.mm-shell.mm-nav-rail #sidebar .nav-list a > .arrow { clip: rect(0, 0, 0, 0); border: 0; height: 1px; margin: -1px; overflow: hidden; padding: 0; position: absolute; white-space: nowrap; width: 1px; }
+.mm-shell.mm-nav-rail #sidebar .nav-list .submenu { border-left: 0; margin: 0 0 6px 16px; padding: 0 0 0 6px; }
+.mm-shell.mm-nav-rail #sidebar .nav-list a[aria-current="page"],
+.mm-shell.mm-nav-rail #sidebar .nav-list li.active > a { box-shadow: inset 0 -1px #2f63a8; }
+.mm-shell.mm-nav-rail #sidebar .nav-list > li + li { margin-top: 2px; }
+.mm-shell.mm-nav-rail #sidebar .nav-list > li > div > .nav-list > li > a { padding-left: 8px !important; padding-right: 8px !important; }
+.mm-shell.mm-nav-rail .mm-shell-rail-toggle { background: transparent; border: 1px solid transparent; border-radius: 6px; color: #37536a; cursor: pointer; height: 32px; width: 32px; }
+.mm-shell.mm-nav-rail .mm-shell-rail-toggle:hover { background: #f0f5fa; border-color: #dbe5f1; }
+.mm-shell.mm-nav-rail #sidebar .mm-shell-rail-toggle-wrap { padding: 0 0 8px; display: flex; justify-content: center; }
+@media (max-width: 991px) {
+    .mm-shell.mm-nav-rail #sidebar { visibility: visible; width: var(--mm-nav-width) !important; }
+    .mm-shell.mm-nav-rail.mm-nav-open #sidebar { visibility: visible; }
+}
+.mm-shell.mm-dark.mm-nav-rail .mm-shell-rail-toggle { color: #c4d3e3; }
+.mm-shell.mm-dark.mm-nav-rail .mm-shell-rail-toggle:hover { background: #1c2a38; border-color: #2f4256; }
+

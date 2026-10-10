@@ -2,9 +2,6 @@
 
 @section('title', ' Night Audit')
 
-@section('page-header')
-    <i class="fa fa-info-circle"></i> Night Audit</span>
-@stop
 @section('css')
 <style>
     .widget-header {
@@ -87,31 +84,20 @@
 @endsection
 
 @section('content')
+    <x-mm.styles />
+    <x-mm.page class="mm-night-audit" title="Night Audit">
+        <x-slot name="actions">
+            @if (request('date'))
+                <a class="mm-button mm-button-secondary" href="javascript:void(0)" onclick="print()">
+                    <i class="ace-icon fa fa-print"></i> Print
+                </a>
+            @endif
+            <a class="mm-button" href="{{ route('night-audits.create') }}">
+                <i class="ace-icon fa fa-plus"></i> Generate
+            </a>
+        </x-slot>
 
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="widget-box">
-                <div class="widget-header hidden-print">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
-
-                    @if (request('date'))
-                    <span class="widget-toolbar">
-                        <a href="javascript:void(0)" onclick="print()">
-                            <i class="ace-icon fa fa-print"></i> Print
-                        </a>
-                    </span>
-                    @endif
-                    <span class="widget-toolbar">
-                        <a href="{{ route('night-audits.create') }}">
-                            <i class="ace-icon fa fa-plus"></i> Generate
-                        </a>
-                    </span>
-
-                </div>
-
-                <div class="widget-body">
-                    <div class="widget-main">
-
+        <x-mm.panel>
                         @include('night-audits._inc.room-details')
 
                         <div class="row">
@@ -297,14 +283,8 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-
+        </x-mm.panel>
+    </x-mm.page>
 @endsection
 
 @section('js')

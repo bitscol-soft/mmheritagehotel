@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title', 'Website Setting')
-@section('page-header')
-    <i class="fa fa-info-circle"></i> Website Setting
-@stop
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/dropzone.min.css') }}" />
     <style>

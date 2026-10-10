@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title', 'Product Inventory')
-@section('page-header')
-    <i class="fa fa-list"></i> Product Inventory
-@stop
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -14,7 +11,6 @@
     </style>
 
 @stop
-
 
 @section('content')
 

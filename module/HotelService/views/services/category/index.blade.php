@@ -1,15 +1,10 @@
 @extends('layouts.master')
 @section('title', 'Hotel Service List')
 
-@section('page-header')
-    <i class="fa fa-bars"></i> Hotel Service List
-@stop
-
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
 @stop
-
 
 @section('content')
 <x-mm.styles />
@@ -25,66 +20,55 @@
     @include('partials._alert_message')
 
     <x-mm.panel>
-        <x-mm.table-scroll label="Hotel services">
-            <table id="data-table" class="table table-striped table-bordered nowrap table-bg-color" width="100%">
-                <thead>
-                    <tr>
-                        <th class="text-center">Sl</th>
-                        <th class="text-center">Name</th>
-                        <th class="text-center">Price</th>
-                        <th class="text-center">Created At</th>
-                        <th class="text-center">Updated At</th>
-                        <th class="text-center">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
+        <x-mm.data-table :columns="[
+            ['label' => 'Sl', 'align' => 'center'],
+            ['label' => 'Name', 'align' => 'center'],
+            ['label' => 'Price', 'align' => 'center'],
+            ['label' => 'Created At', 'align' => 'center'],
+            ['label' => 'Updated At', 'align' => 'center'],
+            ['label' => 'Action', 'align' => 'center'],
+        ]" id="data-table" label="Hotel services" table-class="table table-striped table-bordered nowrap table-bg-color" :sticky="false">
+            @php($sl = $services->firstItem())
 
-                    @php($sl = $services->firstItem())
+            @forelse ($services as $item)
+                <tr class="odd gradeX">
+                    <td>{{ $sl++ }}</td>
+                    <td>{{ $item->name }}</td>
+                    <td>{{ number_format($item->price) }}</td>
+                    <td class="text-center">
+                        {{ $item->created_at }}
+                    </td>
+                    <td class="text-center">
+                        {{ $item->updated_at }}
+                    </td>
+                    <td class="text-center">
 
-                    @forelse ($services as $item)
-                        <tr class="odd gradeX">
-                            <td>{{ $sl++ }}</td>
-                            <td>{{ $item->name }}</td>
-                            <td>{{ number_format($item->price) }}</td>
-                            <td class="text-center">
-                                {{ $item->created_at }}
-                            </td>
-                            <td class="text-center">
-                                {{ $item->updated_at }}
-                            </td>
-                            <td class="text-center">
+                        <div class="btn-group btn-corner">
+                            @if (hasPermission('service.edit', $slugs))
+                                <a href="#modal-dialog{{ $item->id }}" data-toggle="modal"
+                                    class="btn btn-sm btn-success" title="Edit">
+                                    <i class="fa fa-pencil-square-o"></i>
+                                </a>
+                            @endif
+                            @if (hasPermission('service.delete', $slugs))
 
-                                <div class="btn-group btn-corner">
-                                    @if (hasPermission('service.edit', $slugs))
-                                        <a href="#modal-dialog{{ $item->id }}" data-toggle="modal"
-                                            class="btn btn-sm btn-success" title="Edit">
-                                            <i class="fa fa-pencil-square-o"></i>
-                                        </a>
-                                    @endif
-                                    @if (hasPermission('service.delete', $slugs))
+                                <button type="button"
+                                    onclick="delete_item(`{{ route('hotelservice.services.destroy', $item->id) }}`)"
+                                    class="btn btn-sm btn-danger" title="Delete">
+                                    <i class="fa fa-trash-o"></i>
+                                </button>
+                            @endif
+                        </div>
+                        <!-- #modal-dialog -->
+                        @include('services.category.edit-modal')
+                        <!-- end edit section -->
+                    </td>
 
-                                        <button type="button"
-                                            onclick="delete_item(`{{ route('hotelservice.services.destroy', $item->id) }}`)"
-                                            class="btn btn-sm btn-danger" title="Delete">
-                                            <i class="fa fa-trash-o"></i>
-                                        </button>
-                                    @endif
-                                </div>
-                                <!-- #modal-dialog -->
-                                @include('services.category.edit-modal')
-                                <!-- end edit section -->
-                            </td>
-
-                        </tr>
-                    @empty
-                        <tr>
-                            <td class="text-danger text-center" style="font-size: 18px" colspan="30">No Data
-                                Found !</td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </x-mm.table-scroll>
+                </tr>
+            @empty
+                <x-no-table-record />
+            @endforelse
+        </x-mm.data-table>
     </x-mm.panel>
 
     @include('services.category.add-modal')

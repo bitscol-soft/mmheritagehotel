@@ -1,9 +1,6 @@
 @extends('layouts.master')
 @section('title', 'Purchase Create')
 
-@section('page-header')
-    New Purchase
-@stop
 @push('style')
     <style>
         .ui-autocomplete {
@@ -31,25 +28,18 @@
     </style>
 @endpush
 @section('content')
-    <div class="row">
-        <div class="col-md-12">
-            <div class="widget-box">
-                <div class="widget-header">
+    <x-mm.styles />
+    <x-mm.page class="mm-purchase-form mm-rst" title="New Purchase">
+        <x-slot name="actions">
+            @if (hasPermission('pharmacy.view', $slugs))
+                <a href="{{ route('rst.purchases.index') }}" class="btn btn-sm btn-default">
+                    <i class="ace-icon fa fa-list-alt"></i> All Purchased Products
+                </a>
+            @endif
+        </x-slot>
 
-                    <h4 class="widget-title"> <i class="fa fa-plus"></i> @yield('page-header')</h4>
-                    @if (hasPermission('pharmacy.view', $slugs))
-                        <span class="widget-toolbar">
-                            <a href="{{ route('rst.purchases.index') }}">
-                                <i class="ace-icon fa fa-list-alt"></i> All Purchased Products
-                            </a>
-                        </span>
-                    @endif
-                </div>
-                <div class="widget-body">
-
-
-
-                    <div class="widget-main">
+        <x-mm.panel>
+                    <div>
 
 
 
@@ -213,11 +203,8 @@
                     </div>
                 </div>
                 </form>
-            </div>
-        </div>
-    </div>
-    </div>
-    </div>
+        </x-mm.panel>
+    </x-mm.page>
 @endsection
 
 @section('script')

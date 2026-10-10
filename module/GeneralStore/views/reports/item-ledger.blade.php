@@ -273,11 +273,8 @@
     <script src="{{ asset('assets/js/chosen.jquery.min.js') }}"></script>
 
 
-    <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('assets/js/jquery.dataTables.bootstrap.min.js') }}"></script>
-
     <script src="{{ asset('assets/js/bootstrap-datepicker.min.js') }}"></script>
-    
+
 
 <script src="{{ asset('assets/js/jquery-ui.min.js') }}"></script>
 <script src="{{ asset('assets/js/jquery-ui.custom.min.js') }}"></script>
@@ -340,15 +337,6 @@
         }
 
     })
-
-    // data table
-    $('#dynamic-table').DataTable({
-        "ordering": false,
-        "bPaginate": false,
-        "lengthChange": false,
-        "info": false,
-        'searching': false
-    });
 
     // data picker
     $('.date-picker').datepicker({
