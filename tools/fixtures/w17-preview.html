@@ -2126,6 +2126,16 @@ module/Restaurant/views/kitchen/index.blade.php
     </ul>
 </section>
 
+<section class="preview-section" id="w6-4b">
+    <h2>W6.4b — Permission matrix bulk toggle + initial-load state sync (<code>47499253</code>)</h2>
+    <p style="color:#526578">Completes W6.4 across <code>module/Permission/views/access/{create,edit,employee-permission}.blade.php</code>.</p>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>Bulk-toggle toolbar (<code>.mm-perm-bulk-bar</code>)</strong>: adds a global <code>Select All Permissions</code> checkbox (<code>.mm-perm-select-all</code>) plus <code>Expand All</code> (<code>[data-mm-perm-expand="all"]</code>) and <code>Collapse All</code> (<code>[data-mm-perm-collapse="all"]</code>) buttons above the permission matrix on all 3 views.</li>
+        <li><strong>Initial-load &amp; live checkbox sync (<code>syncPermissionMatrixState()</code>)</strong>: automatically syncs <code>.parentCheckBox</code>, <code>.module-checkbox-control</code>, and <code>.mm-perm-select-all</code> on page load and on any permission checkbox change while keeping all existing form names and JS hooks byte-identical.</li>
+        <li><strong>Inline <code>&lt;style&gt;</code> removal</strong>: removes the 34-line inline <code>&lt;style&gt;</code> block (and duplicate <code>bootstrap-multiselect.min.css</code> link) from <code>access/create.blade.php</code> and moves its rules into <code>.mm-ui.mm-perm-access</code> in <code>resources/css/ui.css</code> and <code>public/assets/custom_css/ui.css</code>.</li>
+    </ul>
+</section>
+
 </body>
 
 </html>
