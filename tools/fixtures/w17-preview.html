@@ -2164,6 +2164,15 @@ module/Restaurant/views/kitchen/index.blade.php
     </ul>
 </section>
 
+<section class="preview-section" id="w23-bar-restaurant">
+    <h2>W2.3 Encountered-Pool — Remaining 19 Bar &amp; Restaurant views (<code>148217bb</code>)</h2>
+    <p style="color:#526578">Closes out all remaining <code>@section('page-header')</code> views in <code>module/Bar/</code> (4 views) and <code>module/Restaurant/</code> (15 views), bringing <strong>every module under <code>module/*/views/</code> to 0 remaining</strong> and reducing the repo-wide encountered-pool count from 43 &rarr; <strong>24</strong> (all 24 in <code>resources/views/</code>).</p>
+    <ul style="color:#526578;line-height:1.7;">
+        <li><strong>Bar (4 views &rarr; 0 remaining)</strong>: <code>bar/inventory/product-stock</code>, <code>bar/purchase/create</code>, and <code>bar/sales/exchange/{index,show}</code> migrated off <code>@section('page-header')</code> + <code>widget-box</code> / <code>.page-header</code> onto <code>&lt;x-mm.styles /&gt;</code> + <code>&lt;x-mm.page&gt;</code> + <code>&lt;x-mm.panel&gt;</code>.</li>
+        <li><strong>Restaurant (15 views &rarr; 0 remaining)</strong>: <code>inventory/mat_product/uploads/index</code>, <code>inventory/product-stock</code>, <code>inventory/production/goods_requisitions/{approve,edit,gin_list}</code>, <code>inventory/production/items/upload</code>, <code>inventory/production/purchases/create</code>, <code>purchase/{create,index}</code>, <code>reports/{cash-flow/index,sales/index}</code>, <code>rst/sales-v2/show-old</code>, <code>sales/bck_show</code>, and <code>sales/exchange/{index,show}</code> migrated off <code>@section('page-header')</code> + <code>widget-box</code> / <code>.page-header</code> onto <code>&lt;x-mm.styles /&gt;</code> + <code>&lt;x-mm.page&gt;</code> + <code>&lt;x-mm.panel&gt;</code>.</li>
+    </ul>
+</section>
+
 </body>
 
 </html>
