@@ -15,10 +15,44 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Purchase list</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Bar purchases with required and received quantities.</p>            </div>
-            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button" href="http://localhost/x/bar/purchases/create"><i class="ace-icon fa fa-plus mr-1"></i>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Beverage and spirits stock purchase orders with required and received quantities.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/bar-inventory-report"><i class="fa fa-cubes"></i> Bar Inventory</a>
+                <a class="mm-button" href="http://localhost/x/bar/purchases/create"><i class="ace-icon fa fa-plus mr-1"></i>
                     Add Purchases
-                </a></div>        </header>
+                </a>
+            </div>        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Bar purchases summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-truck"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Purchase Orders</span>
+                    <div class="mm-table-kpi-value">RP-0021 <span class="mm-table-kpi-sub">01 Oct 2026</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-building-o"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Beverage Distributor</span>
+                    <div class="mm-table-kpi-value">Fresh Foods <span class="mm-table-kpi-sub">Verified Vendor</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-money"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Invoice Payable</span>
+                    <div class="mm-table-kpi-value">৳ 2,400 <span class="mm-table-kpi-sub">Paid ৳ 2,000</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-clock-o"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Supplier Balance</span>
+                    <div class="mm-table-kpi-value">৳ 400 Due <span class="mm-table-kpi-sub">AP Tracked</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><div class="mm-table-scroll" role="region" aria-label="Purchases" tabindex="0"><table class="table table-striped table-bordered table-hover">
                         <thead>
                             <tr>

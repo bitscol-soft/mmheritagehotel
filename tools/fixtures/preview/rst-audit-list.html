@@ -6,10 +6,44 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Restaurant night audit</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Restaurant night audits closed in the selected period.</p>            </div>
-            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button" href="http://localhost/rst/night-audits/create">
-            <i class="fa fa-plus" aria-hidden="true"></i> Generate
-        </a></div>        </header>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Completed restaurant end-of-day closes with invoice counts and revenue reconciliation.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/rst-sales-list"><i class="fa fa-cutlery" aria-hidden="true"></i> Sale List</a>
+                <a class="mm-button" href="http://localhost/rst/night-audits/create">
+                    <i class="fa fa-plus" aria-hidden="true"></i> Generate
+                </a>
+            </div>        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Restaurant night audits summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-moon-o"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Audit Batch</span>
+                    <div class="mm-table-kpi-value">RNA-0012 <span class="mm-table-kpi-sub">30 Sep 2026</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-calculator"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Audited Revenue</span>
+                    <div class="mm-table-kpi-value">৳ 18,450 <span class="mm-table-kpi-sub">All POS Shifts</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Cash &amp; Card Collected</span>
+                    <div class="mm-table-kpi-value">৳ 16,200 <span class="mm-table-kpi-sub">GL Posted</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-columns"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Audit Breakdown</span>
+                    <div class="mm-table-kpi-value">App Drawer <span class="mm-table-kpi-sub">#audit-view-details12</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 mm-report-filter"><form action="" method="GET" class="mm-setup-filter mm-report-form">
                 <div class="mm-report-field">
                     <div class="input-group">
