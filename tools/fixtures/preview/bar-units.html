@@ -77,10 +77,44 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Units</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Measurement units for bar products.</p>            </div>
-            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button" href="#modal-dialog" data-toggle="modal">
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Serving and bottle measurement units (Peg, Shot, Bottle, Case) for bar products.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/bar-products"><i class="fa fa-glass"></i> Bar Products</a>
+                <a class="mm-button" href="#modal-dialog" data-toggle="modal">
                     <i class="fa fa-plus-circle"></i> Add New Unit
-                </a></div>        </header>
+                </a>
+            </div>        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Bar units summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-balance-scale"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Serving Units</span>
+                    <div class="mm-table-kpi-value">Peg · Bottle <span class="mm-table-kpi-sub">Small &amp; Base Units</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Active Units</span>
+                    <div class="mm-table-kpi-value">1 Active <span class="mm-table-kpi-sub">POS Pour Ready</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-columns"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Unit Editor</span>
+                    <div class="mm-table-kpi-value">App Drawer <span class="mm-table-kpi-sub">#modal-dialog</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-cubes"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Cellar Conversion</span>
+                    <div class="mm-table-kpi-value">Auto-Tracked ✓ <span class="mm-table-kpi-sub">Bottle → Peg</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><div class="row">
             <div class="col-sm-12">
                 <div class="mm-table-scroll" role="region" aria-label="Units" tabindex="0"><table id="data-table" class="table table-striped table-bordered nowrap" width="100%">

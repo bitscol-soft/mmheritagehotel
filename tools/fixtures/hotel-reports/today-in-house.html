@@ -5,8 +5,43 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Today in-house guest list</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Guests staying in the hotel today.</p>            </div>
-                    </header>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Live roster of guests staying in the hotel today with room, pax and NID/Passport details.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/booking-next"><i class="fa fa-map-o"></i> Booking Wizard</a>
+                <a class="mm-button mm-button-secondary" href="/preview/report-today-activities"><i class="fa fa-bar-chart"></i> Today Report</a>
+            </div>
+        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Today in-house guest list summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-bed"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">In-House Roster</span>
+                    <div class="mm-table-kpi-value">Live Snapshot <span class="mm-table-kpi-sub">Current Shift</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-shield"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Police / KYC Log</span>
+                    <div class="mm-table-kpi-value">NID &amp; Passport <span class="mm-table-kpi-sub">Compliance Ready</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-cutlery"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Breakfast Pax</span>
+                    <div class="mm-table-kpi-value">Auto-Tallied <span class="mm-table-kpi-sub">Restaurant Sync</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-file-excel-o"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Export Formats</span>
+                    <div class="mm-table-kpi-value">Excel &amp; PDF <span class="mm-table-kpi-sub">Front-Desk Copy</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6"><div class="mm-table-scroll" role="region" aria-label="In-house guests" tabindex="0"><table id="datatable" class="table table-striped table-bordered nowrap" width="100%">
     <thead>
                 <tr>

@@ -5,8 +5,43 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Today check in</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Guests checking in on the selected date.</p>            </div>
-                    </header>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Guests checked in today with room assignments and arrival timestamps.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/report-expected-arrival"><i class="fa fa-plane"></i> Expected Arrivals</a>
+                <a class="mm-button mm-button-secondary" href="/preview/report-today-activities"><i class="fa fa-bar-chart"></i> Today Report</a>
+            </div>
+        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Today check-in summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-sign-in"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Check-In Date</span>
+                    <div class="mm-table-kpi-value">01 Oct 2026 <span class="mm-table-kpi-sub">Front-Desk Shift</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-user-plus"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Arrived Guests</span>
+                    <div class="mm-table-kpi-value">Rahim · B-0001 <span class="mm-table-kpi-sub">Room #101</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-key"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Keycard Status</span>
+                    <div class="mm-table-kpi-value">Issued ✓ <span class="mm-table-kpi-sub">12:00 PM Check-In</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-id-card-o"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">KYC Verification</span>
+                    <div class="mm-table-kpi-value">Complete ✓ <span class="mm-table-kpi-sub">NID / Passport</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6"><div class="mm-table-scroll" role="region" aria-label="Today check in" tabindex="0"><input type="hidden" name="date" value="2026-10-01">
             <div class="text-center">
                 <span class="badge badge-info" style="font-size: 17px;">Today Check-In Report</span>

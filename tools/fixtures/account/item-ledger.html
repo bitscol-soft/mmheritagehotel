@@ -17,8 +17,43 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Item Ledger</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Stock movements of one item.</p>            </div>
-                    </header>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Chronological inward and outward stock movements of a selected commercial item.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/acc-stock-in-hand"><i class="fa fa-cubes"></i> Stock In Hand</a>
+                <a class="mm-button mm-button-secondary" href="/preview/acc-products"><i class="fa fa-cube"></i> Product List</a>
+            </div>
+        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Account item ledger summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-book"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Selected Item</span>
+                    <div class="mm-table-kpi-value">Rice 50kg <span class="mm-table-kpi-sub">MM Heritage</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-arrow-down"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Inward Stock</span>
+                    <div class="mm-table-kpi-value">Purchases &amp; Ret <span class="mm-table-kpi-sub">Cost Tracked</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-arrow-up"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Outward Stock</span>
+                    <div class="mm-table-kpi-value">Sales &amp; Damage <span class="mm-table-kpi-sub">FIFO / Avg Rate</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Valuation Sync</span>
+                    <div class="mm-table-kpi-value">Reconciled ✓ <span class="mm-table-kpi-sub">GL Inventory</span></div>
+                </div>
+            </div>
+        </div>
         <form class="form-horizontal" action="" method="get">
         <div class="mm-panel tw-p-4 sm:tw-p-6 mm-report-filter"><div class="mm-setup-filter mm-report-form">
                 <div class="input-group">

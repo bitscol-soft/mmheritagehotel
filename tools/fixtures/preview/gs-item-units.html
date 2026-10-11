@@ -7,9 +7,43 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Item units</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Units and conversions for items.</p>            </div>
-            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button" href="http://localhost/gs/item-units/create"> <i
-                    class="fa fa-plus"></i> Add Item Unit </a></div>        </header>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Measurement units and conversion factors for general store items.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/gs-items"><i class="fa fa-cubes"></i> Item List</a>
+                <a class="mm-button" href="http://localhost/gs/item-units/create"> <i
+                    class="fa fa-plus"></i> Add Item Unit </a>
+            </div>        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="General store item units summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-balance-scale"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Configured Units</span>
+                    <div class="mm-table-kpi-value">Sack · Kg <span class="mm-table-kpi-sub">2 Units</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-exchange"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Conversion Ratio</span>
+                    <div class="mm-table-kpi-value">1 Sack = 25 <span class="mm-table-kpi-sub">Base Multiplier</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Active Units</span>
+                    <div class="mm-table-kpi-value">Enabled ✓ <span class="mm-table-kpi-sub">PO &amp; GRN Ready</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-book"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Ledger Precision</span>
+                    <div class="mm-table-kpi-value">Standardized <span class="mm-table-kpi-sub">Stock In Hand</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6"><div class="table-responsive" style="border: 1px #cdd9e8 solid;">
             <div class="mm-table-scroll" role="region" aria-label="Item units" tabindex="0"><table id="dynamic-table" class="table table-striped table-bordered table-hover">
                     <thead>

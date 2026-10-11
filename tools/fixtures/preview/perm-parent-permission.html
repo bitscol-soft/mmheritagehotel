@@ -6,8 +6,42 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Parent permissions</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Group related permissions under a sub module.</p>            </div>
-                    </header>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Feature-level parent permission groups under each sub-module.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/perm-access-create"><i class="fa fa-shield"></i> Access Matrix</a>
+            </div>
+        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Parent permissions summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-folder-open-o"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Feature Groups</span>
+                    <div class="mm-table-kpi-value">Room List <span class="mm-table-kpi-sub">Rooms Submodule</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-key"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Child Slugs</span>
+                    <div class="mm-table-kpi-value">CRUD Actions <span class="mm-table-kpi-sub">Auto-Generated</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-sitemap"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Submodule Link</span>
+                    <div class="mm-table-kpi-value">Rooms (#4) <span class="mm-table-kpi-sub">Chosen Select</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">RBAC Sync</span>
+                    <div class="mm-table-kpi-value">Active ✓ <span class="mm-table-kpi-sub">Matrix Ready</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-setup-stack">
         <div class="mm-panel tw-p-4 sm:tw-p-6"><h2 class="mm-setup-title">Manage Parent Permission</h2>
             <form class="form-horizontal" action="http://localhost/setting/parent-permissions" method="post">

@@ -26,9 +26,40 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Transaction Ledger</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Transactions by category.</p>            </div>
-            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button mm-button-secondary" href="http://localhost/acc/report/transaction-ledger"><i class="fa fa-refresh"></i> Refresh Data</a>
-        <a class="mm-button" href="http://localhost/acc/report/transaction-ledger?print=1&amp;from=2026-10-01&amp;to=2026-10-01" style="color: maroon !important;"><i class="fa fa-print"></i> Print Data</a></div>        </header>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Categorized financial transactions and debit/credit movements across the period.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button mm-button-secondary" href="/preview/acc-account-ledger"><i class="fa fa-book"></i> Account Ledger</a><a class="mm-button mm-button-secondary" href="http://localhost/acc/report/transaction-ledger"><i class="fa fa-refresh"></i> Refresh Data</a>
+        <a class="mm-button" href="http://localhost/acc/report/transaction-ledger?print=1&amp;from=2026-10-01&amp;to=2026-10-01"><i class="fa fa-print"></i> Print Data</a></div>        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Transaction ledger summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-exchange"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Ledger Period</span>
+                    <div class="mm-table-kpi-value">01 Oct 2026 <span class="mm-table-kpi-sub">Date-Range Filter</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-sitemap"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Grouping Mode</span>
+                    <div class="mm-table-kpi-value">By Category <span class="mm-table-kpi-sub">GL Classification</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-balance-scale"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Posting Parity</span>
+                    <div class="mm-table-kpi-value">100% Matched <span class="mm-table-kpi-sub">Double-Entry</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-print"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Report Output</span>
+                    <div class="mm-table-kpi-value">Print Ready ✓ <span class="mm-table-kpi-sub">Audit Format</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 mm-report-filter"><form class="mm-setup-filter mm-report-form" action="" method="get">
 
                 <div class="input-daterange input-group">

@@ -16,8 +16,42 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Item list</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Raw material items.</p>            </div>
-            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button" href="http://localhost/rst/material/create"> <i class="fa fa-plus"></i> Add Item List </a></div>        </header>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Kitchen raw material items, units, rates and opening stock balances.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/rsi-inventory-report"><i class="fa fa-cubes"></i> Inventory Stock</a>
+                <a class="mm-button" href="http://localhost/rst/material/create"> <i class="fa fa-plus"></i> Add Item List </a>
+            </div>        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Kitchen raw material items summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-cutlery"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Raw Materials</span>
+                    <div class="mm-table-kpi-value">Basmati Rice <span class="mm-table-kpi-sub">Kitchen Store</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-balance-scale"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Material Unit</span>
+                    <div class="mm-table-kpi-value">Kg <span class="mm-table-kpi-sub">Recipe UOM</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-fire"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Production Link</span>
+                    <div class="mm-table-kpi-value">BOM Mapped <span class="mm-table-kpi-sub">Material Products</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Requisition Sync</span>
+                    <div class="mm-table-kpi-value">Active ✓ <span class="mm-table-kpi-sub">Kitchen Issue</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 mm-report-filter"><form class="form-horizontal mm-setup-filter mm-report-form" action="" method="get">
             <div class="mm-report-field">
                 <select aria-label="Company" name="company_id" class="form-control chosen-select">
