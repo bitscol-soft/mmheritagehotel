@@ -14,9 +14,43 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">GRN list</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Goods received notes against general store purchases.</p>            </div>
-            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button" href="http://localhost/gs/purchases/create"><i class="fa fa-plus"></i> Add Purchase</a>
-                        <a class="mm-button mm-button-secondary" href="http://localhost/purchases"><i class="fa fa-list"></i> Purchase List</a></div>        </header>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Goods received notes verified against general store purchase orders.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/gs-gin-list"><i class="fa fa-share-square-o"></i> GIN List</a>
+                <a class="mm-button" href="http://localhost/gs/purchases/create"><i class="fa fa-plus"></i> Add Purchase</a>
+                <a class="mm-button mm-button-secondary" href="http://localhost/purchases"><i class="fa fa-list"></i> Purchase List</a>
+            </div>        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="GRN list summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-truck"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Verified GRNs</span>
+                    <div class="mm-table-kpi-value">1 Receipt <span class="mm-table-kpi-sub">GRN-0005</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-file-text-o"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Linked Purchase Order</span>
+                    <div class="mm-table-kpi-value">PO-0002 <span class="mm-table-kpi-sub">Approved PO</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-check-square-o"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Quality Inspection</span>
+                    <div class="mm-table-kpi-value">Passed ✓ <span class="mm-table-kpi-sub">Storekeeper Signed</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-columns"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Receipt Inspector</span>
+                    <div class="mm-table-kpi-value">App Drawer <span class="mm-table-kpi-sub">Click Eye Icon</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><div class="row">
             <form class="form-horizontal" action="http://localhost/gs/grn/list" method="get">
                 <input type="hidden" name="_token" value="fixture-csrf-token">                <div class="col-sm-12">

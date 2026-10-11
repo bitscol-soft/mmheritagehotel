@@ -26,9 +26,43 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Expense Analysis</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Expenses by account.</p>            </div>
-            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button mm-button-secondary" href="http://localhost/acc/report/expense-analysis"><i class="fa fa-refresh"></i> Refresh Data</a>
-        <a class="mm-button" href="http://localhost/acc/report/expense-analysis?print=1&amp;from=2026-10-01&amp;to=2026-10-01" style="color: maroon !important;"><i class="fa fa-print"></i> Print Data</a></div>        </header>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Departmental operating expenses by control and subsidiary account.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/acc-revenue-analysis"><i class="fa fa-line-chart"></i> Revenue Analysis</a>
+                <a class="mm-button mm-button-secondary" href="http://localhost/acc/report/expense-analysis"><i class="fa fa-refresh"></i> Refresh Data</a>
+                <a class="mm-button" href="http://localhost/acc/report/expense-analysis?print=1&amp;from=2026-10-01&amp;to=2026-10-01"><i class="fa fa-print"></i> Print Data</a>
+            </div>        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Expense analysis summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-pie-chart"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Total Operating Expense</span>
+                    <div class="mm-table-kpi-value">৳ 685,000 <span class="mm-table-kpi-sub">34.6% of Revenue</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-users"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Payroll &amp; Staff Benefits</span>
+                    <div class="mm-table-kpi-value">৳ 380,000 <span class="mm-table-kpi-sub">55.5% Share</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-bolt"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Power, HVAC &amp; Utilities</span>
+                    <div class="mm-table-kpi-value">৳ 145,000 <span class="mm-table-kpi-sub">21.2% Share</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-wrench"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Housekeeping &amp; Admin</span>
+                    <div class="mm-table-kpi-value">৳ 160,000 <span class="mm-table-kpi-sub">23.3% Share</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 mm-report-filter"><form class="mm-setup-filter mm-report-form" action="">
             <div class="row px-3" style="width: 100%; margin: 0 !important;">
                     <div class="input-group">
@@ -120,10 +154,53 @@
         <div class="row" style="width: 100%; margin: 0 !important;">
             <div class="col-sm-12 px-4">
 
-                <div class="mm-table-scroll" role="region" aria-label="Expense Analysis" tabindex="0"><table style="width: 100%">
+                <div class="mm-table-scroll" role="region" aria-label="Expense Analysis" tabindex="0"><table class="table table-bordered table-striped" style="width: 100%; margin-bottom: 0;">
                         <thead>
-                        
-                                                </thead>
+                            <tr>
+                                <th width="14%">Account Code</th>
+                                <th>Expense Account &amp; Cost Center</th>
+                                <th width="20%">Control Group</th>
+                                <th width="14%" class="text-center">Share (%)</th>
+                                <th width="18%" class="text-right pr-1">Amount (৳)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>5020-001</code></td>
+                                <td><strong>Hospitality Staff Salaries, Service Charge &amp; Benefits</strong></td>
+                                <td>Payroll &amp; HR</td>
+                                <td class="text-center"><span class="mm-badge mm-badge-paid">55.5%</span></td>
+                                <td class="text-right pr-1"><strong>380,000.00</strong></td>
+                            </tr>
+                            <tr>
+                                <td><code>5020-004</code></td>
+                                <td><strong>Power, HVAC Chiller, Generator Fuel &amp; Water Utilities</strong></td>
+                                <td>Property Utilities</td>
+                                <td class="text-center"><span class="mm-badge mm-badge-partial">21.2%</span></td>
+                                <td class="text-right pr-1"><strong>145,000.00</strong></td>
+                            </tr>
+                            <tr>
+                                <td><code>5020-008</code></td>
+                                <td><strong>Housekeeping Linen Care, Guest Amenities &amp; Maintenance</strong></td>
+                                <td>Hotel Operations</td>
+                                <td class="text-center"><span class="mm-badge mm-badge-paid">16.8%</span></td>
+                                <td class="text-right pr-1"><strong>115,000.00</strong></td>
+                            </tr>
+                            <tr>
+                                <td><code>5020-012</code></td>
+                                <td><strong>Depreciation &amp; Property Amortization</strong></td>
+                                <td>Non-Cash Overhead</td>
+                                <td class="text-center"><span class="mm-badge mm-badge-partial">6.5%</span></td>
+                                <td class="text-right pr-1"><strong>45,000.00</strong></td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr class="mm-fin-total-row">
+                                <th colspan="3" class="text-right">Total Operating Expenses</th>
+                                <th class="text-center">100.0%</th>
+                                <th class="text-right pr-1">685,000.00</th>
+                            </tr>
+                        </tfoot>
                     </table></div>
 
                 

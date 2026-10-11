@@ -15,8 +15,44 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Stock in hand</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Current general store stock by item.</p>            </div>
-                    </header>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Current general store stock by item, unit and valuation.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/gs-item-ledger"><i class="fa fa-book"></i> Item Ledger</a>
+                <a class="mm-button mm-button-secondary" href="/preview/gs-grn-list"><i class="fa fa-truck"></i> GRN List</a>
+                <a class="mm-button mm-button-secondary" href="/preview/gs-gin-list"><i class="fa fa-share-square-o"></i> GIN List</a>
+            </div>
+        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="General store stock summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-cubes"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Tracked Store Items</span>
+                    <div class="mm-table-kpi-value">1 SKU <span class="mm-table-kpi-sub">Basmati Rice (Kg)</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-arrow-circle-down"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Received (GRN)</span>
+                    <div class="mm-table-kpi-value">20.00 Kg <span class="mm-table-kpi-sub">Verified Inward</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-arrow-circle-up"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Issued (GIN)</span>
+                    <div class="mm-table-kpi-value">8.00 Kg <span class="mm-table-kpi-sub">Kitchen &amp; Housekeeping</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Closing Stock in Hand</span>
+                    <div class="mm-table-kpi-value">12.00 Kg <span class="mm-table-kpi-sub">Above Reorder Level</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><p class="tw-m-0 tw-mb-3 tw-text-sm tw-text-muted">(<b>1 </b>Records Found, page <b>1</b> of <b>1</b>, Data Show per page <b>15</b> )</p>
             <div class="row">
                 <form class="form-horizontal" action="http://localhost/gs/items_stock" method="get">

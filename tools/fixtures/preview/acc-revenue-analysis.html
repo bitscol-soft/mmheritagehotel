@@ -6,8 +6,43 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Revenue Analysis</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Revenue by account.</p>            </div>
-            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><h5 style="font-weight:600"><i class="fa fa-filter"></i> Revenue Analysis (2026-10-01 → 2026-10-01)</h5></div>        </header>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Multi-outlet revenue breakdown by account, subsidiary and control.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/acc-expense-analysis"><i class="fa fa-pie-chart"></i> Expense Analysis</a>
+                <a class="mm-button mm-button-secondary" href="/preview/acc-income-statement"><i class="fa fa-line-chart"></i> Income Statement</a>
+                <h5 style="font-weight:600;margin:0;align-self:center"><i class="fa fa-filter"></i> Revenue Analysis (2026-10-01 → 2026-10-01)</h5>
+            </div>        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Revenue analysis summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-bed"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Room Division</span>
+                    <div class="mm-table-kpi-value">৳ 1,120,000 <span class="mm-table-kpi-sub">56.6% of Revenue</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-cutlery"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Restaurant &amp; Bar POS</span>
+                    <div class="mm-table-kpi-value">৳ 700,000 <span class="mm-table-kpi-sub">35.4% of Revenue</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-glass"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Banquet &amp; Conferencing</span>
+                    <div class="mm-table-kpi-value">৳ 160,000 <span class="mm-table-kpi-sub">8.0% of Revenue</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-line-chart"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Filtered Voucher Total</span>
+                    <div class="mm-table-kpi-value">৳ 150.00 <span class="mm-table-kpi-sub">Voucher V-0004</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 mm-report-filter"><form method="GET" class="mm-setup-filter mm-report-form form-inline" style="margin-bottom:12px">
             <input type="date" name="from" value="2026-10-01" class="form-control input-sm" style="width:160px">
             <input type="date" name="to" value="2026-10-01" class="form-control input-sm" style="width:160px;margin-left:6px">

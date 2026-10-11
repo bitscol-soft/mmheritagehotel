@@ -1,64 +1,14 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
 <link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
 <!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">
-    <link rel="stylesheet" href="/assets/css/chosen.min.css" />
-    <link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css" />
-
     <style type="text/css">
-        th,
-        td {
-            background: white;
-            color: black !important;
+        @media print {
+            .no-print, .no-print * { display: none !important; }
+            .d-print { display: block !important; }
+            tr { page-break-after: avoid !important; }
+            thead { page-break-before: avoid !important; }
         }
-
-        table,
-        th,
-        td,
-        tr {
-            border: 1px solid black !important;
-        }
-
-
-        @media  print {
-
-            .no-print,
-            .no-print * {
-                display: none !important;
-            }
-
-            .d-print {
-                display: block !important;
-            }
-
-            tr {
-                page-break-after: avoid !important;
-            }
-
-            thead {
-                page-break-before: avoid !important;
-            }
-
-            .widget-box {
-                border: none !important;
-                margin: 0 !important;
-                padding: 0 !important;
-                width: 100% !important;
-            }
-
-            .px-4 {
-                padding: 0 !important;
-            }
-        }
-
-        @page  {
-            margin: 0.5in;
-            /*size: landscape;*/
-        }
-
-        .d-print {
-            display: none;
-        }
-
+        .d-print { display: none; }
     </style>
 <!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
 <section class="mm-ui mm-report mm-acc mm-rst mm-rst-inv">
@@ -66,9 +16,44 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Equity Statement</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Changes in equity.</p>            </div>
-            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button mm-button-secondary" href="http://localhost/acc/report/equity-statement"><i class="fa fa-refresh"></i> Refresh</a>
-        <a class="mm-button mm-button-secondary" href="javascript:void(0)" onclick="print()"><i class="fa fa-print"></i> Print</a></div>        </header>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Statement of changes in share capital, retained earnings and total owners equity.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/acc-balance-sheet"><i class="fa fa-building-o"></i> Balance Sheet</a>
+                <a class="mm-button mm-button-secondary" href="/preview/acc-income-statement"><i class="fa fa-line-chart"></i> Income Statement</a>
+                <a class="mm-button mm-button-secondary" href="http://localhost/acc/report/equity-statement"><i class="fa fa-refresh"></i> Refresh</a>
+                <a class="mm-button mm-button-secondary" href="javascript:void(0)" onclick="print()"><i class="fa fa-print"></i> Print</a>
+            </div>        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Equity statement summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-pie-chart"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Paid-Up Share Capital</span>
+                    <div class="mm-table-kpi-value">৳ 2,745,000 <span class="mm-table-kpi-sub">Sponsor Equity</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-line-chart"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Period Net Profit</span>
+                    <div class="mm-table-kpi-value">+ ৳ 685,000 <span class="mm-table-kpi-sub">Retained Surplus</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-exchange"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Adjustments / Drawings</span>
+                    <div class="mm-table-kpi-value">৳ 0.00 <span class="mm-table-kpi-sub">No Withdrawals</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Closing Owners Equity</span>
+                    <div class="mm-table-kpi-value">৳ 3,430,000 <span class="mm-table-kpi-sub">Reconciled</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 mm-report-filter"><form class="mm-setup-filter mm-report-form" action="" method="get">
 
                 <div class="input-group">
@@ -119,69 +104,40 @@
 
                         <tbody>
                             <tr>
-                                <td>Opening Balance</td>
-                                <td class="text-right capital">
-                                    0
-                                </td>
-                                <td class="text-right retained-earnings">
-                                    0
-                                </td>
-                                <td class="text-right item-total"></td>
-                            </tr>
-
-                            <tr>
-                                <td>Add : Profit/Loss during the year</td>
-                                <td class="text-right capital">
-                                    0
-                                </td>
-                                <td class="text-right retained-earnings">
-                                    0
-                                </td>
-                                <td class="text-right item-total"></td>
+                                <td>Opening Balance (01 Jan 2026)</td>
+                                <td class="text-right capital">2,500,000</td>
+                                <td class="text-right retained-earnings">0</td>
+                                <td class="text-right item-total"><strong>2,500,000</strong></td>
                             </tr>
                             <tr>
-                                <td>Add : addition during the year</td>
-                                <td class="text-right capital">
-                                    0
-                                </td>
-                                <td class="text-right retained-earnings">
-                                    0
-                                </td>
-                                <td class="text-right item-total"></td>
+                                <td>Add : Profit / Surplus during the period</td>
+                                <td class="text-right capital">0</td>
+                                <td class="text-right retained-earnings">685,000</td>
+                                <td class="text-right item-total"><strong>685,000</strong></td>
                             </tr>
                             <tr>
-                                <td>Less : adjustment during the year</td>
-                                <td class="text-right capital">
-                                    0
-                                </td>
-                                <td class="text-right retained-earnings">
-                                    0
-                                </td>
-                                <td class="text-right item-total"></td>
+                                <td>Add : Fresh Capital Addition during the year</td>
+                                <td class="text-right capital">245,000</td>
+                                <td class="text-right retained-earnings">0</td>
+                                <td class="text-right item-total"><strong>245,000</strong></td>
                             </tr>
                             <tr>
-                                <td>
-                                    <strong>Closing Balance</strong>
-                                </td>
-                                <td class="text-right">
-                                    <strong class="capital">0</strong>
-                                </td>
-                                <td class="text-right">
-                                    <strong class="retained-earnings">0</strong>
-                                </td>
-                                <td class="text-right">
-                                    <strong class="item-total"></strong>
-                                </td>
+                                <td>Less : Dividend / Adjustment during the year</td>
+                                <td class="text-right capital">0</td>
+                                <td class="text-right retained-earnings">0</td>
+                                <td class="text-right item-total"><strong>0</strong></td>
                             </tr>
-                            <tr>
-                                <td>Previous Year Balance</td>
-                                <td class="text-right capital">
-                                    0
-                                </td>
-                                <td class="text-right retained-earnings">
-                                    0
-                                </td>
-                                <td class="text-right item-total"></td>
+                            <tr class="mm-fin-total-row">
+                                <td><strong>Closing Balance (As on 01 Oct 2026)</strong></td>
+                                <td class="text-right"><strong class="capital">2,745,000</strong></td>
+                                <td class="text-right"><strong class="retained-earnings">685,000</strong></td>
+                                <td class="text-right"><strong class="item-total">3,430,000</strong></td>
+                            </tr>
+                            <tr class="mm-fin-section-row">
+                                <td>Previous Year Comparative Balance</td>
+                                <td class="text-right capital">2,500,000</td>
+                                <td class="text-right retained-earnings">420,000</td>
+                                <td class="text-right item-total"><strong>2,920,000</strong></td>
                             </tr>
                         </tbody>
                     </table></div>
