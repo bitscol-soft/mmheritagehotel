@@ -11,8 +11,42 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">User role and permissions</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Link an employee to a login and choose what they can open.</p>            </div>
-            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button mm-button-secondary" href="http://localhost/setting/permission-access/create"> <i class="fa fa-list-alt"></i> Clear </a></div>        </header>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Link an employee to a login and choose what they can open across companies, departments and modules.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/perm-users"><i class="fa fa-users"></i> Permitted Users</a>
+                <a class="mm-button mm-button-secondary" href="http://localhost/setting/permission-access/create"> <i class="fa fa-list-alt"></i> Clear </a>
+            </div>        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Role and permission matrix summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-shield"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">RBAC Access Control</span>
+                    <div class="mm-table-kpi-value">Granular ✓ <span class="mm-table-kpi-sub">Module &amp; Submodule</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-building-o"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Company &amp; Dept Scope</span>
+                    <div class="mm-table-kpi-value">2 Companies <span class="mm-table-kpi-sub">2 Departments</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-check-square-o"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Bulk Matrix Toggle</span>
+                    <div class="mm-table-kpi-value">Select All <span class="mm-table-kpi-sub">One-Click Module</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-user-plus"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Clone Existing Role</span>
+                    <div class="mm-table-kpi-value">Supported <span class="mm-table-kpi-sub">Load Permissions</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6"><form class="form-horizontal" action="http://localhost/setting/permission-access" method="POST" role="form">
                             <input type="hidden" name="_token" value="fixture-csrf-token">
                             <!-- Employee info -->

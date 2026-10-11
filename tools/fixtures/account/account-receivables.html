@@ -28,8 +28,44 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Account Receivable</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Balances receivable by account.</p>            </div>
-            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button" href="http://localhost/acc/report/account-receivables?print=print&company_id=&account_id="><i class="fa fa-print"></i> Print</a></div>        </header>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Corporate &amp; guest balances receivable by account with aging status.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/acc-account-payables"><i class="fa fa-truck"></i> Account Payable</a>
+                <a class="mm-button mm-button-secondary" href="/preview/acc-customer-ledger"><i class="fa fa-book"></i> Customer Ledger</a>
+                <button type="button" class="mm-button mm-button-secondary" data-toggle="modal" data-target="#acc-ar-drawer"><i class="fa fa-columns"></i> Aging &amp; Collection Drawer</button>
+                <a class="mm-button" href="http://localhost/acc/report/account-receivables?print=print&company_id=&account_id="><i class="fa fa-print"></i> Print</a>
+            </div>        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Account receivable summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-briefcase"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Total Receivables</span>
+                    <div class="mm-table-kpi-value">৳ 485,150 <span class="mm-table-kpi-sub">3 Active Ledgers</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Current (0–30 Days)</span>
+                    <div class="mm-table-kpi-value">৳ 365,150 <span class="mm-table-kpi-sub">75.3% Within Terms</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-clock-o"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Overdue (31–60 Days)</span>
+                    <div class="mm-table-kpi-value">৳ 120,000 <span class="mm-table-kpi-sub">Follow-Up Sent</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-money"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Collected This Month</span>
+                    <div class="mm-table-kpi-value">৳ 640,000 <span class="mm-table-kpi-sub">94% Recovery</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 mm-report-filter"><form class="mm-setup-filter mm-report-form" action="" method="get">
 
                 <div class="input-group">
@@ -80,28 +116,68 @@
                         </thead>
 
                         <tbody>
-                                                            <tr>
-                                    <td class="text-center">1</td>
-                                    <td>Rahim &lt;i&gt;Stores&lt;/i&gt;</td>
-                                    <td class="text-right pr-1">
-                                                                                    <a target="_blank" href="http://localhost/acc/report/account-ledger?company_id=&account_id=1&from=2010-01-01">
-                                                150.00
-                                            </a>
-                                                                            </td>
-                                </tr>
-                                                    </tbody>
+                            <tr>
+                                <td class="text-center">1</td>
+                                <td>Rahim &lt;i&gt;Stores&lt;/i&gt; <span class="mm-badge mm-badge-paid" style="margin-left:8px">0–30 Days</span></td>
+                                <td class="text-right pr-1">
+                                    <a target="_blank" href="http://localhost/acc/report/account-ledger?company_id=&account_id=1&from=2010-01-01"><strong>150.00</strong></a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">2</td>
+                                <td>Orion Pharma Corporate Guest Folio A/C <span class="mm-badge mm-badge-paid" style="margin-left:8px">0–30 Days</span></td>
+                                <td class="text-right pr-1">
+                                    <a href="/preview/acc-customer-ledger"><strong>365,000.00</strong></a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">3</td>
+                                <td>Horizon Aviation Crew Accommodation A/C <span class="mm-badge mm-badge-partial" style="margin-left:8px">31–60 Days</span></td>
+                                <td class="text-right pr-1">
+                                    <a href="/preview/acc-customer-ledger"><strong>120,000.00</strong></a>
+                                </td>
+                            </tr>
+                        </tbody>
 
-                                                    <tfoot>
-                                <tr style="font-size: 18px">
-                                    <th class="text-right" colspan="2">
-                                        <strong>Total=</strong>
-                                    </th>
-                                    <th class="text-right pr-1">
-                                        <strong>0.00</strong>
-                                    </th>
-                                </tr>
-                            </tfoot>
-                                            </table></div>
+                        <tfoot>
+                            <tr class="mm-fin-total-row">
+                                <th class="text-right" colspan="2">
+                                    <strong>Total=</strong>
+                                </th>
+                                <th class="text-right pr-1">
+                                    <strong>485,150.00</strong>
+                                </th>
+                            </tr>
+                        </tfoot>
+                    </table></div>
+
+                <!-- Slide-Over App Drawer: Receivable Aging & Collection -->
+                <div class="modal fade" id="acc-ar-drawer" tabindex="-1" role="dialog" aria-labelledby="acc-ar-drawer-title">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="acc-ar-drawer-title"><i class="fa fa-briefcase"></i> Accounts Receivable Aging &amp; Collection</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <p class="tw-text-sm tw-text-muted" style="margin-top:0">Aging breakdown and quick receive-voucher posting for corporate &amp; trade debtors.</p>
+                                <div class="mm-panel tw-p-4" style="margin-bottom:12px">
+                                    <strong>1. Orion Pharma Corporate Guest Folio A/C</strong> — <code>৳ 365,000.00</code> (Current · Net 30)
+                                </div>
+                                <div class="mm-panel tw-p-4" style="margin-bottom:12px">
+                                    <strong>2. Horizon Aviation Crew Accommodation A/C</strong> — <code>৳ 120,000.00</code> (38 Days · Statement Sent)
+                                </div>
+                                <div class="mm-panel tw-p-4">
+                                    <strong>3. Rahim Stores</strong> — <code>৳ 150.00</code> (Current · Retail Trade)
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <a href="/preview/acc-form-receives-create" class="mm-button mm-button-secondary"><i class="fa fa-plus"></i> Receive Voucher</a>
+                                <button type="button" class="mm-button" data-dismiss="modal"><i class="fa fa-check"></i> Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 
 

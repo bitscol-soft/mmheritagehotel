@@ -5,8 +5,43 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Today report</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Check-ins, check-outs and reservations for one day.</p>            </div>
-                    </header>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Check-ins, check-outs, reservations and cash/bank collections for one day.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/report-expected-arrival"><i class="fa fa-sign-in"></i> Arrivals</a>
+                <a class="mm-button mm-button-secondary" href="/preview/report-room-logs"><i class="fa fa-history"></i> Room Logs</a>
+            </div>
+        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Today report summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-sign-in"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Total Check-Ins</span>
+                    <div class="mm-table-kpi-value">2 Rooms <span class="mm-table-kpi-sub">Active Today</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-sign-out"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Total Check-Outs</span>
+                    <div class="mm-table-kpi-value">1 Room <span class="mm-table-kpi-sub">Settled Today</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-calendar-check-o"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">New Reservations</span>
+                    <div class="mm-table-kpi-value">3 Bookings <span class="mm-table-kpi-sub">0 Cancelled</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-money"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Front-Desk Collection</span>
+                    <div class="mm-table-kpi-value">৳ 1,500 <span class="mm-table-kpi-sub">Posted to Audit</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 mm-report-filter hidden-print"><form action="" method="GET" class="mm-setup-filter mm-report-form">
             <div class="mm-report-field">
                 <div class="input-group">

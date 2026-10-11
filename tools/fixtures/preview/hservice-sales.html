@@ -5,10 +5,45 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Hotel service sales</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Service invoices raised to guests, with payment status.</p>            </div>
-            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a href="http://localhost/hotelservice/service-sales/create" class="mm-button">
-                <i class="fa fa-plus" aria-hidden="true"></i> New Hotel Service
-            </a></div>        </header>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Service invoices raised to guests, with payment and due-collection status.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a href="/preview/hservice-services" class="mm-button mm-button-secondary"><i class="fa fa-gears"></i> Service Catalog</a>
+                <a href="/preview/hservice-audits" class="mm-button mm-button-secondary"><i class="fa fa-moon-o"></i> Service Night Audit</a>
+                <a href="http://localhost/hotelservice/service-sales/create" class="mm-button">
+                    <i class="fa fa-plus" aria-hidden="true"></i> New Hotel Service
+                </a>
+            </div>        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Hotel service sales summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-file-text-o"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Total Service Billed</span>
+                    <div class="mm-table-kpi-value">৳ 2,200.00 <span class="mm-table-kpi-sub">2 Guest Invoices</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Collected Amount</span>
+                    <div class="mm-table-kpi-value">৳ 1,500.00 <span class="mm-table-kpi-sub">৳ 200.00 Discount</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-clock-o"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Outstanding Due</span>
+                    <div class="mm-table-kpi-value">৳ 500.00 <span class="mm-table-kpi-sub">Invoice #0302</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-money"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Due Collection</span>
+                    <div class="mm-table-kpi-value">App Drawer <span class="mm-table-kpi-sub">Instant Settlement</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 mm-hs-filter"><form class="mm-hs-filter-form">
             <div class="mm-hs-filter-field">
                 <label for="hs-invoice-no">Invoice ID</label>

@@ -7,8 +7,43 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Room logs</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Room status changes and who made them.</p>            </div>
-                    </header>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Chronological room status changes, housekeeping transitions and audit trail.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/report-today-activities"><i class="fa fa-bar-chart"></i> Today Report</a>
+                <a class="mm-button mm-button-secondary" href="/preview/booking-next"><i class="fa fa-map-o"></i> Floor Plan</a>
+            </div>
+        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Room logs summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-history"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Logged Events</span>
+                    <div class="mm-table-kpi-value">2 Transitions <span class="mm-table-kpi-sub">01 Oct 2026</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-key"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Tracked Room</span>
+                    <div class="mm-table-kpi-value">Room #101 <span class="mm-table-kpi-sub">Deluxe King</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-bell"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Housekeeping SLA</span>
+                    <div class="mm-table-kpi-value">22 Mins <span class="mm-table-kpi-sub">Avg Turnaround</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-shield"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Operator Audit</span>
+                    <div class="mm-table-kpi-value">Verified ✓ <span class="mm-table-kpi-sub">Timestamped</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 mm-report-filter"><form class="mm-setup-filter mm-report-form">
 
             <div class="input-group">

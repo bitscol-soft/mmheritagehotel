@@ -5,8 +5,44 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">In-house guest list</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Guests staying in the hotel, filtered by date.</p>            </div>
-                    </header>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Checked-in guests currently staying in the hotel, filtered by date.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/report-expected-arrival"><i class="fa fa-sign-in"></i> Arrivals</a>
+                <a class="mm-button mm-button-secondary" href="/preview/report-expected-departure"><i class="fa fa-sign-out"></i> Departures</a>
+                <button type="button" class="mm-button mm-button-secondary" data-toggle="modal" data-target="#hr-inhouse-drawer"><i class="fa fa-columns"></i> Guest Folio Inspector (Drawer)</button>
+            </div>
+        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="In-house guests summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-bed"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Occupied Rooms</span>
+                    <div class="mm-table-kpi-value">Room #101 <span class="mm-table-kpi-sub">Deluxe King (DK)</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-users"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">In-House Pax</span>
+                    <div class="mm-table-kpi-value">2 Guests <span class="mm-table-kpi-sub">Nadia · Acme Corp</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-calendar"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Stay Duration</span>
+                    <div class="mm-table-kpi-value">2 Nights <span class="mm-table-kpi-sub">01 Oct → 03 Oct</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-cutlery"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">POS Room Charge</span>
+                    <div class="mm-table-kpi-value">Enabled ✓ <span class="mm-table-kpi-sub">Breakfast Included</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 mm-report-filter"><form action="" method="GET" class="mm-setup-filter mm-report-form">
             <div class="mm-report-field">
                 <div class="input-group">
@@ -69,6 +105,31 @@
             <span class="pull-right"><ul class="pagination"><li class=" disabled"><a class="" href="#">← First</a></li><li class="active"><span>1</span></li><li><a href="#">2</a></li><li><a class="" href="#">Last →</a></li></ul></span>
 
             <div class="pull-left hidden-print" style="margin-top:10px; margin-left:10px"><a href="/hotel/reports/x?export_type=excel&amp;date=2026-10-01" target="_blank" style="margin-right: 5px"><img src="/assets/images/export-icons/excel-icon.png"></a><a href="/hotel/reports/x?export_type=pdf&amp;date=2026-10-01" target="_blank" style="margin-right: 5px"><img src="/assets/images/export-icons/pdf-icon.png"></a></div></div>
+
+        <!-- Slide-Over App Drawer: In-House Guest Folio Inspector -->
+        <div class="modal fade" id="hr-inhouse-drawer" tabindex="-1" role="dialog" aria-labelledby="hr-inhouse-drawer-title">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="hr-inhouse-drawer-title"><i class="fa fa-bed"></i> In-House Guest Folio — Room #101 (Nadia)</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="tw-text-sm tw-text-muted" style="margin-top:0">Live room folio summary and outlet charge privileges for Room #101.</p>
+                        <div class="mm-panel tw-p-4" style="margin-bottom:12px">
+                            <strong>Guest Profile:</strong> Nadia · Corporate Account: <code>Acme</code> · Pax: <code>2</code> · NID: <code>N-1</code>
+                        </div>
+                        <div class="mm-panel tw-p-4">
+                            <strong>Stay Window:</strong> Check-In <code>2026-10-01</code> → Check-Out <code>2026-10-03</code> · Deluxe King (DK)
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="/preview/hservice-sale-create" class="mm-button mm-button-secondary"><i class="fa fa-plus"></i> Post Room Service</a>
+                        <button type="button" class="mm-button" data-dismiss="modal"><i class="fa fa-check"></i> Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 <!--/MM-BODY--></div>

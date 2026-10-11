@@ -5,8 +5,44 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Expected arrival list</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Guests due to check in on the selected date.</p>            </div>
-                    </header>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Guests due to check in on the selected date, with airport pickup and room readiness.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/report-expected-departure"><i class="fa fa-sign-out"></i> Expected Departures</a>
+                <a class="mm-button mm-button-secondary" href="/preview/report-in-house-guest"><i class="fa fa-bed"></i> In-House Guests</a>
+                <button type="button" class="mm-button mm-button-secondary" data-toggle="modal" data-target="#hr-arrival-drawer"><i class="fa fa-columns"></i> Pre-Arrival Desk (Drawer)</button>
+            </div>
+        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Expected arrivals summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-suitcase"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Expected Arrivals</span>
+                    <div class="mm-table-kpi-value">2 Bookings <span class="mm-table-kpi-sub">B-0007, B-0008</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Rooms Ready</span>
+                    <div class="mm-table-kpi-value">100% Ready <span class="mm-table-kpi-sub">Inspected &amp; Clean</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-plane"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Airport Pickups</span>
+                    <div class="mm-table-kpi-value">2 Flights <span class="mm-table-kpi-sub">Flight BG-12</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-credit-card"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Advance Deposits</span>
+                    <div class="mm-table-kpi-value">৳ 5,000 <span class="mm-table-kpi-sub">Pre-Authorized</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 mm-report-filter"><form action="" method="GET" class="mm-setup-filter mm-report-form">
             <div class="mm-report-field">
                 <div class="input-group">
@@ -63,6 +99,31 @@
             <span class="pull-right"><ul class="pagination"><li class=" disabled"><a class="" href="#">← First</a></li><li class="active"><span>1</span></li><li><a href="#">2</a></li><li><a class="" href="#">Last →</a></li></ul></span>
 
             <div class="pull-left hidden-print" style="margin-top:10px; margin-left:10px"><a href="/hotel/reports/x?export_type=excel&amp;date=2026-10-01" target="_blank" style="margin-right: 5px"><img src="/assets/images/export-icons/excel-icon.png"></a><a href="/hotel/reports/x?export_type=pdf&amp;date=2026-10-01" target="_blank" style="margin-right: 5px"><img src="/assets/images/export-icons/pdf-icon.png"></a></div></div>
+
+        <!-- Slide-Over App Drawer: Pre-Arrival Check-In Desk -->
+        <div class="modal fade" id="hr-arrival-drawer" tabindex="-1" role="dialog" aria-labelledby="hr-arrival-drawer-title">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="hr-arrival-drawer-title"><i class="fa fa-plane"></i> Pre-Arrival &amp; Chauffeur Dispatch Inspector</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="tw-text-sm tw-text-muted" style="margin-top:0">Flight arrival tracking, keycard encoding, and room readiness for today's check-ins.</p>
+                        <div class="mm-panel tw-p-4" style="margin-bottom:12px">
+                            <strong>B-0007 · Rahim</strong> — Flight <code>BG-12</code> (Airport Chauffeur Assigned · Room <code>#101</code> Ready)
+                        </div>
+                        <div class="mm-panel tw-p-4">
+                            <strong>B-0008 · Karim</strong> — Flight <code>BG-12</code> (Airport Chauffeur Assigned · Room <code>#102</code> Ready)
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="/preview/booking-next" class="mm-button mm-button-secondary"><i class="fa fa-calendar-plus-o"></i> New Booking</a>
+                        <button type="button" class="mm-button" data-dismiss="modal"><i class="fa fa-check"></i> Done</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 <!--/MM-BODY--></div>

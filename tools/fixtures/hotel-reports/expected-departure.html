@@ -5,8 +5,44 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Expected departure list</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Guests due to check out on the selected date.</p>            </div>
-                    </header>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Guests due to check out on the selected date, with folio settlement status.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/report-expected-arrival"><i class="fa fa-sign-in"></i> Expected Arrivals</a>
+                <a class="mm-button mm-button-secondary" href="/preview/checkout"><i class="fa fa-credit-card"></i> Express Checkout</a>
+                <button type="button" class="mm-button mm-button-secondary" data-toggle="modal" data-target="#hr-departure-drawer"><i class="fa fa-columns"></i> Departure Checklist (Drawer)</button>
+            </div>
+        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Expected departures summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-sign-out"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Scheduled Departures</span>
+                    <div class="mm-table-kpi-value">1 Booking <span class="mm-table-kpi-sub">B-0009 · Salma</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Minibar &amp; Housekeeping</span>
+                    <div class="mm-table-kpi-value">Cleared ✓ <span class="mm-table-kpi-sub">No Pending KOT</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-plane"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Airport Drop-Off</span>
+                    <div class="mm-table-kpi-value">Flight BG-99 <span class="mm-table-kpi-sub">Hotel Lobby Pickup</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-money"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Folio Settlement</span>
+                    <div class="mm-table-kpi-value">Ready <span class="mm-table-kpi-sub">12:00 PM Check-Out</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 mm-report-filter"><form action="" method="GET" class="mm-setup-filter mm-report-form">
             <div class="mm-report-field">
                 <div class="input-group">
@@ -52,6 +88,28 @@
             <span class="pull-right"><ul class="pagination"><li class=" disabled"><a class="" href="#">← First</a></li><li class="active"><span>1</span></li><li><a href="#">2</a></li><li><a class="" href="#">Last →</a></li></ul></span>
 
             <div class="pull-left hidden-print" style="margin-top:10px; margin-left:10px"><a href="/hotel/reports/x?export_type=excel&amp;date=2026-10-01" target="_blank" style="margin-right: 5px"><img src="/assets/images/export-icons/excel-icon.png"></a><a href="/hotel/reports/x?export_type=pdf&amp;date=2026-10-01" target="_blank" style="margin-right: 5px"><img src="/assets/images/export-icons/pdf-icon.png"></a></div></div>
+
+        <!-- Slide-Over App Drawer: Express Departure Checklist -->
+        <div class="modal fade" id="hr-departure-drawer" tabindex="-1" role="dialog" aria-labelledby="hr-departure-drawer-title">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="hr-departure-drawer-title"><i class="fa fa-sign-out"></i> Express Departure &amp; Folio Clearance</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="tw-text-sm tw-text-muted" style="margin-top:0">Pre-checkout clearance across Front Desk, Restaurant POS, Bar POS, and Housekeeping.</p>
+                        <div class="mm-panel tw-p-4">
+                            <strong>B-0009 · Salma</strong> — Drop at <code>Hotel lobby</code> for Flight <code>BG-99</code> · Minibar &amp; Laundry Verified
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="/preview/checkout" class="mm-button mm-button-secondary"><i class="fa fa-credit-card"></i> Open Checkout Folio</a>
+                        <button type="button" class="mm-button" data-dismiss="modal"><i class="fa fa-check"></i> Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 <!--/MM-BODY--></div>
