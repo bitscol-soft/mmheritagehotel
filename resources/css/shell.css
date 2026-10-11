@@ -1272,6 +1272,73 @@
     border-color: rgba(52, 211, 153, 0.42);
     color: #6ee7b7;
 }
+.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-wiz-floorplan-box {
+    background: linear-gradient(145deg, rgba(18, 28, 43, 0.92) 0%, rgba(12, 19, 32, 0.96) 100%);
+    border-color: rgba(96, 165, 250, 0.28);
+    box-shadow: 0 8px 24px -6px rgba(2, 6, 23, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-wiz-fp-tab {
+    background: rgba(15, 23, 42, 0.85);
+    border-color: rgba(148, 163, 184, 0.30);
+    color: #cbd5e1;
+}
+.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-wiz-fp-tab.is-active {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    border-color: #60a5fa;
+    color: #ffffff;
+}
+.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-wiz-fp-legend {
+    color: #94a3b8;
+}
+.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-wiz-fp-tile {
+    background: linear-gradient(180deg, rgba(30, 41, 59, 0.88) 0%, rgba(15, 23, 42, 0.92) 100%);
+    border-color: rgba(148, 163, 184, 0.28);
+    border-top-color: #34d399;
+    box-shadow: 0 4px 12px rgba(2, 6, 23, 0.45);
+}
+.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-wiz-fp-tile.is-selected {
+    background: linear-gradient(145deg, rgba(30, 58, 138, 0.65) 0%, rgba(15, 23, 42, 0.94) 100%);
+    border-color: rgba(96, 165, 250, 0.58);
+    border-top-color: #60a5fa;
+    box-shadow: 0 8px 20px -4px rgba(37, 99, 235, 0.34), 0 0 0 2px rgba(96, 165, 250, 0.22);
+}
+.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-wiz-fp-tile.is-occupied {
+    background: linear-gradient(180deg, rgba(69, 10, 10, 0.48) 0%, rgba(15, 23, 42, 0.92) 100%);
+    border-color: rgba(248, 113, 113, 0.34);
+    border-top-color: #f87171;
+}
+.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-wiz-fp-tile.is-dirty {
+    background: linear-gradient(180deg, rgba(69, 26, 3, 0.48) 0%, rgba(15, 23, 42, 0.92) 100%);
+    border-color: rgba(251, 191, 36, 0.34);
+    border-top-color: #fbbf24;
+}
+.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-wiz-fp-room,
+.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-wiz-fp-cat {
+    color: #f8fafc;
+}
+.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-wiz-fp-floor {
+    background: rgba(148, 163, 184, 0.18);
+    color: #cbd5e1;
+}
+.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-wiz-fp-meta {
+    border-top-color: rgba(148, 163, 184, 0.22);
+    color: #94a3b8;
+}
+.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-wiz-fp-rate {
+    color: #93c5fd;
+}
+.mm-shell.mm-dark .mm-ui.mm-acc .mm-fin-section-row td,
+.mm-shell.mm-dark .mm-ui.mm-acc .mm-fin-section-row th {
+    background: rgba(30, 58, 95, 0.48) !important;
+    color: #93c5fd !important;
+    border-color: rgba(96, 165, 250, 0.28) !important;
+}
+.mm-shell.mm-dark .mm-ui.mm-acc .mm-fin-total-row td,
+.mm-shell.mm-dark .mm-ui.mm-acc .mm-fin-total-row th {
+    background: rgba(6, 78, 59, 0.42) !important;
+    color: #6ee7b7 !important;
+    border-color: rgba(52, 211, 153, 0.34) !important;
+}
 
 /* ---------- Option 2 & 4: Dark Mode rules for Night Audit, Payment Collection, Banquet & Reports ---------- */
 .mm-shell.mm-dark .mm-ui.mm-night-audit .mm-na-stat {

@@ -29,10 +29,45 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Chart Of Account</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Chart of accounts by group.</p>            </div>
-            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button mm-button-secondary" href="http://localhost/acc/report/chart-of-account"><i class="fa fa-refresh"></i> Refresh</a>
-        
-        <a class="mm-button" href="http://localhost/acc/report/chart-of-account?print=print&"><i class="fa fa-print"></i> Print</a></div>        </header>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Hierarchical chart of accounts by group, control and subsidiary ledger.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/acc-account-ledger"><i class="fa fa-book"></i> Account Ledger</a>
+                <a class="mm-button mm-button-secondary" href="/preview/acc-trial-balance"><i class="fa fa-balance-scale"></i> Trial Balance</a>
+                <button type="button" class="mm-button mm-button-secondary" data-toggle="modal" data-target="#acc-coa-drawer"><i class="fa fa-plus-circle"></i> + Quick GL Account (Drawer)</button>
+                <a class="mm-button mm-button-secondary" href="http://localhost/acc/report/chart-of-account"><i class="fa fa-refresh"></i> Refresh</a>
+                <a class="mm-button" href="http://localhost/acc/report/chart-of-account?print=print&"><i class="fa fa-print"></i> Print</a>
+            </div>        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Chart of accounts summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-sitemap"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Primary Account Groups</span>
+                    <div class="mm-table-kpi-value">4 Groups <span class="mm-table-kpi-sub">Asset, Liab, Eq, P&amp;L</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-folder-open-o"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Control Accounts</span>
+                    <div class="mm-table-kpi-value">14 Controls <span class="mm-table-kpi-sub">Level-2 Hierarchy</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-book"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Posting Ledgers</span>
+                    <div class="mm-table-kpi-value">38 Accounts <span class="mm-table-kpi-sub">Active GL Codes</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Normal Balance Rules</span>
+                    <div class="mm-table-kpi-value">Enforced ✓ <span class="mm-table-kpi-sub">Dr / Cr Validated</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 mm-report-filter"><form class="mm-setup-filter mm-report-form" action="" method="get">
 
             <div class="row px-3 pb-2 no-print">
@@ -151,14 +186,93 @@
         <!-- LIST -->
         <div class="row" style="width: 100%; margin: 0 !important;">
             <div class="col-sm-12 px-4">
+                <div class="mm-table-scroll" role="region" aria-label="Chart Of Account" tabindex="0">
+                    <table class="table table-bordered table-striped" style="margin-bottom:0; width:100%;">
+                        <thead>
+                            <tr>
+                                <th width="14%">Account Code</th>
+                                <th>Account Name</th>
+                                <th width="18%">Control Group</th>
+                                <th width="14%" class="text-center">Balance Type</th>
+                                <th width="18%" class="text-right pr-1">Current Balance (৳)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>1010-001</code></td>
+                                <td><strong>Cash in Hand — Front Desk &amp; POS Float</strong></td>
+                                <td>Current Assets</td>
+                                <td class="text-center"><span class="mm-badge mm-badge-paid">Debit</span></td>
+                                <td class="text-right pr-1"><strong>412,000.00</strong></td>
+                            </tr>
+                            <tr>
+                                <td><code>1020-004</code></td>
+                                <td><strong>City Bank PLC — Corporate Operating A/C</strong></td>
+                                <td>Current Assets</td>
+                                <td class="text-center"><span class="mm-badge mm-badge-paid">Debit</span></td>
+                                <td class="text-right pr-1"><strong>1,000,000.00</strong></td>
+                            </tr>
+                            <tr>
+                                <td><code>2010-002</code></td>
+                                <td><strong>Accounts Payable — F&amp;B &amp; General Store Suppliers</strong></td>
+                                <td>Current Liabilities</td>
+                                <td class="text-center"><span class="mm-badge mm-badge-unpaid">Credit</span></td>
+                                <td class="text-right pr-1"><strong>340,000.00</strong></td>
+                            </tr>
+                            <tr>
+                                <td><code>3010-001</code></td>
+                                <td><strong>Owners Paid-Up Share Capital</strong></td>
+                                <td>Owners Equity</td>
+                                <td class="text-center"><span class="mm-badge mm-badge-partial">Credit</span></td>
+                                <td class="text-right pr-1"><strong>2,745,000.00</strong></td>
+                            </tr>
+                            <tr>
+                                <td><code>4010-001</code></td>
+                                <td><strong>Room Division Tariff &amp; Suite Revenue</strong></td>
+                                <td>Operating Revenue</td>
+                                <td class="text-center"><span class="mm-badge mm-badge-paid">Credit</span></td>
+                                <td class="text-right pr-1"><strong>1,120,000.00</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
-                
-
-
-                
-
-
-                <!-- EXCEL BUTTON -->
+                <!-- Slide-Over App Drawer: Quick Add GL Account -->
+                <div class="modal fade" id="acc-coa-drawer" tabindex="-1" role="dialog" aria-labelledby="acc-coa-drawer-title">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="acc-coa-drawer-title"><i class="fa fa-plus-circle"></i> Quick Add General Ledger Account</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <form onsubmit="return false;" class="tw-space-y-3">
+                                    <div class="mm-field">
+                                        <label class="mm-label">Account Code <span class="mm-req">*</span></label>
+                                        <input type="text" class="form-control" value="4050-001">
+                                    </div>
+                                    <div class="mm-field">
+                                        <label class="mm-label">Account Title <span class="mm-req">*</span></label>
+                                        <input type="text" class="form-control" value="Spa &amp; Wellness Center Revenue">
+                                    </div>
+                                    <div class="mm-field">
+                                        <label class="mm-label">Account Group</label>
+                                        <select class="form-control">
+                                            <option>4000 · Operating Revenue (Credit)</option>
+                                            <option>1000 · Current Assets (Debit)</option>
+                                            <option>2000 · Current Liabilities (Credit)</option>
+                                            <option>5000 · Operating Expenses (Debit)</option>
+                                        </select>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                <button type="button" class="mm-button" data-dismiss="modal"><i class="fa fa-check"></i> Save Account</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <a class="hidden-print" href="http://localhost/acc/report/chart-of-account?export_type=excel&" target="_blank" style="margin: 18px 0 0 20px; display: inline-block;">
                     <img src="/assets/images/export-icons/excel-icon.png">
                 </a>

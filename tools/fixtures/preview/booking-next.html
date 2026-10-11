@@ -99,15 +99,114 @@
                     <header class="mm-section-head">
                         <h2 class="mm-section-title">
                             <span class="mm-wiz-sec-icon"><i class="fa fa-bed"></i></span>
-                            <span>Step 1 · Selected Rooms &amp; Nightly Tariff</span>
+                            <span>Step 1 · Interactive Floor Plan &amp; Selected Rooms</span>
                         </h2>
                         <div class="tw-flex tw-items-center tw-gap-2">
                             <span class="mm-badge mm-badge-paid" id="wiz-rooms-badge">2 Rooms Assigned</span>
+                            <button type="button" class="mm-button mm-button-secondary mm-button-sm" data-toggle="modal" data-target="#wiz-floorplan-modal" style="min-height:30px; padding:3px 10px; font-size:12px;">
+                                <i class="fa fa-map-o"></i> Floor Map Drawer
+                            </button>
                             <a href="/" class="mm-button mm-button-secondary mm-button-sm" style="min-height:30px; padding:3px 10px; font-size:12px;">
-                                <i class="fa fa-th-large"></i> Floor Plan
+                                <i class="fa fa-th-large"></i> Full Board
                             </a>
                         </div>
                     </header>
+
+                    <div class="mm-wiz-floorplan-box" role="region" aria-label="Interactive hotel floor plan">
+                        <div class="mm-wiz-fp-bar">
+                            <div class="mm-wiz-fp-tabs" role="tablist" aria-label="Filter rooms by floor">
+                                <button type="button" class="mm-wiz-fp-tab is-active" data-fp-floor="all">All Floors (6)</button>
+                                <button type="button" class="mm-wiz-fp-tab" data-fp-floor="1">1st Floor · Deluxe Wing</button>
+                                <button type="button" class="mm-wiz-fp-tab" data-fp-floor="2">2nd Floor · Suite Wing</button>
+                            </div>
+                            <div class="mm-wiz-fp-legend">
+                                <span><span class="mm-wiz-fp-dot" style="background:#2563eb;"></span>Selected</span>
+                                <span><span class="mm-wiz-fp-dot" style="background:#10b981;"></span>Available (Click to Toggle)</span>
+                                <span><span class="mm-wiz-fp-dot" style="background:#ef4444;"></span>Occupied</span>
+                                <span><span class="mm-wiz-fp-dot" style="background:#f59e0b;"></span>Cleaning</span>
+                            </div>
+                        </div>
+                        <div class="mm-wiz-fp-grid" id="wiz-floorplan-grid">
+                            <button type="button" class="mm-wiz-fp-tile is-selected" data-fp-room="#101" data-floor="1" title="Click to toggle Room #101">
+                                <div class="mm-wiz-fp-top">
+                                    <span class="mm-wiz-fp-room">#101</span>
+                                    <span class="mm-wiz-fp-floor">1F · City</span>
+                                </div>
+                                <div class="mm-wiz-fp-cat">Deluxe Double</div>
+                                <div class="mm-wiz-fp-meta">
+                                    <span><i class="fa fa-users"></i> 2P · King</span>
+                                    <span class="mm-wiz-fp-rate">৳ 4,200</span>
+                                </div>
+                                <div><span class="mm-badge mm-badge-paid wiz-fp-status-badge" style="font-size:10px;">Selected ✓</span></div>
+                            </button>
+
+                            <button type="button" class="mm-wiz-fp-tile is-occupied" data-floor="1" disabled title="Room #102 — Occupied by In-House Guest">
+                                <div class="mm-wiz-fp-top">
+                                    <span class="mm-wiz-fp-room">#102</span>
+                                    <span class="mm-wiz-fp-floor">1F · City</span>
+                                </div>
+                                <div class="mm-wiz-fp-cat">Deluxe King</div>
+                                <div class="mm-wiz-fp-meta">
+                                    <span><i class="fa fa-user"></i> In-House</span>
+                                    <span class="mm-wiz-fp-rate">৳ 4,500</span>
+                                </div>
+                                <div><span class="mm-badge mm-badge-unpaid" style="font-size:10px;">Occupied</span></div>
+                            </button>
+
+                            <button type="button" class="mm-wiz-fp-tile" data-fp-room="#104" data-floor="1" title="Click to toggle Room #104">
+                                <div class="mm-wiz-fp-top">
+                                    <span class="mm-wiz-fp-room">#104</span>
+                                    <span class="mm-wiz-fp-floor">1F · Garden</span>
+                                </div>
+                                <div class="mm-wiz-fp-cat">Executive Twin</div>
+                                <div class="mm-wiz-fp-meta">
+                                    <span><i class="fa fa-users"></i> 2P · Twin</span>
+                                    <span class="mm-wiz-fp-rate">৳ 3,600</span>
+                                </div>
+                                <div><span class="mm-badge mm-badge-partial wiz-fp-status-badge" style="font-size:10px;">Available · + Add</span></div>
+                            </button>
+
+                            <button type="button" class="mm-wiz-fp-tile is-selected" data-fp-room="#201" data-floor="2" title="Click to toggle Room #201">
+                                <div class="mm-wiz-fp-top">
+                                    <span class="mm-wiz-fp-room">#201</span>
+                                    <span class="mm-wiz-fp-floor">2F · VIP</span>
+                                </div>
+                                <div class="mm-wiz-fp-cat">Heritage Suite</div>
+                                <div class="mm-wiz-fp-meta">
+                                    <span><i class="fa fa-users"></i> 3P · Suite</span>
+                                    <span class="mm-wiz-fp-rate">৳ 6,500</span>
+                                </div>
+                                <div><span class="mm-badge mm-badge-paid wiz-fp-status-badge" style="font-size:10px;">Selected ✓</span></div>
+                            </button>
+
+                            <button type="button" class="mm-wiz-fp-tile is-dirty" data-floor="2" disabled title="Room #202 — Housekeeping in progress">
+                                <div class="mm-wiz-fp-top">
+                                    <span class="mm-wiz-fp-room">#202</span>
+                                    <span class="mm-wiz-fp-floor">2F · VIP</span>
+                                </div>
+                                <div class="mm-wiz-fp-cat">Heritage Suite</div>
+                                <div class="mm-wiz-fp-meta">
+                                    <span><i class="fa fa-magic"></i> Cleaning</span>
+                                    <span class="mm-wiz-fp-rate">৳ 6,500</span>
+                                </div>
+                                <div><span class="mm-badge mm-badge-partial" style="font-size:10px;">Housekeeping</span></div>
+                            </button>
+
+                            <button type="button" class="mm-wiz-fp-tile is-occupied" data-floor="2" disabled title="Room #204 — Reserved VIP Arrival">
+                                <div class="mm-wiz-fp-top">
+                                    <span class="mm-wiz-fp-room">#204</span>
+                                    <span class="mm-wiz-fp-floor">2F · Balcony</span>
+                                </div>
+                                <div class="mm-wiz-fp-cat">Royal Family Suite</div>
+                                <div class="mm-wiz-fp-meta">
+                                    <span><i class="fa fa-lock"></i> Reserved</span>
+                                    <span class="mm-wiz-fp-rate">৳ 8,500</span>
+                                </div>
+                                <div><span class="mm-badge mm-badge-unpaid" style="font-size:10px;">Reserved</span></div>
+                            </button>
+                        </div>
+                    </div>
+
                     <div class="tw-space-y-3" id="wiz-room-list">
                         <div class="mm-wiz-room-row is-selected" data-room-rate="4200">
                             <div class="mm-wiz-room-main">
@@ -454,6 +553,75 @@
                 </div>
             </div>
         </div>
+
+        <!-- Slide-Over App Drawer 3: Interactive Architectural Floor Plan Inspector -->
+        <div class="modal fade" id="wiz-floorplan-modal" tabindex="-1" role="dialog" aria-labelledby="wiz-fp-drawer-title">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="wiz-fp-drawer-title"><i class="fa fa-map-o"></i> Hotel Wing &amp; Floor Plan Inspector</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="tw-text-sm tw-text-muted" style="margin-top:0">Live architectural wing summary for Check-in <strong>2026-10-11</strong> → Check-out <strong>2026-10-13</strong>. Click any available room on the floor map to assign or release it.</p>
+                        <div class="mm-table-scroll">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Floor / Wing</th>
+                                        <th>Room No.</th>
+                                        <th>Category &amp; View</th>
+                                        <th>Status</th>
+                                        <th class="text-right">Tariff / Night</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>1st Floor · East</strong></td>
+                                        <td><code>#101</code></td>
+                                        <td>Deluxe Double · City View</td>
+                                        <td><span class="mm-badge mm-badge-paid">Selected in Wizard</span></td>
+                                        <td class="text-right">৳ 4,200</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>1st Floor · East</strong></td>
+                                        <td><code>#102</code></td>
+                                        <td>Deluxe King · City View</td>
+                                        <td><span class="mm-badge mm-badge-unpaid">Occupied (In-House)</span></td>
+                                        <td class="text-right">৳ 4,500</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>1st Floor · West</strong></td>
+                                        <td><code>#104</code></td>
+                                        <td>Executive Twin · Garden View</td>
+                                        <td><span class="mm-badge mm-badge-partial">Available to Add</span></td>
+                                        <td class="text-right">৳ 3,600</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>2nd Floor · VIP</strong></td>
+                                        <td><code>#201</code></td>
+                                        <td>Heritage Suite · Balcony Lounge</td>
+                                        <td><span class="mm-badge mm-badge-paid">Selected in Wizard</span></td>
+                                        <td class="text-right">৳ 6,500</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>2nd Floor · VIP</strong></td>
+                                        <td><code>#202</code></td>
+                                        <td>Heritage Suite · Panoramic View</td>
+                                        <td><span class="mm-badge mm-badge-partial">Housekeeping</span></td>
+                                        <td class="text-right">৳ 6,500</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="/" class="mm-button mm-button-secondary"><i class="fa fa-th-large"></i> Open Full 32-Room Board</a>
+                        <button type="button" class="mm-button" data-dismiss="modal"><i class="fa fa-check"></i> Done</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 <!--/MM-BODY--></div>
@@ -471,14 +639,27 @@
         document.querySelectorAll('.wiz-room-toggle').forEach(function (cb) {
             var row = cb.closest('.mm-wiz-room-row');
             var txt = row ? row.querySelector('.wiz-room-toggle-text') : null;
+            var roomCode = cb.getAttribute('data-label');
+            var fpTile = roomCode ? document.querySelector('[data-fp-room="' + roomCode + '"]') : null;
+            var fpBadge = fpTile ? fpTile.querySelector('.wiz-fp-status-badge') : null;
             if (cb.checked) {
                 nightly += parseInt(cb.getAttribute('data-rate') || '0', 10);
-                labels.push(cb.getAttribute('data-label'));
+                labels.push(roomCode);
                 if (row) row.classList.add('is-selected');
                 if (txt) txt.textContent = 'Included ✓';
+                if (fpTile) fpTile.classList.add('is-selected');
+                if (fpBadge) {
+                    fpBadge.className = 'mm-badge mm-badge-paid wiz-fp-status-badge';
+                    fpBadge.textContent = 'Selected ✓';
+                }
             } else {
                 if (row) row.classList.remove('is-selected');
                 if (txt) txt.textContent = '+ Add Room';
+                if (fpTile) fpTile.classList.remove('is-selected');
+                if (fpBadge) {
+                    fpBadge.className = 'mm-badge mm-badge-partial wiz-fp-status-badge';
+                    fpBadge.textContent = 'Available · + Add';
+                }
             }
         });
         document.querySelectorAll('.wiz-room-line-sub').forEach(function (subEl) {
@@ -523,6 +704,27 @@
     document.querySelectorAll('.wiz-room-toggle, #wiz-nights, #wiz-discount, #wiz-advance').forEach(function (el) {
         el.addEventListener('input', recalcWizard);
         el.addEventListener('change', recalcWizard);
+    });
+    document.querySelectorAll('[data-fp-room]').forEach(function (tile) {
+        tile.addEventListener('click', function () {
+            var code = tile.getAttribute('data-fp-room');
+            var cb = code ? document.querySelector('.wiz-room-toggle[data-label="' + code + '"]') : null;
+            if (cb) {
+                cb.checked = !cb.checked;
+                recalcWizard();
+            }
+        });
+    });
+    document.querySelectorAll('[data-fp-floor]').forEach(function (tab) {
+        tab.addEventListener('click', function () {
+            var floor = tab.getAttribute('data-fp-floor') || 'all';
+            document.querySelectorAll('[data-fp-floor]').forEach(function (t) {
+                t.classList.toggle('is-active', t === tab);
+            });
+            document.querySelectorAll('#wiz-floorplan-grid [data-floor]').forEach(function (tile) {
+                tile.style.display = (floor === 'all' || tile.getAttribute('data-floor') === floor) ? '' : 'none';
+            });
+        });
     });
     document.querySelectorAll('[data-wiz-step-nav]').forEach(function (stepLi) {
         stepLi.addEventListener('click', function () {

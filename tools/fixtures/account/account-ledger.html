@@ -29,8 +29,44 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Account Ledger</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Transactions of one account.</p>            </div>
-            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button" href="/acc/report/account-ledger?company_id=1&print=print"><i class="fa fa-print"></i> Print</a></div>        </header>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Chronological voucher transactions and running balance of one GL account.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/acc-chart-of-account"><i class="fa fa-sitemap"></i> Chart of Accounts</a>
+                <a class="mm-button mm-button-secondary" href="/preview/acc-trial-balance"><i class="fa fa-balance-scale"></i> Trial Balance</a>
+                <button type="button" class="mm-button mm-button-secondary" data-toggle="modal" data-target="#acc-voucher-drawer"><i class="fa fa-columns"></i> Inspect Voucher Drawer</button>
+                <a class="mm-button" href="/acc/report/account-ledger?company_id=1&print=print"><i class="fa fa-print"></i> Print</a>
+            </div>        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Account ledger summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-book"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Selected GL Account</span>
+                    <div class="mm-table-kpi-value">1010 · Cash <span class="mm-table-kpi-sub">Asset (Debit)</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-arrow-circle-up"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Period Debit (Dr.)</span>
+                    <div class="mm-table-kpi-value">৳ 150.00 <span class="mm-table-kpi-sub">Posted Inflows</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-arrow-circle-down"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Period Credit (Cr.)</span>
+                    <div class="mm-table-kpi-value">৳ 90.00 <span class="mm-table-kpi-sub">Posted Outflows</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Closing Balance</span>
+                    <div class="mm-table-kpi-value">৳ 120.00 <span class="mm-table-kpi-sub">Reconciled</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 mm-report-filter"><form class="mm-setup-filter mm-report-form" action="" method="get">
 
             <input type="hidden" name="report" value="">
@@ -115,55 +151,83 @@
                         </thead>
 
                         <tbody>
-
-                                                            <tr>
-                                    <td colspan="7" style="font-size: 16px" class="text-center text-danger">NO RECORDS
-                                        FOUND!</td>
-                                </tr>
-                            
-                            
-                                                                                            <tr>
-                                    <td class="text-center">1</td>
-                                    <td class="text-center">2026-10-01</td>
-                                    <td class="text-center">V-0004</td>
-                                    <td class="pl-3">Rent &lt;b&gt;paid&lt;/b&gt;</td>
-                                    <td class="text-right pr-1">150.00</td>
-                                    <td class="text-right pr-1">0.00</td>
-                                    <td class="text-right pr-1">210.00</td>
-                                </tr>
-                                                                                            <tr>
-                                    <td class="text-center">2</td>
-                                    <td class="text-center">2026-10-01</td>
-                                    <td class="text-center">V-0005</td>
-                                    <td class="pl-3">Rent &lt;b&gt;paid&lt;/b&gt;</td>
-                                    <td class="text-right pr-1">0.00</td>
-                                    <td class="text-right pr-1">90.00</td>
-                                    <td class="text-right pr-1">120.00</td>
-                                </tr>
-                            
                             <tr>
+                                <td class="text-center">1</td>
+                                <td class="text-center">2026-10-01</td>
+                                <td class="text-center"><a href="javascript:void(0)" data-toggle="modal" data-target="#acc-voucher-drawer"><code>V-0004</code></a></td>
+                                <td class="pl-3">Rent &lt;b&gt;paid&lt;/b&gt;</td>
+                                <td class="text-right pr-1">150.00</td>
+                                <td class="text-right pr-1">0.00</td>
+                                <td class="text-right pr-1"><strong>210.00</strong></td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">2</td>
+                                <td class="text-center">2026-10-01</td>
+                                <td class="text-center"><a href="javascript:void(0)" data-toggle="modal" data-target="#acc-voucher-drawer"><code>V-0005</code></a></td>
+                                <td class="pl-3">Rent &lt;b&gt;paid&lt;/b&gt;</td>
+                                <td class="text-right pr-1">0.00</td>
+                                <td class="text-right pr-1">90.00</td>
+                                <td class="text-right pr-1"><strong>120.00</strong></td>
+                            </tr>
+                            <tr class="mm-fin-section-row">
                                 <th class="text-center" colspan="4">Total In Page</th>
                                 <th class="text-right pr-1">150.00</th>
                                 <th class="text-right pr-1">90.00</th>
                                 <th></th>
                             </tr>
-                                                            <tr style="font-size: 18px">
-                                    <th class="text-center" colspan="4">Grand Total</th>
-                                    <th class="text-right pr-1">150.00</th>
-                                    <th class="text-right pr-1">90.00</th>
-                                    <th></th>
-                                </tr>
-                            
-                            <tr>
-                                <tr style="font-size: 18px">
-                                    <th class="text-center" colspan="4">Balance</th>
-                                    <th></th>
-                                    <th></th>
-                                    <th class="text-right pr-1">120.00</th>
-                                </tr>
+                            <tr class="mm-fin-total-row">
+                                <th class="text-center" colspan="4">Grand Total &amp; Closing Balance</th>
+                                <th class="text-right pr-1">150.00</th>
+                                <th class="text-right pr-1">90.00</th>
+                                <th class="text-right pr-1">120.00</th>
                             </tr>
                         </tbody>
                     </table></div>
+
+                <!-- Slide-Over App Drawer: Voucher Inspector -->
+                <div class="modal fade" id="acc-voucher-drawer" tabindex="-1" role="dialog" aria-labelledby="acc-voucher-drawer-title">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="acc-voucher-drawer-title"><i class="fa fa-file-text-o"></i> Voucher Inspector — #V-0004</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <p class="tw-text-sm tw-text-muted" style="margin-top:0">Double-entry journal lines for Voucher <strong>#V-0004</strong> posted on <strong>2026-10-01</strong>.</p>
+                                <div class="mm-table-scroll">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>GL Account</th>
+                                                <th>Narration</th>
+                                                <th class="text-right">Debit (৳)</th>
+                                                <th class="text-right">Credit (৳)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>1010-001 · Cash in Hand</strong></td>
+                                                <td>Front-desk settlement posting</td>
+                                                <td class="text-right">150.00</td>
+                                                <td class="text-right">0.00</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>4010-001 · Room Division Revenue</strong></td>
+                                                <td>Corresponding credit entry</td>
+                                                <td class="text-right">0.00</td>
+                                                <td class="text-right">150.00</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <a href="/preview/acc-payments" class="mm-button mm-button-secondary"><i class="fa fa-list"></i> All Vouchers</a>
+                                <button type="button" class="mm-button" data-dismiss="modal"><i class="fa fa-check"></i> Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 
 

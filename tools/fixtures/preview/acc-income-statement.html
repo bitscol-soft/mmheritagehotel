@@ -5,14 +5,6 @@
     <link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css" />
 
     <style type="text/css">
-        th,
-        td {
-            background: white;
-            color: black !important;
-        }
-
-
-
         @media  print {
 
             .no-print,
@@ -60,9 +52,45 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Income  Statement</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Income and expenses for the period.</p>            </div>
-            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button mm-button-secondary" href="http://localhost/acc/report/income-statement"><i class="fa fa-refresh"></i> Refresh</a>
-        <a class="mm-button mm-button-secondary" href="javascript:void(0)" onclick="print()"><i class="fa fa-print"></i> Print</a></div>        </header>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Departmental operating revenues, direct costs and net profit for the period.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/acc-balance-sheet"><i class="fa fa-building-o"></i> Balance Sheet</a>
+                <a class="mm-button mm-button-secondary" href="/preview/acc-trial-balance"><i class="fa fa-balance-scale"></i> Trial Balance</a>
+                <button type="button" class="mm-button mm-button-secondary" data-toggle="modal" data-target="#acc-income-drawer"><i class="fa fa-columns"></i> Outlet Margin Drawer</button>
+                <a class="mm-button mm-button-secondary" href="http://localhost/acc/report/income-statement"><i class="fa fa-refresh"></i> Refresh</a>
+                <a class="mm-button mm-button-secondary" href="javascript:void(0)" onclick="print()"><i class="fa fa-print"></i> Print</a>
+            </div>        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Income statement summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-line-chart"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Operating Revenue</span>
+                    <div class="mm-table-kpi-value">৳ 1,920,000 <span class="mm-table-kpi-sub">4 Hotel Outlets</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-cutlery"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Direct Cost of Sales</span>
+                    <div class="mm-table-kpi-value">৳ 540,000 <span class="mm-table-kpi-sub">71.9% Gross Margin</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-cogs"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Operating Expenses</span>
+                    <div class="mm-table-kpi-value">৳ 695,000 <span class="mm-table-kpi-sub">Payroll &amp; Utilities</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-trophy"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Net Profit (EBITDA)</span>
+                    <div class="mm-table-kpi-value">৳ 685,000 <span class="mm-table-kpi-sub">35.7% Net Margin</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 mm-report-filter"><form class="mm-setup-filter mm-report-form">
 
             <!-- COMPANY NAME -->
@@ -116,27 +144,145 @@
 
 
         <div class="row" style="width: 100%; margin: 0 !important; padding: 0 !important;">
+            <div class="col-sm-12">
+                <div class="mm-table-scroll" role="region" aria-label="Income Statement" tabindex="0">
+                    <table class="table table-bordered table-striped" style="margin-bottom:0; width:100%;">
+                        <thead>
+                            <tr>
+                                <th width="14%">GL Code</th>
+                                <th>Revenue / Expense Head</th>
+                                <th width="16%" class="text-center">Department</th>
+                                <th width="18%" class="text-right pr-1">Amount (৳)</th>
+                                <th width="12%" class="text-center">% of Rev</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="mm-fin-section-row">
+                                <td colspan="5"><i class="fa fa-arrow-circle-up"></i> 1. OPERATING REVENUES</td>
+                            </tr>
+                            <tr>
+                                <td><code>4010-001</code></td>
+                                <td><strong>Room Division Tariff &amp; Suite Revenue</strong></td>
+                                <td class="text-center"><span class="mm-badge mm-badge-paid">Front Desk</span></td>
+                                <td class="text-right pr-1"><strong>1,120,000.00</strong></td>
+                                <td class="text-center">58.3%</td>
+                            </tr>
+                            <tr>
+                                <td><code>4020-002</code></td>
+                                <td><strong>Heritage Dining Restaurant POS Sales</strong></td>
+                                <td class="text-center"><span class="mm-badge mm-badge-paid">Restaurant</span></td>
+                                <td class="text-right pr-1"><strong>440,000.00</strong></td>
+                                <td class="text-center">22.9%</td>
+                            </tr>
+                            <tr>
+                                <td><code>4030-003</code></td>
+                                <td><strong>Skyline Lounge Bar &amp; Beverage Sales</strong></td>
+                                <td class="text-center"><span class="mm-badge mm-badge-partial">Bar POS</span></td>
+                                <td class="text-right pr-1"><strong>195,000.00</strong></td>
+                                <td class="text-center">10.2%</td>
+                            </tr>
+                            <tr>
+                                <td><code>4040-004</code></td>
+                                <td><strong>Banquet Hall &amp; Corporate Event Bookings</strong></td>
+                                <td class="text-center"><span class="mm-badge mm-badge-paid">Banquet</span></td>
+                                <td class="text-right pr-1"><strong>165,000.00</strong></td>
+                                <td class="text-center">8.6%</td>
+                            </tr>
+                            <tr class="mm-fin-total-row">
+                                <td colspan="3" class="text-right">Total Operating Revenue</td>
+                                <td class="text-right pr-1">1,920,000.00</td>
+                                <td class="text-center">100.0%</td>
+                            </tr>
 
+                            <tr class="mm-fin-section-row">
+                                <td colspan="5"><i class="fa fa-arrow-circle-down"></i> 2. DIRECT COST OF GOODS &amp; OPERATING EXPENSES</td>
+                            </tr>
+                            <tr>
+                                <td><code>5010-001</code></td>
+                                <td><strong>Kitchen Raw Materials, Beverage &amp; Guest Linen Cost</strong></td>
+                                <td class="text-center"><span class="mm-badge mm-badge-unpaid">Direct COGS</span></td>
+                                <td class="text-right pr-1"><strong>(540,000.00)</strong></td>
+                                <td class="text-center">28.1%</td>
+                            </tr>
+                            <tr>
+                                <td><code>5020-004</code></td>
+                                <td><strong>Hospitality Staff Salaries, Service Charge &amp; Benefits</strong></td>
+                                <td class="text-center"><span class="mm-badge mm-badge-partial">Payroll</span></td>
+                                <td class="text-right pr-1"><strong>(420,000.00)</strong></td>
+                                <td class="text-center">21.9%</td>
+                            </tr>
+                            <tr>
+                                <td><code>5030-009</code></td>
+                                <td><strong>HVAC Power, Generator Fuel, Laundry &amp; Facility Maintenance</strong></td>
+                                <td class="text-center"><span class="mm-badge mm-badge-partial">Utilities</span></td>
+                                <td class="text-right pr-1"><strong>(275,000.00)</strong></td>
+                                <td class="text-center">14.3%</td>
+                            </tr>
+                            <tr class="mm-fin-total-row">
+                                <td colspan="3" class="text-right">Net Operating Profit (Transferred to Retained Earnings)</td>
+                                <td class="text-right pr-1">685,000.00</td>
+                                <td class="text-center">35.7%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
 
-            <!-- FILTER -->
-
-
-
-
-
-
-
-
-
-            <!-- DETAIL -->
-            
-                
-
-            
-
-            <!-- EXCEL BUTTON -->
-            
-
+        <!-- Slide-Over App Drawer: Outlet Margin Breakdown -->
+        <div class="modal fade" id="acc-income-drawer" tabindex="-1" role="dialog" aria-labelledby="acc-income-drawer-title">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="acc-income-drawer-title"><i class="fa fa-pie-chart"></i> Departmental Profit &amp; Margin Inspector</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="tw-text-sm tw-text-muted" style="margin-top:0">Outlet-by-outlet contribution to net operating income for October 2026.</p>
+                        <div class="mm-table-scroll">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Outlet / Division</th>
+                                        <th class="text-right">Revenue (৳)</th>
+                                        <th class="text-right">Direct Cost (৳)</th>
+                                        <th class="text-right">Dept. Margin</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>Room Division (32 Rooms)</strong></td>
+                                        <td class="text-right">1,120,000</td>
+                                        <td class="text-right">185,000</td>
+                                        <td class="text-right"><span class="mm-badge mm-badge-paid">83.5%</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Heritage Dining Restaurant</strong></td>
+                                        <td class="text-right">440,000</td>
+                                        <td class="text-right">210,000</td>
+                                        <td class="text-right"><span class="mm-badge mm-badge-paid">52.3%</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Skyline Lounge Bar</strong></td>
+                                        <td class="text-right">195,000</td>
+                                        <td class="text-right">85,000</td>
+                                        <td class="text-right"><span class="mm-badge mm-badge-paid">56.4%</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Banquet &amp; Conference Halls</strong></td>
+                                        <td class="text-right">165,000</td>
+                                        <td class="text-right">60,000</td>
+                                        <td class="text-right"><span class="mm-badge mm-badge-paid">63.6%</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="mm-button" data-dismiss="modal"><i class="fa fa-check"></i> Done</button>
+                    </div>
+                </div>
+            </div>
         </div></div>
     </div>
 </section>

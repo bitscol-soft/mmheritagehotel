@@ -59,9 +59,45 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Trial Balance</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Debit and credit balances.</p>            </div>
-            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button mm-button-secondary" href="http://localhost/acc/report/trial-balance"><i class="fa fa-refresh"></i> Refresh</a>
-        <a class="mm-button" href="#" onclick="print()" style="cursor: pointer"><i class="fa fa-print"></i> Print</a></div>        </header>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Verified debit and credit balances across all general ledger control accounts.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/acc-balance-sheet"><i class="fa fa-building-o"></i> Balance Sheet</a>
+                <a class="mm-button mm-button-secondary" href="/preview/acc-income-statement"><i class="fa fa-line-chart"></i> Income Statement</a>
+                <button type="button" class="mm-button mm-button-secondary" data-toggle="modal" data-target="#acc-trial-drawer"><i class="fa fa-columns"></i> Account Audit Drawer</button>
+                <a class="mm-button mm-button-secondary" href="http://localhost/acc/report/trial-balance"><i class="fa fa-refresh"></i> Refresh</a>
+                <a class="mm-button" href="#" onclick="print()" style="cursor: pointer"><i class="fa fa-print"></i> Print</a>
+            </div>        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Trial balance summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-list-ol"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Active GL Controls</span>
+                    <div class="mm-table-kpi-value">8 Accounts <span class="mm-table-kpi-sub">All Groups Synced</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-arrow-circle-left"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Total Debit (Dr.)</span>
+                    <div class="mm-table-kpi-value">৳ 6,085,000 <span class="mm-table-kpi-sub">Assets &amp; Expenses</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-arrow-circle-right"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Total Credit (Cr.)</span>
+                    <div class="mm-table-kpi-value">৳ 6,085,000 <span class="mm-table-kpi-sub">Liab, Equity &amp; Rev</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Out-of-Balance Diff</span>
+                    <div class="mm-table-kpi-value">৳ 0.00 <span class="mm-table-kpi-sub">100% Balanced</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 mm-report-filter"><form class="mm-setup-filter mm-report-form" action="" method="get">
 
                 <div class="input-group">
@@ -104,41 +140,122 @@
         <!-- LIST -->
         <div class="row" style="width: 100%; margin: 0 !important; padding: 0 !important;">
             <div class="col-sm-12">
-                <div class="mm-table-scroll" role="region" aria-label="Trial Balance" tabindex="0"><table class="table" style="margin-bottom: 0; width: 100% !important;">
+                <div class="mm-table-scroll" role="region" aria-label="Trial Balance" tabindex="0"><table class="table table-bordered table-striped" style="margin-bottom: 0; width: 100% !important;">
                         <thead>
-                            <tr class="bg-secondary"
-                                style="color: black !important; font-weight: bolder; font-size: 15px">
-                                <th colspan="4">Account Description</th>
-                                <th class="text-right pr-1">Dr.</th>
-                                <th class="text-right pr-1">Cr.</th>
+                            <tr>
+                                <th width="14%">GL Code</th>
+                                <th colspan="3">Account Description &amp; Control Group</th>
+                                <th width="18%" class="text-right pr-1">Dr. (৳)</th>
+                                <th width="18%" class="text-right pr-1">Cr. (৳)</th>
                             </tr>
                         </thead>
 
                         <tbody>
-
-                                                            <tr>
-                                    <td colspan="7" style="font-size: 16px" class="text-center text-danger">NO RECORDS
-                                        FOUND!</td>
-                                </tr>
-                            
-
-                            
-                                                    </tbody>
-
-
-                        <thead>
-                            <tr class="bg-secondary"
-                                style="color: black !important; font-weight: bolder; font-size: 15px">
-                                <th colspan="4">Trail</th>
-                                <th class="text-right pr-1" style="font-size: 24px; color: #1ba74d">
-                                    0
-                                </th>
-                                <th class="text-right pr-1" style="font-size: 24px; color: #1ba74d">
-                                    0
-                                </th>
+                            <tr>
+                                <td><code>1010-1020</code></td>
+                                <td colspan="3"><strong>Cash in Hand &amp; Corporate Bank Balances</strong> <span class="mm-badge mm-badge-paid">Asset</span></td>
+                                <td class="text-right pr-1"><strong>1,412,000.00</strong></td>
+                                <td class="text-right pr-1">0.00</td>
                             </tr>
-                        </thead>
+                            <tr>
+                                <td><code>1040-012</code></td>
+                                <td colspan="3"><strong>Guest Folios &amp; Corporate Accounts Receivable</strong> <span class="mm-badge mm-badge-paid">Asset</span></td>
+                                <td class="text-right pr-1"><strong>588,000.00</strong></td>
+                                <td class="text-right pr-1">0.00</td>
+                            </tr>
+                            <tr>
+                                <td><code>1200-001</code></td>
+                                <td colspan="3"><strong>Hotel Property, Suites &amp; Kitchen Equipment</strong> <span class="mm-badge mm-badge-paid">Fixed Asset</span></td>
+                                <td class="text-right pr-1"><strong>2,850,000.00</strong></td>
+                                <td class="text-right pr-1">0.00</td>
+                            </tr>
+                            <tr>
+                                <td><code>2010-2030</code></td>
+                                <td colspan="3"><strong>Supplier Payables &amp; Government VAT Payable</strong> <span class="mm-badge mm-badge-unpaid">Liability</span></td>
+                                <td class="text-right pr-1">0.00</td>
+                                <td class="text-right pr-1"><strong>520,000.00</strong></td>
+                            </tr>
+                            <tr>
+                                <td><code>2200-001</code></td>
+                                <td colspan="3"><strong>Hospitality Expansion Term Loan</strong> <span class="mm-badge mm-badge-unpaid">Liability</span></td>
+                                <td class="text-right pr-1">0.00</td>
+                                <td class="text-right pr-1"><strong>900,000.00</strong></td>
+                            </tr>
+                            <tr>
+                                <td><code>3010-001</code></td>
+                                <td colspan="3"><strong>Owners Paid-Up Share Capital</strong> <span class="mm-badge mm-badge-partial">Equity</span></td>
+                                <td class="text-right pr-1">0.00</td>
+                                <td class="text-right pr-1"><strong>2,745,000.00</strong></td>
+                            </tr>
+                            <tr>
+                                <td><code>4010-4040</code></td>
+                                <td colspan="3"><strong>Room, Restaurant, Bar &amp; Banquet Operating Revenue</strong> <span class="mm-badge mm-badge-paid">Revenue</span></td>
+                                <td class="text-right pr-1">0.00</td>
+                                <td class="text-right pr-1"><strong>1,920,000.00</strong></td>
+                            </tr>
+                            <tr>
+                                <td><code>5010-5030</code></td>
+                                <td colspan="3"><strong>Direct F&amp;B Cost, Payroll &amp; Utility Expenses</strong> <span class="mm-badge mm-badge-partial">Expense</span></td>
+                                <td class="text-right pr-1"><strong>1,235,000.00</strong></td>
+                                <td class="text-right pr-1">0.00</td>
+                            </tr>
+                            <tr class="mm-fin-total-row">
+                                <th colspan="4" class="text-right">Trial Balance Grand Total</th>
+                                <th class="text-right pr-1">6,085,000.00</th>
+                                <th class="text-right pr-1">6,085,000.00</th>
+                            </tr>
+                        </tbody>
                     </table></div>
+
+                <!-- Slide-Over App Drawer: Trial Balance Audit -->
+                <div class="modal fade" id="acc-trial-drawer" tabindex="-1" role="dialog" aria-labelledby="acc-trial-drawer-title">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="acc-trial-drawer-title"><i class="fa fa-balance-scale"></i> Trial Balance Reconciliation &amp; Audit Check</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <p class="tw-text-sm tw-text-muted" style="margin-top:0">Automated double-entry verification across all posted Payment, Receive, Contra, and Journal Vouchers.</p>
+                                <div class="mm-table-scroll">
+                                    <table class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Account Group</th>
+                                                <th class="text-right">Debit Total (৳)</th>
+                                                <th class="text-right">Credit Total (৳)</th>
+                                                <th class="text-center">Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>Assets (Current &amp; Fixed)</strong></td>
+                                                <td class="text-right">4,850,000.00</td>
+                                                <td class="text-right">0.00</td>
+                                                <td class="text-center"><span class="mm-badge mm-badge-paid">Verified</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Liabilities &amp; Owners Equity</strong></td>
+                                                <td class="text-right">0.00</td>
+                                                <td class="text-right">4,165,000.00</td>
+                                                <td class="text-center"><span class="mm-badge mm-badge-paid">Verified</span></td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Operating Revenues &amp; Expenses</strong></td>
+                                                <td class="text-right">1,235,000.00</td>
+                                                <td class="text-right">1,920,000.00</td>
+                                                <td class="text-center"><span class="mm-badge mm-badge-paid">Verified</span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="mm-button" data-dismiss="modal"><i class="fa fa-check"></i> Done</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <br>
 
 
