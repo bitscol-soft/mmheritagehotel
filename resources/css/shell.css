@@ -1364,12 +1364,12 @@
     gap: 8px;
     padding: 14px 22px !important;
 }
-.mm-shell.mm-dark .mm-ui .form-control,
+.mm-shell.mm-dark .mm-ui .form-control:not(.header-input),
 .mm-shell.mm-dark .mm-ui .mm-input,
 .mm-shell.mm-dark .mm-ui .did-floating-input,
 .mm-shell.mm-dark .mm-ui .did-floating-select,
-.mm-shell.mm-dark .mm-ui input[type="text"]:not(.chosen-search-input),
-.mm-shell.mm-dark .mm-ui input[type="number"],
+.mm-shell.mm-dark .mm-ui input[type="text"]:not(.chosen-search-input):not(.header-input),
+.mm-shell.mm-dark .mm-ui input[type="number"]:not(.header-input),
 .mm-shell.mm-dark .mm-ui input[type="email"],
 .mm-shell.mm-dark .mm-ui input[type="password"],
 .mm-shell.mm-dark .mm-ui input[type="tel"],
@@ -1380,7 +1380,7 @@
 .mm-shell.mm-dark .mm-ui input[type="datetime-local"],
 .mm-shell.mm-dark .mm-ui input[type="month"],
 .mm-shell.mm-dark .mm-ui textarea,
-.mm-shell.mm-dark .mm-ui select {
+.mm-shell.mm-dark .mm-ui select:not([required]:invalid):not(.chosen-select-100-percent) {
     background-color: rgba(20, 31, 46, 0.88) !important;
     background-image: linear-gradient(180deg, rgba(28, 42, 60, 0.90) 0%, rgba(18, 28, 41, 0.94) 100%) !important;
     border-color: rgba(148, 163, 184, 0.28) !important;

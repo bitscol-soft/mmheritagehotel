@@ -2543,12 +2543,12 @@
     letter-spacing: 0.01em;
     color: var(--mm-ink);
 }
-.mm-ui .form-control,
+.mm-ui .form-control:not(.header-input):not(.total-debit):not(.total-credit),
 .mm-ui .mm-input,
 .mm-ui .did-floating-input,
 .mm-ui .did-floating-select,
-.mm-ui input[type="text"]:not(.chosen-search-input),
-.mm-ui input[type="number"],
+.mm-ui input[type="text"]:not(.chosen-search-input):not(.header-input):not(.total-debit):not(.total-credit),
+.mm-ui input[type="number"]:not(.header-input),
 .mm-ui input[type="email"],
 .mm-ui input[type="password"],
 .mm-ui input[type="tel"],
@@ -2559,7 +2559,7 @@
 .mm-ui input[type="datetime-local"],
 .mm-ui input[type="month"],
 .mm-ui textarea,
-.mm-ui select {
+.mm-ui select:not([required]:invalid):not(.chosen-select-100-percent) {
     border-radius: 8px !important;
     border: 1px solid rgba(148, 163, 184, 0.42) !important;
     background-color: rgba(255, 255, 255, 0.94) !important;
@@ -2569,6 +2569,43 @@
     transition: border-color 0.16s ease, box-shadow 0.16s ease, background-color 0.16s ease;
     max-width: 100%;
     box-sizing: border-box;
+}
+.mm-ui.mm-report .header-input {
+    border: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+.mm-ui.mm-acc.mm-rst-form .form-group .row > [class*="col-"] {
+    float: none;
+    width: 100%;
+}
+.mm-ui.mm-acc.mm-rst-form .input-group {
+    display: flex;
+    flex-wrap: nowrap;
+    width: 100%;
+    max-width: 100%;
+}
+.mm-ui.mm-acc.mm-rst-form .input-group > .input-group-addon {
+    width: auto;
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+}
+.mm-ui.mm-acc.mm-rst-form .input-group > .form-control {
+    flex: 1 1 0;
+    min-width: 0;
+    width: 100%;
+    float: none;
+}
+.mm-ui.mm-acc.mm-rst-form .input-group > .chosen-container {
+    flex: 1 1 0;
+    min-width: 0;
+    width: auto !important;
+    max-width: 100%;
+}
+.mm-ui.mm-acc.mm-rst-form .mm-table-scroll .input-group > .chosen-container {
+    min-width: 140px;
 }
 .mm-ui .form-control:hover,
 .mm-ui .mm-input:hover,
@@ -2637,16 +2674,15 @@
 .mm-ui .select2-container--default .select2-selection--single,
 .mm-ui .select2-container--default .select2-selection--multiple {
     min-height: 40px !important;
+    height: 40px !important;
     border-radius: 8px !important;
     border: 1px solid rgba(148, 163, 184, 0.42) !important;
     background-color: rgba(255, 255, 255, 0.95) !important;
     background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.99) 0%, rgba(245, 250, 255, 0.94) 100%) !important;
     color: var(--mm-ink) !important;
     box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.92) !important;
-    display: flex !important;
-    align-items: center !important;
-    padding: 4px 28px 4px 12px !important;
-    line-height: 1.4 !important;
+    padding: 0 28px 0 12px !important;
+    line-height: 38px !important;
     transition: border-color 0.16s ease, box-shadow 0.16s ease;
 }
 .mm-ui .chosen-container-active .chosen-single,
