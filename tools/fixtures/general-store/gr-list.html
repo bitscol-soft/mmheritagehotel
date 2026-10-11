@@ -16,7 +16,43 @@
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Goods requisition list</h1>
                 <p class="tw-m-0 tw-text-sm tw-text-muted">Item requests raised against the general store.</p>            </div>
-            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button" href="http://localhost/gs/goods-requisitions/create"><i class="fa fa-plus"></i> Create Requisition</a></div>        </header>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/gs-purchases"><i class="fa fa-shopping-cart"></i> Purchases</a>
+                <a class="mm-button mm-button-secondary" href="/preview/gs-gin-list"><i class="fa fa-file-text-o"></i> GIN List</a>
+                <a class="mm-button" href="http://localhost/gs/goods-requisitions/create"><i class="fa fa-plus"></i> Create Requisition</a>
+            </div>        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Goods requisition summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-clipboard"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Department Requests</span>
+                    <div class="mm-table-kpi-value">2 GRs <span class="mm-table-kpi-sub">Housekeeping &amp; F&amp;B</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Issued (GIN)</span>
+                    <div class="mm-table-kpi-value">1 GR <span class="mm-table-kpi-sub">Dispatched</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-clock-o"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Pending Approval</span>
+                    <div class="mm-table-kpi-value">1 GR <span class="mm-table-kpi-sub">Storekeeper Queue</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-cubes"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Requested Qty</span>
+                    <div class="mm-table-kpi-value">18 Units <span class="mm-table-kpi-sub">In Stock</span></div>
+                </div>
+            </div>
+        </div>
+
         <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><div class="row">
             <form class="form-horizontal" action="http://localhost/rst/goods-requisitions/index" method="get">
                 <input type="hidden" name="_token" value="fixture-csrf-token">                <div class="col-sm-12">

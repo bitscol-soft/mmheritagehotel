@@ -1186,6 +1186,19 @@
     color: #e2e8f0 !important;
 }
 
+/* ---------- Track A, B & C: Dark Mode rules for Inventory, General Store, Account Vouchers & Website CMS ---------- */
+.mm-shell.mm-dark .mm-ui .bg-dark {
+    background: linear-gradient(180deg, rgba(30, 49, 72, 0.95) 0%, rgba(21, 34, 50, 0.95) 100%) !important;
+    color: #e2e8f0 !important;
+    border-color: rgba(148, 163, 184, 0.28) !important;
+}
+.mm-shell.mm-dark .mm-ui.mm-acc .table-header-bg th {
+    background: linear-gradient(135deg, rgba(30, 58, 95, 0.96) 0%, rgba(23, 37, 64, 0.98) 100%) !important;
+    color: #f8fafc !important;
+    border-color: rgba(96, 165, 250, 0.35) !important;
+}
+
+
 
 
 

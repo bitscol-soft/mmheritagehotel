@@ -16,7 +16,44 @@
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Product inventory</h1>
                 <p class="tw-m-0 tw-text-sm tw-text-muted">Stock on hand for the selected product filters.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a href="/preview/rsi-products" class="mm-button mm-button-secondary"><i class="fa fa-cutlery"></i> Products</a>
+                <a href="/preview/rsi-production-requisitions" class="mm-button mm-button-secondary"><i class="fa fa-exchange"></i> Requisitions</a>
+                <a href="/preview/gs-stock-in-hand" class="mm-button mm-button-secondary"><i class="fa fa-Archive"></i> General Store</a>
+            </div>
                     </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Product inventory stock summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-cubes"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Tracked SKUs</span>
+                    <div class="mm-table-kpi-value">24 Items <span class="mm-table-kpi-sub">Kitchen &amp; Pantry</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Healthy Stock</span>
+                    <div class="mm-table-kpi-value">22 Items <span class="mm-table-kpi-sub">Above Par Level</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-exclamation-triangle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Low Stock Alerts</span>
+                    <div class="mm-table-kpi-value">2 Items <span class="mm-table-kpi-sub">Reorder Soon</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-money"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Stock Valuation</span>
+                    <div class="mm-table-kpi-value">৳ 68,400 <span class="mm-table-kpi-sub">FIFO Cost</span></div>
+                </div>
+            </div>
+        </div>
+
         <div class="mm-panel tw-p-4 sm:tw-p-6 mm-report-filter"><div class="col-sm-12 mb-2 ml-4">
     <form method="get">
 
