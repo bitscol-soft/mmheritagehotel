@@ -113,9 +113,45 @@
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Banquet bookings</h1>
                 <p class="tw-m-0 tw-text-sm tw-text-muted">Search hall bookings, review events and collect dues.</p>            </div>
-            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button" href="http://localhost/bq/banquet/booking/create">
-                <i class="fa fa-plus-circle" aria-hidden="true"></i> New Booking
-            </a></div>        </header>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/bq-rooms-index"><i class="fa fa-building-o" aria-hidden="true"></i> Halls</a>
+                <a class="mm-button mm-button-secondary" href="/preview/bq-category-index"><i class="fa fa-tags" aria-hidden="true"></i> Categories</a>
+                <a class="mm-button" href="http://localhost/bq/banquet/booking/create">
+                    <i class="fa fa-plus-circle" aria-hidden="true"></i> New Booking
+                </a>
+            </div>        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Banquet hall bookings summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-calendar-check-o"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Active Hall Bookings</span>
+                    <div class="mm-table-kpi-value">1 <span class="mm-table-kpi-sub">#BQ-0007</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-building-o"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Event Venue</span>
+                    <div class="mm-table-kpi-value">Grand Hall <span class="mm-table-kpi-sub">400 Capacity</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-money"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Contract Total</span>
+                    <div class="mm-table-kpi-value">৳ 45,000 <span class="mm-table-kpi-sub">Full Day</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-credit-card"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Due Receivable</span>
+                    <div class="mm-table-kpi-value">৳ 15,000 <span class="mm-table-kpi-sub">Collect Due</span></div>
+                </div>
+            </div>
+        </div>
+
         <span class="mm-badge">Total: 1</span>
 
     <!----------------- INCLUDING SEARCH FILTER ----------------->

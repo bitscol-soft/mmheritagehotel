@@ -45,9 +45,45 @@
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Generate bar night audit</h1>
                 <p class="tw-m-0 tw-text-sm tw-text-muted">Pick the audit period, review the day&#039;s bar collections and dues, then generate the audit.</p>            </div>
-            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button" href="http://localhost/hotel/night-audit">
-            <i class="ace-icon fa fa-list-alt"></i> List
-        </a></div>        </header>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/bar-pos"><i class="ace-icon fa fa-glass"></i> Bar POS</a>
+                <a class="mm-button mm-button-secondary" href="/preview/bar-report-sales"><i class="ace-icon fa fa-bar-chart"></i> Bar Sales</a>
+                <a class="mm-button" href="http://localhost/hotel/night-audit">
+                    <i class="ace-icon fa fa-list-alt"></i> List
+                </a>
+            </div>        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Bar night audit summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-glass"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Gross Bar Sales</span>
+                    <div class="mm-table-kpi-value">৳ 1,400 <span class="mm-table-kpi-sub">2 Invoices</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Bar Collected</span>
+                    <div class="mm-table-kpi-value">৳ 900 <span class="mm-table-kpi-sub">Cash &amp; Card</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-clock-o"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Room Folio Postings</span>
+                    <div class="mm-table-kpi-value">৳ 500 <span class="mm-table-kpi-sub">Pending Due</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-bed"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Hotel Occupancy</span>
+                    <div class="mm-table-kpi-value">7 / 32 <span class="mm-table-kpi-sub">Active Rooms</span></div>
+                </div>
+            </div>
+        </div>
+
         <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><div class="row mb-2 hidden-print">
                 <form action="" method="GET">
                     <div class="col-sm-8 col-sm-offset-2">
