@@ -1,4 +1,3 @@
-<!-- Placeholder. Regenerate with: MM_WRITE_FIXTURE=1 php tools/ui-blade-check.php -->
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Bar POS</title>
 <link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
 <!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css"><link rel="stylesheet" href="/assets/custom_css/floating-input.css"><!--/MM-HEAD-->
@@ -212,6 +211,69 @@
                         </div>
                         <input type="hidden" name="is_soft_save" id="is_soft_save" value="0">
 
+                        <div class="mm-pos-table-view" aria-label="Bar Floor Table View">
+                            <div class="mm-pos-table-view-head">
+                                <span class="mm-pos-table-view-title"><i class="fa fa-th-large"></i> Lounge &amp; Bar Table View <span style="font-size:11px;font-weight:600;color:var(--mm-muted)">(Click any table to switch active tab)</span></span>
+                                <div class="mm-pos-table-filters">
+                                    <button type="button" class="mm-pos-filter-pill is-active" data-pos-table-filter="all">All (6)</button>
+                                    <button type="button" class="mm-pos-filter-pill" data-pos-table-filter="available">Available (3)</button>
+                                    <button type="button" class="mm-pos-filter-pill" data-pos-table-filter="occupied">Occupied (2)</button>
+                                    <button type="button" class="mm-pos-filter-pill" data-pos-table-filter="reserved">Reserved (1)</button>
+                                    <a href="/preview/bar-tables" class="mm-pos-filter-pill" title="Open full Bar Floor Map"><i class="fa fa-external-link"></i> Floor Map</a>
+                                </div>
+                            </div>
+                            <div class="mm-pos-table-grid" id="mm-pos-table-grid">
+                                <button type="button" class="mm-pos-table-card is-selected" data-pos-table-card="1" data-pos-state="occupied" data-pos-guest="Aisha Rahman" data-pos-room="101" data-pos-waiter="Karim" data-pos-bill="B-0109">
+                                    <div class="mm-pos-table-card-top">
+                                        <span class="mm-pos-table-no">#B1</span>
+                                        <span class="mm-pos-table-badge mm-pos-table-badge-occupied">Occupied</span>
+                                    </div>
+                                    <div class="mm-pos-table-name">Lounge 1</div>
+                                    <div class="mm-pos-table-sub"><span><i class="fa fa-users"></i> 4 Seats</span><span>৳ 1,701</span></div>
+                                </button>
+                                <button type="button" class="mm-pos-table-card" data-pos-table-card="2" data-pos-state="occupied" data-pos-guest="Tanvir Ahmed" data-pos-room="102" data-pos-waiter="Sajib" data-pos-bill="B-0108">
+                                    <div class="mm-pos-table-card-top">
+                                        <span class="mm-pos-table-no">#B2</span>
+                                        <span class="mm-pos-table-badge mm-pos-table-badge-occupied">Occupied</span>
+                                    </div>
+                                    <div class="mm-pos-table-name">Bar Counter</div>
+                                    <div class="mm-pos-table-sub"><span><i class="fa fa-users"></i> 2 Seats</span><span>৳ 920</span></div>
+                                </button>
+                                <button type="button" class="mm-pos-table-card" data-pos-table-card="3" data-pos-state="available" data-pos-guest="Walk-in Guest" data-pos-room="" data-pos-waiter="Rafiq" data-pos-bill="B-0110">
+                                    <div class="mm-pos-table-card-top">
+                                        <span class="mm-pos-table-no">#B3</span>
+                                        <span class="mm-pos-table-badge mm-pos-table-badge-available">Available</span>
+                                    </div>
+                                    <div class="mm-pos-table-name">Rooftop Deck</div>
+                                    <div class="mm-pos-table-sub"><span><i class="fa fa-users"></i> 6 Seats</span><span>Ready</span></div>
+                                </button>
+                                <button type="button" class="mm-pos-table-card" data-pos-table-card="4" data-pos-state="available" data-pos-guest="VIP Walk-in" data-pos-room="" data-pos-waiter="Karim" data-pos-bill="B-0111">
+                                    <div class="mm-pos-table-card-top">
+                                        <span class="mm-pos-table-no">#B4</span>
+                                        <span class="mm-pos-table-badge mm-pos-table-badge-available">Available</span>
+                                    </div>
+                                    <div class="mm-pos-table-name">VIP Booth</div>
+                                    <div class="mm-pos-table-sub"><span><i class="fa fa-users"></i> 8 Seats</span><span>Ready</span></div>
+                                </button>
+                                <button type="button" class="mm-pos-table-card" data-pos-table-card="5" data-pos-state="reserved" data-pos-guest="Mr. Karim" data-pos-room="204" data-pos-waiter="Sajib" data-pos-bill="B-0112">
+                                    <div class="mm-pos-table-card-top">
+                                        <span class="mm-pos-table-no">#B5</span>
+                                        <span class="mm-pos-table-badge mm-pos-table-badge-reserved">Reserved</span>
+                                    </div>
+                                    <div class="mm-pos-table-name">High Table</div>
+                                    <div class="mm-pos-table-sub"><span><i class="fa fa-users"></i> 4 Seats</span><span>8:00 PM</span></div>
+                                </button>
+                                <button type="button" class="mm-pos-table-card" data-pos-table-card="6" data-pos-state="available" data-pos-guest="Walk-in Guest" data-pos-room="" data-pos-waiter="Rafiq" data-pos-bill="B-0113">
+                                    <div class="mm-pos-table-card-top">
+                                        <span class="mm-pos-table-no">#B6</span>
+                                        <span class="mm-pos-table-badge mm-pos-table-badge-available">Available</span>
+                                    </div>
+                                    <div class="mm-pos-table-name">Cigar Terrace</div>
+                                    <div class="mm-pos-table-sub"><span><i class="fa fa-users"></i> 4 Seats</span><span>Ready</span></div>
+                                </button>
+                            </div>
+                        </div>
+
                         <div class="row tab-d-flex mm-pos-step-row" id="courses" style="margin-top: 5px">
                             <div class="col-md-3 col-sm-6 mb-2 margin-bottom-10 width-50-per">
                                 <div class="input-group">
@@ -237,6 +299,9 @@
                                     <option value="1" selected>Lounge 1 -&gt; B1</option>
                                     <option value="2">Bar Counter -&gt; B2</option>
                                     <option value="3">Rooftop Deck -&gt; B3</option>
+                                    <option value="4">VIP Booth -&gt; B4</option>
+                                    <option value="5">High Table -&gt; B5</option>
+                                    <option value="6">Cigar Terrace -&gt; B6</option>
                                     <option value="99" hidden>Lounge &lt;b&gt;1&lt;/b&gt; -&gt; B1</option>
                                 </select>
                             </div>
@@ -287,7 +352,19 @@
                             </div>
                         </div>
 
-                        <div class="row" style="margin-top: 15px">
+                        <div class="mm-pos-quick-menu">
+                            <div class="mm-pos-quick-chips">
+                                <span class="mm-pos-quick-label"><i class="fa fa-bolt"></i> Quick Add:</span>
+                                <button type="button" class="mm-pos-chip" data-quick-id="201" data-quick-name="Johnnie Walker Black Label (60ml)" data-quick-code="BR-201" data-quick-unit="Peg" data-quick-price="650" data-quick-vat="32.5">+ JW Black Label <b>৳650</b></button>
+                                <button type="button" class="mm-pos-chip" data-quick-id="202" data-quick-name="Chivas Regal 12Y (60ml)" data-quick-code="BR-202" data-quick-unit="Peg" data-quick-price="680" data-quick-vat="34">+ Chivas 12Y <b>৳680</b></button>
+                                <button type="button" class="mm-pos-chip" data-quick-id="203" data-quick-name="Heineken Draught (330ml)" data-quick-code="BR-203" data-quick-unit="Can" data-quick-price="380" data-quick-vat="19">+ Heineken <b>৳380</b></button>
+                                <button type="button" class="mm-pos-chip" data-quick-id="204" data-quick-name="Classic Virgin Mojito" data-quick-code="BR-204" data-quick-unit="Glass" data-quick-price="240" data-quick-vat="12">+ Virgin Mojito <b>৳240</b></button>
+                                <button type="button" class="mm-pos-chip" data-quick-id="205" data-quick-name="Spiced Cashew Bar Platter" data-quick-code="BR-205" data-quick-unit="Plate" data-quick-price="320" data-quick-vat="16">+ Cashew Platter <b>৳320</b></button>
+                            </div>
+                            <span class="mm-pos-order-summary-pill" id="mm-pos-item-count-pill"><i class="fa fa-glass"></i> 2 Drinks · 3 Qty</span>
+                        </div>
+
+                        <div class="row" style="margin-top: 10px">
                             <div class="col-sm-12 tableContainer">
                                 <table class="table table-bordered table-hover table-responsive">
                                     <thead>
@@ -529,6 +606,54 @@
         if (document.getElementById('grand-total')) document.getElementById('grand-total').textContent = grand.toFixed(2);
         if (document.getElementById('modal-payable-display')) document.getElementById('modal-payable-display').textContent = '৳ ' + grand.toFixed(2);
         if (document.getElementById('modal-tendered-input')) document.getElementById('modal-tendered-input').value = grand.toFixed(2);
+        var countPill = document.getElementById('mm-pos-item-count-pill');
+        if (countPill) {
+            var totalQty = 0;
+            rows.forEach(function(r){ var qEl = r.querySelector('.big-unit-qty'); totalQty += Math.max(1, parseInt(qEl && qEl.value || 1, 10)); });
+            countPill.innerHTML = '<i class="fa fa-glass"></i> ' + rows.length + ' Drinks · ' + totalQty + ' Qty';
+        }
+    }
+    function addDrinkToOrder(id, name, code, unit, price, vat, qtyToAdd) {
+        var tbody = document.getElementById('product-details');
+        if (!tbody) return;
+        var existing = tbody.querySelector('.tr-product-' + id);
+        if (existing) {
+            var qEl = existing.querySelector('.big-unit-qty');
+            if (qEl) qEl.value = Math.max(1, parseInt(qEl.value || 1, 10) + (qtyToAdd || 1));
+            recalcBarPos();
+            return;
+        }
+        var qty = Math.max(1, qtyToAdd || 1);
+        var tr = document.createElement('tr');
+        tr.className = 'product-row tr-product-' + id;
+        tr.innerHTML = '<td><span class="product_name">' + name + '</span><input type="hidden" value="' + id + '" name="product_ids[]" class="productId"></td>' +
+            '<td><span class="product_barcode">' + code + '</span></td>' +
+            '<td><div class="input-group"><div class="spinbox-buttons input-group-btn"><button type="button" class="btn table-qty-decrease-btn spinbox-down btn-xs btn-danger qty-decrease" data-pos-qty="-1"><i class="fa fa-minus"></i></button></div>' +
+            '<input type="number" value="' + qty + '" name="sales_qty[]" class="form-control big-unit-qty input-sm" readonly>' +
+            '<span class="input-group-addon custom-addon-width">' + unit + '</span>' +
+            '<div class="spinbox-buttons input-group-btn"><button type="button" class="btn table-qty-decrease-btn spinbox-down btn-xs btn-success qty-increase" data-pos-qty="1"><i class="fa fa-plus"></i></button></div></div></td>' +
+            '<td><input tabindex="-1" type="text" value="0" name="item_discount[]" class="form-control item_discount input-sm width-80px"></td>' +
+            '<td><input tabindex="-1" type="text" value="' + price.toFixed(2) + '" name="sales_price[]" class="form-control sales-price input-sm width-80px" readonly></td>' +
+            '<td><input tabindex="-1" type="text" value="' + vat.toFixed(2) + '" name="item_vat_amounts[]" class="form-control item-vat-amount input-sm width-60px" readonly></td>' +
+            '<td><input tabindex="-1" type="number" min="0" value="' + (price * qty).toFixed(2) + '" name="item_price[]" class="form-control total-line-price input-sm width-70px" readonly></td>' +
+            '<td><button class="delete btn btn-xs btn-danger" tabindex="-1" type="button" data-pos-remove><i class="fa fa-times"></i></button></td>';
+        tbody.appendChild(tr);
+        recalcBarPos();
+    }
+    function selectBarTableCard(card) {
+        if (!card) return;
+        document.querySelectorAll('[data-pos-table-card]').forEach(function(c){ c.classList.remove('is-selected'); });
+        card.classList.add('is-selected');
+        var tblId = card.getAttribute('data-pos-table-card');
+        var guestName = card.getAttribute('data-pos-guest') || '';
+        var roomId = card.getAttribute('data-pos-room') || '';
+        var waiter = card.getAttribute('data-pos-waiter') || 'Karim';
+        var bill = card.getAttribute('data-pos-bill') || 'B-0109';
+        if (document.getElementById('hotel_table_id') && tblId) document.getElementById('hotel_table_id').value = tblId;
+        if (document.getElementById('guest_name') && guestName) document.getElementById('guest_name').value = guestName;
+        if (document.getElementById('room_no')) document.getElementById('room_no').value = roomId;
+        if (document.getElementById('waiter_no')) document.getElementById('waiter_no').value = waiter;
+        if (document.getElementById('invoice_id')) document.getElementById('invoice_id').value = bill;
     }
     document.addEventListener('input', function(e){
         if (e.target.matches('.item_discount, #service_charge, #discount, #vat')) recalcBarPos();
@@ -584,8 +709,54 @@
             if (document.getElementById('guest_name') && guest) document.getElementById('guest_name').value = guest;
             if (document.getElementById('hotel_table_id') && tbl) document.getElementById('hotel_table_id').value = tbl;
             if (document.getElementById('room_no') && rm) document.getElementById('room_no').value = rm;
+            var matchingCard = document.querySelector('[data-pos-table-card="' + tbl + '"]');
+            if (matchingCard) {
+                document.querySelectorAll('[data-pos-table-card]').forEach(function(c){ c.classList.remove('is-selected'); });
+                matchingCard.classList.add('is-selected');
+            }
+        }
+        var tableCard = e.target.closest('[data-pos-table-card]');
+        if (tableCard) {
+            selectBarTableCard(tableCard);
+        }
+        var filterPill = e.target.closest('[data-pos-table-filter]');
+        if (filterPill) {
+            var flt = filterPill.getAttribute('data-pos-table-filter') || 'all';
+            document.querySelectorAll('[data-pos-table-filter]').forEach(function(p){ p.classList.remove('is-active'); });
+            filterPill.classList.add('is-active');
+            document.querySelectorAll('[data-pos-table-card]').forEach(function(c){
+                var st = c.getAttribute('data-pos-state') || 'available';
+                c.style.display = (flt === 'all' || st === flt) ? '' : 'none';
+            });
+        }
+        var quickChip = e.target.closest('[data-quick-id]');
+        if (quickChip) {
+            addDrinkToOrder(
+                quickChip.getAttribute('data-quick-id'),
+                quickChip.getAttribute('data-quick-name'),
+                quickChip.getAttribute('data-quick-code'),
+                quickChip.getAttribute('data-quick-unit') || 'Peg',
+                parseFloat(quickChip.getAttribute('data-quick-price') || 0),
+                parseFloat(quickChip.getAttribute('data-quick-vat') || 0),
+                1
+            );
         }
     });
+    var tblSelect = document.getElementById('hotel_table_id');
+    if (tblSelect) {
+        tblSelect.addEventListener('change', function(){
+            var card = document.querySelector('[data-pos-table-card="' + tblSelect.value + '"]');
+            if (card) selectBarTableCard(card);
+        });
+    }
+    try {
+        var params = new URLSearchParams(window.location.search || '');
+        var urlTbl = params.get('table_id');
+        if (urlTbl && urlTbl !== '1') {
+            var urlCard = document.querySelector('[data-pos-table-card="' + urlTbl + '"]');
+            if (urlCard) selectBarTableCard(urlCard);
+        }
+    } catch (_) {}
     var prodSel = document.getElementById('product-search');
     if (prodSel) {
         prodSel.addEventListener('change', function(){

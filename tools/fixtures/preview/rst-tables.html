@@ -162,11 +162,272 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Tables</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Dining tables used when taking restaurant orders.</p>            </div>
-            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button" href="#modal-dialog" data-toggle="modal">
-                <i class="fa fa-plus-circle"></i> Add New Table
-            </a></div>        </header>
-        <div class="mm-panel tw-p-4 sm:tw-p-6"><div class="mm-table-scroll" role="region" aria-label="Tables" tabindex="0"><table id="data-table" class="table table-striped table-bordered nowrap" width="100%">
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Live dining floor map, table occupancy, and quick order launch for Restaurant POS.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/rst-pos">
+                    <i class="fa fa-cutlery"></i> Open Restaurant POS
+                </a>
+                <a class="mm-button" href="#modal-dialog" data-toggle="modal">
+                    <i class="fa fa-plus-circle"></i> Add New Table
+                </a>
+            </div>        </header>
+
+        <div class="mm-panel tw-p-4 sm:tw-p-6">
+            <div class="tw-mb-3 tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-2">
+                <h2 class="tw-m-0 tw-text-base tw-font-semibold tw-text-ink"><i class="fa fa-th-large tw-mr-1"></i> Live Restaurant Floor Map</h2>
+                <span class="tw-text-xs tw-font-semibold tw-text-muted" id="mm-table-visible-count">Showing 8 of 8 tables · Click status pill to cycle state</span>
+            </div>
+
+            <div class="mm-table-kpi-grid" aria-label="Floor table summary">
+                <div class="mm-table-kpi-card">
+                    <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-th-large"></i></span>
+                    <div class="mm-table-kpi-meta">
+                        <span class="mm-table-kpi-label">Total Tables</span>
+                        <div class="mm-table-kpi-value"><span id="mm-kpi-total">8</span> <span class="mm-table-kpi-sub">38 Seats</span></div>
+                    </div>
+                </div>
+                <div class="mm-table-kpi-card">
+                    <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-check-circle"></i></span>
+                    <div class="mm-table-kpi-meta">
+                        <span class="mm-table-kpi-label">Available</span>
+                        <div class="mm-table-kpi-value"><span id="mm-kpi-avail">4</span> <span class="mm-table-kpi-sub">Ready to seat</span></div>
+                    </div>
+                </div>
+                <div class="mm-table-kpi-card">
+                    <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-cutlery"></i></span>
+                    <div class="mm-table-kpi-meta">
+                        <span class="mm-table-kpi-label">Occupied</span>
+                        <div class="mm-table-kpi-value"><span id="mm-kpi-occ">2</span> <span class="mm-table-kpi-sub">৳ 2,037 active</span></div>
+                    </div>
+                </div>
+                <div class="mm-table-kpi-card">
+                    <span class="mm-table-kpi-icon mm-table-kpi-icon-res"><i class="fa fa-clock-o"></i></span>
+                    <div class="mm-table-kpi-meta">
+                        <span class="mm-table-kpi-label">Reserved / Hold</span>
+                        <div class="mm-table-kpi-value"><span id="mm-kpi-res">1</span> <span class="mm-table-kpi-sub">1 Inactive</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mm-table-toolbar">
+                <div class="mm-table-filter-pills" role="group" aria-label="Filter tables by status">
+                    <button type="button" class="mm-table-filter-btn is-active" data-table-filter="all">All Tables (8)</button>
+                    <button type="button" class="mm-table-filter-btn" data-table-filter="available">Available (4)</button>
+                    <button type="button" class="mm-table-filter-btn" data-table-filter="occupied">Occupied (2)</button>
+                    <button type="button" class="mm-table-filter-btn" data-table-filter="reserved">Reserved (1)</button>
+                    <button type="button" class="mm-table-filter-btn" data-table-filter="inactive">Inactive (1)</button>
+                </div>
+                <div class="mm-table-search-wrap">
+                    <input type="search" id="mm-table-search" placeholder="Search table #T1, zone, or guest..." aria-label="Search tables">
+                </div>
+            </div>
+
+            <div class="mm-table-map" role="list" aria-label="Table map" id="mm-table-map-grid">
+                <div class="mm-table-tile" role="listitem" data-table-state="occupied" data-table-search="t1 terrace 1 outdoor aisha rahman r-0109">
+                    <div class="mm-table-tile-head">
+                        <h6>Terrace &lt;b&gt;1&lt;/b&gt;</h6>
+                        <span class="mm-table-tile-status mm-table-tile-status-occupied" data-cycle-status title="Click to cycle status">Occupied</span>
+                    </div>
+                    <div class="mm-table-tile-body">
+                        <div class="mm-table-tile-toprow">
+                            <p class="mm-table-tile-no">#T1</p>
+                            <span class="mm-table-seat-pill"><i class="fa fa-users"></i> 4 Seats</span>
+                        </div>
+                        <span class="mm-table-zone-tag"><i class="fa fa-map-marker"></i> Outdoor Terrace · Waiter: Karim</span>
+                        <div class="mm-table-live-meta">
+                            <strong>Bill #R-0109 · ৳ 1,197.00</strong>
+                            <span>Room 101 · Aisha Rahman (24m)</span>
+                        </div>
+                    </div>
+                    <div class="mm-table-tile-foot">
+                        <a href="/preview/rst-pos?table_id=1" class="btn btn-xs btn-primary" title="Open active bill in POS"><i class="fa fa-cutlery"></i> Open Bill</a>
+                        <div class="btn-group btn-corner">
+                            <a href="#edit-modal" onclick="editTable(`http://localhost/rst/table-manages/1`,{&quot;id&quot;:1,&quot;name&quot;:&quot;Terrace &lt;b&gt;1&lt;\/b&gt;&quot;,&quot;table_no&quot;:&quot;T1&quot;,&quot;status&quot;:1})" data-toggle="modal" class="btn btn-xs btn-success" title="Edit"><i class="fa fa-pencil-square-o"></i></a>
+                            <button type="button" onclick="delete_item(`http://localhost/rst/table-manages/1`)" class="btn btn-xs btn-danger" title="Delete"><i class="fa fa-trash-o"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mm-table-tile" role="listitem" data-table-state="occupied" data-table-search="t2 main hall dining tanvir ahmed r-0108">
+                    <div class="mm-table-tile-head">
+                        <h6>Main Hall</h6>
+                        <span class="mm-table-tile-status mm-table-tile-status-occupied" data-cycle-status title="Click to cycle status">Occupied</span>
+                    </div>
+                    <div class="mm-table-tile-body">
+                        <div class="mm-table-tile-toprow">
+                            <p class="mm-table-tile-no">#T2</p>
+                            <span class="mm-table-seat-pill"><i class="fa fa-users"></i> 6 Seats</span>
+                        </div>
+                        <span class="mm-table-zone-tag"><i class="fa fa-map-marker"></i> Main Dining · Waiter: Nadim</span>
+                        <div class="mm-table-live-meta">
+                            <strong>Bill #R-0108 · ৳ 840.00</strong>
+                            <span>Room 102 · Tanvir Ahmed (15m)</span>
+                        </div>
+                    </div>
+                    <div class="mm-table-tile-foot">
+                        <a href="/preview/rst-pos?table_id=2" class="btn btn-xs btn-primary" title="Open active bill in POS"><i class="fa fa-cutlery"></i> Open Bill</a>
+                        <div class="btn-group btn-corner">
+                            <a href="#edit-modal" onclick="editTable(`http://localhost/rst/table-manages/2`,{&quot;id&quot;:2,&quot;name&quot;:&quot;Main Hall&quot;,&quot;table_no&quot;:&quot;T2&quot;,&quot;status&quot;:1})" data-toggle="modal" class="btn btn-xs btn-success" title="Edit"><i class="fa fa-pencil-square-o"></i></a>
+                            <button type="button" onclick="delete_item(`http://localhost/rst/table-manages/2`)" class="btn btn-xs btn-danger" title="Delete"><i class="fa fa-trash-o"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mm-table-tile" role="listitem" data-table-state="available" data-table-search="t3 vip dining suite private">
+                    <div class="mm-table-tile-head">
+                        <h6>VIP Dining</h6>
+                        <span class="mm-table-tile-status mm-table-tile-status-1" data-cycle-status title="Click to cycle status">Available</span>
+                    </div>
+                    <div class="mm-table-tile-body">
+                        <div class="mm-table-tile-toprow">
+                            <p class="mm-table-tile-no">#T3</p>
+                            <span class="mm-table-seat-pill"><i class="fa fa-users"></i> 6 Seats</span>
+                        </div>
+                        <span class="mm-table-zone-tag"><i class="fa fa-map-marker"></i> Private Suite · AC Zone</span>
+                        <div class="mm-table-live-meta">
+                            <strong>Ready for Seating</strong>
+                            <span>Cleaned &amp; sanitized · 5m ago</span>
+                        </div>
+                    </div>
+                    <div class="mm-table-tile-foot">
+                        <a href="/preview/rst-pos?table_id=3" class="btn btn-xs btn-primary" title="Start new order at T3"><i class="fa fa-plus"></i> New Order</a>
+                        <div class="btn-group btn-corner">
+                            <a href="#edit-modal" onclick="editTable(`http://localhost/rst/table-manages/3`,{&quot;id&quot;:3,&quot;name&quot;:&quot;VIP Dining&quot;,&quot;table_no&quot;:&quot;T3&quot;,&quot;status&quot;:1})" data-toggle="modal" class="btn btn-xs btn-success" title="Edit"><i class="fa fa-pencil-square-o"></i></a>
+                            <button type="button" onclick="delete_item(`http://localhost/rst/table-manages/3`)" class="btn btn-xs btn-danger" title="Delete"><i class="fa fa-trash-o"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mm-table-tile" role="listitem" data-table-state="available" data-table-search="t4 garden patio lawn outdoor">
+                    <div class="mm-table-tile-head">
+                        <h6>Garden Patio</h6>
+                        <span class="mm-table-tile-status mm-table-tile-status-1" data-cycle-status title="Click to cycle status">Available</span>
+                    </div>
+                    <div class="mm-table-tile-body">
+                        <div class="mm-table-tile-toprow">
+                            <p class="mm-table-tile-no">#T4</p>
+                            <span class="mm-table-seat-pill"><i class="fa fa-users"></i> 4 Seats</span>
+                        </div>
+                        <span class="mm-table-zone-tag"><i class="fa fa-map-marker"></i> Garden Lawn · Open Air</span>
+                        <div class="mm-table-live-meta">
+                            <strong>Ready for Seating</strong>
+                            <span>Walk-in or room guest ready</span>
+                        </div>
+                    </div>
+                    <div class="mm-table-tile-foot">
+                        <a href="/preview/rst-pos?table_id=4" class="btn btn-xs btn-primary" title="Start new order at T4"><i class="fa fa-plus"></i> New Order</a>
+                        <div class="btn-group btn-corner">
+                            <a href="#edit-modal" onclick="editTable(`http://localhost/rst/table-manages/4`,{&quot;id&quot;:4,&quot;name&quot;:&quot;Garden Patio&quot;,&quot;table_no&quot;:&quot;T4&quot;,&quot;status&quot;:1})" data-toggle="modal" class="btn btn-xs btn-success" title="Edit"><i class="fa fa-pencil-square-o"></i></a>
+                            <button type="button" onclick="delete_item(`http://localhost/rst/table-manages/4`)" class="btn btn-xs btn-danger" title="Delete"><i class="fa fa-trash-o"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mm-table-tile" role="listitem" data-table-state="reserved" data-table-search="t5 poolside deck reserved farhan">
+                    <div class="mm-table-tile-head">
+                        <h6>Poolside Deck</h6>
+                        <span class="mm-table-tile-status mm-table-tile-status-reserved" data-cycle-status title="Click to cycle status">Reserved</span>
+                    </div>
+                    <div class="mm-table-tile-body">
+                        <div class="mm-table-tile-toprow">
+                            <p class="mm-table-tile-no">#T5</p>
+                            <span class="mm-table-seat-pill"><i class="fa fa-users"></i> 4 Seats</span>
+                        </div>
+                        <span class="mm-table-zone-tag"><i class="fa fa-map-marker"></i> Poolside Cabana</span>
+                        <div class="mm-table-live-meta">
+                            <strong>Reserved · 7:30 PM</strong>
+                            <span>Dr. Farhan · Suite 305 (4 Pax)</span>
+                        </div>
+                    </div>
+                    <div class="mm-table-tile-foot">
+                        <a href="/preview/rst-pos?table_id=5" class="btn btn-xs btn-purple" title="Seat guest &amp; start order"><i class="fa fa-check"></i> Seat &amp; Order</a>
+                        <div class="btn-group btn-corner">
+                            <a href="#edit-modal" onclick="editTable(`http://localhost/rst/table-manages/5`,{&quot;id&quot;:5,&quot;name&quot;:&quot;Poolside Deck&quot;,&quot;table_no&quot;:&quot;T5&quot;,&quot;status&quot;:1})" data-toggle="modal" class="btn btn-xs btn-success" title="Edit"><i class="fa fa-pencil-square-o"></i></a>
+                            <button type="button" onclick="delete_item(`http://localhost/rst/table-manages/5`)" class="btn btn-xs btn-danger" title="Delete"><i class="fa fa-trash-o"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mm-table-tile" role="listitem" data-table-state="available" data-table-search="t6 family booth main dining">
+                    <div class="mm-table-tile-head">
+                        <h6>Family Booth</h6>
+                        <span class="mm-table-tile-status mm-table-tile-status-1" data-cycle-status title="Click to cycle status">Available</span>
+                    </div>
+                    <div class="mm-table-tile-body">
+                        <div class="mm-table-tile-toprow">
+                            <p class="mm-table-tile-no">#T6</p>
+                            <span class="mm-table-seat-pill"><i class="fa fa-users"></i> 8 Seats</span>
+                        </div>
+                        <span class="mm-table-zone-tag"><i class="fa fa-map-marker"></i> Main Dining · Large Group</span>
+                        <div class="mm-table-live-meta">
+                            <strong>Ready for Seating</strong>
+                            <span>Large family / group booth</span>
+                        </div>
+                    </div>
+                    <div class="mm-table-tile-foot">
+                        <a href="/preview/rst-pos?table_id=6" class="btn btn-xs btn-primary" title="Start new order at T6"><i class="fa fa-plus"></i> New Order</a>
+                        <div class="btn-group btn-corner">
+                            <a href="#edit-modal" onclick="editTable(`http://localhost/rst/table-manages/6`,{&quot;id&quot;:6,&quot;name&quot;:&quot;Family Booth&quot;,&quot;table_no&quot;:&quot;T6&quot;,&quot;status&quot;:1})" data-toggle="modal" class="btn btn-xs btn-success" title="Edit"><i class="fa fa-pencil-square-o"></i></a>
+                            <button type="button" onclick="delete_item(`http://localhost/rst/table-manages/6`)" class="btn btn-xs btn-danger" title="Delete"><i class="fa fa-trash-o"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mm-table-tile" role="listitem" data-table-state="available" data-table-search="t7 window corner couple">
+                    <div class="mm-table-tile-head">
+                        <h6>Window Corner</h6>
+                        <span class="mm-table-tile-status mm-table-tile-status-1" data-cycle-status title="Click to cycle status">Available</span>
+                    </div>
+                    <div class="mm-table-tile-body">
+                        <div class="mm-table-tile-toprow">
+                            <p class="mm-table-tile-no">#T7</p>
+                            <span class="mm-table-seat-pill"><i class="fa fa-users"></i> 2 Seats</span>
+                        </div>
+                        <span class="mm-table-zone-tag"><i class="fa fa-map-marker"></i> Main Dining · Window View</span>
+                        <div class="mm-table-live-meta">
+                            <strong>Ready for Seating</strong>
+                            <span>2-person window table</span>
+                        </div>
+                    </div>
+                    <div class="mm-table-tile-foot">
+                        <a href="/preview/rst-pos?table_id=7" class="btn btn-xs btn-primary" title="Start new order at T7"><i class="fa fa-plus"></i> New Order</a>
+                        <div class="btn-group btn-corner">
+                            <a href="#edit-modal" onclick="editTable(`http://localhost/rst/table-manages/7`,{&quot;id&quot;:7,&quot;name&quot;:&quot;Window Corner&quot;,&quot;table_no&quot;:&quot;T7&quot;,&quot;status&quot;:1})" data-toggle="modal" class="btn btn-xs btn-success" title="Edit"><i class="fa fa-pencil-square-o"></i></a>
+                            <button type="button" onclick="delete_item(`http://localhost/rst/table-manages/7`)" class="btn btn-xs btn-danger" title="Delete"><i class="fa fa-trash-o"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mm-table-tile" role="listitem" data-table-state="inactive" data-table-search="t8 annex hall inactive closed">
+                    <div class="mm-table-tile-head">
+                        <h6>Annex Hall</h6>
+                        <span class="mm-table-tile-status mm-table-tile-status-0" data-cycle-status title="Click to cycle status">Inactive</span>
+                    </div>
+                    <div class="mm-table-tile-body">
+                        <div class="mm-table-tile-toprow">
+                            <p class="mm-table-tile-no">#T8</p>
+                            <span class="mm-table-seat-pill"><i class="fa fa-users"></i> 4 Seats</span>
+                        </div>
+                        <span class="mm-table-zone-tag"><i class="fa fa-map-marker"></i> Annex Wing</span>
+                        <div class="mm-table-live-meta">
+                            <strong>Closed / Setup</strong>
+                            <span>Click status badge to activate</span>
+                        </div>
+                    </div>
+                    <div class="mm-table-tile-foot">
+                        <span class="tw-text-xs tw-text-muted">Inactive</span>
+                        <div class="btn-group btn-corner">
+                            <a href="#edit-modal" onclick="editTable(`http://localhost/rst/table-manages/8`,{&quot;id&quot;:8,&quot;name&quot;:&quot;Annex Hall&quot;,&quot;table_no&quot;:&quot;T8&quot;,&quot;status&quot;:0})" data-toggle="modal" class="btn btn-xs btn-success" title="Edit"><i class="fa fa-pencil-square-o"></i></a>
+                            <button type="button" onclick="delete_item(`http://localhost/rst/table-manages/8`)" class="btn btn-xs btn-danger" title="Delete"><i class="fa fa-trash-o"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mm-panel tw-p-4 sm:tw-p-6">
+            <h2 class="tw-m-0 tw-mb-3 tw-text-base tw-font-semibold tw-text-ink">Manage tables</h2>
+            <div class="mm-table-scroll" role="region" aria-label="Tables" tabindex="0"><table id="data-table" class="table table-striped table-bordered nowrap" width="100%">
                 <thead>
                     <tr>
                         <th width="5%">Sl</th>
@@ -256,5 +517,65 @@
 
             $('#editForm').attr('action', url)
         }
+
+        (function () {
+            var activeFilter = 'all';
+            function refreshTableMapKpis() {
+                var tiles = document.querySelectorAll('#mm-table-map-grid .mm-table-tile');
+                var counts = { all: tiles.length, available: 0, occupied: 0, reserved: 0, inactive: 0 };
+                var visible = 0;
+                var q = ((document.getElementById('mm-table-search') || {}).value || '').toLowerCase().trim();
+                tiles.forEach(function (tile) {
+                    var st = tile.getAttribute('data-table-state') || 'available';
+                    if (counts[st] !== undefined) counts[st]++;
+                    var text = (tile.getAttribute('data-table-search') || tile.textContent || '').toLowerCase();
+                    var matchFilter = (activeFilter === 'all' || st === activeFilter);
+                    var matchSearch = (!q || text.indexOf(q) !== -1);
+                    if (matchFilter && matchSearch) {
+                        tile.style.display = '';
+                        visible++;
+                    } else {
+                        tile.style.display = 'none';
+                    }
+                });
+                var setTxt = function (id, val) { var el = document.getElementById(id); if (el) el.textContent = String(val); };
+                setTxt('mm-kpi-total', counts.all);
+                setTxt('mm-kpi-avail', counts.available);
+                setTxt('mm-kpi-occ', counts.occupied);
+                setTxt('mm-kpi-res', counts.reserved);
+                var countEl = document.getElementById('mm-table-visible-count');
+                if (countEl) countEl.textContent = 'Showing ' + visible + ' of ' + counts.all + ' tables · Click status pill to cycle state';
+            }
+            document.querySelectorAll('[data-table-filter]').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    document.querySelectorAll('[data-table-filter]').forEach(function (b) { b.classList.remove('is-active'); });
+                    btn.classList.add('is-active');
+                    activeFilter = btn.getAttribute('data-table-filter') || 'all';
+                    refreshTableMapKpis();
+                });
+            });
+            var searchInput = document.getElementById('mm-table-search');
+            if (searchInput) searchInput.addEventListener('input', refreshTableMapKpis);
+            document.addEventListener('click', function (e) {
+                var badge = e.target.closest('[data-cycle-status]');
+                if (!badge) return;
+                var tile = badge.closest('.mm-table-tile');
+                if (!tile) return;
+                var order = ['available', 'occupied', 'reserved', 'inactive'];
+                var labels = { available: 'Available', occupied: 'Occupied', reserved: 'Reserved', inactive: 'Inactive' };
+                var classes = {
+                    available: 'mm-table-tile-status mm-table-tile-status-1',
+                    occupied: 'mm-table-tile-status mm-table-tile-status-occupied',
+                    reserved: 'mm-table-tile-status mm-table-tile-status-reserved',
+                    inactive: 'mm-table-tile-status mm-table-tile-status-0'
+                };
+                var cur = tile.getAttribute('data-table-state') || 'available';
+                var next = order[(order.indexOf(cur) + 1) % order.length];
+                tile.setAttribute('data-table-state', next);
+                badge.className = classes[next];
+                badge.textContent = labels[next];
+                refreshTableMapKpis();
+            });
+        })();
     </script>
 <!--/MM-JS--></body></html>

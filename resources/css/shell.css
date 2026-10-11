@@ -818,3 +818,238 @@
 .mm-shell.mm-dark.mm-nav-rail .mm-shell-rail-toggle { color: #c4d3e3; }
 .mm-shell.mm-dark.mm-nav-rail .mm-shell-rail-toggle:hover { background: #1c2a38; border-color: #2f4256; }
 
+/* ---------- Light Mode Glassmorphism & Surface Harmony (Pearl-Sapphire Glass) ---------- */
+.mm-shell:not(.mm-dark) {
+    background-color: #f2f7fc;
+    background-image:
+        radial-gradient(circle at 12% 10%, rgba(59, 130, 246, 0.10) 0%, transparent 42%),
+        radial-gradient(circle at 88% 14%, rgba(99, 102, 241, 0.08) 0%, transparent 45%),
+        radial-gradient(circle at 50% 90%, rgba(14, 165, 233, 0.07) 0%, transparent 48%);
+    background-attachment: fixed;
+}
+.mm-shell:not(.mm-dark) .page-content,
+.mm-shell:not(.mm-dark) .main-content,
+.mm-shell:not(.mm-dark) .main-content-inner {
+    background-color: #f2f7fc !important;
+    background-image:
+        radial-gradient(circle at 12% 10%, rgba(59, 130, 246, 0.09) 0%, transparent 42%),
+        radial-gradient(circle at 88% 14%, rgba(99, 102, 241, 0.07) 0%, transparent 45%),
+        radial-gradient(circle at 50% 90%, rgba(14, 165, 233, 0.06) 0%, transparent 48%) !important;
+}
+.mm-shell:not(.mm-dark) #navbar {
+    background-color: rgba(255, 255, 255, 0.88) !important;
+    background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(242, 247, 254, 0.90) 100%) !important;
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.98), 0 1px 0 rgba(148, 163, 184, 0.28);
+}
+.mm-shell:not(.mm-dark) #sidebar {
+    background-color: rgba(255, 255, 255, 0.90);
+    background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(242, 247, 254, 0.92) 100%);
+    border-right: 1px solid rgba(148, 163, 184, 0.28);
+    backdrop-filter: blur(16px) saturate(175%);
+    -webkit-backdrop-filter: blur(16px) saturate(175%);
+    box-shadow: 4px 0 24px rgba(15, 23, 42, 0.05);
+}
+.mm-shell:not(.mm-dark) #sidebar .nav-list > li > a > .menu-icon {
+    background: linear-gradient(135deg, #eff5fc 0%, #e1ecf8 100%);
+    border: 1px solid rgba(148, 163, 184, 0.26);
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.92);
+    color: #2f63a8 !important;
+}
+.mm-shell:not(.mm-dark) #sidebar .nav-list li.active > a,
+.mm-shell:not(.mm-dark) #sidebar .nav-list a[aria-current="page"] {
+    background: linear-gradient(90deg, rgba(47, 99, 168, 0.14) 0%, rgba(59, 130, 246, 0.05) 100%);
+    color: #1e4276;
+    box-shadow: inset 3px 0 #2f63a8, 0 2px 6px rgba(47, 99, 168, 0.07);
+}
+.mm-shell:not(.mm-dark) .mm-shell-footer {
+    background-color: rgba(255, 255, 255, 0.88);
+    background-image: linear-gradient(180deg, rgba(255, 255, 255, 0.94) 0%, rgba(242, 247, 254, 0.92) 100%);
+    border-top: 1px solid rgba(148, 163, 184, 0.28);
+    backdrop-filter: blur(16px) saturate(180%);
+    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    box-shadow: 0 -4px 20px rgba(15, 23, 42, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.96);
+}
+.mm-shell:not(.mm-dark) [role="note"] {
+    background: linear-gradient(135deg, rgba(235, 245, 255, 0.88) 0%, rgba(224, 238, 254, 0.78) 100%) !important;
+    border-color: rgba(59, 130, 246, 0.30) !important;
+    border-radius: 10px;
+    backdrop-filter: blur(14px) saturate(170%);
+    -webkit-backdrop-filter: blur(14px) saturate(170%);
+    box-shadow: 0 6px 18px rgba(37, 99, 235, 0.07), inset 0 1px 0 rgba(255, 255, 255, 0.94);
+}
+.mm-shell:not(.mm-dark) #navbar .mm-hdr-search,
+.mm-shell:not(.mm-dark) #navbar .mm-hdr-btn,
+.mm-shell:not(.mm-dark) #navbar .ace-nav > li > a {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(243, 248, 254, 0.92) 100%) !important;
+    border-color: rgba(148, 163, 184, 0.36);
+    box-shadow: 0 2px 5px rgba(15, 23, 42, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.98);
+}
+.mm-shell:not(.mm-dark) #navbar .mm-hdr-cta {
+    background-color: #2f63a8;
+    background-image: linear-gradient(135deg, #3b76c4 0%, #27528e 100%);
+    border-color: #234b82;
+    box-shadow: 0 4px 12px rgba(47, 99, 168, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.32);
+}
+.mm-shell:not(.mm-dark) .mm-ui .mm-steps li.mm-step {
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.95) 0%, rgba(242, 247, 254, 0.88) 100%);
+    border-color: rgba(148, 163, 184, 0.34);
+    backdrop-filter: blur(12px) saturate(165%);
+    -webkit-backdrop-filter: blur(12px) saturate(165%);
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.98);
+}
+.mm-shell:not(.mm-dark) .mm-ui .mm-steps li.mm-step.is-current {
+    background: linear-gradient(145deg, rgba(235, 245, 255, 0.98) 0%, rgba(219, 234, 254, 0.90) 100%);
+    border-color: rgba(47, 99, 168, 0.48);
+    box-shadow: 0 6px 18px rgba(47, 99, 168, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.98);
+}
+.mm-shell:not(.mm-dark) .mm-ui .btn-primary {
+    background-color: #2f63a8 !important;
+    background-image: linear-gradient(135deg, #3b76c4 0%, #27528e 100%) !important;
+    border-color: #234b82 !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(47, 99, 168, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.30);
+}
+.mm-shell:not(.mm-dark) .mm-ui .btn-purple {
+    background-color: #7c3aed !important;
+    background-image: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%) !important;
+    border-color: #5b21b6 !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(109, 40, 217, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.28);
+}
+.mm-shell:not(.mm-dark) .mm-ui .btn-success {
+    background-color: #059669 !important;
+    background-image: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+    border-color: #047857 !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(5, 150, 105, 0.20), inset 0 1px 0 rgba(255, 255, 255, 0.28);
+}
+.mm-shell:not(.mm-dark) .mm-ui .btn-danger {
+    background-color: #dc2626 !important;
+    background-image: linear-gradient(135deg, #f43f5e 0%, #dc2626 100%) !important;
+    border-color: #b91c1c !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.20), inset 0 1px 0 rgba(255, 255, 255, 0.28);
+}
+.mm-shell:not(.mm-dark) .mm-ui .btn-info {
+    background-color: #0284c7 !important;
+    background-image: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%) !important;
+    border-color: #0369a1 !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(2, 132, 199, 0.20), inset 0 1px 0 rgba(255, 255, 255, 0.28);
+}
+
+/* ---------- Dark Mode overrides for POS Table View & Floor Map ---------- */
+.mm-shell.mm-dark .mm-ui .mm-table-kpi-card {
+    background-color: #18232f;
+    background-image: linear-gradient(145deg, rgba(28, 42, 56, 0.90) 0%, rgba(20, 30, 42, 0.94) 100%);
+    border-color: rgba(148, 163, 184, 0.24);
+    box-shadow: 0 8px 22px -6px rgba(2, 6, 23, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+.mm-shell.mm-dark .mm-ui .mm-table-kpi-icon-all { background: rgba(56, 189, 248, 0.16); color: #7dd3fc; border-color: rgba(56, 189, 248, 0.35); }
+.mm-shell.mm-dark .mm-ui .mm-table-kpi-icon-avail { background: rgba(16, 185, 129, 0.16); color: #6ee7b7; border-color: rgba(16, 185, 129, 0.35); }
+.mm-shell.mm-dark .mm-ui .mm-table-kpi-icon-occ { background: rgba(245, 158, 11, 0.18); color: #fcd34d; border-color: rgba(245, 158, 11, 0.38); }
+.mm-shell.mm-dark .mm-ui .mm-table-kpi-icon-res { background: rgba(139, 92, 246, 0.18); color: #c4b5fd; border-color: rgba(139, 92, 246, 0.38); }
+.mm-shell.mm-dark .mm-ui .mm-table-toolbar {
+    background: linear-gradient(180deg, rgba(24, 35, 47, 0.92) 0%, rgba(19, 29, 40, 0.95) 100%);
+    border-color: rgba(148, 163, 184, 0.24);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+.mm-shell.mm-dark .mm-ui .mm-table-filter-btn {
+    background: rgba(15, 23, 32, 0.85);
+    border-color: rgba(148, 163, 184, 0.30);
+    color: #cbd5e1;
+}
+.mm-shell.mm-dark .mm-ui .mm-table-filter-btn:hover {
+    border-color: #6ea8f0;
+    color: #f8fafc;
+    background: rgba(30, 49, 72, 0.9);
+}
+.mm-shell.mm-dark .mm-ui .mm-table-filter-btn.is-active {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    border-color: #60a5fa;
+    color: #ffffff;
+}
+.mm-shell.mm-dark .mm-ui .mm-table-search-wrap input {
+    background: rgba(15, 23, 32, 0.90);
+    border-color: rgba(148, 163, 184, 0.34);
+    color: #f1f5f9;
+}
+.mm-shell.mm-dark .mm-ui .mm-table-tile {
+    background-color: #18232f;
+    background-image: linear-gradient(145deg, rgba(28, 42, 56, 0.90) 0%, rgba(19, 29, 40, 0.95) 100%);
+    border-color: rgba(148, 163, 184, 0.24);
+    border-top-width: 4px;
+    box-shadow: 0 8px 24px -6px rgba(2, 6, 23, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+.mm-shell.mm-dark .mm-ui .mm-table-tile-head,
+.mm-shell.mm-dark .mm-ui .mm-table-tile-foot {
+    border-color: rgba(148, 163, 184, 0.18);
+    background: rgba(15, 23, 32, 0.45);
+}
+.mm-shell.mm-dark .mm-ui .mm-table-seat-pill {
+    background: rgba(56, 189, 248, 0.15);
+    color: #bae6fd;
+    border-color: rgba(56, 189, 248, 0.32);
+}
+.mm-shell.mm-dark .mm-ui .mm-table-live-meta {
+    background: rgba(15, 23, 32, 0.72);
+    border-color: rgba(148, 163, 184, 0.22);
+    color: #cbd5e1;
+}
+.mm-shell.mm-dark .mm-ui .mm-table-live-meta strong { color: #f8fafc; }
+.mm-shell.mm-dark .mm-ui .mm-table-tile-status-1 { background: rgba(16, 185, 129, 0.20); color: #6ee7b7; border-color: rgba(16, 185, 129, 0.40); }
+.mm-shell.mm-dark .mm-ui .mm-table-tile-status-occupied { background: rgba(245, 158, 11, 0.22); color: #fcd34d; border-color: rgba(245, 158, 11, 0.42); }
+.mm-shell.mm-dark .mm-ui .mm-table-tile-status-reserved { background: rgba(139, 92, 246, 0.22); color: #ddd6fe; border-color: rgba(139, 92, 246, 0.42); }
+.mm-shell.mm-dark .mm-ui .mm-table-tile-status-0 { background: rgba(239, 68, 68, 0.22); color: #fca5a5; border-color: rgba(239, 68, 68, 0.42); }
+.mm-shell.mm-dark .mm-ui.mm-rst-pos .mm-pos-table-view {
+    background: linear-gradient(145deg, rgba(24, 35, 47, 0.92) 0%, rgba(17, 26, 37, 0.95) 100%);
+    border-color: rgba(148, 163, 184, 0.26);
+    box-shadow: 0 8px 22px -6px rgba(2, 6, 23, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.07);
+}
+.mm-shell.mm-dark .mm-ui.mm-rst-pos .mm-pos-filter-pill {
+    background: rgba(15, 23, 32, 0.85);
+    border-color: rgba(148, 163, 184, 0.30);
+    color: #cbd5e1;
+}
+.mm-shell.mm-dark .mm-ui.mm-rst-pos .mm-pos-filter-pill.is-active {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    border-color: #60a5fa;
+    color: #ffffff;
+}
+.mm-shell.mm-dark .mm-ui.mm-rst-pos .mm-pos-table-card {
+    background: linear-gradient(145deg, rgba(28, 42, 56, 0.92) 0%, rgba(19, 29, 40, 0.96) 100%);
+    border-color: rgba(148, 163, 184, 0.26);
+    box-shadow: 0 4px 12px rgba(2, 6, 23, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.07);
+}
+.mm-shell.mm-dark .mm-ui.mm-rst-pos .mm-pos-table-card.is-selected {
+    background: linear-gradient(145deg, rgba(30, 58, 95, 0.95) 0%, rgba(23, 37, 64, 0.96) 100%);
+    border-color: #60a5fa;
+    box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.32), 0 8px 18px rgba(2, 6, 23, 0.6);
+}
+.mm-shell.mm-dark .mm-ui.mm-rst-pos .mm-pos-table-badge-available { background: rgba(16, 185, 129, 0.22); color: #6ee7b7; }
+.mm-shell.mm-dark .mm-ui.mm-rst-pos .mm-pos-table-badge-occupied { background: rgba(245, 158, 11, 0.22); color: #fcd34d; }
+.mm-shell.mm-dark .mm-ui.mm-rst-pos .mm-pos-table-badge-reserved { background: rgba(139, 92, 246, 0.22); color: #ddd6fe; }
+.mm-shell.mm-dark .mm-ui.mm-rst-pos .mm-pos-quick-menu {
+    background: linear-gradient(180deg, rgba(24, 35, 47, 0.92) 0%, rgba(19, 29, 40, 0.95) 100%);
+    border-color: rgba(148, 163, 184, 0.24);
+}
+.mm-shell.mm-dark .mm-ui.mm-rst-pos .mm-pos-chip {
+    background: linear-gradient(180deg, rgba(30, 45, 62, 0.95) 0%, rgba(21, 33, 47, 0.95) 100%);
+    border-color: rgba(96, 165, 250, 0.35);
+    color: #e2e8f0;
+    box-shadow: 0 2px 6px rgba(2, 6, 23, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+.mm-shell.mm-dark .mm-ui.mm-rst-pos .mm-pos-chip:hover {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    border-color: #60a5fa;
+    color: #ffffff;
+}
+.mm-shell.mm-dark .mm-ui.mm-rst-pos .mm-pos-order-summary-pill {
+    background: rgba(56, 189, 248, 0.16);
+    border-color: rgba(56, 189, 248, 0.35);
+    color: #7dd3fc;
+}
+
+
