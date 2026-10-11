@@ -99,7 +99,12 @@
                 <section class="mm-panel tw-p-4 sm:tw-p-6">
                     <header class="mm-section-head">
                         <h2 class="mm-section-title"><i class="fa fa-user"></i> Step 2 · Primary Guest &amp; Stay Details</h2>
-                        <span class="mm-badge mm-badge-partial">In Progress</span>
+                        <div class="tw-flex tw-items-center tw-gap-2">
+                            <button type="button" class="mm-button mm-button-secondary mm-button-sm" data-toggle="modal" data-target="#add-guest-modal">
+                                <i class="fa fa-user-plus"></i> + Quick Add Guest (Drawer)
+                            </button>
+                            <span class="mm-badge mm-badge-partial">In Progress</span>
+                        </div>
                     </header>
                     <form id="mm-booking-wiz-form" onsubmit="return false;">
                         <div class="mm-wiz-field-grid">
@@ -196,12 +201,112 @@
                         <button type="button" id="wiz-btn-confirm" class="mm-button" style="flex:1; justify-content:center;">
                             <i class="fa fa-check"></i> Confirm Booking &amp; Check-In
                         </button>
+                        <button type="button" class="mm-button mm-button-secondary" data-toggle="modal" data-target="#account-type-modal" title="Open Multi-Account Split Payment Drawer">
+                            <i class="fa fa-columns"></i> Split Pay
+                        </button>
                         <a href="/preview/checkout" class="mm-button mm-button-secondary" title="Proceed to Checkout Folio">
                             <i class="fa fa-arrow-right"></i> Folio
                         </a>
                     </div>
                 </div>
             </aside>
+        </div>
+
+        <!-- Slide-Over App Drawer 1: Quick Add Guest -->
+        <div class="modal fade" id="add-guest-modal" tabindex="-1" role="dialog" aria-labelledby="add-guest-drawer-title">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="add-guest-drawer-title"><i class="fa fa-user-plus"></i> Add New Guest Profile</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="wiz-drawer-guest-form" onsubmit="return false;" class="tw-space-y-3">
+                            <div class="mm-field">
+                                <label class="mm-label" for="drawer-guest-name">Full Name <span class="mm-req">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                    <input id="drawer-guest-name" type="text" class="form-control" value="Nusrat Jahan" placeholder="Guest full name">
+                                </div>
+                            </div>
+                            <div class="mm-field">
+                                <label class="mm-label" for="drawer-guest-phone">Mobile Number <span class="mm-req">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-phone"></i></span>
+                                    <input id="drawer-guest-phone" type="tel" class="form-control" value="+880 1819-552104" placeholder="+880 1...">
+                                </div>
+                            </div>
+                            <div class="mm-field">
+                                <label class="mm-label" for="drawer-guest-nid">NID / Passport Number <span class="mm-req">*</span></label>
+                                <input id="drawer-guest-nid" type="text" class="form-control" value="BD-9930481205">
+                            </div>
+                            <div class="mm-field">
+                                <label class="mm-label" for="drawer-guest-type">Guest Tier / Corporate Account</label>
+                                <select id="drawer-guest-type" class="form-control">
+                                    <option value="VIP">VIP Heritage Member (10% Loyalty)</option>
+                                    <option value="Corporate">Corporate Partner Account</option>
+                                    <option value="WalkIn">Standard Walk-In Guest</option>
+                                </select>
+                            </div>
+                            <div class="mm-field">
+                                <label class="mm-label" for="drawer-guest-email">Email Address</label>
+                                <input id="drawer-guest-email" type="email" class="form-control" value="nusrat.jahan@example.com">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="mm-button" id="wiz-apply-guest-drawer" data-dismiss="modal"><i class="fa fa-check"></i> Save &amp; Select Guest</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide-Over App Drawer 2: Multi-Account Split Payment -->
+        <div class="modal fade" id="account-type-modal" tabindex="-1" role="dialog" aria-labelledby="split-pay-drawer-title">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="split-pay-drawer-title"><i class="fa fa-credit-card"></i> Multi-Account Advance Deposit Drawer</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="tw-text-sm tw-text-muted" style="margin-top:0">Split the guest's advance deposit across Cash, POS Card Terminal, and Mobile Banking accounts.</p>
+                        <div class="mm-table-scroll">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Payment Account</th>
+                                        <th>Reference / Card Last 4</th>
+                                        <th class="text-right">Amount (৳)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>VISA / MasterCard POS</strong></td>
+                                        <td><input type="text" class="form-control" value="VISA-4829"></td>
+                                        <td><input type="number" class="form-control text-right wiz-split-amt" value="7000"></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>bKash Merchant Wallet</strong></td>
+                                        <td><input type="text" class="form-control" value="TRX-994102"></td>
+                                        <td><input type="number" class="form-control text-right wiz-split-amt" value="3000"></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Front-Desk Cash Drawer</strong></td>
+                                        <td><input type="text" class="form-control" value="CASH-FD01"></td>
+                                        <td><input type="number" class="form-control text-right wiz-split-amt" value="0"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="mm-button" id="wiz-apply-split-drawer" data-dismiss="modal"><i class="fa fa-check"></i> Apply Split Deposit</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </section>
@@ -263,6 +368,33 @@
             document.querySelectorAll('.mm-steps li').forEach(function (li) {
                 li.className = 'is-done';
             });
+        });
+    }
+    var btnApplyGuest = document.getElementById('wiz-apply-guest-drawer');
+    if (btnApplyGuest) {
+        btnApplyGuest.addEventListener('click', function () {
+            var gName = document.getElementById('drawer-guest-name');
+            var gPhone = document.getElementById('drawer-guest-phone');
+            var gNid = document.getElementById('drawer-guest-nid');
+            var gEmail = document.getElementById('drawer-guest-email');
+            if (gName && document.getElementById('wiz-guest-name')) document.getElementById('wiz-guest-name').value = gName.value;
+            if (gPhone && document.getElementById('wiz-guest-phone')) document.getElementById('wiz-guest-phone').value = gPhone.value;
+            if (gNid && document.getElementById('wiz-guest-nid')) document.getElementById('wiz-guest-nid').value = gNid.value;
+            if (gEmail && document.getElementById('wiz-guest-email')) document.getElementById('wiz-guest-email').value = gEmail.value;
+        });
+    }
+    var btnApplySplit = document.getElementById('wiz-apply-split-drawer');
+    if (btnApplySplit) {
+        btnApplySplit.addEventListener('click', function () {
+            var sum = 0;
+            document.querySelectorAll('.wiz-split-amt').forEach(function (inp) {
+                sum += Math.max(0, parseInt(inp.value || '0', 10));
+            });
+            var advEl = document.getElementById('wiz-advance');
+            if (advEl) {
+                advEl.value = String(sum);
+                recalcWizard();
+            }
         });
     }
     recalcWizard();

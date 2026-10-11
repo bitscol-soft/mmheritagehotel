@@ -1277,6 +1277,209 @@
     color: #fca5a5 !important;
 }
 
+/* ---------- Modern Frosted-Glass Forms, Dropdowns, Tables & Slide-Over App Drawers (Light & Dark Mode) ---------- */
+.mm-shell .modal-backdrop {
+    background-color: rgba(15, 23, 42, 0.45) !important;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+.mm-shell .modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1055;
+    overflow: hidden;
+}
+.mm-shell .modal .modal-dialog {
+    position: fixed !important;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    left: auto !important;
+    margin: 0 !important;
+    width: min(480px, 100vw) !important;
+    max-width: 100vw !important;
+    height: 100vh !important;
+    max-height: 100vh !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+.mm-shell .modal .modal-dialog.modal-lg,
+.mm-shell #account-type-modal .modal-dialog,
+.mm-shell #booking-details .modal-dialog,
+.mm-shell #check-in .modal-dialog,
+.mm-shell [id^="check-in"] .modal-dialog,
+.mm-shell [id^="project-details"] .modal-dialog,
+.mm-shell [id^="purchase-receive-details"] .modal-dialog,
+.mm-shell [id^="company-details"] .modal-dialog,
+.mm-shell [id^="my_Modal"] .modal-dialog,
+.mm-shell [id^="audit-view-details"] .modal-dialog,
+.mm-shell [id^="view-details"] .modal-dialog {
+    width: min(680px, 100vw) !important;
+}
+.mm-shell .modal.fade .modal-dialog {
+    transform: translateX(100%) !important;
+    transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1) !important;
+}
+.mm-shell .modal.in .modal-dialog,
+.mm-shell .modal.show .modal-dialog,
+.mm-shell .modal[style*="display: block"] .modal-dialog {
+    transform: translateX(0) !important;
+}
+.mm-shell .modal .modal-content {
+    height: 100vh !important;
+    max-height: 100vh !important;
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    border-radius: 16px 0 0 16px !important;
+    overflow: hidden !important;
+}
+.mm-shell .modal .modal-header {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 18px 22px !important;
+}
+.mm-shell .modal .modal-header::after,
+.mm-shell .modal .modal-header::before,
+.mm-shell .modal .modal-footer::after,
+.mm-shell .modal .modal-footer::before {
+    display: none !important;
+}
+.mm-shell .modal .modal-body {
+    flex: 1 1 auto !important;
+    overflow-y: auto !important;
+    overflow-x: hidden;
+    padding: 20px 22px !important;
+}
+.mm-shell .modal .modal-footer {
+    flex-shrink: 0;
+    margin-top: auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    padding: 14px 22px !important;
+}
+.mm-shell.mm-dark .mm-ui .form-control,
+.mm-shell.mm-dark .mm-ui .mm-input,
+.mm-shell.mm-dark .mm-ui .did-floating-input,
+.mm-shell.mm-dark .mm-ui .did-floating-select,
+.mm-shell.mm-dark .mm-ui input[type="text"]:not(.chosen-search-input),
+.mm-shell.mm-dark .mm-ui input[type="number"],
+.mm-shell.mm-dark .mm-ui input[type="email"],
+.mm-shell.mm-dark .mm-ui input[type="password"],
+.mm-shell.mm-dark .mm-ui input[type="tel"],
+.mm-shell.mm-dark .mm-ui input[type="url"],
+.mm-shell.mm-dark .mm-ui input[type="search"],
+.mm-shell.mm-dark .mm-ui input[type="date"],
+.mm-shell.mm-dark .mm-ui input[type="time"],
+.mm-shell.mm-dark .mm-ui input[type="datetime-local"],
+.mm-shell.mm-dark .mm-ui input[type="month"],
+.mm-shell.mm-dark .mm-ui textarea,
+.mm-shell.mm-dark .mm-ui select {
+    background-color: rgba(20, 31, 46, 0.88) !important;
+    background-image: linear-gradient(180deg, rgba(28, 42, 60, 0.90) 0%, rgba(18, 28, 41, 0.94) 100%) !important;
+    border-color: rgba(148, 163, 184, 0.28) !important;
+    color: #f1f5f9 !important;
+    box-shadow: inset 0 1px 2px rgba(2, 6, 23, 0.35), 0 1px 0 rgba(255, 255, 255, 0.04) !important;
+}
+.mm-shell.mm-dark .mm-ui select.form-control:not([multiple]),
+.mm-shell.mm-dark .mm-ui select.mm-input:not([multiple]),
+.mm-shell.mm-dark .mm-ui select.did-floating-select:not([multiple]) {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E"), linear-gradient(180deg, rgba(28, 42, 60, 0.90) 0%, rgba(18, 28, 41, 0.94) 100%) !important;
+    background-repeat: no-repeat, no-repeat !important;
+    background-position: right 11px center, 0 0 !important;
+    background-size: 12px 12px, 100% 100% !important;
+}
+.mm-shell.mm-dark .mm-ui .form-control:focus,
+.mm-shell.mm-dark .mm-ui .mm-input:focus,
+.mm-shell.mm-dark .mm-ui select:focus,
+.mm-shell.mm-dark .mm-ui textarea:focus {
+    border-color: #60a5fa !important;
+    box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.22) !important;
+}
+.mm-shell.mm-dark .mm-ui .input-group .input-group-addon {
+    background-color: #1c2a3a !important;
+    background-image: linear-gradient(180deg, rgba(34, 51, 74, 0.94) 0%, rgba(24, 37, 54, 0.94) 100%) !important;
+    border-color: rgba(148, 163, 184, 0.28) !important;
+    color: #cbd5e1 !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+.mm-shell.mm-dark .mm-ui .chosen-container-single .chosen-single,
+.mm-shell.mm-dark .mm-ui .chosen-container-multi .chosen-choices,
+.mm-shell.mm-dark .mm-ui .select2-container--default .select2-selection--single,
+.mm-shell.mm-dark .mm-ui .select2-container--default .select2-selection--multiple {
+    background-color: rgba(20, 31, 46, 0.90) !important;
+    background-image: linear-gradient(180deg, rgba(28, 42, 60, 0.90) 0%, rgba(18, 28, 41, 0.94) 100%) !important;
+    border-color: rgba(148, 163, 184, 0.28) !important;
+    color: #f1f5f9 !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06) !important;
+}
+.mm-shell.mm-dark .mm-ui .chosen-container .chosen-drop,
+.mm-shell.mm-dark .mm-ui .select2-dropdown {
+    background-color: rgba(20, 30, 44, 0.96) !important;
+    border-color: rgba(148, 163, 184, 0.28) !important;
+    color: #e2e8f0 !important;
+    box-shadow: 0 16px 36px rgba(2, 6, 23, 0.65) !important;
+}
+.mm-shell.mm-dark .mm-ui .mm-table-scroll,
+.mm-shell.mm-dark .mm-ui .mm-data-table-wrap {
+    background-color: rgba(20, 30, 44, 0.78);
+    border-color: rgba(148, 163, 184, 0.22);
+    box-shadow: 0 6px 18px -4px rgba(2, 6, 23, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+.mm-shell.mm-dark .mm-ui .mm-table-scroll thead tr:not(.table-header-bg) th:not(.bg-dark),
+.mm-shell.mm-dark .mm-ui .mm-data-table thead tr:not(.table-header-bg) th:not(.bg-dark) {
+    background-image: linear-gradient(180deg, rgba(30, 45, 64, 0.95) 0%, rgba(22, 34, 49, 0.95) 100%);
+    border-bottom-color: rgba(148, 163, 184, 0.24);
+    color: #cbd5e1;
+}
+.mm-shell.mm-dark .mm-ui .mm-table-scroll tbody tr:hover,
+.mm-shell.mm-dark .mm-ui .mm-data-table tbody tr:hover {
+    background-color: rgba(37, 56, 79, 0.55);
+}
+.mm-shell.mm-dark .modal .modal-content,
+.mm-shell.mm-dark .mm-ui .md-modal .md-content,
+.mm-shell.mm-dark .mm-ui .mm-modal .mm-modal-card {
+    background-color: rgba(20, 30, 44, 0.95) !important;
+    background-image: linear-gradient(160deg, rgba(30, 45, 66, 0.95) 0%, rgba(17, 26, 39, 0.97) 100%) !important;
+    border-color: rgba(148, 163, 184, 0.28) !important;
+    color: #e2e8f0 !important;
+    box-shadow: -18px 0 48px rgba(2, 6, 23, 0.68), inset 1px 0 0 rgba(255, 255, 255, 0.08) !important;
+}
+.mm-shell.mm-dark .modal .modal-header {
+    background: linear-gradient(180deg, rgba(30, 44, 64, 0.96) 0%, rgba(22, 33, 48, 0.92) 100%) !important;
+    border-bottom-color: rgba(148, 163, 184, 0.24) !important;
+    color: #f8fafc !important;
+}
+.mm-shell.mm-dark .modal .modal-header .modal-title,
+.mm-shell.mm-dark .modal .modal-header h4 {
+    color: #f8fafc !important;
+}
+.mm-shell.mm-dark .modal .modal-header .close {
+    background: rgba(30, 45, 66, 0.85) !important;
+    border-color: rgba(148, 163, 184, 0.30) !important;
+    color: #e2e8f0 !important;
+}
+.mm-shell.mm-dark .modal .modal-footer {
+    background: linear-gradient(180deg, rgba(22, 33, 48, 0.95) 0%, rgba(16, 25, 37, 0.98) 100%) !important;
+    border-top-color: rgba(148, 163, 184, 0.24) !important;
+}
+@media (max-width: 575px) {
+    .mm-shell .modal .modal-dialog,
+    .mm-shell .modal .modal-dialog.modal-lg {
+        width: 100vw !important;
+    }
+    .mm-shell .modal .modal-content {
+        border-radius: 0 !important;
+    }
+}
+
+
 
 
 

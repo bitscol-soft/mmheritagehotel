@@ -113,6 +113,88 @@
     window.mm.openModal = openModal;
     window.mm.closeModal = closeModal;
 
+    // --- mm-drawer (Universal Slide-Over App Drawer Enhancement) ------------
+    function openDrawer(id) {
+        var el = typeof id === 'string' ? document.getElementById(id.replace(/^#/, '')) : id;
+        if (!el) return;
+        if (el.matches('[data-mm-modal]')) { openModal(el.id); return; }
+        if (el.classList.contains('md-modal')) { el.classList.add('md-show'); return; }
+        if (window.jQuery && window.jQuery.fn && window.jQuery.fn.modal) {
+            window.jQuery(el).modal('show');
+        } else {
+            el.style.display = 'block';
+            el.classList.add('in', 'show');
+            el.setAttribute('aria-hidden', 'false');
+        }
+    }
+    function closeDrawer(el) {
+        el = typeof el === 'string' ? document.getElementById(el.replace(/^#/, '')) : (el && (el.closest('.modal, .md-modal, [data-mm-modal]') || el));
+        if (!el) return;
+        if (el.matches('[data-mm-modal]')) { closeModal(el); return; }
+        if (el.classList.contains('md-modal')) { el.classList.remove('md-show'); return; }
+        if (window.jQuery && window.jQuery.fn && window.jQuery.fn.modal) {
+            window.jQuery(el).modal('hide');
+        } else {
+            el.style.display = 'none';
+            el.classList.remove('in', 'show');
+            el.setAttribute('aria-hidden', 'true');
+        }
+    }
+    function bindDrawers(root) {
+        root = root || document;
+        var modals = root.querySelectorAll('.modal, .md-modal, [data-mm-modal]');
+        for (var i = 0; i < modals.length; i++) {
+            modals[i].setAttribute('data-mm-drawer', 'true');
+            modals[i].classList.add('mm-app-drawer');
+        }
+        var openers = root.querySelectorAll('[data-mm-drawer-open]');
+        for (var j = 0; j < openers.length; j++) {
+            (function (opener) {
+                if (opener.dataset.mmDrawerBound) return;
+                opener.dataset.mmDrawerBound = '1';
+                opener.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    openDrawer(opener.getAttribute('data-mm-drawer-open'));
+                });
+            })(openers[j]);
+        }
+        var closers = root.querySelectorAll('[data-mm-drawer-close]');
+        for (var k = 0; k < closers.length; k++) {
+            (function (closer) {
+                if (closer.dataset.mmDrawerBound) return;
+                closer.dataset.mmDrawerBound = '1';
+                closer.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    closeDrawer(closer);
+                });
+            })(closers[k]);
+        }
+        var overlays = root.querySelectorAll('.md-overlay');
+        for (var m = 0; m < overlays.length; m++) {
+            (function (ov) {
+                if (ov.dataset.mmDrawerBound) return;
+                ov.dataset.mmDrawerBound = '1';
+                ov.addEventListener('click', function () {
+                    var openMd = document.querySelector('.md-modal.md-show');
+                    if (openMd) openMd.classList.remove('md-show');
+                });
+            })(overlays[m]);
+        }
+        if (!document.documentElement.dataset.mmDrawerEscBound) {
+            document.documentElement.dataset.mmDrawerEscBound = '1';
+            document.addEventListener('keydown', function (e) {
+                if (e.key !== 'Escape' && e.keyCode !== 27) return;
+                var openMd = document.querySelector('.md-modal.md-show');
+                if (openMd) { openMd.classList.remove('md-show'); return; }
+                var openBs = document.querySelector('.modal.in, .modal.show, .modal[style*="display: block"]');
+                if (openBs) closeDrawer(openBs);
+            });
+        }
+    }
+    window.mm.openDrawer = openDrawer;
+    window.mm.closeDrawer = closeDrawer;
+
+
     // --- mm-daterange -------------------------------------------------------
     // Quick-range chip click sets the from/to inputs. The presets are date
     // arithmetic in the user's local timezone; we don't convert to UTC.
@@ -228,6 +310,7 @@
     // --- bootstrap -----------------------------------------------------------
     function init(root) {
         bindModals(root);
+        bindDrawers(root);
         bindDaterange(root);
         bindChipRemove(root);
         bindPrint(root);
