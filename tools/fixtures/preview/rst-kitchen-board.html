@@ -9,18 +9,77 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Kitchen board</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Accept new orders, mark them ready and send them to be served.</p>            </div>
-                    </header>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Live Kitchen Display System (KDS) — accept new orders, check off plated courses, and fire tickets to service.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/rst-kitchen-show"><i class="fa fa-print"></i> Thermal KOT</a>
+                <a class="mm-button mm-button-secondary" href="/preview/rst-kitchen-list"><i class="fa fa-list-alt"></i> Kitchen List</a>
+                <a class="mm-button mm-button-secondary" href="/preview/rst-tables"><i class="fa fa-th-large"></i> Table Map</a>
+                <a class="mm-button" href="/preview/rst-pos"><i class="fa fa-cutlery"></i> Restaurant POS</a>
+            </div>
+        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Kitchen display summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-fire"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Active KDS Tickets</span>
+                    <div class="mm-table-kpi-value"><span id="mm-kds-kpi-total">3</span> <span class="mm-table-kpi-sub">9 Dishes active</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-res"><i class="fa fa-bell-o"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">New / Queued</span>
+                    <div class="mm-table-kpi-value"><span id="mm-kds-kpi-new">1</span> <span class="mm-table-kpi-sub">Table #T1</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-cutlery"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Cooking / On Fire</span>
+                    <div class="mm-table-kpi-value"><span id="mm-kds-kpi-cooking">1</span> <span class="mm-table-kpi-sub">Table #T2</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Ready to Serve</span>
+                    <div class="mm-table-kpi-value"><span id="mm-kds-kpi-ready">1</span> <span class="mm-table-kpi-sub">Avg Prep 8m</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mm-table-toolbar">
+            <div class="mm-table-filter-pills" role="group" aria-label="Filter kitchen tickets">
+                <button type="button" class="mm-table-filter-btn is-active" data-kds-filter="all">All Tickets (3)</button>
+                <button type="button" class="mm-table-filter-btn" data-kds-filter="new">New / Queued (1)</button>
+                <button type="button" class="mm-table-filter-btn" data-kds-filter="cooking">Cooking (1)</button>
+                <button type="button" class="mm-table-filter-btn" data-kds-filter="ready">Ready to Serve (1)</button>
+            </div>
+            <div class="mm-table-search-wrap">
+                <input type="search" id="mm-kds-search" placeholder="Search order #R-0101, table #T1, dish..." aria-label="Search kitchen orders">
+            </div>
+        </div>
+
         <div class="mm-board-layout">
         <div class="mm-board-orders">
             
-                                    <article class="mm-board-card">
+                                    <article class="mm-board-card" data-kds-state="new">
                         <header class="mm-board-card-head">
-                            <h6>Order No : 1
-                            </h6>
+                            <h6>Order No : 1</h6>
+                            <div class="mm-kds-head-badges">
+                                <span class="mm-kds-timer"><i class="fa fa-clock-o"></i> 12m · New</span>
+                                <a href="/preview/rst-kitchen-show" class="btn btn-minier btn-default" title="Print 80mm KOT"><i class="fa fa-print"></i></a>
+                            </div>
                         </header>
 
                         <div class="mm-board-card-body">
+                            <div class="mm-kds-meta-strip">
+                                <span class="mm-kds-meta-pill"><i class="fa fa-file-text-o"></i> <b>Order : R-0101</b></span>
+                                <span class="mm-kds-meta-pill"><i class="fa fa-th-large"></i> <b>Table No : T1</b></span>
+                                <span class="mm-kds-meta-pill"><i class="fa fa-user"></i> <b>Waiter No : W-1</b></span>
+                                <span class="mm-kds-meta-pill"><i class="fa fa-bed"></i> Room 101</span>
+                            </div>
                             <p class="alert alert-info" style="font-size: 12px">
                                 <b>Order : R-0101</b> <br>
                                 <b>Table No : T1</b><br>
@@ -30,6 +89,10 @@
                                                                     <b>Item 2 : Lassi ×
                                         1</b><br>
                                                             </p>
+                            <ul class="mm-kds-checklist" aria-label="Course checklist">
+                                <li class="mm-kds-check-item" data-kds-check><span><i class="fa fa-square-o"></i> Shahi Kacchi Biryani (Hot)</span><span class="mm-kds-qty-badge">× 2</span></li>
+                                <li class="mm-kds-check-item" data-kds-check><span><i class="fa fa-square-o"></i> Artisanal Mango Lassi</span><span class="mm-kds-qty-badge">× 1</span></li>
+                            </ul>
                         </div>
 
                         <footer class="mm-board-card-foot">
@@ -49,13 +112,22 @@
                         </footer>
                     </article>
                             
-                                    <article class="mm-board-card">
+                                    <article class="mm-board-card" data-kds-state="cooking">
                         <header class="mm-board-card-head">
-                            <h6>Order No : 2
-                            </h6>
+                            <h6>Order No : 2</h6>
+                            <div class="mm-kds-head-badges">
+                                <span class="mm-kds-timer mm-kds-timer-warn"><i class="fa fa-fire"></i> 8m · Cooking</span>
+                                <a href="/preview/rst-kitchen-show" class="btn btn-minier btn-default" title="Print 80mm KOT"><i class="fa fa-print"></i></a>
+                            </div>
                         </header>
 
                         <div class="mm-board-card-body">
+                            <div class="mm-kds-meta-strip">
+                                <span class="mm-kds-meta-pill"><i class="fa fa-file-text-o"></i> <b>Order : R-0102</b></span>
+                                <span class="mm-kds-meta-pill"><i class="fa fa-th-large"></i> <b>Table No : T2</b></span>
+                                <span class="mm-kds-meta-pill"><i class="fa fa-user"></i> <b>Waiter No : W-2</b></span>
+                                <span class="mm-kds-meta-pill"><i class="fa fa-bed"></i> Room 102</span>
+                            </div>
                             <p class="alert alert-info" style="font-size: 12px">
                                 <b>Order : R-0102</b> <br>
                                 <b>Table No : T2</b><br>
@@ -65,6 +137,10 @@
                                                                     <b>Item 2 : Lassi ×
                                         1</b><br>
                                                             </p>
+                            <ul class="mm-kds-checklist" aria-label="Course checklist">
+                                <li class="mm-kds-check-item is-plated" data-kds-check><span><i class="fa fa-check-square-o"></i> Chicken Tikka Masala</span><span class="mm-kds-qty-badge">× 2</span></li>
+                                <li class="mm-kds-check-item" data-kds-check><span><i class="fa fa-square-o"></i> Garlic Butter Naan</span><span class="mm-kds-qty-badge">× 4</span></li>
+                            </ul>
                         </div>
 
                         <footer class="mm-board-card-foot">
@@ -84,13 +160,22 @@
                         </footer>
                     </article>
                             
-                                    <article class="mm-board-card">
+                                    <article class="mm-board-card" data-kds-state="ready">
                         <header class="mm-board-card-head">
-                            <h6>Order No : 3
-                            </h6>
+                            <h6>Order No : 3</h6>
+                            <div class="mm-kds-head-badges">
+                                <span class="mm-kds-timer mm-kds-timer-ready"><i class="fa fa-check-circle"></i> 3m · Ready</span>
+                                <a href="/preview/rst-kitchen-show" class="btn btn-minier btn-default" title="Print 80mm KOT"><i class="fa fa-print"></i></a>
+                            </div>
                         </header>
 
                         <div class="mm-board-card-body">
+                            <div class="mm-kds-meta-strip">
+                                <span class="mm-kds-meta-pill"><i class="fa fa-file-text-o"></i> <b>Order : R-0103</b></span>
+                                <span class="mm-kds-meta-pill"><i class="fa fa-th-large"></i> <b>Table No : T3</b></span>
+                                <span class="mm-kds-meta-pill"><i class="fa fa-user"></i> <b>Waiter No : W-3</b></span>
+                                <span class="mm-kds-meta-pill"><i class="fa fa-star"></i> VIP Suite</span>
+                            </div>
                             <p class="alert alert-info" style="font-size: 12px">
                                 <b>Order : R-0103</b> <br>
                                 <b>Table No : T3</b><br>
@@ -100,6 +185,10 @@
                                                                     <b>Item 2 : Lassi ×
                                         1</b><br>
                                                             </p>
+                            <ul class="mm-kds-checklist" aria-label="Course checklist">
+                                <li class="mm-kds-check-item is-plated" data-kds-check><span><i class="fa fa-check-square-o"></i> Grilled King Prawn Platter</span><span class="mm-kds-qty-badge">× 2</span></li>
+                                <li class="mm-kds-check-item is-plated" data-kds-check><span><i class="fa fa-check-square-o"></i> Special Zafrani Borhani</span><span class="mm-kds-qty-badge">× 2</span></li>
+                            </ul>
                         </div>
 
                         <footer class="mm-board-card-foot">
@@ -229,5 +318,38 @@
             })
 
         }
+
+        (function () {
+            var activeKdsFilter = 'all';
+            function filterKdsCards() {
+                var q = ((document.getElementById('mm-kds-search') || {}).value || '').toLowerCase().trim();
+                document.querySelectorAll('.mm-board-card').forEach(function (card) {
+                    var st = card.getAttribute('data-kds-state') || 'new';
+                    var txt = (card.textContent || '').toLowerCase();
+                    var okFilter = (activeKdsFilter === 'all' || st === activeKdsFilter);
+                    var okSearch = (!q || txt.indexOf(q) !== -1);
+                    card.style.display = (okFilter && okSearch) ? '' : 'none';
+                });
+            }
+            document.querySelectorAll('[data-kds-filter]').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    document.querySelectorAll('[data-kds-filter]').forEach(function (b) { b.classList.remove('is-active'); });
+                    btn.classList.add('is-active');
+                    activeKdsFilter = btn.getAttribute('data-kds-filter') || 'all';
+                    filterKdsCards();
+                });
+            });
+            var searchEl = document.getElementById('mm-kds-search');
+            if (searchEl) searchEl.addEventListener('input', filterKdsCards);
+            document.addEventListener('click', function (e) {
+                var checkItem = e.target.closest('[data-kds-check]');
+                if (!checkItem) return;
+                checkItem.classList.toggle('is-plated');
+                var icon = checkItem.querySelector('i.fa');
+                if (icon) {
+                    icon.className = checkItem.classList.contains('is-plated') ? 'fa fa-check-square-o' : 'fa fa-square-o';
+                }
+            });
+        })();
     </script>
 <!--/MM-JS--></body></html>

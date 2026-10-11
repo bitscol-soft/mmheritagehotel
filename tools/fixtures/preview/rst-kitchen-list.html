@@ -9,8 +9,46 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Kitchen orders</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Orders sent to the kitchen, with their table, amount and status.</p>            </div>
-                    </header>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Orders sent to the kitchen, with their table, amount, live KDS status, and thermal KOT tickets.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/rst-kitchen-show"><i class="fa fa-print"></i> Thermal KOT</a>
+                <a class="mm-button mm-button-secondary" href="/preview/rst-tables"><i class="fa fa-th-large"></i> Table Map</a>
+                <a class="mm-button mm-button-secondary" href="/preview/rst-pos"><i class="fa fa-cutlery"></i> Restaurant POS</a>
+                <a class="mm-button" href="/preview/rst-kitchen-board"><i class="fa fa-television"></i> Live KDS Board</a>
+            </div>
+        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Kitchen orders summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-file-text-o"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Total Kitchen Tickets</span>
+                    <div class="mm-table-kpi-value">4 <span class="mm-table-kpi-sub">Today's Service</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-fire"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Pending / Cooking</span>
+                    <div class="mm-table-kpi-value">2 <span class="mm-table-kpi-sub">Active in KDS</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Ready / Served</span>
+                    <div class="mm-table-kpi-value">2 <span class="mm-table-kpi-sub">100% On-Time</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-money"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Kitchen Volume</span>
+                    <div class="mm-table-kpi-value">৳ 1,800 <span class="mm-table-kpi-sub">4 Invoices</span></div>
+                </div>
+            </div>
+        </div>
+
         <div class="mm-panel tw-p-4 sm:tw-p-6"><div class="mm-table-scroll" role="region" aria-label="Kitchen orders" tabindex="0"><table id="data-table" class="table table-striped table-bordered table-hover">
                 <thead>
                     <tr>

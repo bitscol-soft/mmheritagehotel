@@ -27,9 +27,46 @@
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Checkout and payment</h1>
                 <p class="tw-m-0 tw-text-sm tw-text-muted">Review charges, adjust nights, apply a discount and collect payment for this booking.</p>            </div>
-            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button mm-button-secondary" href="http://localhost/hotel/booking">
-                <i class="ace-icon fa fa-list-alt" aria-hidden="true"></i> Booking List
-            </a></div>        </header>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/"><i class="ace-icon fa fa-th-large" aria-hidden="true"></i> Room Board</a>
+                <a class="mm-button mm-button-secondary" href="/preview/booking-next"><i class="ace-icon fa fa-calendar-plus-o" aria-hidden="true"></i> Booking Wizard</a>
+                <a class="mm-button mm-button-secondary" href="/preview/booking-invoice"><i class="ace-icon fa fa-print" aria-hidden="true"></i> Folio Invoice</a>
+                <a class="mm-button mm-button-secondary" href="http://localhost/hotel/booking">
+                    <i class="ace-icon fa fa-list-alt" aria-hidden="true"></i> Booking List
+                </a>
+            </div>        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Checkout folio summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-bed"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Room Tariff + VAT/SC</span>
+                    <div class="mm-table-kpi-value">৳ 9,240 <span class="mm-table-kpi-sub">2 Nights · Deluxe</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-cutlery"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Restaurant &amp; Bar Folio</span>
+                    <div class="mm-table-kpi-value">৳ 0 <span class="mm-table-kpi-sub">Settled at POS</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Advance Deposit Paid</span>
+                    <div class="mm-table-kpi-value">৳ 3,000 <span class="mm-table-kpi-sub">Receipt #BK-1042</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-credit-card"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Net Balance Due</span>
+                    <div class="mm-table-kpi-value">৳ 6,240 <span class="mm-table-kpi-sub">Awaiting Settlement</span></div>
+                </div>
+            </div>
+        </div>
+
         <form class="form-horizontal" action="http://localhost/hotel/checkout/7" method="post"
                             enctype="multipart/form-data">
                             <input type="hidden" name="_token" value="fixture-csrf-token">            
