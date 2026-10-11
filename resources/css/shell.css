@@ -1198,6 +1198,86 @@
     border-color: rgba(96, 165, 250, 0.35) !important;
 }
 
+/* ---------- Universal Button Border-Radius & Variant Coverage (Light & Dark Mode) ---------- */
+.mm-shell .btn,
+.mm-shell .btn-group > .btn,
+.mm-shell .btn-group.btn-corner > .btn,
+.mm-shell .input-group > .btn,
+.mm-shell .input-group-btn > .btn,
+.mm-shell .mm-button,
+.mm-shell .mmb-btn,
+.mm-shell .mm-header-tool {
+    border-radius: 6px !important;
+    border-width: 1px !important;
+    text-shadow: none !important;
+}
+.mm-shell .btn-minier,
+.mm-shell .btn-xs,
+.mm-shell .btn-group > .btn-minier,
+.mm-shell .btn-group > .btn-xs {
+    border-radius: 5px !important;
+}
+.mm-shell .btn-sm,
+.mm-shell .btn-group > .btn-sm {
+    border-radius: 6px !important;
+}
+.mm-shell .btn-lg,
+.mm-shell .btn-group > .btn-lg {
+    border-radius: 8px !important;
+}
+.mm-shell .mmb-pill,
+.mm-shell .mm-pos-filter-pill,
+.mm-shell .mm-table-filter-btn,
+.mm-shell .mm-pos-chip {
+    border-radius: 999px !important;
+}
+.mm-shell .mm-ui.mm-rst-pos .tableContainer td .input-group .spinbox-buttons:first-child .btn {
+    border-radius: 6px 0 0 6px !important;
+}
+.mm-shell .mm-ui.mm-rst-pos .tableContainer td .input-group .spinbox-buttons:last-child .btn {
+    border-radius: 0 6px 6px 0 !important;
+}
+.mm-shell .pagination > li > a,
+.mm-shell .pagination > li > span,
+.mm-shell .pager > li > a,
+.mm-shell .pager > li > span {
+    border-radius: 6px !important;
+}
+.mm-shell:not(.mm-dark) .mm-ui .btn-warning {
+    background-color: #d97706 !important;
+    background-image: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important;
+    border-color: #b45309 !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 12px rgba(217, 119, 6, 0.20), inset 0 1px 0 rgba(255, 255, 255, 0.28);
+}
+.mm-shell:not(.mm-dark) .mm-ui .btn-default,
+.mm-shell:not(.mm-dark) .mm-ui .btn-white {
+    background-color: #ffffff !important;
+    background-image: linear-gradient(180deg, #ffffff 0%, #f1f6fc 100%) !important;
+    border-color: #cbd5e1 !important;
+    color: #1e293b !important;
+    box-shadow: 0 2px 6px rgba(15, 23, 42, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+}
+.mm-shell.mm-dark .btn-warning {
+    background-color: #d97706 !important;
+    background-image: linear-gradient(135deg, rgba(245, 158, 11, 0.92) 0%, rgba(180, 83, 9, 0.88) 100%) !important;
+    border: 1px solid rgba(252, 211, 77, 0.45) !important;
+    color: #f8fafc !important;
+    box-shadow: 0 4px 14px rgba(217, 119, 6, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.22) !important;
+    text-shadow: none !important;
+}
+.mm-shell.mm-dark .btn-outline-success {
+    background-color: rgba(16, 185, 129, 0.14) !important;
+    border: 1px solid rgba(52, 211, 153, 0.45) !important;
+    color: #6ee7b7 !important;
+}
+.mm-shell.mm-dark .btn-outline-danger {
+    background-color: rgba(239, 68, 68, 0.14) !important;
+    border: 1px solid rgba(248, 113, 113, 0.45) !important;
+    color: #fca5a5 !important;
+}
+
+
 
 
 

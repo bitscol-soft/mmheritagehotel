@@ -476,5 +476,16 @@ body.mm-public .cart-table {
 body.mm-public .food_section.layout_padding {
     padding: 48px 0;
 }
+body.mm-public .btn-booking,
+body.mm-public .btn-cart,
+body.mm-public .price-selet a,
+body.mm-public .w3layouts_more-buttn a,
+body.mm-public .book-form input[type="submit"],
+body.mm-public .book-form button,
+body.mm-public section.contact-w3ls button.btn.btn-primary,
+body.mm-public .btn {
+    border-radius: var(--web-radius-sm, 8px) !important;
+}
+
 
 

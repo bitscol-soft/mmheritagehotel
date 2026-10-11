@@ -2473,6 +2473,67 @@
     border-color: rgba(37, 99, 235, 0.45) !important;
 }
 
+/* ---------- Universal Button Border-Radius & Polish (overrides Ace Admin border-radius:0) ---------- */
+.mm-ui .mm-button,
+.mm-ui .btn,
+.mm-ui .btn-group > .btn,
+.mm-ui .btn-group.btn-corner > .btn,
+.mm-ui .input-group > .btn,
+.mm-ui .input-group-btn > .btn,
+.mm-ui .action-button .btn,
+.mm-ui .action-button a,
+.mm-ui .modal-action .modal-btn,
+.mm-ui button:not([class]),
+.mm-ui input[type="button"],
+.mm-ui input[type="submit"],
+.mm-ui input[type="reset"] {
+    border-radius: var(--mm-radius-sm, 6px) !important;
+    border-width: 1px !important;
+    text-shadow: none !important;
+}
+.mm-ui .btn-minier,
+.mm-ui .btn-xs,
+.mm-ui .btn-group > .btn-minier,
+.mm-ui .btn-group > .btn-xs {
+    border-radius: 5px !important;
+}
+.mm-ui .btn-sm,
+.mm-ui .btn-group > .btn-sm {
+    border-radius: 6px !important;
+}
+.mm-ui .btn-lg,
+.mm-ui .btn-group > .btn-lg {
+    border-radius: 8px !important;
+}
+.mm-ui .mmb-pill,
+.mm-ui .mm-pos-filter-pill,
+.mm-ui .mm-table-filter-btn,
+.mm-ui .mm-pos-chip {
+    border-radius: 999px !important;
+}
+.mm-ui.mm-rst-pos .tableContainer td .input-group .spinbox-buttons:first-child .btn {
+    border-radius: 6px 0 0 6px !important;
+}
+.mm-ui.mm-rst-pos .tableContainer td .input-group .spinbox-buttons:last-child .btn {
+    border-radius: 0 6px 6px 0 !important;
+}
+.mm-ui .pagination > li > a,
+.mm-ui .pagination > li > span,
+.mm-ui .pager > li > a,
+.mm-ui .pager > li > span {
+    border-radius: 6px !important;
+}
+.mm-ui.mm-web .btn-booking,
+.mm-ui.mm-web .btn-cart,
+.mm-ui.mm-web .price-selet a,
+.mm-ui.mm-web .w3layouts_more-buttn a,
+.mm-ui.mm-web .book-form input[type="submit"],
+.mm-ui.mm-web .book-form button,
+.mm-ui.mm-web section.contact-w3ls button.btn.btn-primary {
+    border-radius: 8px !important;
+}
+
+
 
 
 
