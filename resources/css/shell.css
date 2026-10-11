@@ -1126,6 +1126,90 @@
     color: #e2e8f0;
     box-shadow: 0 14px 34px -8px rgba(2, 6, 23, 0.65);
 }
+.mm-shell.mm-dark .mm-ui .mm-stay-summary {
+    background: linear-gradient(145deg, rgba(22, 33, 49, 0.92) 0%, rgba(15, 23, 36, 0.96) 100%);
+    border-color: rgba(96, 165, 250, 0.28);
+    box-shadow: 0 12px 30px -8px rgba(2, 6, 23, 0.65), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+.mm-shell.mm-dark .mm-ui .mm-stay-summary > div {
+    background: linear-gradient(180deg, rgba(30, 41, 59, 0.86) 0%, rgba(15, 23, 42, 0.92) 100%);
+    border-color: rgba(148, 163, 184, 0.24);
+    box-shadow: 0 4px 12px rgba(2, 6, 23, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+.mm-shell.mm-dark .mm-ui .mm-stay-summary dt,
+.mm-shell.mm-dark .mm-ui .mm-stay-summary-label,
+.mm-shell.mm-dark .mm-ui .mm-stay-summary-sub {
+    color: #94a3b8;
+}
+.mm-shell.mm-dark .mm-ui .mm-stay-summary dd,
+.mm-shell.mm-dark .mm-ui .mm-stay-summary-value {
+    color: #f8fafc;
+}
+.mm-shell.mm-dark .mm-ui .mm-stay-card-icon {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.24) 0%, rgba(30, 64, 175, 0.18) 100%);
+    border-color: rgba(96, 165, 250, 0.36);
+    color: #93c5fd;
+}
+.mm-shell.mm-dark .mm-ui .mm-stay-card-icon.is-emerald {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.24) 0%, rgba(5, 150, 105, 0.16) 100%);
+    border-color: rgba(52, 211, 153, 0.36);
+    color: #6ee7b7;
+}
+.mm-shell.mm-dark .mm-ui .mm-stay-card-icon.is-amber {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.24) 0%, rgba(180, 83, 9, 0.16) 100%);
+    border-color: rgba(251, 191, 36, 0.36);
+    color: #fcd34d;
+}
+.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-steps ol {
+    background: linear-gradient(145deg, rgba(22, 33, 49, 0.92) 0%, rgba(15, 23, 36, 0.96) 100%);
+    border-color: rgba(148, 163, 184, 0.26);
+    box-shadow: 0 10px 26px -8px rgba(2, 6, 23, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.07);
+}
+.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-steps li {
+    background: rgba(15, 23, 42, 0.72);
+    border-color: rgba(148, 163, 184, 0.22);
+    color: #94a3b8;
+}
+.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-steps li.is-done {
+    background: linear-gradient(135deg, rgba(6, 78, 59, 0.45) 0%, rgba(15, 23, 42, 0.88) 100%);
+    border-color: rgba(52, 211, 153, 0.38);
+    color: #a7f3d0;
+}
+.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-steps li.is-current {
+    background: linear-gradient(135deg, rgba(30, 58, 138, 0.52) 0%, rgba(15, 23, 42, 0.92) 100%);
+    border-color: rgba(96, 165, 250, 0.48);
+    box-shadow: 0 6px 18px -4px rgba(37, 99, 235, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.10);
+    color: #f8fafc;
+}
+.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-step-sub {
+    color: #94a3b8;
+}
+.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-step-pill {
+    background: rgba(15, 23, 42, 0.85);
+    border-color: rgba(148, 163, 184, 0.28);
+    color: #94a3b8;
+}
+.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-steps li.is-done .mm-step-pill {
+    background: rgba(16, 185, 129, 0.22);
+    border-color: rgba(52, 211, 153, 0.42);
+    color: #6ee7b7;
+}
+.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-steps li.is-current .mm-step-pill {
+    background: rgba(59, 130, 246, 0.24);
+    border-color: rgba(96, 165, 250, 0.45);
+    color: #93c5fd;
+}
+.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-section-head {
+    border-bottom-color: rgba(148, 163, 184, 0.22);
+}
+.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-section-title {
+    color: #f8fafc;
+}
+.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-wiz-sec-icon {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.24) 0%, rgba(30, 64, 175, 0.18) 100%);
+    border-color: rgba(96, 165, 250, 0.36);
+    color: #93c5fd;
+}
 .mm-shell.mm-dark .mm-ui.mm-booking-checkout .board-stay-strip.booking-context {
     background: linear-gradient(135deg, rgba(24, 38, 56, 0.92) 0%, rgba(17, 27, 40, 0.95) 100%);
     border-color: rgba(96, 165, 250, 0.30);
@@ -1137,13 +1221,56 @@
     color: #e2e8f0;
 }
 .mm-shell.mm-dark .mm-ui.mm-booking-next .mm-wiz-room-row {
-    background: rgba(15, 23, 32, 0.78);
+    background: linear-gradient(180deg, rgba(24, 35, 52, 0.88) 0%, rgba(15, 23, 38, 0.92) 100%);
     border-color: rgba(148, 163, 184, 0.26);
+    box-shadow: 0 4px 14px -4px rgba(2, 6, 23, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-wiz-room-row.is-selected {
+    background: linear-gradient(135deg, rgba(30, 58, 95, 0.62) 0%, rgba(15, 23, 42, 0.94) 100%);
+    border-color: rgba(96, 165, 250, 0.52);
+    box-shadow: 0 8px 22px -6px rgba(37, 99, 235, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.10);
+}
+.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-wiz-room-row:not(.is-selected) .mm-wiz-room-num {
+    background: rgba(30, 41, 59, 0.85);
+    color: #cbd5e1;
+    border-color: rgba(148, 163, 184, 0.30);
+}
+.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-wiz-tag {
+    background: rgba(15, 23, 42, 0.80);
+    border-color: rgba(148, 163, 184, 0.26);
+    color: #cbd5e1;
+}
+.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-wiz-room-toggle-pill {
+    background: rgba(15, 23, 42, 0.88);
+    border-color: rgba(148, 163, 184, 0.34);
+    color: #e2e8f0;
+}
+.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-wiz-room-row.is-selected .mm-wiz-room-toggle-pill {
+    background: rgba(16, 185, 129, 0.22);
+    border-color: rgba(52, 211, 153, 0.45);
+    color: #6ee7b7;
+}
+.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-wiz-breakdown-box {
+    background: linear-gradient(180deg, rgba(15, 23, 38, 0.88) 0%, rgba(12, 19, 32, 0.94) 100%);
+    border-color: rgba(148, 163, 184, 0.24);
+}
+.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-wiz-summary-line {
+    border-bottom-color: rgba(148, 163, 184, 0.22);
+    color: #cbd5e1;
+}
+.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-wiz-summary-line strong {
+    color: #f8fafc;
 }
 .mm-shell.mm-dark .mm-ui.mm-booking-next .mm-wiz-summary-total {
     background: linear-gradient(135deg, rgba(30, 58, 95, 0.92) 0%, rgba(23, 37, 64, 0.95) 100%);
-    border-color: rgba(96, 165, 250, 0.40);
+    border-color: rgba(96, 165, 250, 0.45);
+    box-shadow: 0 6px 18px -4px rgba(2, 6, 23, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.10);
     color: #93c5fd;
+}
+.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-wiz-due-box {
+    background: linear-gradient(135deg, rgba(6, 78, 59, 0.55) 0%, rgba(15, 23, 42, 0.92) 100%);
+    border-color: rgba(52, 211, 153, 0.42);
+    color: #6ee7b7;
 }
 
 /* ---------- Option 2 & 4: Dark Mode rules for Night Audit, Payment Collection, Banquet & Reports ---------- */
