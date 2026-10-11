@@ -8,23 +8,54 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Product List</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Products with price and stock settings.</p>            </div>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Commercial trading products with category, unit, opening stock and pricing settings.</p>            </div>
             <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button mm-button-secondary" href="http://localhost/acc/products"><i class="fa fa-refresh"></i> Refresh Data</a>
                     <a class="mm-button" href="http://localhost/acc/products/create"><i class="fa fa-plus"></i> Create New</a></div>        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Account products summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-cube"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Catalog Item</span>
+                    <div class="mm-table-kpi-value">Juice <span class="mm-table-kpi-sub">Beverage · Litre</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-tag"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Purchase Cost</span>
+                    <div class="mm-table-kpi-value">৳ 80.00 <span class="mm-table-kpi-sub">Unit Cost</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-money"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Selling Price</span>
+                    <div class="mm-table-kpi-value">৳ 110.00 <span class="mm-table-kpi-sub">27.3% Margin</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Trading Status</span>
+                    <div class="mm-table-kpi-value">Active ✓ <span class="mm-table-kpi-sub">Sales &amp; PO Ready</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><!-- LIST -->
         <div class="row" style="width: 100%; margin: 0 !important;">
             <div class="col-sm-12 px-4">
                 <div class="mm-table-scroll" role="region" aria-label="Product List" tabindex="0"><table id="data-table" class="table table-bordered table-striped">
                         <thead>
                             <tr class="table-header-bg">
-                                <th class="text-center" style="color: white !important;" width="5%">S/L</th>
-                                <th class="pl-3" style="color: white !important;" >Name</th>
-                                <th class="pl-3" style="color: white !important;" >Category</th>
-                                <th class="pl-3" style="color: white !important;" >Unit</th>
-                                <th class="text-right" style="color: white !important;" >Opening Qty</th>
-                                <th class="text-right" style="color: white !important;" >Purchase Price</th>
-                                <th class="text-right" style="color: white !important;" >Selling Price</th>
-                                <th class="text-center" style="color: white !important;" width="10%">Actions</th>
+                                <th class="text-center" width="5%">S/L</th>
+                                <th class="pl-3">Name</th>
+                                <th class="pl-3">Category</th>
+                                <th class="pl-3">Unit</th>
+                                <th class="text-right">Opening Qty</th>
+                                <th class="text-right">Purchase Price</th>
+                                <th class="text-right">Selling Price</th>
+                                <th class="text-center" width="10%">Actions</th>
                             </tr>
                         </thead>
 

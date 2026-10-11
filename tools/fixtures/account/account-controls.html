@@ -8,19 +8,53 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Account Controls</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Account controls grouped by account group.</p>            </div>
-            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"></div>        </header>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Second-level control accounts grouped under primary financial statement classes.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/acc-accounts"><i class="fa fa-book"></i> GL Accounts</a>
+                <a class="mm-button" href="/preview/acc-form-control-create"><i class="fa fa-plus"></i> Add Control</a>
+            </div>        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Account controls summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-sliders"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Control Ledgers</span>
+                    <div class="mm-table-kpi-value">Current Assets <span class="mm-table-kpi-sub">Asset Group</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Control Status</span>
+                    <div class="mm-table-kpi-value">Active ✓ <span class="mm-table-kpi-sub">Mapped to Subsidiary</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-building-o"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Statement Class</span>
+                    <div class="mm-table-kpi-value">Balance Sheet <span class="mm-table-kpi-sub">Auto-Rollup</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-sitemap"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">COA Integrity</span>
+                    <div class="mm-table-kpi-value">100% Linked <span class="mm-table-kpi-sub">Zero Orphans</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><!-- LIST -->
         <div class="row" style="width: 100%; margin: 0 !important;">
             <div class="col-sm-12 px-4">
                 <div class="mm-table-scroll" role="region" aria-label="Account Controls" tabindex="0"><table id="data-table" class="table table-bordered table-striped">
                         <thead>
                             <tr class="table-header-bg">
-                                <th class="text-center" style="color: white !important;" width="8%">Sl</th>
-                                <th class="pl-3" style="color: white !important;" width="20%">Account Group</th>
-                                <th class="pl-3" style="color: white !important;">Name</th>
-                                <th class="text-center" style="color: white !important;" width="15%">Status</th>
-                                <th class="text-center" style="color: white !important;" width="15%">Actions</th>
+                                <th class="text-center" width="8%">Sl</th>
+                                <th class="pl-3" width="20%">Account Group</th>
+                                <th class="pl-3">Name</th>
+                                <th class="text-center" width="15%">Status</th>
+                                <th class="text-center" width="15%">Actions</th>
                             </tr>
                         </thead>
 

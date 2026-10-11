@@ -10,8 +10,42 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Payment Lists</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Supplier payments.</p>            </div>
-            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button" href="http://localhost/acc/acc-suppliers/index"><i class="fa fa-list"></i> List</a></div>        </header>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Supplier payable disbursements and purchase invoice payment history.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/acc-account-payables"><i class="fa fa-arrow-circle-up"></i> AP Aging</a>
+                <a class="mm-button" href="http://localhost/acc/acc-suppliers/index"><i class="fa fa-list"></i> List</a>
+            </div>        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Supplier payments summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-file-text-o"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Payable Invoices</span>
+                    <div class="mm-table-kpi-value">8 Invoices <span class="mm-table-kpi-sub">P-2021-10 Series</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">AP Settlement</span>
+                    <div class="mm-table-kpi-value">Verified ✓ <span class="mm-table-kpi-sub">Supplier Ledgers</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-book"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">GL Voucher Link</span>
+                    <div class="mm-table-kpi-value">Payment Voucher <span class="mm-table-kpi-sub">Auto-Posted</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-filter"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Quick Filter</span>
+                    <div class="mm-table-kpi-value">Invoice &amp; Ref <span class="mm-table-kpi-sub">Chosen Select</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><div class="mm-panel tw-p-4 sm:tw-p-6 mm-report-filter"><form class="mm-setup-filter mm-report-form" action="" method="get">
                 <div class="input-group">
                     <label class="input-group-addon" for="">

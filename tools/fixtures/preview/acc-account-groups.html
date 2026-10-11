@@ -22,8 +22,42 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Account Group</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Account groups and their account types.</p>            </div>
-                    </header>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Top-level accounting classifications and normal debit/credit balance types.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/acc-accounts"><i class="fa fa-book"></i> Chart of Accounts</a>
+            </div>
+        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Account groups summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-layer-group fa-th-list"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Primary Groups</span>
+                    <div class="mm-table-kpi-value">Asset &amp; Liability <span class="mm-table-kpi-sub">Core Ledger Roots</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-balance-scale"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Normal Balances</span>
+                    <div class="mm-table-kpi-value">Debit / Credit <span class="mm-table-kpi-sub">Double-Entry Rules</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-lock"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">System Protected</span>
+                    <div class="mm-table-kpi-value">IFRS / GAAP <span class="mm-table-kpi-sub">Standardized</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Status</span>
+                    <div class="mm-table-kpi-value">Active ✓ <span class="mm-table-kpi-sub">All Reports Synced</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><!-- LIST -->
         <div class="row" style="width: 100%; margin: 0 !important;">
             <div class="col-sm-12 px-4">
