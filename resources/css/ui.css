@@ -3071,6 +3071,12 @@
     width: 100%;
     max-width: 100%;
 }
+.mm-ui .input-group > .input-group-btn {
+    width: auto;
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: stretch;
+}
 .mm-ui .input-group > .input-group-addon,
 .mm-ui .input-group > label.input-group-addon,
 .mm-ui .input-group > .input-group-addon.input-sm,
