@@ -1,4 +1,4 @@
-<div id="member-detail-modal" class="modal" tabindex="-1">
+<div id="member-detail-modal" class="modal fade mm-drawer" data-mm-drawer="true" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header" style="background: rgb(41, 4, 77)">

@@ -1,6 +1,6 @@
 <div class="extra-charge">
 
-    <div class="md-modal md-effect close-modal" id="extendDateModal{{ $data->id }}" style="max-width: 800px; min-width: 700px">
+    <div class="md-modal md-effect close-modal mm-drawer" data-mm-drawer="true" id="extendDateModal{{ $data->id }}" style="max-width: 800px; min-width: 700px">
 
         <div class="md-content" style="border-radius: 4px;">
             <div class="main-body" style="position: relative">

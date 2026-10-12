@@ -1,6 +1,6 @@
 <div class="extra-charge">
 
-    <div class="md-modal md-effect close-modal" id="extraChargeModal">
+    <div class="md-modal md-effect close-modal mm-drawer" data-mm-drawer="true" id="extraChargeModal">
 
         <div class="md-content" style="border-radius: 4px;">
             <div class="main-body" style="position: relative">

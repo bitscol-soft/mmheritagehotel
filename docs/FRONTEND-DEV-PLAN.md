@@ -128,12 +128,12 @@ Order = user value; each task = one PR-size chunk. Screens not listed keep their
 |---|---|---|
 | D1 | Delete vs keep dead invoice templates (W3.8) | decided (W3.8 = delete v2/v4/get_invoice, keep v3, annotate unrouted methods) |
 | D2 | Tom Select as canonical autocomplete | proposed → ratify at W1.5 |
-| D3 | Dark mode & Light mode frosted glassmorphism + Slide-Over App Drawers + 100% KPI Strips (`resources/css/shell.css`, `resources/css/ui.css`, `public/frontend/assets/css/custom.css`) | **shipped** (`cd7d01da`..`00d74026` — Midnight-Sapphire Dark Mode + Pearl-Sapphire Light Mode with frosted glass chrome, forms, dropdowns, tables, printable invoice/folio screen cards, public storefront cards, 264/264 KPI strips, 29/29 Slide-Over App Drawers, and 295 preview routes) |
+| D3 | Dark mode & Light mode frosted glassmorphism + Slide-Over App Drawers + 100% KPI Strips (`resources/css/shell.css`, `resources/css/ui.css`, `public/frontend/assets/css/custom.css`) | **shipped** (`cd7d01da`..`555b1ff5` — Midnight-Sapphire Dark Mode + Pearl-Sapphire Light Mode with frosted glass chrome, forms, dropdowns, tables, printable invoice/folio screen cards, public storefront cards, 264/264 KPI strips, 29/29 Slide-Over App Drawers + 19 Blade modal partials, and 308 interactive preview routes) |
 | D4 | Due-column math quirk | flagged in BUGS.md; needs owner + separate functional ticket (out of UI scope) |
-| B1 | Charts for reports (pick one lib, static) | W6 stretch |
-| B2 | Global search API (needs backend; outside Plan B) | parked |
-| B3 | Email templates (booking confirmations, payment reminders) — same design tokens, MJML optional | W6.5 |
-| B4 | Keyboard shortcut layer (`g b` board, `/` focus search) | W2 stretch |
+| B1 | Visual share bars & trend indicators for financial & outlet reports (`.mm-share-bar` + frosted `.well`) | **shipped** (`555b1ff5` + follow-up — Ratio Analysis, Revenue Analysis, Trial Balance, Income Statement, Balance Sheet, Restaurant Sales Report & Bar Sales Report) |
+| B2 | Global search API (`Ctrl+K` Command Palette indexing all 308 screens + Quick Action Drawer trigger) | **shipped** (`555b1ff5` — client-side instant search across all 308 admin, public, and showcase screens) |
+| B3 | Branded hospitality email templates (`resources/views/mails/password-reset.blade.php` + `/preview/email-templates` showcase) | **shipped** (brand-aligned transactional email styling + interactive `/preview/email-templates` showcase) |
+| B4 | Keyboard shortcut layer (`g d` dashboard, `g b` booking wizard, `g p` restaurant POS, `g r` ratio analysis, `g a` balance sheet, `g s` storefront, `g x` preview hub, `/` focus search, `?` help drawer) | **shipped** (`555b1ff5` in `public/assets/custom_js/shell-tools.js` & `resources/views/layouts/shell/shortcuts.blade.php`) |
 
 ## 8. Estimation recap & suggested cadence
 
