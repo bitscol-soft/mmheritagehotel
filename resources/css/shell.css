@@ -1864,6 +1864,55 @@
         border-radius: 0 !important;
     }
 }
+/* Options 1–4 Dark Mode: Interactive Preview Hub, Financial Share Bars & Ratio Wells */
+.mm-shell.mm-dark .mm-ui .well,
+.mm-shell.mm-dark .mm-ui .well.well-sm {
+    background: linear-gradient(145deg, rgba(24, 36, 52, 0.94) 0%, rgba(17, 26, 39, 0.96) 100%) !important;
+    border-color: rgba(148, 163, 184, 0.26) !important;
+    border-top: 3px solid #60a5fa !important;
+    color: #f8fafc !important;
+    box-shadow: 0 8px 22px rgba(2, 6, 23, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+}
+.mm-shell.mm-dark .mm-ui .well b {
+    color: #94a3b8 !important;
+}
+.mm-shell.mm-dark .mm-ui .mm-share-bar {
+    background: rgba(148, 163, 184, 0.22);
+}
+.mm-shell.mm-dark .mm-ui .mm-preview-pill {
+    background: rgba(24, 36, 52, 0.92);
+    border-color: rgba(148, 163, 184, 0.28);
+    color: #cbd5e1;
+}
+.mm-shell.mm-dark .mm-ui .mm-preview-pill:hover,
+.mm-shell.mm-dark .mm-ui .mm-preview-pill.is-active {
+    background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%);
+    border-color: #60a5fa;
+    color: #ffffff;
+}
+.mm-shell.mm-dark .mm-ui .mm-preview-card {
+    background: linear-gradient(145deg, rgba(24, 36, 52, 0.94) 0%, rgba(17, 26, 39, 0.96) 100%);
+    border-color: rgba(148, 163, 184, 0.24);
+    box-shadow: 0 6px 18px rgba(2, 6, 23, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+.mm-shell.mm-dark .mm-ui .mm-preview-card:hover {
+    border-color: #60a5fa;
+    box-shadow: 0 10px 26px rgba(2, 6, 23, 0.65);
+}
+.mm-shell.mm-dark .mm-ui .mm-preview-card-title {
+    color: #f8fafc;
+}
+.mm-shell.mm-dark .mm-ui .mm-preview-card-tag {
+    background: rgba(59, 130, 246, 0.20);
+    color: #93c5fd;
+}
+.mm-shell.mm-dark .mm-ui .mm-preview-card-desc {
+    color: #cbd5e1;
+}
+.mm-shell.mm-dark .mm-ui .mm-preview-card-route {
+    color: #94a3b8;
+}
+
 
 
 

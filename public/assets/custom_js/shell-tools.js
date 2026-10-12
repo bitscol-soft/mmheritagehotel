@@ -113,6 +113,8 @@
             { group: 'Actions', label: 'Keyboard shortcuts', detail: 'Help', run: function () { openDialog(help); }, icon: 'fa-keyboard-o', key: 'keyboard shortcuts help' }
         );
         if (canFullscreen) items.push({ group: 'Actions', label: document.fullscreenElement ? 'Exit full screen' : 'Enter full screen', detail: 'Layout', run: toggleFullscreen, icon: 'fa-expand', key: 'fullscreen full screen' });
+        var quickDrawer = document.getElementById('mm-quick-drawer');
+        if (quickDrawer) items.push({ group: 'Actions', label: 'Open Quick Action App Drawer', detail: 'Slide-over inspector', run: function () { if (window.mm && window.mm.openDrawer) window.mm.openDrawer(quickDrawer); else if (window.jQuery) window.jQuery(quickDrawer).modal('show'); }, icon: 'fa-columns', key: 'drawer quick action inspector slide over' });
         return items;
     }
     function recents() {
@@ -230,6 +232,44 @@
     rememberVisit();
 
     /* ---------- Global shortcuts ---------- */
+    var helpList = help && help.querySelector('.mm-help-list');
+    if (helpList && !helpList.getAttribute('data-mm-chords')) {
+        helpList.setAttribute('data-mm-chords', '1');
+        var chordDocs = [
+            ['g', 'd', 'Go to Dashboard & Room Board'],
+            ['g', 'w', 'Go to 3-Step Booking Wizard & Floor Plan'],
+            ['g', 'r', 'Go to Restaurant POS'],
+            ['g', 'b', 'Go to Bar POS'],
+            ['g', 'k', 'Go to Kitchen Board (KDS)'],
+            ['g', 'a', 'Go to Account Vouchers'],
+            ['g', 'p', 'Open 300-Screen Preview Explorer']
+        ];
+        chordDocs.forEach(function (pair) {
+            var wrap = document.createElement('div');
+            var dt = document.createElement('dt');
+            var k1 = document.createElement('kbd'); k1.className = 'mm-kbd'; k1.textContent = pair[0];
+            var k2 = document.createElement('kbd'); k2.className = 'mm-kbd'; k2.textContent = pair[1];
+            dt.appendChild(k1);
+            dt.appendChild(document.createTextNode(' then '));
+            dt.appendChild(k2);
+            var dd = document.createElement('dd');
+            dd.textContent = pair[2];
+            wrap.appendChild(dt);
+            wrap.appendChild(dd);
+            helpList.appendChild(wrap);
+        });
+    }
+    var gChordUntil = 0;
+    var gRoutes = {
+        d: '/',
+        w: '/preview/booking-next',
+        r: '/preview/rst-pos',
+        b: '/preview/bar-pos',
+        k: '/preview/rst-kitchen-board',
+        a: '/preview/acc-payments',
+        p: '/preview',
+        u: '/preview/ui-kit'
+    };
     document.addEventListener('keydown', function (event) {
         if (event.defaultPrevented) return;
         var key = event.key;
@@ -240,6 +280,18 @@
             return;
         }
         if (event.ctrlKey || event.metaKey || event.altKey || isTyping(event.target) || document.querySelector('dialog[open], .swal2-container')) return;
+        var lower = key.toLowerCase();
+        if (Date.now() < gChordUntil && gRoutes[lower]) {
+            gChordUntil = 0;
+            event.preventDefault();
+            window.location.href = gRoutes[lower];
+            return;
+        }
+        if (lower === 'g' && !event.shiftKey) {
+            gChordUntil = Date.now() + 1200;
+            return;
+        }
+        gChordUntil = 0;
         if (key === '?' || (key === '/' && event.shiftKey)) { event.preventDefault(); openDialog(help); }
         else if (key === '/') { event.preventDefault(); openPalette(); }
         else if (key === '[') { var toggle = document.getElementById('menu-toggler'); if (toggle) toggle.click(); }

@@ -3900,6 +3900,150 @@
         border-radius: 0 !important;
     }
 }
+/* Options 1–4: Interactive Preview Hub, Financial Share Bars & Ratio Wells, and UI-Kit Showcase */
+.mm-ui .well,
+.mm-ui .well.well-sm {
+    border-radius: 12px;
+    padding: 12px 16px;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.96) 0%, rgba(248, 250, 252, 0.92) 100%);
+    border: 1px solid rgba(15, 23, 42, 0.10);
+    border-top: 3px solid var(--mm-brand, #1d4ed8);
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.05);
+    color: var(--mm-ink);
+    font-size: 13.5px;
+    line-height: 1.45;
+}
+.mm-ui .well b {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--mm-muted);
+    margin-bottom: 2px;
+}
+.mm-ui .mm-share-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 96px;
+}
+.mm-ui .mm-share-bar {
+    width: 100%;
+    height: 6px;
+    border-radius: 999px;
+    background: rgba(148, 163, 184, 0.22);
+    overflow: hidden;
+}
+.mm-ui .mm-share-fill {
+    display: block;
+    height: 100%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #2563eb 0%, #3b82f6 100%);
+}
+.mm-ui .mm-share-fill.is-emerald {
+    background: linear-gradient(90deg, #059669 0%, #10b981 100%);
+}
+.mm-ui .mm-share-fill.is-amber {
+    background: linear-gradient(90deg, #d97706 0%, #f59e0b 100%);
+}
+.mm-ui .mm-share-fill.is-violet {
+    background: linear-gradient(90deg, #7c3aed 0%, #8b5cf6 100%);
+}
+.mm-ui .mm-preview-hub-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+.mm-ui .mm-preview-filter-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 16px;
+}
+.mm-ui .mm-preview-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(148, 163, 184, 0.35);
+    background: rgba(255, 255, 255, 0.9);
+    color: #334155;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.16s ease;
+}
+.mm-ui .mm-preview-pill:hover,
+.mm-ui .mm-preview-pill.is-active {
+    background: linear-gradient(135deg, #1d4ed8 0%, #2563eb 100%);
+    border-color: #1d4ed8;
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(29, 78, 216, 0.22);
+}
+.mm-ui .mm-preview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+    gap: 12px;
+}
+.mm-ui .mm-preview-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 1px solid rgba(148, 163, 184, 0.28);
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.96) 0%, rgba(248, 250, 252, 0.92) 100%);
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04);
+    text-decoration: none !important;
+    color: var(--mm-ink);
+    transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease;
+}
+.mm-ui .mm-preview-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(37, 99, 235, 0.45);
+    box-shadow: 0 10px 24px -6px rgba(29, 78, 216, 0.14);
+}
+.mm-ui .mm-preview-card-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px;
+}
+.mm-ui .mm-preview-card-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #0f172a;
+    line-height: 1.35;
+}
+.mm-ui .mm-preview-card-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 10.5px;
+    font-weight: 700;
+    background: rgba(37, 99, 235, 0.10);
+    color: #1d4ed8;
+    white-space: nowrap;
+}
+.mm-ui .mm-preview-card-desc {
+    font-size: 12px;
+    color: #475569;
+    line-height: 1.45;
+    margin: 0;
+}
+.mm-ui .mm-preview-card-route {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 11px;
+    color: #64748b;
+}
+
 
 
 
