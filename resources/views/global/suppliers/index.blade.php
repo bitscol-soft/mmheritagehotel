@@ -89,7 +89,7 @@
     
     @foreach($suppliers as $supplier)
 
-        <div id="view-details{{ $supplier->id }}" class="modal" tabindex="-1">
+        <div id="view-details{{ $supplier->id }}" class="modal fade mm-drawer" data-mm-drawer="true" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">

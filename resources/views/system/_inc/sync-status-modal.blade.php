@@ -1,4 +1,4 @@
-<div id="sync-status-modal" class="modal" tabindex="-1">
+<div id="sync-status-modal" class="modal fade mm-drawer" data-mm-drawer="true" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

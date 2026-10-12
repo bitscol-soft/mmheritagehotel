@@ -1,4 +1,4 @@
-<div class="modal fade" id="my_Modal{{ $audit->id }}" role="dialog">
+<div class="modal fade mm-drawer" data-mm-drawer="true" id="my_Modal{{ $audit->id }}" role="dialog">
     <div class="modal-dialog modal-lg">
 
         <!-- Modal content-->

@@ -1,5 +1,5 @@
   <!-- Modal -->
-  <div class="modal fade" id="webcam-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal fade mm-drawer" data-mm-drawer="true" id="webcam-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header" style="padding: 2px !important">

@@ -1,4 +1,4 @@
-<div id="check-in{{ $book->id }}" class="modal" tabindex="-1">
+<div id="check-in{{ $book->id }}" class="modal fade mm-drawer" data-mm-drawer="true" tabindex="-1">
     <div class="modal-dialog modal-lg">
 
 
