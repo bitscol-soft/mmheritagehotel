@@ -3,43 +3,45 @@
 <!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">    <link rel="stylesheet" href="/assets/css/chosen.min.css" />
     <link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css" />
     <link rel="stylesheet" href="/assets/custom_css/chosen-required.css" />
-
-
-    <style>
-        td {
-            padding-bottom: 3px !important;
-            padding-top: 3px !important;
-        }
-
-        table {
-            counter-reset: section;
-        }
-
-        .count:before {
-            counter-increment: section;
-            content: counter(section);
-        }
-
-        select:invalid {
-            height: 0px !important;
-            opacity: 0 !important;
-            position: absolute !important;
-            display: flex !important;
-        }
-
-        select:invalid[multiple] {
-            margin-top: 15px !important;
-        }
-
-    </style>
 <!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
 <section class="mm-ui mm-acc mm-rst mm-rst-inv mm-rst-form">
     <div class="tw-space-y-4 tw-py-2">
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Receive Voucher</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Record a receive voucher.</p>            </div>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Record a cash or bank receipt voucher with double-entry account lines and attachments.</p>            </div>
             <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button" href="http://localhost/acc/voucher-receives/index"><i class="fa fa-list-alt"></i> List</a></div>        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Receive voucher create summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-money"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Voucher Type</span>
+                    <div class="mm-table-kpi-value">Receive <span class="mm-table-kpi-sub">Cash / Bank Inflow</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-balance-scale"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Parity Guard</span>
+                    <div class="mm-table-kpi-value">Debit = Credit <span class="mm-table-kpi-sub">Enforced on Submit</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-paperclip"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Supporting Docs</span>
+                    <div class="mm-table-kpi-value">File Upload <span class="mm-table-kpi-sub">Deposit Slip Scan</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Workflow</span>
+                    <div class="mm-table-kpi-value">Draft → Approve <span class="mm-table-kpi-sub">GL Posting</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><!-- Form  -->
         <form id="form" action="http://localhost/acc/voucher-receives/store" method="post" enctype="multipart/form-data">
             <input type="hidden" name="_token" value="fixture-csrf-token">
@@ -53,7 +55,7 @@
 
 
                     <!-- Filter -->
-                    <div class="row">
+                    <div class="row mm-voucher-meta">
 
                         <!-- Company -->
                         <div class="col-sm-5 my-1">
@@ -230,28 +232,20 @@
 
                 <div class="col-sm-12 px-4 mt-2 mb-2">
 
-                    <div class="row">
-                        <div class="input-group " style="width: 100%!important; float: left; ">
+                    <div class="row mm-voucher-footer">
+                        <div class="input-group">
                             <label class="input-group-addon">Narration/Description</label>
                             <input type="text" required class="form-control" name="description"
                                 value="" placeholder="Narration / Description">
 
                                                     </div>
 
-                        <div class="input-group input-group-sm"
-                            style="width: 80%!important; height: 40%!important; float: left; margin-top: 10px;">
-                            <div class="col-xs-6" style="padding-left: 0px;;">
-                                <label class="ace-file-input ace-file-multiple">
-                                    <input type="file" name="attachment" id="id-input-file-3" />
-                            </div>
-                        </div>
-
-
-
-
-
                         <!-- Action -->
-                        <div class="pull-right mt-5">
+                        <div class="mm-voucher-actions">
+                            <label class="ace-file-input ace-file-multiple">
+                                <input type="file" name="attachment" id="id-input-file-3" />
+                            </label>
+
                             <div class="btn-group">
                                 <button type="button" id="draft" class="btn btn-sm btn-primary save-btn" disabled>
                                     <i class="fa fa-file"></i>

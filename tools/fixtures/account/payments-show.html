@@ -17,10 +17,41 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Payment Voucher Detail</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Payment voucher details and approval.</p>            </div>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Payment voucher line breakdown, double-entry ledger postings, and signatory approval.</p>            </div>
             <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button mm-button-secondary" href="javascript:void(0)" onclick="print()"><i class="fa fa-print"></i> Print</a>
         <a class="mm-button" href="http://localhost/acc/voucher-payments/index"><i class="fa fa-list-alt"></i> List</a>
         <a class="mm-button" href="http://localhost/acc/voucher-payments/create"><i class="fa fa-plus"></i> Create</a></div>        </header>
+
+        <div class="mm-table-kpi-grid mm-no-print" aria-label="Payment voucher detail summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-file-text-o"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Voucher Type</span>
+                    <div class="mm-table-kpi-value">Payment <span class="mm-table-kpi-sub">Disbursement</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-balance-scale"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Ledger Balance</span>
+                    <div class="mm-table-kpi-value">Dr = Cr <span class="mm-table-kpi-sub">Double-Entry</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Approval Gate</span>
+                    <div class="mm-table-kpi-value">Verified ✓ <span class="mm-table-kpi-sub">Signatory Ready</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-print"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Voucher Output</span>
+                    <div class="mm-table-kpi-value">A4 Printable <span class="mm-table-kpi-sub">Audit Copy</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><!-- Top Heading -->
         <div class="row px-2 pb-3">
             <div class="col-md-6">

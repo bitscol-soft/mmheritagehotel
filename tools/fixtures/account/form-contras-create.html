@@ -9,8 +9,39 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Create Contra Voucher</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Record a contra voucher.</p>            </div>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Record a treasury contra transfer between cash-in-hand and bank accounts.</p>            </div>
             <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button" href="http://localhost/acc/voucher-contras/index"><i class="fa fa-list"></i> List</a></div>        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Contra voucher create summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-exchange"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Voucher Type</span>
+                    <div class="mm-table-kpi-value">Contra <span class="mm-table-kpi-sub">Cash ↔ Bank</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-balance-scale"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Double-Entry</span>
+                    <div class="mm-table-kpi-value">Dr = Cr <span class="mm-table-kpi-sub">Zero Net Variance</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-university"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Treasury Scope</span>
+                    <div class="mm-table-kpi-value">Vault &amp; Banks <span class="mm-table-kpi-sub">Liquidity Transfer</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Cash Flow Sync</span>
+                    <div class="mm-table-kpi-value">Tracked ✓ <span class="mm-table-kpi-sub">2-Step Approval</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><!-- INPUTS -->
         <form id="form" action="http://localhost/acc/voucher-contras/store" method="post" enctype="multipart/form-data">
             <input type="hidden" name="_token" value="fixture-csrf-token">            <input type="hidden" name="voucher_type" value="Contra">

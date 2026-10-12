@@ -9,8 +9,43 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Edit user permissions</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Change what this user can open.</p>            </div>
-                    </header>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Update module access, company/department scope, and granular CRUD permissions for this user.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/perm-users-index"><i class="fa fa-users"></i> Permitted Users</a>
+                <a class="mm-button mm-button-secondary" href="/preview/perm-access-create"><i class="fa fa-shield"></i> Access Matrix</a>
+            </div>
+        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Edit user permissions summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-id-badge"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Target Employee</span>
+                    <div class="mm-table-kpi-value">EMP-001 <span class="mm-table-kpi-sub">User ID #5</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-building-o"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Company &amp; Dept</span>
+                    <div class="mm-table-kpi-value">2 Scopes <span class="mm-table-kpi-sub">Multi-Property</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-check-square-o"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Bulk Controls</span>
+                    <div class="mm-table-kpi-value">Select / Expand <span class="mm-table-kpi-sub">Module Toggles</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-lock"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">RBAC Enforcement</span>
+                    <div class="mm-table-kpi-value">Immediate ✓ <span class="mm-table-kpi-sub">Route &amp; Menu Gate</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6"><form class="form-horizontal" action="http://localhost/setting/permission-access/5" method="post" role="form">
                             <input type="hidden" name="_token" value="fixture-csrf-token">  <input type="hidden" name="_method" value="put">
                             

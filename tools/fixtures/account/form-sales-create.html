@@ -37,8 +37,42 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Sale Create</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Record a sale.</p>            </div>
-            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button" href="http://localhost/acc/acc-sales/index"><i class="fa fa-list-alt"></i> List</a></div>        </header>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Create a commercial sales invoice with itemized products, discounts, and customer payment collection.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/acc-customers"><i class="fa fa-users"></i> Customers</a>
+                <a class="mm-button" href="http://localhost/acc/acc-sales/index"><i class="fa fa-list-alt"></i> List</a>
+            </div>        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Commercial sale create summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-file-text-o"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Invoice Mode</span>
+                    <div class="mm-table-kpi-value">New Sale <span class="mm-table-kpi-sub">Commercial Billing</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-cubes"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Stock Depletion</span>
+                    <div class="mm-table-kpi-value">Auto-Deduct <span class="mm-table-kpi-sub">Stock In Hand</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-calculator"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Live Totals</span>
+                    <div class="mm-table-kpi-value">Qty × Price <span class="mm-table-kpi-sub">Discount &amp; Paid</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-book"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">GL Integration</span>
+                    <div class="mm-table-kpi-value">AR &amp; Revenue <span class="mm-table-kpi-sub">Auto-Journal</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><!-- body -->
                 <form class="form-horizontal" action="http://localhost/acc/acc-sales/store" method="post" enctype="multipart/form-data">
 

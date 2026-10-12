@@ -40,7 +40,7 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Purchase requisition details</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Printable purchase form. Printing outputs the document only.</p>            </div>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Printable restaurant purchase order &amp; requisition sheet. Printing outputs the document only.</p>            </div>
             <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button mm-button-secondary" href="http://localhost/rst/purchases/create">
                 <i class="fa fa-plus" aria-hidden="true"></i> Add Purchase
             </a>
@@ -50,6 +50,37 @@
                 <a href="javascript:void(0)" class="mm-button d-print-none" onclick="printForm()">
             <i class="fa fa-print" aria-hidden="true"></i> Print
         </a></div>        </header>
+
+        <div class="mm-table-kpi-grid mm-no-print" aria-label="Restaurant purchase requisition summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-shopping-cart"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Purchase Order</span>
+                    <div class="mm-table-kpi-value">#P-0001 <span class="mm-table-kpi-sub">MM Heritage</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-truck"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Supplier</span>
+                    <div class="mm-table-kpi-value">Fresh Foods <span class="mm-table-kpi-sub">Kitchen Vendor</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Approval Stage</span>
+                    <div class="mm-table-kpi-value">Verified ✓ <span class="mm-table-kpi-sub">Signatory Block</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-print"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">A4 Print Sheet</span>
+                    <div class="mm-table-kpi-value">Ready <span class="mm-table-kpi-sub">Challan Copy</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><div class="row">
             <div class="col-sm-10 col-sm-offset-1 border-print-none" style="border: none !important;">
                 <table class="table no-spacing" style="border: none !important;">

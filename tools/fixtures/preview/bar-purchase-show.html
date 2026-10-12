@@ -82,7 +82,7 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Purchase details</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Printable purchase record. Printing outputs the document only.</p>            </div>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Printable bar beverage purchase record and supplier invoice breakdown.</p>            </div>
             <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button" href="http://localhost/x/bar/purchases/index">
             <i class="ace-icon fa fa-list-alt"></i>
             All Purchases
@@ -90,6 +90,37 @@
         <a class="mm-button mm-button-secondary" href="javascript:void(0)" onclick="printPage('print_body')">
             <i class="fa fa-print"></i> Print
         </a></div>        </header>
+
+        <div class="mm-table-kpi-grid mm-no-print" aria-label="Bar purchase details summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-truck"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Bar PO Voucher</span>
+                    <div class="mm-table-kpi-value">#BP-0001 <span class="mm-table-kpi-sub">MM Heritage</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-glass"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Cellar Stock-In</span>
+                    <div class="mm-table-kpi-value">Posted ✓ <span class="mm-table-kpi-sub">Bottle &amp; Peg Ledger</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Vendor Settlement</span>
+                    <div class="mm-table-kpi-value">Verified ✓ <span class="mm-table-kpi-sub">Supplier Ledger</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-print"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Print Document</span>
+                    <div class="mm-table-kpi-value">A4 Ready <span class="mm-table-kpi-sub">#print_body</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><div class="row">
 
             <div id="print_body" class="col-xs-12">
