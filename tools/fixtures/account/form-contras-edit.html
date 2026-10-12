@@ -11,6 +11,24 @@
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Edit Contra Voucher</h1>
                 <p class="tw-m-0 tw-text-sm tw-text-muted">Update the contra voucher.</p>            </div>
             <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button" href="http://localhost/acc/contra/index"><i class="fa fa-list"></i> List</a></div>        </header>
+        <div class="mm-table-kpi-grid mm-no-print" style="margin-bottom: 14px;">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-label">Voucher Mode</span>
+                <div class="mm-table-kpi-value">Edit Contra <span class="mm-table-kpi-badge">Cash / Bank</span></div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-label">Voucher Date</span>
+                <div class="mm-table-kpi-value">2026-10-01 <span class="mm-table-kpi-badge">Draft</span></div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-label">Total Debit</span>
+                <div class="mm-table-kpi-value">&#2547; 300.00 <span class="mm-table-kpi-badge is-emerald">Dr Side</span></div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-label">Total Credit</span>
+                <div class="mm-table-kpi-value">&#2547; 300.00 <span class="mm-table-kpi-badge is-emerald">Cr Balanced</span></div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><!-- INPUTS -->
         <form action="http://localhost/acc/vouchers/update/4" method="post" enctype="multipart/form-data">
             <input type="hidden" name="_token" value="fixture-csrf-token">            <input type="hidden" name="_method" value="PUT">            <input type="hidden" name="voucher_type" value="Contra">
