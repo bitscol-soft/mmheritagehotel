@@ -242,7 +242,8 @@
             ['g', 'b', 'Go to Bar POS'],
             ['g', 'k', 'Go to Kitchen Board (KDS)'],
             ['g', 'a', 'Go to Account Vouchers'],
-            ['g', 'p', 'Open 300-Screen Preview Explorer']
+            ['g', 'p', 'Open 300-Screen Preview Explorer'],
+            ['g', 'h', 'Open User Wiki & Help (EN / বাংলা)']
         ];
         chordDocs.forEach(function (pair) {
             var wrap = document.createElement('div');
@@ -268,7 +269,8 @@
         k: '/preview/rst-kitchen-board',
         a: '/preview/acc-payments',
         p: '/preview',
-        u: '/preview/ui-kit'
+        u: '/preview/ui-kit',
+        h: '/preview/wiki'
     };
     document.addEventListener('keydown', function (event) {
         if (event.defaultPrevented) return;
