@@ -288,7 +288,8 @@ function shellWith(content,head,js,title,crumbs){
  crumbs=crumbs||['Preview','Screens'];
  page=page.replace(/<li><span>Hotel<\/span><\/li>\s*<li><span>Booking<\/span><\/li>\s*<li><span aria-current="page">Create<\/span><\/li>/,()=>crumbs.slice(0,-1).map(c=>'<li><span>'+c+'</span></li>').join('')+'<li><span aria-current="page">'+crumbs[crumbs.length-1]+'</span></li>');
  page=page.replace('<!--MM-PAGE-->',()=>banner+content+quickDrawer);
- page=page.replace('</head>',()=>head+'</head>').replace('</body>',()=>js+'</body>');
+ const styleAnchor='<link rel="stylesheet" href="/assets/custom_css/style.css">';
+ page=(page.includes(styleAnchor)?page.replace(styleAnchor,()=>head+styleAnchor):page.replace('</head>',()=>head+'</head>')).replace('</body>',()=>js+'</body>');
  return page;
 }
 function screen(name){

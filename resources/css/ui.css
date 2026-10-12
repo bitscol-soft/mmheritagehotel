@@ -132,6 +132,13 @@
     .mm-ui .mm-no-print { display: none !important; }
     .mm-ui .mm-table-scroll { overflow: visible; }
 }
+@media (min-width: 769px) {
+    .mm-ui .mm-table-scroll,
+    .mm-ui .table-responsive,
+    .mm-ui.mm-rst-form [class*="col-"]:has(> table),
+    .mm-ui.mm-rst-form [class*="col-"]:has(> .table-responsive),
+    .mm-ui.mm-rst-purchase-create .mm-rst-purchase-lines { overflow: visible !important; }
+}
 
 /* Booking page compatibility rules, moved intact out of its Blade view. */
 .mm-ui.mm-bookings ul li {
@@ -2982,12 +2989,18 @@
     letter-spacing: 0.01em;
     color: var(--mm-ink);
 }
-.mm-ui .form-control:not(.header-input):not(.total-debit):not(.total-credit),
+.mm-ui .form-control:not(.header-input):not(.footer-input),
 .mm-ui .mm-input,
 .mm-ui .did-floating-input,
 .mm-ui .did-floating-select,
-.mm-ui input[type="text"]:not(.chosen-search-input):not(.header-input):not(.total-debit):not(.total-credit),
-.mm-ui input[type="number"]:not(.header-input),
+.mm-ui input.total-credit,
+.mm-ui input.total-debit,
+.mm-ui input.discount,
+.mm-ui input.totalAmount,
+.mm-ui input.paidAmount,
+.mm-ui input.dueAmount,
+.mm-ui input[type="text"]:not(.chosen-search-input):not(.header-input):not(.footer-input),
+.mm-ui input[type="number"]:not(.header-input):not(.footer-input),
 .mm-ui input[type="email"],
 .mm-ui input[type="password"],
 .mm-ui input[type="tel"],
@@ -3009,6 +3022,32 @@
     max-width: 100%;
     box-sizing: border-box;
 }
+.mm-ui .form-control:not(textarea):not(.header-input):not(.footer-input):not(.night-count),
+.mm-ui input.form-control.input-sm:not(.header-input):not(.footer-input):not(.night-count),
+.mm-ui select.form-control:not([multiple]),
+.mm-ui select.form-control.input-sm:not([multiple]),
+.mm-ui .mm-input:not(textarea),
+.mm-ui .did-floating-input,
+.mm-ui .did-floating-select {
+    min-height: 40px !important;
+    height: 40px !important;
+    line-height: 22px !important;
+    padding: 7px 12px !important;
+}
+.mm-ui.mm-rst-pos .tableContainer td .form-control {
+    min-height: 32px !important;
+    height: 32px !important;
+    padding: 4px 8px !important;
+    line-height: 20px !important;
+}
+.mm-ui.mm-room-inventory .dataTables_filter input,
+.mm-ui.mm-room-inventory .dataTables_length select,
+.mm-ui .dataTables_wrapper .dataTables_filter input,
+.mm-ui .dataTables_wrapper .dataTables_length select {
+    min-height: 36px !important;
+    height: 36px !important;
+    padding: 5px 10px !important;
+}
 .mm-ui.mm-report .header-input {
     border: 0 !important;
     background: transparent !important;
@@ -3018,33 +3057,183 @@
     float: none;
     width: 100%;
 }
-.mm-ui.mm-acc.mm-rst-form .input-group {
+/* Universal Input Group & Addon Height/Alignment */
+.mm-ui .input-group:not(:has(> .row)) {
+    display: flex;
+    align-items: stretch;
+    max-width: 100%;
+}
+.mm-ui.mm-acc.mm-rst-form .input-group,
+.mm-ui.mm-rst-form .input-group {
     display: flex;
     flex-wrap: nowrap;
+    align-items: stretch;
     width: 100%;
     max-width: 100%;
 }
+.mm-ui .input-group > .input-group-addon,
+.mm-ui .input-group > label.input-group-addon,
+.mm-ui .input-group > .input-group-addon.input-sm,
 .mm-ui.mm-acc.mm-rst-form .input-group > .input-group-addon {
     width: auto;
     flex: 0 0 auto;
-    display: inline-flex;
-    align-items: center;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center;
+    margin: 0 !important;
+    padding: 0 12px !important;
+    min-height: 40px !important;
+    height: auto !important;
+    line-height: 1.2 !important;
     white-space: nowrap;
+    box-sizing: border-box !important;
 }
+.mm-ui.mm-category-form .input-group > .input-group-addon,
+.mm-ui.mm-perm-access .input-group > .input-group-addon {
+    white-space: normal;
+}
+.mm-ui .input-group > .form-control,
 .mm-ui.mm-acc.mm-rst-form .input-group > .form-control {
     flex: 1 1 0;
     min-width: 0;
     width: 100%;
     float: none;
+    margin: 0 !important;
 }
+.mm-ui .input-group > .chosen-container,
+.mm-ui .input-group > .select2-container,
 .mm-ui.mm-acc.mm-rst-form .input-group > .chosen-container {
-    flex: 1 1 0;
+    flex: 1 1 0 !important;
     min-width: 0;
     width: auto !important;
     max-width: 100%;
 }
+.mm-ui td .chosen-container,
+.mm-ui .form-group .chosen-container {
+    width: 100% !important;
+    max-width: 100%;
+}
+.mm-ui .mm-table-scroll .input-group > .chosen-container,
+.mm-ui .mm-table-scroll td .chosen-container,
 .mm-ui.mm-acc.mm-rst-form .mm-table-scroll .input-group > .chosen-container {
     min-width: 140px;
+}
+.mm-ui table td > [class*="col-"] {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    float: none;
+    width: 100%;
+}
+/* Purchase / Sale / Return Create & Edit Bottom Summary Fields (Discount Amount, Total Amount, Paid Amount, Due Amount) */
+.mm-ui.mm-rst-form .col-md-5.pull-right {
+    float: right;
+    width: min(100%, 420px);
+    padding: 0 !important;
+}
+.mm-ui.mm-rst-form .mm-table-scroll + .row:has(> .col-md-5.pull-right) {
+    margin-top: 14px;
+}
+.mm-ui.mm-rst-form .col-md-5.pull-right > .form-group {
+    display: flex !important;
+    align-items: stretch !important;
+    flex-wrap: nowrap !important;
+    gap: 0 !important;
+    margin: 0 0 8px !important;
+    padding: 0 !important;
+    width: 100%;
+}
+.mm-ui.mm-rst-form .col-md-5.pull-right > .form-group::before,
+.mm-ui.mm-rst-form .col-md-5.pull-right > .form-group::after {
+    display: none !important;
+}
+.mm-ui.mm-rst-form .col-md-5.pull-right > .form-group > .control-label {
+    flex: 0 0 148px !important;
+    width: 148px !important;
+    min-height: 40px !important;
+    height: 40px !important;
+    margin: 0 !important;
+    padding: 0 14px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    text-align: left !important;
+    font-size: 12.5px !important;
+    font-weight: 700 !important;
+    color: #1e3a5f !important;
+    background-color: #f1f6fd !important;
+    background-image: linear-gradient(180deg, #f5f9ff 0%, #e6effb 100%) !important;
+    border: 1px solid rgba(148, 163, 184, 0.42) !important;
+    border-right: 0 !important;
+    border-radius: 8px 0 0 8px !important;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.92);
+    white-space: nowrap;
+    box-sizing: border-box !important;
+}
+.mm-ui.mm-rst-form .col-md-5.pull-right > .form-group > [class*="col-"] {
+    flex: 1 1 0 !important;
+    width: auto !important;
+    min-width: 0 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    float: none !important;
+}
+.mm-ui.mm-rst-form .col-md-5.pull-right > .form-group > [class*="col-"] > .form-control {
+    min-height: 40px !important;
+    height: 40px !important;
+    border-radius: 0 8px 8px 0 !important;
+    font-weight: 700 !important;
+    font-size: 14px !important;
+    font-variant-numeric: tabular-nums;
+    padding: 8px 14px !important;
+    margin: 0 !important;
+}
+@media (max-width: 480px) {
+    .mm-ui.mm-rst-form .col-md-5.pull-right > .form-group > .control-label {
+        flex: 0 0 124px !important;
+        width: 124px !important;
+        padding: 0 10px !important;
+        font-size: 12px !important;
+    }
+}
+/* Unified Button & Control Heights in Input Groups, Filter Bars, Form Rows, and Repeater Tables */
+.mm-ui .input-group:not(.tableContainer *) > .btn,
+.mm-ui .input-group:not(.tableContainer *) > .input-group-btn > .btn,
+.mm-ui .input-group:not(.tableContainer *) > .input-group-btn > .mm-button,
+.mm-ui :is(.mm-report-filter, .mm-booking-filter, .mm-setup-filter, .booking-filter-panel, .mm-report-form) :is(.btn, .btn-sm, .mm-button):not(table *),
+.mm-ui.mm-rst-form :is(.btn, .btn-sm, .mm-button):not(table *) {
+    min-height: 40px !important;
+    height: 40px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px;
+    padding: 0 14px !important;
+    line-height: 1.2 !important;
+    vertical-align: middle;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    box-sizing: border-box !important;
+}
+.mm-ui.mm-perm-access .row > [class*="col-md-4"] {
+    height: auto !important;
+    margin-bottom: 10px;
+}
+.mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .guest-detail-table .night-count {
+    min-width: 44px;
+    height: 32px !important;
+    min-height: 32px !important;
+    padding: 4px 6px !important;
+    text-align: center;
+    border-radius: 0 !important;
+}
+.mm-ui:is(.mm-booking-checkout, .mm-payment-collection, .mm-night-audit) .guest-detail-table .input-group .btn {
+    min-width: 32px !important;
+    height: 32px !important;
+    min-height: 32px !important;
+    padding: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
 }
 .mm-ui .form-control:hover,
 .mm-ui .mm-input:hover,
@@ -3093,21 +3282,42 @@
 }
 .mm-ui .input-group > .input-group-addon:first-child {
     border-radius: 8px 0 0 8px !important;
+    border-right: 0 !important;
 }
 .mm-ui .input-group > .input-group-addon:last-child:not(:first-child) {
     border-radius: 0 8px 8px 0 !important;
+    border-left: 0 !important;
+}
+.mm-ui .input-group > .input-group-addon:not(:first-child):not(:last-child),
+.mm-ui .input-group > .form-control:not(:first-child):not(:last-child) {
+    border-radius: 0 !important;
 }
 .mm-ui .input-group > .input-group-addon:first-child + .form-control,
 .mm-ui .input-group > .input-group-addon:first-child + select,
 .mm-ui .input-group > .input-group-addon:first-child + .chosen-container .chosen-single,
 .mm-ui .input-group > .input-group-addon:first-child + select + .chosen-container .chosen-single,
-.mm-ui .input-group > .input-group-addon:first-child + select + .select2-container .select2-selection {
+.mm-ui .input-group > .input-group-addon:first-child + select + .select2-container .select2-selection,
+.mm-ui .input-group > .form-control:last-child:not(:first-child),
+.mm-ui .input-group > select:last-child:not(:first-child),
+.mm-ui .input-group > .chosen-container:last-child:not(:first-child) .chosen-single,
+.mm-ui .input-group > .select2-container:last-child:not(:first-child) .select2-selection--single,
+.mm-ui .input-group > .input-group-btn:last-child > .btn {
     border-radius: 0 8px 8px 0 !important;
 }
-.mm-ui .input-group > .form-control:first-child:not(:last-child) {
+.mm-ui .input-group > .form-control:first-child:not(:last-child),
+.mm-ui .input-group > .chosen-container:first-child:not(:last-child) .chosen-single,
+.mm-ui .input-group > select:first-child + .chosen-container:not(:last-child) .chosen-single,
+.mm-ui .input-group > .select2-container:first-child:not(:last-child) .select2-selection--single,
+.mm-ui .input-group > select:first-child + .select2-container:not(:last-child) .select2-selection--single,
+.mm-ui .input-group > .input-group-btn:first-child > .btn {
     border-radius: 8px 0 0 8px !important;
 }
-/* Chosen & Select2 Modern Glass Dropdowns */
+.mm-ui .input-group > .input-group-addon:first-child + .form-control:not(:last-child) {
+    border-radius: 0 !important;
+}
+/* Chosen & Select2 Modern Glass Dropdowns & Z-Index Stacking */
+.mm-ui .chosen-container > .chosen-single,
+.mm-ui [class*="chosen-container"] > .chosen-single,
 .mm-ui .chosen-container-single .chosen-single,
 .mm-ui .chosen-container-multi .chosen-choices,
 .mm-ui .select2-container--default .select2-selection--single,
@@ -3122,7 +3332,19 @@
     box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.92) !important;
     padding: 0 28px 0 12px !important;
     line-height: 38px !important;
+    display: flex !important;
+    align-items: center !important;
     transition: border-color 0.16s ease, box-shadow 0.16s ease;
+}
+.mm-ui .chosen-container-single .chosen-single span {
+    line-height: 38px !important;
+}
+.mm-ui .chosen-container-single .chosen-single div {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 24px !important;
+    height: 100% !important;
 }
 .mm-ui .chosen-container-active .chosen-single,
 .mm-ui .chosen-with-drop .chosen-single,
@@ -3131,8 +3353,15 @@
     border-color: #2563eb !important;
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.18) !important;
 }
+.mm-ui .chosen-container.chosen-with-drop,
+.mm-ui .chosen-container.chosen-container-active,
+.mm-ui .select2-container--open {
+    z-index: 1060 !important;
+}
 .mm-ui .chosen-container .chosen-drop,
 .mm-ui .select2-dropdown {
+    z-index: 1065 !important;
+    min-width: 100%;
     margin-top: 4px !important;
     border-radius: 10px !important;
     border: 1px solid rgba(148, 163, 184, 0.38) !important;
@@ -3142,6 +3371,48 @@
     box-shadow: 0 14px 34px -6px rgba(15, 23, 42, 0.16), 0 4px 10px rgba(15, 23, 42, 0.06) !important;
     padding: 4px !important;
     overflow: hidden;
+}
+.mm-ui .input-group:has(.chosen-with-drop),
+.mm-ui .input-group:has(.chosen-container-active),
+.mm-ui .form-group:has(.chosen-with-drop),
+.mm-ui .form-group:has(.chosen-container-active),
+.mm-ui [class*="col-"]:has(.chosen-with-drop),
+.mm-ui [class*="col-"]:has(.chosen-container-active),
+.mm-ui .row:has(.chosen-with-drop),
+.mm-ui .row:has(.chosen-container-active),
+.mm-ui td:has(.chosen-with-drop),
+.mm-ui td:has(.chosen-container-active),
+.mm-ui tr:has(.chosen-with-drop),
+.mm-ui tr:has(.chosen-container-active),
+.mm-ui tbody:has(.chosen-with-drop),
+.mm-ui tbody:has(.chosen-container-active),
+.mm-ui table:has(.chosen-with-drop),
+.mm-ui table:has(.chosen-container-active),
+.mm-ui .mm-table-scroll:has(.chosen-with-drop),
+.mm-ui .mm-table-scroll:has(.chosen-container-active),
+.mm-ui .table-responsive:has(.chosen-with-drop),
+.mm-ui .table-responsive:has(.chosen-container-active),
+.mm-ui .mm-rst-purchase-lines:has(.chosen-with-drop),
+.mm-ui .mm-rst-purchase-lines:has(.chosen-container-active) {
+    position: relative;
+    z-index: 1060 !important;
+    overflow: visible !important;
+}
+/* Repeater & Form Table Row Control Height Alignment */
+.mm-ui.mm-rst-form table td .form-control:not(textarea):not(.header-input),
+.mm-ui.mm-rst-form table td .input-group > .input-group-addon,
+.mm-ui.mm-rst-form table td .chosen-container-single .chosen-single,
+.mm-ui.mm-rst-form table td :is(.btn:not(.btn-xs):not(.btn-minier), .btn-sm) {
+    min-height: 38px !important;
+    height: 38px !important;
+}
+.mm-ui.mm-rst-form table td :is(.btn:not(.btn-xs):not(.btn-minier), .btn-sm) {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 0 12px !important;
+    margin: 0 !important;
+    vertical-align: middle;
 }
 .mm-ui .chosen-container .chosen-results li {
     border-radius: 6px !important;
