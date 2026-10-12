@@ -3614,6 +3614,155 @@
     width: min(520px, 100vw);
     box-shadow: -16px 0 42px -6px rgba(15, 23, 42, 0.22);
 }
+/* Track 4: Universal Slide-Over App Drawer Form & Table-Cell Polish */
+.mm-ui .modal .modal-content {
+    text-align: left !important;
+}
+.mm-ui .modal .modal-header {
+    border-left: 4px solid #3b82f6 !important;
+}
+.mm-ui .modal .modal-body .form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+    margin: 0 0 14px 0 !important;
+    text-align: left !important;
+}
+.mm-ui .modal .modal-body .form-group > .control-label,
+.mm-ui .modal .modal-body .form-group > label[class*="col-"] {
+    width: 100% !important;
+    float: none !important;
+    text-align: left !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    font-size: 12.5px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.015em;
+    color: var(--mm-ink-soft) !important;
+}
+.mm-ui .modal .modal-body .form-group > div[class*="col-"] {
+    width: 100% !important;
+    float: none !important;
+    padding: 0 !important;
+}
+.mm-ui .modal .modal-footer :is(.btn, .mm-button) {
+    min-height: 40px !important;
+    height: 40px !important;
+    padding: 0 16px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 6px;
+    font-weight: 600 !important;
+    border-radius: 8px !important;
+}
+.mm-ui td:has(.modal.in),
+.mm-ui td:has(.modal.show),
+.mm-ui tr:has(.modal.in),
+.mm-ui tr:has(.modal.show),
+.mm-ui .mm-table-scroll:has(.modal.in),
+.mm-ui .mm-table-scroll:has(.modal.show) {
+    overflow: visible !important;
+    z-index: 1060 !important;
+}
+/* Track 3: Hotel Front-Desk Payment Collection, Night Audit & Setup/CMS/RBAC Form Polish */
+.mm-ui .mm-co-list.mm-pc-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+    gap: 10px;
+    margin: 0;
+}
+.mm-ui .mm-co-list.mm-pc-info > div {
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid rgba(148, 163, 184, 0.30);
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.96) 0%, rgba(242, 247, 255, 0.90) 100%);
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+}
+.mm-ui .mm-co-list.mm-pc-info > div > dt {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--mm-muted);
+    margin-bottom: 3px;
+}
+.mm-ui .mm-co-list.mm-pc-info > div > dd {
+    font-size: 13.5px;
+    font-weight: 700;
+    color: var(--mm-ink);
+    margin: 0;
+}
+.mm-ui .mm-na-stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 12px;
+}
+@media (max-width: 900px) {
+    .mm-ui .mm-na-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+@media (max-width: 575px) {
+    .mm-ui .mm-na-stats {
+        grid-template-columns: 1fr;
+    }
+}
+.mm-ui .mm-na-stat {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 4px;
+    padding: 11px 14px;
+    margin: 0 !important;
+    border-radius: 10px;
+    border: 1px solid rgba(148, 163, 184, 0.32);
+    border-top: 3px solid #3b82f6;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.97) 0%, rgba(241, 247, 255, 0.91) 100%);
+    box-shadow: 0 4px 12px -4px rgba(15, 23, 42, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.96);
+}
+.mm-ui .mm-na-stat .mm-sum-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--mm-muted);
+}
+.mm-ui .mm-na-stat .header-input {
+    border: 0 !important;
+    background: transparent !important;
+    font-size: 19px !important;
+    font-weight: 800 !important;
+    color: var(--mm-ink) !important;
+    padding: 0 !important;
+    height: auto !important;
+    line-height: 1.2 !important;
+    font-variant-numeric: tabular-nums;
+}
+.mm-ui .mm-audit-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+    margin-bottom: 14px;
+}
+.mm-ui .mm-audit-summary > div {
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid rgba(148, 163, 184, 0.30);
+    border-top: 3px solid #3b82f6;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.97) 0%, rgba(241, 247, 255, 0.91) 100%);
+    box-shadow: 0 3px 10px -3px rgba(15, 23, 42, 0.05);
+}
+.mm-ui .form-actions,
+.mm-ui .mm-form-actions {
+    padding: 12px 16px;
+    border-radius: 10px;
+    background: linear-gradient(180deg, rgba(246, 250, 255, 0.92) 0%, rgba(238, 245, 253, 0.88) 100%);
+    border: 1px solid rgba(148, 163, 184, 0.26);
+    margin-top: 14px;
+}
 @media (max-width: 575px) {
     .mm-ui .modal .modal-dialog,
     .mm-ui .modal .modal-dialog.modal-lg,

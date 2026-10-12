@@ -1670,6 +1670,37 @@
     background: linear-gradient(180deg, rgba(22, 33, 48, 0.95) 0%, rgba(16, 25, 37, 0.98) 100%) !important;
     border-top-color: rgba(148, 163, 184, 0.24) !important;
 }
+.mm-shell.mm-dark .modal .modal-header {
+    border-left: 4px solid #60a5fa !important;
+}
+.mm-shell.mm-dark .modal .modal-body .form-group > .control-label,
+.mm-shell.mm-dark .modal .modal-body .form-group > label[class*="col-"] {
+    color: #cbd5e1 !important;
+}
+.mm-shell.mm-dark .mm-ui .mm-co-list.mm-pc-info > div,
+.mm-shell.mm-dark .mm-ui .mm-na-stat,
+.mm-shell.mm-dark .mm-ui .mm-audit-summary > div {
+    background: linear-gradient(145deg, rgba(28, 42, 60, 0.92) 0%, rgba(19, 30, 44, 0.94) 100%) !important;
+    border-color: rgba(148, 163, 184, 0.25) !important;
+    box-shadow: 0 4px 12px -4px rgba(2, 6, 23, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+}
+.mm-shell.mm-dark .mm-ui .mm-na-stat,
+.mm-shell.mm-dark .mm-ui .mm-audit-summary > div {
+    border-top: 3px solid #60a5fa !important;
+}
+.mm-shell.mm-dark .mm-ui .mm-co-list.mm-pc-info > div > dt,
+.mm-shell.mm-dark .mm-ui .mm-na-stat .mm-sum-label {
+    color: #94a3b8 !important;
+}
+.mm-shell.mm-dark .mm-ui .mm-co-list.mm-pc-info > div > dd,
+.mm-shell.mm-dark .mm-ui .mm-na-stat .header-input {
+    color: #f1f5f9 !important;
+}
+.mm-shell.mm-dark .mm-ui .form-actions,
+.mm-shell.mm-dark .mm-ui .mm-form-actions {
+    background: linear-gradient(180deg, rgba(26, 39, 56, 0.92) 0%, rgba(18, 28, 42, 0.95) 100%) !important;
+    border-color: rgba(148, 163, 184, 0.24) !important;
+}
 @media (max-width: 575px) {
     .mm-shell .modal .modal-dialog,
     .mm-shell .modal .modal-dialog.modal-lg {
