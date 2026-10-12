@@ -801,3 +801,16 @@ Twenty reachable views in `module/HotelWebsite/views` now use `x-mm.page` and `x
 - Layout section titles fixed (copy errors only): `gallery/edit` ("Add New Image" to "Edit Image"), `feature_list/index` ("Add New Aminities" to "Homepage Feature List") and `privacy_policy/index` ("Website Setting" to "Privacy Policy", also the tab title).
 - Tests: `tools/browser/hotelwebsite.spec.cjs` (25), fixtures in `tools/fixtures/hotelwebsite/`, previews at `/preview/web-*`.
 - Legacy quirks left as they were: the wrong `suppliers.view` slug on the List links, unused `delete_check` scripts next to `delete_item(...)`, and several tab titles that read "Edit Feature Header" on create pages.
+
+## Forty-fifth increment: Full W1–W7 Suite, POS & Floor Maps, Slide-Over Drawers & 315-Screen Explorer Hub
+
+- **Public Storefront (`W7` — 12 views in `resources/views/frontend/`):** Migrated onto `frontend.layouts.mm-web` using `--web-*` brand tokens (`public/frontend/assets/css/custom.css`) with frosted-glass cards, `40px` `.book-form` controls, lazy-loaded imagery, and `tools/browser/frontend.spec.cjs` verification.
+- **Restaurant & Bar POS (`W5.3b` — `rst/sales-v2` & `bar/sales-v2`), Table Floor Maps & KDS:** Upgraded with `<x-mm.page>`, `<x-mm.stepper>` (`courses -> fire -> pay`), `<x-mm.print-sheet>`, interactive Table View KPI strip/filter pills/search, Kitchen Display Board (`kitchen-board.html`), and 80mm Thermal KOT.
+- **3-Step Booking Wizard (`booking_next.blade.php`) & Interactive Floor Plan Map:** Added visual 3-step stepper, Stay Summary strip, and interactive Floor 1–3 room map + slide-over Floor Plan drawer.
+- **100% Executive KPI Summary Strips (`.mm-table-kpi-grid`) & Universal Slide-Over App Drawers (`.mm-drawer`):**
+  - All **264/264** full-page admin screen fixtures render a 4-card `.mm-table-kpi-grid` executive KPI strip above the primary content panel.
+  - All **29/29** fixture modal dialogs and **45** Blade `.modal` partials across Hotel, Banquet Hall, Restaurant, Bar, and System modules use `.mm-drawer` (`data-mm-drawer="true"`), sliding in from the right viewport edge (`max-width: 560px` / `720px`) with frosted-glass headers and sticky footers (showcased at `/preview/booking-drawers`).
+- **Financial & Multi-Outlet Visual Share Bars (`.mm-share-bar` — `Backlog B1`):** Added inline progress/contribution bars across Ratio Analysis, Revenue Analysis, Expense Analysis, Trial Balance, Income Statement, Balance Sheet, Cash Flow, Equity Statement, Payable/Receivable Aging, Restaurant/Bar Sales & Cash Flow Reports, General Store Stock-in-Hand, and Kitchen Inventory Stock.
+- **315-Screen Interactive Preview Explorer Hub (`/preview`), Command Palette (`Ctrl+K`) & Two-Key `g` Chords (`Backlog B2/B4`):**
+  - `tools/preview-server.cjs` serves all **315** interactive routes across 10 module categories, indexed in the `Ctrl+K` / `Cmd+K` Command Palette (`public/assets/custom_js/shell-tools.js`) with two-key navigation chords (`g d`, `g b`, `g p`, `g r`, `g a`, `g s`, `g x`, `/`, `?`).
+

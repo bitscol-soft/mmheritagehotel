@@ -89,7 +89,7 @@
         </x-mm.panel>
     </x-mm.page>
 
-    <div id="add-new" class="modal in" tabindex="-1" style="display: none; padding-right: 17px;">
+    <div id="add-new" class="modal fade in mm-drawer" data-mm-drawer="true" tabindex="-1" style="display: none; padding-right: 17px;">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">

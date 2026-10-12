@@ -52,7 +52,7 @@
                                                         <input type="file" name="image" class="image${data.id} id-input-file-5 btn-outline-success" style="border: 1px solid #28a745; padding: 4px; width:70%; border-radius: 4px; background-color: #fff; color: #28a745; cursor: pointer;">
 
                                                         <!-- Modal -->
-                                                            <div class="modal fade webcamModal" id="webcam-modal${data.id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                            <div class="modal fade webcamModal mm-drawer" data-mm-drawer="true" id="webcam-modal${data.id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                                 <div class="modal-dialog">
                                                                 <div class="modal-content">
                                                                     <div class="modal-header" style="padding: 2px !important">
