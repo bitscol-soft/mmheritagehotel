@@ -486,6 +486,49 @@ body.mm-public section.contact-w3ls button.btn.btn-primary,
 body.mm-public .btn {
     border-radius: var(--web-radius-sm, 8px) !important;
 }
+/* Option 10: Public Hotel Storefront Frosted-Glass Cards, Forms, Cart & Menu Polish */
+body.mm-public .mm-public-main .mm-panel {
+    border-radius: 14px;
+    border: 1px solid rgba(148, 163, 184, 0.28);
+    background: linear-gradient(160deg, rgba(255, 255, 255, 0.98) 0%, rgba(246, 250, 255, 0.94) 100%);
+    box-shadow: 0 12px 32px -8px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.96);
+}
+body.mm-public .price-block,
+body.mm-public .all-category,
+body.mm-public .category-body,
+body.mm-public .food_section .box {
+    border-radius: 12px !important;
+    overflow: hidden;
+    border: 1px solid rgba(148, 163, 184, 0.28);
+    box-shadow: 0 8px 24px -6px rgba(15, 23, 42, 0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+body.mm-public .price-block:hover,
+body.mm-public .food_section .box:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 30px -6px rgba(15, 23, 42, 0.14);
+}
+body.mm-public .book-form input[type="text"],
+body.mm-public .book-form input[type="date"],
+body.mm-public .book-form input[type="email"],
+body.mm-public .book-form input[type="number"],
+body.mm-public .book-form select,
+body.mm-public .form-control {
+    min-height: 40px;
+    border-radius: 8px !important;
+    border: 1px solid rgba(148, 163, 184, 0.42);
+}
+body.mm-public .filters_menu li {
+    border-radius: 999px !important;
+    padding: 7px 20px;
+    font-weight: 600;
+    transition: all 0.16s ease;
+}
+body.mm-public .booking-cart table.table {
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(148, 163, 184, 0.30);
+}
 
 
 

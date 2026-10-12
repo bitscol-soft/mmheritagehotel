@@ -1829,6 +1829,32 @@
     background: linear-gradient(180deg, rgba(30, 45, 66, 0.96) 0%, rgba(22, 34, 50, 0.96) 100%) !important;
     color: #f1f5f9 !important;
 }
+@media screen {
+    .mm-shell.mm-dark .mm-ui #print_body,
+    .mm-shell.mm-dark .mm-ui .invoice-doc {
+        background: linear-gradient(160deg, rgba(24, 36, 52, 0.96) 0%, rgba(17, 26, 39, 0.98) 100%) !important;
+        border-color: rgba(148, 163, 184, 0.28) !important;
+        color: #e2e8f0 !important;
+        box-shadow: 0 12px 32px -6px rgba(2, 6, 23, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+    }
+    .mm-shell.mm-dark .mm-ui #print_body .company-info,
+    .mm-shell.mm-dark .mm-ui .invoice-doc .inv-brand h3,
+    .mm-shell.mm-dark .mm-ui #print_body h3,
+    .mm-shell.mm-dark .mm-ui #print_body h4 {
+        color: #f8fafc !important;
+    }
+    .mm-shell.mm-dark .mm-ui #print_body table th,
+    .mm-shell.mm-dark .mm-ui .invoice-doc table th {
+        background: linear-gradient(180deg, rgba(32, 48, 70, 0.96) 0%, rgba(22, 34, 50, 0.96) 100%) !important;
+        color: #cbd5e1 !important;
+        border-color: rgba(148, 163, 184, 0.24) !important;
+    }
+    .mm-shell.mm-dark .mm-ui #print_body table td,
+    .mm-shell.mm-dark .mm-ui .invoice-doc table td {
+        border-color: rgba(148, 163, 184, 0.20) !important;
+        color: #e2e8f0 !important;
+    }
+}
 @media (max-width: 575px) {
     .mm-shell .modal .modal-dialog,
     .mm-shell .modal .modal-dialog.modal-lg {
