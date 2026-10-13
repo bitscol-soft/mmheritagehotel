@@ -71,6 +71,12 @@ for (const [route, heading] of [
     ['/preview/concierge-requests', 'Concierge, Guest Requests & Lost-and-Found'],
     ['/preview/channel-manager', 'OTA Channel Manager & iCal Sync'],
     ['/preview/rate-plans', 'Seasonal Rate Plans & Promo Engine'],
+    ['/preview/kiosk-checkin', 'Self-Service Kiosk Check-In & Digital Registration Card'],
+    ['/preview/room-move', 'In-Stay Room Move, Upgrade & Folio Transfer'],
+    ['/preview/guest-crm', 'Guest & Corporate CRM 360° Directory'],
+    ['/preview/minibar-folio', 'In-Room Minibar & Asset Consumption Auto-Post to Folio'],
+    ['/preview/city-ledger', 'Corporate AR / City Ledger & Credit Aging Report'],
+    ['/preview/manager-bi', 'Manager BI: Occupancy, ADR, RevPAR & Channel Mix'],
     ['/preview/booking-drawers', 'Front-Desk & POS Slide-Over App Drawers'],
 ]) {
     test(`${route} renders shell frame, KPI/table panels, and does not overflow at desktop or phone`, async ({ page }) => {

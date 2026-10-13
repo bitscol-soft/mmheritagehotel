@@ -728,8 +728,462 @@ function draftBookingPdfPage(){
  </div></section>`;
  return shellWith(body,'','','Whole Booking Preview — Draft Reservation Summary PDF',['Hotel','Booking','Draft Summary PDF']);
 }
+function kioskCheckinPage(){
+ const body=`<section class="mm-ui"><div class="tw-space-y-4 tw-py-2">
+ <header class="mm-page-head mm-no-print tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+  <div class="mm-page-title">
+   <h1 class="tw-m-0 tw-font-semibold tw-text-ink"><i class="fa fa-tablet"></i> Self-Service Kiosk Check-In &amp; Digital Registration Card (Plan B · F10)</h1>
+   <p class="tw-m-0 tw-text-sm tw-text-muted">Express passport/NID OCR verification, digital guest registration card, e-signature pad, and Mifare RFID keycard encoder.</p>
+  </div>
+  <div class="tw-flex tw-flex-wrap tw-gap-2">
+   <a href="/preview/booking-next" class="mm-button mm-button-secondary"><i class="fa fa-calendar-plus-o"></i> 3-Step Booking Wizard</a>
+   <a href="/preview/draft-booking-pdf" class="mm-button mm-button-secondary"><i class="fa fa-file-pdf-o"></i> Draft Summary PDF</a>
+   <button type="button" class="mm-button" onclick="window.print()"><i class="fa fa-print"></i> Print Registration Card</button>
+  </div>
+ </header>
+ <div class="mm-table-kpi-grid mm-no-print" aria-label="Kiosk check-in summary">
+  <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-tablet"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Express Kiosk Queue</span><div class="mm-table-kpi-value">4 Arrivals Ready <span class="mm-table-kpi-sub">Avg 45s Check-In</span></div></div></div>
+  <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-id-card-o"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Passport / NID OCR</span><div class="mm-table-kpi-value">99.4% Accuracy <span class="mm-table-kpi-sub">MRZ + Smart NID</span></div></div></div>
+  <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-pencil-square-o"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Digital Reg. Cards</span><div class="mm-table-kpi-value">18 Signed Today <span class="mm-table-kpi-sub">Paperless Archive</span></div></div></div>
+  <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-key"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">RFID Key Encoder</span><div class="mm-table-kpi-value">Online · Terminal #1 <span class="mm-table-kpi-sub">Mifare 13.56 MHz</span></div></div></div>
+ </div>
+ <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:16px">
+  <div class="mm-panel tw-p-5">
+   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+    <strong><i class="fa fa-id-card-o"></i> Step 1 · Reservation Lookup &amp; Passport / NID OCR Scan</strong>
+    <span class="mm-badge mm-badge-paid" id="kiosk-ocr-badge">OCR Scanner Ready</span>
+   </div>
+   <div class="tw-space-y-3">
+    <div>
+     <label class="mm-label" for="kiosk-booking-select">Select Arriving Reservation</label>
+     <select id="kiosk-booking-select" class="form-control">
+      <option value="Tanvir Ahmed Chowdhury|BD-8894021562|+880 1711-948210|Suites #101 &amp; #201 (2 Nights)|Bangladeshi" selected>#BK-2026-1094 — Tanvir Ahmed Chowdhury (Suites #101 &amp; #201)</option>
+      <option value="Brig. Gen. Mahmudul Hasan|BD-1904882104|+880 1713-220194|Royal Family Suite #204 (3 Nights)|Bangladeshi">#BK-2026-1088 — Brig. Gen. Mahmudul Hasan (Suite #204)</option>
+      <option value="Amb. Kenji Takahashi|JP-TR9041822|+880 1714-882010|Diplomatic Suite #301 (4 Nights)|Japanese">#BK-2026-1091 — Amb. Kenji Takahashi (Suite #301)</option>
+      <option value="Rubana Huq|BD-4401928371|+880 1711-500200|Grand Presidential #403 (2 Nights)|Bangladeshi">#BK-2026-1095 — Rubana Huq (Suite #403)</option>
+     </select>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+     <div><label class="mm-label">Verified Guest Name</label><input type="text" id="kiosk-guest-name" class="form-control" value="Tanvir Ahmed Chowdhury"></div>
+     <div><label class="mm-label">Passport / Smart NID (MRZ)</label><input type="text" id="kiosk-guest-nid" class="form-control" value="BD-8894021562"></div>
+     <div><label class="mm-label">Mobile Phone</label><input type="text" id="kiosk-guest-phone" class="form-control" value="+880 1711-948210"></div>
+     <div><label class="mm-label">Assigned Suite(s)</label><input type="text" id="kiosk-guest-rooms" class="form-control" value="Suites #101 &amp; #201 (2 Nights)" readonly></div>
+    </div>
+    <div id="kiosk-ocr-banner" class="alert alert-success" style="display:none;margin:0;font-size:12px;">
+     <i class="fa fa-check-circle"></i> <strong>Govt. Smart NID / Passport MRZ Verified!</strong> Optical scan matched reservation KYC 100%.
+    </div>
+    <div class="tw-flex tw-flex-wrap tw-gap-2">
+     <button type="button" id="kiosk-btn-scan-id" class="mm-button mm-button-secondary"><i class="fa fa-camera"></i> Scan Passport / NID via OCR</button>
+     <button type="button" class="mm-button mm-button-secondary" data-toggle="modal" data-target="#mm-quick-drawer"><i class="fa fa-user-plus"></i> Add Co-Guest ID</button>
+    </div>
+   </div>
+  </div>
+  <div class="mm-panel tw-p-5">
+   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+    <strong><i class="fa fa-pencil"></i> Step 2 · Digital E-Signature &amp; RFID Keycard Dispenser</strong>
+    <span class="mm-badge mm-badge-partial" id="kiosk-sig-status">Awaiting Signature</span>
+   </div>
+   <p class="tw-text-xs tw-text-muted" style="margin:0 0 8px">Sign inside the touch pad below or click <strong>Apply Verified E-Signature</strong> to authorize check-in and encode RFID room keycards.</p>
+   <div style="border:1.5px dashed #94a3b8;border-radius:10px;background:#f8fafc;padding:10px;text-align:center;margin-bottom:10px">
+    <canvas id="kiosk-signature-canvas" width="440" height="110" style="width:100%;max-width:440px;height:110px;background:#ffffff;border:1px solid #cbd5e1;border-radius:8px;cursor:crosshair"></canvas>
+    <div style="font-size:11px;color:#475569;margin-top:4px" id="kiosk-sig-caption">Signed by: <strong>Tanvir Ahmed Chowdhury</strong> · Agree to Hotel Registration Terms &amp; Folio Policy</div>
+   </div>
+   <div id="kiosk-keycard-banner" class="alert alert-success" style="display:none;margin:0 0 10px;font-size:12px;">
+    <i class="fa fa-key"></i> <strong>2 Mifare RFID Keycards Encoded &amp; Dispensed!</strong> Rooms <code>#101</code> &amp; <code>#201</code> active until 16 Oct 2026 12:00 PM.
+   </div>
+   <div class="tw-flex tw-flex-wrap tw-gap-2">
+    <button type="button" id="kiosk-btn-auto-sign" class="mm-button mm-button-secondary"><i class="fa fa-pencil"></i> Apply Verified E-Signature</button>
+    <button type="button" id="kiosk-btn-clear-sig" class="mm-button mm-button-secondary"><i class="fa fa-eraser"></i> Clear Pad</button>
+    <button type="button" id="kiosk-btn-encode-keys" class="mm-button"><i class="fa fa-key"></i> Complete Check-In &amp; Encode RFID Keys</button>
+   </div>
+  </div>
+ </div>
+ </div></section>
+ <script>(function(){
+  var sel=document.getElementById("kiosk-booking-select");
+  if(sel)sel.addEventListener("change",function(){
+   var p=(sel.value||"").split("|");
+   if(p.length>=4){
+    document.getElementById("kiosk-guest-name").value=p[0];
+    document.getElementById("kiosk-guest-nid").value=p[1];
+    document.getElementById("kiosk-guest-phone").value=p[2];
+    document.getElementById("kiosk-guest-rooms").value=p[3];
+    var cap=document.getElementById("kiosk-sig-caption");
+    if(cap)cap.innerHTML="Signed by: <strong>"+p[0]+"</strong> · Agree to Hotel Registration Terms & Folio Policy";
+   }
+  });
+  var scanBtn=document.getElementById("kiosk-btn-scan-id");
+  if(scanBtn)scanBtn.addEventListener("click",function(){
+   var b=document.getElementById("kiosk-ocr-banner"),bd=document.getElementById("kiosk-ocr-badge");
+   if(b)b.style.display="block";
+   if(bd){bd.className="mm-badge mm-badge-paid";bd.textContent="MRZ & NID Verified";}
+  });
+  var cvs=document.getElementById("kiosk-signature-canvas"),ctx=cvs?cvs.getContext("2d"):null;
+  function drawSampleSig(name){
+   if(!ctx)return;
+   ctx.clearRect(0,0,cvs.width,cvs.height);
+   ctx.strokeStyle="#1e3a8a";ctx.lineWidth=2.4;
+   ctx.beginPath();ctx.moveTo(45,74);ctx.bezierCurveTo(95,28,155,88,215,44);ctx.bezierCurveTo(265,18,320,76,390,48);ctx.stroke();
+   ctx.fillStyle="#0f172a";ctx.font="italic bold 18px Georgia, serif";
+   ctx.fillText(name||"Tanvir A. Chowdhury",62,64);
+   var st=document.getElementById("kiosk-sig-status");
+   if(st){st.className="mm-badge mm-badge-paid";st.textContent="E-Signature Verified";}
+  }
+  drawSampleSig("Tanvir A. Chowdhury");
+  var autoBtn=document.getElementById("kiosk-btn-auto-sign");
+  if(autoBtn)autoBtn.addEventListener("click",function(){
+   drawSampleSig((document.getElementById("kiosk-guest-name")||{}).value||"Verified Guest");
+  });
+  var clrBtn=document.getElementById("kiosk-btn-clear-sig");
+  if(clrBtn)clrBtn.addEventListener("click",function(){
+   if(ctx)ctx.clearRect(0,0,cvs.width,cvs.height);
+   var st=document.getElementById("kiosk-sig-status");
+   if(st){st.className="mm-badge mm-badge-partial";st.textContent="Cleared — Sign Again";}
+  });
+  var encBtn=document.getElementById("kiosk-btn-encode-keys");
+  if(encBtn)encBtn.addEventListener("click",function(){
+   drawSampleSig((document.getElementById("kiosk-guest-name")||{}).value||"Verified Guest");
+   var kb=document.getElementById("kiosk-keycard-banner");
+   if(kb)kb.style.display="block";
+  });
+ })();</script>`;
+ return shellWith(body,'','','Self-Service Kiosk Check-In & Digital Registration Card (F10)',['Hotel','Front Desk','Kiosk Check-In']);
+}
+function roomMovePage(){
+ const body=`<section class="mm-ui"><div class="tw-space-y-4 tw-py-2">
+ <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+  <div class="mm-page-title">
+   <h1 class="tw-m-0 tw-font-semibold tw-text-ink"><i class="fa fa-exchange"></i> In-Stay Room Move, Upgrade &amp; Folio Transfer (Plan B · F9)</h1>
+   <p class="tw-m-0 tw-text-sm tw-text-muted">Move an in-house guest from Room A to Room B with automatic tariff differential calculation, folio transfer, and housekeeping turnaround trigger.</p>
+  </div>
+  <div class="tw-flex tw-flex-wrap tw-gap-2">
+   <a href="/preview/tape-chart" class="mm-button mm-button-secondary"><i class="fa fa-calendar"></i> 7-Day Tape Chart</a>
+   <a href="/preview/housekeeping-board" class="mm-button mm-button-secondary"><i class="fa fa-check-square-o"></i> Housekeeping SLA Board</a>
+   <a href="/preview/checkout" class="mm-button mm-button-secondary"><i class="fa fa-credit-card"></i> Checkout Folio</a>
+  </div>
+ </header>
+ <div class="mm-table-kpi-grid" aria-label="Room move summary">
+  <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-bed"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Active In-House Stays</span><div class="mm-table-kpi-value">18 Occupied <span class="mm-table-kpi-sub">Eligible for Move</span></div></div></div>
+  <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-check-circle"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Inspected Target Suites</span><div class="mm-table-kpi-value">6 Ready Now <span class="mm-table-kpi-sub">100% HK Passed</span></div></div></div>
+  <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-exchange"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Room Moves Today</span><div class="mm-table-kpi-value" id="rmove-kpi-count">2 Completed <span class="mm-table-kpi-sub">Folio Synced</span></div></div></div>
+  <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-shield"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Rate-Change Audit</span><div class="mm-table-kpi-value">100% Logged <span class="mm-table-kpi-sub">Zero Folio Variance</span></div></div></div>
+ </div>
+ <div class="mm-panel tw-p-5">
+  <h2 class="tw-m-0 tw-mb-3 tw-text-base tw-font-semibold"><i class="fa fa-random"></i> Execute In-Stay Suite Transfer &amp; Folio Merge</h2>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:14px">
+   <div>
+    <label class="mm-label" for="rmove-source-select">Current Occupied Room (From)</label>
+    <select id="rmove-source-select" class="form-control">
+     <option value="#101|Tanvir Ahmed Chowdhury|4200|#BK-2026-1094" selected>#101 — Deluxe Double (Tanvir A. Chowdhury · ৳ 4,200/nt)</option>
+     <option value="#105|Tahmina Akter|3800|#BK-2026-1082">#105 — Superior Double (Tahmina Akter · ৳ 3,800/nt)</option>
+     <option value="#203|Shabnam Mustari|4500|#BK-2026-1086">#203 — Superior Twin (Shabnam Mustari · ৳ 4,500/nt)</option>
+    </select>
+   </div>
+   <div>
+    <label class="mm-label" for="rmove-target-select">Target Inspected Suite (To)</label>
+    <select id="rmove-target-select" class="form-control">
+     <option value="#206|Executive King (2F)|5500" selected>#206 — Executive King (2F · ৳ 5,500/nt · Ready)</option>
+     <option value="#301|Diplomatic Suite (3F)|8500">#301 — Diplomatic Suite (3F · ৳ 8,500/nt · VIP Ready)</option>
+     <option value="#401|Royal Penthouse (4F)|12000">#401 — Royal Penthouse (4F · ৳ 12,000/nt · Staged)</option>
+    </select>
+   </div>
+   <div>
+    <label class="mm-label" for="rmove-rate-policy">Tariff Differential Policy</label>
+    <select id="rmove-rate-policy" class="form-control">
+     <option value="upgrade_paid" selected>Charge Upgrade Difference (+৳ 1,300 / night)</option>
+     <option value="comp_vip">Complimentary VIP Upgrade (Keep Original Tariff)</option>
+     <option value="half_diff">50% Courtesy Corporate Upgrade (+৳ 650 / night)</option>
+    </select>
+   </div>
+   <div>
+    <label class="mm-label" for="rmove-reason">Move Reason &amp; Audit Note</label>
+    <input type="text" id="rmove-reason" class="form-control" value="Guest requested higher-floor Executive King with quiet courtyard view">
+   </div>
+  </div>
+  <div id="rmove-success-banner" class="alert alert-success" style="display:none;margin-bottom:12px;font-size:12.5px;">
+   <i class="fa fa-check-circle"></i> <span id="rmove-success-text">Suite Move Completed: Folio transferred from #101 to #206, RFID keycard re-encoded, and Room #101 queued for Housekeeping Turnaround.</span>
+  </div>
+  <div class="tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-2">
+   <span class="tw-text-xs tw-text-muted" id="rmove-preview-line">Folio Impact Preview: <strong>#101 → #206</strong> · Nightly Rate <strong>৳ 4,200 → ৳ 5,500 (+৳ 1,300/nt)</strong> · Vacated room #101 auto-marked <em>Dirty / Turnaround</em>.</span>
+   <button type="button" id="rmove-btn-execute" class="mm-button"><i class="fa fa-exchange"></i> Confirm Room Move &amp; Transfer Folio</button>
+  </div>
+ </div>
+ <div class="mm-panel tw-p-5">
+  <h2 class="tw-m-0 tw-mb-3 tw-text-base tw-font-semibold"><i class="fa fa-history"></i> Room Move &amp; Rate-Change Audit Log</h2>
+  <div class="mm-table-scroll">
+   <table class="mm-data-table table table-bordered table-striped" id="rmove-audit-table">
+    <thead><tr><th>Timestamp</th><th>Booking Ref</th><th>Guest Name</th><th>From → To Suite</th><th>Tariff Adjustment</th><th>Reason &amp; HK Action</th><th>Status</th></tr></thead>
+    <tbody id="rmove-audit-tbody">
+     <tr><td>2026-10-14 11:20</td><td><code>#BK-2026-1079</code></td><td><strong>Dr. Farhana Rahman</strong></td><td><code>#102</code> → <code>#103</code></td><td>Complimentary VIP (৳ 4,800/nt)</td><td>Upgraded to corner Deluxe King · #102 Inspected</td><td><span class="mm-badge mm-badge-paid">Folio Merged</span></td></tr>
+     <tr><td>2026-10-14 09:45</td><td><code>#BK-2026-1084</code></td><td><strong>Imran Hossain &amp; Family</strong></td><td><code>#205</code> → <code>#305</code></td><td>+৳ 2,200/nt (Family Suite)</td><td>Added extra rollaway bed · #205 Cleaned</td><td><span class="mm-badge mm-badge-paid">Folio Merged</span></td></tr>
+    </tbody>
+   </table>
+  </div>
+ </div>
+ </div></section>
+ <script>(function(){
+  var src=document.getElementById("rmove-source-select"),tgt=document.getElementById("rmove-target-select"),pol=document.getElementById("rmove-rate-policy"),btn=document.getElementById("rmove-btn-execute");
+  if(btn)btn.addEventListener("click",function(){
+   var sp=(src.value||"").split("|"),tp=(tgt.value||"").split("|");
+   var fromRm=sp[0]||"#101",gName=sp[1]||"Guest",oldRate=parseInt(sp[2]||"4200",10),bkRef=sp[3]||"#BK-2026-1094";
+   var toRm=tp[0]||"#206",toCat=tp[1]||"Executive King",newRate=parseInt(tp[2]||"5500",10);
+   var diff=pol.value==="comp_vip"?0:(pol.value==="half_diff"?Math.round((newRate-oldRate)/2):Math.max(0,newRate-oldRate));
+   var rateTxt=diff===0?"Complimentary VIP (৳ "+oldRate.toLocaleString()+"/nt)":"+৳ "+diff.toLocaleString()+"/nt (New: ৳ "+(oldRate+diff).toLocaleString()+"/nt)";
+   var reason=(document.getElementById("rmove-reason")||{}).value||"Suite move";
+   var tb=document.getElementById("rmove-audit-tbody");
+   if(tb){
+    var tr=document.createElement("tr");
+    tr.innerHTML="<td>2026-10-14 14:15</td><td><code>"+bkRef+"</code></td><td><strong>"+gName+"</strong></td><td><code>"+fromRm+"</code> → <code>"+toRm+"</code></td><td>"+rateTxt+"</td><td>"+reason+" · "+fromRm+" HK Turnaround</td><td><span class=\\"mm-badge mm-badge-paid\\">Folio Merged</span></td>";
+    tb.insertBefore(tr,tb.firstChild);
+   }
+   var b=document.getElementById("rmove-success-banner"),bt=document.getElementById("rmove-success-text"),kc=document.getElementById("rmove-kpi-count");
+   if(bt)bt.textContent="Suite Move Completed: "+gName+" ("+bkRef+") moved from "+fromRm+" to "+toRm+" ("+toCat+"). "+fromRm+" queued for Housekeeping Turnaround.";
+   if(b)b.style.display="block";
+   if(kc)kc.innerHTML=(tb?tb.children.length:3)+" Completed <span class=\\"mm-table-kpi-sub\\">Folio Synced</span>";
+  });
+ })();</script>`;
+ return shellWith(body,'','','In-Stay Room Move & Folio Transfer (F9)',['Hotel','Bookings','Room Move']);
+}
+function guestCrmPage(){
+ const crmRows=[
+  ['Tanvir Ahmed Chowdhury','VIP Corporate','Mohammadi Group','8 Stays · 22 Nights','৳ 284,500','High Floor · King Bed · Extra Espresso','vip','Active In-House (#101)'],
+  ['Brig. Gen. Mahmudul Hasan','VIP Protocol','Defence Services Command','11 Stays · 31 Nights','৳ 465,000','Corner Suite · Early Check-In · Newspaper','vip','Active In-House (#204)'],
+  ['Amb. Kenji Takahashi','Diplomatic','Embassy of Japan (Dhaka)','6 Stays · 19 Nights','৳ 390,000','Japanese Green Tea · Diplomatic Floor 3','vip','Active In-House (#301)'],
+  ['Nusrat Jahan','Corporate Contract','UNICEF Bangladesh','9 Stays · 24 Nights','৳ 312,000','Quiet Workspace · Airport Chauffeur','corp','Active In-House (#201)'],
+  ['Elena Rostova','Corporate Contract','World Bank Group','7 Stays · 21 Nights','৳ 348,000','Dedicated VPN Router · Hypoallergenic Pillow','corp','Active In-House (#402)'],
+  ['Rubana Huq','VIP Loyalty','BGMEA / Mohammadi','14 Stays · 38 Nights','৳ 620,000','Presidential Suite #403 · Boardroom Setup','loyalty','Active In-House (#403)'],
+  ['Capt. Jonathan Vance','Airline Crew Contract','Horizon Air International','19 Stays · 42 Nights','৳ 410,000','Blackout Curtains · 04:45 AM Wake-Up Box','corp','Active In-House (#302)'],
+  ['Dr. Farhana Rahman','Repeat Loyalty','Square Hospitals Ltd.','5 Stays · 12 Nights','৳ 148,000','Feather Pillows · Late Check-Out','loyalty','Active In-House (#103)'],
+ ];
+ const trs=crmRows.map(([name,tier,org,stays,ltv,pref,tag,st])=>'<tr class="crm-row" data-crm-tag="'+tag+'" data-crm-search="'+(name+' '+tier+' '+org+' '+pref).toLowerCase()+'"><td><strong>'+name+'</strong><div class="tw-text-xs tw-text-muted">'+org+'</div></td><td><span class="mm-badge mm-badge-'+(tag==='vip'?'paid':'partial')+'">'+tier+'</span></td><td>'+stays+'</td><td><strong>'+ltv+'</strong></td><td>'+pref+'</td><td><span class="mm-badge mm-badge-paid">'+st+'</span></td><td class="text-center"><button type="button" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px" data-toggle="modal" data-target="#mm-quick-drawer"><i class="fa fa-id-badge"></i> 360° Profile</button></td></tr>').join('');
+ const body=`<section class="mm-ui"><div class="tw-space-y-4 tw-py-2">
+ <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+  <div class="mm-page-title">
+   <h1 class="tw-m-0 tw-font-semibold tw-text-ink"><i class="fa fa-address-book-o"></i> Guest &amp; Corporate CRM 360° Directory (Plan B · F11)</h1>
+   <p class="tw-m-0 tw-text-sm tw-text-muted">Revived CRM workspace (<code>c_r_m_customers</code>): guest preferences, stay history, lifetime folio value (LTV), corporate rate contracts, and loyalty tiers.</p>
+  </div>
+  <div class="tw-flex tw-flex-wrap tw-gap-2">
+   <a href="/preview/guests" class="mm-button mm-button-secondary"><i class="fa fa-users"></i> All 20 Guests</a>
+   <a href="/preview/city-ledger" class="mm-button mm-button-secondary"><i class="fa fa-building-o"></i> Corporate City Ledger (F20)</a>
+   <button type="button" class="mm-button" data-toggle="modal" data-target="#mm-quick-drawer"><i class="fa fa-plus"></i> New Corporate Contract</button>
+  </div>
+ </header>
+ <div class="mm-table-kpi-grid" aria-label="Guest CRM summary">
+  <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-users"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">CRM Guest Profiles</span><div class="mm-table-kpi-value">20 Verified <span class="mm-table-kpi-sub">100% KYC Linked</span></div></div></div>
+  <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-building-o"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Corporate Contracts</span><div class="mm-table-kpi-value">8 Organizations <span class="mm-table-kpi-sub">Direct-Bill Active</span></div></div></div>
+  <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-repeat"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Repeat Stay Ratio</span><div class="mm-table-kpi-value">68.4% Returning <span class="mm-table-kpi-sub">Avg 8.4 Stays</span></div></div></div>
+  <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-line-chart"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Combined Lifetime Value</span><div class="mm-table-kpi-value">৳ 4,820,000 <span class="mm-table-kpi-sub">Room + F&amp;B + Banquet</span></div></div></div>
+ </div>
+ <div class="mm-panel tw-p-5">
+  <div class="tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-2" style="margin-bottom:12px">
+   <div class="tw-flex tw-flex-wrap tw-gap-2">
+    <button type="button" class="mm-preview-pill is-active" data-crm-filter="all">All CRM Profiles (8)</button>
+    <button type="button" class="mm-preview-pill" data-crm-filter="vip">VIP &amp; Diplomatic</button>
+    <button type="button" class="mm-preview-pill" data-crm-filter="corp">Corporate Contracts</button>
+    <button type="button" class="mm-preview-pill" data-crm-filter="loyalty">Repeat Loyalty Circle</button>
+   </div>
+   <input type="search" id="crm-search-input" class="form-control" style="max-width:280px" placeholder="Search guest, organization, preference...">
+  </div>
+  <div class="mm-table-scroll">
+   <table class="mm-data-table table table-bordered table-striped" id="crm-table">
+    <thead><tr><th>Guest &amp; Organization</th><th>CRM Tier</th><th>Stay History</th><th>Lifetime Value (LTV)</th><th>Recorded Room &amp; Dietary Preferences</th><th>Current Status</th><th class="text-center">Action</th></tr></thead>
+    <tbody>${trs}</tbody>
+   </table>
+  </div>
+ </div>
+ </div></section>
+ <script>(function(){
+  var pills=document.querySelectorAll("[data-crm-filter]"),rows=document.querySelectorAll(".crm-row"),q=document.getElementById("crm-search-input"),tag="all";
+  function filter(){
+   var s=(q&&q.value||"").toLowerCase().trim();
+   rows.forEach(function(r){
+    var ok=(tag==="all"||r.getAttribute("data-crm-tag")===tag)&&(!s||r.getAttribute("data-crm-search").indexOf(s)>=0);
+    r.style.display=ok?"":"none";
+   });
+  }
+  pills.forEach(function(p){p.addEventListener("click",function(){pills.forEach(function(x){x.classList.remove("is-active");});p.classList.add("is-active");tag=p.getAttribute("data-crm-filter");filter();});});
+  if(q)q.addEventListener("input",filter);
+ })();</script>`;
+ return shellWith(body,'','','Guest & Corporate CRM 360° Directory (F11)',['Hotel','CRM','Guest & Corporate CRM']);
+}
+function minibarFolioPage(){
+ const body=`<section class="mm-ui"><div class="tw-space-y-4 tw-py-2">
+ <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+  <div class="mm-page-title">
+   <h1 class="tw-m-0 tw-font-semibold tw-text-ink"><i class="fa fa-glass"></i> In-Room Minibar &amp; Asset Consumption Auto-Post to Folio (Plan B · F15)</h1>
+   <p class="tw-m-0 tw-text-sm tw-text-muted">Link Bar &amp; General Store minibar stock directly to in-house guest room folios with automatic stock deduction and live folio posting.</p>
+  </div>
+  <div class="tw-flex tw-flex-wrap tw-gap-2">
+   <a href="/preview/checkout" class="mm-button mm-button-secondary"><i class="fa fa-credit-card"></i> Checkout Folio</a>
+   <a href="/preview/bar-pos" class="mm-button mm-button-secondary"><i class="fa fa-glass"></i> Bar POS</a>
+  </div>
+ </header>
+ <div class="mm-table-kpi-grid" aria-label="Minibar folio summary">
+  <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-cubes"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Stocked Suites</span><div class="mm-table-kpi-value">20 Mini-Bars <span class="mm-table-kpi-sub"> Seal Verified</span></div></div></div>
+  <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-check-circle"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Auto-Posted Today</span><div class="mm-table-kpi-value" id="mb-kpi-posted">৳ 8,450 <span class="mm-table-kpi-sub">14 Items Synced</span></div></div></div>
+  <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-refresh"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Restock Queue</span><div class="mm-table-kpi-value">3 Suites <span class="mm-table-kpi-sub">#101, #204, #301</span></div></div></div>
+  <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-bolt"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Folio Sync Latency</span><div class="mm-table-kpi-value">Instant <span class="mm-table-kpi-sub">Bar Store Linked</span></div></div></div>
+ </div>
+ <div class="mm-panel tw-p-5">
+  <h2 class="tw-m-0 tw-mb-3 tw-text-base tw-font-semibold"><i class="fa fa-plus-circle"></i> Record Suite Minibar Consumption &amp; Auto-Post to Room Folio</h2>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-bottom:14px">
+   <div>
+    <label class="mm-label" for="mb-room-select">In-House Suite &amp; Active Folio</label>
+    <select id="mb-room-select" class="form-control">
+     <option value="#101|Tanvir Ahmed Chowdhury|#BK-2026-1094" selected>Room #101 — Tanvir Ahmed Chowdhury (#BK-2026-1094)</option>
+     <option value="#204|Brig. Gen. Mahmudul Hasan|#BK-2026-1088">Suite #204 — Brig. Gen. Mahmudul Hasan (#BK-2026-1088)</option>
+     <option value="#301|Amb. Kenji Takahashi|#BK-2026-1091">Suite #301 — Amb. Kenji Takahashi (#BK-2026-1091)</option>
+     <option value="#403|Rubana Huq|#BK-2026-1095">Suite #403 — Rubana Huq (#BK-2026-1095)</option>
+    </select>
+   </div>
+   <div>
+    <label class="mm-label" for="mb-item-select">Consumed Minibar Item (Bar / Store SKU)</label>
+    <select id="mb-item-select" class="form-control">
+     <option value="Artisanal Roasted Cashews &amp; Almonds (150g)|650" selected>Artisanal Roasted Cashews &amp; Almonds (150g) — ৳ 650</option>
+     <option value="Perrier Sparkling Mineral Water (330ml)|450">Perrier Sparkling Mineral Water (330ml) — ৳ 450</option>
+     <option value="Belgian 70% Dark Chocolate Bar|800">Belgian 70% Dark Chocolate Bar — ৳ 800</option>
+     <option value="Cold-Pressed Organic Mango Nectar|380">Cold-Pressed Organic Mango Nectar — ৳ 380</option>
+     <option value="Nespresso Heritage Gold Capsules (4-Pack)|720">Nespresso Heritage Gold Capsules (4-Pack) — ৳ 720</option>
+    </select>
+   </div>
+   <div>
+    <label class="mm-label" for="mb-qty">Quantity Consumed</label>
+    <input type="number" id="mb-qty" class="form-control" min="1" max="10" value="2">
+   </div>
+  </div>
+  <div id="mb-post-banner" class="alert alert-success" style="display:none;margin-bottom:12px;font-size:12.5px;">
+   <i class="fa fa-check-circle"></i> <span id="mb-post-text">Posted to Room #101 Folio (#BK-2026-1094)! Bar inventory decremented and housekeeping restock queued.</span>
+  </div>
+  <button type="button" id="mb-btn-post" class="mm-button"><i class="fa fa-check"></i> Auto-Post Consumption to Guest Folio</button>
+ </div>
+ <div class="mm-panel tw-p-5">
+  <div class="mm-table-scroll">
+   <table class="mm-data-table table table-bordered table-striped" id="mb-ledger-table">
+    <thead><tr><th>Time</th><th>Suite &amp; Folio</th><th>Guest Name</th><th>Minibar Item</th><th>Qty</th><th class="text-right">Posted Amount</th><th>Status</th></tr></thead>
+    <tbody id="mb-ledger-tbody">
+     <tr><td>13:40</td><td><strong>#204</strong> (<code>#BK-2026-1088</code>)</td><td>Brig. Gen. Mahmudul Hasan</td><td>Perrier Sparkling Mineral Water (330ml)</td><td>2</td><td class="text-right"><strong>৳ 900</strong></td><td><span class="mm-badge mm-badge-paid">Posted to Folio</span></td></tr>
+     <tr><td>12:15</td><td><strong>#301</strong> (<code>#BK-2026-1091</code>)</td><td>Amb. Kenji Takahashi</td><td>Belgian 70% Dark Chocolate Bar</td><td>1</td><td class="text-right"><strong>৳ 800</strong></td><td><span class="mm-badge mm-badge-paid">Posted to Folio</span></td></tr>
+    </tbody>
+   </table>
+  </div>
+ </div>
+ </div></section>
+ <script>(function(){
+  var btn=document.getElementById("mb-btn-post");
+  if(btn)btn.addEventListener("click",function(){
+   var rm=(document.getElementById("mb-room-select").value||"").split("|");
+   var it=(document.getElementById("mb-item-select").value||"").split("|");
+   var qty=Math.max(1,parseInt(document.getElementById("mb-qty").value||"1",10));
+   var amt=(parseInt(it[1]||"650",10))*qty;
+   var tb=document.getElementById("mb-ledger-tbody");
+   if(tb){
+    var tr=document.createElement("tr");
+    tr.innerHTML="<td>14:20</td><td><strong>"+rm[0]+"</strong> (<code>"+rm[2]+"</code>)</td><td>"+rm[1]+"</td><td>"+it[0]+"</td><td>"+qty+"</td><td class=\\"text-right\\"><strong>৳ "+amt.toLocaleString()+"</strong></td><td><span class=\\"mm-badge mm-badge-paid\\">Posted to Folio</span></td>";
+    tb.insertBefore(tr,tb.firstChild);
+   }
+   var b=document.getElementById("mb-post-banner"),bt=document.getElementById("mb-post-text");
+   if(bt)bt.textContent="Posted "+qty+"x "+it[0]+" (৳ "+amt.toLocaleString()+") directly to "+rm[0]+" Folio ("+rm[2]+" · "+rm[1]+").";
+   if(b)b.style.display="block";
+  });
+ })();</script>`;
+ return shellWith(body,'','','Minibar & In-Room Consumption Auto-Post (F15)',['Hotel','Housekeeping','Minibar Auto-Post']);
+}
+function cityLedgerPage(){
+ const arRows=[
+  ['#CL-101','UNICEF Bangladesh (Country Office)','৳ 500,000','৳ 142,000','৳ 112,000','৳ 30,000','৳ 0',28,'is-emerald','Current (Net 30)','paid'],
+  ['#CL-102','World Bank Group (Dhaka Mission)','৳ 600,000','৳ 185,000','৳ 185,000','৳ 0','৳ 0',31,'is-emerald','Current (Net 30)','paid'],
+  ['#CL-103','Mohammadi Group Ltd.','৳ 450,000','৳ 128,000','৳ 98,000','৳ 30,000','৳ 0',28,'is-emerald','Current (Net 30)','paid'],
+  ['#CL-104','Horizon Air International (Crew Account)','৳ 500,000','৳ 160,000','৳ 110,000','৳ 50,000','৳ 0',32,'','Statement Sent','partial'],
+  ['#CL-105','Apex Footwear &amp; Corporate Events','৳ 250,000','৳ 70,000','৳ 40,000','৳ 0','৳ 30,000',28,'is-violet','60d Reminder','unpaid'],
+ ];
+ const trs=arRows.map(([code,corp,limit,bal,b30,b60,b90,pct,cls,st,badge])=>'<tr><td><code>'+code+'</code></td><td><strong>'+corp+'</strong><div class="tw-text-xs tw-text-muted">Credit Limit: '+limit+'</div></td><td class="text-right"><strong>'+bal+'</strong></td><td class="text-right">'+b30+'</td><td class="text-right">'+b60+'</td><td class="text-right">'+b90+'</td><td><div class="mm-share-cell"><span>'+pct+'% Used</span><span class="mm-share-bar"><span class="mm-share-fill '+cls+'" style="width:'+pct+'%"></span></span></div></td><td><span class="mm-badge mm-badge-'+badge+'">'+st+'</span></td></tr>').join('');
+ const body=`<section class="mm-ui"><div class="tw-space-y-4 tw-py-2">
+ <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+  <div class="mm-page-title">
+   <h1 class="tw-m-0 tw-font-semibold tw-text-ink"><i class="fa fa-building-o"></i> Corporate AR / City Ledger &amp; Credit Aging Report (Plan B · F20)</h1>
+   <p class="tw-m-0 tw-text-sm tw-text-muted">Manage corporate direct-bill accounts, credit limits, 30/60/90-day aging buckets, and automated Statement of Account (SOA) dispatch.</p>
+  </div>
+  <div class="tw-flex tw-flex-wrap tw-gap-2">
+   <a href="/preview/payment-collection" class="mm-button mm-button-secondary"><i class="fa fa-money"></i> Payment Collection</a>
+   <button type="button" id="cl-btn-send-soa" class="mm-button" onclick="var b=document.getElementById('cl-soa-banner');if(b)b.style.display='block';"><i class="fa fa-envelope-o"></i> Dispatch Monthly SOA &amp; Reminders</button>
+  </div>
+ </header>
+ <div id="cl-soa-banner" class="alert alert-success" style="display:none;font-size:12.5px;">
+  <i class="fa fa-check-circle"></i> <strong>Monthly Statements of Account (SOA) Dispatched!</strong> PDF statements emailed to all 5 active corporate billing controllers.
+ </div>
+ <div class="mm-table-kpi-grid" aria-label="City ledger summary">
+  <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-building-o"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Total City Ledger AR</span><div class="mm-table-kpi-value">৳ 685,000 <span class="mm-table-kpi-sub">5 Corporate Accounts</span></div></div></div>
+  <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-check-circle"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">0–30 Days (Current)</span><div class="mm-table-kpi-value">৳ 545,000 <span class="mm-table-kpi-sub">79.6% Current</span></div></div></div>
+  <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-clock-o"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">31–60 Days Bucket</span><div class="mm-table-kpi-value">৳ 110,000 <span class="mm-table-kpi-sub">16.0% Invoiced</span></div></div></div>
+  <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-exclamation-circle"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">61–90+ Days Overdue</span><div class="mm-table-kpi-value">৳ 30,000 <span class="mm-table-kpi-sub">4.4% Follow-Up</span></div></div></div>
+ </div>
+ <div class="mm-panel tw-p-5"><div class="mm-table-scroll"><table class="mm-data-table table table-bordered table-striped"><thead><tr><th>Account</th><th>Corporate Entity &amp; Credit Limit</th><th class="text-right">Total AR Balance</th><th class="text-right">0–30 Days</th><th class="text-right">31–60 Days</th><th class="text-right">61–90+ Days</th><th>Credit Utilization</th><th>Aging Status</th></tr></thead><tbody>${trs}</tbody></table></div></div>
+ </div></section>`;
+ return shellWith(body,'','','Corporate AR / City Ledger & Aging (F20)',['Account','City Ledger','AR Aging']);
+}
+function managerBiPage(){
+ const body=`<section class="mm-ui"><div class="tw-space-y-4 tw-py-2">
+ <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+  <div class="mm-page-title">
+   <h1 class="tw-m-0 tw-font-semibold tw-text-ink"><i class="fa fa-bar-chart"></i> Manager BI: Occupancy, ADR, RevPAR &amp; Channel Mix (Plan B · F29)</h1>
+   <p class="tw-m-0 tw-text-sm tw-text-muted">Executive hospitality intelligence across all 9 day-1 Plan B KPIs: Occupancy %, ADR, RevPAR, Direct-vs-OTA Mix, Pickup Pace, F&amp;B Attach Rate, and AR Days.</p>
+  </div>
+  <div class="tw-flex tw-flex-wrap tw-gap-2">
+   <button type="button" class="mm-preview-pill is-active" data-bi-period="today">Today (14 Oct 2026)</button>
+   <button type="button" class="mm-preview-pill" data-bi-period="mtd">MTD (Oct 2026)</button>
+   <button type="button" class="mm-preview-pill" data-bi-period="q4">Q4 Forecast</button>
+   <button type="button" class="mm-button mm-button-secondary" onclick="window.print()"><i class="fa fa-print"></i> Print Executive BI Brief</button>
+  </div>
+ </header>
+ <div class="mm-table-kpi-grid" aria-label="Manager BI core KPIs">
+  <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-bed"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">1. Occupancy Rate</span><div class="mm-table-kpi-value" id="bi-kpi-occ">90.0% <span class="mm-table-kpi-sub">18 of 20 Suites Sold</span></div></div></div>
+  <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-line-chart"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">2. ADR (Avg Daily Rate)</span><div class="mm-table-kpi-value" id="bi-kpi-adr">৳ 7,450 <span class="mm-table-kpi-sub">+8.4% vs Last Month</span></div></div></div>
+  <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-bolt"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">3. RevPAR</span><div class="mm-table-kpi-value" id="bi-kpi-revpar">৳ 6,705 <span class="mm-table-kpi-sub">৳ 134,100 Room Rev/Day</span></div></div></div>
+  <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-cutlery"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">4. F&amp;B Attach &amp; NPS</span><div class="mm-table-kpi-value" id="bi-kpi-fnb">76.4% · 94 NPS <span class="mm-table-kpi-sub">19d Avg AR Settlement</span></div></div></div>
+ </div>
+ <div class="mm-panel tw-p-5">
+  <h2 class="tw-m-0 tw-mb-3 tw-text-base tw-font-semibold"><i class="fa fa-pie-chart"></i> Suite Category RevPAR, Pickup Pace &amp; Direct-vs-OTA Mix Breakdown</h2>
+  <div class="mm-table-scroll">
+   <table class="mm-data-table table table-bordered table-striped">
+    <thead><tr><th>Suite Category</th><th>Inventory</th><th>Occupied</th><th>ADR</th><th>RevPAR</th><th>Occupancy &amp; Revenue Share</th><th>Direct vs OTA Mix</th></tr></thead>
+    <tbody>
+     <tr><td><strong>Floor 1 · Deluxe &amp; Superior Rooms (#101–#106)</strong></td><td>6 Rooms</td><td>5 / 6</td><td>৳ 4,350</td><td><strong>৳ 3,625</strong></td><td><div class="mm-share-cell"><span>83.3% Occ</span><span class="mm-share-bar"><span class="mm-share-fill is-emerald" style="width:83.3%"></span></span></div></td><td>50% Direct / 50% OTA</td></tr>
+     <tr><td><strong>Floor 2 · Heritage &amp; Royal Family Suites (#201–#206)</strong></td><td>6 Suites</td><td>5 / 6</td><td>৳ 6,850</td><td><strong>৳ 5,708</strong></td><td><div class="mm-share-cell"><span>83.3% Occ</span><span class="mm-share-bar"><span class="mm-share-fill" style="width:83.3%"></span></span></div></td><td>60% Direct / 40% OTA</td></tr>
+     <tr><td><strong>Floor 3 · Diplomatic &amp; Presidential Suites (#301–#305)</strong></td><td>5 Suites</td><td>5 / 5</td><td>৳ 8,900</td><td><strong>৳ 8,900</strong></td><td><div class="mm-share-cell"><span>100% Sold Out</span><span class="mm-share-bar"><span class="mm-share-fill is-emerald" style="width:100%"></span></span></div></td><td>80% Corporate Direct</td></tr>
+     <tr><td><strong>Floor 4 · Royal Penthouse &amp; Grand Presidential (#401–#403)</strong></td><td>3 Suites</td><td>3 / 3</td><td>৳ 13,200</td><td><strong>৳ 13,200</strong></td><td><div class="mm-share-cell"><span>100% Sold Out</span><span class="mm-share-bar"><span class="mm-share-fill is-violet" style="width:100%"></span></span></div></td><td>100% VIP Direct</td></tr>
+    </tbody>
+   </table>
+  </div>
+ </div>
+ </div></section>
+ <script>(function(){
+  var data={
+   today:{occ:"90.0% <span class=\\"mm-table-kpi-sub\\">18 of 20 Suites Sold</span>",adr:"৳ 7,450 <span class=\\"mm-table-kpi-sub\\">+8.4% vs Last Month</span>",rev:"৳ 6,705 <span class=\\"mm-table-kpi-sub\\">৳ 134,100 Room Rev/Day</span>",fnb:"76.4% · 94 NPS <span class=\\"mm-table-kpi-sub\\">19d Avg AR Settlement</span>"},
+   mtd:{occ:"87.5% <span class=\\"mm-table-kpi-sub\\">245 Room-Nights MTD</span>",adr:"৳ 7,280 <span class=\\"mm-table-kpi-sub\\">+6.9% vs Budget</span>",rev:"৳ 6,370 <span class=\\"mm-table-kpi-sub\\">৳ 1,783,600 MTD Rev</span>",fnb:"74.8% · 92 NPS <span class=\\"mm-table-kpi-sub\\">1.8% Cancel/No-Show</span>"},
+   q4:{occ:"92.4% <span class=\\"mm-table-kpi-sub\\">Peak Season Pace +14/d</span>",adr:"৳ 7,890 <span class=\\"mm-table-kpi-sub\\">Peak Corporate BAR</span>",rev:"৳ 7,290 <span class=\\"mm-table-kpi-sub\\">+12.1% YoY Projected</span>",fnb:"81.0% · 95 NPS <span class=\\"mm-table-kpi-sub\\">Banquet Gala Season</span>"}
+  };
+  document.querySelectorAll("[data-bi-period]").forEach(function(b){
+   b.addEventListener("click",function(){
+    document.querySelectorAll("[data-bi-period]").forEach(function(x){x.classList.remove("is-active");});
+    b.classList.add("is-active");
+    var d=data[b.getAttribute("data-bi-period")]||data.today;
+    document.getElementById("bi-kpi-occ").innerHTML=d.occ;
+    document.getElementById("bi-kpi-adr").innerHTML=d.adr;
+    document.getElementById("bi-kpi-revpar").innerHTML=d.rev;
+    document.getElementById("bi-kpi-fnb").innerHTML=d.fnb;
+   });
+  });
+ })();</script>`;
+ return shellWith(body,'','','Manager BI: Occupancy, ADR & RevPAR (F29)',['Hotel','Reports','Manager BI']);
+}
 const specialPages={
  '/preview/draft-booking-pdf':{fn:draftBookingPdfPage,title:'Whole Booking Preview — Draft Reservation Summary PDF',crumbs:['Hotel','Bookings','Draft Summary PDF']},
+ '/preview/kiosk-checkin':{fn:kioskCheckinPage,title:'Self-Service Kiosk Check-In & Digital Reg. Card (Plan B · F10)',crumbs:['Hotel','Front Desk','Kiosk Check-In']},
+ '/preview/room-move':{fn:roomMovePage,title:'In-Stay Room Move & Folio Transfer (Plan B · F9)',crumbs:['Hotel','Bookings','Room Move']},
+ '/preview/guest-crm':{fn:guestCrmPage,title:'Guest & Corporate CRM 360° Directory (Plan B · F11)',crumbs:['Hotel','Guests','CRM 360']},
+ '/preview/minibar-folio':{fn:minibarFolioPage,title:'In-Room Minibar Consumption Auto-Post (Plan B · F15)',crumbs:['Hotel','Housekeeping','Minibar Auto-Post']},
+ '/preview/city-ledger':{fn:cityLedgerPage,title:'Corporate AR / City Ledger & Aging Report (Plan B · F20)',crumbs:['Account','City Ledger','AR Aging']},
+ '/preview/manager-bi':{fn:managerBiPage,title:'Manager BI: Occupancy, ADR, RevPAR & Channel Mix (Plan B · F29)',crumbs:['Hotel','Reports','Manager BI']},
  '/preview/wiki':{fn:wikiPage,title:'User Documentation, Wiki & Help (EN / বাংলা)',crumbs:['System','Documentation','Wiki & Help']},
  '/preview/help':{fn:wikiPage,title:'Help Center & SOP Checklists (EN / বাংলা)',crumbs:['System','Documentation','Help']},
  '/preview/sop-print':{fn:sopPrintPage,title:'Printable Bilingual SOP Cheat Sheet (EN / বাংলা)',crumbs:['System','Documentation','Printable SOP']},
@@ -796,7 +1250,7 @@ function menuLinks(page){
   Object.entries(pages).map(([p,v])=>'<li><a href="'+p+'">'+v.title+' ('+p.replace('/preview/','')+')</a></li>').join('')+
   Object.keys(pubPages).map(p=>'<li><a href="'+p+'">Public Storefront: '+p.replace('/preview/public-','')+'</a></li>').join('')+
   '</ul></li>';
- const nav='<li><a href="/preview"><i class="menu-icon fa fa-th-large"></i><span class="menu-text">All 300 Screens Hub</span></a><b class="arrow"></b></li><li><a href="/preview/tape-chart"><i class="menu-icon fa fa-calendar"></i><span class="menu-text">7-Day Tape Chart (20)</span></a><b class="arrow"></b></li><li><a href="/preview/rooms"><i class="menu-icon fa fa-bed"></i><span class="menu-text">Rooms Directory (20)</span></a><b class="arrow"></b></li><li><a href="/preview/guests"><i class="menu-icon fa fa-users"></i><span class="menu-text">Guests Directory (20)</span></a><b class="arrow"></b></li><li><a href="/preview/bookings"><i class="menu-icon fa fa-list-alt"></i><span class="menu-text">Bookings Ledger (20)</span></a><b class="arrow"></b></li><li><a href="/preview/wiki"><i class="menu-icon fa fa-question-circle"></i><span class="menu-text">Wiki &amp; Help (EN/বাংলা)</span></a><b class="arrow"></b></li><li><a href="/preview/ui-kit"><i class="menu-icon fa fa-cubes"></i><span class="menu-text">UI Component Kit</span></a><b class="arrow"></b></li><li><a href="/preview/booking-next"><i class="menu-icon fa fa-map-o"></i><span class="menu-text">Booking Wizard &amp; Floor Plan</span></a><b class="arrow"></b></li><li><a href="/preview/acc-balance-sheet"><i class="menu-icon fa fa-building-o"></i><span class="menu-text">Balance Sheet</span></a><b class="arrow"></b></li><li><a href="/preview/acc-income-statement"><i class="menu-icon fa fa-line-chart"></i><span class="menu-text">Income Statement</span></a><b class="arrow"></b></li><li><a href="/preview/acc-trial-balance"><i class="menu-icon fa fa-balance-scale"></i><span class="menu-text">Trial Balance</span></a><b class="arrow"></b></li><li><a href="/preview/acc-cash-flow"><i class="menu-icon fa fa-exchange"></i><span class="menu-text">Cash Flow Statement</span></a><b class="arrow"></b></li><li><a href="/preview/acc-ratio-analysis"><i class="menu-icon fa fa-pie-chart"></i><span class="menu-text">Ratio &amp; Share Analysis</span></a><b class="arrow"></b></li><li><a href="/preview/acc-chart-of-account"><i class="menu-icon fa fa-sitemap"></i><span class="menu-text">Chart of Accounts</span></a><b class="arrow"></b></li><li><a href="/preview/acc-account-ledger"><i class="menu-icon fa fa-book"></i><span class="menu-text">Account Ledger</span></a><b class="arrow"></b></li><li><a href="/preview/public-home"><i class="menu-icon fa fa-globe"></i><span class="menu-text">Public Hotel Site</span></a><b class="arrow"></b></li><li><a href="/preview/rsi-inventory-report"><i class="menu-icon fa fa-cubes"></i><span class="menu-text">Inventory Stock</span></a><b class="arrow"></b></li><li><a href="/preview/gs-purchases"><i class="menu-icon fa fa-shopping-cart"></i><span class="menu-text">General Store POs</span></a><b class="arrow"></b></li><li><a href="/preview/acc-payments"><i class="menu-icon fa fa-book"></i><span class="menu-text">Account Vouchers</span></a><b class="arrow"></b></li><li><a href="/preview/rst-kitchen-board"><i class="menu-icon fa fa-fire"></i><span class="menu-text">Kitchen Board (KDS)</span></a><b class="arrow"></b></li><li><a href="/preview/checkout"><i class="menu-icon fa fa-credit-card"></i><span class="menu-text">Checkout and payment</span></a><b class="arrow"></b></li><li><a href="/preview/rst-pos"><i class="menu-icon fa fa-cutlery"></i><span class="menu-text">Restaurant POS</span></a><b class="arrow"></b></li><li><a href="/preview/bar-pos"><i class="menu-icon fa fa-glass"></i><span class="menu-text">Bar POS</span></a><b class="arrow"></b></li><li><a href="/preview/rst-tables"><i class="menu-icon fa fa-th-large"></i><span class="menu-text">Restaurant Tables</span></a><b class="arrow"></b></li><li><a href="/preview/bar-tables"><i class="menu-icon fa fa-th-large"></i><span class="menu-text">Bar Tables</span></a><b class="arrow"></b></li><li><a href="/preview/payment-collection"><i class="menu-icon fa fa-money"></i><span class="menu-text">Payment collection</span></a><b class="arrow"></b></li><li><a href="/preview/system-settings"><i class="menu-icon fa fa-cogs"></i><span class="menu-text">System Settings</span></a><b class="arrow"></b></li><li><a href="/preview/login"><i class="menu-icon fa fa-lock"></i><span class="menu-text">Staff Login (Auth)</span></a><b class="arrow"></b></li><li><a href="/preview/invoice"><i class="menu-icon fa fa-print"></i><span class="menu-text">Booking invoice</span></a><b class="arrow"></b></li>'+hiddenAll;
+ const nav='<li><a href="/preview"><i class="menu-icon fa fa-th-large"></i><span class="menu-text">All 300 Screens Hub</span></a><b class="arrow"></b></li><li><a href="/preview/booking-next"><i class="menu-icon fa fa-map-o"></i><span class="menu-text">Booking Wizard &amp; Floor Plan</span></a><b class="arrow"></b></li><li><a href="/preview/draft-booking-pdf"><i class="menu-icon fa fa-file-pdf-o"></i><span class="menu-text">Draft Summary A4 PDF</span></a><b class="arrow"></b></li><li><a href="/preview/kiosk-checkin"><i class="menu-icon fa fa-tablet"></i><span class="menu-text">Kiosk Check-In (F10)</span></a><b class="arrow"></b></li><li><a href="/preview/room-move"><i class="menu-icon fa fa-exchange"></i><span class="menu-text">Room Move &amp; Folio (F9)</span></a><b class="arrow"></b></li><li><a href="/preview/guest-crm"><i class="menu-icon fa fa-address-book-o"></i><span class="menu-text">Guest CRM 360 (F11)</span></a><b class="arrow"></b></li><li><a href="/preview/minibar-folio"><i class="menu-icon fa fa-glass"></i><span class="menu-text">Minibar Auto-Post (F15)</span></a><b class="arrow"></b></li><li><a href="/preview/city-ledger"><i class="menu-icon fa fa-building-o"></i><span class="menu-text">City Ledger AR (F20)</span></a><b class="arrow"></b></li><li><a href="/preview/manager-bi"><i class="menu-icon fa fa-bar-chart"></i><span class="menu-text">Manager BI Suite (F29)</span></a><b class="arrow"></b></li><li><a href="/preview/tape-chart"><i class="menu-icon fa fa-calendar"></i><span class="menu-text">7-Day Tape Chart (20)</span></a><b class="arrow"></b></li><li><a href="/preview/rooms"><i class="menu-icon fa fa-bed"></i><span class="menu-text">Rooms Directory (20)</span></a><b class="arrow"></b></li><li><a href="/preview/guests"><i class="menu-icon fa fa-users"></i><span class="menu-text">Guests Directory (20)</span></a><b class="arrow"></b></li><li><a href="/preview/bookings"><i class="menu-icon fa fa-list-alt"></i><span class="menu-text">Bookings Ledger (20)</span></a><b class="arrow"></b></li><li><a href="/preview/wiki"><i class="menu-icon fa fa-question-circle"></i><span class="menu-text">Wiki &amp; Help (EN/বাংলা)</span></a><b class="arrow"></b></li><li><a href="/preview/ui-kit"><i class="menu-icon fa fa-cubes"></i><span class="menu-text">UI Component Kit</span></a><b class="arrow"></b></li><li><a href="/preview/acc-balance-sheet"><i class="menu-icon fa fa-building-o"></i><span class="menu-text">Balance Sheet</span></a><b class="arrow"></b></li><li><a href="/preview/acc-income-statement"><i class="menu-icon fa fa-line-chart"></i><span class="menu-text">Income Statement</span></a><b class="arrow"></b></li><li><a href="/preview/acc-trial-balance"><i class="menu-icon fa fa-balance-scale"></i><span class="menu-text">Trial Balance</span></a><b class="arrow"></b></li><li><a href="/preview/acc-cash-flow"><i class="menu-icon fa fa-exchange"></i><span class="menu-text">Cash Flow Statement</span></a><b class="arrow"></b></li><li><a href="/preview/acc-ratio-analysis"><i class="menu-icon fa fa-pie-chart"></i><span class="menu-text">Ratio &amp; Share Analysis</span></a><b class="arrow"></b></li><li><a href="/preview/acc-chart-of-account"><i class="menu-icon fa fa-sitemap"></i><span class="menu-text">Chart of Accounts</span></a><b class="arrow"></b></li><li><a href="/preview/acc-account-ledger"><i class="menu-icon fa fa-book"></i><span class="menu-text">Account Ledger</span></a><b class="arrow"></b></li><li><a href="/preview/public-home"><i class="menu-icon fa fa-globe"></i><span class="menu-text">Public Hotel Site</span></a><b class="arrow"></b></li><li><a href="/preview/rsi-inventory-report"><i class="menu-icon fa fa-cubes"></i><span class="menu-text">Inventory Stock</span></a><b class="arrow"></b></li><li><a href="/preview/gs-purchases"><i class="menu-icon fa fa-shopping-cart"></i><span class="menu-text">General Store POs</span></a><b class="arrow"></b></li><li><a href="/preview/acc-payments"><i class="menu-icon fa fa-book"></i><span class="menu-text">Account Vouchers</span></a><b class="arrow"></b></li><li><a href="/preview/rst-kitchen-board"><i class="menu-icon fa fa-fire"></i><span class="menu-text">Kitchen Board (KDS)</span></a><b class="arrow"></b></li><li><a href="/preview/checkout"><i class="menu-icon fa fa-credit-card"></i><span class="menu-text">Checkout and payment</span></a><b class="arrow"></b></li><li><a href="/preview/rst-pos"><i class="menu-icon fa fa-cutlery"></i><span class="menu-text">Restaurant POS</span></a><b class="arrow"></b></li><li><a href="/preview/bar-pos"><i class="menu-icon fa fa-glass"></i><span class="menu-text">Bar POS</span></a><b class="arrow"></b></li><li><a href="/preview/rst-tables"><i class="menu-icon fa fa-th-large"></i><span class="menu-text">Restaurant Tables</span></a><b class="arrow"></b></li><li><a href="/preview/bar-tables"><i class="menu-icon fa fa-th-large"></i><span class="menu-text">Bar Tables</span></a><b class="arrow"></b></li><li><a href="/preview/payment-collection"><i class="menu-icon fa fa-money"></i><span class="menu-text">Payment collection</span></a><b class="arrow"></b></li><li><a href="/preview/system-settings"><i class="menu-icon fa fa-cogs"></i><span class="menu-text">System Settings</span></a><b class="arrow"></b></li><li><a href="/preview/login"><i class="menu-icon fa fa-lock"></i><span class="menu-text">Staff Login (Auth)</span></a><b class="arrow"></b></li><li><a href="/preview/invoice"><i class="menu-icon fa fa-print"></i><span class="menu-text">Booking invoice</span></a><b class="arrow"></b></li>'+hiddenAll;
  return page.replace(/(id="mm-primary-menu"[^>]*>)/,(m)=>m+nav);
 }
 const pubPages={'/preview/public-home':'frontend/home.html','/preview/public-rooms':'frontend/room_view.html','/preview/public-room-view':'frontend/room_view.html','/preview/public-booking-cart':'frontend/booking_cart.html','/preview/public-search-all-room':'frontend/search_all_room.html','/preview/public-search-room':'frontend/search_room.html','/preview/public-guest-register':'frontend/guest_register.html','/preview/public-booking-register':'frontend/booking_register.html','/preview/public-food-menu':'frontend/food_menu.html','/preview/public-bar-menu':'frontend/bar_menu.html','/preview/public-terms':'frontend/terms.html','/preview/public-privacy-policy':'frontend/privacy_policy.html','/preview/public-single-page-view':'frontend/single_page_view.html'};
