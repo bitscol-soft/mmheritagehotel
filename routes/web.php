@@ -194,4 +194,6 @@ Route::view('/ui-kit', 'ui.kit')->middleware(['auth', 'super-admin'])->name('ui.
 Route::view('/wiki', 'ui.wiki')->middleware(['auth'])->name('ui.wiki');
 Route::view('/help', 'ui.wiki')->middleware(['auth'])->name('ui.help');
 Route::view('/sop-print', 'ui.sop-print')->middleware(['auth'])->name('ui.sop-print');
+Route::view('/tape-chart', 'ui.tape-chart')->middleware(['auth'])->name('ui.tape-chart');
+
 
