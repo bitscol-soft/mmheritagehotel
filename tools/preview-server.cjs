@@ -673,27 +673,58 @@ function ratePlansPage(){
 function draftBookingPdfPage(){
  const html=fix('preview/booking-next.html');
  const sheetStart=html.indexOf('<div class="mm-wiz-draft-sheet" id="wiz-draft-sheet">');
- const sheetEnd=html.indexOf('</div>\n                    </div>\n                    <div class="modal-footer">\n                        <button type="button" class="btn btn-default" data-dismiss="modal">Close Preview</button>');
+ const sheetEnd=html.indexOf('</div>\n                    </div>\n                    <div class="modal-footer">',sheetStart);
  const sheet=sheetStart>=0&&sheetEnd>sheetStart?html.slice(sheetStart,sheetEnd)+'</div>':'<div class="mm-panel tw-p-5">Draft Booking Summary PDF</div>';
  const body=`<section class="mm-ui mm-booking-next"><div class="tw-space-y-4 tw-py-2">
  <header class="mm-page-head mm-no-print tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
   <div class="mm-page-title">
-   <h1 class="tw-m-0 tw-font-semibold tw-text-ink"><i class="fa fa-file-pdf-o"></i> Whole Booking Preview — Draft Reservation Summary PDF</h1>
-   <p class="tw-m-0 tw-text-sm tw-text-muted">Executive A4 Pre-Confirmation Reservation Summary for guest review, signature, and instant PDF print/download.</p>
+   <h1 class="tw-m-0 tw-font-semibold tw-text-ink"><i class="fa fa-file-pdf-o"></i> Whole Booking Preview — Draft Reservation Summary PDF (Standalone A4 View)</h1>
+   <p class="tw-m-0 tw-text-sm tw-text-muted">2-Page Executive A4 Pre-Confirmation Reservation Summary for guest review, signature, and instant PDF print or download.</p>
   </div>
   <div class="tw-flex tw-flex-wrap tw-gap-2">
    <a href="/preview/booking-next" class="mm-button mm-button-secondary"><i class="fa fa-arrow-left"></i> Back to 3-Step Booking Wizard</a>
-   <a href="/assets/docs/draft-reservation-summary.pdf" download="MM-Heritage-Draft-Booking-Summary.pdf" class="mm-button mm-button-secondary"><i class="fa fa-download"></i> Download Vector PDF</a>
-   <button type="button" class="mm-button" onclick="window.print()"><i class="fa fa-print"></i> Print / Save as A4 PDF</button>
+   <a href="/assets/docs/draft-reservation-summary.pdf?download=1" download="MM-Heritage-Draft-Booking-Summary.pdf" id="standalone-btn-download-pdf" onclick="var t=document.getElementById('standalone-dl-toast');if(t)t.style.display='block';" class="mm-button mm-button-secondary"><i class="fa fa-download"></i> Download Draft PDF</a>
+   <button type="button" id="standalone-btn-toggle-pdf-embed" class="mm-button mm-button-secondary" onclick="var el=document.getElementById('standalone-pdf-embed-wrap');if(el){el.style.display=el.style.display==='none'?'block':'none';}"><i class="fa fa-eye"></i> Embedded Vector PDF Viewer</button>
+   <button type="button" class="mm-button" onclick="window.print()"><i class="fa fa-print"></i> Print 2-Page A4 PDF</button>
   </div>
  </header>
+ <div id="standalone-dl-toast" class="mm-wiz-adv-alert is-ok mm-no-print" style="display:none; max-width:980px; margin:0 auto 10px; background:#ecfdf5; border:1px solid #34d399; color:#065f46; border-radius:10px; padding:10px 14px;">
+  <div class="tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-2">
+   <span><i class="fa fa-check-circle"></i> <strong>MM-Heritage-Draft-Booking-Summary.pdf (2 Pages · A4 Vector)</strong> downloaded.</span>
+   <button type="button" class="mm-button mm-button-secondary" onclick="var el=document.getElementById('standalone-pdf-embed-wrap');if(el)el.style.display='block';" style="min-height:26px;padding:2px 10px;font-size:11px;"><i class="fa fa-eye"></i> Open Embedded Vector PDF Viewer</button>
+  </div>
+ </div>
  <div class="mm-table-kpi-grid mm-no-print" aria-label="Draft booking PDF metrics">
-  <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-file-pdf-o"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Document Format</span><div class="mm-table-kpi-value">A4 Portrait PDF <span class="mm-table-kpi-sub">1 Page · Vector</span></div></div></div>
+  <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-file-pdf-o"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Document Format</span><div class="mm-table-kpi-value">2-Page A4 PDF <span class="mm-table-kpi-sub">210 × 297 mm Vector</span></div></div></div>
   <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-bed"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Assigned Suites</span><div class="mm-table-kpi-value">2 Suites · 2 Nights <span class="mm-table-kpi-sub">#101 &amp; #201</span></div></div></div>
   <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-users"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Registered Guests</span><div class="mm-table-kpi-value">3 Occupants <span class="mm-table-kpi-sub">KYC Verified</span></div></div></div>
   <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-check-circle"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Net Stay / Advance</span><div class="mm-table-kpi-value">৳ 25,000 / ৳ 10,000 <span class="mm-table-kpi-sub">Due: ৳ 15,000</span></div></div></div>
  </div>
- <div style="max-width:920px;margin:0 auto;">${sheet}</div>
+ <div class="mm-wiz-pdf-toolbar mm-no-print" id="wiz-pdf-toolbar" style="max-width:980px; margin:0 auto 14px; border-radius:10px; border:1px solid rgba(148,163,184,0.36); box-shadow:0 4px 12px rgba(15,23,42,0.06);">
+  <div class="tw-flex tw-flex-wrap tw-items-center tw-gap-2">
+   <span class="mm-badge mm-badge-paid"><i class="fa fa-file-pdf-o"></i> Standalone 2-Page A4 Executive Summary (210 × 297 mm)</span>
+   <span class="tw-text-xs tw-text-muted">Page 1: Stay, Guest KYC &amp; Suites · Page 2: Financial Folio, Policy &amp; Signatures</span>
+  </div>
+  <div class="tw-flex tw-flex-wrap tw-gap-2">
+   <button type="button" class="mm-button" id="wiz-btn-print-draft-top" onclick="window.print()" style="min-height:30px; padding:3px 12px; font-size:11.5px;">
+    <i class="fa fa-print"></i> Print 2-Page Draft PDF
+   </button>
+   <a href="/assets/docs/draft-reservation-summary.pdf?download=1" download="MM-Heritage-Draft-Booking-Summary.pdf" onclick="var t=document.getElementById('standalone-dl-toast');if(t)t.style.display='block';" class="mm-button mm-button-secondary" id="wiz-btn-download-draft-pdf" style="min-height:30px; padding:3px 11px; font-size:11.5px;">
+    <i class="fa fa-download"></i> Download Draft PDF
+   </a>
+   <button type="button" class="mm-button mm-button-secondary" onclick="var el=document.getElementById('standalone-pdf-embed-wrap');if(el){el.style.display=el.style.display==='none'?'block':'none';}" style="min-height:30px; padding:3px 11px; font-size:11.5px;">
+    <i class="fa fa-file-pdf-o"></i> View Embedded Vector PDF
+   </button>
+  </div>
+ </div>
+ <div id="standalone-pdf-embed-wrap" class="mm-panel tw-p-4 mm-no-print" style="display:none; max-width:980px; margin:0 auto 16px;">
+  <div class="tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-2" style="margin-bottom:10px;">
+   <strong><i class="fa fa-file-pdf-o"></i> Embedded 2-Page Vector PDF Document (<code>/assets/docs/draft-reservation-summary.pdf</code>)</strong>
+   <a href="/assets/docs/draft-reservation-summary.pdf?download=1" download="MM-Heritage-Draft-Booking-Summary.pdf" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11.5px;"><i class="fa fa-download"></i> Save Vector PDF</a>
+  </div>
+  <iframe src="/assets/docs/draft-reservation-summary.pdf" title="Draft Reservation Summary Vector PDF" style="width:100%; height:640px; border:1px solid #cbd5e1; border-radius:8px; background:#fff;"></iframe>
+ </div>
+ <div style="max-width:980px;margin:0 auto;">${sheet}</div>
  </div></section>`;
  return shellWith(body,'','','Whole Booking Preview — Draft Reservation Summary PDF',['Hotel','Booking','Draft Summary PDF']);
 }
@@ -817,6 +848,12 @@ http.createServer((req,res)=>{
  if(!file.startsWith(root+'/public/assets/')&&!file.startsWith(root+'/public/frontend/')&&!file.startsWith(root+'/public/food_menu/')){res.writeHead(403);return res.end();}
  fs.readFile(file,(err,data)=>{
   if(err){res.writeHead(404);return res.end('Not found');}
-  res.writeHead(200,{'Content-Type':types[path.extname(file)]||'application/octet-stream','Cache-Control':'no-store'});res.end(data);
+  const ext=path.extname(file);
+  const hdrs={'Content-Type':types[ext]||'application/octet-stream','Cache-Control':'no-store'};
+  if(ext==='.pdf'){
+   hdrs['Content-Disposition']=(url.searchParams.get('download')==='1'?'attachment':'inline')+'; filename="MM-Heritage-Draft-Booking-Summary.pdf"';
+   hdrs['Content-Length']=String(data.length);
+  }
+  res.writeHead(200,hdrs);res.end(data);
  });
 }).listen(Number(process.env.PORT)||3000,'0.0.0.0');
