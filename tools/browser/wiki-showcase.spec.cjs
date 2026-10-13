@@ -215,4 +215,46 @@ test('20-room & 20-guest sample dataset renders across Tape Chart, Rooms, Guests
     await expect(page.locator('#wiz-draft-page-1')).toBeVisible();
     await expect(page.locator('#wiz-draft-page-2')).toBeVisible();
     await expect(page.locator('.mm-wiz-pdf-hero')).toBeVisible();
+
+    // Verify Complete Plan B Command Center (F1-F34) & all 22 new Plan B workspaces
+    await page.goto(`http://127.0.0.1:${PORT}/preview/plan-b`);
+    await expect(page.locator('.planb-card')).toHaveCount(34);
+    await page.locator('[data-pb-pillar="4. Finance & Compliance"]').click();
+    await expect(page.locator('.planb-card:visible')).toHaveCount(6);
+    await page.locator('[data-pb-pillar="All"]').click();
+    await expect(page.locator('.planb-card:visible')).toHaveCount(34);
+    await page.fill('#planb-search', 'F17');
+    await expect(page.locator('.planb-card:visible')).toHaveCount(1);
+
+    const planBNewRoutes = [
+        '/preview/payment-gateway',
+        '/preview/dynamic-pricing',
+        '/preview/upsell-marketplace',
+        '/preview/inventory-guards',
+        '/preview/group-contracts',
+        '/preview/maintenance-tickets',
+        '/preview/shift-roster',
+        '/preview/e-invoicing',
+        '/preview/tax-rules',
+        '/preview/night-audit-hardening',
+        '/preview/gateway-reconciliation',
+        '/preview/multi-currency-fx',
+        '/preview/notification-backbone',
+        '/preview/guest-portal',
+        '/preview/loyalty-coupons',
+        '/preview/guest-reviews',
+        '/preview/public-seo-cms',
+        '/preview/mobile-staff-app',
+        '/preview/api-webhooks',
+        '/preview/multi-property',
+        '/preview/admin-i18n',
+        '/preview/audit-compliance',
+        '/preview/import-export-hub',
+    ];
+    for (const r of planBNewRoutes) {
+        const resp = await page.goto(`http://127.0.0.1:${PORT}${r}`);
+        expect(resp && resp.status()).toBe(200);
+        await expect(page.locator('.mm-table-kpi-grid .mm-table-kpi-card').first()).toBeVisible();
+    }
 });
+

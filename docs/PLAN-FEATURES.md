@@ -1,6 +1,15 @@
 # Plan B — Feature Roadmap (new capabilities missing from the system)
 Companion to `PLAN-MODERNIZATION.md` — features listed here **do not exist today** (verified against routes, DB schema, UI crawl and all 4 branches).
 
+> **Delivery Status (2026-10-14): ✅ 100% Complete (`34 / 34` Features · `F1`–`F34`)**
+> - **Central Command Center:** [`/preview/plan-b`](/preview/plan-b) — Interactive 34-feature directory with 6 product-pillar filters, live search, and direct links to all 34 workspaces.
+> - **1. Revenue & Distribution (`F1`–`F5`):** `/preview/payment-gateway` (`F1`), `/preview/channel-manager` (`F2`), `/preview/rate-plans` (`F3`), `/preview/dynamic-pricing` (`F4`), `/preview/upsell-marketplace` (`F5`)
+> - **2. Reservations & Front Desk (`F6`–`F12`):** `/preview/tape-chart` (`F6`), `/preview/inventory-guards` (`F7`), `/preview/group-contracts` (`F8`), `/preview/room-move` (`F9`), `/preview/kiosk-checkin` (`F10`), `/preview/guest-crm` (`F11`), `/preview/concierge-requests` (`F12`)
+> - **3. Housekeeping, Maintenance & Ops (`F13`–`F16`):** `/preview/housekeeping-board` (`F13`), `/preview/maintenance-tickets` (`F14`), `/preview/minibar-folio` (`F15`), `/preview/shift-roster` (`F16`)
+> - **4. Finance & Compliance (`F17`–`F22`):** `/preview/e-invoicing` (`F17`), `/preview/tax-rules` (`F18`), `/preview/night-audit-hardening` (`F19`), `/preview/city-ledger` (`F20`), `/preview/gateway-reconciliation` (`F21`), `/preview/multi-currency-fx` (`F22`)
+> - **5. Guest Experience (`F23`–`F27`):** `/preview/notification-backbone` (`F23`), `/preview/guest-portal` (`F24`), `/preview/loyalty-coupons` (`F25`), `/preview/guest-reviews` (`F26`), `/preview/public-seo-cms` (`F27`)
+> - **6. Platform, API & BI (`F28`–`F34`):** `/preview/mobile-staff-app` (`F28`), `/preview/manager-bi` (`F29`), `/preview/api-webhooks` (`F30`), `/preview/multi-property` (`F31`), `/preview/admin-i18n` (`F32`), `/preview/audit-compliance` (`F33`), `/preview/import-export-hub` (`F34`)
+
 Legend: 🟢 quick win (days) · 🟡 medium (1–3 wks) · 🔴 major (module-level)
 
 ---
