@@ -1981,10 +1981,72 @@
     color: #94a3b8;
 }
 
+/* Desktop A4-Ratio App Drawer & Full-Fidelity Print Engine for Draft Reservation Summary PDF */
+@media (min-width: 769px) {
+    .mm-shell #wiz-draft-summary-modal .modal-dialog {
+        width: min(920px, 95vw) !important;
+        max-width: min(920px, 95vw) !important;
+    }
+    .mm-shell #wiz-floorplan-modal .modal-dialog {
+        width: min(860px, 92vw) !important;
+        max-width: min(860px, 92vw) !important;
+    }
+    .mm-shell #wiz-draft-summary-modal .modal-body {
+        background: linear-gradient(180deg, #e2e8f0 0%, #cbd5e1 100%) !important;
+        padding: 22px 28px !important;
+    }
+    .mm-shell.mm-dark #wiz-draft-summary-modal .modal-body {
+        background: linear-gradient(180deg, #0b1120 0%, #0f172a 100%) !important;
+    }
+}
 
-
-
-
-
-
-
+@media print {
+    .mm-shell.mm-printing-draft-pdf #navbar,
+    .mm-shell.mm-printing-draft-pdf #sidebar,
+    .mm-shell.mm-printing-draft-pdf .breadcrumbs,
+    .mm-shell.mm-printing-draft-pdf .footer,
+    .mm-shell.mm-printing-draft-pdf .modal-backdrop,
+    .mm-shell.mm-printing-draft-pdf [role="note"],
+    .mm-shell.mm-printing-draft-pdf #mm-quick-drawer,
+    .mm-shell:has(.mm-booking-next) #navbar,
+    .mm-shell:has(.mm-booking-next) #sidebar,
+    .mm-shell:has(.mm-booking-next) .breadcrumbs,
+    .mm-shell:has(.mm-booking-next) .footer,
+    .mm-shell:has(.mm-booking-next) .modal-backdrop,
+    .mm-shell:has(.mm-booking-next) [role="note"],
+    .mm-shell:has(.mm-booking-next) #mm-quick-drawer {
+        display: none !important;
+    }
+    .mm-shell.mm-printing-draft-pdf .main-content,
+    .mm-shell.mm-printing-draft-pdf .main-content-inner,
+    .mm-shell.mm-printing-draft-pdf .page-content,
+    .mm-shell:has(.mm-booking-next) .main-content,
+    .mm-shell:has(.mm-booking-next) .main-content-inner,
+    .mm-shell:has(.mm-booking-next) .page-content {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        background: #ffffff !important;
+    }
+    .mm-shell #wiz-draft-summary-modal,
+    .mm-shell #wiz-draft-summary-modal .modal-dialog,
+    .mm-shell #wiz-draft-summary-modal .modal-content,
+    .mm-shell #wiz-draft-summary-modal .modal-body {
+        position: static !important;
+        inset: auto !important;
+        transform: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        height: auto !important;
+        max-height: none !important;
+        overflow: visible !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        border: 0 !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        background: #ffffff !important;
+        display: block !important;
+        opacity: 1 !important;
+    }
+}

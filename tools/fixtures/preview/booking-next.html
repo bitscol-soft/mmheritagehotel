@@ -1136,23 +1136,26 @@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
                     </div>
                     <div class="modal-body">
-                        <div class="mm-wiz-draft-sheet" id="wiz-draft-sheet">
-                            <!-- Top PDF Document Action Toolbar (Hidden in @media print) -->
-                            <div class="mm-wiz-pdf-toolbar" id="wiz-pdf-toolbar">
-                                <div class="tw-flex tw-flex-wrap tw-items-center tw-gap-2">
-                                    <span class="mm-badge mm-badge-paid"><i class="fa fa-file-pdf-o"></i> A4 Executive PDF Sheet</span>
-                                    <span class="tw-text-xs tw-text-muted">Live synchronized with Steps 1–3 · Ready for Print or PDF Download</span>
-                                </div>
-                                <div class="tw-flex tw-flex-wrap tw-gap-2">
-                                    <button type="button" class="mm-button mm-button-secondary" id="wiz-btn-download-draft-pdf" style="min-height:30px; padding:3px 11px; font-size:11.5px;">
-                                        <i class="fa fa-download"></i> Download Draft PDF
-                                    </button>
-                                    <a href="/preview/draft-booking-pdf" target="_blank" rel="noopener" class="mm-button mm-button-secondary" id="wiz-btn-open-pdf-tab" style="min-height:30px; padding:3px 11px; font-size:11.5px;">
-                                        <i class="fa fa-external-link"></i> Standalone A4 PDF View
-                                    </a>
-                                </div>
+                        <!-- Top PDF Document Viewer Toolbar (Hidden in @media print) -->
+                        <div class="mm-wiz-pdf-toolbar" id="wiz-pdf-toolbar" style="max-width:794px; margin:0 auto 14px; border-radius:10px; border:1px solid rgba(148,163,184,0.36); box-shadow:0 4px 12px rgba(15,23,42,0.06);">
+                            <div class="tw-flex tw-flex-wrap tw-items-center tw-gap-2">
+                                <span class="mm-badge mm-badge-paid"><i class="fa fa-file-pdf-o"></i> A4 Portrait (210 × 297 mm)</span>
+                                <span class="tw-text-xs tw-text-muted">Live synchronized with Steps 1–3 · Print-Ready Vector Sheet</span>
                             </div>
+                            <div class="tw-flex tw-flex-wrap tw-gap-2">
+                                <button type="button" class="mm-button" id="wiz-btn-print-draft-top" style="min-height:30px; padding:3px 12px; font-size:11.5px;">
+                                    <i class="fa fa-print"></i> Print Draft Summary PDF
+                                </button>
+                                <button type="button" class="mm-button mm-button-secondary" id="wiz-btn-download-draft-pdf" style="min-height:30px; padding:3px 11px; font-size:11.5px;">
+                                    <i class="fa fa-download"></i> Download Draft PDF
+                                </button>
+                                <a href="/preview/draft-booking-pdf" target="_blank" rel="noopener" class="mm-button mm-button-secondary" id="wiz-btn-open-pdf-tab" style="min-height:30px; padding:3px 11px; font-size:11.5px;">
+                                    <i class="fa fa-external-link"></i> Standalone A4 View
+                                </a>
+                            </div>
+                        </div>
 
+                        <div class="mm-wiz-draft-sheet" id="wiz-draft-sheet">
                             <!-- Luxury Hotel PDF Header Banner -->
                             <div class="mm-wiz-pdf-hero">
                                 <div class="mm-wiz-pdf-brand">
@@ -1951,9 +1954,16 @@
 
     function printDraftBookingSummary() {
         buildDraftBookingSummary();
+        document.body.classList.add('mm-printing-draft-pdf');
         var modal = document.getElementById('wiz-draft-summary-modal');
-        if (modal && window.jQuery && typeof window.jQuery(modal).modal === 'function' && !modal.classList.contains('in')) {
-            window.jQuery(modal).modal('show');
+        if (modal) {
+            if (window.jQuery && typeof window.jQuery(modal).modal === 'function' && !modal.classList.contains('in')) {
+                window.jQuery(modal).modal('show');
+            } else {
+                modal.classList.add('in', 'show');
+                modal.style.display = 'block';
+                modal.setAttribute('aria-hidden', 'false');
+            }
         }
         var printBanner = document.getElementById('wiz-draft-print-banner');
         var printBannerText = document.getElementById('wiz-draft-print-banner-text');
@@ -1965,6 +1975,178 @@
             try { window.print(); } catch (e) {}
         }
     }
+    window.addEventListener('afterprint', function () {
+        document.body.classList.remove('mm-printing-draft-pdf');
+    });
+
+    function buildDynamicPdfBlob() {
+        function pdfEsc(s) {
+            return String(s || '').replace(/[^\x20-\x7E]/g, ' ').replace(/\\/g, '\\\\').replace(/\(/g, '\\(').replace(/\)/g, '\\)');
+        }
+        function fmtBdt(n) {
+            return 'BDT ' + Math.round(n || 0).toLocaleString('en-US');
+        }
+        var inVal = (document.getElementById('wiz-checkin-date') || {}).value || '2026-10-14';
+        var outVal = (document.getElementById('wiz-checkout-date') || {}).value || '2026-10-16';
+        var tIn = formatTime12((document.getElementById('wiz-checkin-time') || {}).value || '14:00');
+        var tOut = formatTime12((document.getElementById('wiz-checkout-time') || {}).value || '12:00');
+        var nights = Math.max(1, parseInt((document.getElementById('wiz-nights') || {}).value || '2', 10));
+        var gName = (document.getElementById('wiz-guest-name') || {}).value || 'Tanvir Ahmed Chowdhury';
+        var gPhone = (document.getElementById('wiz-guest-phone') || {}).value || '+880 1711-948210';
+        var gNid = (document.getElementById('wiz-guest-nid') || {}).value || 'BD-8894021562';
+        var gEmail = (document.getElementById('wiz-guest-email') || {}).value || '';
+        var coRows = document.querySelectorAll('#wiz-coguests-tbody .wiz-coguest-row');
+        var totalGuests = 1 + coRows.length;
+
+        var ops = [];
+        var rgbF = function (r, g, b) { ops.push((r / 255).toFixed(3) + ' ' + (g / 255).toFixed(3) + ' ' + (b / 255).toFixed(3) + ' rg'); };
+        var rgbS = function (r, g, b) { ops.push((r / 255).toFixed(3) + ' ' + (g / 255).toFixed(3) + ' ' + (b / 255).toFixed(3) + ' RG'); };
+        var rF = function (x, y, w, h) { ops.push(x + ' ' + y + ' ' + w + ' ' + h + ' re f'); };
+        var rFS = function (x, y, w, h, lw) { ops.push((lw || 0.75) + ' w ' + x + ' ' + y + ' ' + w + ' ' + h + ' re B'); };
+        var txt = function (x, y, sz, f, s, r, g, b) {
+            rgbF(r === undefined ? 15 : r, g === undefined ? 23 : g, b === undefined ? 42 : b);
+            ops.push('BT /' + f + ' ' + sz + ' Tf 1 0 0 1 ' + x + ' ' + y + ' Tm (' + pdfEsc(s) + ') Tj ET');
+        };
+
+        rgbF(255, 255, 255); rF(0, 0, 595, 842);
+        rgbS(203, 213, 225); ops.push('0.9 w 24 24 547 794 re S');
+        rgbF(15, 23, 42); rF(24, 732, 547, 86);
+        rgbF(245, 158, 11); rF(24, 729, 547, 3);
+        rgbF(245, 158, 11); rF(38, 752, 46, 46);
+        txt(45, 770, 13, 'F2', 'M&M', 15, 23, 42);
+        txt(94, 792, 7.5, 'F2', 'FIVE-STAR BOUTIQUE HOSPITALITY  |  DHAKA, BANGLADESH', 252, 211, 77);
+        txt(94, 774, 15, 'F2', 'M&M HERITAGE HOTEL & SUITES', 255, 255, 255);
+        txt(94, 760, 8, 'F1', 'Plot 42, Road 90, Gulshan-2, Dhaka-1212  |  BIN: 004192837-0101', 203, 213, 225);
+        txt(94, 748, 8, 'F1', 'Front Desk: +880 2-55051920  |  Whole Booking Preview - Draft Summary PDF', 148, 163, 184);
+
+        rgbF(30, 41, 59); rgbS(71, 85, 105); rFS(368, 743, 190, 64, 0.75);
+        txt(377, 795, 7, 'F2', 'WHOLE BOOKING PREVIEW - DRAFT PDF', 147, 197, 253);
+        rgbF(5, 150, 105); rF(377, 777, 132, 13);
+        txt(383, 781, 7.5, 'F2', 'DRAFT - READY TO CONFIRM', 255, 255, 255);
+        txt(377, 764, 8.5, 'F2', 'Folio Ref: #DRAFT-BK-2026-1094', 252, 211, 77);
+        txt(377, 751, 7.5, 'F1', 'Issued: ' + inVal + ' 14:00 BST', 203, 213, 225);
+
+        rgbF(239, 246, 255); rF(36, 702, 523, 18);
+        rgbF(37, 99, 235); rF(36, 702, 3.5, 18);
+        txt(46, 708, 8.5, 'F2', '1. STAY SCHEDULE & CHECK-IN / CHECK-OUT WINDOW', 15, 23, 42);
+
+        var kpis = [
+            ['CHECK-IN DATE & TIME', inVal + ' ' + tIn, 'Guaranteed Arrival'],
+            ['CHECK-OUT DATE & TIME', outVal + ' ' + tOut, 'Standard Departure'],
+            ['STAY & OCCUPANCY', nights + ' Nights | ' + totalGuests + ' Guests', 'Breakfast Included'],
+            ['BOOKING CHANNEL', 'Corporate Direct Desk', 'VIP Priority']
+        ];
+        kpis.forEach(function (k, i) {
+            var kx = 36 + i * 132;
+            rgbF(248, 250, 252); rgbS(203, 213, 225); rFS(kx, 654, 127, 42, 0.7);
+            txt(kx + 8, 684, 6.8, 'F2', k[0], 100, 116, 139);
+            txt(kx + 8, 671, 9, 'F2', k[1], 15, 23, 42);
+            txt(kx + 8, 660, 7, 'F1', k[2], 37, 99, 235);
+        });
+
+        rgbF(239, 246, 255); rF(36, 628, 523, 18);
+        rgbF(37, 99, 235); rF(36, 628, 3.5, 18);
+        txt(46, 634, 8.5, 'F2', '2. PRIMARY FOLIO HOLDER & ACCOMPANYING OCCUPANTS (KYC)', 15, 23, 42);
+
+        rgbF(240, 253, 244); rgbS(167, 243, 208); rFS(36, 588, 523, 34, 0.75);
+        rgbF(5, 150, 105); rF(36, 588, 3.5, 34);
+        txt(46, 611, 7, 'F2', 'PRIMARY GUEST (MASTER FOLIO HOLDER - GOVT. ID VERIFIED)', 4, 120, 87);
+        txt(46, 597, 8.5, 'F2', gName + '  |  ' + gPhone + '  |  NID: ' + gNid + (gEmail ? '  |  ' + gEmail : ''), 15, 23, 42);
+
+        rgbF(241, 245, 249); rgbS(203, 213, 225); rFS(36, 562, 523, 18, 0.7);
+        txt(44, 568, 7.5, 'F2', '#', 51, 65, 85);
+        txt(66, 568, 7.5, 'F2', 'ROOM', 51, 65, 85);
+        txt(115, 568, 7.5, 'F2', 'ACCOMPANYING GUEST FULL NAME', 51, 65, 85);
+        txt(275, 568, 7.5, 'F2', 'MOBILE PHONE', 51, 65, 85);
+        txt(365, 568, 7.5, 'F2', 'NID / PASSPORT', 51, 65, 85);
+        txt(455, 568, 7.5, 'F2', 'RELATION', 51, 65, 85);
+
+        Array.prototype.slice.call(coRows, 0, 3).forEach(function (r, idx) {
+            var ry = 544 - idx * 18;
+            rgbF(255, 255, 255); rgbS(226, 232, 240); rFS(36, ry, 523, 18, 0.6);
+            txt(44, ry + 5, 8, 'F1', String(idx + 1));
+            txt(66, ry + 5, 8, 'F2', (r.querySelector('.wiz-cg-room') || {}).value || '#101', 37, 99, 235);
+            txt(115, ry + 5, 8, 'F2', (r.querySelector('.wiz-cg-name') || {}).value || 'Guest');
+            txt(275, ry + 5, 8, 'F1', (r.querySelector('.wiz-cg-phone') || {}).value || '');
+            txt(365, ry + 5, 8, 'F1', (r.querySelector('.wiz-cg-nid') || {}).value || '');
+            txt(455, ry + 5, 8, 'F1', (r.querySelector('.wiz-cg-rel') || {}).value || 'Colleague');
+        });
+
+        rgbF(239, 246, 255); rF(36, 480, 523, 18);
+        rgbF(37, 99, 235); rF(36, 480, 3.5, 18);
+        txt(46, 486, 8.5, 'F2', '3. ASSIGNED SUITES & NIGHTLY TARIFF SCHEDULE', 15, 23, 42);
+
+        rgbF(241, 245, 249); rgbS(203, 213, 225); rFS(36, 456, 523, 18, 0.7);
+        txt(44, 462, 7.5, 'F2', 'SL', 51, 65, 85);
+        txt(72, 462, 7.5, 'F2', 'ROOM & FLOOR', 51, 65, 85);
+        txt(175, 462, 7.5, 'F2', 'SUITE CATEGORY & BED TYPE', 51, 65, 85);
+        txt(365, 462, 7.5, 'F2', 'NIGHTLY RATE', 51, 65, 85);
+        txt(442, 462, 7.5, 'F2', 'NIGHTS', 51, 65, 85);
+        txt(492, 462, 7.5, 'F2', 'LINE TOTAL', 51, 65, 85);
+
+        var nightly = 0;
+        var checkedRooms = Array.prototype.slice.call(document.querySelectorAll('.wiz-room-toggle:checked'), 0, 4);
+        checkedRooms.forEach(function (cb, idx) {
+            var ry = 438 - idx * 18;
+            var rate = parseInt(cb.getAttribute('data-rate') || '0', 10);
+            var code = cb.getAttribute('data-label') || '#101';
+            var row = cb.closest('.mm-wiz-room-row');
+            var fl = row ? (row.getAttribute('data-floor') || '1') : '1';
+            var rType = row ? (row.getAttribute('data-room-type') || 'Deluxe') : 'Deluxe';
+            var bType = row ? (row.getAttribute('data-bed-type') || 'King') : 'King';
+            nightly += rate;
+            rgbF(255, 255, 255); rgbS(226, 232, 240); rFS(36, ry, 523, 18, 0.6);
+            txt(44, ry + 5, 8, 'F1', String(idx + 1));
+            txt(72, ry + 5, 8, 'F2', code + ' (Floor ' + fl + ')', 37, 99, 235);
+            txt(175, ry + 5, 8, 'F1', rType + ' | ' + bType);
+            txt(365, ry + 5, 8, 'F1', fmtBdt(rate));
+            txt(452, ry + 5, 8, 'F2', String(nights));
+            txt(492, ry + 5, 8.5, 'F2', fmtBdt(rate * nights));
+        });
+
+        var sub = nightly * nights;
+        var sc = Math.round(sub * 0.10);
+        var vat = Math.round(sub * 0.15);
+        var total = sub + sc + vat;
+        var disc = Math.max(0, parseInt((document.getElementById('wiz-discount') || {}).value || '0', 10));
+        var net = Math.max(0, total - disc);
+        var adv = Math.max(0, parseInt((document.getElementById('wiz-advance') || {}).value || '0', 10));
+        var due = Math.max(0, net - adv);
+
+        rgbF(245, 250, 255); rgbS(147, 197, 253); rFS(36, 200, 523, 155, 0.85);
+        txt(48, 338, 8.5, 'F2', '4. FINANCIAL FOLIO, ADVANCE DEPOSIT & BALANCE SUMMARY', 37, 99, 235);
+        txt(48, 318, 8, 'F1', 'Combined Nightly Tariff: ' + fmtBdt(nightly) + '   |   Room Stay Subtotal: ' + fmtBdt(sub));
+        txt(48, 302, 8, 'F1', 'Service Charge (10%) + Govt. VAT (15%): ' + fmtBdt(sc + vat) + '   |   Gross Payable: ' + fmtBdt(total));
+        txt(48, 286, 8, 'F1', 'Discount: - ' + fmtBdt(disc) + '   |   Net Stay Payable: ' + fmtBdt(net));
+        txt(48, 268, 8.5, 'F2', 'Advance Deposit Paid Now: ' + fmtBdt(adv), 5, 150, 105);
+        rgbF(15, 23, 42); rF(48, 214, 499, 30);
+        txt(60, 226, 10, 'F2', 'BALANCE DUE AT CHECKOUT', 255, 255, 255);
+        txt(430, 226, 11, 'F2', fmtBdt(due), 252, 211, 77);
+
+        txt(48, 120, 8, 'F2', 'Primary Guest Signature: ___________________________', 15, 23, 42);
+        txt(330, 120, 8, 'F2', 'Front-Desk Officer: ___________________________', 15, 23, 42);
+        txt(48, 52, 7.5, 'F1', 'Document ID: PDF-DRAFT-BK-2026-1094  |  M&M Heritage PMS v2.4  |  Page 1 of 1 (A4 Executive Summary)', 100, 116, 139);
+
+        var stream = ops.join('\n');
+        var objs = [
+            '1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n',
+            '2 0 obj\n<< /Type /Pages /Kids [3 0 R] /Count 1 >>\nendobj\n',
+            '3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 4 0 R /F2 5 0 R >> >> /Contents 6 0 R >>\nendobj\n',
+            '4 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>\nendobj\n',
+            '5 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>\nendobj\n',
+            '6 0 obj\n<< /Length ' + stream.length + ' >>\nstream\n' + stream + '\nendstream\nendobj\n'
+        ];
+        var pdf = '%PDF-1.4\n';
+        var offs = [0];
+        objs.forEach(function (o) { offs.push(pdf.length); pdf += o; });
+        var xref = pdf.length;
+        pdf += 'xref\n0 ' + (objs.length + 1) + '\n0000000000 65535 f \n';
+        for (var i = 1; i < offs.length; i++) {
+            pdf += String(offs[i]).padStart(10, '0') + ' 00000 n \n';
+        }
+        pdf += 'trailer\n<< /Size ' + (objs.length + 1) + ' /Root 1 0 R >>\nstartxref\n' + xref + '\n%%EOF\n';
+        return new Blob([pdf], { type: 'application/pdf' });
+    }
 
     function downloadDraftBookingPdf() {
         buildDraftBookingSummary();
@@ -1974,12 +2156,24 @@
             printBannerText.textContent = 'Whole Booking Preview — Draft Reservation Summary PDF downloaded (MM-Heritage-Draft-Booking-Summary.pdf).';
         }
         if (printBanner) printBanner.style.display = 'block';
-        var a = document.createElement('a');
-        a.href = '/assets/docs/draft-reservation-summary.pdf';
-        a.download = 'MM-Heritage-Draft-Booking-Summary.pdf';
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
+        try {
+            var blob = buildDynamicPdfBlob();
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = 'MM-Heritage-Draft-Booking-Summary.pdf';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            setTimeout(function () { URL.revokeObjectURL(url); }, 2000);
+        } catch (e) {
+            var fallback = document.createElement('a');
+            fallback.href = '/assets/docs/draft-reservation-summary.pdf';
+            fallback.download = 'MM-Heritage-Draft-Booking-Summary.pdf';
+            document.body.appendChild(fallback);
+            fallback.click();
+            document.body.removeChild(fallback);
+        }
     }
 
     var btnDraftPreview = document.getElementById('wiz-btn-draft-preview');
@@ -1989,6 +2183,10 @@
     var btnPrintDraftDirect = document.getElementById('wiz-btn-print-draft-direct');
     if (btnPrintDraftDirect) {
         btnPrintDraftDirect.addEventListener('click', printDraftBookingSummary);
+    }
+    var btnPrintDraftTop = document.getElementById('wiz-btn-print-draft-top');
+    if (btnPrintDraftTop) {
+        btnPrintDraftTop.addEventListener('click', printDraftBookingSummary);
     }
     var btnPrintDraftModal = document.getElementById('wiz-btn-print-draft');
     if (btnPrintDraftModal) {

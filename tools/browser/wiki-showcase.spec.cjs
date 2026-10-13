@@ -153,15 +153,24 @@ test('20-room & 20-guest sample dataset renders across Tape Chart, Rooms, Guests
     // Verify Step 3 Whole Booking Draft Summary Preview & Print PDF option before confirming
     await page.locator('#wiz-btn-draft-preview').click();
     await expect(page.locator('#wiz-draft-summary-modal')).toBeVisible();
+    const drawerWidth = await page.locator('#wiz-draft-summary-modal .modal-dialog').evaluate(el => el.getBoundingClientRect().width);
+    expect(drawerWidth).toBeGreaterThanOrEqual(850);
     await expect(page.locator('.mm-wiz-pdf-hero')).toBeVisible();
     await expect(page.locator('.mm-wiz-pdf-crest')).toContainText('M&M');
     await expect(page.locator('#wiz-btn-download-draft-pdf')).toBeVisible();
+    await expect(page.locator('#wiz-btn-print-draft-top')).toBeVisible();
     await expect(page.locator('#draft-nights')).toContainText('3 Nights · 4 Guests');
     await expect(page.locator('#draft-rooms-tbody tr')).toHaveCount(2);
     await expect(page.locator('#draft-guests-tbody tr')).toHaveCount(3);
     await page.evaluate(() => { window.print = () => { window.__draftPrinted = true; }; });
     await page.locator('#wiz-btn-print-draft').click();
     await expect(page.locator('#wiz-draft-print-banner')).toBeVisible();
+
+    await page.emulateMedia({ media: 'print' });
+    await expect(page.locator('#wiz-draft-sheet')).toBeVisible();
+    await expect(page.locator('#wiz-draft-summary-modal .modal-footer')).toBeHidden();
+    await expect(page.locator('#wiz-pdf-toolbar')).toBeHidden();
+    await page.emulateMedia({ media: 'screen' });
 
     await page.goto(`http://127.0.0.1:${PORT}/preview/draft-booking-pdf`);
     await expect(page.locator('#wiz-draft-sheet')).toBeVisible();
