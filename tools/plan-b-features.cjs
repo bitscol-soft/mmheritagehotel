@@ -634,11 +634,249 @@ function buildPlanBPages(shellWith) {
         },
     };
 
+    function roomSettingsHubPage() {
+        const body = `<section class="mm-ui"><div class="tw-space-y-4 tw-py-2">
+            <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+                <div class="mm-page-title">
+                    <h1 class="tw-m-0 tw-font-semibold tw-text-ink"><i class="fa fa-sliders"></i> Room Settings, Pricing, Amenities &amp; Rules Control Center</h1>
+                    <p class="tw-m-0 tw-text-sm tw-text-muted">Unified configuration hub for Room Categories, Capacity Tariffs, In-Suite Amenities, Check-In/Out Policies, Tax Rules, and Inventory Guards.</p>
+                </div>
+                <div class="tw-flex tw-flex-wrap tw-gap-2">
+                    <a href="/preview/category-create" class="mm-button"><i class="fa fa-plus-circle"></i> + Add Room Category</a>
+                    <a href="/preview/setup-amenities" class="mm-button mm-button-secondary"><i class="fa fa-wifi"></i> Amenities Setup</a>
+                    <a href="/preview/rate-plans" class="mm-button mm-button-secondary"><i class="fa fa-tags"></i> Rate Plans (F3)</a>
+                    <a href="/preview/inventory-guards" class="mm-button mm-button-secondary"><i class="fa fa-shield"></i> OOO &amp; Guards (F7)</a>
+                    <a href="/preview/rooms" class="mm-button mm-button-secondary"><i class="fa fa-bed"></i> 20 Rooms Directory</a>
+                </div>
+            </header>
+            <div class="mm-table-kpi-grid" aria-label="Room settings summary">
+                <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-bed"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Configured Categories</span><div class="mm-table-kpi-value">6 Suite Tiers <span class="mm-table-kpi-sub">20 Physical Rooms</span></div></div></div>
+                <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-money"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Base Tariff Range</span><div class="mm-table-kpi-value">৳ 5,500 – ৳ 24,000 <span class="mm-table-kpi-sub">BAR + Seasonal Plans</span></div></div></div>
+                <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-wifi"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Active Room Amenities</span><div class="mm-table-kpi-value">14 Amenities <span class="mm-table-kpi-sub">Assigned per Category</span></div></div></div>
+                <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-gavel"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Booking &amp; Tax Rules</span><div class="mm-table-kpi-value">20% Min Deposit <span class="mm-table-kpi-sub">5% Svc + 15% VAT</span></div></div></div>
+            </div>
+
+            <div id="rmset-save-banner" class="alert alert-success" style="display:none;margin:0;border-radius:10px;">
+                <i class="fa fa-check-circle"></i> <strong id="rmset-save-msg">Room category pricing, amenities assignment, and house booking rules saved &amp; synced to Booking Wizard!</strong>
+            </div>
+
+            <!-- 1. Room Categories & Pricing Matrix -->
+            <div class="mm-panel tw-p-5">
+                <div class="tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-2" style="margin-bottom:12px;">
+                    <div>
+                        <h2 class="tw-m-0 tw-text-base tw-font-semibold"><i class="fa fa-money"></i> 1. Room Categories, Capacity &amp; Nightly Pricing Configuration</h2>
+                        <p class="tw-m-0 tw-text-xs tw-text-muted">Maps to <code>Hotel → Category</code> (<code>module/Hotel/views/category/{index,create,edit}.blade.php</code>) &amp; <code>Rate Plans (F3)</code>.</p>
+                    </div>
+                    <div class="tw-flex tw-gap-2">
+                        <a href="/preview/category-create" class="mm-button mm-button-secondary" style="min-height:32px;padding:4px 12px;"><i class="fa fa-external-link"></i> Open Category Create Form</a>
+                        <button type="button" class="mm-button" id="rmset-btn-save-prices" style="min-height:32px;padding:4px 12px;"><i class="fa fa-check"></i> Save Tariff Changes</button>
+                    </div>
+                </div>
+                <div class="mm-table-scroll">
+                    <table class="mm-data-table table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Category Code &amp; Name</th>
+                                <th>Assigned Rooms</th>
+                                <th>Bed &amp; Max Capacity</th>
+                                <th class="text-right">Base Rate / Night (৳)</th>
+                                <th class="text-right">Corporate Rate (৳)</th>
+                                <th class="text-right">Extra Bed (৳)</th>
+                                <th>Included Amenities</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><code>CAT-01</code> <strong>Heritage Deluxe Single</strong></td>
+                                <td><code>#103, #106</code> (Fl. 1)</td>
+                                <td>1 Queen · 2 Adults</td>
+                                <td class="text-right"><input type="number" class="form-control input-sm text-right" value="5500" style="width:110px;display:inline-block;"></td>
+                                <td class="text-right"><strong>4,675</strong></td>
+                                <td class="text-right">1,200</td>
+                                <td><span class="mm-badge mm-badge-paid">Wi-Fi 6</span> <span class="mm-badge mm-badge-paid">Breakfast</span> <span class="mm-badge mm-badge-partial">Smart TV</span></td>
+                                <td><span class="mm-badge mm-badge-paid">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td><code>CAT-02</code> <strong>Deluxe King Suite</strong></td>
+                                <td><code>#101, #102, #104, #105</code> (Fl. 1)</td>
+                                <td>1 King · 2 Adults, 1 Child</td>
+                                <td class="text-right"><input type="number" class="form-control input-sm text-right" value="8500" style="width:110px;display:inline-block;"></td>
+                                <td class="text-right"><strong>7,225</strong></td>
+                                <td class="text-right">1,500</td>
+                                <td><span class="mm-badge mm-badge-paid">Wi-Fi 6</span> <span class="mm-badge mm-badge-paid">Breakfast</span> <span class="mm-badge mm-badge-paid">Minibar</span></td>
+                                <td><span class="mm-badge mm-badge-paid">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td><code>CAT-03</code> <strong>Heritage Executive Suite</strong></td>
+                                <td><code>#201, #202, #203, #205</code> (Fl. 2)</td>
+                                <td>1 King · 3 Adults</td>
+                                <td class="text-right"><input type="number" class="form-control input-sm text-right" value="12500" style="width:110px;display:inline-block;"></td>
+                                <td class="text-right"><strong>10,625</strong></td>
+                                <td class="text-right">2,000</td>
+                                <td><span class="mm-badge mm-badge-paid">Lounge Access</span> <span class="mm-badge mm-badge-paid">Nespresso</span> <span class="mm-badge mm-badge-paid">Minibar</span></td>
+                                <td><span class="mm-badge mm-badge-paid">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td><code>CAT-04</code> <strong>Royal Family Twin Suite</strong></td>
+                                <td><code>#204, #302, #304, #305</code> (Fl. 2–3)</td>
+                                <td>2 Queen · 4 Adults, 2 Children</td>
+                                <td class="text-right"><input type="number" class="form-control input-sm text-right" value="15000" style="width:110px;display:inline-block;"></td>
+                                <td class="text-right"><strong>12,750</strong></td>
+                                <td class="text-right">2,200</td>
+                                <td><span class="mm-badge mm-badge-paid">2 Bedrooms</span> <span class="mm-badge mm-badge-paid">Breakfast ×4</span> <span class="mm-badge mm-badge-paid">Balcony</span></td>
+                                <td><span class="mm-badge mm-badge-paid">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td><code>CAT-05</code> <strong>Ambassador Diplomatic Suite</strong></td>
+                                <td><code>#301, #303, #401, #402</code> (Fl. 3–4)</td>
+                                <td>1 Emperor King · 3 Adults</td>
+                                <td class="text-right"><input type="number" class="form-control input-sm text-right" value="18500" style="width:110px;display:inline-block;"></td>
+                                <td class="text-right"><strong>15,725</strong></td>
+                                <td class="text-right">2,500</td>
+                                <td><span class="mm-badge mm-badge-paid">24h Butler</span> <span class="mm-badge mm-badge-paid">Airport Limo</span> <span class="mm-badge mm-badge-paid">Jacuzzi</span></td>
+                                <td><span class="mm-badge mm-badge-paid">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td><code>CAT-06</code> <strong>Grand Presidential Suite</strong></td>
+                                <td><code>#403, #404</code> (Fl. 4 Penthouse)</td>
+                                <td>2 King + Dining · 4 Adults</td>
+                                <td class="text-right"><input type="number" class="form-control input-sm text-right" value="24000" style="width:110px;display:inline-block;"></td>
+                                <td class="text-right"><strong>20,400</strong></td>
+                                <td class="text-right">3,000</td>
+                                <td><span class="mm-badge mm-badge-paid">Private Butler</span> <span class="mm-badge mm-badge-paid">Chauffeur</span> <span class="mm-badge mm-badge-paid">Private Terrace</span></td>
+                                <td><span class="mm-badge mm-badge-paid">Active</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 2. Amenities & 3. Rules side by side -->
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:16px">
+                <div class="mm-panel tw-p-5">
+                    <div class="tw-flex tw-items-center tw-justify-between" style="margin-bottom:10px">
+                        <strong><i class="fa fa-wifi"></i> 2. Room Amenities &amp; In-Suite Facilities</strong>
+                        <a href="/preview/setup-amenities" class="mm-badge mm-badge-paid">Manage Amenities →</a>
+                    </div>
+                    <p class="tw-text-xs tw-text-muted" style="margin:0 0 12px">Toggle default amenities included in room categories (<code>Hotel → Setup → Amenities</code>):</p>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px">
+                        <label style="display:flex;align-items:center;gap:8px;font-weight:500"><input type="checkbox" checked> High-Speed Wi-Fi 6 (Dedicated AP)</label>
+                        <label style="display:flex;align-items:center;gap:8px;font-weight:500"><input type="checkbox" checked> Complimentary Buffet Breakfast</label>
+                        <label style="display:flex;align-items:center;gap:8px;font-weight:500"><input type="checkbox" checked> 55" 4K Smart Hospitality TV</label>
+                        <label style="display:flex;align-items:center;gap:8px;font-weight:500"><input type="checkbox" checked> Stocked In-Room Minibar (F15)</label>
+                        <label style="display:flex;align-items:center;gap:8px;font-weight:500"><input type="checkbox" checked> Nespresso &amp; Gourmet Tea Bar</label>
+                        <label style="display:flex;align-items:center;gap:8px;font-weight:500"><input type="checkbox" checked> Laptop-Size Electronic Safe</label>
+                        <label style="display:flex;align-items:center;gap:8px;font-weight:500"><input type="checkbox" checked> Rain Shower &amp; Luxury Bathrobe</label>
+                        <label style="display:flex;align-items:center;gap:8px;font-weight:500"><input type="checkbox" checked> VIP Airport Pickup (Suites)</label>
+                    </div>
+                    <div class="tw-flex tw-flex-wrap tw-gap-2">
+                        <a href="/preview/setup-amenity-create" class="mm-button mm-button-secondary"><i class="fa fa-plus"></i> Add New Amenity</a>
+                        <a href="/preview/setup-amenities" class="mm-button mm-button-secondary"><i class="fa fa-list"></i> All Amenities List</a>
+                    </div>
+                </div>
+
+                <div class="mm-panel tw-p-5">
+                    <div class="tw-flex tw-items-center tw-justify-between" style="margin-bottom:10px">
+                        <strong><i class="fa fa-gavel"></i> 3. Booking, Check-In/Out, Deposit &amp; Tax Rules</strong>
+                        <a href="/preview/setup-registration-terms" class="mm-badge mm-badge-partial">House Rules →</a>
+                    </div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+                        <div><label class="mm-label">Standard Check-In Time</label><input type="time" class="form-control" value="14:00"></div>
+                        <div><label class="mm-label">Standard Check-Out Time</label><input type="time" class="form-control" value="12:00"></div>
+                        <div><label class="mm-label">Minimum Advance Deposit (%)</label><input type="number" class="form-control" value="20"></div>
+                        <div><label class="mm-label">Free Cancellation Cutoff (Hours)</label><input type="number" class="form-control" value="24"></div>
+                        <div><label class="mm-label">Service Charge (%) + VAT (%)</label><input type="text" class="form-control" value="5% Service + 15% VAT"></div>
+                        <div><label class="mm-label">Late Check-Out Policy (After 14:00)</label><input type="text" class="form-control" value="50% Half-Day Tariff until 18:00"></div>
+                    </div>
+                    <div class="tw-flex tw-flex-wrap tw-gap-2">
+                        <button type="button" class="mm-button" id="rmset-btn-save-rules"><i class="fa fa-check"></i> Save Booking &amp; House Rules</button>
+                        <a href="/preview/setup-vat" class="mm-button mm-button-secondary"><i class="fa fa-percent"></i> VAT &amp; Service Setup</a>
+                        <a href="/preview/setup-registration-terms" class="mm-button mm-button-secondary"><i class="fa fa-file-text-o"></i> Registration Terms</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Quick Navigation Directory to All Room & Setup Screens -->
+            <div class="mm-panel tw-p-5">
+                <h2 class="tw-m-0 tw-mb-2 tw-text-base tw-font-semibold"><i class="fa fa-compass"></i> 4. Direct Navigation Map — Where Every Room Setting Lives</h2>
+                <div class="mm-table-scroll">
+                    <table class="mm-data-table table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Configuration Area</th>
+                                <th>Admin Menu Location</th>
+                                <th>Laravel Blade View / Controller</th>
+                                <th>Interactive Live Preview Link</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Room Categories, Capacity Prices &amp; Amenities</strong></td>
+                                <td><code>Hotel → Category → Create / Edit</code></td>
+                                <td><code>module/Hotel/views/category/create.blade.php</code></td>
+                                <td><a href="/preview/category-create" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:12px;">Open Category &amp; Price Form →</a></td>
+                            </tr>
+                            <tr>
+                                <td><strong>20-Room Inventory, Floor, Bed Type &amp; Status</strong></td>
+                                <td><code>Hotel → Room → Room List</code></td>
+                                <td><code>module/Hotel/views/room/index.blade.php</code></td>
+                                <td><a href="/preview/rooms" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:12px;">Open 20-Room Directory →</a></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Room Amenities Master List &amp; Icons</strong></td>
+                                <td><code>Hotel → Setup → Amenities</code></td>
+                                <td><code>module/Hotel/views/setup/aminities/index.blade.php</code></td>
+                                <td><a href="/preview/setup-amenities" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:12px;">Open Amenities Setup →</a></td>
+                            </tr>
+                            <tr>
+                                <td><strong>VAT, Service Charge &amp; Locality Tax Rules</strong></td>
+                                <td><code>Hotel → Setup → VAT &amp; Services</code></td>
+                                <td><code>module/Hotel/views/setup/vat/index.blade.php</code></td>
+                                <td><a href="/preview/setup-vat" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:12px;">Open VAT Setup →</a> <a href="/preview/tax-rules" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:12px;">Tax Rules (F18) →</a></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Guest Registration Terms &amp; House Rules</strong></td>
+                                <td><code>Hotel → Setup → Registration Terms</code></td>
+                                <td><code>module/Hotel/views/setup/guest-registration-terms/index.blade.php</code></td>
+                                <td><a href="/preview/setup-registration-terms" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:12px;">Open Registration Terms →</a></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Seasonal Rate Plans, Min-Stay &amp; Promo Codes</strong></td>
+                                <td><code>Hotel → Distribution → Rate Plans (F3)</code></td>
+                                <td><code>Plan B · F3 Rate Engine</code></td>
+                                <td><a href="/preview/rate-plans" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:12px;">Open Rate Plans (F3) →</a> <a href="/preview/dynamic-pricing" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:12px;">Dynamic Pricing (F4) →</a></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Overbooking Limits &amp; Out-of-Order (OOO) Rules</strong></td>
+                                <td><code>Hotel → Front Desk → Inventory Guards (F7)</code></td>
+                                <td><code>Plan B · F7 Inventory Guards</code></td>
+                                <td><a href="/preview/inventory-guards" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:12px;">Open Inventory Guards (F7) →</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div></section>
+        <script>(function(){
+            var b1=document.getElementById("rmset-btn-save-prices"),b2=document.getElementById("rmset-btn-save-rules"),ban=document.getElementById("rmset-save-banner");
+            function show(){if(ban){ban.style.display="block";ban.scrollIntoView({behavior:"smooth",block:"nearest"});}}
+            if(b1)b1.addEventListener("click",show);
+            if(b2)b2.addEventListener("click",show);
+        })();</script>`;
+        return shellWith(body, '', '', 'Room Settings, Pricing, Amenities & Rules', ['Hotel', 'Setup', 'Room Settings & Rules']);
+    }
+
     const result = {
         '/preview/plan-b': {
             fn: planBCommandCenterPage,
             title: 'Complete Plan B Feature Command Center (F1–F34 · 100%)',
             crumbs: ['Hotel', 'Plan B Roadmap', 'All 34 Features'],
+        },
+        '/preview/room-settings': {
+            fn: roomSettingsHubPage,
+            title: 'Room Settings, Pricing, Amenities & Rules Control Center',
+            crumbs: ['Hotel', 'Setup', 'Room Settings & Rules'],
         },
     };
     for (const [route, spec] of Object.entries(specs)) {
