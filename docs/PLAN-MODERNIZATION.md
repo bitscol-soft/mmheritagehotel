@@ -1,6 +1,17 @@
 # Plan A — Whole-Software Modernization Plan
 ### UI redesign → frontend rebuild → backend/platform re-engineering
-Target repo: `bitscol-soft/mmheritagehotel` · Prepared 2026-09-30
+Target repo: `bitscol-soft/mmheritagehotel` · Prepared 2026-09-30 · **Updated 2026-10-14 (✅ Phase 2 Design System & Phase 3 Core Workflows 9/9 Live at [`/preview/plan-a`](/preview/plan-a))**
+
+> **Interactive Phase 3 Core Workflows Directory (`/preview/plan-a`):**
+> 1. **Front-Desk Dashboard & Room Board:** `/`
+> 2. **7-Day Reservation Tape Chart & Server Cart:** `/preview/tape-chart`
+> 3. **3-Step Booking Wizard & 2-Page A4 Draft Summary PDF:** `/preview/booking-next` & `/preview/draft-booking-pdf`
+> 4. **Multi-Window Split-Folio & Express Checkout Settlement:** `/preview/folio-settlement` & `/preview/kiosk-checkin`
+> 5. **Night-Audit Hardening & Guided Checklist:** `/preview/night-audit-hardening`
+> 6. **Unified Restaurant, Bar & In-Room Dining POS Engine:** `/preview/pos-unified`
+> 7. **Accounting & Financial Statement Suite:** `/preview/acc-balance-sheet` & `/preview/acc-income-statement`
+> 8. **Guest & Corporate CRM 360° Revival:** `/preview/guest-crm`
+> 9. **Room Settings, Pricing, Amenities & Admin Cluster:** `/preview/room-settings` & `/preview/system-settings`
 
 ---
 

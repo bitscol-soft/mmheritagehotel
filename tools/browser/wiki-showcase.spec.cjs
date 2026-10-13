@@ -268,5 +268,23 @@ test('20-room & 20-guest sample dataset renders across Tape Chart, Rooms, Guests
     await expect(page.locator('#rmset-kpi-rules')).toContainText('30% Min Deposit');
     await page.locator('#rmset-btn-save-prices').click();
     await expect(page.locator('#rmset-save-banner')).toBeVisible();
+
+    // Verify Plan A Phase 3 Core Workflows: Split-Folio Checkout (/preview/folio-settlement), Unified POS (/preview/pos-unified) & Plan A Hub (/preview/plan-a)
+    await page.goto(`http://127.0.0.1:${PORT}/preview/folio-settlement`);
+    await expect(page.locator('#folio-lines-tbody .folio-line-row')).toHaveCount(5);
+    await page.locator('.folio-toggle-win').first().click();
+    await expect(page.locator('#folio-win-a-badge')).toContainText('৳ 25,000');
+    await page.locator('#folio-btn-settle').click();
+    await expect(page.locator('#folio-settle-banner')).toBeVisible();
+
+    await page.goto(`http://127.0.0.1:${PORT}/preview/pos-unified`);
+    await expect(page.locator('#upos-ticket-tbody .upos-row')).toHaveCount(3);
+    await page.locator('.upos-menu-btn').first().click();
+    await expect(page.locator('#upos-ticket-tbody .upos-row')).toHaveCount(4);
+    await page.selectOption('#upos-split-select', '2');
+    await expect(page.locator('#upos-kpi-split')).toContainText('Split 2 Ways');
+
+    await page.goto(`http://127.0.0.1:${PORT}/preview/plan-a`);
+    await expect(page.locator('table.mm-data-table tbody tr')).toHaveCount(9);
 });
 

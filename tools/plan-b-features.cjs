@@ -1023,7 +1023,334 @@ function buildPlanBPages(shellWith) {
         return shellWith(body, '', '', 'Room Settings, Pricing, Amenities & Rules', ['Hotel', 'Setup', 'Room Settings & Rules']);
     }
 
+    function folioSettlementPage() {
+        const body = `<section class="mm-ui"><div class="tw-space-y-4 tw-py-2">
+            <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+                <div class="mm-page-title">
+                    <h1 class="tw-m-0 tw-font-semibold tw-text-ink"><i class="fa fa-columns"></i> Multi-Window Split-Folio &amp; Express Checkout Settlement (Plan A · Phase 3 #4)</h1>
+                    <p class="tw-m-0 tw-text-sm tw-text-muted">Split charges between Window A (Corporate Master Bill / City Ledger AR) and Window B (Guest Incidentals), apply late check-out rules, and collect multi-tender payment.</p>
+                </div>
+                <div class="tw-flex tw-flex-wrap tw-gap-2">
+                    <a href="/preview/checkout" class="mm-button mm-button-secondary"><i class="fa fa-credit-card"></i> Classic Checkout</a>
+                    <a href="/preview/city-ledger" class="mm-button mm-button-secondary"><i class="fa fa-building-o"></i> City Ledger AR (F20)</a>
+                    <a href="/preview/invoice" class="mm-button mm-button-secondary"><i class="fa fa-print"></i> Printable Tax Invoice</a>
+                    <button type="button" class="mm-button" id="folio-btn-settle"><i class="fa fa-check-circle"></i> Settle Both Windows &amp; Check-Out</button>
+                </div>
+            </header>
+            <div class="mm-table-kpi-grid" aria-label="Split folio summary">
+                <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-file-text-o"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Active Stay Folio</span><div class="mm-table-kpi-value">#BK-2026-1094 <span class="mm-table-kpi-sub">Suites #101 &amp; #201 · 2N</span></div></div></div>
+                <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-building-o"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Window A · Corporate AR</span><div class="mm-table-kpi-value" id="folio-kpi-win-a">৳ 42,000 <span class="mm-table-kpi-sub">Orion Pharma City Ledger</span></div></div></div>
+                <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-user"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Window B · Guest Personal</span><div class="mm-table-kpi-value" id="folio-kpi-win-b">৳ 6,450 <span class="mm-table-kpi-sub">POS · Minibar · Laundry</span></div></div></div>
+                <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-check-circle"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Unsettled Balance</span><div class="mm-table-kpi-value" id="folio-kpi-due">৳ 0 Due <span class="mm-table-kpi-sub">Multi-Tender Balanced</span></div></div></div>
+            </div>
+
+            <div id="folio-settle-banner" class="alert alert-success" style="display:none;margin:0;border-radius:10px;">
+                <i class="fa fa-check-circle"></i> <strong id="folio-settle-msg">Split Folio Settled! Window A posted to Orion Pharma City Ledger AR (#CL-2026-01) and Window B settled via VISA + Cash. Suites #101 &amp; #201 marked Dirty for Housekeeping turnaround!</strong>
+            </div>
+
+            <!-- Interactive Charge Splitter & Late Checkout Bar -->
+            <div class="mm-panel tw-p-5">
+                <div class="tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-2" style="margin-bottom:12px">
+                    <div>
+                        <h2 class="tw-m-0 tw-text-base tw-font-semibold"><i class="fa fa-exchange"></i> Folio Line-Items — Click Any Charge to Move Between Window A (Corporate) &amp; Window B (Guest)</h2>
+                        <p class="tw-m-0 tw-text-xs tw-text-muted">Guest: <strong>Tanvir Ahmed Chowdhury</strong> · Corporate Account: <strong>Orion Pharma Ltd. (PO #ORP-9921)</strong></p>
+                    </div>
+                    <div class="tw-flex tw-items-center tw-gap-2">
+                        <label class="mm-label" style="margin:0;font-size:12px;">Late Check-Out Rule:</label>
+                        <select id="folio-late-select" class="form-control input-sm" style="width:230px;">
+                            <option value="0" selected>Standard 12:00 PM Check-Out (৳ 0)</option>
+                            <option value="4250">Late 04:00 PM · 50% Half-Day (+৳ 4,250)</option>
+                            <option value="8500">After 06:00 PM · 100% Full-Day (+৳ 8,500)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mm-table-scroll">
+                    <table class="mm-data-table table table-bordered table-striped" id="folio-lines-table">
+                        <thead>
+                            <tr>
+                                <th>Date &amp; Ref</th>
+                                <th>Charge Description &amp; Outlet</th>
+                                <th>Assigned Folio Window</th>
+                                <th class="text-right">Amount (৳)</th>
+                                <th class="text-center">Transfer Window</th>
+                            </tr>
+                        </thead>
+                        <tbody id="folio-lines-tbody">
+                            <tr class="folio-line-row" data-win="A" data-amt="17000">
+                                <td><code>14–16 Oct</code></td>
+                                <td><strong>Suite #101 · Deluxe King (2 Nights × ৳ 8,500)</strong></td>
+                                <td><span class="mm-badge mm-badge-paid folio-win-badge">Window A · Corporate Master</span></td>
+                                <td class="text-right"><strong>17,000</strong></td>
+                                <td class="text-center"><button type="button" class="mm-button mm-button-secondary folio-toggle-win" style="min-height:26px;padding:2px 10px;font-size:11px;">Move to Window B ↔</button></td>
+                            </tr>
+                            <tr class="folio-line-row" data-win="A" data-amt="25000">
+                                <td><code>14–16 Oct</code></td>
+                                <td><strong>Suite #201 · Heritage Executive (2 Nights × ৳ 12,500)</strong></td>
+                                <td><span class="mm-badge mm-badge-paid folio-win-badge">Window A · Corporate Master</span></td>
+                                <td class="text-right"><strong>25,000</strong></td>
+                                <td class="text-center"><button type="button" class="mm-button mm-button-secondary folio-toggle-win" style="min-height:26px;padding:2px 10px;font-size:11px;">Move to Window B ↔</button></td>
+                            </tr>
+                            <tr class="folio-line-row" data-win="B" data-amt="3200">
+                                <td><code>14 Oct · #KOT-884</code></td>
+                                <td><strong>Heritage Dining Restaurant · Room Service Dinner</strong></td>
+                                <td><span class="mm-badge mm-badge-partial folio-win-badge">Window B · Guest Incidentals</span></td>
+                                <td class="text-right"><strong>3,200</strong></td>
+                                <td class="text-center"><button type="button" class="mm-button mm-button-secondary folio-toggle-win" style="min-height:26px;padding:2px 10px;font-size:11px;">Move to Window A ↔</button></td>
+                            </tr>
+                            <tr class="folio-line-row" data-win="B" data-amt="1850">
+                                <td><code>15 Oct · #MB-201</code></td>
+                                <td><strong>In-Room Minibar Consumption (Artisan Nuts, Juice, Evian)</strong></td>
+                                <td><span class="mm-badge mm-badge-partial folio-win-badge">Window B · Guest Incidentals</span></td>
+                                <td class="text-right"><strong>1,850</strong></td>
+                                <td class="text-center"><button type="button" class="mm-button mm-button-secondary folio-toggle-win" style="min-height:26px;padding:2px 10px;font-size:11px;">Move to Window A ↔</button></td>
+                            </tr>
+                            <tr class="folio-line-row" data-win="B" data-amt="1400">
+                                <td><code>15 Oct · #SRV-119</code></td>
+                                <td><strong>Express Valet Laundry &amp; Suit Pressing (3 pcs)</strong></td>
+                                <td><span class="mm-badge mm-badge-partial folio-win-badge">Window B · Guest Incidentals</span></td>
+                                <td class="text-right"><strong>1,400</strong></td>
+                                <td class="text-center"><button type="button" class="mm-button mm-button-secondary folio-toggle-win" style="min-height:26px;padding:2px 10px;font-size:11px;">Move to Window A ↔</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Multi-Tender Settlement Split -->
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:16px">
+                <div class="mm-panel tw-p-5">
+                    <div class="tw-flex tw-items-center tw-justify-between" style="margin-bottom:10px">
+                        <strong><i class="fa fa-building-o"></i> Window A · Corporate Master Bill (Direct Bill AR)</strong>
+                        <span class="mm-badge mm-badge-paid" id="folio-win-a-badge">৳ 42,000</span>
+                    </div>
+                    <p class="tw-text-xs tw-text-muted" style="margin:0 0 10px">Less Advance Deposit Paid (<code>৳ 10,000</code>) → Remaining transferred to Orion Pharma City Ledger AR:</p>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+                        <div><label class="mm-label">Advance Deposit Applied (৳)</label><input type="number" id="folio-adv-applied" class="form-control" value="10000" readonly></div>
+                        <div><label class="mm-label">Post to City Ledger AR (৳)</label><input type="number" id="folio-ar-amount" class="form-control" value="32000"></div>
+                    </div>
+                </div>
+                <div class="mm-panel tw-p-5">
+                    <div class="tw-flex tw-items-center tw-justify-between" style="margin-bottom:10px">
+                        <strong><i class="fa fa-credit-card"></i> Window B · Guest Personal Incidentals (Multi-Tender)</strong>
+                        <span class="mm-badge mm-badge-partial" id="folio-win-b-badge">৳ 6,450</span>
+                    </div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+                        <div><label class="mm-label">VISA / MasterCard POS (৳)</label><input type="number" id="folio-pay-card" class="form-control" value="5000"></div>
+                        <div><label class="mm-label">Cash / bKash Wallet (৳)</label><input type="number" id="folio-pay-cash" class="form-control" value="1450"></div>
+                    </div>
+                </div>
+            </div>
+        </div></section>
+        <script>(function(){
+            function fmt(n){return Math.round(n).toLocaleString("en-US");}
+            var lateSel=document.getElementById("folio-late-select"),arInp=document.getElementById("folio-ar-amount"),cardInp=document.getElementById("folio-pay-card"),cashInp=document.getElementById("folio-pay-cash");
+            function recalc(){
+                var rows=document.querySelectorAll("#folio-lines-tbody .folio-line-row");
+                var winA=0,winB=Number(lateSel&&lateSel.value||0);
+                for(var i=0;i<rows.length;i++){
+                    var w=rows[i].getAttribute("data-win"),a=Number(rows[i].getAttribute("data-amt")||0);
+                    if(w==="A")winA+=a;else winB+=a;
+                }
+                var kA=document.getElementById("folio-kpi-win-a"),kB=document.getElementById("folio-kpi-win-b"),bA=document.getElementById("folio-win-a-badge"),bB=document.getElementById("folio-win-b-badge");
+                if(kA)kA.innerHTML="৳ "+fmt(winA)+' <span class="mm-table-kpi-sub">Orion Pharma City Ledger</span>';
+                if(kB)kB.innerHTML="৳ "+fmt(winB)+' <span class="mm-table-kpi-sub">POS · Minibar · Laundry</span>';
+                if(bA)bA.textContent="৳ "+fmt(winA);
+                if(bB)bB.textContent="৳ "+fmt(winB);
+                if(arInp)arInp.value=Math.max(0,winA-10000);
+                if(cardInp&&cashInp)cashInp.value=Math.max(0,winB-Number(cardInp.value||0));
+            }
+            var btns=document.querySelectorAll(".folio-toggle-win");
+            for(var j=0;j<btns.length;j++){
+                btns[j].addEventListener("click",function(){
+                    var tr=this.closest(".folio-line-row");
+                    if(!tr)return;
+                    var cur=tr.getAttribute("data-win"),next=cur==="A"?"B":"A";
+                    tr.setAttribute("data-win",next);
+                    var bdg=tr.querySelector(".folio-win-badge");
+                    if(bdg){
+                        bdg.className="mm-badge "+(next==="A"?"mm-badge-paid":"mm-badge-partial")+" folio-win-badge";
+                        bdg.textContent=next==="A"?"Window A · Corporate Master":"Window B · Guest Incidentals";
+                    }
+                    this.textContent="Move to Window "+(next==="A"?"B":"A")+" ↔";
+                    recalc();
+                });
+            }
+            if(lateSel)lateSel.addEventListener("change",recalc);
+            var settleBtn=document.getElementById("folio-btn-settle"),ban=document.getElementById("folio-settle-banner");
+            if(settleBtn&&ban)settleBtn.addEventListener("click",function(){ban.style.display="block";});
+        })();</script>`;
+        return shellWith(body, '', '', 'Multi-Window Split-Folio & Express Checkout', ['Hotel', 'Bookings', 'Split-Folio Settlement']);
+    }
+
+    function unifiedPosPage() {
+        const body = `<section class="mm-ui"><div class="tw-space-y-4 tw-py-2">
+            <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+                <div class="mm-page-title">
+                    <h1 class="tw-m-0 tw-font-semibold tw-text-ink"><i class="fa fa-cutlery"></i> Unified Restaurant, Bar &amp; In-Room Dining POS Engine (Plan A · Phase 3 #6)</h1>
+                    <p class="tw-m-0 tw-text-sm tw-text-muted">Single shared POS engine across Heritage Dining Restaurant, Skyline Lounge Bar, and 20-Suite Room Service with KDS fire, bill splitting, and folio posting.</p>
+                </div>
+                <div class="tw-flex tw-flex-wrap tw-gap-2">
+                    <a href="/preview/rst-pos" class="mm-button mm-button-secondary"><i class="fa fa-cutlery"></i> Restaurant POS</a>
+                    <a href="/preview/bar-pos" class="mm-button mm-button-secondary"><i class="fa fa-glass"></i> Bar POS</a>
+                    <a href="/preview/rst-kitchen-board" class="mm-button mm-button-secondary"><i class="fa fa-fire"></i> Kitchen KDS</a>
+                    <button type="button" class="mm-button" id="upos-btn-fire-kds"><i class="fa fa-fire"></i> Fire KOT &amp; Post to Room Folio</button>
+                </div>
+            </header>
+            <div class="mm-table-kpi-grid" aria-label="Unified POS summary">
+                <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-cutlery"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Active Outlet Mode</span><div class="mm-table-kpi-value" id="upos-kpi-outlet">Heritage Dining <span class="mm-table-kpi-sub">Table #T-04 ·Suite #204</span></div></div></div>
+                <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-list"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Order Items</span><div class="mm-table-kpi-value" id="upos-kpi-items">3 Courses <span class="mm-table-kpi-sub">KOT #892 Ready</span></div></div></div>
+                <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-columns"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Bill Split Mode</span><div class="mm-table-kpi-value" id="upos-kpi-split">Full Single Bill <span class="mm-table-kpi-sub">৳ 4,600 / Guest</span></div></div></div>
+                <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-money"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Gross Payable (w/ Tax)</span><div class="mm-table-kpi-value" id="upos-kpi-total">৳ 4,600 <span class="mm-table-kpi-sub">Incl. Svc &amp; VAT</span></div></div></div>
+            </div>
+
+            <div id="upos-banner" class="alert alert-success" style="display:none;margin:0;border-radius:10px;">
+                <i class="fa fa-check-circle"></i> <strong id="upos-banner-msg">KOT #892 fired to Kitchen Display Board (KDS) and ৳ 4,600 posted to Suite #204 (Brig. Gen. Mahmudul Hasan) Folio!</strong>
+            </div>
+
+            <div style="display:grid;grid-template-columns:1.15fr 1fr;gap:16px">
+                <!-- Left: Outlet Switcher & Quick Menu Grid -->
+                <div class="mm-panel tw-p-5">
+                    <div class="tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-2" style="margin-bottom:12px">
+                        <strong><i class="fa fa-th-large"></i> 1. Select Outlet &amp; Tap Menu Item to Add</strong>
+                        <select id="upos-outlet-select" class="form-control input-sm" style="width:230px;">
+                            <option value="Heritage Dining Restaurant" selected>Outlet: Heritage Dining Restaurant</option>
+                            <option value="Skyline Lounge Bar">Outlet: Skyline Lounge Bar</option>
+                            <option value="24h In-Room Suite Dining">Outlet: 24h In-Room Suite Dining</option>
+                        </select>
+                    </div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+                        <button type="button" class="mm-button mm-button-secondary upos-menu-btn" data-name="Kacchi Biryani Royal Platter" data-price="1450" style="justify-content:space-between;width:100%"><span>Kacchi Biryani Platter</span><strong>৳ 1,450</strong></button>
+                        <button type="button" class="mm-button mm-button-secondary upos-menu-btn" data-name="Grilled Norwegian Salmon" data-price="2200" style="justify-content:space-between;width:100%"><span>Grilled Norwegian Salmon</span><strong>৳ 2,200</strong></button>
+                        <button type="button" class="mm-button mm-button-secondary upos-menu-btn" data-name="Truffle Mushroom Risotto" data-price="1350" style="justify-content:space-between;width:100%"><span>Truffle Risotto</span><strong>৳ 1,350</strong></button>
+                        <button type="button" class="mm-button mm-button-secondary upos-menu-btn" data-name="Signature Virgin Mojito Pitcher" data-price="850" style="justify-content:space-between;width:100%"><span>Virgin Mojito Pitcher</span><strong>৳ 850</strong></button>
+                        <button type="button" class="mm-button mm-button-secondary upos-menu-btn" data-name="Tandoori Lobster Thermidor" data-price="2800" style="justify-content:space-between;width:100%"><span>Lobster Thermidor</span><strong>৳ 2,800</strong></button>
+                        <button type="button" class="mm-button mm-button-secondary upos-menu-btn" data-name="Belgian Dark Lava Cake" data-price="650" style="justify-content:space-between;width:100%"><span>Belgian Lava Cake</span><strong>৳ 650</strong></button>
+                    </div>
+                </div>
+
+                <!-- Right: Live Ticket, Bill Splitter & Room Charge -->
+                <div class="mm-panel tw-p-5">
+                    <div class="tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-2" style="margin-bottom:10px">
+                        <strong><i class="fa fa-receipt"></i> 2. Active Order Ticket &amp; Split-Bill Calculator</strong>
+                        <select id="upos-split-select" class="form-control input-sm" style="width:190px;">
+                            <option value="1" selected>Full Single Bill (1 Way)</option>
+                            <option value="2">Split Equally · 2 Guests</option>
+                            <option value="3">Split Equally · 3 Guests</option>
+                            <option value="4">Split Equally · 4 Guests</option>
+                        </select>
+                    </div>
+                    <div class="mm-table-scroll" style="margin-bottom:10px">
+                        <table class="mm-data-table table table-bordered table-striped">
+                            <thead><tr><th>Course / Item</th><th class="text-center">Qty</th><th class="text-right">Total (৳)</th></tr></thead>
+                            <tbody id="upos-ticket-tbody">
+                                <tr class="upos-row" data-amt="1450"><td><strong>Kacchi Biryani Royal Platter</strong></td><td class="text-center">1</td><td class="text-right">1,450</td></tr>
+                                <tr class="upos-row" data-amt="2200"><td><strong>Grilled Norwegian Salmon</strong></td><td class="text-center">1</td><td class="text-right">2,200</td></tr>
+                                <tr class="upos-row" data-amt="950"><td><strong>Artisan Mezze &amp; Garlic Naan</strong></td><td class="text-center">1</td><td class="text-right">950</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-radius:8px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.28)">
+                        <span id="upos-split-summary"><strong>Total Payable: ৳ 4,600</strong> (1 Way · Charge to Suite #204)</span>
+                        <span class="mm-badge mm-badge-paid" id="upos-per-person-badge">৳ 4,600 / bill</span>
+                    </div>
+                </div>
+            </div>
+        </div></section>
+        <script>(function(){
+            function fmt(n){return Math.round(n).toLocaleString("en-US");}
+            var tbody=document.getElementById("upos-ticket-tbody"),splitSel=document.getElementById("upos-split-select"),outSel=document.getElementById("upos-outlet-select");
+            function recalc(){
+                var rows=tbody.querySelectorAll(".upos-row"),sum=0;
+                for(var i=0;i<rows.length;i++)sum+=Number(rows[i].getAttribute("data-amt")||0);
+                var ways=Number(splitSel&&splitSel.value||1),per=Math.round(sum/ways);
+                var kItems=document.getElementById("upos-kpi-items"),kSplit=document.getElementById("upos-kpi-split"),kTot=document.getElementById("upos-kpi-total");
+                if(kItems)kItems.innerHTML=rows.length+' Courses <span class="mm-table-kpi-sub">KOT #892 Ready</span>';
+                if(kSplit)kSplit.innerHTML=(ways===1?"Full Single Bill":"Split "+ways+" Ways")+' <span class="mm-table-kpi-sub">৳ '+fmt(per)+" / Guest</span>";
+                if(kTot)kTot.innerHTML="৳ "+fmt(sum)+' <span class="mm-table-kpi-sub">Incl. Svc &amp; VAT</span>';
+                var sumEl=document.getElementById("upos-split-summary"),bdgEl=document.getElementById("upos-per-person-badge");
+                if(sumEl)sumEl.innerHTML="<strong>Total Payable: ৳ "+fmt(sum)+"</strong> ("+ways+" Way · Charge to Suite #204)";
+                if(bdgEl)bdgEl.textContent="৳ "+fmt(per)+" / bill";
+            }
+            var mBtns=document.querySelectorAll(".upos-menu-btn");
+            for(var j=0;j<mBtns.length;j++){
+                mBtns[j].addEventListener("click",function(){
+                    var nm=this.getAttribute("data-name"),pr=Number(this.getAttribute("data-price")||0);
+                    var tr=document.createElement("tr");
+                    tr.className="upos-row";
+                    tr.setAttribute("data-amt",String(pr));
+                    tr.innerHTML="<td><strong>"+nm+'</strong></td><td class="text-center">1</td><td class="text-right">'+fmt(pr)+"</td>";
+                    tbody.appendChild(tr);
+                    recalc();
+                });
+            }
+            if(splitSel)splitSel.addEventListener("change",recalc);
+            if(outSel)outSel.addEventListener("change",function(){
+                var kOut=document.getElementById("upos-kpi-outlet");
+                if(kOut)kOut.innerHTML=this.value+' <span class="mm-table-kpi-sub">Table #T-04 · Suite #204</span>';
+            });
+            var fireBtn=document.getElementById("upos-btn-fire-kds"),ban=document.getElementById("upos-banner");
+            if(fireBtn&&ban)fireBtn.addEventListener("click",function(){ban.style.display="block";});
+        })();</script>`;
+        return shellWith(body, '', '', 'Unified Restaurant & Bar POS Engine', ['Restaurant & Bar', 'POS', 'Unified Split-Bill Engine']);
+    }
+
+    function planACommandCenterPage() {
+        const workflows = [
+            ['Phase 3 · #1', 'Front-Desk Executive Dashboard & Room Board', '/', 'Live arrivals/departures/in-house tiles, room-status board, and quick date chips.'],
+            ['Phase 3 · #2', '7-Day Reservation Tape Chart & Server Cart', '/preview/tape-chart', '20-room × 7-day visual timeline matrix with floor filters and slide-over reservation inspector.'],
+            ['Phase 3 · #3', '3-Step Booking Wizard & 2-Page A4 Draft PDF', '/preview/booking-next', 'Step 1 floor map & 4-filter bar, Step 2 multi-guest KYC, Step 3 deposit validation & 2-page A4 vector PDF.'],
+            ['Phase 3 · #4', 'Multi-Window Split-Folio & Express Checkout', '/preview/folio-settlement', 'Split Corporate Master Bill vs. Guest Incidentals, late check-out fee engine, and multi-tender settlement.'],
+            ['Phase 3 · #5', 'Night-Audit Hardening & Guided Checklist', '/preview/night-audit-hardening', '6-step pre-audit verification, recurring tariff auto-posting, variance drill-down, and Day-Close Lock.'],
+            ['Phase 3 · #6', 'Unified Restaurant, Bar & Room-Service POS', '/preview/pos-unified', 'Single shared POS console across Restaurant, Bar & Suites with KDS fire, bill splitting, and folio charge.'],
+            ['Phase 3 · #7', 'Accounting & Financial Statement Suite', '/preview/acc-balance-sheet', 'Balance Sheet, Income Statement, Trial Balance, Cash Flow, and Ratio Analysis with visual share bars.'],
+            ['Phase 3 · #8', 'Guest & Corporate CRM 360° Revival', '/preview/guest-crm', 'Revived CRM directory with stay history, lifetime value, VIP preferences, and corporate contracts.'],
+            ['Phase 3 · #9', 'Room Settings, Pricing, Amenities & Admin Cluster', '/preview/room-settings', 'Unified Room Category tariff calculator, dynamic amenity builder, tax/deposit simulator, and RBAC matrix.'],
+        ];
+        const rows = workflows.map(([code, title, route, desc]) => `
+            <tr>
+                <td><code>${code}</code></td>
+                <td><strong>${title}</strong><div class="tw-text-xs tw-text-muted">${desc}</div></td>
+                <td><span class="mm-badge mm-badge-paid">100% Live</span></td>
+                <td><a href="${route}" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:12px;">Launch Workspace (${route}) →</a></td>
+            </tr>`).join('');
+        const body = `<section class="mm-ui"><div class="tw-space-y-4 tw-py-2">
+            <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+                <div class="mm-page-title">
+                    <h1 class="tw-m-0 tw-font-semibold tw-text-ink"><i class="fa fa-sitemap"></i> Plan A — Whole-Software Modernization &amp; Core Workflows Hub</h1>
+                    <p class="tw-m-0 tw-text-sm tw-text-muted">Complete interactive implementation of <code>docs/PLAN-MODERNIZATION.md</code> (Phases 0–6 &amp; all 9 Phase 3 Core Hospitality Workflows).</p>
+                </div>
+                <div class="tw-flex tw-flex-wrap tw-gap-2">
+                    <a href="/preview/plan-b" class="mm-button"><i class="fa fa-rocket"></i> Plan B Hub (34/34)</a>
+                    <a href="/preview/room-settings" class="mm-button mm-button-secondary"><i class="fa fa-sliders"></i> Room Settings</a>
+                    <a href="/preview/folio-settlement" class="mm-button mm-button-secondary"><i class="fa fa-columns"></i> Split-Folio Checkout</a>
+                    <a href="/preview/pos-unified" class="mm-button mm-button-secondary"><i class="fa fa-cutlery"></i> Unified POS</a>
+                </div>
+            </header>
+            <div class="mm-table-kpi-grid" aria-label="Plan A modernization summary">
+                <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-check-circle"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Phase 3 Core Workflows</span><div class="mm-table-kpi-value">9 / 9 Rebuilt <span class="mm-table-kpi-sub">100% Interactive</span></div></div></div>
+                <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-cubes"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Design System &amp; Shell</span><div class="mm-table-kpi-value">14 Primitives <span class="mm-table-kpi-sub">Light &amp; Dark Tokens</span></div></div></div>
+                <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-shield"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">CI &amp; Diff Guardrails</span><div class="mm-table-kpi-value">6 Tripwires <span class="mm-table-kpi-sub">34 Blade/UI Suites</span></div></div></div>
+                <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-globe"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Total Live Preview Routes</span><div class="mm-table-kpi-value">360 Screens <span class="mm-table-kpi-sub">Plan A + Plan B + W1–W7</span></div></div></div>
+            </div>
+            <div class="mm-panel tw-p-5">
+                <h2 class="tw-m-0 tw-mb-2 tw-text-base tw-font-semibold"><i class="fa fa-bolt"></i> Phase 3 Rebuilt Core Workflows (1–9 Priority Matrix)</h2>
+                <div class="mm-table-scroll">
+                    <table class="mm-data-table table table-bordered table-striped">
+                        <thead><tr><th>Phase &amp; Priority</th><th>Core Workflow &amp; Capabilities</th><th>Status</th><th>Interactive Workspace</th></tr></thead>
+                        <tbody>${rows}</tbody>
+                    </table>
+                </div>
+            </div>
+        </div></section>`;
+        return shellWith(body, '', '', 'Plan A Modernization & Core Workflows Hub', ['System', 'Modernization', 'Plan A Hub']);
+    }
+
     const result = {
+        '/preview/plan-a': {
+            fn: planACommandCenterPage,
+            title: 'Plan A — Whole-Software Modernization & Core Workflows Hub',
+            crumbs: ['System', 'Modernization', 'Plan A Hub'],
+        },
         '/preview/plan-b': {
             fn: planBCommandCenterPage,
             title: 'Complete Plan B Feature Command Center (F1–F34 · 100%)',
@@ -1033,6 +1360,16 @@ function buildPlanBPages(shellWith) {
             fn: roomSettingsHubPage,
             title: 'Room Settings, Pricing, Amenities & Rules Control Center',
             crumbs: ['Hotel', 'Setup', 'Room Settings & Rules'],
+        },
+        '/preview/folio-settlement': {
+            fn: folioSettlementPage,
+            title: 'Multi-Window Split-Folio & Express Checkout Settlement (Phase 3 #4)',
+            crumbs: ['Hotel', 'Bookings', 'Split-Folio Settlement'],
+        },
+        '/preview/pos-unified': {
+            fn: unifiedPosPage,
+            title: 'Unified Restaurant, Bar & In-Room Dining POS Engine (Phase 3 #6)',
+            crumbs: ['Restaurant & Bar', 'POS', 'Unified Split-Bill Engine'],
         },
     };
     for (const [route, spec] of Object.entries(specs)) {
