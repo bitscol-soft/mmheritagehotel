@@ -133,8 +133,8 @@
     .mm-ui .mm-table-scroll { overflow: visible; }
 }
 @media (min-width: 769px) {
-    .mm-ui .mm-table-scroll,
-    .mm-ui .table-responsive,
+    .mm-ui.mm-rst-form .mm-table-scroll,
+    .mm-ui.mm-rst-form .table-responsive,
     .mm-ui.mm-rst-form [class*="col-"]:has(> table),
     .mm-ui.mm-rst-form [class*="col-"]:has(> .table-responsive),
     .mm-ui.mm-rst-purchase-create .mm-rst-purchase-lines { overflow: visible !important; }
@@ -3957,12 +3957,20 @@
     justify-content: space-between;
     gap: 12px;
     margin-bottom: 14px;
+    min-width: 0;
+    max-width: 100%;
+}
+.mm-ui .mm-preview-hub-bar > .input-group {
+    min-width: 0;
+    max-width: 100% !important;
 }
 .mm-ui .mm-preview-filter-pills {
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
     margin-bottom: 16px;
+    min-width: 0;
+    max-width: 100%;
 }
 .mm-ui .mm-preview-pill {
     display: inline-flex;
