@@ -35,41 +35,52 @@ function buildContentStream() {
     rgbStroke(203, 213, 225);
     rectStroke(24, 24, 547, 794, 0.9);
 
-    // 1. Luxury Navy Header Banner (y=732..818)
-    rgbFill(15, 23, 42);
+    // 1. Redesigned Architectural Luxury Hotel Letterhead (y=732..818)
+    // Ivory-alabaster letterhead background
+    rgbFill(250, 251, 253);
     rectFill(24, 732, 547, 86);
-    // Gold Bottom Trim on Header
-    rgbFill(245, 158, 11);
-    rectFill(24, 729, 547, 3);
+    // Top Royal Navy Crown Bar (5pt)
+    rgbFill(15, 23, 42);
+    rectFill(24, 813, 547, 5);
+    // Bottom Warm Gold Accent Rule (2pt)
+    rgbFill(217, 119, 6);
+    rectFill(24, 730, 547, 2);
 
-    // Gold Monogram Crest Box
-    rgbFill(245, 158, 11);
-    rectFill(38, 752, 46, 46);
-    text(45, 770, 13, 'F2', 'M&M', 15, 23, 42);
+    // Royal Navy & Gold Framed Crest Box (x=36, y=746, 48x54)
+    rgbFill(15, 23, 42);
+    rgbStroke(245, 158, 11);
+    rectFillStroke(36, 746, 48, 54, 1.5);
+    text(47, 787, 6.5, 'F2', '* * *', 252, 211, 77);
+    text(43, 769, 13, 'F2', 'M&M', 252, 211, 77);
+    text(46, 754, 6, 'F2', 'EST. BD', 147, 197, 253);
 
-    // Hotel Title & Address
-    text(94, 792, 7.5, 'F2', 'FIVE-STAR BOUTIQUE HOSPITALITY  |  DHAKA, BANGLADESH', 252, 211, 77);
-    text(94, 774, 15, 'F2', 'M&M HERITAGE HOTEL & SUITES', 255, 255, 255);
-    text(94, 760, 8, 'F1', 'Plot 42, Road 90, Gulshan-2, Dhaka-1212  |  BIN: 004192837-0101', 203, 213, 225);
-    text(94, 748, 8, 'F1', 'Front Desk: +880 2-55051920  |  reservations@mmheritagehotel.com', 148, 163, 184);
+    // Hotel Kicker, Authoritative Royal-Navy Title & Contact Strip
+    text(94, 791, 7.5, 'F2', '* * * * *   FIVE-STAR BOUTIQUE HOSPITALITY  |  DHAKA, BANGLADESH', 180, 83, 9);
+    text(94, 771, 15.5, 'F2', 'M&M HERITAGE HOTEL & SUITES', 15, 23, 42);
+    text(94, 756, 8, 'F1', 'Plot 42, Road 90, Gulshan-2, Dhaka-1212   |   Tel: +880 2-55051920', 71, 85, 105);
+    text(94, 744, 8, 'F1', 'BIN: 004192837-0101   |   reservations@mmheritagehotel.com', 100, 116, 139);
 
-    // Right Header Document Meta Box
-    rgbFill(30, 41, 59);
-    rgbStroke(71, 85, 105);
-    rectFillStroke(368, 743, 190, 64, 0.75);
-    text(377, 795, 7, 'F2', 'WHOLE BOOKING PREVIEW - DRAFT PDF', 147, 197, 253);
+    // Right Header Document Verification Card (Light Bordered Box with Royal Blue Left Accent)
+    rgbFill(255, 255, 255);
+    rgbStroke(203, 213, 225);
+    rectFillStroke(366, 742, 193, 64, 0.85);
+    rgbFill(30, 58, 138);
+    rectFill(366, 742, 3.5, 64);
+
+    text(376, 794, 7, 'F2', 'DRAFT RESERVATION SUMMARY', 30, 58, 138);
 
     // Status Pill (Emerald)
     rgbFill(5, 150, 105);
-    rectFill(377, 777, 128, 13);
-    text(383, 781, 7.5, 'F2', 'DRAFT - READY TO CONFIRM', 255, 255, 255);
+    rectFill(376, 776, 128, 13);
+    text(382, 780, 7.2, 'F2', 'DRAFT - READY TO CONFIRM', 255, 255, 255);
 
-    text(377, 764, 8.5, 'F2', 'Folio Ref: #DRAFT-BK-2026-1094', 252, 211, 77);
-    text(377, 751, 7.5, 'F1', 'Issued: 2026-10-14 14:00 BST', 203, 213, 225);
+    text(376, 763, 8.2, 'F2', 'Ref: #DRAFT-BK-2026-1094', 29, 78, 216);
+    text(376, 750, 7.2, 'F1', 'Issued: 2026-10-14 14:00 BST', 100, 116, 139);
 
-    // Mini QR Code Matrix inside Header (x=516, y=751, 34x34)
+    // Mini QR Code Matrix inside Header (x=515, y=750, 36x36)
     rgbFill(255, 255, 255);
-    rectFill(515, 750, 36, 36);
+    rgbStroke(203, 213, 225);
+    rectFillStroke(515, 750, 36, 36, 0.6);
     rgbFill(15, 23, 42);
     rectFill(518, 774, 9, 9);
     rectFill(539, 774, 9, 9);
