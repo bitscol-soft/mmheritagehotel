@@ -1359,16 +1359,41 @@
     border-color: rgba(148, 163, 184, 0.26);
 }
 .mm-shell.mm-dark .mm-ui.mm-booking-next .mm-wiz-draft-sheet {
-    background: rgba(18, 28, 43, 0.96);
-    border-color: rgba(96, 165, 250, 0.30);
+    background: rgba(18, 28, 43, 0.98);
+    border-color: rgba(96, 165, 250, 0.34);
     color: #f1f5f9;
+}
+.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-wiz-pdf-toolbar {
+    background: linear-gradient(90deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 58, 95, 0.55) 100%);
+    border-bottom-color: rgba(96, 165, 250, 0.28);
+}
+.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-wiz-pdf-section-title {
+    background: linear-gradient(90deg, rgba(59, 130, 246, 0.22) 0%, rgba(15, 23, 42, 0.65) 100%);
+    border-left-color: #60a5fa;
+    color: #f8fafc;
 }
 .mm-shell.mm-dark .mm-ui.mm-booking-next .mm-wiz-draft-kv {
     background: rgba(15, 23, 42, 0.88);
     border-color: rgba(148, 163, 184, 0.24);
 }
+.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-wiz-draft-kv-lbl {
+    color: #94a3b8;
+}
 .mm-shell.mm-dark .mm-ui.mm-booking-next .mm-wiz-draft-kv-val {
     color: #f8fafc;
+}
+.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-wiz-pdf-policy-box {
+    background: rgba(15, 23, 42, 0.85);
+    border-color: rgba(148, 163, 184, 0.26);
+}
+.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-wiz-pdf-totals-box {
+    background: linear-gradient(180deg, rgba(15, 23, 42, 0.92) 0%, rgba(30, 58, 95, 0.45) 100%);
+    border-color: rgba(96, 165, 250, 0.34);
+}
+.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-wiz-draft-sign,
+.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-wiz-pdf-footbar {
+    color: #cbd5e1;
+    border-top-color: rgba(148, 163, 184, 0.30);
 }
 .mm-shell.mm-dark .mm-ui.mm-acc .mm-fin-section-row td,
 .mm-shell.mm-dark .mm-ui.mm-acc .mm-fin-section-row th {

@@ -1,7 +1,7 @@
 const http=require('http'),fs=require('fs'),path=require('path');
 const root=path.resolve(__dirname,'..');
 const {compose}=require(path.join(root,'tools/browser/compose-fixture.cjs'));
-const types={'.html':'text/html; charset=utf-8','.css':'text/css','.js':'text/javascript','.woff2':'font/woff2','.woff':'font/woff','.ttf':'font/ttf','.png':'image/png','.svg':'image/svg+xml'};
+const types={'.html':'text/html; charset=utf-8','.css':'text/css','.js':'text/javascript','.woff2':'font/woff2','.woff':'font/woff','.ttf':'font/ttf','.png':'image/png','.svg':'image/svg+xml','.pdf':'application/pdf'};
 const note='<div role="note" style="padding:12px;margin:0 0 16px;border:1px solid #c5d7ee;background:#edf4ff;color:#24436a"><strong>Visual preview \u00b7 sample data only</strong><br>Admin shell, header, footer and room board design. Not connected to Laravel, bookings or the hotel database. Menu destinations are demonstration links.</div>';
 
 const fix=n=>fs.readFileSync(path.join(root,'tools/fixtures',n),'utf8');
@@ -670,7 +670,35 @@ function ratePlansPage(){
  </tbody></table></div></div></div></section>`;
  return shellWith(body,'','','Seasonal Rate Plans & Promo Engine (F3)',['Hotel','Distribution','Rate Plans']);
 }
+function draftBookingPdfPage(){
+ const html=fix('preview/booking-next.html');
+ const sheetStart=html.indexOf('<div class="mm-wiz-draft-sheet" id="wiz-draft-sheet">');
+ const sheetEnd=html.indexOf('</div>\n                    </div>\n                    <div class="modal-footer">\n                        <button type="button" class="btn btn-default" data-dismiss="modal">Close Preview</button>');
+ const sheet=sheetStart>=0&&sheetEnd>sheetStart?html.slice(sheetStart,sheetEnd)+'</div>':'<div class="mm-panel tw-p-5">Draft Booking Summary PDF</div>';
+ const body=`<section class="mm-ui mm-booking-next"><div class="tw-space-y-4 tw-py-2">
+ <header class="mm-page-head mm-no-print tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+  <div class="mm-page-title">
+   <h1 class="tw-m-0 tw-font-semibold tw-text-ink"><i class="fa fa-file-pdf-o"></i> Whole Booking Preview — Draft Reservation Summary PDF</h1>
+   <p class="tw-m-0 tw-text-sm tw-text-muted">Executive A4 Pre-Confirmation Reservation Summary for guest review, signature, and instant PDF print/download.</p>
+  </div>
+  <div class="tw-flex tw-flex-wrap tw-gap-2">
+   <a href="/preview/booking-next" class="mm-button mm-button-secondary"><i class="fa fa-arrow-left"></i> Back to 3-Step Booking Wizard</a>
+   <a href="/assets/docs/draft-reservation-summary.pdf" download="MM-Heritage-Draft-Booking-Summary.pdf" class="mm-button mm-button-secondary"><i class="fa fa-download"></i> Download Vector PDF</a>
+   <button type="button" class="mm-button" onclick="window.print()"><i class="fa fa-print"></i> Print / Save as A4 PDF</button>
+  </div>
+ </header>
+ <div class="mm-table-kpi-grid mm-no-print" aria-label="Draft booking PDF metrics">
+  <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-file-pdf-o"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Document Format</span><div class="mm-table-kpi-value">A4 Portrait PDF <span class="mm-table-kpi-sub">1 Page · Vector</span></div></div></div>
+  <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-bed"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Assigned Suites</span><div class="mm-table-kpi-value">2 Suites · 2 Nights <span class="mm-table-kpi-sub">#101 &amp; #201</span></div></div></div>
+  <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-users"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Registered Guests</span><div class="mm-table-kpi-value">3 Occupants <span class="mm-table-kpi-sub">KYC Verified</span></div></div></div>
+  <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-check-circle"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Net Stay / Advance</span><div class="mm-table-kpi-value">৳ 25,000 / ৳ 10,000 <span class="mm-table-kpi-sub">Due: ৳ 15,000</span></div></div></div>
+ </div>
+ <div style="max-width:920px;margin:0 auto;">${sheet}</div>
+ </div></section>`;
+ return shellWith(body,'','','Whole Booking Preview — Draft Reservation Summary PDF',['Hotel','Booking','Draft Summary PDF']);
+}
 const specialPages={
+ '/preview/draft-booking-pdf':{fn:draftBookingPdfPage,title:'Whole Booking Preview — Draft Reservation Summary PDF',crumbs:['Hotel','Bookings','Draft Summary PDF']},
  '/preview/wiki':{fn:wikiPage,title:'User Documentation, Wiki & Help (EN / বাংলা)',crumbs:['System','Documentation','Wiki & Help']},
  '/preview/help':{fn:wikiPage,title:'Help Center & SOP Checklists (EN / বাংলা)',crumbs:['System','Documentation','Help']},
  '/preview/sop-print':{fn:sopPrintPage,title:'Printable Bilingual SOP Cheat Sheet (EN / বাংলা)',crumbs:['System','Documentation','Printable SOP']},

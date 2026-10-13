@@ -948,18 +948,18 @@
                         <strong id="wiz-calc-due" style="font-size:16px;">৳ 15,000</strong>
                     </div>
                     <div id="wiz-draft-print-banner" class="mm-wiz-adv-alert is-ok" style="display:none; margin-bottom:6px;">
-                        <i class="fa fa-print"></i> <span id="wiz-draft-print-banner-text">Draft Booking Summary generated and prepared for A4 / Thermal print.</span>
+                        <i class="fa fa-file-pdf-o"></i> <span id="wiz-draft-print-banner-text">Whole Booking Preview — Draft Reservation Summary PDF generated and prepared for A4 Print / PDF Save.</span>
                     </div>
                     <div id="wiz-confirm-banner" class="alert alert-success" style="display:none; margin-bottom:8px; font-size:12px;">
                         <i class="fa fa-check-circle"></i> <strong>Booking #BK-2026-1094 Confirmed!</strong> Guest checked in &amp; room keys encoded.
                     </div>
-                    <!-- Pre-Confirmation Whole Booking Preview & Print Draft Bar -->
+                    <!-- Pre-Confirmation Whole Booking Preview & Print Draft PDF Bar -->
                     <div class="tw-flex tw-flex-wrap tw-gap-2" style="padding-top:2px;">
                         <button type="button" id="wiz-btn-draft-preview" class="mm-button mm-button-secondary" data-toggle="modal" data-target="#wiz-draft-summary-modal" style="flex:1; justify-content:center;">
-                            <i class="fa fa-file-text-o"></i> Preview Draft Booking Summary
+                            <i class="fa fa-file-pdf-o"></i> Preview Draft Summary PDF
                         </button>
-                        <button type="button" id="wiz-btn-print-draft-direct" class="mm-button mm-button-secondary" title="Generate and Print Draft Booking Summary">
-                            <i class="fa fa-print"></i> Print Draft
+                        <button type="button" id="wiz-btn-print-draft-direct" class="mm-button mm-button-secondary" title="Open &amp; Print Whole Booking Draft Reservation Summary PDF">
+                            <i class="fa fa-print"></i> Print Draft Summary
                         </button>
                     </div>
                     <div class="tw-flex tw-flex-wrap tw-gap-2" style="padding-top:4px;">
@@ -1127,130 +1127,199 @@
             </div>
         </div>
 
-        <!-- Slide-Over / Printable App Drawer 4: Whole Booking Draft Summary Preview & Print -->
+        <!-- Slide-Over / Printable App Drawer 4: Whole Booking Draft Summary Preview & Print PDF -->
         <div class="modal fade mm-drawer" id="wiz-draft-summary-modal" data-mm-drawer="true" tabindex="-1" role="dialog" aria-labelledby="wiz-draft-summary-title">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h4 class="modal-title" id="wiz-draft-summary-title"><i class="fa fa-file-text-o"></i> Whole Booking Preview — Draft Reservation Summary</h4>
+                        <h4 class="modal-title" id="wiz-draft-summary-title"><i class="fa fa-file-pdf-o"></i> Whole Booking Preview — Draft Reservation Summary PDF</h4>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
                     </div>
                     <div class="modal-body">
                         <div class="mm-wiz-draft-sheet" id="wiz-draft-sheet">
-                            <div class="mm-wiz-draft-head">
-                                <div>
-                                    <div style="font-size:17px; font-weight:800; color:var(--mm-ink);">M&amp;M Heritage Hotel &amp; Suites</div>
-                                    <div class="tw-text-xs tw-text-muted">Front-Desk Reservation Desk · Pre-Confirmation Draft Booking Summary</div>
+                            <!-- Top PDF Document Action Toolbar (Hidden in @media print) -->
+                            <div class="mm-wiz-pdf-toolbar" id="wiz-pdf-toolbar">
+                                <div class="tw-flex tw-flex-wrap tw-items-center tw-gap-2">
+                                    <span class="mm-badge mm-badge-paid"><i class="fa fa-file-pdf-o"></i> A4 Executive PDF Sheet</span>
+                                    <span class="tw-text-xs tw-text-muted">Live synchronized with Steps 1–3 · Ready for Print or PDF Download</span>
                                 </div>
-                                <div style="text-align:right;">
-                                    <div><span class="mm-badge mm-badge-partial" id="draft-status-badge">DRAFT · READY TO CONFIRM</span></div>
-                                    <div class="tw-text-xs tw-text-muted" style="margin-top:4px;">Draft Ref: <code id="draft-ref-code">#DRAFT-BK-2026-1094</code></div>
-                                </div>
-                            </div>
-
-                            <!-- Section 1: Stay & Check-In/Out Schedule -->
-                            <div class="mm-wiz-subhead" style="margin-top:0;">
-                                <span><i class="fa fa-calendar"></i> 1. Stay Schedule &amp; Check-In / Check-Out Window</span>
-                            </div>
-                            <div class="mm-wiz-draft-meta-grid">
-                                <div class="mm-wiz-draft-kv">
-                                    <div class="mm-wiz-draft-kv-lbl">Check-In Date &amp; Time</div>
-                                    <div class="mm-wiz-draft-kv-val" id="draft-checkin">2026-10-14 · 02:00 PM</div>
-                                </div>
-                                <div class="mm-wiz-draft-kv">
-                                    <div class="mm-wiz-draft-kv-lbl">Check-Out Date &amp; Time</div>
-                                    <div class="mm-wiz-draft-kv-val" id="draft-checkout">2026-10-16 · 12:00 PM</div>
-                                </div>
-                                <div class="mm-wiz-draft-kv">
-                                    <div class="mm-wiz-draft-kv-lbl">Stay Duration &amp; Occupancy</div>
-                                    <div class="mm-wiz-draft-kv-val" id="draft-nights">2 Nights · 3 Guests</div>
-                                </div>
-                                <div class="mm-wiz-draft-kv">
-                                    <div class="mm-wiz-draft-kv-lbl">Booking Source / Tier</div>
-                                    <div class="mm-wiz-draft-kv-val" id="draft-source">Corporate Partner — Direct Desk</div>
+                                <div class="tw-flex tw-flex-wrap tw-gap-2">
+                                    <button type="button" class="mm-button mm-button-secondary" id="wiz-btn-download-draft-pdf" style="min-height:30px; padding:3px 11px; font-size:11.5px;">
+                                        <i class="fa fa-download"></i> Download Draft PDF
+                                    </button>
+                                    <a href="/preview/draft-booking-pdf" target="_blank" rel="noopener" class="mm-button mm-button-secondary" id="wiz-btn-open-pdf-tab" style="min-height:30px; padding:3px 11px; font-size:11.5px;">
+                                        <i class="fa fa-external-link"></i> Standalone A4 PDF View
+                                    </a>
                                 </div>
                             </div>
 
-                            <!-- Section 2: Primary Guest & Accompanying Guests -->
-                            <div class="mm-wiz-subhead">
-                                <span><i class="fa fa-users"></i> 2. Primary Guest &amp; Accompanying Occupants (KYC)</span>
-                                <span class="tw-text-xs tw-text-muted" id="draft-guests-count-lbl">3 Guests Registered</span>
-                            </div>
-                            <div class="mm-wiz-draft-kv" style="margin-bottom:10px;" id="draft-primary-guest">
-                                <div class="mm-wiz-draft-kv-lbl">Primary Guest (Folio Holder)</div>
-                                <div class="mm-wiz-draft-kv-val" id="draft-primary-guest-val">Tanvir Ahmed Chowdhury · +880 1711-948210 · NID/Passport: BD-8894021562 · tanvir.chowdhury@example.com</div>
-                            </div>
-                            <div class="mm-table-scroll" style="margin-bottom:14px;">
-                                <table class="mm-data-table table table-bordered table-striped" id="draft-guests-table">
-                                    <thead>
-                                        <tr>
-                                            <th>#</th>
-                                            <th>Room</th>
-                                            <th>Guest Full Name</th>
-                                            <th>Mobile Phone</th>
-                                            <th>NID / Passport</th>
-                                            <th>Relation / Role</th>
-                                            <th>Age / Gender</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="draft-guests-tbody">
-                                        <tr><td>1</td><td><code>#101</code></td><td><strong>Rafiqul Islam Bhuiyan</strong></td><td>+880 1911-458920</td><td><code>BD-5521904811</code></td><td>Colleague</td><td>35 / M</td></tr>
-                                        <tr><td>2</td><td><code>#201</code></td><td><strong>Nusrat Jahan</strong></td><td>+880 1819-552104</td><td><code>BG-0192837</code></td><td>Spouse</td><td>29 / F</td></tr>
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <!-- Section 3: Assigned Rooms & Tariff Breakdown -->
-                            <div class="mm-wiz-subhead">
-                                <span><i class="fa fa-bed"></i> 3. Assigned Rooms &amp; Nightly Tariff Breakdown</span>
-                                <span class="tw-text-xs tw-text-muted" id="draft-rooms-count-lbl">2 Rooms Assigned</span>
-                            </div>
-                            <div class="mm-table-scroll" style="margin-bottom:14px;">
-                                <table class="mm-data-table table table-bordered table-striped" id="draft-rooms-table">
-                                    <thead>
-                                        <tr>
-                                            <th>SL</th>
-                                            <th>Room &amp; Floor</th>
-                                            <th>Category &amp; Bed Type</th>
-                                            <th class="text-right">Nightly Tariff</th>
-                                            <th class="text-center">Nights</th>
-                                            <th class="text-right">Line Subtotal</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="draft-rooms-tbody">
-                                        <tr><td>1</td><td><strong>#101</strong> (Floor 1)</td><td>Deluxe Double · King Bed</td><td class="text-right">৳ 4,200</td><td class="text-center">2</td><td class="text-right"><strong>৳ 8,400</strong></td></tr>
-                                        <tr><td>2</td><td><strong>#201</strong> (Floor 2)</td><td>Heritage Suite · Suite</td><td class="text-right">৳ 6,500</td><td class="text-center">2</td><td class="text-right"><strong>৳ 13,000</strong></td></tr>
-                                    </tbody>
-                                </table>
-                            </div>
-
-                            <!-- Section 4: Financial Folio & Advance Deposit Summary -->
-                            <div class="mm-wiz-subhead">
-                                <span><i class="fa fa-calculator"></i> 4. Financial Folio, Advance Deposit &amp; Balance Summary</span>
-                            </div>
-                            <div class="mm-wiz-breakdown-box">
-                                <div class="mm-wiz-summary-line"><span>Combined Nightly Room Tariff</span><strong id="draft-nightly">৳ 10,700</strong></div>
-                                <div class="mm-wiz-summary-line"><span>Room Subtotal</span><strong id="draft-subtotal">৳ 21,400</strong></div>
-                                <div class="mm-wiz-summary-line"><span>Service Charge (10%) + Government VAT (15%)</span><strong id="draft-tax">৳ 5,350</strong></div>
-                                <div class="mm-wiz-summary-line"><span>Gross Stay Payable</span><strong id="draft-total">৳ 26,750</strong></div>
-                                <div class="mm-wiz-summary-line"><span>Promotional / Corporate Discount</span><strong id="draft-discount">- ৳ 1,750</strong></div>
-                                <div class="mm-wiz-summary-line"><span><strong>Net Stay Payable</strong></span><strong id="draft-net">৳ 25,000</strong></div>
-                                <div class="mm-wiz-summary-line"><span>Minimum Required Advance Deposit</span><strong id="draft-min-adv">৳ 7,500</strong></div>
-                                <div class="mm-wiz-summary-line"><span>Advance Paid Now (<span id="draft-pay-method">Card</span>)</span><strong id="draft-advance" style="color:#059669;">৳ 10,000</strong></div>
-                                <div class="mm-wiz-summary-line"><span><strong>Balance Due at Checkout</strong></span><strong id="draft-due" style="font-size:15px;">৳ 15,000</strong></div>
-                            </div>
-                            <div class="tw-text-xs tw-text-muted" style="margin-top:8px;" id="draft-notes">
-                                <strong>Front-Desk &amp; Housekeeping Instructions:</strong> VIP corporate arrival at 14:00 · Prepare welcome fruit basket &amp; high-floor quiet room.
-                            </div>
-
-                            <div class="mm-wiz-draft-sign">
-                                <div>
-                                    <div style="border-bottom:1px solid rgba(148,163,184,0.6); height:28px; margin-bottom:4px;"></div>
-                                    <strong>Primary Guest Signature</strong> · Agree to Tariff &amp; Terms
+                            <!-- Luxury Hotel PDF Header Banner -->
+                            <div class="mm-wiz-pdf-hero">
+                                <div class="mm-wiz-pdf-brand">
+                                    <div class="mm-wiz-pdf-crest" aria-hidden="true">M&amp;M</div>
+                                    <div>
+                                        <div style="font-size:10.5px; font-weight:800; letter-spacing:0.12em; text-transform:uppercase; color:#fcd34d;">Five-Star Boutique Hospitality · Dhaka</div>
+                                        <div style="font-size:19px; font-weight:900; letter-spacing:-0.01em; color:#ffffff; line-height:1.2;">M&amp;M HERITAGE HOTEL &amp; SUITES</div>
+                                        <div style="font-size:11.5px; color:#cbd5e1; margin-top:2px;">Plot 42, Road 90, Gulshan-2, Dhaka-1212 · BIN: 004192837-0101 · Front Desk: +880 2-55051920</div>
+                                    </div>
                                 </div>
-                                <div style="text-align:right;">
-                                    <div style="border-bottom:1px solid rgba(148,163,184,0.6); height:28px; margin-bottom:4px;"></div>
-                                    <strong>Front-Desk Officer Signature</strong> · M&amp;M Heritage Hotel
+                                <div class="mm-wiz-pdf-docmeta">
+                                    <div style="text-align:right;">
+                                        <div style="font-size:10px; font-weight:800; letter-spacing:0.08em; text-transform:uppercase; color:#93c5fd;">Whole Booking Preview · Draft Summary PDF</div>
+                                        <div style="margin-top:3px;"><span class="mm-badge mm-badge-paid" id="draft-status-badge">DRAFT · READY TO CONFIRM</span></div>
+                                        <div style="font-size:11px; color:#e2e8f0; margin-top:4px;">Folio Ref: <code id="draft-ref-code" style="background:rgba(255,255,255,0.14); color:#fcd34d; padding:1px 6px; border-radius:4px;">#DRAFT-BK-2026-1094</code></div>
+                                        <div style="font-size:10.5px; color:#94a3b8; margin-top:2px;" id="draft-issued-at">Issued: 2026-10-14 · 14:00 BST</div>
+                                    </div>
+                                    <svg width="46" height="46" viewBox="0 0 46 46" aria-label="Verification QR" style="background:#ffffff; padding:4px; border-radius:7px; flex-shrink:0;">
+                                        <rect x="2" y="2" width="12" height="12" fill="#0f172a"/><rect x="4" y="4" width="8" height="8" fill="#ffffff"/><rect x="6" y="6" width="4" height="4" fill="#0f172a"/>
+                                        <rect x="32" y="2" width="12" height="12" fill="#0f172a"/><rect x="34" y="4" width="8" height="8" fill="#ffffff"/><rect x="36" y="6" width="4" height="4" fill="#0f172a"/>
+                                        <rect x="2" y="32" width="12" height="12" fill="#0f172a"/><rect x="4" y="34" width="8" height="8" fill="#ffffff"/><rect x="6" y="36" width="4" height="4" fill="#0f172a"/>
+                                        <rect x="18" y="4" width="4" height="4" fill="#0f172a"/><rect x="24" y="8" width="4" height="4" fill="#0f172a"/><rect x="18" y="16" width="10" height="4" fill="#0f172a"/>
+                                        <rect x="6" y="20" width="8" height="4" fill="#0f172a"/><rect x="20" y="24" width="6" height="6" fill="#0f172a"/><rect x="32" y="20" width="10" height="4" fill="#0f172a"/>
+                                        <rect x="18" y="34" width="6" height="8" fill="#0f172a"/><rect x="28" y="32" width="14" height="4" fill="#0f172a"/><rect x="34" y="38" width="8" height="6" fill="#0f172a"/>
+                                    </svg>
+                                </div>
+                            </div>
+
+                            <div class="mm-wiz-pdf-body">
+                                <!-- Section 1: Stay & Check-In/Out Schedule -->
+                                <div class="mm-wiz-pdf-section-title" style="margin-top:0;">
+                                    <span><i class="fa fa-calendar"></i> 1. Stay Schedule &amp; Check-In / Check-Out Window</span>
+                                    <span class="tw-text-xs tw-text-muted">Guaranteed Reservation Hold · Standard Check-In 14:00 / Check-Out 12:00</span>
+                                </div>
+                                <div class="mm-wiz-draft-meta-grid">
+                                    <div class="mm-wiz-draft-kv">
+                                        <div class="mm-wiz-draft-kv-lbl">Check-In Date &amp; Time</div>
+                                        <div class="mm-wiz-draft-kv-val" id="draft-checkin">2026-10-14 · 02:00 PM</div>
+                                    </div>
+                                    <div class="mm-wiz-draft-kv">
+                                        <div class="mm-wiz-draft-kv-lbl">Check-Out Date &amp; Time</div>
+                                        <div class="mm-wiz-draft-kv-val" id="draft-checkout">2026-10-16 · 12:00 PM</div>
+                                    </div>
+                                    <div class="mm-wiz-draft-kv">
+                                        <div class="mm-wiz-draft-kv-lbl">Stay Duration &amp; Occupancy</div>
+                                        <div class="mm-wiz-draft-kv-val" id="draft-nights">2 Nights · 3 Guests</div>
+                                    </div>
+                                    <div class="mm-wiz-draft-kv">
+                                        <div class="mm-wiz-draft-kv-lbl">Booking Source / Tier</div>
+                                        <div class="mm-wiz-draft-kv-val" id="draft-source">Corporate Partner — Direct Desk</div>
+                                    </div>
+                                </div>
+
+                                <!-- Section 2: Primary Guest & Accompanying Guests -->
+                                <div class="mm-wiz-pdf-section-title">
+                                    <span><i class="fa fa-users"></i> 2. Primary Folio Holder &amp; Accompanying Occupants (KYC)</span>
+                                    <span class="tw-text-xs tw-text-muted" id="draft-guests-count-lbl">3 Guests Registered (1 Primary + 2 Accompanying)</span>
+                                </div>
+                                <div class="mm-wiz-draft-kv" style="margin-bottom:10px; border-left:3.5px solid #059669;" id="draft-primary-guest">
+                                    <div class="mm-wiz-draft-kv-lbl">Primary Guest (Master Folio Holder · Govt. ID Verified)</div>
+                                    <div class="mm-wiz-draft-kv-val" id="draft-primary-guest-val">Tanvir Ahmed Chowdhury · +880 1711-948210 · NID/Passport: BD-8894021562 · tanvir.chowdhury@example.com</div>
+                                </div>
+                                <div class="mm-table-scroll" style="margin-bottom:14px;">
+                                    <table class="mm-data-table table table-bordered table-striped" id="draft-guests-table">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Assigned Room</th>
+                                                <th>Accompanying Guest Full Name</th>
+                                                <th>Mobile Phone</th>
+                                                <th>NID / Passport No.</th>
+                                                <th>Relation / Role</th>
+                                                <th>Age / Gender</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="draft-guests-tbody">
+                                            <tr><td>1</td><td><code>#101</code></td><td><strong>Rafiqul Islam Bhuiyan</strong></td><td>+880 1911-458920</td><td><code>BD-5521904811</code></td><td>Colleague</td><td>35 / M</td></tr>
+                                            <tr><td>2</td><td><code>#201</code></td><td><strong>Nusrat Jahan</strong></td><td>+880 1819-552104</td><td><code>BG-0192837</code></td><td>Spouse</td><td>29 / F</td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <!-- Section 3: Assigned Rooms & Tariff Breakdown -->
+                                <div class="mm-wiz-pdf-section-title">
+                                    <span><i class="fa fa-bed"></i> 3. Assigned Rooms &amp; Nightly Tariff Schedule</span>
+                                    <span class="tw-text-xs tw-text-muted" id="draft-rooms-count-lbl">2 Rooms Assigned · Complimentary Buffet Breakfast &amp; Wi-Fi</span>
+                                </div>
+                                <div class="mm-table-scroll" style="margin-bottom:14px;">
+                                    <table class="mm-data-table table table-bordered table-striped" id="draft-rooms-table">
+                                        <thead>
+                                            <tr>
+                                                <th>SL</th>
+                                                <th>Room &amp; Floor</th>
+                                                <th>Suite Category &amp; Bed Type</th>
+                                                <th class="text-right">Nightly Tariff</th>
+                                                <th class="text-center">Nights</th>
+                                                <th class="text-right">Line Subtotal</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="draft-rooms-tbody">
+                                            <tr><td>1</td><td><strong>#101</strong> (Floor 1)</td><td>Deluxe Double · King Bed</td><td class="text-right">৳ 4,200</td><td class="text-center">2</td><td class="text-right"><strong>৳ 8,400</strong></td></tr>
+                                            <tr><td>2</td><td><strong>#201</strong> (Floor 2)</td><td>Heritage Suite · Suite</td><td class="text-right">৳ 6,500</td><td class="text-center">2</td><td class="text-right"><strong>৳ 13,000</strong></td></tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <!-- Section 4: Two-Column Financial Folio & Advance Deposit Policy -->
+                                <div class="mm-wiz-pdf-section-title">
+                                    <span><i class="fa fa-calculator"></i> 4. Financial Folio, Advance Deposit Policy &amp; Balance Summary</span>
+                                    <span class="tw-text-xs tw-text-muted">All amounts in Bangladeshi Taka (BDT · ৳)</span>
+                                </div>
+                                <div class="mm-wiz-pdf-finance-grid">
+                                    <div class="mm-wiz-pdf-policy-box">
+                                        <div>
+                                            <div style="font-size:11.5px; font-weight:800; text-transform:uppercase; letter-spacing:0.04em; color:#2563eb; margin-bottom:6px;">
+                                                <i class="fa fa-shield"></i> Advance Deposit Policy &amp; Compliance
+                                            </div>
+                                            <div class="mm-wiz-summary-line"><span>Selected Deposit Policy</span><strong id="draft-policy-name">Standard — Min 30% of Net Payable</strong></div>
+                                            <div class="mm-wiz-summary-line"><span>Minimum Required Advance</span><strong id="draft-min-adv">৳ 7,500</strong></div>
+                                            <div class="mm-wiz-summary-line"><span>Settlement Tender Channel</span><strong id="draft-pay-method-badge"><span class="mm-badge mm-badge-paid" id="draft-pay-method">Card</span></strong></div>
+                                            <div class="mm-wiz-summary-line"><span>Deposit Policy Verification</span><strong id="draft-compliance-pill"><span class="mm-badge mm-badge-paid">✓ Minimum Satisfied</span></strong></div>
+                                        </div>
+                                        <div style="padding-top:8px; border-top:1px dashed rgba(148,163,184,0.45); font-size:11.5px; line-height:1.45;" id="draft-notes">
+                                            <strong>Front-Desk &amp; Housekeeping Instructions:</strong> VIP corporate arrival at 14:00 · Prepare welcome fruit basket &amp; high-floor quiet room.
+                                        </div>
+                                        <div style="font-size:10.5px; color:#64748b; line-height:1.4;">
+                                            <strong>Reservation Terms:</strong> Government NID/Passport is mandatory at check-in for all occupants. Standard check-out is 12:00 PM; remaining folio balance is payable upon checkout.
+                                        </div>
+                                    </div>
+                                    <div class="mm-wiz-pdf-totals-box">
+                                        <div class="mm-wiz-summary-line"><span>Combined Nightly Room Tariff</span><strong id="draft-nightly">৳ 10,700</strong></div>
+                                        <div class="mm-wiz-summary-line"><span>Room Stay Subtotal</span><strong id="draft-subtotal">৳ 21,400</strong></div>
+                                        <div class="mm-wiz-summary-line"><span>Service Charge (10%) + Govt. VAT (15%)</span><strong id="draft-tax">৳ 5,350</strong></div>
+                                        <div class="mm-wiz-summary-line"><span>Gross Stay Payable</span><strong id="draft-total">৳ 26,750</strong></div>
+                                        <div class="mm-wiz-summary-line"><span>Promotional / Corporate Discount</span><strong id="draft-discount">- ৳ 1,750</strong></div>
+                                        <div class="mm-wiz-summary-line" style="border-top:1px solid rgba(37,99,235,0.25); padding-top:6px; margin-top:4px;"><span><strong>Net Stay Payable</strong></span><strong id="draft-net" style="font-size:14px;">৳ 25,000</strong></div>
+                                        <div class="mm-wiz-summary-line"><span>Advance Paid Now</span><strong id="draft-advance" style="color:#059669; font-size:14px;">৳ 10,000</strong></div>
+                                        <div class="mm-wiz-pdf-due-bar">
+                                            <span><i class="fa fa-credit-card"></i> Balance Due at Checkout</span>
+                                            <strong id="draft-due" style="font-size:16px; color:#fcd34d;">৳ 15,000</strong>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Section 5: Authorized Signatures & Official Hotel Seal -->
+                                <div class="mm-wiz-draft-sign">
+                                    <div>
+                                        <div style="border-bottom:1.5px solid rgba(100,116,139,0.55); height:30px; margin-bottom:5px;"></div>
+                                        <strong>Primary Guest Signature</strong><br>
+                                        <span>I confirm the stay dates, occupant KYC &amp; tariff terms</span>
+                                    </div>
+                                    <div style="text-align:center;">
+                                        <div style="border:1.5px dashed rgba(37,99,235,0.45); border-radius:8px; height:34px; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:800; color:#2563eb; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:4px;">
+                                            M&amp;M Heritage Official Front-Desk Seal
+                                        </div>
+                                        <span>Verified Pre-Confirmation Draft</span>
+                                    </div>
+                                    <div style="text-align:right;">
+                                        <div style="border-bottom:1.5px solid rgba(100,116,139,0.55); height:30px; margin-bottom:5px;"></div>
+                                        <strong>Front-Desk Reservation Officer</strong><br>
+                                        <span>M&amp;M Heritage Hotel &amp; Suites</span>
+                                    </div>
+                                </div>
+
+                                <div class="mm-wiz-pdf-footbar">
+                                    <span>Document ID: <strong>PDF-DRAFT-BK-2026-1094</strong> · M&amp;M Heritage PMS v2.4</span>
+                                    <span>Page 1 of 1 · A4 Executive Reservation Summary</span>
                                 </div>
                             </div>
                         </div>
@@ -1258,7 +1327,7 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Close Preview</button>
                         <button type="button" class="mm-button mm-button-secondary" id="wiz-btn-print-draft">
-                            <i class="fa fa-print"></i> Print Draft Summary
+                            <i class="fa fa-print"></i> Print Draft Summary PDF
                         </button>
                         <button type="button" class="mm-button" id="wiz-draft-confirm-btn" data-dismiss="modal">
                             <i class="fa fa-check"></i> Confirm Booking &amp; Check-In
@@ -1836,13 +1905,18 @@
         var net = Math.max(0, total - disc);
         var adv = Math.max(0, parseInt((document.getElementById('wiz-advance') || {}).value || '0', 10));
         var due = Math.max(0, net - adv);
-        var policy = (document.getElementById('wiz-advance-policy') || {}).value || 'min30';
+        var policyEl = document.getElementById('wiz-advance-policy');
+        var policy = (policyEl || {}).value || 'min30';
+        var policyTxt = (policyEl && policyEl.options && policyEl.selectedIndex >= 0)
+            ? policyEl.options[policyEl.selectedIndex].text
+            : 'Standard — Min 30% of Net Payable';
         var minReq = Math.round(net * 0.30);
         if (policy === 'first_night') minReq = Math.min(net, nightly);
         else if (policy === 'min50') minReq = Math.round(net * 0.50);
         else if (policy === 'full100') minReq = net;
 
         var payMethod = (document.getElementById('wiz-pay-method') || {}).value || 'Card';
+        if (document.getElementById('draft-policy-name')) document.getElementById('draft-policy-name').textContent = policyTxt;
         if (document.getElementById('draft-nightly')) document.getElementById('draft-nightly').textContent = fmt(nightly);
         if (document.getElementById('draft-subtotal')) document.getElementById('draft-subtotal').textContent = fmt(sub);
         if (document.getElementById('draft-tax')) document.getElementById('draft-tax').textContent = fmt(sc + vat);
@@ -1855,24 +1929,57 @@
         if (document.getElementById('draft-due')) document.getElementById('draft-due').textContent = fmt(due);
 
         var stBadge = document.getElementById('draft-status-badge');
-        if (stBadge) {
-            if (adv < minReq && net > 0) {
+        var compPill = document.getElementById('draft-compliance-pill');
+        if (adv < minReq && net > 0) {
+            if (stBadge) {
                 stBadge.className = 'mm-badge mm-badge-unpaid';
                 stBadge.textContent = 'DRAFT · ADVANCE BELOW MINIMUM';
-            } else {
+            }
+            if (compPill) {
+                compPill.innerHTML = '<span class="mm-badge mm-badge-unpaid">⚠ Shortfall ' + fmt(minReq - adv) + '</span>';
+            }
+        } else {
+            if (stBadge) {
                 stBadge.className = 'mm-badge mm-badge-paid';
                 stBadge.textContent = 'DRAFT · READY TO CONFIRM';
+            }
+            if (compPill) {
+                compPill.innerHTML = '<span class="mm-badge mm-badge-paid">✓ Minimum Satisfied</span>';
             }
         }
     }
 
     function printDraftBookingSummary() {
         buildDraftBookingSummary();
+        var modal = document.getElementById('wiz-draft-summary-modal');
+        if (modal && window.jQuery && typeof window.jQuery(modal).modal === 'function' && !modal.classList.contains('in')) {
+            window.jQuery(modal).modal('show');
+        }
         var printBanner = document.getElementById('wiz-draft-print-banner');
+        var printBannerText = document.getElementById('wiz-draft-print-banner-text');
+        if (printBannerText) {
+            printBannerText.textContent = 'Whole Booking Preview — Draft Reservation Summary PDF generated and prepared for A4 Print / PDF Save.';
+        }
         if (printBanner) printBanner.style.display = 'block';
         if (typeof window.print === 'function') {
             try { window.print(); } catch (e) {}
         }
+    }
+
+    function downloadDraftBookingPdf() {
+        buildDraftBookingSummary();
+        var printBanner = document.getElementById('wiz-draft-print-banner');
+        var printBannerText = document.getElementById('wiz-draft-print-banner-text');
+        if (printBannerText) {
+            printBannerText.textContent = 'Whole Booking Preview — Draft Reservation Summary PDF downloaded (MM-Heritage-Draft-Booking-Summary.pdf).';
+        }
+        if (printBanner) printBanner.style.display = 'block';
+        var a = document.createElement('a');
+        a.href = '/assets/docs/draft-reservation-summary.pdf';
+        a.download = 'MM-Heritage-Draft-Booking-Summary.pdf';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
     }
 
     var btnDraftPreview = document.getElementById('wiz-btn-draft-preview');
@@ -1886,6 +1993,10 @@
     var btnPrintDraftModal = document.getElementById('wiz-btn-print-draft');
     if (btnPrintDraftModal) {
         btnPrintDraftModal.addEventListener('click', printDraftBookingSummary);
+    }
+    var btnDownloadDraftPdf = document.getElementById('wiz-btn-download-draft-pdf');
+    if (btnDownloadDraftPdf) {
+        btnDownloadDraftPdf.addEventListener('click', downloadDraftBookingPdf);
     }
     var btnDraftConfirm = document.getElementById('wiz-draft-confirm-btn');
     if (btnDraftConfirm) {
