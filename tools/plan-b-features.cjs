@@ -141,10 +141,11 @@ function buildPlanBPages(shellWith) {
                     <div class="mm-table-scroll">
                         <table class="mm-data-table table table-bordered table-striped">
                             <thead><tr>${ths}</tr></thead>
-                            <tbody>${trs}</tbody>
+                            <tbody id="pb-tbody-${spec.code.toLowerCase()}">${trs}</tbody>
                         </table>
                     </div>
                 </div>
+                ${spec.script || ''}
             </div></section>`;
             return shellWith(body, '', '', `${spec.title} (Plan B · ${spec.code})`, spec.crumbs);
         };
@@ -164,6 +165,27 @@ function buildPlanBPages(shellWith) {
                 ['fa-money', 'occ', 'Online Deposits Today', '৳ 148,500', '14 Confirmed Bookings'],
                 ['fa-shield', 'rev', 'No-Show Reduction', '-84% Drop', 'Guaranteed Pre-Payment'],
             ],
+            controls: `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><strong><i class="fa fa-bolt"></i> Interactive Payment Intent Generator &amp; Webhook Capture Simulator (F1)</strong><span class="mm-badge mm-badge-paid">HMAC-SHA256 Live</span></div>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;align-items:end">
+                    <div><label class="mm-label">Reservation &amp; Guest</label><select id="f1-booking" class="form-control"><option value="#BK-2026-1095 · Rubana Huq">#BK-2026-1095 · Rubana Huq (Suite #403)</option><option value="#BK-2026-1096 · Dr. Ahsan Habib">#BK-2026-1096 · Dr. Ahsan Habib (Suite #401)</option><option value="#BK-2026-1097 · Syed Kamrul Hasan">#BK-2026-1097 · Syed Kamrul Hasan (Suite #106)</option></select></div>
+                    <div><label class="mm-label">Payment Gateway</label><select id="f1-gateway" class="form-control"><option value="SSLCommerz · VISA/MasterCard">SSLCommerz · VISA/MasterCard</option><option value="Stripe Checkout · International Card">Stripe Checkout · International Card</option><option value="bKash Tokenized Checkout">bKash Tokenized Checkout</option><option value="HitPay QR / FPX / PayNow">HitPay QR / FPX / PayNow</option></select></div>
+                    <div><label class="mm-label">Deposit Tier</label><select id="f1-tier" class="form-control"><option value="Min 20% Deposit">Min 20% Deposit</option><option value="50% Corporate Advance" selected>50% Corporate Advance</option><option value="100% Full Prepay">100% Full Prepay</option></select></div>
+                    <div><label class="mm-label">Capture Amount (৳)</label><input type="number" id="f1-amount" class="form-control" value="18500"></div>
+                    <div><button type="button" id="f1-btn-capture" class="mm-button" style="width:100%"><i class="fa fa-bolt"></i> Capture &amp; Auto-Post to Folio</button></div>
+                </div>`,
+            script: `<script>(function(){
+                var btn=document.getElementById("f1-btn-capture"),tb=document.getElementById("pb-tbody-f1"),ban=document.getElementById("pb-banner-f1");
+                if(btn&&tb){
+                    btn.addEventListener("click",function(){
+                        var bk=document.getElementById("f1-booking").value,gw=document.getElementById("f1-gateway").value,trTier=document.getElementById("f1-tier").value,amt=Number(document.getElementById("f1-amount").value||18500);
+                        var id="#PI-"+(8844+tb.querySelectorAll("tr").length);
+                        var tr=document.createElement("tr");
+                        tr.innerHTML="<td><code>"+id+"</code></td><td><strong>"+bk+"</strong></td><td>"+gw+"</td><td>"+trTier+'</td><td><div class="mm-share-cell"><span>Captured</span><span class="mm-share-bar"><span class="mm-share-fill is-emerald" style="width:100%"></span></span></div></td><td><strong>৳ '+amt.toLocaleString("en-US")+'</strong></td><td><span class="mm-badge mm-badge-paid">Posted to Folio</span></td>';
+                        tb.insertBefore(tr,tb.firstChild);
+                        if(ban){ban.innerHTML='<i class="fa fa-check-circle"></i> <strong>Webhook Verified ('+id+'):</strong> Captured ৳ '+amt.toLocaleString("en-US")+" via "+gw+" and auto-posted to "+bk+" folio!";ban.style.display="block";}
+                    });
+                }
+            })();</script>`,
             tableTitle: 'Live Online Payment Intents & Auto-Posted Folio Deposits',
             headers: ['Intent ID', 'Booking & Guest', 'Gateway & Method', 'Deposit Tier', 'Capture Progress', 'Amount', 'Status'],
             rows: [
