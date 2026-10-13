@@ -1354,6 +1354,22 @@
     border-color: rgba(52, 211, 153, 0.42);
     color: #6ee7b7;
 }
+.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-wiz-filter-bar {
+    background: rgba(15, 23, 42, 0.78);
+    border-color: rgba(148, 163, 184, 0.26);
+}
+.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-wiz-draft-sheet {
+    background: rgba(18, 28, 43, 0.96);
+    border-color: rgba(96, 165, 250, 0.30);
+    color: #f1f5f9;
+}
+.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-wiz-draft-kv {
+    background: rgba(15, 23, 42, 0.88);
+    border-color: rgba(148, 163, 184, 0.24);
+}
+.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-wiz-draft-kv-val {
+    color: #f8fafc;
+}
 .mm-shell.mm-dark .mm-ui.mm-acc .mm-fin-section-row td,
 .mm-shell.mm-dark .mm-ui.mm-acc .mm-fin-section-row th {
     background: rgba(30, 58, 95, 0.48) !important;

@@ -118,6 +118,27 @@ test('20-room & 20-guest sample dataset renders across Tape Chart, Rooms, Guests
     await expect(page.locator('#wiz-guest-preset option')).toHaveCount(18);
     await expect(page.locator('#wiz-floorplan-grid')).toHaveClass(/is-scrollable/);
     await expect(page.locator('#wiz-room-list')).toHaveClass(/is-scrollable/);
+
+    // Verify Step 1 4-dropdown room filter bar (Status, Room Type, Bed Type, Floor)
+    await expect(page.locator('#wiz-filter-status')).toBeVisible();
+    await expect(page.locator('#wiz-filter-type')).toBeVisible();
+    await expect(page.locator('#wiz-filter-bed')).toBeVisible();
+    await expect(page.locator('#wiz-filter-floor')).toBeVisible();
+    await page.selectOption('#wiz-filter-status', 'Occupied');
+    await expect(page.locator('#wiz-filter-count')).toContainText('Showing 6 of 18');
+    await page.selectOption('#wiz-filter-status', 'HouseKeeping');
+    await expect(page.locator('#wiz-filter-count')).toContainText('Showing 2 of 18');
+    await page.selectOption('#wiz-filter-status', 'Hold');
+    await expect(page.locator('#wiz-filter-count')).toContainText('Showing 2 of 18');
+    await page.selectOption('#wiz-filter-status', 'Booked');
+    await expect(page.locator('#wiz-filter-count')).toContainText('Showing 2 of 18');
+    await page.selectOption('#wiz-filter-status', 'Available');
+    await expect(page.locator('#wiz-filter-count')).toContainText('Showing 6 of 18');
+    await page.selectOption('#wiz-filter-floor', '2');
+    await expect(page.locator('#wiz-filter-count')).toContainText('Showing 2 of 18');
+    await page.locator('#wiz-filter-reset').click();
+    await expect(page.locator('#wiz-filter-count')).toContainText('Showing 18 of 18');
+
     await page.locator('[data-wiz-range-preset="3"]').click();
     await expect(page.locator('#wiz-nights')).toHaveValue('3');
     await expect(page.locator('#wiz-coguests-tbody .wiz-coguest-row')).toHaveCount(2);
@@ -128,4 +149,14 @@ test('20-room & 20-guest sample dataset renders across Tape Chart, Rooms, Guests
     await page.locator('[data-wiz-adv-pct="50"]').click();
     await expect(page.locator('#wiz-advance-error')).toBeHidden();
     await expect(page.locator('#wiz-advance-ok')).toBeVisible();
+
+    // Verify Step 3 Whole Booking Draft Summary Preview & Print option before confirming
+    await page.locator('#wiz-btn-draft-preview').click();
+    await expect(page.locator('#wiz-draft-summary-modal')).toBeVisible();
+    await expect(page.locator('#draft-nights')).toContainText('3 Nights · 4 Guests');
+    await expect(page.locator('#draft-rooms-tbody tr')).toHaveCount(2);
+    await expect(page.locator('#draft-guests-tbody tr')).toHaveCount(3);
+    await page.evaluate(() => { window.print = () => { window.__draftPrinted = true; }; });
+    await page.locator('#wiz-btn-print-draft').click();
+    await expect(page.locator('#wiz-draft-print-banner')).toBeVisible();
 });
