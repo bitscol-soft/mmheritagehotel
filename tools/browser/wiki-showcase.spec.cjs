@@ -64,6 +64,9 @@ test('printable bilingual SOP cheat sheet (/preview/sop-print) hides chrome on p
 for (const [route, heading] of [
     ['/preview/onboarding', 'Role-Based Staff Onboarding'],
     ['/preview/tape-chart', '7-Day Reservation Tape Chart'],
+    ['/preview/rooms', 'Hotel Rooms & Suite Inventory'],
+    ['/preview/guests', 'Registered Guests & VIP CRM Directory'],
+    ['/preview/bookings', 'Room Bookings & Active Reservations'],
     ['/preview/housekeeping-board', 'Housekeeping & Maintenance SLA Board'],
     ['/preview/concierge-requests', 'Concierge, Guest Requests & Lost-and-Found'],
     ['/preview/channel-manager', 'OTA Channel Manager & iCal Sync'],
@@ -82,3 +85,35 @@ for (const [route, heading] of [
         }
     });
 }
+
+test('20-room & 20-guest sample dataset renders across Tape Chart, Rooms, Guests, Bookings, Housekeeping, Concierge & Booking Wizard', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
+
+    await page.goto(`http://127.0.0.1:${PORT}/preview/tape-chart`);
+    await expect(page.locator('.tape-room-row')).toHaveCount(20);
+
+    await page.goto(`http://127.0.0.1:${PORT}/preview/rooms`);
+    await expect(page.locator('.rm-dir-row')).toHaveCount(20);
+    await page.locator('[data-rm-floor="1"]').click();
+    await expect(page.locator('.rm-dir-row:visible')).toHaveCount(6);
+    await page.locator('[data-rm-floor="all"]').click();
+    await expect(page.locator('.rm-dir-row:visible')).toHaveCount(20);
+
+    await page.goto(`http://127.0.0.1:${PORT}/preview/guests`);
+    await expect(page.locator('.gst-dir-row')).toHaveCount(20);
+    await page.fill('#mm-gst-search', 'UNICEF');
+    await expect(page.locator('.gst-dir-row:visible')).toHaveCount(1);
+
+    await page.goto(`http://127.0.0.1:${PORT}/preview/bookings`);
+    await expect(page.locator('.bk-dir-row')).toHaveCount(20);
+
+    await page.goto(`http://127.0.0.1:${PORT}/preview/housekeeping-board`);
+    await expect(page.locator('table.mm-data-table tbody tr')).toHaveCount(18);
+
+    await page.goto(`http://127.0.0.1:${PORT}/preview/concierge-requests`);
+    await expect(page.locator('table.mm-data-table tbody tr')).toHaveCount(16);
+
+    await page.goto(`http://127.0.0.1:${PORT}/preview/booking-next`);
+    await expect(page.locator('#wiz-floorplan-grid [data-floor]')).toHaveCount(18);
+    await expect(page.locator('#wiz-guest-preset option')).toHaveCount(18);
+});

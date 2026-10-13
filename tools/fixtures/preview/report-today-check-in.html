@@ -5,8 +5,43 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Today check in</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Guests checking in on the selected date.</p>            </div>
-                    </header>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Guests checked in today with room assignments and arrival timestamps.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/report-expected-arrival"><i class="fa fa-plane"></i> Expected Arrivals</a>
+                <a class="mm-button mm-button-secondary" href="/preview/report-today-activities"><i class="fa fa-bar-chart"></i> Today Report</a>
+            </div>
+        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Today check-in summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-sign-in"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Check-In Date</span>
+                    <div class="mm-table-kpi-value">01 Oct 2026 <span class="mm-table-kpi-sub">Front-Desk Shift</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-user-plus"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Arrived Guests</span>
+                    <div class="mm-table-kpi-value">15 Check-Ins <span class="mm-table-kpi-sub">Rooms #101 to #403</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-key"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Keycard Status</span>
+                    <div class="mm-table-kpi-value">15 Issued ✓ <span class="mm-table-kpi-sub">12:00–14:00 PM</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-id-card-o"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">KYC Verification</span>
+                    <div class="mm-table-kpi-value">100% Complete ✓ <span class="mm-table-kpi-sub">NID / Passport</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6"><div class="mm-table-scroll" role="region" aria-label="Today check in" tabindex="0"><input type="hidden" name="date" value="2026-10-01">
             <div class="text-center">
                 <span class="badge badge-info" style="font-size: 17px;">Today Check-In Report</span>
@@ -29,39 +64,22 @@
                 </thead>
 
                 <tbody>
-                    
-                    
-                        <tr>
-                            <td class="text-center">
-                                1
-
-                            </td>
-                            <td class="text-center">
-                                B-0011
-                            </td>
-                            <td class="text-center">
-                                Tania
-                            </td>
-                            <td class="text-center">
-                                                                                                    <label
-                                            class="label label-success">101</label>
-                                                            </td>
-                            <td style="text-align: right;">
-                                <span class="item-total">
-                                    2026-09-28
-                                </span>
-                            </td>
-                            <td style="text-align: right;">
-                                2026-10-01
-                            </td>
-                            <td class="text-right">
-                                2026-10-03
-                            </td>
-                            <td class="text-center">
-                                                                14:00 PM
-                            </td>
-                        </tr>
-                                    </tbody>
+                    <tr><td class="text-center">1</td><td class="text-center">B-0011</td><td class="text-center">Tania</td><td class="text-center"><label class="label label-success">101</label></td><td style="text-align: right;"><span class="item-total">2026-09-28</span></td><td style="text-align: right;">2026-10-01</td><td class="text-right">2026-10-03</td><td class="text-center">14:00 PM</td></tr>
+                    <tr><td class="text-center">2</td><td class="text-center">BK-2026-101</td><td class="text-center">Tanvir Ahmed Chowdhury</td><td class="text-center"><label class="label label-success">102</label></td><td style="text-align: right;"><span class="item-total">2026-10-10</span></td><td style="text-align: right;">2026-10-14</td><td class="text-right">2026-10-17</td><td class="text-center">14:05 PM</td></tr>
+                    <tr><td class="text-center">3</td><td class="text-center">BK-2026-102</td><td class="text-center">Nadia Islam</td><td class="text-center"><label class="label label-success">103</label></td><td style="text-align: right;"><span class="item-total">2026-10-11</span></td><td style="text-align: right;">2026-10-14</td><td class="text-right">2026-10-18</td><td class="text-center">14:12 PM</td></tr>
+                    <tr><td class="text-center">4</td><td class="text-center">BK-2026-103</td><td class="text-center">Dr. Farhana Rahman</td><td class="text-center"><label class="label label-success">104</label></td><td style="text-align: right;"><span class="item-total">2026-10-09</span></td><td style="text-align: right;">2026-10-14</td><td class="text-right">2026-10-19</td><td class="text-center">12:30 PM</td></tr>
+                    <tr><td class="text-center">5</td><td class="text-center">BK-2026-105</td><td class="text-center">Tahmina Akter</td><td class="text-center"><label class="label label-success">105</label></td><td style="text-align: right;"><span class="item-total">2026-10-12</span></td><td style="text-align: right;">2026-10-14</td><td class="text-right">2026-10-17</td><td class="text-center">13:45 PM</td></tr>
+                    <tr><td class="text-center">6</td><td class="text-center">BK-2026-106</td><td class="text-center">Syed Kamrul Hasan</td><td class="text-center"><label class="label label-success">106</label></td><td style="text-align: right;"><span class="item-total">2026-10-12</span></td><td style="text-align: right;">2026-10-14</td><td class="text-right">2026-10-18</td><td class="text-center">14:20 PM</td></tr>
+                    <tr><td class="text-center">7</td><td class="text-center">BK-2026-107</td><td class="text-center">Nusrat Jahan</td><td class="text-center"><label class="label label-success">201</label></td><td style="text-align: right;"><span class="item-total">2026-10-08</span></td><td style="text-align: right;">2026-10-14</td><td class="text-right">2026-10-18</td><td class="text-center">13:15 PM</td></tr>
+                    <tr><td class="text-center">8</td><td class="text-center">BK-2026-109</td><td class="text-center">Shabnam Mustari</td><td class="text-center"><label class="label label-success">203</label></td><td style="text-align: right;"><span class="item-total">2026-10-11</span></td><td style="text-align: right;">2026-10-14</td><td class="text-right">2026-10-16</td><td class="text-center">11:50 AM</td></tr>
+                    <tr><td class="text-center">9</td><td class="text-center">BK-2026-110</td><td class="text-center">Brig. Gen. Mahmudul Hasan</td><td class="text-center"><label class="label label-success">204</label></td><td style="text-align: right;"><span class="item-total">2026-10-05</span></td><td style="text-align: right;">2026-10-14</td><td class="text-right">2026-10-18</td><td class="text-center">12:00 PM</td></tr>
+                    <tr><td class="text-center">10</td><td class="text-center">BK-2026-111</td><td class="text-center">Ashraful Alam Siddiqui</td><td class="text-center"><label class="label label-success">205</label></td><td style="text-align: right;"><span class="item-total">2026-10-12</span></td><td style="text-align: right;">2026-10-14</td><td class="text-right">2026-10-17</td><td class="text-center">14:40 PM</td></tr>
+                    <tr><td class="text-center">11</td><td class="text-center">BK-2026-113</td><td class="text-center">Amb. Kenji Takahashi</td><td class="text-center"><label class="label label-success">301</label></td><td style="text-align: right;"><span class="item-total">2026-10-02</span></td><td style="text-align: right;">2026-10-14</td><td class="text-right">2026-10-19</td><td class="text-center">13:00 PM</td></tr>
+                    <tr><td class="text-center">12</td><td class="text-center">BK-2026-114</td><td class="text-center">Capt. Jonathan Vance</td><td class="text-center"><label class="label label-success">302</label></td><td style="text-align: right;"><span class="item-total">2026-10-06</span></td><td style="text-align: right;">2026-10-14</td><td class="text-right">2026-10-20</td><td class="text-center">15:10 PM</td></tr>
+                    <tr><td class="text-center">13</td><td class="text-center">BK-2026-115</td><td class="text-center">Meher Afroz Shaon</td><td class="text-center"><label class="label label-success">303</label></td><td style="text-align: right;"><span class="item-total">2026-10-10</span></td><td style="text-align: right;">2026-10-14</td><td class="text-right">2026-10-17</td><td class="text-center">14:25 PM</td></tr>
+                    <tr><td class="text-center">14</td><td class="text-center">BK-2026-119</td><td class="text-center">Elena Rostova</td><td class="text-center"><label class="label label-success">402</label></td><td style="text-align: right;"><span class="item-total">2026-10-04</span></td><td style="text-align: right;">2026-10-14</td><td class="text-right">2026-10-19</td><td class="text-center">13:30 PM</td></tr>
+                    <tr><td class="text-center">15</td><td class="text-center">BK-2026-120</td><td class="text-center">Rubana Huq</td><td class="text-center"><label class="label label-success">403</label></td><td style="text-align: right;"><span class="item-total">2026-10-01</span></td><td style="text-align: right;">2026-10-14</td><td class="text-right">2026-10-20</td><td class="text-center">12:15 PM</td></tr>
+                </tbody>
 
             </table></div></div>
     </div>

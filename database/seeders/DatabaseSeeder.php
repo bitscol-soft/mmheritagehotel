@@ -24,5 +24,6 @@ class DatabaseSeeder extends Seeder
         $this->call(CurrencySeeder::class);
         $this->call(SystemSettingTableSeeder::class);
         $this->call(CurrencyConversionTableSeeder::class);
+        $this->call(HotelDemoRoomsAndGuestsSeeder::class);
     }
 }
