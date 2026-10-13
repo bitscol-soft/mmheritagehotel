@@ -256,5 +256,17 @@ test('20-room & 20-guest sample dataset renders across Tape Chart, Rooms, Guests
         expect(resp && resp.status()).toBe(200);
         await expect(page.locator('.mm-table-kpi-grid .mm-table-kpi-card').first()).toBeVisible();
     }
+
+    // Verify Room Settings, Pricing, Amenities & Rules Control Center (/preview/room-settings)
+    await page.goto(`http://127.0.0.1:${PORT}/preview/room-settings`);
+    await expect(page.locator('#rmset-cat-tbody .rmset-cat-row')).toHaveCount(6);
+    await expect(page.locator('#rmset-amenity-count-badge')).toContainText('10 Active Amenities');
+    await page.fill('#rmset-new-amenity-name', 'Private Plunge Pool');
+    await page.locator('#rmset-btn-add-amenity').click();
+    await expect(page.locator('#rmset-amenity-count-badge')).toContainText('11 Active Amenities');
+    await page.fill('#rmset-rule-deposit', '30');
+    await expect(page.locator('#rmset-kpi-rules')).toContainText('30% Min Deposit');
+    await page.locator('#rmset-btn-save-prices').click();
+    await expect(page.locator('#rmset-save-banner')).toBeVisible();
 });
 

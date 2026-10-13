@@ -639,21 +639,36 @@ function buildPlanBPages(shellWith) {
             <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
                 <div class="mm-page-title">
                     <h1 class="tw-m-0 tw-font-semibold tw-text-ink"><i class="fa fa-sliders"></i> Room Settings, Pricing, Amenities &amp; Rules Control Center</h1>
-                    <p class="tw-m-0 tw-text-sm tw-text-muted">Unified configuration hub for Room Categories, Capacity Tariffs, In-Suite Amenities, Check-In/Out Policies, Tax Rules, and Inventory Guards.</p>
+                    <p class="tw-m-0 tw-text-sm tw-text-muted">Unified interactive configuration hub for Room Categories, Capacity Tariffs, In-Suite Amenities, Check-In/Out Policies, Tax Rules, and Inventory Guards.</p>
                 </div>
                 <div class="tw-flex tw-flex-wrap tw-gap-2">
-                    <a href="/preview/category-create" class="mm-button"><i class="fa fa-plus-circle"></i> + Add Room Category</a>
+                    <button type="button" class="mm-button" data-toggle="modal" data-target="#rmset-add-cat-modal"><i class="fa fa-plus-circle"></i> + New Room Category</button>
+                    <a href="/preview/category-create" class="mm-button mm-button-secondary"><i class="fa fa-external-link"></i> Blade Category Form</a>
                     <a href="/preview/setup-amenities" class="mm-button mm-button-secondary"><i class="fa fa-wifi"></i> Amenities Setup</a>
                     <a href="/preview/rate-plans" class="mm-button mm-button-secondary"><i class="fa fa-tags"></i> Rate Plans (F3)</a>
                     <a href="/preview/inventory-guards" class="mm-button mm-button-secondary"><i class="fa fa-shield"></i> OOO &amp; Guards (F7)</a>
-                    <a href="/preview/rooms" class="mm-button mm-button-secondary"><i class="fa fa-bed"></i> 20 Rooms Directory</a>
+                    <a href="/preview/booking-next" class="mm-button mm-button-secondary"><i class="fa fa-calendar-plus-o"></i> Booking Wizard</a>
                 </div>
             </header>
             <div class="mm-table-kpi-grid" aria-label="Room settings summary">
-                <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-bed"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Configured Categories</span><div class="mm-table-kpi-value">6 Suite Tiers <span class="mm-table-kpi-sub">20 Physical Rooms</span></div></div></div>
-                <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-money"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Base Tariff Range</span><div class="mm-table-kpi-value">৳ 5,500 – ৳ 24,000 <span class="mm-table-kpi-sub">BAR + Seasonal Plans</span></div></div></div>
-                <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-wifi"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Active Room Amenities</span><div class="mm-table-kpi-value">14 Amenities <span class="mm-table-kpi-sub">Assigned per Category</span></div></div></div>
-                <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-gavel"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Booking &amp; Tax Rules</span><div class="mm-table-kpi-value">20% Min Deposit <span class="mm-table-kpi-sub">5% Svc + 15% VAT</span></div></div></div>
+                <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-bed"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Configured Categories</span><div class="mm-table-kpi-value" id="rmset-kpi-cats">6 Suite Tiers <span class="mm-table-kpi-sub">20 Physical Rooms</span></div></div></div>
+                <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-money"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Base Tariff Range &amp; Avg</span><div class="mm-table-kpi-value" id="rmset-kpi-tariff">৳ 5,500 – ৳ 24,000 <span class="mm-table-kpi-sub">Avg BAR: ৳ 14,000</span></div></div></div>
+                <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-wifi"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Active Room Amenities</span><div class="mm-table-kpi-value" id="rmset-kpi-amenities">10 Enabled <span class="mm-table-kpi-sub">Assigned per Category</span></div></div></div>
+                <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-gavel"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Booking &amp; Tax Rules</span><div class="mm-table-kpi-value" id="rmset-kpi-rules">20% Min Deposit <span class="mm-table-kpi-sub">5% Svc + 15% VAT</span></div></div></div>
+            </div>
+
+            <!-- Interactive Section Switcher -->
+            <div class="mm-panel tw-p-4">
+                <div class="tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-2">
+                    <div class="mm-preview-filter-pills" id="rmset-tab-pills" style="margin:0;">
+                        <button type="button" class="mm-preview-pill is-active" data-rmset-tab="all"><i class="fa fa-th-large"></i> All Settings Sections</button>
+                        <button type="button" class="mm-preview-pill" data-rmset-tab="pricing"><i class="fa fa-money"></i> 1. Categories &amp; Pricing</button>
+                        <button type="button" class="mm-preview-pill" data-rmset-tab="amenities"><i class="fa fa-wifi"></i> 2. Room Amenities</button>
+                        <button type="button" class="mm-preview-pill" data-rmset-tab="rules"><i class="fa fa-gavel"></i> 3. Booking &amp; Tax Rules</button>
+                        <button type="button" class="mm-preview-pill" data-rmset-tab="navmap"><i class="fa fa-compass"></i> 4. Screen &amp; Blade Map</button>
+                    </div>
+                    <span class="mm-badge mm-badge-paid" id="rmset-sync-badge"><i class="fa fa-bolt"></i> Live Tariff &amp; Tax Calculator Active</span>
+                </div>
             </div>
 
             <div id="rmset-save-banner" class="alert alert-success" style="display:none;margin:0;border-radius:10px;">
@@ -661,19 +676,23 @@ function buildPlanBPages(shellWith) {
             </div>
 
             <!-- 1. Room Categories & Pricing Matrix -->
-            <div class="mm-panel tw-p-5">
+            <div class="mm-panel tw-p-5 rmset-section" data-rmset-sec="pricing">
                 <div class="tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-2" style="margin-bottom:12px;">
                     <div>
                         <h2 class="tw-m-0 tw-text-base tw-font-semibold"><i class="fa fa-money"></i> 1. Room Categories, Capacity &amp; Nightly Pricing Configuration</h2>
-                        <p class="tw-m-0 tw-text-xs tw-text-muted">Maps to <code>Hotel → Category</code> (<code>module/Hotel/views/category/{index,create,edit}.blade.php</code>) &amp; <code>Rate Plans (F3)</code>.</p>
+                        <p class="tw-m-0 tw-text-xs tw-text-muted">Edit any Base Rate or Corporate Discount % below — Corporate Rate and Gross Tax-Inclusive Tariff recalculate automatically.</p>
                     </div>
-                    <div class="tw-flex tw-gap-2">
-                        <a href="/preview/category-create" class="mm-button mm-button-secondary" style="min-height:32px;padding:4px 12px;"><i class="fa fa-external-link"></i> Open Category Create Form</a>
+                    <div class="tw-flex tw-flex-wrap tw-gap-2">
+                        <div class="input-group" style="width:220px;">
+                            <span class="input-group-addon" style="font-size:11px;">Corp. Disc %</span>
+                            <input type="number" id="rmset-corp-disc" class="form-control input-sm text-right" value="15" min="0" max="50">
+                        </div>
+                        <button type="button" class="mm-button mm-button-secondary" data-toggle="modal" data-target="#rmset-add-cat-modal" style="min-height:32px;padding:4px 12px;"><i class="fa fa-plus"></i> + Add Category</button>
                         <button type="button" class="mm-button" id="rmset-btn-save-prices" style="min-height:32px;padding:4px 12px;"><i class="fa fa-check"></i> Save Tariff Changes</button>
                     </div>
                 </div>
                 <div class="mm-table-scroll">
-                    <table class="mm-data-table table table-bordered table-striped">
+                    <table class="mm-data-table table table-bordered table-striped" id="rmset-cat-table">
                         <thead>
                             <tr>
                                 <th>Category Code &amp; Name</th>
@@ -681,69 +700,76 @@ function buildPlanBPages(shellWith) {
                                 <th>Bed &amp; Max Capacity</th>
                                 <th class="text-right">Base Rate / Night (৳)</th>
                                 <th class="text-right">Corporate Rate (৳)</th>
+                                <th class="text-right">Gross w/ Tax (৳)</th>
                                 <th class="text-right">Extra Bed (৳)</th>
                                 <th>Included Amenities</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
-                        <tbody>
-                            <tr>
+                        <tbody id="rmset-cat-tbody">
+                            <tr class="rmset-cat-row">
                                 <td><code>CAT-01</code> <strong>Heritage Deluxe Single</strong></td>
                                 <td><code>#103, #106</code> (Fl. 1)</td>
                                 <td>1 Queen · 2 Adults</td>
-                                <td class="text-right"><input type="number" class="form-control input-sm text-right" value="5500" style="width:110px;display:inline-block;"></td>
-                                <td class="text-right"><strong>4,675</strong></td>
-                                <td class="text-right">1,200</td>
+                                <td class="text-right"><input type="number" class="form-control input-sm text-right rmset-base-input" value="5500" style="width:105px;display:inline-block;"></td>
+                                <td class="text-right"><strong class="rmset-corp-cell">4,675</strong></td>
+                                <td class="text-right"><span class="rmset-gross-cell">6,641</span></td>
+                                <td class="text-right"><input type="number" class="form-control input-sm text-right rmset-xbed-input" value="1200" style="width:85px;display:inline-block;"></td>
                                 <td><span class="mm-badge mm-badge-paid">Wi-Fi 6</span> <span class="mm-badge mm-badge-paid">Breakfast</span> <span class="mm-badge mm-badge-partial">Smart TV</span></td>
                                 <td><span class="mm-badge mm-badge-paid">Active</span></td>
                             </tr>
-                            <tr>
+                            <tr class="rmset-cat-row">
                                 <td><code>CAT-02</code> <strong>Deluxe King Suite</strong></td>
                                 <td><code>#101, #102, #104, #105</code> (Fl. 1)</td>
                                 <td>1 King · 2 Adults, 1 Child</td>
-                                <td class="text-right"><input type="number" class="form-control input-sm text-right" value="8500" style="width:110px;display:inline-block;"></td>
-                                <td class="text-right"><strong>7,225</strong></td>
-                                <td class="text-right">1,500</td>
+                                <td class="text-right"><input type="number" class="form-control input-sm text-right rmset-base-input" value="8500" style="width:105px;display:inline-block;"></td>
+                                <td class="text-right"><strong class="rmset-corp-cell">7,225</strong></td>
+                                <td class="text-right"><span class="rmset-gross-cell">10,264</span></td>
+                                <td class="text-right"><input type="number" class="form-control input-sm text-right rmset-xbed-input" value="1500" style="width:85px;display:inline-block;"></td>
                                 <td><span class="mm-badge mm-badge-paid">Wi-Fi 6</span> <span class="mm-badge mm-badge-paid">Breakfast</span> <span class="mm-badge mm-badge-paid">Minibar</span></td>
                                 <td><span class="mm-badge mm-badge-paid">Active</span></td>
                             </tr>
-                            <tr>
+                            <tr class="rmset-cat-row">
                                 <td><code>CAT-03</code> <strong>Heritage Executive Suite</strong></td>
                                 <td><code>#201, #202, #203, #205</code> (Fl. 2)</td>
                                 <td>1 King · 3 Adults</td>
-                                <td class="text-right"><input type="number" class="form-control input-sm text-right" value="12500" style="width:110px;display:inline-block;"></td>
-                                <td class="text-right"><strong>10,625</strong></td>
-                                <td class="text-right">2,000</td>
+                                <td class="text-right"><input type="number" class="form-control input-sm text-right rmset-base-input" value="12500" style="width:105px;display:inline-block;"></td>
+                                <td class="text-right"><strong class="rmset-corp-cell">10,625</strong></td>
+                                <td class="text-right"><span class="rmset-gross-cell">15,094</span></td>
+                                <td class="text-right"><input type="number" class="form-control input-sm text-right rmset-xbed-input" value="2000" style="width:85px;display:inline-block;"></td>
                                 <td><span class="mm-badge mm-badge-paid">Lounge Access</span> <span class="mm-badge mm-badge-paid">Nespresso</span> <span class="mm-badge mm-badge-paid">Minibar</span></td>
                                 <td><span class="mm-badge mm-badge-paid">Active</span></td>
                             </tr>
-                            <tr>
+                            <tr class="rmset-cat-row">
                                 <td><code>CAT-04</code> <strong>Royal Family Twin Suite</strong></td>
                                 <td><code>#204, #302, #304, #305</code> (Fl. 2–3)</td>
                                 <td>2 Queen · 4 Adults, 2 Children</td>
-                                <td class="text-right"><input type="number" class="form-control input-sm text-right" value="15000" style="width:110px;display:inline-block;"></td>
-                                <td class="text-right"><strong>12,750</strong></td>
-                                <td class="text-right">2,200</td>
+                                <td class="text-right"><input type="number" class="form-control input-sm text-right rmset-base-input" value="15000" style="width:105px;display:inline-block;"></td>
+                                <td class="text-right"><strong class="rmset-corp-cell">12,750</strong></td>
+                                <td class="text-right"><span class="rmset-gross-cell">18,113</span></td>
+                                <td class="text-right"><input type="number" class="form-control input-sm text-right rmset-xbed-input" value="2200" style="width:85px;display:inline-block;"></td>
                                 <td><span class="mm-badge mm-badge-paid">2 Bedrooms</span> <span class="mm-badge mm-badge-paid">Breakfast ×4</span> <span class="mm-badge mm-badge-paid">Balcony</span></td>
                                 <td><span class="mm-badge mm-badge-paid">Active</span></td>
                             </tr>
-                            <tr>
+                            <tr class="rmset-cat-row">
                                 <td><code>CAT-05</code> <strong>Ambassador Diplomatic Suite</strong></td>
                                 <td><code>#301, #303, #401, #402</code> (Fl. 3–4)</td>
                                 <td>1 Emperor King · 3 Adults</td>
-                                <td class="text-right"><input type="number" class="form-control input-sm text-right" value="18500" style="width:110px;display:inline-block;"></td>
-                                <td class="text-right"><strong>15,725</strong></td>
-                                <td class="text-right">2,500</td>
+                                <td class="text-right"><input type="number" class="form-control input-sm text-right rmset-base-input" value="18500" style="width:105px;display:inline-block;"></td>
+                                <td class="text-right"><strong class="rmset-corp-cell">15,725</strong></td>
+                                <td class="text-right"><span class="rmset-gross-cell">22,339</span></td>
+                                <td class="text-right"><input type="number" class="form-control input-sm text-right rmset-xbed-input" value="2500" style="width:85px;display:inline-block;"></td>
                                 <td><span class="mm-badge mm-badge-paid">24h Butler</span> <span class="mm-badge mm-badge-paid">Airport Limo</span> <span class="mm-badge mm-badge-paid">Jacuzzi</span></td>
                                 <td><span class="mm-badge mm-badge-paid">Active</span></td>
                             </tr>
-                            <tr>
+                            <tr class="rmset-cat-row">
                                 <td><code>CAT-06</code> <strong>Grand Presidential Suite</strong></td>
                                 <td><code>#403, #404</code> (Fl. 4 Penthouse)</td>
                                 <td>2 King + Dining · 4 Adults</td>
-                                <td class="text-right"><input type="number" class="form-control input-sm text-right" value="24000" style="width:110px;display:inline-block;"></td>
-                                <td class="text-right"><strong>20,400</strong></td>
-                                <td class="text-right">3,000</td>
+                                <td class="text-right"><input type="number" class="form-control input-sm text-right rmset-base-input" value="24000" style="width:105px;display:inline-block;"></td>
+                                <td class="text-right"><strong class="rmset-corp-cell">20,400</strong></td>
+                                <td class="text-right"><span class="rmset-gross-cell">28,980</span></td>
+                                <td class="text-right"><input type="number" class="form-control input-sm text-right rmset-xbed-input" value="3000" style="width:85px;display:inline-block;"></td>
                                 <td><span class="mm-badge mm-badge-paid">Private Butler</span> <span class="mm-badge mm-badge-paid">Chauffeur</span> <span class="mm-badge mm-badge-paid">Private Terrace</span></td>
                                 <td><span class="mm-badge mm-badge-paid">Active</span></td>
                             </tr>
@@ -754,40 +780,53 @@ function buildPlanBPages(shellWith) {
 
             <!-- 2. Amenities & 3. Rules side by side -->
             <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:16px">
-                <div class="mm-panel tw-p-5">
+                <div class="mm-panel tw-p-5 rmset-section" data-rmset-sec="amenities">
                     <div class="tw-flex tw-items-center tw-justify-between" style="margin-bottom:10px">
                         <strong><i class="fa fa-wifi"></i> 2. Room Amenities &amp; In-Suite Facilities</strong>
-                        <a href="/preview/setup-amenities" class="mm-badge mm-badge-paid">Manage Amenities →</a>
+                        <span class="mm-badge mm-badge-paid" id="rmset-amenity-count-badge">10 Active Amenities</span>
                     </div>
-                    <p class="tw-text-xs tw-text-muted" style="margin:0 0 12px">Toggle default amenities included in room categories (<code>Hotel → Setup → Amenities</code>):</p>
-                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px">
-                        <label style="display:flex;align-items:center;gap:8px;font-weight:500"><input type="checkbox" checked> High-Speed Wi-Fi 6 (Dedicated AP)</label>
-                        <label style="display:flex;align-items:center;gap:8px;font-weight:500"><input type="checkbox" checked> Complimentary Buffet Breakfast</label>
-                        <label style="display:flex;align-items:center;gap:8px;font-weight:500"><input type="checkbox" checked> 55" 4K Smart Hospitality TV</label>
-                        <label style="display:flex;align-items:center;gap:8px;font-weight:500"><input type="checkbox" checked> Stocked In-Room Minibar (F15)</label>
-                        <label style="display:flex;align-items:center;gap:8px;font-weight:500"><input type="checkbox" checked> Nespresso &amp; Gourmet Tea Bar</label>
-                        <label style="display:flex;align-items:center;gap:8px;font-weight:500"><input type="checkbox" checked> Laptop-Size Electronic Safe</label>
-                        <label style="display:flex;align-items:center;gap:8px;font-weight:500"><input type="checkbox" checked> Rain Shower &amp; Luxury Bathrobe</label>
-                        <label style="display:flex;align-items:center;gap:8px;font-weight:500"><input type="checkbox" checked> VIP Airport Pickup (Suites)</label>
+                    <p class="tw-text-xs tw-text-muted" style="margin:0 0 12px">Toggle amenities included across room categories or add a new custom amenity below:</p>
+                    <div id="rmset-amenities-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px">
+                        <label style="display:flex;align-items:center;gap:8px;font-weight:500"><input type="checkbox" class="rmset-am-chk" checked> High-Speed Wi-Fi 6 (Dedicated AP)</label>
+                        <label style="display:flex;align-items:center;gap:8px;font-weight:500"><input type="checkbox" class="rmset-am-chk" checked> Complimentary Buffet Breakfast</label>
+                        <label style="display:flex;align-items:center;gap:8px;font-weight:500"><input type="checkbox" class="rmset-am-chk" checked> 55" 4K Smart Hospitality TV</label>
+                        <label style="display:flex;align-items:center;gap:8px;font-weight:500"><input type="checkbox" class="rmset-am-chk" checked> Stocked In-Room Minibar (F15)</label>
+                        <label style="display:flex;align-items:center;gap:8px;font-weight:500"><input type="checkbox" class="rmset-am-chk" checked> Nespresso &amp; Gourmet Tea Bar</label>
+                        <label style="display:flex;align-items:center;gap:8px;font-weight:500"><input type="checkbox" class="rmset-am-chk" checked> Laptop-Size Electronic Safe</label>
+                        <label style="display:flex;align-items:center;gap:8px;font-weight:500"><input type="checkbox" class="rmset-am-chk" checked> Rain Shower &amp; Luxury Bathrobe</label>
+                        <label style="display:flex;align-items:center;gap:8px;font-weight:500"><input type="checkbox" class="rmset-am-chk" checked> VIP Airport Pickup (Suites)</label>
+                        <label style="display:flex;align-items:center;gap:8px;font-weight:500"><input type="checkbox" class="rmset-am-chk" checked> Executive Sky-Lounge Access</label>
+                        <label style="display:flex;align-items:center;gap:8px;font-weight:500"><input type="checkbox" class="rmset-am-chk" checked> Evening VIP Turndown Service</label>
+                    </div>
+                    <div style="display:flex;gap:8px;margin-bottom:12px">
+                        <input type="text" id="rmset-new-amenity-name" class="form-control" placeholder="Add new amenity (e.g. Private Jacuzzi, Baby Cot)...">
+                        <button type="button" id="rmset-btn-add-amenity" class="mm-button" style="white-space:nowrap"><i class="fa fa-plus"></i> Add Amenity</button>
                     </div>
                     <div class="tw-flex tw-flex-wrap tw-gap-2">
-                        <a href="/preview/setup-amenity-create" class="mm-button mm-button-secondary"><i class="fa fa-plus"></i> Add New Amenity</a>
-                        <a href="/preview/setup-amenities" class="mm-button mm-button-secondary"><i class="fa fa-list"></i> All Amenities List</a>
+                        <a href="/preview/setup-amenity-create" class="mm-button mm-button-secondary"><i class="fa fa-external-link"></i> Blade Add Amenity Form</a>
+                        <a href="/preview/setup-amenities" class="mm-button mm-button-secondary"><i class="fa fa-list"></i> All Amenities Table</a>
                     </div>
                 </div>
 
-                <div class="mm-panel tw-p-5">
+                <div class="mm-panel tw-p-5 rmset-section" data-rmset-sec="rules">
                     <div class="tw-flex tw-items-center tw-justify-between" style="margin-bottom:10px">
                         <strong><i class="fa fa-gavel"></i> 3. Booking, Check-In/Out, Deposit &amp; Tax Rules</strong>
                         <a href="/preview/setup-registration-terms" class="mm-badge mm-badge-partial">House Rules →</a>
                     </div>
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
-                        <div><label class="mm-label">Standard Check-In Time</label><input type="time" class="form-control" value="14:00"></div>
-                        <div><label class="mm-label">Standard Check-Out Time</label><input type="time" class="form-control" value="12:00"></div>
-                        <div><label class="mm-label">Minimum Advance Deposit (%)</label><input type="number" class="form-control" value="20"></div>
-                        <div><label class="mm-label">Free Cancellation Cutoff (Hours)</label><input type="number" class="form-control" value="24"></div>
-                        <div><label class="mm-label">Service Charge (%) + VAT (%)</label><input type="text" class="form-control" value="5% Service + 15% VAT"></div>
-                        <div><label class="mm-label">Late Check-Out Policy (After 14:00)</label><input type="text" class="form-control" value="50% Half-Day Tariff until 18:00"></div>
+                        <div><label class="mm-label">Standard Check-In Time</label><input type="time" id="rmset-rule-checkin" class="form-control" value="14:00"></div>
+                        <div><label class="mm-label">Standard Check-Out Time</label><input type="time" id="rmset-rule-checkout" class="form-control" value="12:00"></div>
+                        <div><label class="mm-label">Minimum Advance Deposit (%)</label><input type="number" id="rmset-rule-deposit" class="form-control" value="20" min="0" max="100"></div>
+                        <div><label class="mm-label">Free Cancellation Cutoff (Hours)</label><input type="number" id="rmset-rule-cancel" class="form-control" value="24" min="0" max="168"></div>
+                        <div><label class="mm-label">Service Charge (%)</label><input type="number" id="rmset-rule-svc" class="form-control" value="5" min="0" max="30"></div>
+                        <div><label class="mm-label">Government VAT / SST (%)</label><input type="number" id="rmset-rule-vat" class="form-control" value="15" min="0" max="30"></div>
+                    </div>
+                    <div style="padding:10px 12px;border-radius:10px;background:rgba(14,116,144,0.08);border:1px solid rgba(14,116,144,0.25);margin-bottom:12px;font-size:12px" id="rmset-rule-sim-box">
+                        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+                            <strong><i class="fa fa-calculator"></i> Live Rule Simulator (Sample ৳ 10,000 Stay)</strong>
+                            <span class="mm-badge mm-badge-paid" id="rmset-sim-total">Gross: ৳ 12,075</span>
+                        </div>
+                        <div id="rmset-sim-details" class="tw-text-xs tw-text-muted">Base: ৳ 10,000 · Svc (5%): ৳ 500 · Compound VAT (15%): ৳ 1,575 · Min Advance (20%): <strong>৳ 2,415</strong></div>
                     </div>
                     <div class="tw-flex tw-flex-wrap tw-gap-2">
                         <button type="button" class="mm-button" id="rmset-btn-save-rules"><i class="fa fa-check"></i> Save Booking &amp; House Rules</button>
@@ -798,7 +837,7 @@ function buildPlanBPages(shellWith) {
             </div>
 
             <!-- 4. Quick Navigation Directory to All Room & Setup Screens -->
-            <div class="mm-panel tw-p-5">
+            <div class="mm-panel tw-p-5 rmset-section" data-rmset-sec="navmap">
                 <h2 class="tw-m-0 tw-mb-2 tw-text-base tw-font-semibold"><i class="fa fa-compass"></i> 4. Direct Navigation Map — Where Every Room Setting Lives</h2>
                 <div class="mm-table-scroll">
                     <table class="mm-data-table table table-bordered table-striped">
@@ -857,12 +896,129 @@ function buildPlanBPages(shellWith) {
                     </table>
                 </div>
             </div>
+
+            <!-- Add Room Category Slide-Over Drawer -->
+            <div id="rmset-add-cat-modal" class="modal fade mm-drawer" data-mm-drawer="true" tabindex="-1" role="dialog">
+                <div class="modal-dialog"><div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title"><i class="fa fa-plus-circle"></i> Add New Room Category, Pricing &amp; Amenities</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group"><label class="mm-label">Category Code &amp; Title</label><input type="text" id="rmset-new-cat-name" class="form-control" value="Royal Honeymoon Pool Villa"></div>
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+                            <div class="form-group"><label class="mm-label">Assigned Room Numbers</label><input type="text" id="rmset-new-cat-rooms" class="form-control" value="#405, #406 (Fl. 4)"></div>
+                            <div class="form-group"><label class="mm-label">Bed &amp; Max Capacity</label><input type="text" id="rmset-new-cat-cap" class="form-control" value="1 Canopy King · 2 Adults"></div>
+                            <div class="form-group"><label class="mm-label">Base Nightly Rate (৳)</label><input type="number" id="rmset-new-cat-rate" class="form-control" value="21000"></div>
+                            <div class="form-group"><label class="mm-label">Extra Bed Tariff (৳)</label><input type="number" id="rmset-new-cat-xbed" class="form-control" value="2500"></div>
+                        </div>
+                        <div class="form-group"><label class="mm-label">Included Amenities</label><input type="text" id="rmset-new-cat-am" class="form-control" value="Plunge Pool, Butler, Floating Breakfast"></div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="mm-button mm-button-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="mm-button" id="rmset-btn-create-cat" data-dismiss="modal"><i class="fa fa-check"></i> Create Room Category</button>
+                    </div>
+                </div></div>
+            </div>
         </div></section>
         <script>(function(){
-            var b1=document.getElementById("rmset-btn-save-prices"),b2=document.getElementById("rmset-btn-save-rules"),ban=document.getElementById("rmset-save-banner");
-            function show(){if(ban){ban.style.display="block";ban.scrollIntoView({behavior:"smooth",block:"nearest"});}}
-            if(b1)b1.addEventListener("click",show);
-            if(b2)b2.addEventListener("click",show);
+            var b1=document.getElementById("rmset-btn-save-prices"),b2=document.getElementById("rmset-btn-save-rules"),ban=document.getElementById("rmset-save-banner"),msg=document.getElementById("rmset-save-msg");
+            var discEl=document.getElementById("rmset-corp-disc"),depEl=document.getElementById("rmset-rule-deposit"),svcEl=document.getElementById("rmset-rule-svc"),vatEl=document.getElementById("rmset-rule-vat");
+            function fmt(n){return Math.round(n).toLocaleString("en-US");}
+            function recalcAll(){
+                var disc=Number(discEl&&discEl.value||15),svc=Number(svcEl&&svcEl.value||5),vat=Number(vatEl&&vatEl.value||15),dep=Number(depEl&&depEl.value||20);
+                var grossMult=(1+svc/100)*(1+vat/100);
+                var rows=document.querySelectorAll("#rmset-cat-tbody .rmset-cat-row");
+                var minR=Infinity,maxR=0,sumR=0;
+                for(var i=0;i<rows.length;i++){
+                    var inp=rows[i].querySelector(".rmset-base-input");
+                    var base=Number(inp&&inp.value||0);
+                    if(base<minR)minR=base;
+                    if(base>maxR)maxR=base;
+                    sumR+=base;
+                    var corpCell=rows[i].querySelector(".rmset-corp-cell");
+                    var grossCell=rows[i].querySelector(".rmset-gross-cell");
+                    if(corpCell)corpCell.textContent=fmt(base*(1-disc/100));
+                    if(grossCell)grossCell.textContent=fmt(base*grossMult);
+                }
+                var avg=rows.length?Math.round(sumR/rows.length):0;
+                var kpiCats=document.getElementById("rmset-kpi-cats");
+                if(kpiCats)kpiCats.innerHTML=rows.length+' Suite Tiers <span class="mm-table-kpi-sub">20+ Physical Rooms</span>';
+                var kpiTariff=document.getElementById("rmset-kpi-tariff");
+                if(kpiTariff&&minR<Infinity)kpiTariff.innerHTML="৳ "+fmt(minR)+" – ৳ "+fmt(maxR)+' <span class="mm-table-kpi-sub">Avg BAR: ৳ '+fmt(avg)+"</span>";
+                var kpiRules=document.getElementById("rmset-kpi-rules");
+                if(kpiRules)kpiRules.innerHTML=dep+'% Min Deposit <span class="mm-table-kpi-sub">'+svc+"% Svc + "+vat+"% VAT</span>";
+                var sampleBase=10000,sampleSvc=Math.round(sampleBase*svc/100),sampleVat=Math.round((sampleBase+sampleSvc)*vat/100),sampleGross=sampleBase+sampleSvc+sampleVat,sampleDep=Math.round(sampleGross*dep/100);
+                var simTot=document.getElementById("rmset-sim-total"),simDet=document.getElementById("rmset-sim-details");
+                if(simTot)simTot.textContent="Gross: ৳ "+fmt(sampleGross);
+                if(simDet)simDet.innerHTML="Base: ৳ 10,000 · Svc ("+svc+"%): ৳ "+fmt(sampleSvc)+" · Compound VAT ("+vat+"%): ৳ "+fmt(sampleVat)+" · Min Advance ("+dep+"%): <strong>৳ "+fmt(sampleDep)+"</strong>";
+            }
+            function recalcAmenities(){
+                var chks=document.querySelectorAll(".rmset-am-chk");
+                var active=0;
+                for(var i=0;i<chks.length;i++)if(chks[i].checked)active++;
+                var b=document.getElementById("rmset-amenity-count-badge"),k=document.getElementById("rmset-kpi-amenities");
+                if(b)b.textContent=active+" Active Amenities";
+                if(k)k.innerHTML=active+' Enabled <span class="mm-table-kpi-sub">Assigned per Category</span>';
+            }
+            document.addEventListener("input",function(e){
+                if(e.target&&(e.target.classList.contains("rmset-base-input")||e.target.id==="rmset-corp-disc"||e.target.id==="rmset-rule-deposit"||e.target.id==="rmset-rule-svc"||e.target.id==="rmset-rule-vat"))recalcAll();
+            });
+            document.addEventListener("change",function(e){
+                if(e.target&&e.target.classList.contains("rmset-am-chk"))recalcAmenities();
+            });
+            var addAmBtn=document.getElementById("rmset-btn-add-amenity"),newAmInp=document.getElementById("rmset-new-amenity-name"),amGrid=document.getElementById("rmset-amenities-grid");
+            if(addAmBtn&&newAmInp&&amGrid){
+                addAmBtn.addEventListener("click",function(){
+                    var v=(newAmInp.value||"").trim();
+                    if(!v)return;
+                    var lbl=document.createElement("label");
+                    lbl.style.cssText="display:flex;align-items:center;gap:8px;font-weight:500";
+                    lbl.innerHTML='<input type="checkbox" class="rmset-am-chk" checked> '+v.replace(/[<>&"]/g,"");
+                    amGrid.appendChild(lbl);
+                    newAmInp.value="";
+                    recalcAmenities();
+                });
+            }
+            var createCatBtn=document.getElementById("rmset-btn-create-cat"),catTbody=document.getElementById("rmset-cat-tbody");
+            if(createCatBtn&&catTbody){
+                createCatBtn.addEventListener("click",function(){
+                    var idx=catTbody.querySelectorAll(".rmset-cat-row").length+1;
+                    var code="CAT-0"+idx;
+                    var name=(document.getElementById("rmset-new-cat-name").value||"New Suite Category").replace(/[<>&"]/g,"");
+                    var rms=(document.getElementById("rmset-new-cat-rooms").value||"#405").replace(/[<>&"]/g,"");
+                    var cap=(document.getElementById("rmset-new-cat-cap").value||"1 King · 2 Adults").replace(/[<>&"]/g,"");
+                    var rate=Number(document.getElementById("rmset-new-cat-rate").value||18000);
+                    var xbed=Number(document.getElementById("rmset-new-cat-xbed").value||2500);
+                    var ams=(document.getElementById("rmset-new-cat-am").value||"Wi-Fi 6, Breakfast").split(",").map(function(s){return '<span class="mm-badge mm-badge-paid">'+s.trim().replace(/[<>&"]/g,"")+"</span>";}).join(" ");
+                    var tr=document.createElement("tr");
+                    tr.className="rmset-cat-row";
+                    tr.innerHTML='<td><code>'+code+"</code> <strong>"+name+"</strong></td><td><code>"+rms+"</code></td><td>"+cap+'</td><td class="text-right"><input type="number" class="form-control input-sm text-right rmset-base-input" value="'+rate+'" style="width:105px;display:inline-block;"></td><td class="text-right"><strong class="rmset-corp-cell">0</strong></td><td class="text-right"><span class="rmset-gross-cell">0</span></td><td class="text-right"><input type="number" class="form-control input-sm text-right rmset-xbed-input" value="'+xbed+'" style="width:85px;display:inline-block;"></td><td>'+ams+'</td><td><span class="mm-badge mm-badge-paid">Active</span></td>';
+                    catTbody.appendChild(tr);
+                    recalcAll();
+                    if(ban&&msg){msg.textContent="Added new category "+code+" ("+name+") and recalculated tariff matrix!";ban.style.display="block";}
+                });
+            }
+            var tabPills=document.querySelectorAll("[data-rmset-tab]"),secs=document.querySelectorAll(".rmset-section");
+            for(var t=0;t<tabPills.length;t++){
+                tabPills[t].addEventListener("click",function(){
+                    for(var k=0;k<tabPills.length;k++)tabPills[k].classList.remove("is-active");
+                    this.classList.add("is-active");
+                    var tab=this.getAttribute("data-rmset-tab");
+                    for(var s=0;s<secs.length;s++){
+                        secs[s].style.display=(tab==="all"||secs[s].getAttribute("data-rmset-sec")===tab)?"":"none";
+                    }
+                });
+            }
+            function showSave(text){
+                recalcAll();
+                try{localStorage.setItem("mm_room_settings_v1",JSON.stringify({updatedAt:new Date().toISOString(),corpDisc:discEl&&discEl.value,minDeposit:depEl&&depEl.value,svc:svcEl&&svcEl.value,vat:vatEl&&vatEl.value}));}catch(e){}
+                if(ban&&msg){msg.textContent=text;ban.style.display="block";ban.scrollIntoView({behavior:"smooth",block:"nearest"});}
+            }
+            if(b1)b1.addEventListener("click",function(){showSave("Room category tariffs, corporate rates, and tax-inclusive prices saved & synced to Booking Wizard!");});
+            if(b2)b2.addEventListener("click",function(){showSave("Check-in/out times, minimum deposit %, and compound VAT/Service rules saved & synced!");});
+            recalcAll();
+            recalcAmenities();
         })();</script>`;
         return shellWith(body, '', '', 'Room Settings, Pricing, Amenities & Rules', ['Hotel', 'Setup', 'Room Settings & Rules']);
     }
