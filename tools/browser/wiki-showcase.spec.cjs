@@ -116,4 +116,16 @@ test('20-room & 20-guest sample dataset renders across Tape Chart, Rooms, Guests
     await page.goto(`http://127.0.0.1:${PORT}/preview/booking-next`);
     await expect(page.locator('#wiz-floorplan-grid [data-floor]')).toHaveCount(18);
     await expect(page.locator('#wiz-guest-preset option')).toHaveCount(18);
+    await expect(page.locator('#wiz-floorplan-grid')).toHaveClass(/is-scrollable/);
+    await expect(page.locator('#wiz-room-list')).toHaveClass(/is-scrollable/);
+    await page.locator('[data-wiz-range-preset="3"]').click();
+    await expect(page.locator('#wiz-nights')).toHaveValue('3');
+    await expect(page.locator('#wiz-coguests-tbody .wiz-coguest-row')).toHaveCount(2);
+    await page.locator('#wiz-add-coguest-btn').click();
+    await expect(page.locator('#wiz-coguests-tbody .wiz-coguest-row')).toHaveCount(3);
+    await page.fill('#wiz-advance', '500');
+    await expect(page.locator('#wiz-advance-error')).toBeVisible();
+    await page.locator('[data-wiz-adv-pct="50"]').click();
+    await expect(page.locator('#wiz-advance-error')).toBeHidden();
+    await expect(page.locator('#wiz-advance-ok')).toBeVisible();
 });

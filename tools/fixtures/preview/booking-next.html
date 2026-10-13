@@ -50,16 +50,16 @@
                 <span class="mm-stay-card-icon" aria-hidden="true"><i class="fa fa-calendar-check-o"></i></span>
                 <div class="mm-stay-card-body">
                     <div class="mm-stay-summary-label">Check-in</div>
-                    <div class="mm-stay-summary-value" id="wiz-summary-checkin">2026-10-11</div>
-                    <div class="mm-stay-summary-sub">From 02:00 PM · Standard</div>
+                    <div class="mm-stay-summary-value" id="wiz-summary-checkin">2026-10-14</div>
+                    <div class="mm-stay-summary-sub" id="wiz-summary-checkin-sub">From 02:00 PM · Standard</div>
                 </div>
             </div>
             <div class="mm-stay-card">
                 <span class="mm-stay-card-icon" aria-hidden="true"><i class="fa fa-calendar-times-o"></i></span>
                 <div class="mm-stay-card-body">
                     <div class="mm-stay-summary-label">Check-out</div>
-                    <div class="mm-stay-summary-value" id="wiz-summary-checkout">2026-10-13</div>
-                    <div class="mm-stay-summary-sub">Until 12:00 PM · Late OK</div>
+                    <div class="mm-stay-summary-value" id="wiz-summary-checkout">2026-10-16</div>
+                    <div class="mm-stay-summary-sub" id="wiz-summary-checkout-sub">Until 12:00 PM · Late OK</div>
                 </div>
             </div>
             <div class="mm-stay-card">
@@ -75,16 +75,16 @@
                 <div class="mm-stay-card-body">
                     <div class="mm-stay-summary-label">Assigned Rooms</div>
                     <div class="mm-stay-summary-value" id="wiz-summary-rooms">2 Rooms (#101, #201)</div>
-                    <div class="mm-stay-summary-sub">Breakfast &amp; Wi-Fi Included</div>
+                    <div class="mm-stay-summary-sub" id="wiz-summary-guests-sub">3 Guests · Breakfast Included</div>
                 </div>
             </div>
             <div class="mm-stay-card">
                 <div class="mm-stay-card-body" style="display:flex; flex-direction:column; gap:6px;">
                     <div class="mm-stay-summary-label">Quick Reservation Actions</div>
                     <div class="tw-flex tw-flex-wrap tw-gap-2" style="margin-top:2px;">
-                        <a class="mm-button mm-button-secondary mm-button-sm" href="/" style="min-height:30px; padding:3px 10px; font-size:11.5px;">
-                            <i class="fa fa-calendar"></i> Change Dates
-                        </a>
+                        <button type="button" class="mm-button mm-button-secondary mm-button-sm" id="wiz-focus-dates-btn" style="min-height:30px; padding:3px 10px; font-size:11.5px;">
+                            <i class="fa fa-calendar"></i> Pick Dates &amp; Time
+                        </button>
                         <button type="button" class="mm-button mm-button-sm" data-toggle="modal" data-target="#add-guest-modal" style="min-height:30px; padding:3px 10px; font-size:11.5px;">
                             <i class="fa fa-user-plus"></i> + Guest
                         </button>
@@ -101,8 +101,11 @@
                             <span class="mm-wiz-sec-icon"><i class="fa fa-bed"></i></span>
                             <span>Step 1 · Interactive Floor Plan &amp; Selected Rooms</span>
                         </h2>
-                        <div class="tw-flex tw-items-center tw-gap-2">
+                        <div class="tw-flex tw-flex-wrap tw-items-center tw-gap-2">
                             <span class="mm-badge mm-badge-paid" id="wiz-rooms-badge">2 Rooms Assigned</span>
+                            <button type="button" class="mm-button mm-button-secondary mm-button-sm" id="wiz-scroll-toggle" aria-pressed="true" style="min-height:30px; padding:3px 10px; font-size:12px;" title="Toggle fixed-height scrollable containers vs full expanded height">
+                                <i class="fa fa-arrows-v"></i> <span id="wiz-scroll-toggle-lbl">Fixed-Height Scroll ✓</span>
+                            </button>
                             <button type="button" class="mm-button mm-button-secondary mm-button-sm" data-toggle="modal" data-target="#wiz-floorplan-modal" style="min-height:30px; padding:3px 10px; font-size:12px;">
                                 <i class="fa fa-map-o"></i> Floor Map Drawer
                             </button>
@@ -111,6 +114,57 @@
                             </a>
                         </div>
                     </header>
+
+                    <!-- Step 1 Check-In & Check-Out Calendar Date Range & Time Picker Bar -->
+                    <div class="mm-wiz-stay-bar" id="wiz-stay-calendar-bar" role="region" aria-label="Check-in and Check-out calendar and time range">
+                        <div class="mm-wiz-subhead" style="margin-top:0;">
+                            <span><i class="fa fa-calendar"></i> 1A. Select Check-In &amp; Check-Out Date Range &amp; Time</span>
+                            <span class="tw-text-xs tw-text-muted" id="wiz-date-status">✓ 2 Nights Selected · Standard Check-In 02:00 PM → Check-Out 12:00 PM</span>
+                        </div>
+                        <div class="mm-wiz-stay-grid">
+                            <div class="mm-field">
+                                <label class="mm-label" for="wiz-checkin-date">Check-In Date (Calendar) <span class="mm-req">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-calendar-check-o"></i></span>
+                                    <input id="wiz-checkin-date" name="check_in_date" type="date" class="form-control" value="2026-10-14" min="2026-10-14">
+                                </div>
+                            </div>
+                            <div class="mm-field">
+                                <label class="mm-label" for="wiz-checkin-time">Check-In Time</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                                    <input id="wiz-checkin-time" name="check_in_time" type="time" class="form-control" value="14:00">
+                                </div>
+                            </div>
+                            <div class="mm-field">
+                                <label class="mm-label" for="wiz-checkout-date">Check-Out Date (Calendar) <span class="mm-req">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-calendar-times-o"></i></span>
+                                    <input id="wiz-checkout-date" name="check_out_date" type="date" class="form-control" value="2026-10-16" min="2026-10-15">
+                                </div>
+                            </div>
+                            <div class="mm-field">
+                                <label class="mm-label" for="wiz-checkout-time">Check-Out Time</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                                    <input id="wiz-checkout-time" name="check_out_time" type="time" class="form-control" value="12:00">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mm-wiz-chip-bar">
+                            <div class="tw-flex tw-flex-wrap tw-items-center tw-gap-1.5">
+                                <span class="tw-text-xs tw-text-muted" style="font-weight:700; margin-right:4px;">Quick Stay Range:</span>
+                                <button type="button" class="mm-wiz-chip" data-wiz-range-preset="1">Tonight (1 Night)</button>
+                                <button type="button" class="mm-wiz-chip is-active" data-wiz-range-preset="2">2 Nights ✓</button>
+                                <button type="button" class="mm-wiz-chip" data-wiz-range-preset="3">Weekend (3 Nights)</button>
+                                <button type="button" class="mm-wiz-chip" data-wiz-range-preset="5">5 Nights</button>
+                                <button type="button" class="mm-wiz-chip" data-wiz-range-preset="7">Weekly (7 Nights)</button>
+                            </div>
+                            <div class="tw-text-xs tw-text-muted">
+                                <i class="fa fa-info-circle"></i> Min 1 night required · Changing dates auto-updates nights &amp; room tariffs
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="mm-wiz-floorplan-box" role="region" aria-label="Interactive hotel floor plan">
                         <div class="mm-wiz-fp-bar">
@@ -127,7 +181,7 @@
                                 <span><span class="mm-wiz-fp-dot" style="background:#f59e0b;"></span>Cleaning</span>
                             </div>
                         </div>
-                        <div class="mm-wiz-fp-grid" id="wiz-floorplan-grid">
+                        <div class="mm-wiz-fp-grid is-scrollable" id="wiz-floorplan-grid">
                             <button type="button" class="mm-wiz-fp-tile is-selected" data-fp-room="#101" data-floor="1" title="Click to toggle Room #101">
                                 <div class="mm-wiz-fp-top">
                                     <span class="mm-wiz-fp-room">#101</span>
@@ -364,7 +418,11 @@
                         </div>
                     </div>
 
-                    <div class="tw-space-y-3" id="wiz-room-list">
+                    <div class="mm-wiz-subhead">
+                        <span><i class="fa fa-list-ul"></i> 1B. Selected &amp; Available Rooms List (Fixed-Height Scroll)</span>
+                        <span class="tw-text-xs tw-text-muted">Scroll to inspect tariffs &amp; toggle rooms (#101–#304)</span>
+                    </div>
+                    <div class="tw-space-y-3 mm-wiz-room-scroll is-scrollable" id="wiz-room-list">
                         <div class="mm-wiz-room-row is-selected" data-room-rate="4200">
                             <div class="mm-wiz-room-main">
                                 <span class="mm-wiz-room-num"><span>RM</span><span>101</span></span>
@@ -639,6 +697,105 @@
                                 <input id="wiz-notes" type="text" class="form-control" value="VIP corporate arrival at 14:00 · Prepare welcome fruit basket &amp; high-floor quiet room.">
                             </div>
                         </div>
+
+                        <!-- Step 2B: Multiple Guest / Accompanying Room Occupants Repeater -->
+                        <div class="mm-wiz-coguests-box" id="wiz-co-guests-section" role="region" aria-label="Multiple guest and accompanying occupants">
+                            <div class="mm-wiz-subhead" style="margin-top:0; margin-bottom:10px;">
+                                <span><i class="fa fa-users"></i> 2B. Accompanying Guests &amp; Room Occupants (Multiple Guest Information)</span>
+                                <span class="mm-badge mm-badge-paid" id="wiz-total-guests-badge">3 Guests Total (1 Primary + 2 Accompanying)</span>
+                            </div>
+                            <div class="tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-2" style="margin-bottom:10px;">
+                                <div class="tw-flex tw-flex-wrap tw-items-center tw-gap-2" style="flex:1 1 280px; min-width:0;">
+                                    <select id="wiz-coguest-preset" class="form-control" style="max-width:320px; flex:1 1 200px;">
+                                        <option value="#201|Dr. Farhana Rahman|+880 1819-334812|A09481204|Colleague|38|Female">Quick Pick: Dr. Farhana Rahman (A09481204 · #201)</option>
+                                        <option value="#101|Syed Kamrul Hasan|+880 1715-609281|BD-4489201932|Colleague|34|Male">Quick Pick: Syed Kamrul Hasan (BD-4489201932 · #101)</option>
+                                        <option value="#201|Tahmina Akter|+880 1611-883920|BD-6630192845|Spouse|31|Female">Quick Pick: Tahmina Akter (BD-6630192845 · #201)</option>
+                                        <option value="#201|Amb. Kenji Takahashi|+880 1711-889900|JP-8839201|VIP Escort|52|Male">Quick Pick: Amb. Kenji Takahashi (JP-8839201 · #201)</option>
+                                        <option value="#101|Barrister Zaima Rahman|+880 1716-839201|A10293847|Colleague|36|Female">Quick Pick: Barrister Zaima Rahman (A10293847 · #101)</option>
+                                    </select>
+                                    <button type="button" class="mm-button mm-button-secondary mm-button-sm" id="wiz-add-preset-coguest-btn" style="min-height:34px; padding:4px 12px;">
+                                        <i class="fa fa-user-plus"></i> + Add Selected Guest
+                                    </button>
+                                </div>
+                                <div class="tw-flex tw-flex-wrap tw-gap-2">
+                                    <button type="button" class="mm-button mm-button-sm" id="wiz-add-coguest-btn" style="min-height:34px; padding:4px 12px;">
+                                        <i class="fa fa-plus"></i> + Add Blank Guest Row
+                                    </button>
+                                    <button type="button" class="mm-button mm-button-secondary mm-button-sm" data-toggle="modal" data-target="#add-guest-modal" style="min-height:34px; padding:4px 12px;">
+                                        <i class="fa fa-id-card-o"></i> New Guest Drawer
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="mm-table-scroll">
+                                <table class="mm-data-table table table-bordered table-striped" id="wiz-coguests-table">
+                                    <thead>
+                                        <tr>
+                                            <th width="12%">Room</th>
+                                            <th width="22%">Accompanying Guest Name <span class="mm-req">*</span></th>
+                                            <th width="18%">Mobile Phone <span class="mm-req">*</span></th>
+                                            <th width="18%">NID / Passport No. <span class="mm-req">*</span></th>
+                                            <th width="14%">Relation / Role</th>
+                                            <th width="10%">Age / Gender</th>
+                                            <th width="6%" class="text-center">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="wiz-coguests-tbody">
+                                        <tr class="wiz-coguest-row">
+                                            <td>
+                                                <select name="member_room[]" class="form-control wiz-cg-room">
+                                                    <option value="#101" selected>#101</option>
+                                                    <option value="#201">#201</option>
+                                                    <option value="#104">#104</option>
+                                                    <option value="#106">#106</option>
+                                                    <option value="#206">#206</option>
+                                                    <option value="#304">#304</option>
+                                                </select>
+                                            </td>
+                                            <td><input type="text" name="member_names[]" class="form-control wiz-cg-name" value="Rafiqul Islam Bhuiyan" placeholder="Full Name" required></td>
+                                            <td><input type="tel" name="member_phone_nos[]" class="form-control wiz-cg-phone" value="+880 1911-458920" placeholder="+880 1..." required></td>
+                                            <td><input type="text" name="registration_nos[]" class="form-control wiz-cg-nid" value="BD-5521904811" placeholder="NID / Passport" required></td>
+                                            <td>
+                                                <select name="relation[]" class="form-control wiz-cg-rel">
+                                                    <option value="Colleague" selected>Colleague</option>
+                                                    <option value="Spouse">Spouse</option>
+                                                    <option value="Child">Child</option>
+                                                    <option value="Family">Family</option>
+                                                    <option value="VIP Escort">VIP Escort</option>
+                                                </select>
+                                            </td>
+                                            <td><input type="text" name="member_age[]" class="form-control wiz-cg-age" value="35 / M" placeholder="Age/M-F"></td>
+                                            <td class="text-center"><button type="button" class="mm-button mm-button-secondary wiz-remove-coguest" style="min-height:28px;padding:2px 8px;" title="Remove Guest Row"><i class="fa fa-trash-o"></i></button></td>
+                                        </tr>
+                                        <tr class="wiz-coguest-row">
+                                            <td>
+                                                <select name="member_room[]" class="form-control wiz-cg-room">
+                                                    <option value="#101">#101</option>
+                                                    <option value="#201" selected>#201</option>
+                                                    <option value="#104">#104</option>
+                                                    <option value="#106">#106</option>
+                                                    <option value="#206">#206</option>
+                                                    <option value="#304">#304</option>
+                                                </select>
+                                            </td>
+                                            <td><input type="text" name="member_names[]" class="form-control wiz-cg-name" value="Nusrat Jahan" placeholder="Full Name" required></td>
+                                            <td><input type="tel" name="member_phone_nos[]" class="form-control wiz-cg-phone" value="+880 1819-552104" placeholder="+880 1..." required></td>
+                                            <td><input type="text" name="registration_nos[]" class="form-control wiz-cg-nid" value="BG-0192837" placeholder="NID / Passport" required></td>
+                                            <td>
+                                                <select name="relation[]" class="form-control wiz-cg-rel">
+                                                    <option value="Colleague">Colleague</option>
+                                                    <option value="Spouse" selected>Spouse</option>
+                                                    <option value="Child">Child</option>
+                                                    <option value="Family">Family</option>
+                                                    <option value="VIP Escort">VIP Escort</option>
+                                                </select>
+                                            </td>
+                                            <td><input type="text" name="member_age[]" class="form-control wiz-cg-age" value="29 / F" placeholder="Age/M-F"></td>
+                                            <td class="text-center"><button type="button" class="mm-button mm-button-secondary wiz-remove-coguest" style="min-height:28px;padding:2px 8px;" title="Remove Guest Row"><i class="fa fa-trash-o"></i></button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </form>
                 </section>
             </div>
@@ -684,11 +841,35 @@
                         </div>
                     </div>
                     <div class="mm-field">
-                        <label class="mm-label" for="wiz-advance">Advance Deposit Paid Now</label>
+                        <label class="mm-label" for="wiz-advance-policy">Minimum Advance Deposit Policy</label>
+                        <select id="wiz-advance-policy" class="form-control">
+                            <option value="min30" selected>Standard Policy — Min 30% of Net Payable</option>
+                            <option value="first_night">1st Night Room Tariff Minimum</option>
+                            <option value="min50">Peak / Corporate — Min 50% Advance</option>
+                            <option value="full100">Full Prepayment (100% Required)</option>
+                        </select>
+                    </div>
+                    <div class="mm-field">
+                        <div class="tw-flex tw-items-center tw-justify-between" style="margin-bottom:4px;">
+                            <label class="mm-label" for="wiz-advance" style="margin:0;">Booking Money / Advance Paid Now <span class="mm-req">*</span></label>
+                            <span class="tw-text-xs tw-font-semibold" id="wiz-min-advance-lbl" style="color:var(--mm-brand);">Min Required (30%): ৳ 7,500</span>
+                        </div>
                         <div class="input-group">
                             <span class="input-group-addon">৳</span>
-                            <input id="wiz-advance" type="number" min="0" class="form-control" value="10000">
+                            <input id="wiz-advance" name="advanced_amount" type="number" min="7500" class="form-control" value="10000" aria-describedby="wiz-advance-feedback">
                         </div>
+                        <div class="tw-flex tw-flex-wrap tw-gap-1.5" style="margin-top:8px;">
+                            <button type="button" class="mm-wiz-chip" data-wiz-adv-pct="30">Min 30% (৳ 7,500)</button>
+                            <button type="button" class="mm-wiz-chip" data-wiz-adv-pct="first_night">1st Night</button>
+                            <button type="button" class="mm-wiz-chip" data-wiz-adv-pct="50">50% Advance</button>
+                            <button type="button" class="mm-wiz-chip" data-wiz-adv-pct="100">100% Full Pay</button>
+                        </div>
+                    </div>
+                    <div id="wiz-advance-error" class="mm-wiz-adv-alert is-error" role="alert" style="display:none;">
+                        <i class="fa fa-exclamation-triangle"></i> <span id="wiz-advance-error-text">Minimum advance deposit of ৳ 7,500 is required to confirm this booking.</span>
+                    </div>
+                    <div id="wiz-advance-ok" class="mm-wiz-adv-alert is-ok" id="wiz-advance-feedback">
+                        <i class="fa fa-check-circle"></i> <span id="wiz-advance-ok-text">Advance deposit meets minimum requirement (40% · ৳ 10,000 received).</span>
                     </div>
                     <div class="mm-field">
                         <label class="mm-label" for="wiz-pay-method">Settlement Account / Terminal</label>
@@ -765,7 +946,8 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                        <button type="button" class="mm-button" id="wiz-apply-guest-drawer" data-dismiss="modal"><i class="fa fa-check"></i> Save &amp; Select Guest</button>
+                        <button type="button" class="mm-button mm-button-secondary" id="wiz-append-guest-drawer" data-dismiss="modal"><i class="fa fa-users"></i> + Append as Accompanying Guest</button>
+                        <button type="button" class="mm-button" id="wiz-apply-guest-drawer" data-dismiss="modal"><i class="fa fa-check"></i> Save as Primary Guest</button>
                     </div>
                 </div>
             </div>
@@ -879,6 +1061,92 @@
     function fmt(n) {
         return '৳ ' + Math.round(n).toLocaleString('en-US');
     }
+    function formatTime12(hm) {
+        if (!hm) return '02:00 PM';
+        var p = hm.split(':');
+        var h = parseInt(p[0] || '14', 10);
+        var m = p[1] || '00';
+        var ampm = h >= 12 ? 'PM' : 'AM';
+        var h12 = h % 12 || 12;
+        return (h12 < 10 ? '0' + h12 : h12) + ':' + m + ' ' + ampm;
+    }
+    function addDaysIso(isoDate, daysToAdd) {
+        var d = new Date((isoDate || '2026-10-14') + 'T00:00:00');
+        if (isNaN(d.getTime())) d = new Date('2026-10-14T00:00:00');
+        d.setDate(d.getDate() + daysToAdd);
+        var y = d.getFullYear();
+        var m = String(d.getMonth() + 1).padStart(2, '0');
+        var day = String(d.getDate()).padStart(2, '0');
+        return y + '-' + m + '-' + day;
+    }
+    function syncDatesFromCalendar(source) {
+        var inEl = document.getElementById('wiz-checkin-date');
+        var outEl = document.getElementById('wiz-checkout-date');
+        var inTimeEl = document.getElementById('wiz-checkin-time');
+        var outTimeEl = document.getElementById('wiz-checkout-time');
+        var nightsEl = document.getElementById('wiz-nights');
+        var statusEl = document.getElementById('wiz-date-status');
+        if (!inEl || !outEl) return;
+
+        var inVal = inEl.value || '2026-10-14';
+        var outVal = outEl.value || '2026-10-16';
+        var minOut = addDaysIso(inVal, 1);
+        outEl.min = minOut;
+
+        var autoAdjusted = false;
+        if (source === 'nights' && nightsEl) {
+            var nReq = Math.max(1, parseInt(nightsEl.value || '2', 10));
+            outVal = addDaysIso(inVal, nReq);
+            outEl.value = outVal;
+        } else {
+            var dIn = new Date(inVal + 'T00:00:00');
+            var dOut = new Date(outVal + 'T00:00:00');
+            var diffDays = Math.round((dOut - dIn) / 86400000);
+            if (isNaN(diffDays) || diffDays < 1) {
+                diffDays = 1;
+                outVal = minOut;
+                outEl.value = outVal;
+                autoAdjusted = true;
+            }
+            if (nightsEl) nightsEl.value = String(diffDays);
+        }
+
+        var finalNights = Math.max(1, parseInt((nightsEl || {}).value || '2', 10));
+        var tIn = formatTime12(inTimeEl ? inTimeEl.value : '14:00');
+        var tOut = formatTime12(outTimeEl ? outTimeEl.value : '12:00');
+
+        var sumIn = document.getElementById('wiz-summary-checkin');
+        var sumInSub = document.getElementById('wiz-summary-checkin-sub');
+        var sumOut = document.getElementById('wiz-summary-checkout');
+        var sumOutSub = document.getElementById('wiz-summary-checkout-sub');
+        if (sumIn) sumIn.textContent = inVal;
+        if (sumInSub) sumInSub.textContent = 'From ' + tIn + ' · Check-In';
+        if (sumOut) sumOut.textContent = outVal;
+        if (sumOutSub) sumOutSub.textContent = 'Until ' + tOut + ' · Check-Out';
+        if (statusEl) {
+            statusEl.textContent = (autoAdjusted ? '⚠ Adjusted to min 1 night · ' : '✓ ') +
+                finalNights + ' Night' + (finalNights === 1 ? '' : 's') +
+                ' (' + inVal + ' ' + tIn + ' → ' + outVal + ' ' + tOut + ')';
+        }
+        document.querySelectorAll('[data-wiz-range-preset]').forEach(function (chip) {
+            var p = parseInt(chip.getAttribute('data-wiz-range-preset') || '0', 10);
+            chip.classList.toggle('is-active', p === finalNights);
+        });
+    }
+    function updateCoGuestsCount() {
+        var rows = document.querySelectorAll('#wiz-coguests-tbody .wiz-coguest-row');
+        var coCount = rows.length;
+        var totalGuests = 1 + coCount;
+        var badge = document.getElementById('wiz-total-guests-badge');
+        var sub = document.getElementById('wiz-summary-guests-sub');
+        if (badge) {
+            badge.textContent = totalGuests + ' Guest' + (totalGuests === 1 ? '' : 's') +
+                ' Total (1 Primary + ' + coCount + ' Accompanying)';
+        }
+        if (sub) {
+            sub.textContent = totalGuests + ' Guest' + (totalGuests === 1 ? '' : 's') + ' · Breakfast Included';
+        }
+    }
     function recalcWizard() {
         var nights = Math.max(1, parseInt((document.getElementById('wiz-nights') || {}).value || '2', 10));
         var nightly = 0;
@@ -918,8 +1186,72 @@
         var vat = Math.round(sub * 0.15);
         var total = sub + sc + vat;
         var disc = Math.max(0, parseInt((document.getElementById('wiz-discount') || {}).value || '0', 10));
-        var adv = Math.max(0, parseInt((document.getElementById('wiz-advance') || {}).value || '0', 10));
-        var due = Math.max(0, total - disc - adv);
+        var netPayable = Math.max(0, total - disc);
+        var advEl = document.getElementById('wiz-advance');
+        var adv = Math.max(0, parseInt((advEl || {}).value || '0', 10));
+        var due = Math.max(0, netPayable - adv);
+
+        var policyEl = document.getElementById('wiz-advance-policy');
+        var policy = policyEl ? policyEl.value : 'min30';
+        var minRequired = Math.round(netPayable * 0.30);
+        var policyLabel = 'Min Required (30%)';
+        if (policy === 'first_night') {
+            minRequired = Math.min(netPayable, nightly);
+            policyLabel = 'Min Required (1st Night)';
+        } else if (policy === 'min50') {
+            minRequired = Math.round(netPayable * 0.50);
+            policyLabel = 'Min Required (50%)';
+        } else if (policy === 'full100') {
+            minRequired = netPayable;
+            policyLabel = 'Min Required (100%)';
+        }
+        if (advEl) advEl.min = String(minRequired);
+
+        var minLbl = document.getElementById('wiz-min-advance-lbl');
+        if (minLbl) minLbl.textContent = policyLabel + ': ' + fmt(minRequired);
+        var chip30 = document.querySelector('[data-wiz-adv-pct="30"]');
+        if (chip30) chip30.textContent = 'Min 30% (' + fmt(Math.round(netPayable * 0.30)) + ')';
+
+        var errBox = document.getElementById('wiz-advance-error');
+        var errTxt = document.getElementById('wiz-advance-error-text');
+        var okBox = document.getElementById('wiz-advance-ok');
+        var okTxt = document.getElementById('wiz-advance-ok-text');
+        if (netPayable > 0 && adv < minRequired) {
+            var shortfall = minRequired - adv;
+            if (advEl) {
+                advEl.classList.add('is-invalid');
+                advEl.setAttribute('aria-invalid', 'true');
+            }
+            if (errBox) errBox.style.display = 'block';
+            if (errTxt) {
+                errTxt.textContent = 'Minimum advance deposit of ' + fmt(minRequired) +
+                    ' is required to confirm this booking (Shortfall: ' + fmt(shortfall) + ').';
+            }
+            if (okBox) okBox.style.display = 'none';
+            var bannerHide = document.getElementById('wiz-confirm-banner');
+            if (bannerHide) bannerHide.style.display = 'none';
+        } else if (adv > netPayable && netPayable > 0) {
+            if (advEl) {
+                advEl.classList.add('is-invalid');
+                advEl.setAttribute('aria-invalid', 'true');
+            }
+            if (errBox) errBox.style.display = 'block';
+            if (errTxt) {
+                errTxt.textContent = 'Advance deposit (' + fmt(adv) + ') cannot exceed Net Payable (' + fmt(netPayable) + ').';
+            }
+            if (okBox) okBox.style.display = 'none';
+        } else {
+            if (advEl) {
+                advEl.classList.remove('is-invalid');
+                advEl.removeAttribute('aria-invalid');
+            }
+            if (errBox) errBox.style.display = 'none';
+            if (okBox) okBox.style.display = 'block';
+            var pctPaid = netPayable > 0 ? Math.round((adv / netPayable) * 100) : 100;
+            if (okTxt) {
+                okTxt.textContent = 'Advance deposit meets minimum requirement (' + pctPaid + '% · ' + fmt(adv) + ' received).';
+            }
+        }
 
         var elNightly = document.getElementById('wiz-calc-nightly');
         var elNightsLbl = document.getElementById('wiz-calc-nights-lbl');
@@ -948,10 +1280,158 @@
         if (elTotal) elTotal.textContent = fmt(total);
         if (elDue) elDue.textContent = fmt(due);
     }
-    document.querySelectorAll('.wiz-room-toggle, #wiz-nights, #wiz-discount, #wiz-advance').forEach(function (el) {
+
+    var scrollToggleBtn = document.getElementById('wiz-scroll-toggle');
+    if (scrollToggleBtn) {
+        scrollToggleBtn.addEventListener('click', function () {
+            var fpGrid = document.getElementById('wiz-floorplan-grid');
+            var rmList = document.getElementById('wiz-room-list');
+            var lbl = document.getElementById('wiz-scroll-toggle-lbl');
+            var isScroll = fpGrid ? !fpGrid.classList.contains('is-scrollable') : false;
+            if (fpGrid) fpGrid.classList.toggle('is-scrollable', isScroll);
+            if (rmList) rmList.classList.toggle('is-scrollable', isScroll);
+            scrollToggleBtn.setAttribute('aria-pressed', isScroll ? 'true' : 'false');
+            if (lbl) lbl.textContent = isScroll ? 'Fixed-Height Scroll ✓' : 'Expanded Full Height';
+        });
+    }
+
+    var focusDatesBtn = document.getElementById('wiz-focus-dates-btn');
+    if (focusDatesBtn) {
+        focusDatesBtn.addEventListener('click', function () {
+            var inEl = document.getElementById('wiz-checkin-date');
+            if (inEl) {
+                if (inEl.scrollIntoView) inEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                inEl.focus();
+            }
+        });
+    }
+
+    ['wiz-checkin-date', 'wiz-checkout-date', 'wiz-checkin-time', 'wiz-checkout-time'].forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) {
+            el.addEventListener('change', function () {
+                syncDatesFromCalendar('calendar');
+                recalcWizard();
+            });
+            el.addEventListener('input', function () {
+                syncDatesFromCalendar('calendar');
+                recalcWizard();
+            });
+        }
+    });
+
+    document.querySelectorAll('[data-wiz-range-preset]').forEach(function (chip) {
+        chip.addEventListener('click', function () {
+            var n = Math.max(1, parseInt(chip.getAttribute('data-wiz-range-preset') || '2', 10));
+            var nightsEl = document.getElementById('wiz-nights');
+            if (nightsEl) nightsEl.value = String(n);
+            syncDatesFromCalendar('nights');
+            recalcWizard();
+        });
+    });
+
+    document.querySelectorAll('.wiz-room-toggle, #wiz-discount, #wiz-advance, #wiz-advance-policy').forEach(function (el) {
         el.addEventListener('input', recalcWizard);
         el.addEventListener('change', recalcWizard);
     });
+    var nightsInput = document.getElementById('wiz-nights');
+    if (nightsInput) {
+        nightsInput.addEventListener('input', function () {
+            syncDatesFromCalendar('nights');
+            recalcWizard();
+        });
+        nightsInput.addEventListener('change', function () {
+            syncDatesFromCalendar('nights');
+            recalcWizard();
+        });
+    }
+
+    document.querySelectorAll('[data-wiz-adv-pct]').forEach(function (chip) {
+        chip.addEventListener('click', function () {
+            var mode = chip.getAttribute('data-wiz-adv-pct');
+            var nights = Math.max(1, parseInt((document.getElementById('wiz-nights') || {}).value || '2', 10));
+            var nightly = 0;
+            document.querySelectorAll('.wiz-room-toggle:checked').forEach(function (cb) {
+                nightly += parseInt(cb.getAttribute('data-rate') || '0', 10);
+            });
+            var sub = nightly * nights;
+            var total = sub + Math.round(sub * 0.10) + Math.round(sub * 0.15);
+            var disc = Math.max(0, parseInt((document.getElementById('wiz-discount') || {}).value || '0', 10));
+            var netPayable = Math.max(0, total - disc);
+            var targetAdv = Math.round(netPayable * 0.30);
+            if (mode === 'first_night') targetAdv = Math.min(netPayable, nightly);
+            else if (mode === '50') targetAdv = Math.round(netPayable * 0.50);
+            else if (mode === '100') targetAdv = netPayable;
+            var advEl = document.getElementById('wiz-advance');
+            if (advEl) {
+                advEl.value = String(targetAdv);
+                recalcWizard();
+            }
+        });
+    });
+
+    function appendCoGuestRow(room, name, phone, nid, rel, ageGender) {
+        var tbody = document.getElementById('wiz-coguests-tbody');
+        if (!tbody) return;
+        var tr = document.createElement('tr');
+        tr.className = 'wiz-coguest-row';
+        var rooms = ['#101', '#201', '#104', '#106', '#206', '#304'];
+        var roomOpts = rooms.map(function (r) {
+            return '<option value="' + r + '"' + (r === (room || '#101') ? ' selected' : '') + '>' + r + '</option>';
+        }).join('');
+        var rels = ['Colleague', 'Spouse', 'Child', 'Family', 'VIP Escort'];
+        var relOpts = rels.map(function (rl) {
+            return '<option value="' + rl + '"' + (rl === (rel || 'Colleague') ? ' selected' : '') + '>' + rl + '</option>';
+        }).join('');
+        tr.innerHTML =
+            '<td><select name="member_room[]" class="form-control wiz-cg-room">' + roomOpts + '</select></td>' +
+            '<td><input type="text" name="member_names[]" class="form-control wiz-cg-name" value="' + (name || '').replace(/"/g, '&quot;') + '" placeholder="Full Name" required></td>' +
+            '<td><input type="tel" name="member_phone_nos[]" class="form-control wiz-cg-phone" value="' + (phone || '').replace(/"/g, '&quot;') + '" placeholder="+880 1..." required></td>' +
+            '<td><input type="text" name="registration_nos[]" class="form-control wiz-cg-nid" value="' + (nid || '').replace(/"/g, '&quot;') + '" placeholder="NID / Passport" required></td>' +
+            '<td><select name="relation[]" class="form-control wiz-cg-rel">' + relOpts + '</select></td>' +
+            '<td><input type="text" name="member_age[]" class="form-control wiz-cg-age" value="' + (ageGender || '30 / M').replace(/"/g, '&quot;') + '" placeholder="Age/M-F"></td>' +
+            '<td class="text-center"><button type="button" class="mm-button mm-button-secondary wiz-remove-coguest" style="min-height:28px;padding:2px 8px;" title="Remove Guest Row"><i class="fa fa-trash-o"></i></button></td>';
+        tbody.appendChild(tr);
+        updateCoGuestsCount();
+    }
+
+    var coGuestsTbody = document.getElementById('wiz-coguests-tbody');
+    if (coGuestsTbody) {
+        coGuestsTbody.addEventListener('click', function (e) {
+            var btn = e.target.closest('.wiz-remove-coguest');
+            if (btn) {
+                var row = btn.closest('.wiz-coguest-row');
+                if (row) row.remove();
+                updateCoGuestsCount();
+            }
+        });
+    }
+    var addBlankCoGuestBtn = document.getElementById('wiz-add-coguest-btn');
+    if (addBlankCoGuestBtn) {
+        addBlankCoGuestBtn.addEventListener('click', function () {
+            appendCoGuestRow('#101', '', '+880 1', '', 'Colleague', '30 / M');
+        });
+    }
+    var addPresetCoGuestBtn = document.getElementById('wiz-add-preset-coguest-btn');
+    if (addPresetCoGuestBtn) {
+        addPresetCoGuestBtn.addEventListener('click', function () {
+            var sel = document.getElementById('wiz-coguest-preset');
+            var parts = ((sel && sel.value) || '').split('|');
+            if (parts.length >= 6) {
+                appendCoGuestRow(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5] + ' / ' + (parts[6] ? parts[6].charAt(0) : 'M'));
+            }
+        });
+    }
+    var btnAppendGuestDrawer = document.getElementById('wiz-append-guest-drawer');
+    if (btnAppendGuestDrawer) {
+        btnAppendGuestDrawer.addEventListener('click', function () {
+            var gName = (document.getElementById('drawer-guest-name') || {}).value || 'New Guest';
+            var gPhone = (document.getElementById('drawer-guest-phone') || {}).value || '+880 1';
+            var gNid = (document.getElementById('drawer-guest-nid') || {}).value || 'BD-0000';
+            appendCoGuestRow('#201', gName, gPhone, gNid, 'Colleague', '32 / F');
+        });
+    }
+
     document.querySelectorAll('[data-fp-room]').forEach(function (tile) {
         tile.addEventListener('click', function () {
             var code = tile.getAttribute('data-fp-room');
@@ -1005,6 +1485,12 @@
     var btnConfirm = document.getElementById('wiz-btn-confirm');
     if (btnConfirm) {
         btnConfirm.addEventListener('click', function () {
+            recalcWizard();
+            var advEl = document.getElementById('wiz-advance');
+            if (advEl && advEl.classList.contains('is-invalid')) {
+                advEl.focus();
+                return;
+            }
             var banner = document.getElementById('wiz-confirm-banner');
             if (banner) banner.style.display = 'block';
             document.querySelectorAll('.mm-steps li').forEach(function (li) {
@@ -1055,6 +1541,8 @@
             }
         });
     }
+    syncDatesFromCalendar('init');
+    updateCoGuestsCount();
     recalcWizard();
 })();
 </script>

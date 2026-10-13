@@ -2777,6 +2777,120 @@
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 10px;
 }
+.mm-ui.mm-booking-next .mm-wiz-fp-grid.is-scrollable {
+    max-height: 265px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 6px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(37, 99, 235, 0.42) rgba(148, 163, 184, 0.16);
+}
+.mm-ui.mm-booking-next .mm-wiz-room-scroll.is-scrollable {
+    max-height: 315px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 6px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(37, 99, 235, 0.42) rgba(148, 163, 184, 0.16);
+}
+.mm-ui.mm-booking-next .mm-wiz-fp-grid.is-scrollable::-webkit-scrollbar,
+.mm-ui.mm-booking-next .mm-wiz-room-scroll.is-scrollable::-webkit-scrollbar {
+    width: 7px;
+}
+.mm-ui.mm-booking-next .mm-wiz-fp-grid.is-scrollable::-webkit-scrollbar-track,
+.mm-ui.mm-booking-next .mm-wiz-room-scroll.is-scrollable::-webkit-scrollbar-track {
+    background: rgba(148, 163, 184, 0.16);
+    border-radius: 999px;
+}
+.mm-ui.mm-booking-next .mm-wiz-fp-grid.is-scrollable::-webkit-scrollbar-thumb,
+.mm-ui.mm-booking-next .mm-wiz-room-scroll.is-scrollable::-webkit-scrollbar-thumb {
+    background: rgba(37, 99, 235, 0.45);
+    border-radius: 999px;
+}
+.mm-ui.mm-booking-next .mm-wiz-stay-bar {
+    padding: 12px 14px;
+    margin-bottom: 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(59, 130, 246, 0.32);
+    background: linear-gradient(145deg, rgba(239, 246, 255, 0.94) 0%, rgba(248, 251, 255, 0.96) 100%);
+    box-shadow: 0 3px 12px -3px rgba(37, 99, 235, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.95);
+}
+.mm-ui.mm-booking-next .mm-wiz-stay-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+    gap: 10px;
+    align-items: end;
+}
+.mm-ui.mm-booking-next .mm-wiz-chip-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px dashed rgba(148, 163, 184, 0.34);
+}
+.mm-ui.mm-booking-next .mm-wiz-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    border: 1px solid rgba(148, 163, 184, 0.38);
+    background: rgba(255, 255, 255, 0.94);
+    color: var(--mm-ink);
+    font-size: 11.5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+.mm-ui.mm-booking-next .mm-wiz-chip:hover,
+.mm-ui.mm-booking-next .mm-wiz-chip.is-active {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    border-color: #1d4ed8;
+    color: #ffffff;
+    box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
+}
+.mm-ui.mm-booking-next .mm-wiz-subhead {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin: 4px 0 8px;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--mm-ink);
+}
+.mm-ui.mm-booking-next .mm-wiz-coguests-box {
+    margin-top: 16px;
+    padding: 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(148, 163, 184, 0.34);
+    background: linear-gradient(145deg, rgba(248, 251, 255, 0.96) 0%, rgba(240, 246, 254, 0.90) 100%);
+}
+.mm-ui.mm-booking-next .mm-wiz-adv-alert {
+    padding: 9px 12px;
+    border-radius: 9px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.4;
+}
+.mm-ui.mm-booking-next .mm-wiz-adv-alert.is-error {
+    background: rgba(254, 242, 242, 0.96);
+    border: 1px solid rgba(239, 68, 68, 0.45);
+    color: #b91c1c;
+}
+.mm-ui.mm-booking-next .mm-wiz-adv-alert.is-ok {
+    background: rgba(236, 253, 245, 0.96);
+    border: 1px solid rgba(16, 185, 129, 0.42);
+    color: #047857;
+}
+.mm-ui.mm-booking-next input.is-invalid {
+    border-color: #ef4444 !important;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.16) !important;
+}
 .mm-ui.mm-booking-next .mm-wiz-fp-tile {
     position: relative;
     display: flex;
