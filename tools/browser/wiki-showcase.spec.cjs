@@ -154,7 +154,9 @@ test('20-room & 20-guest sample dataset renders across Tape Chart, Rooms, Guests
     await page.locator('#wiz-btn-draft-preview').click();
     await expect(page.locator('#wiz-draft-summary-modal')).toBeVisible();
     const drawerWidth = await page.locator('#wiz-draft-summary-modal .modal-dialog').evaluate(el => el.getBoundingClientRect().width);
-    expect(drawerWidth).toBeGreaterThanOrEqual(850);
+    expect(drawerWidth).toBeGreaterThanOrEqual(1000);
+    await expect(page.locator('#wiz-draft-page-1')).toBeVisible();
+    await expect(page.locator('#wiz-draft-page-2')).toBeVisible();
     await expect(page.locator('.mm-wiz-pdf-hero')).toBeVisible();
     await expect(page.locator('.mm-wiz-pdf-crest')).toContainText('M&M');
     await expect(page.locator('#wiz-btn-download-draft-pdf')).toBeVisible();
@@ -162,17 +164,49 @@ test('20-room & 20-guest sample dataset renders across Tape Chart, Rooms, Guests
     await expect(page.locator('#draft-nights')).toContainText('3 Nights · 4 Guests');
     await expect(page.locator('#draft-rooms-tbody tr')).toHaveCount(2);
     await expect(page.locator('#draft-guests-tbody tr')).toHaveCount(3);
+    const screenFit = await page.evaluate(() => {
+        const p1 = document.getElementById('wiz-draft-page-1');
+        const gt = document.getElementById('draft-guests-table');
+        const rt = document.getElementById('draft-rooms-table');
+        return {
+            p1W: p1.clientWidth,
+            gtW: gt.scrollWidth,
+            rtW: rt.scrollWidth,
+        };
+    });
+    expect(screenFit.gtW).toBeLessThanOrEqual(screenFit.p1W + 2);
+    expect(screenFit.rtW).toBeLessThanOrEqual(screenFit.p1W + 2);
+
     await page.evaluate(() => { window.print = () => { window.__draftPrinted = true; }; });
     await page.locator('#wiz-btn-print-draft').click();
     await expect(page.locator('#wiz-draft-print-banner')).toBeVisible();
 
     await page.emulateMedia({ media: 'print' });
     await expect(page.locator('#wiz-draft-sheet')).toBeVisible();
+    await expect(page.locator('#wiz-draft-page-1')).toBeVisible();
+    await expect(page.locator('#wiz-draft-page-2')).toBeVisible();
     await expect(page.locator('#wiz-draft-summary-modal .modal-footer')).toBeHidden();
     await expect(page.locator('#wiz-pdf-toolbar')).toBeHidden();
+    const printFit = await page.evaluate(() => {
+        const p1 = document.getElementById('wiz-draft-page-1');
+        const gt = document.getElementById('draft-guests-table');
+        const rt = document.getElementById('draft-rooms-table');
+        const cs1 = getComputedStyle(p1);
+        return {
+            p1W: p1.clientWidth,
+            gtW: gt.scrollWidth,
+            rtW: rt.scrollWidth,
+            breakAfter: cs1.breakAfter || cs1.pageBreakAfter,
+        };
+    });
+    expect(printFit.gtW).toBeLessThanOrEqual(printFit.p1W + 2);
+    expect(printFit.rtW).toBeLessThanOrEqual(printFit.p1W + 2);
+    expect(['page', 'always']).toContain(printFit.breakAfter);
     await page.emulateMedia({ media: 'screen' });
 
     await page.goto(`http://127.0.0.1:${PORT}/preview/draft-booking-pdf`);
     await expect(page.locator('#wiz-draft-sheet')).toBeVisible();
+    await expect(page.locator('#wiz-draft-page-1')).toBeVisible();
+    await expect(page.locator('#wiz-draft-page-2')).toBeVisible();
     await expect(page.locator('.mm-wiz-pdf-hero')).toBeVisible();
 });

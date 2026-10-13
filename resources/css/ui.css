@@ -2906,14 +2906,35 @@
 }
 .mm-ui.mm-booking-next .mm-wiz-draft-sheet {
     padding: 0;
-    border-radius: 14px;
-    border: 1px solid rgba(148, 163, 184, 0.38);
-    background: #ffffff;
+    background: transparent;
     color: #0f172a;
-    box-shadow: 0 14px 36px -8px rgba(15, 23, 42, 0.14), 0 4px 12px rgba(15, 23, 42, 0.06);
-    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
+}
+.mm-ui.mm-booking-next .mm-wiz-pdf-page {
+    background: #ffffff;
+    color: #0f172a;
+    border-radius: 10px;
+    border: 1px solid rgba(148, 163, 184, 0.38);
+    box-shadow: 0 14px 36px -8px rgba(15, 23, 42, 0.14), 0 4px 12px rgba(15, 23, 42, 0.06);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+.mm-ui.mm-booking-next .mm-wiz-pdf-page2-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 14px 22px;
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 62%, #fffbeb 100%);
+    color: #0f172a;
+    border-top: 5px solid #0f172a;
+    border-bottom: 2px solid #d97706;
 }
 .mm-ui.mm-booking-next .mm-wiz-pdf-toolbar {
     display: flex;
@@ -3004,20 +3025,32 @@
 }
 .mm-ui.mm-booking-next .mm-wiz-pdf-body {
     padding: 16px 22px 18px;
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
 }
 .mm-ui.mm-booking-next .mm-wiz-draft-sheet .mm-table-scroll {
-    overflow: visible !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow: hidden !important;
 }
 .mm-ui.mm-booking-next .mm-wiz-draft-sheet .mm-data-table {
     width: 100% !important;
+    max-width: 100% !important;
+    table-layout: fixed !important;
+    border-collapse: collapse !important;
     margin-bottom: 0 !important;
-    font-size: 11.5px;
+    font-size: 12px !important;
 }
-.mm-ui.mm-booking-next .mm-wiz-draft-sheet .mm-data-table th,
-.mm-ui.mm-booking-next .mm-wiz-draft-sheet .mm-data-table td {
-    padding: 5px 8px !important;
+.mm-ui.mm-booking-next .mm-wiz-draft-sheet .mm-data-table thead th,
+.mm-ui.mm-booking-next .mm-wiz-draft-sheet .mm-data-table tbody td {
+    display: table-cell !important;
+    white-space: normal !important;
+    word-break: break-word !important;
+    overflow-wrap: anywhere !important;
+    padding: 6px 8px !important;
     vertical-align: middle !important;
-    word-break: break-word;
+    line-height: 1.35 !important;
 }
 .mm-ui.mm-booking-next .mm-wiz-pdf-section-title {
     display: flex;
@@ -4442,46 +4475,45 @@
     color: #64748b;
 }
 
-/* Desktop A4-Ratio App Drawer & Full-Fidelity Print Engine for Draft Reservation Summary PDF */
+/* Desktop A4-Ratio App Drawer & Full-Fidelity 2-Page Print Engine for Draft Reservation Summary PDF */
 @media (min-width: 769px) {
     .mm-ui #wiz-draft-summary-modal .modal-dialog {
-        width: min(920px, 95vw) !important;
-        max-width: min(920px, 95vw) !important;
+        width: min(1140px, 96vw) !important;
+        max-width: min(1140px, 96vw) !important;
     }
     .mm-ui #wiz-floorplan-modal .modal-dialog {
-        width: min(860px, 92vw) !important;
-        max-width: min(860px, 92vw) !important;
+        width: min(920px, 94vw) !important;
+        max-width: min(920px, 94vw) !important;
     }
     .mm-ui #wiz-draft-summary-modal .modal-body {
         background: linear-gradient(180deg, #e2e8f0 0%, #cbd5e1 100%) !important;
-        padding: 22px 28px !important;
+        padding: 24px 32px !important;
     }
     .mm-ui.mm-booking-next .mm-wiz-draft-sheet {
         width: 100%;
-        max-width: 794px;
-        min-height: 1122px;
+        max-width: 980px;
         margin: 0 auto;
         display: flex;
         flex-direction: column;
-        border-radius: 6px;
+        gap: 24px;
+    }
+    .mm-ui.mm-booking-next .mm-wiz-pdf-page {
+        width: 100%;
+        border-radius: 10px;
         box-shadow: 0 20px 50px rgba(15, 23, 42, 0.22), 0 4px 14px rgba(15, 23, 42, 0.10);
     }
     .mm-ui.mm-booking-next .mm-wiz-pdf-body {
         flex: 1 1 auto;
         display: flex;
         flex-direction: column;
-        padding: 22px 28px 24px;
-    }
-    .mm-ui.mm-booking-next .mm-wiz-draft-sign {
-        margin-top: auto;
-        padding-top: 22px;
+        padding: 22px 26px 24px;
     }
 }
 
 @media print {
     @page {
         size: A4 portrait;
-        margin: 8mm 10mm;
+        margin: 10mm 10mm;
     }
     .mm-ui.mm-booking-next .mm-wiz-grid,
     .mm-ui.mm-booking-next .mm-steps,
@@ -4520,68 +4552,97 @@
     .mm-ui.mm-booking-next .mm-wiz-draft-sheet {
         width: 100% !important;
         max-width: 100% !important;
-        min-height: 0 !important;
         margin: 0 !important;
-        border: 1.5px solid #cbd5e1 !important;
-        border-radius: 6px !important;
-        box-shadow: none !important;
+        gap: 0 !important;
+        display: block !important;
         background: #ffffff !important;
         color: #0f172a !important;
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
-        page-break-inside: avoid !important;
     }
-    .mm-ui.mm-booking-next .mm-wiz-pdf-hero {
+    .mm-ui.mm-booking-next .mm-wiz-pdf-page {
+        width: 100% !important;
+        max-width: 100% !important;
+        border: 1.5px solid #cbd5e1 !important;
+        border-radius: 8px !important;
+        box-shadow: none !important;
+        background: #ffffff !important;
+        color: #0f172a !important;
+        page-break-inside: avoid !important;
+        break-inside: avoid !important;
+    }
+    .mm-ui.mm-booking-next #wiz-draft-page-1 {
+        page-break-after: always !important;
+        break-after: page !important;
+        margin-bottom: 0 !important;
+    }
+    .mm-ui.mm-booking-next #wiz-draft-page-2 {
+        page-break-before: always !important;
+        break-before: page !important;
+    }
+    .mm-ui.mm-booking-next .mm-wiz-pdf-hero,
+    .mm-ui.mm-booking-next .mm-wiz-pdf-page2-head {
         grid-template-columns: minmax(0, 1fr) auto !important;
-        padding: 11px 15px !important;
-        gap: 10px !important;
+        padding: 14px 18px !important;
+        gap: 12px !important;
     }
     .mm-ui.mm-booking-next .mm-wiz-pdf-title {
-        font-size: 17px !important;
+        font-size: 18px !important;
     }
     .mm-ui.mm-booking-next .mm-wiz-pdf-body {
-        padding: 11px 15px 12px !important;
+        padding: 16px 18px 18px !important;
     }
     .mm-ui.mm-booking-next .mm-wiz-pdf-section-title {
-        margin: 7px 0 5px !important;
-        padding: 4px 8px !important;
-        font-size: 10.5px !important;
+        margin: 10px 0 8px !important;
+        padding: 5px 10px !important;
+        font-size: 11px !important;
     }
     .mm-ui.mm-booking-next .mm-wiz-draft-meta-grid {
         grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-        gap: 6px !important;
-        margin-bottom: 6px !important;
+        gap: 8px !important;
+        margin-bottom: 10px !important;
     }
     .mm-ui.mm-booking-next .mm-wiz-draft-kv {
-        padding: 6px 8px !important;
+        padding: 8px 10px !important;
     }
     .mm-ui.mm-booking-next .mm-wiz-draft-kv-val {
-        font-size: 11px !important;
+        font-size: 11.5px !important;
     }
     .mm-ui.mm-booking-next .mm-wiz-draft-sheet .mm-table-scroll {
-        overflow: visible !important;
-        margin-bottom: 6px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow: hidden !important;
+        margin-bottom: 10px !important;
     }
-    .mm-ui.mm-booking-next .mm-wiz-draft-sheet .mm-data-table th,
-    .mm-ui.mm-booking-next .mm-wiz-draft-sheet .mm-data-table td {
-        padding: 3.5px 6px !important;
-        font-size: 10px !important;
+    .mm-ui.mm-booking-next .mm-wiz-draft-sheet .mm-data-table {
+        width: 100% !important;
+        max-width: 100% !important;
+        table-layout: fixed !important;
+    }
+    .mm-ui.mm-booking-next .mm-wiz-draft-sheet .mm-data-table thead th,
+    .mm-ui.mm-booking-next .mm-wiz-draft-sheet .mm-data-table tbody td {
+        display: table-cell !important;
+        white-space: normal !important;
+        word-break: break-word !important;
+        overflow-wrap: anywhere !important;
+        padding: 6px 7px !important;
+        font-size: 11px !important;
     }
     .mm-ui.mm-booking-next .mm-wiz-pdf-finance-grid {
         grid-template-columns: 1.12fr 1fr !important;
-        gap: 10px !important;
+        gap: 12px !important;
     }
     .mm-ui.mm-booking-next .mm-wiz-pdf-policy-box,
     .mm-ui.mm-booking-next .mm-wiz-pdf-totals-box {
-        padding: 8px 10px !important;
+        padding: 12px 14px !important;
     }
     .mm-ui.mm-booking-next .mm-wiz-draft-sign {
-        margin-top: 10px !important;
-        padding-top: 8px !important;
-        gap: 14px !important;
+        margin-top: 18px !important;
+        padding-top: 14px !important;
+        gap: 16px !important;
     }
     .mm-ui.mm-booking-next .mm-wiz-pdf-footbar {
-        margin-top: 8px !important;
-        padding-top: 6px !important;
+        margin-top: 14px !important;
+        padding-top: 8px !important;
     }
 }

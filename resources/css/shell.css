@@ -2001,19 +2001,30 @@
     color: #94a3b8;
 }
 
-/* Desktop A4-Ratio App Drawer & Full-Fidelity Print Engine for Draft Reservation Summary PDF */
+/* Desktop A4-Ratio App Drawer & Full-Fidelity 2-Page Print Engine for Draft Reservation Summary PDF */
+.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-wiz-pdf-page {
+    background: rgba(18, 28, 43, 0.98);
+    border-color: rgba(96, 165, 250, 0.34);
+    color: #f1f5f9;
+}
+.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-wiz-pdf-page2-head {
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.98) 0%, rgba(30, 41, 59, 0.96) 62%, rgba(30, 58, 95, 0.55) 100%);
+    color: #f8fafc;
+    border-top-color: #60a5fa;
+    border-bottom-color: #f59e0b;
+}
 @media (min-width: 769px) {
     .mm-shell #wiz-draft-summary-modal .modal-dialog {
-        width: min(920px, 95vw) !important;
-        max-width: min(920px, 95vw) !important;
+        width: min(1140px, 96vw) !important;
+        max-width: min(1140px, 96vw) !important;
     }
     .mm-shell #wiz-floorplan-modal .modal-dialog {
-        width: min(860px, 92vw) !important;
-        max-width: min(860px, 92vw) !important;
+        width: min(920px, 94vw) !important;
+        max-width: min(920px, 94vw) !important;
     }
     .mm-shell #wiz-draft-summary-modal .modal-body {
         background: linear-gradient(180deg, #e2e8f0 0%, #cbd5e1 100%) !important;
-        padding: 22px 28px !important;
+        padding: 24px 32px !important;
     }
     .mm-shell.mm-dark #wiz-draft-summary-modal .modal-body {
         background: linear-gradient(180deg, #0b1120 0%, #0f172a 100%) !important;
