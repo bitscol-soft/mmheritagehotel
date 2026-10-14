@@ -1160,41 +1160,49 @@
     border-color: rgba(251, 191, 36, 0.36);
     color: #fcd34d;
 }
-.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-steps ol {
+.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-steps ol,
+.mm-shell.mm-dark .mm-ui .mm-stepper-list {
     background: linear-gradient(145deg, rgba(22, 33, 49, 0.92) 0%, rgba(15, 23, 36, 0.96) 100%);
     border-color: rgba(148, 163, 184, 0.26);
     box-shadow: 0 10px 26px -8px rgba(2, 6, 23, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.07);
 }
-.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-steps li {
+.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-steps li,
+.mm-shell.mm-dark .mm-ui .mm-stepper-list > .mm-step {
     background: rgba(15, 23, 42, 0.72);
     border-color: rgba(148, 163, 184, 0.22);
     color: #94a3b8;
 }
-.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-steps li.is-done {
+.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-steps li.is-done,
+.mm-shell.mm-dark .mm-ui .mm-stepper-list > .mm-step.is-done {
     background: linear-gradient(135deg, rgba(6, 78, 59, 0.45) 0%, rgba(15, 23, 42, 0.88) 100%);
     border-color: rgba(52, 211, 153, 0.38);
     color: #a7f3d0;
 }
-.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-steps li.is-current {
+.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-steps li.is-current,
+.mm-shell.mm-dark .mm-ui .mm-stepper-list > .mm-step.is-current {
     background: linear-gradient(135deg, rgba(30, 58, 138, 0.52) 0%, rgba(15, 23, 42, 0.92) 100%);
     border-color: rgba(96, 165, 250, 0.48);
     box-shadow: 0 6px 18px -4px rgba(37, 99, 235, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.10);
     color: #f8fafc;
 }
-.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-step-sub {
+.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-step-sub,
+.mm-shell.mm-dark .mm-ui .mm-stepper-list .mm-step-sub {
     color: #94a3b8;
 }
-.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-step-pill {
+.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-step-pill,
+.mm-shell.mm-dark .mm-ui .mm-stepper-list .mm-step-pill {
     background: rgba(15, 23, 42, 0.85);
     border-color: rgba(148, 163, 184, 0.28);
     color: #94a3b8;
 }
-.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-steps li.is-done .mm-step-pill {
+.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-steps li.is-done .mm-step-pill,
+.mm-shell.mm-dark .mm-ui .mm-stepper-list > .mm-step.is-done .mm-step-pill {
     background: rgba(16, 185, 129, 0.22);
     border-color: rgba(52, 211, 153, 0.42);
     color: #6ee7b7;
 }
-.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-steps li.is-current .mm-step-pill {
+.mm-shell.mm-dark .mm-ui.mm-booking-next .mm-steps li.is-current .mm-step-pill,
+.mm-shell.mm-dark .mm-ui .mm-stepper-list > .mm-step.is-current .mm-step-pill {
     background: rgba(59, 130, 246, 0.24);
     border-color: rgba(96, 165, 250, 0.45);
     color: #93c5fd;

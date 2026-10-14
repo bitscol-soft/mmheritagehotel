@@ -1313,23 +1313,41 @@
 /* --- mm-stepper --- */
 .mm-ui .mm-stepper,
 .mm-ui .mm-steps ol.mm-stepper { display: flex; flex-wrap: nowrap; list-style: none; margin: 0; padding: 0; gap: 0; counter-reset: step; border: 1px solid var(--mm-line); border-radius: var(--mm-radius); overflow: hidden; background: var(--mm-surface); }
+.mm-ui nav.mm-stepper { display: block; border: 0; background: transparent; overflow: visible; }
+.mm-ui .mm-stepper-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; list-style: none; margin: 0; padding: 10px; width: 100%; border-radius: 12px; border: 1px solid rgba(148, 163, 184, 0.34); background: linear-gradient(145deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 246, 255, 0.90) 100%); box-shadow: 0 6px 18px -6px rgba(15, 23, 42, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.98); box-sizing: border-box; }
+@media (max-width: 768px) { .mm-ui .mm-stepper-list { grid-template-columns: minmax(0, 1fr); } }
 .mm-ui .mm-step,
 .mm-ui .mm-steps li.mm-step { flex: 1 1 0; min-width: 0; position: relative; display: flex; }
 .mm-ui .mm-step + .mm-step::before { content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 1px; height: 60%; background: var(--mm-line); }
+.mm-ui .mm-stepper-list > .mm-step { padding: 10px 14px; border-radius: 10px; border: 1px solid rgba(148, 163, 184, 0.28); background: rgba(255, 255, 255, 0.88); display: flex; align-items: center; gap: 10px; min-width: 0; cursor: pointer; transition: transform 0.16s ease, box-shadow 0.16s ease, border-color 0.16s ease, background-color 0.16s ease; }
+.mm-ui .mm-stepper-list > .mm-step + .mm-step::before { display: none; }
+.mm-ui .mm-stepper-list > .mm-step:hover { transform: translateY(-1px); border-color: rgba(47, 99, 168, 0.45); }
 .mm-ui .mm-step-link { flex: 1 1 0; min-width: 0; display: flex; align-items: center; gap: var(--mm-pad-2); padding: var(--mm-pad-3) var(--mm-pad-3); color: var(--mm-muted); text-decoration: none; transition: background var(--mm-motion-fast), color var(--mm-motion-fast); }
 .mm-ui .mm-step-link:hover { background: var(--mm-bg); color: var(--mm-ink); }
-.mm-ui .mm-step-mark { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; background: var(--mm-bg); color: var(--mm-muted); font-weight: 700; font-size: var(--mm-text-sm); border: 1px solid var(--mm-line); flex-shrink: 0; }
+.mm-ui .mm-step-mark,
+.mm-ui .mm-step-index { display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; min-width: 30px; border-radius: 50%; background: var(--mm-bg); color: var(--mm-muted); font-weight: 800; font-size: 13px; border: 2px solid var(--mm-line); flex-shrink: 0; }
 .mm-ui .mm-step-label { font-weight: 600; font-size: var(--mm-text-sm); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mm-ui .mm-stepper-list .mm-step-copy { display: flex; flex-direction: column; min-width: 0; flex: 1 1 auto; }
+.mm-ui .mm-stepper-list .mm-step-label { font-size: 13.5px; font-weight: 700; line-height: 1.25; white-space: normal; overflow: visible; }
+.mm-ui .mm-stepper-list .mm-step-sub { font-size: 11.5px; font-weight: 500; color: var(--mm-muted); line-height: 1.25; margin-top: 2px; }
+.mm-ui .mm-stepper-list .mm-step-pill { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; padding: 3px 8px; border-radius: 999px; border: 1px solid rgba(148, 163, 184, 0.32); background: rgba(255, 255, 255, 0.85); color: var(--mm-muted); flex-shrink: 0; }
 .mm-ui .mm-step.is-current .mm-step-link,
 .mm-ui .mm-step.mm-step-is-current .mm-step-link { background: var(--mm-brand-soft); color: var(--mm-brand); }
 .mm-ui .mm-step.is-current .mm-step-mark,
+.mm-ui .mm-step.is-current .mm-step-index,
 .mm-ui .mm-step.mm-step-is-current .mm-step-mark { background: var(--mm-brand); color: white; border-color: var(--mm-brand); }
 .mm-ui .mm-step.is-done .mm-step-link,
 .mm-ui .mm-step.mm-step-is-done .mm-step-link { color: var(--mm-success); }
 .mm-ui .mm-step.is-done .mm-step-mark,
-.mm-ui .mm-step.mm-step-is-done .mm-step-mark { background: var(--mm-success); color: white; border-color: var(--mm-success); }
+.mm-ui .mm-step.is-done .mm-step-index,
+.mm-ui .mm-step.mm-step-is-done .mm-step-mark { background: #1f7a4d; color: white; border-color: #1f7a4d; }
 .mm-ui .mm-step.is-upcoming .mm-step-mark,
+.mm-ui .mm-step.is-upcoming .mm-step-index,
 .mm-ui .mm-step.mm-step-is-upcoming .mm-step-mark { color: var(--mm-muted); }
+.mm-ui .mm-stepper-list > .mm-step.is-done { background: linear-gradient(135deg, rgba(236, 253, 245, 0.95) 0%, rgba(209, 250, 229, 0.82) 100%); border-color: rgba(16, 185, 129, 0.38); color: #065f46; }
+.mm-ui .mm-stepper-list > .mm-step.is-current { background: linear-gradient(135deg, rgba(239, 246, 255, 0.98) 0%, rgba(219, 234, 254, 0.90) 100%); border-color: rgba(47, 99, 168, 0.48); box-shadow: 0 4px 14px -4px rgba(37, 99, 235, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.95); color: var(--mm-ink); }
+.mm-ui .mm-stepper-list > .mm-step.is-done .mm-step-pill { background: rgba(16, 185, 129, 0.16); border-color: rgba(16, 185, 129, 0.35); color: #047857; }
+.mm-ui .mm-stepper-list > .mm-step.is-current .mm-step-pill { background: rgba(37, 99, 235, 0.14); border-color: rgba(37, 99, 235, 0.35); color: #1d4ed8; }
 
 /* --- mm-modal --- */
 .mm-ui .mm-modal { position: fixed; inset: 0; z-index: var(--mm-z-modal); display: flex; align-items: center; justify-content: center; padding: var(--mm-pad-4); }

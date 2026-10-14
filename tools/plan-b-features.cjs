@@ -1204,28 +1204,81 @@ function buildPlanBPages(shellWith) {
         return shellWith(body, '', '', 'Multi-Window Split-Folio & Express Checkout', ['Hotel', 'Bookings', 'Split-Folio Settlement']);
     }
 
+    function renderThermalStyles() {
+        return `<style>
+            .mm-thermal-studio { display:grid; grid-template-columns:repeat(auto-fit,minmax(335px,1fr)); gap:22px; justify-items:center; padding:12px 6px; background:linear-gradient(180deg,rgba(15,23,42,0.04),rgba(15,23,42,0.08)); border-radius:12px; border:1px dashed rgba(100,116,139,0.38); }
+            .mm-thermal-slip { position:relative; width:348px; max-width:100%; background:linear-gradient(180deg,#fffef9 0%,#fffdf5 100%); color:#0f172a; border-left:1px solid #cbd5e1; border-right:1px solid #cbd5e1; border-top:6px solid #0f172a; border-bottom:6px dashed #475569; border-radius:6px; padding:16px 15px; font-family:'Courier New',Courier,monospace; font-size:11.8px; line-height:1.42; box-shadow:0 16px 34px -6px rgba(15,23,42,0.18), 0 2px 6px rgba(15,23,42,0.08); transition:width 0.18s ease; }
+            .mm-thermal-studio.is-58mm .mm-thermal-slip { width:268px; font-size:11px; padding:12px 10px; }
+            .mm-thermal-hw-tag { display:flex; align-items:center; justify-content:space-between; font-size:10px; font-weight:700; color:#475569; background:#f1f5f9; border:1px solid #cbd5e1; border-radius:4px; padding:3px 7px; margin-bottom:8px; letter-spacing:0.3px; }
+            .mm-thermal-crest { width:42px; height:42px; margin:0 auto 5px; border:2px solid #0f172a; border-radius:50%; display:flex; flex-direction:column; align-items:center; justify-content:center; font-weight:900; font-size:11px; line-height:1; letter-spacing:0.5px; background:#fff; }
+            .mm-thermal-band { background:#0f172a; color:#ffffff; text-align:center; font-weight:800; padding:5px 8px; margin:6px 0; border-radius:3px; letter-spacing:0.7px; font-size:11.5px; text-transform:uppercase; }
+            .mm-thermal-subband { background:#e2e8f0; color:#0f172a; text-align:center; font-weight:800; padding:3px 6px; margin:4px 0 8px; border-radius:3px; border:1px solid #94a3b8; font-size:10.5px; letter-spacing:0.4px; }
+            .mm-thermal-meta-grid { display:grid; grid-template-columns:1fr 1fr; gap:3px 8px; border:1px solid #94a3b8; border-radius:4px; padding:6px 8px; margin-bottom:8px; background:#f8fafc; font-size:10.8px; }
+            .mm-thermal-divider { border-top:1px dashed #64748b; margin:7px 0; }
+            .mm-thermal-double { border-top:3px double #0f172a; border-bottom:3px double #0f172a; padding:6px 0; margin:7px 0; font-weight:800; font-size:13.5px; }
+            .mm-thermal-item-row { padding:4px 0; border-bottom:1px dotted #cbd5e1; }
+            .mm-thermal-item-row:last-child { border-bottom:0; }
+            .mm-thermal-mod { font-size:10.5px; color:#334155; padding-left:10px; font-style:italic; }
+            .mm-thermal-stn-badge { display:inline-block; font-size:9.8px; font-weight:800; padding:1px 5px; border:1px solid #0f172a; border-radius:3px; background:#f1f5f9; color:#0f172a; }
+            .mm-thermal-sign-box { border:1.5px dashed #334155; border-radius:4px; padding:8px; margin-top:8px; background:#f8fafc; font-size:10.8px; }
+            .mm-thermal-pass-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:4px; margin-top:7px; text-align:center; font-size:10px; }
+            .mm-thermal-pass-cell { border:1px solid #94a3b8; border-radius:3px; padding:4px 2px; background:#fff; }
+            .mm-thermal-barcode { text-align:center; margin-top:8px; padding-top:6px; border-top:1px dashed #94a3b8; font-size:10px; letter-spacing:2px; font-weight:700; }
+            .mm-thermal-qr-box { display:flex; align-items:center; gap:10px; border:1px solid #94a3b8; border-radius:4px; padding:6px 8px; margin-top:8px; background:#fff; font-size:10px; line-height:1.35; }
+            .mm-thermal-reprint-stamp { display:none; text-align:center; border:2px solid #b42318; color:#b42318; font-weight:900; font-size:11px; padding:2px 6px; margin-bottom:6px; border-radius:3px; letter-spacing:1px; background:#fef2f2; }
+            .mm-thermal-studio.is-reprint .mm-thermal-reprint-stamp { display:block; }
+            @media print {
+                body * { visibility:hidden; }
+                #upos-live-receipt-panel, #upos-live-receipt-panel *, #upos-kot-modal, #upos-kot-modal * { visibility:visible; }
+                #upos-kot-toolbar, .mm-no-print { display:none !important; }
+            }
+        </style>`;
+    }
+
     function unifiedPosPage() {
         const body = `<section class="mm-ui"><div class="tw-space-y-4 tw-py-2">
+            ${renderThermalStyles()}
             <header class="mm-page-head mm-no-print tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
                 <div class="mm-page-title">
                     <h1 class="tw-m-0 tw-font-semibold tw-text-ink"><i class="fa fa-cutlery"></i> Unified Restaurant, Bar &amp; In-Room Dining POS Engine (Plan A · Phase 3 #6)</h1>
-                    <p class="tw-m-0 tw-text-sm tw-text-muted">Single shared POS engine across Heritage Dining Restaurant, Skyline Lounge Bar, and 20-Suite Room Service with KDS course fire, table merge, bill splitting, and room-folio posting.</p>
+                    <p class="tw-m-0 tw-text-sm tw-text-muted">Single shared POS engine across Heritage Dining Restaurant, Skyline Lounge Bar, and 20-Suite Room Service with KDS course fire, table merge, bill splitting, and Dual-Slip 80mm Thermal KOT &amp; Mushak 6.3 Check Studio.</p>
                 </div>
                 <div class="tw-flex tw-flex-wrap tw-gap-2">
                     <a href="/preview/rst-pos" class="mm-button mm-button-secondary"><i class="fa fa-cutlery"></i> Restaurant POS</a>
                     <a href="/preview/bar-pos" class="mm-button mm-button-secondary"><i class="fa fa-glass"></i> Bar POS</a>
                     <a href="/preview/rst-kitchen-board" class="mm-button mm-button-secondary"><i class="fa fa-fire"></i> Kitchen KDS</a>
-                    <button type="button" class="mm-button mm-button-secondary" data-toggle="modal" data-target="#upos-kot-modal"><i class="fa fa-print"></i> 80mm Thermal KOT / Check</button>
+                    <button type="button" class="mm-button mm-button-secondary" data-toggle="modal" data-target="#upos-kot-modal"><i class="fa fa-print"></i> 80mm Thermal KOT / Check Drawer</button>
                     <button type="button" class="mm-button" id="upos-btn-fire-kds"><i class="fa fa-fire"></i> Fire KOT &amp; Post to Room Folio</button>
                 </div>
             </header>
 
-            <!-- 3-Step POS Workflow Stepper -->
+            <!-- 3-Step POS Workflow Stepper (Fixed 3-Card Horizontal Grid w/ Interactive Step Switching) -->
             <nav class="mm-stepper mm-no-print" aria-label="Unified POS workflow">
                 <ol class="mm-stepper-list">
-                    <li class="mm-step is-done" id="upos-step-1"><span class="mm-step-index">✓</span><span class="mm-step-label">1. Outlet, Table / Suite &amp; Courses</span></li>
-                    <li class="mm-step is-current" id="upos-step-2" aria-current="step"><span class="mm-step-index">2</span><span class="mm-step-label">2. Fire KOT to Kitchen &amp; Bar KDS</span></li>
-                    <li class="mm-step" id="upos-step-3"><span class="mm-step-index">3</span><span class="mm-step-label">3. Split / Merge Bill &amp; Folio Settlement</span></li>
+                    <li class="mm-step is-done" id="upos-step-1" data-pos-step="1">
+                        <span class="mm-step-index" id="upos-step-idx-1">&#10003;</span>
+                        <span class="mm-step-copy">
+                            <span class="mm-step-label">1. Outlet, Table / Suite &amp; Courses</span>
+                            <span class="mm-step-sub" id="upos-step-sub-1">Heritage Dining · Table #T-04 · 3 Active Courses</span>
+                        </span>
+                        <span class="mm-step-pill" id="upos-step-pill-1">Completed</span>
+                    </li>
+                    <li class="mm-step is-current" id="upos-step-2" data-pos-step="2" aria-current="step">
+                        <span class="mm-step-index" id="upos-step-idx-2">2</span>
+                        <span class="mm-step-copy">
+                            <span class="mm-step-label">2. Fire KOT to Kitchen &amp; Bar KDS</span>
+                            <span class="mm-step-sub" id="upos-step-sub-2">80mm KOT #2026-892 · Pacing &amp; Station Routing</span>
+                        </span>
+                        <span class="mm-step-pill" id="upos-step-pill-2">Active Step</span>
+                    </li>
+                    <li class="mm-step" id="upos-step-3" data-pos-step="3">
+                        <span class="mm-step-index" id="upos-step-idx-3">3</span>
+                        <span class="mm-step-copy">
+                            <span class="mm-step-label">3. Split / Merge Bill &amp; Folio Settlement</span>
+                            <span class="mm-step-sub" id="upos-step-sub-3">Mushak 6.3 Check · Suite #204 Folio Charge</span>
+                        </span>
+                        <span class="mm-step-pill" id="upos-step-pill-3">Ready</span>
+                    </li>
                 </ol>
             </nav>
 
@@ -1240,8 +1293,8 @@ function buildPlanBPages(shellWith) {
                 <i class="fa fa-check-circle"></i> <strong id="upos-banner-msg">KOT #892 fired to Kitchen Display Board (KDS) and posted to Suite #204 (Brig. Gen. Mahmudul Hasan) Folio!</strong>
             </div>
 
-            <!-- Outlet, Table/Suite & Table Merge Bar -->
-            <div class="mm-panel tw-p-4 mm-no-print">
+            <!-- Step 1: Outlet, Table/Suite & Table Merge Bar -->
+            <div class="mm-panel tw-p-4 mm-no-print" id="upos-panel-step1">
                 <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;align-items:end">
                     <div>
                         <label class="mm-label" for="upos-outlet-select">1. Active POS Outlet</label>
@@ -1282,7 +1335,7 @@ function buildPlanBPages(shellWith) {
                 </div>
             </div>
 
-            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:16px" class="mm-no-print">
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:16px" class="mm-no-print" id="upos-panel-step3">
                 <!-- Left: Category Filter, Search & Menu Grid -->
                 <div class="mm-panel tw-p-5">
                     <div class="tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-2" style="margin-bottom:10px">
@@ -1297,14 +1350,14 @@ function buildPlanBPages(shellWith) {
                         <button type="button" class="mm-preview-pill" data-upos-cat="Dessert">Desserts</button>
                     </div>
                     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px" id="upos-menu-grid">
-                        <button type="button" class="mm-button mm-button-secondary upos-menu-btn" data-cat="Mains" data-course="Main" data-name="Kacchi Biryani Royal Platter" data-price="1450" style="justify-content:space-between;width:100%"><span>Kacchi Biryani Platter</span><strong>৳ 1,450</strong></button>
-                        <button type="button" class="mm-button mm-button-secondary upos-menu-btn" data-cat="Grills" data-course="Main" data-name="Grilled Norwegian Salmon" data-price="2200" style="justify-content:space-between;width:100%"><span>Grilled Norwegian Salmon</span><strong>৳ 2,200</strong></button>
-                        <button type="button" class="mm-button mm-button-secondary upos-menu-btn" data-cat="Mains" data-course="Main" data-name="Truffle Mushroom Risotto" data-price="1350" style="justify-content:space-between;width:100%"><span>Truffle Risotto</span><strong>৳ 1,350</strong></button>
-                        <button type="button" class="mm-button mm-button-secondary upos-menu-btn" data-cat="Bar" data-course="Bar" data-name="Signature Virgin Mojito Pitcher" data-price="850" style="justify-content:space-between;width:100%"><span>Virgin Mojito Pitcher</span><strong>৳ 850</strong></button>
-                        <button type="button" class="mm-button mm-button-secondary upos-menu-btn" data-cat="Grills" data-course="Main" data-name="Tandoori Lobster Thermidor" data-price="2800" style="justify-content:space-between;width:100%"><span>Lobster Thermidor</span><strong>৳ 2,800</strong></button>
-                        <button type="button" class="mm-button mm-button-secondary upos-menu-btn" data-cat="Dessert" data-course="Dessert" data-name="Belgian Dark Lava Cake" data-price="650" style="justify-content:space-between;width:100%"><span>Belgian Lava Cake</span><strong>৳ 650</strong></button>
-                        <button type="button" class="mm-button mm-button-secondary upos-menu-btn" data-cat="Bar" data-course="Bar" data-name="Cold-Pressed Pomegranate Elixir" data-price="620" style="justify-content:space-between;width:100%"><span>Pomegranate Elixir</span><strong>৳ 620</strong></button>
-                        <button type="button" class="mm-button mm-button-secondary upos-menu-btn" data-cat="Dessert" data-course="Dessert" data-name="Saffron Pistachio Shahi Tukda" data-price="580" style="justify-content:space-between;width:100%"><span>Saffron Shahi Tukda</span><strong>৳ 580</strong></button>
+                        <button type="button" class="mm-button mm-button-secondary upos-menu-btn" data-cat="Mains" data-course="Main" data-sku="MN-101" data-stn="HOT-1 · 15m" data-mod="Less Ghee, Extra Saffron Aloo, Raita on Side" data-name="Kacchi Biryani Royal Platter" data-price="1450" style="justify-content:space-between;width:100%"><span>Kacchi Biryani Platter</span><strong>৳ 1,450</strong></button>
+                        <button type="button" class="mm-button mm-button-secondary upos-menu-btn" data-cat="Grills" data-course="Main" data-sku="GR-204" data-stn="GRILL · 14m" data-mod="Medium-Well, Lemon Caper Butter, No MSG" data-name="Grilled Norwegian Salmon" data-price="2200" style="justify-content:space-between;width:100%"><span>Grilled Norwegian Salmon</span><strong>৳ 2,200</strong></button>
+                        <button type="button" class="mm-button mm-button-secondary upos-menu-btn" data-cat="Mains" data-course="Main" data-sku="MN-108" data-stn="HOT-1 · 12m" data-mod="Wild Porcini,aged Parmesan, Truffle Oil" data-name="Truffle Mushroom Risotto" data-price="1350" style="justify-content:space-between;width:100%"><span>Truffle Risotto</span><strong>৳ 1,350</strong></button>
+                        <button type="button" class="mm-button mm-button-secondary upos-menu-btn" data-cat="Bar" data-course="Bar" data-sku="BR-301" data-stn="BAR · 05m" data-mod="Fresh Mint, Crushed Ice, Less Sugar" data-name="Signature Virgin Mojito Pitcher" data-price="850" style="justify-content:space-between;width:100%"><span>Virgin Mojito Pitcher</span><strong>৳ 850</strong></button>
+                        <button type="button" class="mm-button mm-button-secondary upos-menu-btn" data-cat="Grills" data-course="Main" data-sku="GR-210" data-stn="GRILL · 18m" data-mod="Char-Grilled, Garlic Herb Glaze, Drawn Butter" data-name="Tandoori Lobster Thermidor" data-price="2800" style="justify-content:space-between;width:100%"><span>Lobster Thermidor</span><strong>৳ 2,800</strong></button>
+                        <button type="button" class="mm-button mm-button-secondary upos-menu-btn" data-cat="Dessert" data-course="Dessert" data-sku="DS-402" data-stn="PASTRY · 10m" data-mod="Warm Molten Core, Madagascar Vanilla Gelato" data-name="Belgian Dark Lava Cake" data-price="650" style="justify-content:space-between;width:100%"><span>Belgian Lava Cake</span><strong>৳ 650</strong></button>
+                        <button type="button" class="mm-button mm-button-secondary upos-menu-btn" data-cat="Bar" data-course="Bar" data-sku="BR-309" data-stn="BAR · 04m" data-mod="Chilled Glass, No Added Syrup, Lime Wedge" data-name="Cold-Pressed Pomegranate Elixir" data-price="620" style="justify-content:space-between;width:100%"><span>Pomegranate Elixir</span><strong>৳ 620</strong></button>
+                        <button type="button" class="mm-button mm-button-secondary upos-menu-btn" data-cat="Dessert" data-course="Dessert" data-sku="DS-405" data-stn="PASTRY · 08m" data-mod="Saffron Rabri, Crushed Iranian Pistachio" data-name="Saffron Pistachio Shahi Tukda" data-price="580" style="justify-content:space-between;width:100%"><span>Saffron Shahi Tukda</span><strong>৳ 580</strong></button>
                     </div>
                 </div>
 
@@ -1323,9 +1376,9 @@ function buildPlanBPages(shellWith) {
                         <table class="mm-data-table table table-bordered table-striped">
                             <thead><tr><th>Course &amp; Item</th><th class="text-center">Qty</th><th class="text-right">Line (৳)</th><th class="text-center">×</th></tr></thead>
                             <tbody id="upos-ticket-tbody">
-                                <tr class="upos-row" data-unit="1450" data-qty="1" data-amt="1450"><td><span class="mm-badge mm-badge-paid">Main</span> <strong>Kacchi Biryani Royal Platter</strong></td><td class="text-center"><button type="button" class="btn btn-xs btn-default upos-qty-dec">-</button> <span class="upos-qty-val">1</span> <button type="button" class="btn btn-xs btn-default upos-qty-inc">+</button></td><td class="text-right upos-line-cell">1,450</td><td class="text-center"><button type="button" class="btn btn-xs btn-danger upos-row-del">&times;</button></td></tr>
-                                <tr class="upos-row" data-unit="2200" data-qty="1" data-amt="2200"><td><span class="mm-badge mm-badge-paid">Main</span> <strong>Grilled Norwegian Salmon</strong></td><td class="text-center"><button type="button" class="btn btn-xs btn-default upos-qty-dec">-</button> <span class="upos-qty-val">1</span> <button type="button" class="btn btn-xs btn-default upos-qty-inc">+</button></td><td class="text-right upos-line-cell">2,200</td><td class="text-center"><button type="button" class="btn btn-xs btn-danger upos-row-del">&times;</button></td></tr>
-                                <tr class="upos-row" data-unit="950" data-qty="1" data-amt="950"><td><span class="mm-badge mm-badge-partial">Starter</span> <strong>Artisan Mezze &amp; Garlic Naan</strong></td><td class="text-center"><button type="button" class="btn btn-xs btn-default upos-qty-dec">-</button> <span class="upos-qty-val">1</span> <button type="button" class="btn btn-xs btn-default upos-qty-inc">+</button></td><td class="text-right upos-line-cell">950</td><td class="text-center"><button type="button" class="btn btn-xs btn-danger upos-row-del">&times;</button></td></tr>
+                                <tr class="upos-row" data-unit="1450" data-qty="1" data-amt="1450" data-sku="MN-101" data-stn="HOT-1 · 15m" data-mod="Less Ghee, Extra Saffron Aloo, Raita on Side"><td><span class="mm-badge mm-badge-paid">Main</span> <strong>Kacchi Biryani Royal Platter</strong></td><td class="text-center"><button type="button" class="btn btn-xs btn-default upos-qty-dec">-</button> <span class="upos-qty-val">1</span> <button type="button" class="btn btn-xs btn-default upos-qty-inc">+</button></td><td class="text-right upos-line-cell">1,450</td><td class="text-center"><button type="button" class="btn btn-xs btn-danger upos-row-del">&times;</button></td></tr>
+                                <tr class="upos-row" data-unit="2200" data-qty="1" data-amt="2200" data-sku="GR-204" data-stn="GRILL · 14m" data-mod="Medium-Well, Lemon Caper Butter, No MSG"><td><span class="mm-badge mm-badge-paid">Main</span> <strong>Grilled Norwegian Salmon</strong></td><td class="text-center"><button type="button" class="btn btn-xs btn-default upos-qty-dec">-</button> <span class="upos-qty-val">1</span> <button type="button" class="btn btn-xs btn-default upos-qty-inc">+</button></td><td class="text-right upos-line-cell">2,200</td><td class="text-center"><button type="button" class="btn btn-xs btn-danger upos-row-del">&times;</button></td></tr>
+                                <tr class="upos-row" data-unit="950" data-qty="1" data-amt="950" data-sku="ST-019" data-stn="START · 08m" data-mod="Warm Garlic Butter Naan, Extra Roasted Hummus"><td><span class="mm-badge mm-badge-partial">Starter</span> <strong>Artisan Mezze &amp; Garlic Naan</strong></td><td class="text-center"><button type="button" class="btn btn-xs btn-default upos-qty-dec">-</button> <span class="upos-qty-val">1</span> <button type="button" class="btn btn-xs btn-default upos-qty-inc">+</button></td><td class="text-right upos-line-cell">950</td><td class="text-center"><button type="button" class="btn btn-xs btn-danger upos-row-del">&times;</button></td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -1340,127 +1393,219 @@ function buildPlanBPages(shellWith) {
                 </div>
             </div>
 
-            <!-- 80mm Thermal KOT & Guest Check Slide-Over Drawer (Redesigned Dual-Slip 80mm Studio) -->
-            <style>
-                .mm-thermal-studio { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:18px; justify-items:center; padding:8px 4px; }
-                .mm-thermal-slip { width:308px; max-width:100%; background:#fffef9; color:#0f172a; border:1px solid #cbd5e1; border-top:5px solid #0f172a; border-bottom:5px dashed #64748b; border-radius:6px; padding:16px 14px; font-family:'Courier New',Courier,monospace; font-size:12px; line-height:1.45; box-shadow:0 10px 25px rgba(15,23,42,0.12); }
-                .mm-thermal-crest { width:38px; height:38px; margin:0 auto 6px; border:2px solid #0f172a; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:11px; letter-spacing:0.5px; }
-                .mm-thermal-band { background:#0f172a; color:#ffffff; text-align:center; font-weight:700; padding:4px 8px; margin:6px 0; border-radius:3px; letter-spacing:0.8px; font-size:11.5px; }
-                .mm-thermal-divider { border-top:1px dashed #64748b; margin:8px 0; }
-                .mm-thermal-double { border-top:3px double #0f172a; border-bottom:3px double #0f172a; padding:6px 0; margin:8px 0; font-weight:700; font-size:13px; }
-                .mm-thermal-sign-box { border:1px dashed #475569; border-radius:4px; padding:8px; margin-top:8px; background:#f8fafc; font-size:11px; }
-                @media print {
-                    body * { visibility:hidden; }
-                    #upos-kot-modal, #upos-kot-modal * { visibility:visible; }
-                    #upos-kot-modal { position:static !important; display:block !important; background:#fff !important; }
-                    #upos-kot-modal .modal-header, #upos-kot-modal .modal-footer, #upos-kot-toolbar { display:none !important; }
-                }
-            </style>
+            <!-- Step 2 & 3 Live On-Page Dual-Slip 80mm Thermal KOT & Mushak-6.3 Guest Check Receipt Studio -->
+            <div class="mm-panel tw-p-5" id="upos-live-receipt-panel">
+                <div id="upos-kot-toolbar" class="tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-2" style="margin-bottom:14px;padding:10px 14px;border-radius:10px;background:rgba(15,23,42,0.04);border:1px solid rgba(148,163,184,0.32)">
+                    <div>
+                        <strong style="font-size:14px"><i class="fa fa-print"></i> Live 80mm Thermal KOT &amp; Mushak-6.3 Guest Check Receipt Studio (#KOT-2026-892)</strong>
+                        <div class="tw-text-xs tw-text-muted">Auto-syncs in real time with Menu Catalog, Qty +/-, Course Pacing, Discounts, Split-Bill &amp; Suite Folio Selection.</div>
+                    </div>
+                    <div class="tw-flex tw-flex-wrap tw-items-center tw-gap-2">
+                        <div class="mm-preview-filter-pills" style="margin:0">
+                            <button type="button" class="mm-preview-pill is-active" data-kot-view="both">Both 80mm Slips (KOT + Check)</button>
+                            <button type="button" class="mm-preview-pill" data-kot-view="kot">1. Kitchen / Bar KOT (80mm)</button>
+                            <button type="button" class="mm-preview-pill" data-kot-view="check">2. Guest Tax Check (80mm)</button>
+                        </div>
+                        <div class="mm-preview-filter-pills" style="margin:0">
+                            <button type="button" class="mm-preview-pill is-active" data-paper-size="80mm">80mm Roll</button>
+                            <button type="button" class="mm-preview-pill" data-paper-size="58mm">58mm Compact</button>
+                        </div>
+                        <label style="display:inline-flex;align-items:center;gap:5px;font-size:11.5px;margin:0;cursor:pointer;padding:4px 8px;border-radius:6px;border:1px solid rgba(148,163,184,0.35)">
+                            <input type="checkbox" id="upos-kot-reprint-chk"> Reprint Stamp
+                        </label>
+                        <a href="/preview/pos-kot-print" class="mm-button mm-button-secondary" style="min-height:30px;padding:2px 10px;font-size:11.5px;"><i class="fa fa-external-link"></i> Standalone View</a>
+                        <button type="button" class="mm-button" onclick="window.print()" style="min-height:30px;padding:2px 12px;font-size:11.5px;"><i class="fa fa-print"></i> Print 80mm Slips</button>
+                    </div>
+                </div>
+
+                <div class="mm-thermal-studio" id="upos-thermal-studio">
+                    <!-- SLIP 1: ADVANCED 80mm KITCHEN & BAR ORDER TICKET (KOT) -->
+                    <div class="mm-thermal-slip" id="upos-slip-kot">
+                        <div class="mm-thermal-hw-tag">
+                            <span>EPSON TM-T88VI · 80MM</span>
+                            <span>KDS CH #01 · AUTO-CUT</span>
+                        </div>
+                        <div class="mm-thermal-reprint-stamp">★ DUPLICATE / KITCHEN REPRINT ★</div>
+                        <div class="mm-thermal-band">★ KITCHEN &amp; BAR ORDER TICKET ★</div>
+                        <div class="mm-thermal-subband">PRIORITY: VIP IN-HOUSE SUITE · DINE-IN</div>
+                        <div style="text-align:center;margin-bottom:6px">
+                            <strong id="kot-print-outlet" style="font-size:13px">Heritage Dining Restaurant</strong><br>
+                            <span style="font-size:10.5px">M&amp;M Heritage Hotel · Floor 2 Kitchen Pass</span>
+                        </div>
+                        <div class="mm-thermal-meta-grid">
+                            <div>KOT NO: <strong>#KOT-2026-892</strong></div>
+                            <div>CHK REF: <strong>#CHK-0892</strong></div>
+                            <div>DATE: <strong>14 OCT 2026</strong></div>
+                            <div>FIRED: <strong>19:45:18 BST</strong></div>
+                            <div>SERVER: <strong>Arifur (#S14)</strong></div>
+                            <div>TERM: <strong>POS-02 (RST)</strong></div>
+                        </div>
+                        <div style="border:2px solid #0f172a;padding:7px 8px;text-align:center;border-radius:4px;margin-bottom:7px;background:#f1f5f9">
+                            <strong id="kot-print-table" style="font-size:13px;display:block">Table #T-04 · Suite #204 (Brig. Gen. Mahmud)</strong>
+                            <span style="font-size:10.8px;font-weight:700">COVERS: 4 PAX · VIP GOLD · HALAL CERTIFIED</span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;gap:4px;margin-bottom:5px">
+                            <span class="mm-thermal-stn-badge">HOT KITCHEN #1</span>
+                            <span class="mm-thermal-stn-badge">GRILL / TANDOOR</span>
+                            <span class="mm-thermal-stn-badge">SKYLINE BAR</span>
+                        </div>
+                        <div style="font-size:11px;font-weight:800;text-transform:uppercase;padding:4px 6px;background:#fef3c7;border:1px solid #d97706;border-radius:3px;margin-bottom:6px" id="kot-print-pacing">
+                            ▶ PACING: Fire Starters &amp; Bar · Hold Mains
+                        </div>
+                        <div class="mm-thermal-divider"></div>
+                        <div style="display:flex;justify-content:space-between;font-weight:800;font-size:10.8px;border-bottom:1.5px solid #0f172a;padding-bottom:3px;margin-bottom:4px">
+                            <span>QTY · COURSE / DISH &amp; MODIFIERS</span>
+                            <span>STN · SLA</span>
+                        </div>
+                        <div id="kot-print-lines" style="margin-bottom:8px">
+                            <div class="mm-thermal-item-row">
+                                <div style="display:flex;justify-content:space-between;align-items:baseline">
+                                    <strong>1x [MAIN] Kacchi Biryani Royal Platter</strong>
+                                    <span class="mm-thermal-stn-badge">HOT-1 · 15m</span>
+                                </div>
+                                <div class="mm-thermal-mod">↳ Mod: Less Ghee, Extra Saffron Aloo, Raita on Side</div>
+                            </div>
+                            <div class="mm-thermal-item-row">
+                                <div style="display:flex;justify-content:space-between;align-items:baseline">
+                                    <strong>1x [MAIN] Grilled Norwegian Salmon</strong>
+                                    <span class="mm-thermal-stn-badge">GRILL · 14m</span>
+                                </div>
+                                <div class="mm-thermal-mod">↳ Mod: Medium-Well, Lemon Caper Butter, No MSG</div>
+                            </div>
+                            <div class="mm-thermal-item-row">
+                                <div style="display:flex;justify-content:space-between;align-items:baseline">
+                                    <strong>1x [STARTER] Artisan Mezze &amp; Garlic Naan</strong>
+                                    <span class="mm-thermal-stn-badge">START · 08m</span>
+                                </div>
+                                <div class="mm-thermal-mod">↳ Mod: Warm Garlic Butter Naan, Extra Roasted Hummus</div>
+                            </div>
+                        </div>
+                        <div class="mm-thermal-divider"></div>
+                        <div class="mm-thermal-sign-box">
+                            <strong>⚠ ALLERGEN &amp; DIETARY PROTOCOL:</strong><br>
+                            • VIP Suite #204 Guest · Strictly No MSG<br>
+                            • Keep Shellfish &amp; Peanut Utensils Separate<br>
+                            • Expediter: Ring Pass Bell for Table #T-04
+                        </div>
+                        <div class="mm-thermal-pass-grid">
+                            <div class="mm-thermal-pass-cell"><strong>PREP CHEF</strong><br>A. Karim ✓</div>
+                            <div class="mm-thermal-pass-cell"><strong>PASS EXPEDITER</strong><br>Chef Riaz ✓</div>
+                            <div class="mm-thermal-pass-cell"><strong>RUNNER</strong><br>S. Alam #04</div>
+                        </div>
+                        <div class="mm-thermal-barcode">
+                            || | |||| || ||| | |||| || | ||| |||| | ||<br>
+                            <span style="letter-spacing:0.5px;font-size:9.8px">KOT-2026-0892 · KDS ACK 19:45:19</span>
+                        </div>
+                    </div>
+
+                    <!-- SLIP 2: ADVANCED 80mm GUEST TAX CHECK & ROOM FOLIO SETTLEMENT RECEIPT -->
+                    <div class="mm-thermal-slip" id="upos-slip-check">
+                        <div class="mm-thermal-hw-tag">
+                            <span>MUSHAK-6.3 FISCAL CHECK</span>
+                            <span>NBR EFD · 80MM ROLL</span>
+                        </div>
+                        <div class="mm-thermal-reprint-stamp">★ DUPLICATE GUEST TAX CHECK ★</div>
+                        <div class="mm-thermal-crest"><span>M&amp;M</span><span style="font-size:7px">★★★★★</span></div>
+                        <div style="text-align:center;margin-bottom:6px">
+                            <strong style="font-size:13px;letter-spacing:0.4px">M&amp;M HERITAGE HOTEL &amp; SUITES</strong><br>
+                            <span style="font-size:10.2px">House 14, Road 45, Gulshan-2, Dhaka-1212</span><br>
+                            <span style="font-size:10.2px">Tel: +880 2-55068899 · vat@mmheritagehotel.com</span><br>
+                            <strong style="font-size:10.5px">NBR VAT Reg (BIN): 004192837-0101 · Mushak 6.3</strong>
+                        </div>
+                        <div class="mm-thermal-band">GUEST TAX CHECK &amp; FOLIO SLIP</div>
+                        <div class="mm-thermal-meta-grid">
+                            <div>INV NO: <strong>#INV-2026-892</strong></div>
+                            <div>KOT REF: <strong>#KOT-2026-892</strong></div>
+                            <div>DATE: <strong>14 OCT 2026</strong></div>
+                            <div>TIME: <strong>19:48:05 BST</strong></div>
+                            <div>CASHIER: <strong>Farhana A.</strong></div>
+                            <div>COVERS: <strong>4 PAX (VIP)</strong></div>
+                        </div>
+                        <div style="font-size:11px;font-weight:700;padding:4px 7px;background:#f1f5f9;border:1px solid #94a3b8;border-radius:4px;margin-bottom:6px" id="check-print-table">
+                            Table #T-04 · Suite #204 (Brig. Gen. Mahmud)
+                        </div>
+                        <div style="display:flex;justify-content:space-between;font-weight:800;font-size:10.8px;border-bottom:1.5px solid #0f172a;padding-bottom:3px;margin-bottom:4px">
+                            <span>QTY · ITEM DESCRIPTION &amp; SKU</span>
+                            <span>LINE (৳)</span>
+                        </div>
+                        <div id="check-print-lines" style="margin-bottom:8px">
+                            <div class="mm-thermal-item-row">
+                                <div style="display:flex;justify-content:space-between">
+                                    <strong>1x Kacchi Biryani Royal Platter</strong>
+                                    <strong>1,450.00</strong>
+                                </div>
+                                <div style="font-size:10px;color:#475569">SKU #MN-101 · 1 × @ ৳ 1,450.00 (Main)</div>
+                            </div>
+                            <div class="mm-thermal-item-row">
+                                <div style="display:flex;justify-content:space-between">
+                                    <strong>1x Grilled Norwegian Salmon</strong>
+                                    <strong>2,200.00</strong>
+                                </div>
+                                <div style="font-size:10px;color:#475569">SKU #GR-204 · 1 × @ ৳ 2,200.00 (Main)</div>
+                            </div>
+                            <div class="mm-thermal-item-row">
+                                <div style="display:flex;justify-content:space-between">
+                                    <strong>1x Artisan Mezze &amp; Garlic Naan</strong>
+                                    <strong>950.00</strong>
+                                </div>
+                                <div style="font-size:10px;color:#475569">SKU #ST-019 · 1 × @ ৳ 950.00 (Starter)</div>
+                            </div>
+                        </div>
+                        <div class="mm-thermal-divider"></div>
+                        <div style="font-size:11.2px;line-height:1.5" id="kot-print-totals">
+                            <div style="display:flex;justify-content:space-between"><span>Gross F&amp;B Subtotal (3 Items):</span><strong>৳ 4,600.00</strong></div>
+                            <div style="display:flex;justify-content:space-between"><span>Promo / Happy Hour Discount (0%):</span><span>- ৳ 0.00</span></div>
+                            <div style="display:flex;justify-content:space-between"><span>Net Taxable F&amp;B Amount:</span><strong>৳ 4,600.00</strong></div>
+                            <div style="display:flex;justify-content:space-between"><span>Hospitality Service Charge (5.0%):</span><span>+ ৳ 230.00</span></div>
+                            <div style="display:flex;justify-content:space-between"><span>NBR Govt. VAT (15.0% Mushak 6.3):</span><span>+ ৳ 725.00</span></div>
+                        </div>
+                        <div class="mm-thermal-double" style="display:flex;justify-content:space-between;align-items:center">
+                            <span>GRAND TOTAL (BDT)</span>
+                            <span id="check-print-grand">৳ 5,555</span>
+                        </div>
+                        <div style="font-size:10.8px;padding:5px 7px;background:#ecfdf5;border:1px solid #059669;border-radius:4px;margin-bottom:6px;text-align:center;font-weight:700" id="check-print-split">
+                            Split Mode: Full Single Bill (1 Way · ৳ 5,555)
+                        </div>
+                        <div class="mm-thermal-sign-box">
+                            <strong>ROOM FOLIO CHARGE AUTHORIZATION</strong><br>
+                            Settlement Mode: <strong id="check-print-tender">Post to Suite #204 Folio</strong><br>
+                            In-House Suite: <strong>#204 — Brig. Gen. Mahmudul Hasan</strong><br>
+                            Extra Gratuity / Tip: ৳ _____________________<br>
+                            Guest Signature: ___________________________
+                        </div>
+                        <div class="mm-thermal-qr-box">
+                            <div style="width:44px;height:44px;border:2px solid #0f172a;display:grid;grid-template-columns:repeat(5,1fr);gap:1px;padding:2px;background:#fff;flex-shrink:0" aria-hidden="true">
+                                <span style="background:#0f172a"></span><span style="background:#0f172a"></span><span></span><span style="background:#0f172a"></span><span style="background:#0f172a"></span>
+                                <span style="background:#0f172a"></span><span></span><span style="background:#0f172a"></span><span></span><span style="background:#0f172a"></span>
+                                <span></span><span style="background:#0f172a"></span><span style="background:#0f172a"></span><span style="background:#0f172a"></span><span></span>
+                                <span style="background:#0f172a"></span><span></span><span style="background:#0f172a"></span><span></span><span style="background:#0f172a"></span>
+                                <span style="background:#0f172a"></span><span style="background:#0f172a"></span><span></span><span style="background:#0f172a"></span><span style="background:#0f172a"></span>
+                            </div>
+                            <div>
+                                <strong>[QR VERIFIED: MMH-2026-CHK892]</strong><br>
+                                EFD SDC: SDC-DHK-009412<br>
+                                Fiscal Hash: 9F4A-882C-E109<br>
+                                <em>Thank You for Dining at M&amp;M Heritage!</em>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide-Over Drawer Modal Mirror (#upos-kot-modal) -->
             <div id="upos-kot-modal" class="modal fade mm-drawer" data-mm-drawer="true" tabindex="-1" role="dialog">
-                <div class="modal-dialog" style="width:94vw;max-width:860px;"><div class="modal-content">
+                <div class="modal-dialog" style="width:94vw;max-width:880px;"><div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title"><i class="fa fa-print"></i> 80mm Thermal KOT &amp; Guest Tax Check Print Studio (#KOT-2026-892)</h4>
+                        <h4 class="modal-title"><i class="fa fa-print"></i> 80mm Thermal KOT &amp; Mushak-6.3 Guest Check Print Drawer (#KOT-2026-892)</h4>
                     </div>
-                    <div class="modal-body">
-                        <div id="upos-kot-toolbar" class="tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-2" style="margin-bottom:14px;padding:8px 12px;border-radius:8px;background:rgba(15,23,42,0.05);border:1px solid rgba(148,163,184,0.3)">
-                            <div class="mm-preview-filter-pills" style="margin:0">
-                                <button type="button" class="mm-preview-pill is-active" data-kot-view="both">Both 80mm Slips (KOT + Check)</button>
-                                <button type="button" class="mm-preview-pill" data-kot-view="kot">1. Kitchen / Bar KOT (80mm)</button>
-                                <button type="button" class="mm-preview-pill" data-kot-view="check">2. Guest Tax Check (80mm)</button>
-                            </div>
-                            <div class="tw-flex tw-gap-2">
-                                <a href="/preview/pos-kot-print" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11.5px;"><i class="fa fa-external-link"></i> Standalone 80mm View</a>
-                                <button type="button" class="mm-button" onclick="window.print()" style="min-height:28px;padding:2px 12px;font-size:11.5px;"><i class="fa fa-print"></i> Print Now (80mm)</button>
-                            </div>
-                        </div>
-
-                        <div class="mm-thermal-studio" id="upos-thermal-studio">
-                            <!-- Slip 1: 80mm Kitchen / Bar Order Ticket (KOT) -->
-                            <div class="mm-thermal-slip" id="upos-slip-kot">
-                                <div class="mm-thermal-band">★ KITCHEN ORDER TICKET (KOT) ★</div>
-                                <div style="text-align:center;margin-bottom:6px">
-                                    <strong id="kot-print-outlet" style="font-size:13px">Heritage Dining Restaurant</strong><br>
-                                    <span>KOT #2026-892 · 14 Oct 2026 · 19:45</span>
-                                </div>
-                                <div style="border:1.5px solid #0f172a;padding:6px;text-align:center;border-radius:4px;margin-bottom:8px;background:#f1f5f9">
-                                    <strong id="kot-print-table" style="font-size:13px">Table #T-04 · Suite #204</strong><br>
-                                    <span style="font-size:11px">Server: Arifur R. · Covers: 4 PAX · VIP</span>
-                                </div>
-                                <div style="font-size:11px;font-weight:700;text-transform:uppercase;margin-bottom:4px" id="kot-print-pacing">Pacing: Fire Starters &amp; Bar · Hold Mains</div>
-                                <div class="mm-thermal-divider"></div>
-                                <div style="display:flex;justify-content:space-between;font-weight:700;font-size:11px;margin-bottom:4px">
-                                    <span>QTY &amp; COURSE / DISH</span>
-                                    <span>STATION</span>
-                                </div>
-                                <div id="kot-print-lines" style="margin-bottom:8px">
-                                    <div><strong>1x Kacchi Biryani Platter</strong> <span style="float:right">[MAIN]</span></div>
-                                    <div><strong>1x Grilled Norwegian Salmon</strong> <span style="float:right">[GRILL]</span></div>
-                                    <div><strong>1x Artisan Mezze &amp; Garlic Naan</strong> <span style="float:right">[START]</span></div>
-                                </div>
-                                <div class="mm-thermal-divider"></div>
-                                <div class="mm-thermal-sign-box">
-                                    <strong>CHEF / ALLERGEN NOTES:</strong><br>
-                                    • VIP Suite #204 Guest · No MSG<br>
-                                    • Salmon Medium-Well · Serve w/ Lemon Butter
-                                </div>
-                                <div style="text-align:center;margin-top:8px;font-size:10.5px;color:#475569">
-                                    *** KDS ROUTED: HOT KITCHEN #1 &amp; BAR ***
-                                </div>
-                            </div>
-
-                            <!-- Slip 2: 80mm Guest Tax Check & Room Folio Charge Slip -->
-                            <div class="mm-thermal-slip" id="upos-slip-check">
-                                <div class="mm-thermal-crest">M&amp;M</div>
-                                <div style="text-align:center;margin-bottom:6px">
-                                    <strong style="font-size:13px">M&amp;M HERITAGE HOTEL &amp; SUITES</strong><br>
-                                    <span style="font-size:10.5px">House 14, Road 45, Gulshan-2, Dhaka-1212</span><br>
-                                    <span style="font-size:10.5px">BIN: 004192837-0101 · Mushak 6.3 Tax Check</span>
-                                </div>
-                                <div class="mm-thermal-band">GUEST TAX CHECK &amp; FOLIO SLIP</div>
-                                <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px">
-                                    <span>Check: <strong>#CHK-892</strong></span>
-                                    <span>Date: <strong>14 Oct 2026</strong></span>
-                                </div>
-                                <div style="font-size:11px;margin-bottom:6px" id="check-print-table">Table #T-04 · Suite #204 (Brig. Gen. Mahmud)</div>
-                                <div class="mm-thermal-divider"></div>
-                                <div style="display:flex;justify-content:space-between;font-weight:700;font-size:11px;margin-bottom:4px">
-                                    <span>QTY &amp; ITEM DESCRIPTION</span>
-                                    <span>AMT (৳)</span>
-                                </div>
-                                <div id="check-print-lines" style="margin-bottom:8px">
-                                    <div style="display:flex;justify-content:space-between"><span>1x Kacchi Biryani Royal Platter</span><strong>1,450</strong></div>
-                                    <div style="display:flex;justify-content:space-between"><span>1x Grilled Norwegian Salmon</span><strong>2,200</strong></div>
-                                    <div style="display:flex;justify-content:space-between"><span>1x Artisan Mezze &amp; Garlic Naan</span><strong>950</strong></div>
-                                </div>
-                                <div class="mm-thermal-divider"></div>
-                                <div style="text-align:right" id="kot-print-totals">
-                                    Subtotal: ৳ 4,600<br>
-                                    5% Service Charge: ৳ 230<br>
-                                    15% Govt. VAT: ৳ 725
-                                </div>
-                                <div class="mm-thermal-double" style="display:flex;justify-content:space-between">
-                                    <span>GRAND TOTAL (BDT)</span>
-                                    <span id="check-print-grand">৳ 5,555</span>
-                                </div>
-                                <div style="font-size:11px;text-align:center;margin-bottom:6px" id="check-print-split">
-                                    Split Mode: Full Single Bill (1 Way · ৳ 5,555)
-                                </div>
-                                <div class="mm-thermal-sign-box">
-                                    <strong>ROOM FOLIO CHARGE AUTHORIZATION</strong><br>
-                                    Suite / Room: <strong>#204 (Brig. Gen. Mahmud)</strong><br>
-                                    Guest Signature: _______________________
-                                </div>
-                                <div style="text-align:center;margin-top:8px;font-size:10.5px;color:#475569">
-                                    [QR VERIFIED: MMH-2026-CHK892]<br>
-                                    Thank You for Dining at M&amp;M Heritage!
-                                </div>
-                            </div>
-                        </div>
+                    <div class="modal-body" id="upos-modal-receipt-mirror">
+                        <p class="tw-text-xs tw-text-muted tw-mb-2">Live mirror of the Dual-Slip 80mm Thermal KOT &amp; Guest Check Receipt Studio:</p>
+                        <div id="upos-modal-studio-slot"></div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="mm-button mm-button-secondary" data-dismiss="modal">Close</button>
-                        <a href="/preview/pos-kot-print" class="mm-button mm-button-secondary"><i class="fa fa-external-link"></i> Open Full-Page 80mm View</a>
+                        <a href="/preview/pos-kot-print" class="mm-button mm-button-secondary"><i class="fa fa-external-link"></i> Open Full-Page 80mm Studio</a>
                         <button type="button" class="mm-button" onclick="window.print()"><i class="fa fa-print"></i> Print 80mm Thermal Ticket</button>
                     </div>
                 </div></div>
@@ -1468,12 +1613,21 @@ function buildPlanBPages(shellWith) {
         </div></section>
         <script>(function(){
             function fmt(n){return Math.round(n).toLocaleString("en-US");}
-            var tbody=document.getElementById("upos-ticket-tbody"),splitSel=document.getElementById("upos-split-select"),outSel=document.getElementById("upos-outlet-select"),tblSel=document.getElementById("upos-table-select"),discInp=document.getElementById("upos-disc-pct");
+            var tbody=document.getElementById("upos-ticket-tbody"),splitSel=document.getElementById("upos-split-select"),outSel=document.getElementById("upos-outlet-select"),tblSel=document.getElementById("upos-table-select"),discInp=document.getElementById("upos-disc-pct"),paceSel=document.getElementById("upos-course-pace"),paySel=document.getElementById("upos-pay-method");
+            var studioEl=document.getElementById("upos-thermal-studio"),modalSlot=document.getElementById("upos-modal-studio-slot");
+            function syncModalMirror(){
+                if(studioEl&&modalSlot){
+                    modalSlot.innerHTML=studioEl.outerHTML;
+                }
+            }
             function recalc(){
                 var rows=tbody.querySelectorAll(".upos-row"),sub=0,kotLines=[],chkLines=[];
                 for(var i=0;i<rows.length;i++){
                     var u=Number(rows[i].getAttribute("data-unit")||rows[i].getAttribute("data-amt")||0);
                     var q=Number(rows[i].getAttribute("data-qty")||1);
+                    var sku=rows[i].getAttribute("data-sku")||("FD-10"+(i+1));
+                    var stn=rows[i].getAttribute("data-stn")||"HOT-1 · 12m";
+                    var mod=rows[i].getAttribute("data-mod")||"Chef Standard Prep · Serve Hot";
                     var line=u*q;
                     rows[i].setAttribute("data-amt",String(line));
                     var qEl=rows[i].querySelector(".upos-qty-val"),lEl=rows[i].querySelector(".upos-line-cell"),nmEl=rows[i].querySelector("strong"),bdgEl0=rows[i].querySelector(".mm-badge");
@@ -1481,19 +1635,23 @@ function buildPlanBPages(shellWith) {
                     if(lEl)lEl.textContent=fmt(line);
                     sub+=line;
                     if(nmEl){
-                        var tag=(bdgEl0?bdgEl0.textContent:"MAIN").toUpperCase();
-                        kotLines.push("<div><strong>"+q+"x "+nmEl.textContent+'</strong> <span style="float:right">['+tag+"]</span></div>");
-                        chkLines.push('<div style="display:flex;justify-content:space-between"><span>'+q+"x "+nmEl.textContent+"</span><strong>"+fmt(line)+"</strong></div>");
+                        var courseName=(bdgEl0?bdgEl0.textContent:"Main");
+                        var tag=courseName.toUpperCase();
+                        kotLines.push('<div class="mm-thermal-item-row"><div style="display:flex;justify-content:space-between;align-items:baseline"><strong>'+q+"x ["+tag+"] "+nmEl.textContent+'</strong><span class="mm-thermal-stn-badge">'+stn+'</span></div><div class="mm-thermal-mod">↳ Mod: '+mod+"</div></div>");
+                        chkLines.push('<div class="mm-thermal-item-row"><div style="display:flex;justify-content:space-between"><strong>'+q+"x "+nmEl.textContent+"</strong><strong>"+fmt(line)+'.00</strong></div><div style="font-size:10px;color:#475569">SKU #'+sku+" · "+q+" × @ ৳ "+fmt(u)+".00 ("+courseName+")</div></div>");
                     }
                 }
                 var discPct=Number(discInp&&discInp.value||0);
-                var netSub=Math.round(sub*(1-discPct/100));
+                var discAmt=Math.round(sub*(discPct/100));
+                var netSub=sub-discAmt;
                 var svc=Math.round(netSub*0.05),vat=Math.round((netSub+svc)*0.15),grand=netSub+svc+vat;
                 var ways=Number(splitSel&&splitSel.value||1),perSub=Math.round(netSub/ways),perGrand=Math.round(grand/ways);
                 var kItems=document.getElementById("upos-kpi-items"),kSplit=document.getElementById("upos-kpi-split"),kTot=document.getElementById("upos-kpi-total");
                 if(kItems)kItems.innerHTML=rows.length+' Courses <span class="mm-table-kpi-sub">KOT #892 Ready</span>';
                 if(kSplit)kSplit.innerHTML=(ways===1?"Full Single Bill":"Split "+ways+" Ways")+' <span class="mm-table-kpi-sub">৳ '+fmt(perSub)+" / Guest</span>";
                 if(kTot)kTot.innerHTML="৳ "+fmt(grand)+' <span class="mm-table-kpi-sub">Subtotal: ৳ '+fmt(netSub)+"</span>";
+                var s1Sub=document.getElementById("upos-step-sub-1");
+                if(s1Sub&&outSel)s1Sub.textContent=outSel.value.split(" ")[0]+" · "+rows.length+" Active Courses";
                 var taxLine=document.getElementById("upos-tax-line"),sumEl=document.getElementById("upos-split-summary"),bdgEl=document.getElementById("upos-per-person-badge");
                 if(taxLine)taxLine.textContent="Subtotal: ৳ "+fmt(netSub)+" · Svc (5%): ৳ "+fmt(svc)+" · VAT (15%): ৳ "+fmt(vat);
                 if(sumEl)sumEl.innerHTML="<strong>Net Subtotal: ৳ "+fmt(netSub)+" · Gross w/ Tax: ৳ "+fmt(grand)+"</strong> ("+ways+" Way · ৳ "+fmt(perGrand)+"/guest)";
@@ -1501,16 +1659,28 @@ function buildPlanBPages(shellWith) {
                 var kpLines=document.getElementById("kot-print-lines"),cpLines=document.getElementById("check-print-lines"),kpTot=document.getElementById("kot-print-totals"),cpGrand=document.getElementById("check-print-grand"),cpSplit=document.getElementById("check-print-split");
                 if(kpLines)kpLines.innerHTML=kotLines.join("");
                 if(cpLines)cpLines.innerHTML=chkLines.join("");
-                if(kpTot)kpTot.innerHTML="Subtotal: ৳ "+fmt(netSub)+(discPct>0?" (-"+discPct+"%)":"")+"<br>5% Service Charge: ৳ "+fmt(svc)+"<br>15% Govt. VAT: ৳ "+fmt(vat);
+                if(kpTot)kpTot.innerHTML='<div style="display:flex;justify-content:space-between"><span>Gross F&amp;B Subtotal ('+rows.length+' Items):</span><strong>৳ '+fmt(sub)+'.00</strong></div><div style="display:flex;justify-content:space-between"><span>Promo / Happy Hour Discount ('+discPct+'%):</span><span>- ৳ '+fmt(discAmt)+'.00</span></div><div style="display:flex;justify-content:space-between"><span>Net Taxable F&amp;B Amount:</span><strong>৳ '+fmt(netSub)+'.00</strong></div><div style="display:flex;justify-content:space-between"><span>Hospitality Service Charge (5.0%):</span><span>+ ৳ '+fmt(svc)+'.00</span></div><div style="display:flex;justify-content:space-between"><span>NBR Govt. VAT (15.0% Mushak 6.3):</span><span>+ ৳ '+fmt(vat)+'.00</span></div>';
                 if(cpGrand)cpGrand.textContent="৳ "+fmt(grand);
-                if(cpSplit)cpSplit.textContent="Split Mode: "+(ways===1?"Full Single Bill (1 Way · ৳ "+fmt(grand)+")":"Split "+ways+" Ways (৳ "+fmt(perGrand)+" / guest)");
+                if(cpSplit){
+                    if(ways===1){
+                        cpSplit.innerHTML="Split Mode: Full Single Bill (1 Way · ৳ "+fmt(grand)+")";
+                    }else{
+                        var seatRows=[];
+                        for(var s=1;s<=ways;s++)seatRows.push("Guest #"+s+": ৳ "+fmt(perGrand));
+                        cpSplit.innerHTML="Split "+ways+" Ways ("+seatRows.join(" · ")+")";
+                    }
+                }
+                syncModalMirror();
             }
-            function appendRow(course,nm,pr){
+            function appendRow(course,nm,pr,sku,stn,mod){
                 var tr=document.createElement("tr");
                 tr.className="upos-row";
                 tr.setAttribute("data-unit",String(pr));
                 tr.setAttribute("data-qty","1");
                 tr.setAttribute("data-amt",String(pr));
+                tr.setAttribute("data-sku",sku||"FD-209");
+                tr.setAttribute("data-stn",stn||"HOT-1 · 12m");
+                tr.setAttribute("data-mod",mod||"Chef Signature Prep · Serve Hot");
                 tr.innerHTML='<td><span class="mm-badge mm-badge-paid">'+(course||"Main")+"</span> <strong>"+nm+'</strong></td><td class="text-center"><button type="button" class="btn btn-xs btn-default upos-qty-dec">-</button> <span class="upos-qty-val">1</span> <button type="button" class="btn btn-xs btn-default upos-qty-inc">+</button></td><td class="text-right upos-line-cell">'+fmt(pr)+'</td><td class="text-center"><button type="button" class="btn btn-xs btn-danger upos-row-del">&times;</button></td>';
                 tbody.appendChild(tr);
                 recalc();
@@ -1518,7 +1688,7 @@ function buildPlanBPages(shellWith) {
             var mBtns=document.querySelectorAll(".upos-menu-btn");
             for(var j=0;j<mBtns.length;j++){
                 mBtns[j].addEventListener("click",function(){
-                    appendRow(this.getAttribute("data-course"),this.getAttribute("data-name"),Number(this.getAttribute("data-price")||0));
+                    appendRow(this.getAttribute("data-course"),this.getAttribute("data-name"),Number(this.getAttribute("data-price")||0),this.getAttribute("data-sku"),this.getAttribute("data-stn"),this.getAttribute("data-mod"));
                 });
             }
             tbody.addEventListener("click",function(e){
@@ -1542,7 +1712,7 @@ function buildPlanBPages(shellWith) {
             if(mrgBtn&&mrgSel){
                 mrgBtn.addEventListener("click",function(){
                     var pts=(mrgSel.value||"").split("|");
-                    appendRow("Merged",pts[0]||"Merged Table Order",Number(pts[1]||1250));
+                    appendRow("Merged",pts[0]||"Merged Table Order",Number(pts[1]||1250),"MRG-501","BAR/HOT · 06m","Transferred & Merged Table Ticket");
                 });
             }
             var catPills=document.querySelectorAll("[data-upos-cat]"),qInp=document.getElementById("upos-menu-search"),activeCat="all";
@@ -1568,17 +1738,55 @@ function buildPlanBPages(shellWith) {
             function syncOutletHeader(){
                 var kOut=document.getElementById("upos-kpi-outlet"),tVal=tblSel?tblSel.value:"Table #T-04 · Suite #204";
                 if(kOut&&outSel)kOut.innerHTML=outSel.value+' <span class="mm-table-kpi-sub">'+tVal+"</span>";
-                var kpOut=document.getElementById("kot-print-outlet"),kpTbl=document.getElementById("kot-print-table");
+                var kpOut=document.getElementById("kot-print-outlet"),kpTbl=document.getElementById("kot-print-table"),cpTbl=document.getElementById("check-print-table"),kpPace=document.getElementById("kot-print-pacing"),cpTend=document.getElementById("check-print-tender");
                 if(kpOut&&outSel)kpOut.textContent=outSel.value;
                 if(kpTbl)kpTbl.textContent=tVal;
+                if(cpTbl)cpTbl.textContent=tVal;
+                if(kpPace&&paceSel)kpPace.textContent="▶ PACING: "+paceSel.value;
+                if(cpTend&&paySel)cpTend.textContent=paySel.value;
+                syncModalMirror();
             }
             if(outSel)outSel.addEventListener("change",syncOutletHeader);
             if(tblSel)tblSel.addEventListener("change",syncOutletHeader);
+            if(paceSel)paceSel.addEventListener("change",syncOutletHeader);
+            if(paySel)paySel.addEventListener("change",syncOutletHeader);
+            var stepItems=document.querySelectorAll("[data-pos-step]");
+            function setActivePosStep(stepNum){
+                for(var s=0;s<stepItems.length;s++){
+                    var el=stepItems[s],n=Number(el.getAttribute("data-pos-step"));
+                    var idxEl=document.getElementById("upos-step-idx-"+n),pillEl=document.getElementById("upos-step-pill-"+n);
+                    el.classList.remove("is-done","is-current");
+                    el.removeAttribute("aria-current");
+                    if(n<stepNum){
+                        el.classList.add("is-done");
+                        if(idxEl)idxEl.innerHTML="&#10003;";
+                        if(pillEl)pillEl.textContent="Completed";
+                    }else if(n===stepNum){
+                        el.classList.add("is-current");
+                        el.setAttribute("aria-current","step");
+                        if(idxEl)idxEl.textContent=String(n);
+                        if(pillEl)pillEl.textContent="Active Step";
+                    }else{
+                        if(idxEl)idxEl.textContent=String(n);
+                        if(pillEl)pillEl.textContent="Ready";
+                    }
+                }
+            }
+            for(var si=0;si<stepItems.length;si++){
+                stepItems[si].addEventListener("click",function(){
+                    var n=Number(this.getAttribute("data-pos-step")||2);
+                    setActivePosStep(n);
+                    var targetId=n===1?"upos-panel-step1":(n===2?"upos-live-receipt-panel":"upos-panel-step3");
+                    var targetEl=document.getElementById(targetId);
+                    if(targetEl&&targetEl.scrollIntoView)targetEl.scrollIntoView({behavior:"smooth",block:"nearest"});
+                });
+            }
             var fireBtn=document.getElementById("upos-btn-fire-kds"),settleBtn=document.getElementById("upos-btn-settle-inline"),ban=document.getElementById("upos-banner"),banMsg=document.getElementById("upos-banner-msg");
             function fireAndPost(){
+                setActivePosStep(3);
                 if(ban&&banMsg){
-                    var payM=document.getElementById("upos-pay-method")?document.getElementById("upos-pay-method").value:"Suite #204 Folio";
-                    var pace=document.getElementById("upos-course-pace")?document.getElementById("upos-course-pace").value:"Fire All Courses";
+                    var payM=paySel?paySel.value:"Suite #204 Folio";
+                    var pace=paceSel?paceSel.value:"Fire All Courses";
                     banMsg.textContent="KOT #892 ("+pace+") fired to Kitchen & Bar KDS and settled via "+payM+"!";
                     ban.style.display="block";
                 }
@@ -1593,27 +1801,38 @@ function buildPlanBPages(shellWith) {
                     var v=this.getAttribute("data-kot-view");
                     if(sKot)sKot.style.display=(v==="both"||v==="kot")?"":"none";
                     if(sChk)sChk.style.display=(v==="both"||v==="check")?"":"none";
+                    syncModalMirror();
                 });
             }
+            var paperBtns=document.querySelectorAll("[data-paper-size]");
+            for(var pb=0;pb<paperBtns.length;pb++){
+                paperBtns[pb].addEventListener("click",function(){
+                    for(var k=0;k<paperBtns.length;k++)paperBtns[k].classList.remove("is-active");
+                    this.classList.add("is-active");
+                    var sz=this.getAttribute("data-paper-size");
+                    if(studioEl)studioEl.classList.toggle("is-58mm",sz==="58mm");
+                    syncModalMirror();
+                });
+            }
+            var repChk=document.getElementById("upos-kot-reprint-chk");
+            if(repChk){
+                repChk.addEventListener("change",function(){
+                    if(studioEl)studioEl.classList.toggle("is-reprint",this.checked);
+                    syncModalMirror();
+                });
+            }
+            syncModalMirror();
         })();</script>`;
         return shellWith(body, '', '', 'Unified Restaurant & Bar POS Engine', ['Restaurant & Bar', 'POS', 'Unified Split-Bill Engine']);
     }
 
     function posKotPrintPage() {
         const body = `<section class="mm-ui"><div class="tw-space-y-4 tw-py-2">
-            <style>
-                .mm-thermal-studio { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:22px; justify-items:center; padding:12px 4px; }
-                .mm-thermal-slip { width:310px; max-width:100%; background:#fffef9; color:#0f172a; border:1px solid #cbd5e1; border-top:6px solid #0f172a; border-bottom:5px dashed #64748b; border-radius:6px; padding:18px 16px; font-family:'Courier New',Courier,monospace; font-size:12px; line-height:1.48; box-shadow:0 12px 28px rgba(15,23,42,0.12); }
-                .mm-thermal-crest { width:40px; height:40px; margin:0 auto 6px; border:2px solid #0f172a; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:11px; letter-spacing:0.5px; }
-                .mm-thermal-band { background:#0f172a; color:#ffffff; text-align:center; font-weight:700; padding:5px 8px; margin:6px 0; border-radius:3px; letter-spacing:0.8px; font-size:11.5px; }
-                .mm-thermal-divider { border-top:1px dashed #64748b; margin:8px 0; }
-                .mm-thermal-double { border-top:3px double #0f172a; border-bottom:3px double #0f172a; padding:6px 0; margin:8px 0; font-weight:700; font-size:13px; }
-                .mm-thermal-sign-box { border:1px dashed #475569; border-radius:4px; padding:8px; margin-top:8px; background:#f8fafc; font-size:11px; }
-            </style>
+            ${renderThermalStyles()}
             <header class="mm-page-head mm-no-print tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
                 <div class="mm-page-title">
                     <h1 class="tw-m-0 tw-font-semibold tw-text-ink"><i class="fa fa-print"></i> 80mm Thermal KOT &amp; Guest Tax Check Print Studio</h1>
-                    <p class="tw-m-0 tw-text-sm tw-text-muted">Dual-slip 80mm thermal paper layout: Slip 1 (Kitchen &amp; Bar Order Ticket) + Slip 2 (Mushak 6.3 Guest Tax Check &amp; Room-Folio Authorization).</p>
+                    <p class="tw-m-0 tw-text-sm tw-text-muted">Dual-slip 80mm thermal paper layout: Slip 1 (Kitchen &amp; Bar Order Ticket w/ Station SLA &amp; Modifiers) + Slip 2 (Mushak 6.3 Guest Tax Check, Room-Folio Authorization &amp; EFD QR).</p>
                 </div>
                 <div class="tw-flex tw-flex-wrap tw-gap-2">
                     <a href="/preview/pos-unified" class="mm-button mm-button-secondary"><i class="fa fa-cutlery"></i> Back to Unified POS</a>
@@ -1622,57 +1841,79 @@ function buildPlanBPages(shellWith) {
                 </div>
             </header>
             <div class="mm-table-kpi-grid mm-no-print" aria-label="80mm thermal print summary">
-                <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-print"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Thermal Paper Spec</span><div class="mm-table-kpi-value">80mm Roll <span class="mm-table-kpi-sub">72mm Printable Width</span></div></div></div>
-                <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-fire"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Slip 1 · Kitchen KOT</span><div class="mm-table-kpi-value">#KOT-2026-892 <span class="mm-table-kpi-sub">Course Pacing + Allergen</span></div></div></div>
+                <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-print"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Thermal Paper Spec</span><div class="mm-table-kpi-value">80mm Roll <span class="mm-table-kpi-sub">72mm Print · 203 DPI</span></div></div></div>
+                <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-fire"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Slip 1 · Kitchen KOT</span><div class="mm-table-kpi-value">#KOT-2026-892 <span class="mm-table-kpi-sub">Course SLA + Allergen</span></div></div></div>
                 <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-file-text-o"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Slip 2 · Guest Check</span><div class="mm-table-kpi-value">৳ 5,555 Gross <span class="mm-table-kpi-sub">Mushak 6.3 + Room Sign</span></div></div></div>
-                <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-qrcode"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Fiscal Verification</span><div class="mm-table-kpi-value">QR Stamped <span class="mm-table-kpi-sub">Suite #204 Linked</span></div></div></div>
+                <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-qrcode"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Fiscal Verification</span><div class="mm-table-kpi-value">EFD QR Stamped <span class="mm-table-kpi-sub">SDC-DHK-009412</span></div></div></div>
             </div>
             <div class="mm-panel tw-p-5">
                 <div class="mm-thermal-studio">
                     <div class="mm-thermal-slip">
-                        <div class="mm-thermal-band">★ KITCHEN ORDER TICKET (KOT) ★</div>
+                        <div class="mm-thermal-hw-tag"><span>EPSON TM-T88VI · 80MM</span><span>KDS CH #01 · AUTO-CUT</span></div>
+                        <div class="mm-thermal-band">★ KITCHEN &amp; BAR ORDER TICKET ★</div>
+                        <div class="mm-thermal-subband">PRIORITY: VIP IN-HOUSE SUITE · DINE-IN</div>
                         <div style="text-align:center;margin-bottom:6px">
                             <strong style="font-size:13px">Heritage Dining Restaurant</strong><br>
-                            <span>KOT #2026-892 · 14 Oct 2026 · 19:45</span>
+                            <span style="font-size:10.5px">KOT #2026-892 · 14 Oct 2026 · 19:45:18</span>
                         </div>
-                        <div style="border:1.5px solid #0f172a;padding:6px;text-align:center;border-radius:4px;margin-bottom:8px;background:#f1f5f9">
-                            <strong style="font-size:13px">Table #T-04 · Suite #204</strong><br>
-                            <span style="font-size:11px">Server: Arifur R. · Covers: 4 PAX · VIP</span>
+                        <div class="mm-thermal-meta-grid">
+                            <div>KOT NO: <strong>#KOT-2026-892</strong></div>
+                            <div>CHK REF: <strong>#CHK-0892</strong></div>
+                            <div>SERVER: <strong>Arifur (#S14)</strong></div>
+                            <div>TERM: <strong>POS-02 (RST)</strong></div>
                         </div>
-                        <div style="font-size:11px;font-weight:700;text-transform:uppercase;margin-bottom:4px">Pacing: Fire Starters &amp; Bar · Hold Mains</div>
+                        <div style="border:2px solid #0f172a;padding:6px;text-align:center;border-radius:4px;margin-bottom:8px;background:#f1f5f9">
+                            <strong style="font-size:13px">Table #T-04 · Suite #204 (Brig. Gen. Mahmud)</strong><br>
+                            <span style="font-size:10.8px;font-weight:700">COVERS: 4 PAX · VIP GOLD · HALAL</span>
+                        </div>
+                        <div style="font-size:11px;font-weight:800;text-transform:uppercase;padding:4px 6px;background:#fef3c7;border:1px solid #d97706;border-radius:3px;margin-bottom:6px">▶ PACING: Fire Starters &amp; Bar · Hold Mains</div>
                         <div class="mm-thermal-divider"></div>
-                        <div style="display:flex;justify-content:space-between;font-weight:700;font-size:11px;margin-bottom:4px"><span>QTY &amp; COURSE / DISH</span><span>STATION</span></div>
+                        <div style="display:flex;justify-content:space-between;font-weight:800;font-size:10.8px;border-bottom:1.5px solid #0f172a;padding-bottom:3px;margin-bottom:4px"><span>QTY · COURSE / DISH &amp; MODIFIERS</span><span>STN · SLA</span></div>
                         <div style="margin-bottom:8px">
-                            <div><strong>1x Kacchi Biryani Platter</strong> <span style="float:right">[MAIN]</span></div>
-                            <div><strong>1x Grilled Norwegian Salmon</strong> <span style="float:right">[GRILL]</span></div>
-                            <div><strong>1x Artisan Mezze &amp; Garlic Naan</strong> <span style="float:right">[START]</span></div>
+                            <div class="mm-thermal-item-row"><div style="display:flex;justify-content:space-between"><strong>1x [MAIN] Kacchi Biryani Platter</strong><span class="mm-thermal-stn-badge">HOT-1 · 15m</span></div><div class="mm-thermal-mod">↳ Mod: Less Ghee, Extra Saffron Aloo, Raita on Side</div></div>
+                            <div class="mm-thermal-item-row"><div style="display:flex;justify-content:space-between"><strong>1x [MAIN] Grilled Norwegian Salmon</strong><span class="mm-thermal-stn-badge">GRILL · 14m</span></div><div class="mm-thermal-mod">↳ Mod: Medium-Well, Lemon Caper Butter, No MSG</div></div>
+                            <div class="mm-thermal-item-row"><div style="display:flex;justify-content:space-between"><strong>1x [START] Artisan Mezze &amp; Garlic Naan</strong><span class="mm-thermal-stn-badge">START · 08m</span></div><div class="mm-thermal-mod">↳ Mod: Warm Garlic Butter Naan, Extra Roasted Hummus</div></div>
                         </div>
                         <div class="mm-thermal-divider"></div>
-                        <div class="mm-thermal-sign-box"><strong>CHEF / ALLERGEN NOTES:</strong><br>• VIP Suite #204 Guest · No MSG<br>• Salmon Medium-Well · Lemon Butter</div>
-                        <div style="text-align:center;margin-top:8px;font-size:10.5px;color:#475569">*** KDS ROUTED: HOT KITCHEN #1 &amp; BAR ***</div>
+                        <div class="mm-thermal-sign-box"><strong>⚠ ALLERGEN &amp; DIETARY PROTOCOL:</strong><br>• VIP Suite #204 Guest · Strictly No MSG<br>• Salmon Medium-Well · Lemon Butter</div>
+                        <div class="mm-thermal-pass-grid">
+                            <div class="mm-thermal-pass-cell"><strong>PREP CHEF</strong><br>A. Karim ✓</div>
+                            <div class="mm-thermal-pass-cell"><strong>EXPEDITER</strong><br>Chef Riaz ✓</div>
+                            <div class="mm-thermal-pass-cell"><strong>RUNNER</strong><br>S. Alam #04</div>
+                        </div>
+                        <div class="mm-thermal-barcode">|| | |||| || ||| | |||| || | ||| |||| | ||<br><span style="letter-spacing:0.5px;font-size:9.8px">KOT-2026-0892 · KDS ACK 19:45:19</span></div>
                     </div>
                     <div class="mm-thermal-slip">
-                        <div class="mm-thermal-crest">M&amp;M</div>
+                        <div class="mm-thermal-hw-tag"><span>MUSHAK-6.3 FISCAL CHECK</span><span>NBR EFD · 80MM ROLL</span></div>
+                        <div class="mm-thermal-crest"><span>M&amp;M</span><span style="font-size:7px">★★★★★</span></div>
                         <div style="text-align:center;margin-bottom:6px">
                             <strong style="font-size:13px">M&amp;M HERITAGE HOTEL &amp; SUITES</strong><br>
-                            <span style="font-size:10.5px">House 14, Road 45, Gulshan-2, Dhaka-1212</span><br>
-                            <span style="font-size:10.5px">BIN: 004192837-0101 · Mushak 6.3 Tax Check</span>
+                            <span style="font-size:10.2px">House 14, Road 45, Gulshan-2, Dhaka-1212</span><br>
+                            <strong style="font-size:10.5px">BIN: 004192837-0101 · Mushak 6.3 Tax Check</strong>
                         </div>
                         <div class="mm-thermal-band">GUEST TAX CHECK &amp; FOLIO SLIP</div>
-                        <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px"><span>Check: <strong>#CHK-892</strong></span><span>Date: <strong>14 Oct 2026</strong></span></div>
-                        <div style="font-size:11px;margin-bottom:6px">Table #T-04 · Suite #204 (Brig. Gen. Mahmud)</div>
-                        <div class="mm-thermal-divider"></div>
-                        <div style="display:flex;justify-content:space-between;font-weight:700;font-size:11px;margin-bottom:4px"><span>QTY &amp; ITEM DESCRIPTION</span><span>AMT (৳)</span></div>
+                        <div class="mm-thermal-meta-grid">
+                            <div>INV NO: <strong>#INV-2026-892</strong></div>
+                            <div>KOT REF: <strong>#KOT-2026-892</strong></div>
+                            <div>DATE: <strong>14 OCT 2026</strong></div>
+                            <div>CASHIER: <strong>Farhana A.</strong></div>
+                        </div>
+                        <div style="font-size:11px;font-weight:700;padding:4px 7px;background:#f1f5f9;border:1px solid #94a3b8;border-radius:4px;margin-bottom:6px">Table #T-04 · Suite #204 (Brig. Gen. Mahmud)</div>
+                        <div style="display:flex;justify-content:space-between;font-weight:800;font-size:10.8px;border-bottom:1.5px solid #0f172a;padding-bottom:3px;margin-bottom:4px"><span>QTY · ITEM DESCRIPTION &amp; SKU</span><span>LINE (৳)</span></div>
                         <div style="margin-bottom:8px">
-                            <div style="display:flex;justify-content:space-between"><span>1x Kacchi Biryani Royal Platter</span><strong>1,450</strong></div>
-                            <div style="display:flex;justify-content:space-between"><span>1x Grilled Norwegian Salmon</span><strong>2,200</strong></div>
-                            <div style="display:flex;justify-content:space-between"><span>1x Artisan Mezze &amp; Garlic Naan</span><strong>950</strong></div>
+                            <div class="mm-thermal-item-row"><div style="display:flex;justify-content:space-between"><strong>1x Kacchi Biryani Royal Platter</strong><strong>1,450.00</strong></div><div style="font-size:10px;color:#475569">SKU #MN-101 · 1 × @ ৳ 1,450.00 (Main)</div></div>
+                            <div class="mm-thermal-item-row"><div style="display:flex;justify-content:space-between"><strong>1x Grilled Norwegian Salmon</strong><strong>2,200.00</strong></div><div style="font-size:10px;color:#475569">SKU #GR-204 · 1 × @ ৳ 2,200.00 (Main)</div></div>
+                            <div class="mm-thermal-item-row"><div style="display:flex;justify-content:space-between"><strong>1x Artisan Mezze &amp; Garlic Naan</strong><strong>950.00</strong></div><div style="font-size:10px;color:#475569">SKU #ST-019 · 1 × @ ৳ 950.00 (Starter)</div></div>
                         </div>
                         <div class="mm-thermal-divider"></div>
-                        <div style="text-align:right">Subtotal: ৳ 4,600<br>5% Service Charge: ৳ 230<br>15% Govt. VAT: ৳ 725</div>
+                        <div style="font-size:11.2px;line-height:1.5">
+                            <div style="display:flex;justify-content:space-between"><span>Gross F&amp;B Subtotal:</span><strong>৳ 4,600.00</strong></div>
+                            <div style="display:flex;justify-content:space-between"><span>Hospitality Service Charge (5%):</span><span>+ ৳ 230.00</span></div>
+                            <div style="display:flex;justify-content:space-between"><span>NBR Govt. VAT (15% Mushak 6.3):</span><span>+ ৳ 725.00</span></div>
+                        </div>
                         <div class="mm-thermal-double" style="display:flex;justify-content:space-between"><span>GRAND TOTAL (BDT)</span><span>৳ 5,555</span></div>
-                        <div class="mm-thermal-sign-box"><strong>ROOM FOLIO CHARGE AUTHORIZATION</strong><br>Suite / Room: <strong>#204 (Brig. Gen. Mahmud)</strong><br>Guest Signature: _______________________</div>
-                        <div style="text-align:center;margin-top:8px;font-size:10.5px;color:#475569">[QR VERIFIED: MMH-2026-CHK892]<br>Thank You for Dining at M&amp;M Heritage!</div>
+                        <div class="mm-thermal-sign-box"><strong>ROOM FOLIO CHARGE AUTHORIZATION</strong><br>Suite / Room: <strong>#204 (Brig. Gen. Mahmud)</strong><br>Extra Gratuity / Tip: ৳ _____________________<br>Guest Signature: ___________________________</div>
+                        <div style="text-align:center;margin-top:8px;font-size:10.5px;color:#475569">[QR VERIFIED: MMH-2026-CHK892 · SDC-DHK-009412]<br>Thank You for Dining at M&amp;M Heritage!</div>
                     </div>
                 </div>
             </div>
