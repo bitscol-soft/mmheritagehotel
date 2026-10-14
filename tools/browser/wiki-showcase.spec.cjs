@@ -423,7 +423,7 @@ test('Wave 2 High-Traffic Operational Screens (Checkout, Night Audit, POS, Vouch
     // 1. Express Checkout Folio & Split Bill (/preview/checkout)
     await page.goto(`http://127.0.0.1:${PORT}/preview/checkout`);
     await expect(page.locator('#co-kpi-due')).toContainText('6,240');
-    await page.locator('#co-split-pills [data-split-mode="corporate"]').click();
+    await page.locator('#co-split-pills [data-split-due="5000"]').click();
     await expect(page.locator('#co-kpi-due')).toContainText('5,000');
     await page.locator('#check-full-payment').click();
     await page.locator('#co-submit-btn').click();
