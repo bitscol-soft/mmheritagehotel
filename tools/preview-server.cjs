@@ -1783,7 +1783,7 @@ function menuLinks(page,currentPath){
       '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-eye"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Supervisor Inspecting</span><div class="mm-table-kpi-value"><span id="mm-hk-cnt-insp">2</span> Suites <span class="mm-table-kpi-sub">Final Checklist</span></div></div></div>'+
       '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-wrench"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Engineering / OOO</span><div class="mm-table-kpi-value"><span id="mm-hk-cnt-ooo">1</span> Suite <span class="mm-table-kpi-sub">HVAC Preventive</span></div></div></div>'+
      '</div>'+
-     '<div class="mm-panel tw-p-4">'+
+     '<div class="mm-drawer-card tw-p-4">'+
       '<div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px">'+
        '<div style="display:flex;flex-wrap:wrap;gap:6px" id="mm-hk-floor-pills">'+
         '<button type="button" class="mm-role-pill is-active" data-hk-floor="all">All 20 Suites</button>'+
@@ -1811,7 +1811,7 @@ function menuLinks(page,currentPath){
       '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-balance-scale"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Auto-GL Trial Balance</span><div class="mm-table-kpi-value">৳ 248,650 <span class="mm-table-kpi-sub">Dr = Cr (100% Balanced)</span></div></div></div>'+
      '</div>'+
      '<div id="mm-audit-roll-banner" class="alert alert-success" style="display:none;margin:0;border-radius:10px;font-size:12.5px"><i class="fa fa-check-circle"></i> <strong>All 8 Pre-Close Checks Verified!</strong> Auto-GL Voucher <code>#JV-2026-1014</code> (Dr ৳ 248,650 = Cr ৳ 248,650) staged and Business Date ready to roll to <strong>15 Oct 2026</strong>.</div>'+
-     '<div class="mm-panel tw-p-4">'+
+     '<div class="mm-drawer-card tw-p-4">'+
       '<div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px">'+
        '<strong><i class="fa fa-list-ul"></i> 1. Interactive 8-Point End-of-Day Pre-Close Checklist (14 Oct 2026)</strong>'+
        '<div style="display:flex;gap:6px"><button type="button" id="mm-audit-verify-all" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11.5px"><i class="fa fa-check-square-o"></i> Verify All 8 Pre-Checks</button><button type="button" id="mm-audit-roll-btn" class="mm-button" style="min-height:28px;padding:2px 10px;font-size:11.5px"><i class="fa fa-lock"></i> Simulate Day-Close &amp; GL Post</button></div>'+
@@ -1827,9 +1827,9 @@ function menuLinks(page,currentPath){
        '<label class="mm-shift-note-card" style="display:flex;align-items:center;gap:8px;margin:0;cursor:pointer"><input type="checkbox" class="mm-audit-chk"> <span>8. Suite #305 Window B City Ledger Sign-Off (৳ 48,450)</span></label>'+
       '</div>'+
      '</div>'+
-     '<div class="mm-panel tw-p-4">'+
+     '<div class="mm-drawer-card tw-p-4">'+
       '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px"><strong><i class="fa fa-calculator"></i> 2. Auto-Generated General Ledger Journal Preview (Voucher #JV-2026-1014)</strong><a href="/preview/acc-journals" class="mm-button mm-button-secondary" style="min-height:26px;padding:1px 9px;font-size:11px">Open Journal Register →</a></div>'+
-      '<div class="mm-table-scroll"><table class="mm-data-table table table-bordered table-striped"><thead><tr><th>GL Code</th><th>Account Head</th><th>Cost Center</th><th class="text-right">Debit (৳)</th><th class="text-right">Credit (৳)</th></tr></thead><tbody>'+
+      '<div class="mm-table-scroll"><table class="table table-bordered table-striped"><thead><tr><th>GL Code</th><th>Account Head</th><th>Cost Center</th><th class="text-right">Debit (৳)</th><th class="text-right">Credit (৳)</th></tr></thead><tbody>'+
        '<tr><td><code>1010-01</code></td><td><strong>Cash, POS Terminal &amp; bKash Clearing</strong></td><td>Treasury &amp; Front Desk</td><td class="text-right"><strong>214,200.00</strong></td><td class="text-right">0.00</td></tr>'+
        '<tr><td><code>1040-02</code></td><td><strong>Corporate City Ledger AR Control</strong></td><td>Accounts Receivable</td><td class="text-right"><strong>34,450.00</strong></td><td class="text-right">0.00</td></tr>'+
        '<tr><td><code>4010-01</code></td><td><strong>Room Division Suite Tariff Revenue</strong></td><td>Front Desk (18 Suites)</td><td class="text-right">0.00</td><td class="text-right"><strong>111,750.00</strong></td></tr>'+
@@ -1852,7 +1852,7 @@ function menuLinks(page,currentPath){
       '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-columns"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Open Folio Balance</span><div class="mm-table-kpi-value">৳ 184,900 <span class="mm-table-kpi-sub">Window A + City Ledger</span></div></div></div>'+
       '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-key"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Encoded Keycards</span><div class="mm-table-kpi-value">34 Active <span class="mm-table-kpi-sub">Mifare RFID</span></div></div></div>'+
      '</div>'+
-     '<div class="mm-panel tw-p-4" id="mm-guest-lookup-detail">'+
+     '<div class="mm-drawer-card tw-p-4" id="mm-guest-lookup-detail">'+
       '<div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px">'+
        '<div><span class="mm-badge mm-badge-paid" id="glk-det-suite">Suite #204 · Deluxe Double</span> <strong id="glk-det-name" style="font-size:14px;margin-left:6px">Tanvir Ahmed Chowdhury</strong> <span class="mm-badge mm-badge-partial" id="glk-det-tier" style="margin-left:4px">Platinum VIP · UNICEF BD</span></div>'+
        '<span style="font-size:11.5px;font-weight:700" id="glk-det-bk">#BK-2026-104 · 12 Oct → 15 Oct (3 Nights · 2 RFID Keys)</span>'+
@@ -1870,7 +1870,7 @@ function menuLinks(page,currentPath){
        '<a href="/preview/invoice" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11.5px"><i class="fa fa-print"></i> Print Tax Invoice →</a>'+
       '</div>'+
      '</div>'+
-     '<div class="mm-panel tw-p-4">'+
+     '<div class="mm-drawer-card tw-p-4">'+
       '<div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px">'+
        '<div class="input-group" style="max-width:340px;flex:1 1 240px"><span class="input-group-addon"><i class="fa fa-search"></i></span><input type="search" id="mm-guest-lookup-search" class="form-control" placeholder="Search Suite #, Guest, Corporate, Phone or #BK..."></div>'+
        '<div style="display:flex;flex-wrap:wrap;gap:5px" id="mm-glookup-pills">'+
@@ -1880,7 +1880,7 @@ function menuLinks(page,currentPath){
         '<button type="button" class="mm-role-pill" data-glookup-filter="arrival">Today Arrival (2)</button>'+
        '</div>'+
       '</div>'+
-      '<div class="mm-table-scroll"><table class="mm-data-table table table-bordered table-striped"><thead><tr><th>Suite</th><th>Guest &amp; Corporate Entity</th><th>Booking &amp; Stay</th><th class="text-right">Folio Balance</th><th class="text-center">Inspect</th></tr></thead><tbody id="mm-glookup-tbody">'+
+      '<div class="mm-table-scroll"><table class="table table-bordered table-striped"><thead><tr><th>Suite</th><th>Guest &amp; Corporate Entity</th><th>Booking &amp; Stay</th><th class="text-right">Folio Balance</th><th class="text-center">Inspect</th></tr></thead><tbody id="mm-glookup-tbody">'+
        '<tr data-glk-tags="all vip due" data-glk-search="204 tanvir ahmed chowdhury unicef bk-2026-104 01711" data-glk-suite="Suite #204 · Deluxe Double" data-glk-name="Tanvir Ahmed Chowdhury" data-glk-tier="Platinum VIP · UNICEF BD" data-glk-bk="#BK-2026-104 · 12 Oct → 15 Oct (3 Nights · 2 RFID Keys)" data-glk-wina="৳ 4,100 · Settled (POS/Minibar)" data-glk-winb="৳ 12,600 · UNICEF City Ledger" data-glk-due="৳ 2,600 Due on Checkout"><td><code>#204</code></td><td><strong>Tanvir Ahmed Chowdhury</strong><div class="tw-text-xs tw-text-muted">UNICEF Bangladesh · +880 1711-204204</div></td><td><code>#BK-2026-104</code> · 3N</td><td class="text-right"><strong>৳ 2,600 Due</strong></td><td class="text-center"><button type="button" class="mm-button mm-button-secondary glk-inspect-btn" style="min-height:26px;padding:1px 8px;font-size:11px">Inspect Folio</button></td></tr>'+
        '<tr data-glk-tags="all vip arrival" data-glk-search="301 mahmudul hasan brig gen diplomatic bk-2026-101 01713" data-glk-suite="Suite #301 · Diplomatic Suite" data-glk-name="Brig. Gen. Mahmudul Hasan" data-glk-tier="State VIP · Cantonment HQ" data-glk-bk="#BK-2026-101 · 14 Oct → 17 Oct (3 Nights · 2 RFID Keys)" data-glk-wina="৳ 3,200 · Airport Limo &amp; Dining" data-glk-winb="৳ 26,700 · Direct Bill Approved" data-glk-due="৳ 0 (Pre-Authorized)"><td><code>#301</code></td><td><strong>Brig. Gen. Mahmudul Hasan</strong><div class="tw-text-xs tw-text-muted">Diplomatic Protocol · +880 1713-301301</div></td><td><code>#BK-2026-101</code> · 3N</td><td class="text-right"><span class="mm-badge mm-badge-paid">Pre-Auth</span></td><td class="text-center"><button type="button" class="mm-button mm-button-secondary glk-inspect-btn" style="min-height:26px;padding:1px 8px;font-size:11px">Inspect Folio</button></td></tr>'+
        '<tr data-glk-tags="all vip due" data-glk-search="305 world bank delegation farhana rahman bk-2026-105 01715" data-glk-suite="Suite #305 · Presidential Suite" data-glk-name="Dr. Farhana Rahman (World Bank)" data-glk-tier="Diplomatic VIP · World Bank" data-glk-bk="#BK-2026-105 · 11 Oct → 14 Oct (3 Nights · Late Checkout)" data-glk-wina="৳ 6,450 · Settled via Visa POS" data-glk-winb="৳ 48,450 · World Bank City Ledger" data-glk-due="৳ 48,450 Window B Sign-Off"><td><code>#305</code></td><td><strong>Dr. Farhana Rahman</strong><div class="tw-text-xs tw-text-muted">World Bank Dhaka Mission · +880 1715-305305</div></td><td><code>#BK-2026-105</code> · 3N</td><td class="text-right"><strong>৳ 48,450 Due</strong></td><td class="text-center"><button type="button" class="mm-button mm-button-secondary glk-inspect-btn" style="min-height:26px;padding:1px 8px;font-size:11px">Inspect Folio</button></td></tr>'+
@@ -1903,7 +1903,7 @@ function menuLinks(page,currentPath){
       '<button type="button" class="mm-role-pill" data-express-tab="voucher"><i class="fa fa-calculator"></i> 3. Instant GL / Petty Cash Voucher</button>'+
      '</div>'+
      '<div id="mm-express-confirm-banner" class="alert alert-success" style="display:none;margin:0;border-radius:10px;font-size:12.5px"></div>'+
-     '<div class="mm-panel tw-p-4" data-express-pane="walkin">'+
+     '<div class="mm-drawer-card tw-p-4" data-express-pane="walkin">'+
       '<form id="mm-express-walkin-form" onsubmit="return false;" class="tw-space-y-3">'+
        '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">'+
         '<div><label class="mm-label">Available Suite</label><select id="exp-walkin-room" class="form-control"><option value="Suite #104 (Deluxe Double · ৳ 4,200)">Suite #104 — Deluxe Double (৳ 4,200/night)</option><option value="Suite #202 (Heritage Suite · ৳ 6,800)">Suite #202 — Heritage Suite (৳ 6,800/night)</option><option value="Suite #304 (Diplomatic Suite · ৳ 8,900)">Suite #304 — Diplomatic Suite (৳ 8,900/night)</option></select></div>'+
@@ -1916,7 +1916,7 @@ function menuLinks(page,currentPath){
        '</div>'+
       '</form>'+
      '</div>'+
-     '<div class="mm-panel tw-p-4" data-express-pane="pos" style="display:none">'+
+     '<div class="mm-drawer-card tw-p-4" data-express-pane="pos" style="display:none">'+
       '<form id="mm-express-pos-form" onsubmit="return false;" class="tw-space-y-3">'+
        '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">'+
         '<div><label class="mm-label">F&amp;B Outlet</label><select id="exp-pos-outlet" class="form-control"><option value="Heritage Dining Restaurant">Heritage Dining Restaurant</option><option value="Skyline Lounge Bar">Skyline Lounge Bar</option><option value="In-Room Dining (Room Charge)">In-Room Dining (Room Charge)</option></select></div>'+
@@ -1929,7 +1929,7 @@ function menuLinks(page,currentPath){
        '</div>'+
       '</form>'+
      '</div>'+
-     '<div class="mm-panel tw-p-4" data-express-pane="voucher" style="display:none">'+
+     '<div class="mm-drawer-card tw-p-4" data-express-pane="voucher" style="display:none">'+
       '<form id="mm-express-vch-form" onsubmit="return false;" class="tw-space-y-3">'+
        '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">'+
         '<div><label class="mm-label">Voucher Type</label><select id="exp-vch-type" class="form-control"><option value="Receive Voucher (Guest Advance)">Receive Voucher (Guest Advance)</option><option value="Payment Voucher (Petty Cash)">Payment Voucher (Petty Cash)</option><option value="Contra Voucher (Cash to Bank)">Contra Voucher (Cash to Bank)</option></select></div>'+
@@ -1942,7 +1942,7 @@ function menuLinks(page,currentPath){
        '</div>'+
       '</form>'+
      '</div>'+
-     '<div class="mm-panel tw-p-4">'+
+     '<div class="mm-drawer-card tw-p-4">'+
       '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px"><strong><i class="fa fa-history"></i> Recent Express Transactions (<span id="mm-express-log-count">3</span>)</strong><span class="mm-badge mm-badge-paid">Session Synced</span></div>'+
       '<div id="mm-express-log-list" style="display:flex;flex-direction:column;gap:6px"></div>'+
      '</div>'+
@@ -1960,9 +1960,9 @@ function menuLinks(page,currentPath){
       '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-credit-card"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Realized Collections</span><div class="mm-table-kpi-value">৳ 214,200 <span class="mm-table-kpi-sub">Cash/POS/bKash/AR</span></div></div></div>'+
       '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-users"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Active Shift Roster</span><div class="mm-table-kpi-value">14 On Duty <span class="mm-table-kpi-sub">14:00–22:00 Shift</span></div></div></div>'+
      '</div>'+
-     '<div class="mm-panel tw-p-4">'+
+     '<div class="mm-drawer-card tw-p-4">'+
       '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px"><strong><i class="fa fa-pie-chart"></i> Outlet Revenue vs Target &amp; On-Duty Department Leads</strong><a href="/preview/daily-flash-report" class="mm-button" style="min-height:28px;padding:2px 10px;font-size:11.5px"><i class="fa fa-print"></i> Open Full Printable A4 Flash Report →</a></div>'+
-      '<div class="mm-table-scroll"><table class="mm-data-table table table-bordered table-striped"><thead><tr><th>Department / Outlet</th><th>Lead On Duty</th><th>Target</th><th class="text-right">Actual Today</th><th>Achievement</th></tr></thead><tbody>'+
+      '<div class="mm-table-scroll"><table class="table table-bordered table-striped"><thead><tr><th>Department / Outlet</th><th>Lead On Duty</th><th>Target</th><th class="text-right">Actual Today</th><th>Achievement</th></tr></thead><tbody>'+
        '<tr><td><strong>Room Division (18/20 Suites)</strong></td><td>Nusrat Jahan (Front Desk)</td><td>৳ 125,000</td><td class="text-right"><strong>৳ 134,100</strong></td><td><span class="mm-badge mm-badge-paid">107.3%</span></td></tr>'+
        '<tr><td><strong>Heritage Dining Restaurant</strong></td><td>Chef Kamrul Hasan (Kitchen)</td><td>৳ 45,000</td><td class="text-right"><strong>৳ 46,850</strong></td><td><span class="mm-badge mm-badge-paid">104.1%</span></td></tr>'+
        '<tr><td><strong>Skyline Lounge Bar &amp; Minibar</strong></td><td>Rafiqul Alam (F&amp;B Captain)</td><td>৳ 22,000</td><td class="text-right"><strong>৳ 21,700</strong></td><td><span class="mm-badge mm-badge-paid">98.6%</span></td></tr>'+
@@ -1983,7 +1983,7 @@ function menuLinks(page,currentPath){
       '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-cutlery"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Kitchen &amp; POS SLA</span><div class="mm-table-kpi-value">3 KOT &gt; 12m <span class="mm-table-kpi-sub">6 Open POS Tables</span></div></div></div>'+
       '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-exchange"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Shift Handover Log</span><div class="mm-table-kpi-value"><span id="mm-shift-notes-count">3</span> Active <span class="mm-table-kpi-sub">14 Oct 2026</span></div></div></div>'+
      '</div>'+
-     '<div class="mm-panel tw-p-4">'+
+     '<div class="mm-drawer-card tw-p-4">'+
       '<div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px">'+
        '<div style="display:flex;flex-wrap:wrap;gap:6px" id="mm-notif-filter-group">'+
         '<button type="button" class="mm-role-pill is-active" data-notif-filter="all">All Alerts (8)</button>'+
@@ -2004,7 +2004,7 @@ function menuLinks(page,currentPath){
        '<div class="mm-notif-item" data-notif-cat="finance"><div><div style="font-weight:700;font-size:12.5px"><span class="mm-badge mm-badge-paid" style="margin-right:6px">Night Audit</span>Business Date 14 Oct 2026 — 6 of 8 Day-Close Pre-Checks Ready</div><div style="font-size:11.5px;opacity:.8;margin-top:2px">Verify 2 open Restaurant POS tabs and Room 305 City Ledger transfer prior to 23:59 day lock</div></div><a href="/preview/night-audit-hardening" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11px;white-space:nowrap">Night Audit →</a></div>'+
       '</div>'+
      '</div>'+
-     '<div class="mm-panel tw-p-4">'+
+     '<div class="mm-drawer-card tw-p-4">'+
       '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px">'+
        '<strong><i class="fa fa-comments-o"></i> Staff Shift Handover Log (Persisted Across Workspace)</strong>'+
        '<span class="mm-badge mm-badge-paid">Morning → Afternoon Shift</span>'+
@@ -2024,7 +2024,7 @@ function menuLinks(page,currentPath){
    '<div class="modal-dialog modal-lg" role="document"><div class="modal-content">'+
     '<div class="modal-header"><h4 class="modal-title" id="mm-shortcuts-drawer-title"><i class="fa fa-keyboard-o"></i> Global Keyboard Quick-Switcher &amp; Shortcut Cheat-Sheet</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button></div>'+
     '<div class="modal-body"><section class="mm-ui"><div class="tw-space-y-4">'+
-     '<div class="mm-panel tw-p-4">'+
+     '<div class="mm-drawer-card tw-p-4">'+
       '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px"><strong><i class="fa fa-bolt"></i> 1. Global Shell &amp; Top Sub-Menu Shortcuts</strong><span class="mm-badge mm-badge-paid">Active Everywhere</span></div>'+
       '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:8px">'+
        '<div class="mm-shortcut-row"><span>Global Command Palette (362 Screens)</span><span class="mm-kbd-badge">Ctrl + K</span></div>'+
@@ -2042,7 +2042,7 @@ function menuLinks(page,currentPath){
        '<div class="mm-shortcut-row"><span>Open Keyboard Shortcut Cheat-Sheet</span><span class="mm-kbd-badge">?</span></div>'+
       '</div>'+
      '</div>'+
-     '<div class="mm-panel tw-p-4">'+
+     '<div class="mm-drawer-card tw-p-4">'+
       '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px"><strong><i class="fa fa-compass"></i> 2. Direct Module Quick-Jump (Press Alt + 1..0 or Click)</strong><span class="mm-badge mm-badge-partial">10 Core Modules</span></div>'+
       '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:8px">'+
        '<a href="/dashboard" class="mm-shortcut-row"><span><i class="fa fa-tachometer"></i> Dashboard &amp; Room Status Board</span><span class="mm-kbd-badge">Alt + 1</span></a>'+
