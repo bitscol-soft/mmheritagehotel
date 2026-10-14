@@ -1586,8 +1586,13 @@ function menuLinks(page,currentPath){
   }
   const isAct=m.id===activeMod.id;
   const modScreensCount=screensForMod(m).length;
-  sidebarParts.push('<li'+(isAct?' class="active"':'')+'><a href="'+m.href+'"'+(isAct?' aria-current="page"':'')+' title="'+m.label+' ('+m.tabs.length+' primary tabs · '+modScreensCount+' module screens)"><i class="menu-icon fa '+m.icon+'"></i><span class="menu-text">'+m.label+'</span><span class="mm-nav-count">'+m.tabs.length+'</span></a><b class="arrow"></b></li>');
+  const subLis=m.tabs.map(([href,,lbl])=>{
+   const isSubAct=href===cur||(href==='/dashboard'&&m.aliases.includes(cur));
+   return '<li'+(isSubAct?' class="active"':'')+'><a href="'+href+'"'+(isSubAct?' aria-current="page"':'')+'>'+lbl+'</a><b class="arrow"></b></li>';
+  }).join('');
+  sidebarParts.push('<li'+(isAct?' class="mm-mod-current open"':'')+'><a href="#" class="dropdown-toggle" aria-expanded="'+(isAct?'true':'false')+'" title="'+m.label+' ('+m.tabs.length+' primary tabs · '+modScreensCount+' module screens)"><i class="menu-icon fa '+m.icon+'"></i><span class="menu-text">'+m.label+'</span><span class="mm-nav-count">'+m.tabs.length+'</span><b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b><ul class="submenu">'+subLis+'</ul></li>');
  }
+ const sidebarFooter='<div id="mm-sidebar-collapse-bar" class="mm-no-print"><button type="button" id="mm-sidebar-collapse-btn" class="mm-button mm-button-secondary" style="width:100%;min-height:32px;padding:4px 10px;font-size:11.5px;justify-content:center" title="Expand or collapse side menu (Full / 68px Rail)"><i class="fa fa-angle-double-left" id="mm-sidebar-collapse-icon"></i> <span class="mm-collapse-label" id="mm-sidebar-collapse-text">Collapse Side Menu</span></button></div>';
 
  const tabsList=activeMod.tabs.slice();
  const hasExactTab=tabsList.some(([h])=>h===cur||(h==='/dashboard'&&activeMod.aliases.includes(cur)));
@@ -1614,6 +1619,7 @@ function menuLinks(page,currentPath){
  const topSubnav='<nav class="mm-top-subnav is-sticky mm-no-print" id="mm-top-subnav" aria-label="'+activeMod.label+' sub-menu tabs">'+
   '<div class="mm-top-subnav-head">'+
    '<div class="mm-top-subnav-title">'+
+    '<button type="button" id="mm-top-sidebar-btn" class="mm-button mm-button-secondary" style="min-height:26px;padding:2px 8px;font-size:11.5px" title="Expand or collapse side menu"><i class="fa fa-bars"></i> Side Menu</button>'+
     '<span class="mm-top-subnav-icon"><i class="fa '+activeMod.icon+'"></i></span>'+
     '<span>'+activeMod.label+'</span>'+
     '<span class="mm-badge mm-badge-paid" style="font-size:11px">'+(activeIdx+1)+' / '+tabsList.length+' Tabs</span>'+
@@ -1641,7 +1647,11 @@ function menuLinks(page,currentPath){
    '<div class="mm-top-more-grid" id="mm-top-more-grid">'+moreCardsHtml+'</div>'+
   '</div>'+
   '<script>(function(){'+
-   'var nav=document.getElementById("mm-top-subnav"),pinBtn=document.getElementById("mm-top-pin-btn"),moreBtn=document.getElementById("mm-top-more-btn"),morePanel=document.getElementById("mm-top-more-panel"),flt=document.getElementById("mm-top-tab-filter"),cnt=document.getElementById("mm-top-more-count");'+
+   'var nav=document.getElementById("mm-top-subnav"),pinBtn=document.getElementById("mm-top-pin-btn"),moreBtn=document.getElementById("mm-top-more-btn"),morePanel=document.getElementById("mm-top-more-panel"),flt=document.getElementById("mm-top-tab-filter"),cnt=document.getElementById("mm-top-more-count"),topSbBtn=document.getElementById("mm-top-sidebar-btn"),botSbBtn=document.getElementById("mm-sidebar-collapse-btn"),botSbIcon=document.getElementById("mm-sidebar-collapse-icon");'+
+   'function syncSbFooter(){var isRail=document.body.classList.contains("mm-nav-rail");if(botSbIcon)botSbIcon.className="fa "+(isRail?"fa-angle-double-right":"fa-angle-double-left");}'+
+   'syncSbFooter();'+
+   'if(topSbBtn)topSbBtn.addEventListener("click",function(){var t=document.getElementById("menu-toggler");if(t)t.click();syncSbFooter();});'+
+   'if(botSbBtn)botSbBtn.addEventListener("click",function(){var isRail=document.body.classList.contains("mm-nav-rail");var target=document.querySelector("[data-mm-nav-mode=\\""+(isRail?"mm-nav-full":"mm-nav-rail")+"\\"]");if(target)target.click();syncSbFooter();});'+
    'if(!nav)return;'+
    'var pinned=true;try{pinned=localStorage.getItem("mm-top-subnav-pinned")!=="0";}catch(e){}'+
    'function syncPin(){nav.classList.toggle("is-sticky",pinned);if(pinBtn){pinBtn.setAttribute("aria-pressed",String(pinned));pinBtn.innerHTML="<i class=\\"fa fa-thumb-tack\\"></i> "+(pinned?"Pinned":"Pin Bar");}}'+
@@ -1665,7 +1675,7 @@ function menuLinks(page,currentPath){
  '</nav>';
 
  return page
-  .replace(/<ul class="nav nav-list" id="mm-primary-menu"[^>]*>[\s\S]*?<\/ul>(?=<\/div>)/,'<ul class="nav nav-list" id="mm-primary-menu" aria-label="Main navigation">'+sidebarParts.join('')+'</ul>')
+  .replace(/<ul class="nav nav-list" id="mm-primary-menu"[^>]*>[\s\S]*?<\/ul>(?=<\/div>)/,'<ul class="nav nav-list" id="mm-primary-menu" aria-label="Main navigation">'+sidebarParts.join('')+'</ul>'+sidebarFooter)
   .replace('<!--MM-TOP-SUBNAV-->',()=>topSubnav);
 }
 const pubPages={'/preview/public-home':'frontend/home.html','/preview/public-rooms':'frontend/room_view.html','/preview/public-room-view':'frontend/room_view.html','/preview/public-booking-cart':'frontend/booking_cart.html','/preview/public-search-all-room':'frontend/search_all_room.html','/preview/public-search-room':'frontend/search_room.html','/preview/public-guest-register':'frontend/guest_register.html','/preview/public-booking-register':'frontend/booking_register.html','/preview/public-food-menu':'frontend/food_menu.html','/preview/public-bar-menu':'frontend/bar_menu.html','/preview/public-terms':'frontend/terms.html','/preview/public-privacy-policy':'frontend/privacy_policy.html','/preview/public-single-page-view':'frontend/single_page_view.html'};

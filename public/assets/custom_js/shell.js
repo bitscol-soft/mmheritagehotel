@@ -18,11 +18,26 @@
     // Preferences are browser-local, not server-side per-user settings.
     function read(key) { try { return localStorage.getItem(key); } catch (e) { return null; } }
     function save(key, value) { try { localStorage.setItem(key, value); } catch (e) {} }
-    collapsed = read('mm-shell-collapsed') === '1';
+    collapsed = read('mm-shell-collapsed') === '1' || read('mm-nav-mode') === 'mm-nav-collapsed';
     // Let Ace own nested dropdowns, but not shell visibility or rail dimensions.
     sidebar.classList.remove('menu-min', 'display', 'responsive-min');
+    if (window.jQuery && window.jQuery.fn && window.jQuery.fn.ace_sidebar) {
+        if (window.jQuery.fn.ace_sidebar.defaults) window.jQuery.fn.ace_sidebar.defaults.duration = 0;
+        var aceInst = window.jQuery(sidebar).data('ace_sidebar');
+        if (aceInst && aceInst.settings) aceInst.settings.duration = 0;
+    }
+    function syncNavModeButtons() {
+        var curMode = body.classList.contains('mm-nav-collapsed') ? 'mm-nav-collapsed' : (body.classList.contains('mm-nav-rail') ? 'mm-nav-rail' : 'mm-nav-full');
+        document.querySelectorAll('[data-mm-nav-toggle]').forEach(function (b) {
+            if (b.dataset.mmNavMode) b.setAttribute('aria-pressed', String(b.dataset.mmNavMode === curMode));
+            else b.setAttribute('aria-pressed', String(curMode !== 'mm-nav-full'));
+        });
+    }
     function render() {
         body.classList.toggle('mm-nav-collapsed', !mobile.matches && collapsed);
+        if (!mobile.matches && !collapsed && !body.classList.contains('mm-nav-rail')) {
+            body.classList.add('mm-nav-full');
+        }
         body.classList.toggle('mm-nav-open', mobile.matches && isOpen);
         var visible = mobile.matches ? isOpen : !collapsed;
         toggle.setAttribute('aria-expanded', String(visible));
@@ -30,6 +45,7 @@
         sidebar.inert = !visible;
         if (backdrop) backdrop.hidden = !(mobile.matches && isOpen);
         if (main) main.inert = mobile.matches && isOpen;
+        syncNavModeButtons();
     }
     function close(restoreFocus) {
         isOpen = false;
@@ -45,13 +61,28 @@
             render();
             if (isOpen && filter) filter.focus();
         } else {
-            collapsed = !collapsed;
+            var isCurrentlyCollapsedOrRail = body.classList.contains('mm-nav-collapsed') || body.classList.contains('mm-nav-rail');
+            collapsed = !isCurrentlyCollapsedOrRail;
+            body.classList.remove('mm-nav-rail');
+            body.classList.toggle('mm-nav-full', !collapsed);
             save('mm-shell-collapsed', collapsed ? '1' : '0');
+            save('mm-nav-mode', collapsed ? 'mm-nav-collapsed' : 'mm-nav-full');
             render();
             // Existing Chosen adapters listen for this Ace compatibility event.
             if (window.jQuery) window.jQuery(document).trigger('settings.ace', ['sidebar_collapsed', collapsed]);
             window.dispatchEvent(new Event('resize'));
         }
+    });
+    // If user clicks a top-level dropdown-toggle while in 68px rail mode, auto-expand to full sidebar.
+    menu.addEventListener('click', function (event) {
+        var link = event.target && event.target.closest ? event.target.closest('a.dropdown-toggle') : null;
+        if (!link || !body.classList.contains('mm-nav-rail')) return;
+        collapsed = false;
+        body.classList.remove('mm-nav-rail', 'mm-nav-collapsed');
+        body.classList.add('mm-nav-full');
+        save('mm-shell-collapsed', '0');
+        save('mm-nav-mode', 'mm-nav-full');
+        render();
     });
     document.querySelectorAll('[data-mm-close]').forEach(function (button) {
         button.addEventListener('click', function () { close(true); });
