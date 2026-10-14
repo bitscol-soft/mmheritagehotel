@@ -296,7 +296,7 @@ test('14-module sidebar role switcher, top sub-menu bar & global command drawers
     await expect(page.locator('.mm-page-title').first()).toContainText('Daily Manager Flash Report');
     await expect(page.locator('.mm-panel').first()).toBeVisible();
 
-    // Verify Sidebar Role Switcher (#mm-role-switcher) & Clean Top Sub-Menu Bar (#mm-top-subnav) with no duplicate strips/bars
+    // Verify Sidebar Role Switcher (#mm-role-switcher) & Clean Top Sub-Menu Bar (#mm-top-subnav) with curtain pull-down & pin-to-top
     await page.goto(`http://127.0.0.1:${PORT}/preview/dashboard`);
     await expect(page.locator('#dash-ops-strip')).toHaveCount(0);
     await expect(page.locator('#mm-top-favs-bar')).toHaveCount(0);
@@ -307,9 +307,24 @@ test('14-module sidebar role switcher, top sub-menu bar & global command drawers
     await page.locator('#mm-role-switcher [data-role-filter="all"]').click();
     await expect(page.locator('#mm-primary-menu > li:not(.mm-nav-section):visible')).toHaveCount(14);
 
+    await expect(page.locator('#mm-top-subnav')).toHaveClass(/is-sticky/);
+    await expect(page.locator('#mm-top-subnav')).toHaveClass(/is-slid-up/);
+    await expect(page.locator('#mm-top-curtain-btn')).toHaveAttribute('aria-expanded', 'false');
+    await page.locator('#mm-top-curtain-btn').click();
+    await expect(page.locator('#mm-top-subnav')).not.toHaveClass(/is-slid-up/);
+    await expect(page.locator('#mm-top-curtain-btn')).toHaveAttribute('aria-expanded', 'true');
+
+    await expect(page.locator('#mm-top-pin-btn')).toHaveAttribute('aria-pressed', 'true');
+    await page.locator('#mm-top-pin-btn').click();
+    await expect(page.locator('#mm-top-subnav')).not.toHaveClass(/is-sticky/);
+    await page.locator('#mm-top-pin-btn').click();
+    await expect(page.locator('#mm-top-subnav')).toHaveClass(/is-sticky/);
+
     await page.locator('#mm-top-more-btn').click();
     await expect(page.locator('#mm-top-more-panel')).toBeVisible();
     await page.locator('#mm-top-more-btn').click();
+    await page.locator('#mm-top-curtain-btn').click();
+    await expect(page.locator('#mm-top-subnav')).toHaveClass(/is-slid-up/);
 
     // Verify Redesigned New Banquet Booking (/preview/bq-booking-create)
     await page.goto(`http://127.0.0.1:${PORT}/preview/bq-booking-create`);
@@ -345,6 +360,7 @@ test('redesigned Express Quick-Create Drawer (Alt+Q) & Website Settings (/previe
     await expect(page.locator('#webset-save-banner')).toBeVisible();
 
     // Verify Redesigned Express Walk-In, 80mm KOT, GL Voucher & Banquet Quick-Create Drawer (Alt+Q)
+    await page.locator('#mm-top-curtain-btn').click();
     await page.locator('#mm-express-create-btn').click();
     await expect(page.locator('#mm-express-drawer')).toBeVisible();
     await expect(page.locator('#mm-express-drawer .mm-drawer-kpi-grid .mm-table-kpi-card')).toHaveCount(4);

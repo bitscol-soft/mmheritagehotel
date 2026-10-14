@@ -1734,30 +1734,40 @@ function menuLinks(page,currentPath){
   return '<a href="'+s.href+'" data-top-more-search="'+(s.title+' '+s.href).toLowerCase().replace(/"/g,'')+'" data-top-more-primary="'+(s.isPrimary?'1':'0')+'" class="mm-top-more-card'+(isCardAct?' is-active':'')+'"><span><i class="fa '+(s.isPrimary?'fa-bookmark':'fa-file-text-o')+'" style="opacity:.75;margin-right:6px"></i>'+s.title+'</span><span class="mm-badge '+(isCardAct?'mm-badge-paid':s.isPrimary?'mm-badge-partial':'')+'" style="font-size:10px">'+(isCardAct?'Current':s.isPrimary?'Tab':s.href.replace('/preview/',''))+'</span></a>';
  }).join('');
 
- const topSubnav='<nav class="mm-top-subnav is-sticky mm-no-print" id="mm-top-subnav" data-cur-href="'+curCanonicalHref+'" data-cur-title="'+curTabTitle.replace(/"/g,'')+'" aria-label="'+activeMod.label+' sub-menu tabs">'+
-  '<div class="mm-top-subnav-head">'+
-   '<div class="mm-top-subnav-title">'+
-    '<span class="mm-top-subnav-icon"><i class="fa '+activeMod.icon+'"></i></span>'+
-    '<span>'+activeMod.label+'</span>'+
-    '<span class="mm-badge mm-badge-paid" style="font-size:11px">'+(activeIdx+1)+' / '+tabsList.length+' Tabs</span>'+
-   '</div>'+
-   '<div style="display:flex;flex-wrap:wrap;align-items:center;gap:6px">'+
-    '<input type="search" id="mm-top-tab-filter" class="mm-top-tab-filter" placeholder="Filter '+modScreens.length+' module screens..." aria-label="Filter sub-menu tabs and module screens">'+
-    '<button type="button" id="mm-express-create-btn" data-toggle="modal" data-target="#mm-express-drawer" class="mm-button" style="min-height:28px;padding:2px 10px;font-size:11.5px" title="Express Walk-In Room Hold, 80mm KOT Order &amp; GL Voucher Quick-Create (Alt+Q)"><i class="fa fa-plus-circle"></i> + Quick Create</button>'+
-    '<button type="button" id="mm-top-more-btn" aria-expanded="false" aria-controls="mm-top-more-panel" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11.5px"><i class="fa fa-th-list"></i> All '+modScreens.length+' Module Screens <i class="fa fa-caret-down"></i></button>'+
-   '</div>'+
-  '</div>'+
-  '<div class="mm-top-subnav-tabs" role="navigation" aria-label="Module sub-pages">'+tabsHtml+'</div>'+
-  '<div class="mm-top-more-panel" id="mm-top-more-panel" hidden>'+
-   '<div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;padding-bottom:8px;border-bottom:1px solid rgba(148,163,184,0.2)">'+
-    '<div style="font-size:12px;font-weight:700"><i class="fa '+activeMod.icon+'"></i> '+activeMod.label+' — Complete Screen Directory (<span id="mm-top-more-count">'+modScreens.length+'</span> screens)</div>'+
-    '<div style="display:flex;flex-wrap:wrap;gap:6px">'+
-     '<button type="button" class="mm-button mm-button-secondary mm-top-scope-btn is-active" data-top-scope="all" style="min-height:25px;padding:1px 9px;font-size:11px">All ('+modScreens.length+')</button>'+
-     '<button type="button" class="mm-button mm-button-secondary mm-top-scope-btn" data-top-scope="primary" style="min-height:25px;padding:1px 9px;font-size:11px">Primary Tabs ('+tabsList.length+')</button>'+
-     '<a href="/preview" class="mm-button mm-button-secondary" style="min-height:25px;padding:1px 9px;font-size:11px"><i class="fa fa-th-large"></i> All 362 ERP Screens →</a>'+
+ const topSubnav='<nav class="mm-top-subnav is-sticky is-slid-up mm-no-print" id="mm-top-subnav" data-cur-href="'+curCanonicalHref+'" data-cur-title="'+curTabTitle.replace(/"/g,'')+'" data-mod-label="'+activeMod.label.replace(/"/g,'')+'" data-tabs-count="'+tabsList.length+'" aria-label="'+activeMod.label+' sub-menu tabs">'+
+  '<div class="mm-top-subnav-curtain" id="mm-top-subnav-curtain">'+
+   '<div class="mm-top-subnav-head">'+
+    '<div class="mm-top-subnav-title">'+
+     '<span class="mm-top-subnav-icon"><i class="fa '+activeMod.icon+'"></i></span>'+
+     '<span>'+activeMod.label+'</span>'+
+     '<span class="mm-badge mm-badge-paid" style="font-size:11px">'+(activeIdx+1)+' / '+tabsList.length+' Tabs</span>'+
+    '</div>'+
+    '<div style="display:flex;flex-wrap:wrap;align-items:center;gap:6px">'+
+     '<input type="search" id="mm-top-tab-filter" class="mm-top-tab-filter" placeholder="Filter '+modScreens.length+' module screens..." aria-label="Filter sub-menu tabs and module screens">'+
+     '<button type="button" id="mm-express-create-btn" data-toggle="modal" data-target="#mm-express-drawer" class="mm-button" style="min-height:28px;padding:2px 10px;font-size:11.5px" title="Express Walk-In Room Hold, 80mm KOT Order &amp; GL Voucher Quick-Create (Alt+Q)"><i class="fa fa-plus-circle"></i> + Quick Create</button>'+
+     '<button type="button" id="mm-top-more-btn" aria-expanded="false" aria-controls="mm-top-more-panel" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11.5px"><i class="fa fa-th-list"></i> All '+modScreens.length+' Module Screens <i class="fa fa-caret-down"></i></button>'+
+     '<button type="button" id="mm-top-pin-btn" aria-pressed="true" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11.5px" title="Pin or unpin top sub-menu bar to sticky top while scrolling"><i class="fa fa-thumb-tack"></i> Pinned</button>'+
+     '<button type="button" id="mm-top-slideup-btn" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11.5px" title="Slide sub-menu bar up under top navigation"><i class="fa fa-chevron-up"></i> Slide Up</button>'+
     '</div>'+
    '</div>'+
-   '<div class="mm-top-more-grid" id="mm-top-more-grid">'+moreCardsHtml+'</div>'+
+   '<div class="mm-top-subnav-tabs" role="navigation" aria-label="Module sub-pages">'+tabsHtml+'</div>'+
+   '<div class="mm-top-more-panel" id="mm-top-more-panel" hidden>'+
+    '<div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;padding-bottom:8px;border-bottom:1px solid rgba(148,163,184,0.2)">'+
+     '<div style="font-size:12px;font-weight:700"><i class="fa '+activeMod.icon+'"></i> '+activeMod.label+' — Complete Screen Directory (<span id="mm-top-more-count">'+modScreens.length+'</span> screens)</div>'+
+     '<div style="display:flex;flex-wrap:wrap;gap:6px">'+
+      '<button type="button" class="mm-button mm-button-secondary mm-top-scope-btn is-active" data-top-scope="all" style="min-height:25px;padding:1px 9px;font-size:11px">All ('+modScreens.length+')</button>'+
+      '<button type="button" class="mm-button mm-button-secondary mm-top-scope-btn" data-top-scope="primary" style="min-height:25px;padding:1px 9px;font-size:11px">Primary Tabs ('+tabsList.length+')</button>'+
+      '<a href="/preview" class="mm-button mm-button-secondary" style="min-height:25px;padding:1px 9px;font-size:11px"><i class="fa fa-th-large"></i> All 362 ERP Screens →</a>'+
+     '</div>'+
+    '</div>'+
+    '<div class="mm-top-more-grid" id="mm-top-more-grid">'+moreCardsHtml+'</div>'+
+   '</div>'+
+  '</div>'+
+  '<div class="mm-top-curtain-rail">'+
+   '<button type="button" id="mm-top-curtain-btn" class="mm-top-curtain-btn" aria-expanded="false" aria-controls="mm-top-subnav-curtain" title="Pull down or slide up sub-menu curtain under top navbar">'+
+    '<i class="fa fa-chevron-down mm-top-curtain-arrow" id="mm-top-curtain-icon"></i>'+
+    '<span id="mm-top-curtain-label">'+activeMod.label+' ('+tabsList.length+' Tabs)</span>'+
+   '</button>'+
   '</div></nav>'+
   '<div class="modal fade mm-app-drawer" id="mm-express-drawer" tabindex="-1" role="dialog" aria-labelledby="mm-express-drawer-title">'+
    '<div class="modal-dialog modal-lg" role="document"><div class="modal-content">'+
@@ -1874,7 +1884,7 @@ function menuLinks(page,currentPath){
    '</div></div>'+
   '</div>'+
   '<script>(function(){'+
-   'var nav=document.getElementById("mm-top-subnav"),moreBtn=document.getElementById("mm-top-more-btn"),morePanel=document.getElementById("mm-top-more-panel"),flt=document.getElementById("mm-top-tab-filter"),cnt=document.getElementById("mm-top-more-count");'+
+   'var nav=document.getElementById("mm-top-subnav"),pinBtn=document.getElementById("mm-top-pin-btn"),slideUpBtn=document.getElementById("mm-top-slideup-btn"),curtainBtn=document.getElementById("mm-top-curtain-btn"),curtainLbl=document.getElementById("mm-top-curtain-label"),moreBtn=document.getElementById("mm-top-more-btn"),morePanel=document.getElementById("mm-top-more-panel"),flt=document.getElementById("mm-top-tab-filter"),cnt=document.getElementById("mm-top-more-count");'+
    'var roleSw=document.getElementById("mm-role-switcher"),roleLbl=document.getElementById("mm-role-active-label"),menuEl=document.getElementById("mm-primary-menu");'+
    'var roleOrder=["all","frontdesk","pos","finance"];'+
    'var curRole="all";try{curRole=localStorage.getItem("mm-sidebar-role")||"all";}catch(e){}'+
@@ -1894,6 +1904,21 @@ function menuLinks(page,currentPath){
     'for(var rIdx=0;rIdx<rBtns.length;rIdx++){rBtns[rIdx].addEventListener("click",function(){applyRole(this.getAttribute("data-role-filter")||"all");});}'+
    '}'+
    'if(!nav)return;'+
+   'var modLbl=nav.getAttribute("data-mod-label")||"Module",tabsCnt=nav.getAttribute("data-tabs-count")||"";'+
+   'var pinned=true;try{pinned=localStorage.getItem("mm-top-subnav-pinned")!=="0";}catch(e){}'+
+   'function syncPin(){nav.classList.toggle("is-sticky",pinned);if(pinBtn){pinBtn.setAttribute("aria-pressed",String(pinned));pinBtn.innerHTML="<i class=\\"fa fa-thumb-tack\\"></i> "+(pinned?"Pinned":"Pin to Top");}}'+
+   'syncPin();'+
+   'if(pinBtn)pinBtn.addEventListener("click",function(){pinned=!pinned;try{localStorage.setItem("mm-top-subnav-pinned",pinned?"1":"0");}catch(e){}syncPin();});'+
+   'var isOpen=false;try{isOpen=localStorage.getItem("mm-top-subnav-open")==="1";}catch(e){}'+
+   'function syncCurtain(){'+
+    'nav.classList.toggle("is-slid-up",!isOpen);'+
+    'if(curtainBtn)curtainBtn.setAttribute("aria-expanded",String(isOpen));'+
+    'if(curtainLbl)curtainLbl.textContent=isOpen?("Slide Up · "+modLbl):(modLbl+(tabsCnt?" ("+tabsCnt+" Tabs)":""));'+
+   '}'+
+   'syncCurtain();'+
+   'function toggleCurtain(force){isOpen=typeof force==="boolean"?force:!isOpen;try{localStorage.setItem("mm-top-subnav-open",isOpen?"1":"0");}catch(e){}syncCurtain();}'+
+   'if(curtainBtn)curtainBtn.addEventListener("click",function(){toggleCurtain();});'+
+   'if(slideUpBtn)slideUpBtn.addEventListener("click",function(){toggleCurtain(false);});'+
    'var expTabs=document.querySelectorAll("[data-express-tab]"),expPanes=document.querySelectorAll("[data-express-pane]"),expBanner=document.getElementById("mm-express-confirm-banner"),expLogList=document.getElementById("mm-express-log-list"),expLogCnt=document.getElementById("mm-express-log-count");'+
    'for(var et=0;et<expTabs.length;et++){expTabs[et].addEventListener("click",function(){'+
     'var tgt=this.getAttribute("data-express-tab");'+
@@ -1964,8 +1989,9 @@ function menuLinks(page,currentPath){
      'if(altJump[e.key]){e.preventDefault();window.location.href=altJump[e.key];return;}'+
      'var kLower=(e.key||"").toLowerCase();'+
      'if(kLower==="r"){e.preventDefault();var nextR=roleOrder[(roleOrder.indexOf(curRole)+1)%roleOrder.length];applyRole(nextR);return;}'+
+     'if(kLower==="c"){e.preventDefault();toggleCurtain();return;}'+
      'if(kLower==="q"){e.preventDefault();var qb=document.getElementById("mm-express-create-btn");if(qb)qb.click();return;}'+
-     'if(kLower==="f"&&flt){e.preventDefault();flt.focus();return;}'+
+     'if(kLower==="f"&&flt){e.preventDefault();toggleCurtain(true);flt.focus();return;}'+
     '}'+
    '});'+
   '})();</script>';

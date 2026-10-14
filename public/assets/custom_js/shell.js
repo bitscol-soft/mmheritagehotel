@@ -260,9 +260,12 @@
             }
             if (subLinks.length) {
                 var nav = document.createElement('nav');
-                nav.className = 'mm-top-subnav is-sticky mm-no-print';
+                nav.className = 'mm-top-subnav is-sticky is-slid-up mm-no-print';
                 nav.id = 'mm-top-subnav';
                 nav.setAttribute('aria-label', modLabel + ' sub-menu tabs');
+                var curtain = document.createElement('div');
+                curtain.className = 'mm-top-subnav-curtain';
+                curtain.id = 'mm-top-subnav-curtain';
                 var head = document.createElement('div');
                 head.className = 'mm-top-subnav-head';
                 var titleWrap = document.createElement('div');
@@ -278,6 +281,24 @@
                 countBadge.textContent = (actIndex + 1) + ' / ' + subLinks.length + ' Tabs';
                 titleWrap.appendChild(countBadge);
                 head.appendChild(titleWrap);
+                var rightWrap = document.createElement('div');
+                rightWrap.style.cssText = 'display:flex;flex-wrap:wrap;align-items:center;gap:6px';
+                var pinBtn = document.createElement('button');
+                pinBtn.type = 'button';
+                pinBtn.id = 'mm-top-pin-btn';
+                pinBtn.className = 'mm-button mm-button-secondary';
+                pinBtn.style.cssText = 'min-height:28px;padding:2px 10px;font-size:11.5px';
+                pinBtn.title = 'Pin or unpin top sub-menu bar to sticky top while scrolling';
+                var slideUpBtn = document.createElement('button');
+                slideUpBtn.type = 'button';
+                slideUpBtn.id = 'mm-top-slideup-btn';
+                slideUpBtn.className = 'mm-button mm-button-secondary';
+                slideUpBtn.style.cssText = 'min-height:28px;padding:2px 10px;font-size:11.5px';
+                slideUpBtn.title = 'Slide sub-menu bar up under top navigation';
+                slideUpBtn.innerHTML = '<i class="fa fa-chevron-up"></i> Slide Up';
+                rightWrap.appendChild(pinBtn);
+                rightWrap.appendChild(slideUpBtn);
+                head.appendChild(rightWrap);
                 var tabsWrap = document.createElement('div');
                 tabsWrap.className = 'mm-top-subnav-tabs';
                 tabsWrap.setAttribute('role', 'navigation');
@@ -293,9 +314,54 @@
                     tab.appendChild(lbl);
                     tabsWrap.appendChild(tab);
                 });
-                nav.appendChild(head);
-                nav.appendChild(tabsWrap);
+                curtain.appendChild(head);
+                curtain.appendChild(tabsWrap);
+                var rail = document.createElement('div');
+                rail.className = 'mm-top-curtain-rail';
+                var curtainBtn = document.createElement('button');
+                curtainBtn.type = 'button';
+                curtainBtn.id = 'mm-top-curtain-btn';
+                curtainBtn.className = 'mm-top-curtain-btn';
+                curtainBtn.setAttribute('aria-expanded', 'false');
+                curtainBtn.setAttribute('aria-controls', 'mm-top-subnav-curtain');
+                curtainBtn.title = 'Pull down or slide up sub-menu curtain under top navbar';
+                var cIcon = document.createElement('i');
+                cIcon.className = 'fa fa-chevron-down mm-top-curtain-arrow';
+                cIcon.id = 'mm-top-curtain-icon';
+                var cLabel = document.createElement('span');
+                cLabel.id = 'mm-top-curtain-label';
+                curtainBtn.appendChild(cIcon);
+                curtainBtn.appendChild(cLabel);
+                rail.appendChild(curtainBtn);
+                nav.appendChild(curtain);
+                nav.appendChild(rail);
                 pageContent.insertBefore(nav, pageContent.firstChild);
+                var pinned = read('mm-top-subnav-pinned') !== '0';
+                function syncPin() {
+                    nav.classList.toggle('is-sticky', pinned);
+                    pinBtn.setAttribute('aria-pressed', String(pinned));
+                    pinBtn.innerHTML = '<i class="fa fa-thumb-tack"></i> ' + (pinned ? 'Pinned' : 'Pin to Top');
+                }
+                syncPin();
+                pinBtn.addEventListener('click', function () {
+                    pinned = !pinned;
+                    save('mm-top-subnav-pinned', pinned ? '1' : '0');
+                    syncPin();
+                });
+                var isOpen = read('mm-top-subnav-open') === '1';
+                function syncCurtain() {
+                    nav.classList.toggle('is-slid-up', !isOpen);
+                    curtainBtn.setAttribute('aria-expanded', String(isOpen));
+                    cLabel.textContent = isOpen ? ('Slide Up · ' + modLabel) : (modLabel + ' (' + subLinks.length + ' Tabs)');
+                }
+                syncCurtain();
+                function toggleCurtain(force) {
+                    isOpen = typeof force === 'boolean' ? force : !isOpen;
+                    save('mm-top-subnav-open', isOpen ? '1' : '0');
+                    syncCurtain();
+                }
+                curtainBtn.addEventListener('click', function () { toggleCurtain(); });
+                slideUpBtn.addEventListener('click', function () { toggleCurtain(false); });
                 document.addEventListener('keydown', function (ev) {
                     var tag = (ev.target && ev.target.tagName || '').toLowerCase();
                     if (tag === 'input' || tag === 'textarea' || tag === 'select' || (ev.target && ev.target.isContentEditable)) return;
