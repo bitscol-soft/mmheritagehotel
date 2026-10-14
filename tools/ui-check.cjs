@@ -1154,7 +1154,7 @@ console.log('PASS: note list/edit expressions, forms and status scripts; legacy 
   assert(posShow.includes('<x-mm.print-sheet') && !posShow.includes('</body onclick='), 'rst/sales-v2/show.blade.php must use x-mm.print-sheet and valid </body> closing tag');
   // QR + barcode verification codes and the blank-print-preview fix on POS receipts / sale invoices.
   const printCodesPartial=fs.readFileSync('resources/views/partials/print-codes.blade.php','utf8');
-  assert(printCodesPartial.includes('QrCode::') && printCodesPartial.includes('DNS1D::getBarcodePNG') && printCodesPartial.includes('mm-print-codes'), 'partials/print-codes.blade.php must render a QrCode QR and a DNS1D Code128 barcode');
+  assert(printCodesPartial.includes('\\SimpleSoftwareIO\\QrCode\\Facades\\QrCode::') && printCodesPartial.includes('DNS1D::getBarcodePNG') && printCodesPartial.includes('mm-print-codes'), 'partials/print-codes.blade.php must render a QrCode QR (fully-qualified facade) and a DNS1D Code128 barcode');
   for(const pf of ['module/Restaurant/views/rst/sales-v2/pos-print.blade.php','module/Restaurant/views/rst/sales-v2/pos-office-print.blade.php','module/Bar/views/bar/sales-v2/pos-print.blade.php']) {
     const pv=fs.readFileSync(pf,'utf8');
     assert(pv.includes("partials.print-codes"), `${pf} must include the QR/barcode verification block`);

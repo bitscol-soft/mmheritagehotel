@@ -24,7 +24,7 @@
 @if ($mmPrintCode !== '')
     <div class="mm-print-codes" style="margin-top: 14px; padding-top: 10px; border-top: 1px dashed #000; text-align: center; page-break-inside: avoid;">
         <div style="display: inline-block; vertical-align: top; margin: 0 10px; text-align: center;">
-            {!! QrCode::size(72)->margin(0)->generate($mmPrintPayload) !!}
+            {!! \SimpleSoftwareIO\QrCode\Facades\QrCode::size(72)->margin(0)->generate($mmPrintPayload) !!}
             <div style="font-size: 9px; margin-top: 2px;">Scan to verify</div>
         </div>
         <div style="display: inline-block; vertical-align: top; margin: 0 10px; text-align: center;">
