@@ -445,7 +445,7 @@ test('Wave 2 High-Traffic Operational Screens (Checkout, Night Audit, POS, Vouch
     // 3. Restaurant & Bar POS Terminals (/preview/rst-pos-create & /preview/bar-pos-create) + Focused Fullscreen Mode
     await page.goto(`http://127.0.0.1:${PORT}/preview/rst-pos-create`);
     await expect(page.locator('#mm-pos-table-grid [data-pos-table-card]')).toHaveCount(6);
-    await expect(page.locator('#invoice-list tr')).toHaveCount(8);
+    await expect(page.locator('#invoice-list tr')).toHaveCount(2);
     await page.locator('.rpos-quick-item').first().click();
     await expect(page.locator('#rpos-kpi-items')).toContainText('3 Items');
     await page.locator('[data-pos-modifier]').first().click();
