@@ -366,6 +366,7 @@
                         <span>Thank you for staying with us.</span>
                         <span>{{ $company->name }}</span>
                     </div>
+                    @include('partials.print-codes', ['code' => $booking->booking_number, 'label' => 'Booking Receipt'])
                 </div>
             </x-mm.print-sheet>
             @endif

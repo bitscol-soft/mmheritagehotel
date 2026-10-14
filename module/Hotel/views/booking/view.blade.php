@@ -311,6 +311,7 @@
                     </button>
                 </div>
             </section>
+            @include('partials.print-codes', ['code' => $booking->booking_number, 'label' => 'Booking Summary'])
         </form>
     </x-mm.page>
 @endsection

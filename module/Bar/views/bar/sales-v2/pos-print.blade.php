@@ -22,10 +22,23 @@
         }
 
         @media print {
+            @page {
+                size: 80mm auto;
+                margin: 0;
+            }
+
+            html,
+            body {
+                background: #ffffff !important;
+            }
+
             #invoice {
+                display: block !important;
+                visibility: visible !important;
                 margin-top: 0 !important;
                 margin-bottom: 0 !important;
                 padding-top: 2px !important;
+                box-shadow: none !important;
             }
 
             .company-logo {
@@ -470,12 +483,17 @@
                 <p>For any queries complaints or feedback.</p>
                 <p>Please call {{ optional($sale->company)->phone }}</p>
             </div>
+            @include('partials.print-codes', ['code' => $sale->invoice_no, 'label' => 'Skyline Rooftop Bar POS Receipt'])
         </div>
     </section>
 
 
     <script>
-        window.print()
+        // Auto-open the print dialog once the receipt has fully rendered
+        // (deferred to the load event so the print preview is never blank).
+        window.addEventListener('load', function () {
+            setTimeout(function () { window.print(); }, 350);
+        });
     </script>
 </body>
 

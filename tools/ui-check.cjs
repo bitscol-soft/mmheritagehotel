@@ -397,7 +397,9 @@ console.log('PASS: note list/edit expressions, forms and status scripts; legacy 
   assert.deepEqual(exprs(after),exprs(before),`${name}: Blade expressions changed beyond the Booking List link`);
   assert.deepEqual(phpBlocks(after),phpBlocks(before),`${name}: @php blocks changed`);
   assert((after.includes('<x-mm.page')||after.includes('<x-mm.print-sheet'))&&!after.includes('widget-box'),`${name}: shared frame expected`);
+  assert(after.includes("partials.print-codes"),`${name}: QR/barcode verification block expected (include-only, no new expressions)`);
  }
+ assert(fs.readFileSync('module/Hotel/views/booking/view.blade.php','utf8').includes("partials.print-codes"),'booking summary (view) must include the QR/barcode verification block');
  const v3Path='module/Hotel/views/booking/checkout-invoice-v3.blade.php', v3=fs.readFileSync(v3Path,'utf8'), v3Base=base(v3Path);
  assert.equal(v3,v3Base,'invoice v3: changed beyond the screen-only action bar');
  assert(/@media print \{\s*\.inv-screen-bar \{\s*display: none !important;/.test(v3)&&v3.includes('window.print();'),'invoice v3: action bar must be hidden in print and auto-print kept');
@@ -1150,6 +1152,16 @@ console.log('PASS: note list/edit expressions, forms and status scripts; legacy 
   for(const hook of ['id="sale-form"','id="courses"','id="fire"','id="pay"','id="room_no"','id="waiter_no"','id="invoice_id"','id="product-details"','id="grand-total"','id="service_charge"','id="subTotal"','id="discount"','id="grandTotal"','id="vat"','id="paid_amount"','save-only','save-sale']) assert(posRight.includes(hook), `right-side.blade.php missing ${hook}`);
   assert(posEdit.includes('name="guest_name"') && posEdit.includes('id="pay"'), 'edit-sale.blade.php must preserve guest_name input and #pay step section');
   assert(posShow.includes('<x-mm.print-sheet') && !posShow.includes('</body onclick='), 'rst/sales-v2/show.blade.php must use x-mm.print-sheet and valid </body> closing tag');
+  // QR + barcode verification codes and the blank-print-preview fix on POS receipts / sale invoices.
+  const printCodesPartial=fs.readFileSync('resources/views/partials/print-codes.blade.php','utf8');
+  assert(printCodesPartial.includes('QrCode::') && printCodesPartial.includes('DNS1D::getBarcodePNG') && printCodesPartial.includes('mm-print-codes'), 'partials/print-codes.blade.php must render a QrCode QR and a DNS1D Code128 barcode');
+  for(const pf of ['module/Restaurant/views/rst/sales-v2/pos-print.blade.php','module/Restaurant/views/rst/sales-v2/pos-office-print.blade.php','module/Bar/views/bar/sales-v2/pos-print.blade.php']) {
+    const pv=fs.readFileSync(pf,'utf8');
+    assert(pv.includes("partials.print-codes"), `${pf} must include the QR/barcode verification block`);
+    assert(pv.includes('@page') && pv.includes('size: 80mm auto') && pv.includes("addEventListener('load'"), `${pf} must use an 80mm @page and defer auto-print to load (blank print preview fix)`);
+    assert(!pv.includes('// window.print()'), `${pf} must not keep the commented-out auto-print`);
+  }
+  assert(posShow.includes("partials.print-codes") && posShow.includes("@stack('ui-styles')"), 'rst sale invoice must include QR/barcode codes and render the pushed ui styles');
 
   // W5 Bar POS v2 (module/Bar/views/bar/sales-v2): twin of Restaurant POS v2
   const barPosCreate=fs.readFileSync('module/Bar/views/bar/sales-v2/create.blade.php','utf8');
@@ -1165,6 +1177,7 @@ console.log('PASS: note list/edit expressions, forms and status scripts; legacy 
   for(const hook of ['id="sale-form"','id="courses"','id="fire"','id="pay"','id="room_no"','id="waiter_no"','id="invoice_id"','id="product-details"','id="grand-total"','id="service_charge"','id="subTotal"','id="discount"','id="grandTotal"','id="vat"','id="paid_amount"','save-only','save-sale']) assert(barPosRight.includes(hook), `bar right-side.blade.php missing ${hook}`);
   assert(barPosEdit.includes('name="guest_name"') && barPosEdit.includes('id="pay"'), 'bar edit-sale.blade.php must preserve guest_name input and #pay step section');
   assert(barPosShow.includes('<x-mm.print-sheet') && !barPosShow.includes('</body onclick='), 'bar/sales-v2/show.blade.php must use x-mm.print-sheet and valid </body> closing tag');
+  assert(barPosShow.includes("partials.print-codes") && barPosShow.includes("@stack('ui-styles')"), 'bar sale invoice must include QR/barcode codes and render the pushed ui styles');
   assert(!fs.existsSync('module/Bar/views/bar/sales-v2/edit.blade.php'), 'empty module/Bar/views/bar/sales-v2/edit.blade.php should be removed');
   console.log('PASS: W5 Restaurant & Bar POS (rst/sales-v2 & bar/sales-v2) use x-mm.page, x-mm.stepper (courses -> fire -> pay), x-mm.print-sheet, and preserve all POS form and calculation hooks');
 }

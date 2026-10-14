@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="{{ asset('assets/font-awesome/4.5.0/css/font-awesome.min.css') }}" />
     <x-mm.styles />
     @stack('ui-styles')
+    @stack('ui-styles')
 
     <style>
         @media print {
@@ -222,11 +223,15 @@
             </div>
         </div>
     </div>
+        @include('partials.print-codes', ['code' => $sale->invoice_no, 'label' => 'Skyline Rooftop Bar Sale Invoice'])
     </x-mm.print-sheet>
 
     <script type="text/javascript">
         window.onafterprint = window.close;
-        window.print();
+        // Deferred to the load event so the print preview is never blank.
+        window.addEventListener('load', function () {
+            setTimeout(function () { window.print(); }, 350);
+        });
     </script>
 </body>
 

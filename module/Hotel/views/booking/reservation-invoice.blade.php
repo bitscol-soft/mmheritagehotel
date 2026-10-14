@@ -232,6 +232,7 @@
                 <div class="sig">{{ $company->name }}</div>
             </div>
 
+            @include('partials.print-codes', ['code' => $booking->booking_number, 'label' => 'Booking Confirmation'])
 
             </div>{{-- /.invoice-doc --}}
             </x-mm.print-sheet>

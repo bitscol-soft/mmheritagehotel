@@ -2997,6 +2997,82 @@
     border-color: #1d4ed8 !important;
 }
 
+/* ---------- POS Print Receipt (screen-hidden, print-only) + Print Codes ---------- */
+.mm-shell .mm-pos-print-receipt {
+    display: none;
+    width: 80mm;
+    max-width: 80mm;
+    margin: 0 auto;
+    background: #ffffff;
+    color: #111827;
+    font-family: "Courier New", monospace;
+    font-size: 11px;
+    line-height: 1.45;
+    padding: 10px 8px;
+}
+.mm-shell .mm-pos-print-receipt h3 {
+    margin: 0 0 2px;
+    font-size: 13px;
+    text-align: center;
+}
+.mm-shell .mm-pos-print-receipt table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.mm-shell .mm-pos-print-receipt td,
+.mm-shell .mm-pos-print-receipt th {
+    padding: 2px 3px;
+    border-bottom: 1px dashed #9ca3af;
+    text-align: left;
+}
+.mm-shell .mm-pos-print-receipt .text-right { text-align: right; }
+.mm-shell .mm-print-codes {
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px dashed #111827;
+    text-align: center;
+    page-break-inside: avoid;
+}
+.mm-shell .mm-print-codes svg {
+    display: inline-block;
+}
+.mm-shell .mm-print-codes .mm-print-qr svg {
+    width: 76px;
+    height: 76px;
+}
+.mm-shell .mm-print-codes .mm-print-barcode svg {
+    width: 168px;
+    height: 42px;
+}
+.mm-shell .mm-print-codes-caption {
+    font-size: 9.5px;
+    letter-spacing: 0.08em;
+    margin-top: 2px;
+}
+@media print {
+    .mm-shell.mm-printing-pos-receipt .mm-pos-print-hide,
+    .mm-shell.mm-printing-booking-doc .mm-pos-print-hide {
+        display: none !important;
+    }
+    .mm-shell.mm-printing-pos-receipt .mm-pos-print-receipt,
+    .mm-shell.mm-printing-booking-doc .mm-pos-print-receipt {
+        display: block !important;
+    }
+    .mm-shell.mm-printing-pos-receipt #navbar,
+    .mm-shell.mm-printing-pos-receipt #sidebar,
+    .mm-shell.mm-printing-pos-receipt #mm-top-subnav,
+    .mm-shell.mm-printing-pos-receipt .breadcrumbs,
+    .mm-shell.mm-printing-pos-receipt .footer {
+        display: none !important;
+    }
+    .mm-shell.mm-printing-pos-receipt .main-content,
+    .mm-shell.mm-printing-pos-receipt .page-content,
+    .mm-shell.mm-printing-pos-receipt .mm-shell-main {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+}
+
 /* ---------- KDS Course / Modifier Badges, Live SLA Timers & Recall ---------- */
 .mm-shell .mm-kds-badge-row {
     display: flex;

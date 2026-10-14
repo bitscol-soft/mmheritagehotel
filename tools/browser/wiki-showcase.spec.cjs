@@ -494,6 +494,38 @@ test('Wave 2 High-Traffic Operational Screens (Checkout, Night Audit, POS, Vouch
     await page.locator('#mm-fullscreen-exit-btn').click();
     await expect(page.locator('body')).not.toHaveClass(/mm-focused-fullscreen/);
 
+    // 3b. POS Print Receipt with QR + Barcode (blank print-preview fix: dedicated 80mm receipt)
+    await page.goto(`http://127.0.0.1:${PORT}/preview/rst-pos-create`);
+    await page.evaluate(() => { window.__printCalls = 0; window.print = function () { window.__printCalls++; }; });
+    await page.locator('#rpos-print-btn').click();
+    await expect.poll(() => page.evaluate(() => window.__printCalls)).toBeGreaterThan(0);
+    await expect(page.locator('#rpos-receipt-items tr')).toHaveCount(2);
+    await expect(page.locator('#rpos-receipt-total')).not.toContainText('0.00');
+    await expect(page.locator('#rpos-print-receipt .mm-print-qr svg')).toHaveCount(1);
+    await expect(page.locator('#rpos-print-receipt .mm-print-barcode svg')).toHaveCount(1);
+    await expect(page.locator('#rpos-receipt-code')).toContainText('R-');
+
+    await page.goto(`http://127.0.0.1:${PORT}/preview/bar-pos-create`);
+    await page.evaluate(() => { window.__printCalls = 0; window.print = function () { window.__printCalls++; }; });
+    await page.locator('#bpos-print-btn').click();
+    await expect.poll(() => page.evaluate(() => window.__printCalls)).toBeGreaterThan(0);
+    await expect(page.locator('#bpos-print-receipt .mm-print-qr svg')).toHaveCount(1);
+    await expect(page.locator('#bpos-print-receipt .mm-print-barcode svg')).toHaveCount(1);
+
+    // 3c. QR + Barcode on Booking Summary / Invoice / KOT documents
+    await page.goto(`http://127.0.0.1:${PORT}/preview/checkout`);
+    await expect(page.locator('.mm-print-codes .mm-print-qr svg')).toHaveCount(1);
+    await expect(page.locator('.mm-print-codes .mm-print-barcode svg')).toHaveCount(1);
+    await page.goto(`http://127.0.0.1:${PORT}/preview/invoice`);
+    await expect(page.locator('.mm-print-codes .mm-print-qr svg')).toHaveCount(1);
+    await expect(page.locator('.mm-print-codes .mm-print-barcode svg')).toHaveCount(1);
+    await page.goto(`http://127.0.0.1:${PORT}/preview/draft-booking-pdf`);
+    await expect(page.locator('.mm-print-codes .mm-print-qr svg')).toHaveCount(1);
+    await expect(page.locator('.mm-print-codes .mm-print-barcode svg')).toHaveCount(1);
+    await page.goto(`http://127.0.0.1:${PORT}/preview/pos-kot-print`);
+    await expect(page.locator('.mm-thermal-slip .mm-print-qr svg')).toHaveCount(1);
+    await expect(page.locator('.mm-thermal-slip .mm-print-barcode svg')).toHaveCount(1);
+
     // 4. Receive Vouchers, Balance Sheet & Income Statement
     await page.goto(`http://127.0.0.1:${PORT}/preview/acc-receives`);
     await page.locator('#rcv-approve-all-btn').click();

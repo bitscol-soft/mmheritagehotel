@@ -42,6 +42,7 @@
         }
     </style>
     <x-mm.styles />
+    @stack('ui-styles')
 </head>
 
 <body>
@@ -220,12 +221,16 @@
             </div>
         </div>
     </div>
+            @include('partials.print-codes', ['code' => $sale->invoice_no, 'label' => 'Restaurant Sale Invoice'])
         </x-mm.print-sheet>
     </div>
 
     <script type="text/javascript">
         window.onafterprint = window.close;
-        window.print();
+        // Deferred to the load event so the print preview is never blank.
+        window.addEventListener('load', function () {
+            setTimeout(function () { window.print(); }, 350);
+        });
     </script>
 </body>
 
