@@ -1206,55 +1206,113 @@ function buildPlanBPages(shellWith) {
 
     function unifiedPosPage() {
         const body = `<section class="mm-ui"><div class="tw-space-y-4 tw-py-2">
-            <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <header class="mm-page-head mm-no-print tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
                 <div class="mm-page-title">
                     <h1 class="tw-m-0 tw-font-semibold tw-text-ink"><i class="fa fa-cutlery"></i> Unified Restaurant, Bar &amp; In-Room Dining POS Engine (Plan A · Phase 3 #6)</h1>
-                    <p class="tw-m-0 tw-text-sm tw-text-muted">Single shared POS engine across Heritage Dining Restaurant, Skyline Lounge Bar, and 20-Suite Room Service with KDS fire, bill splitting, and folio posting.</p>
+                    <p class="tw-m-0 tw-text-sm tw-text-muted">Single shared POS engine across Heritage Dining Restaurant, Skyline Lounge Bar, and 20-Suite Room Service with KDS course fire, table merge, bill splitting, and room-folio posting.</p>
                 </div>
                 <div class="tw-flex tw-flex-wrap tw-gap-2">
                     <a href="/preview/rst-pos" class="mm-button mm-button-secondary"><i class="fa fa-cutlery"></i> Restaurant POS</a>
                     <a href="/preview/bar-pos" class="mm-button mm-button-secondary"><i class="fa fa-glass"></i> Bar POS</a>
                     <a href="/preview/rst-kitchen-board" class="mm-button mm-button-secondary"><i class="fa fa-fire"></i> Kitchen KDS</a>
+                    <button type="button" class="mm-button mm-button-secondary" data-toggle="modal" data-target="#upos-kot-modal"><i class="fa fa-print"></i> 80mm Thermal KOT / Check</button>
                     <button type="button" class="mm-button" id="upos-btn-fire-kds"><i class="fa fa-fire"></i> Fire KOT &amp; Post to Room Folio</button>
                 </div>
             </header>
-            <div class="mm-table-kpi-grid" aria-label="Unified POS summary">
-                <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-cutlery"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Active Outlet Mode</span><div class="mm-table-kpi-value" id="upos-kpi-outlet">Heritage Dining <span class="mm-table-kpi-sub">Table #T-04 ·Suite #204</span></div></div></div>
-                <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-list"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Order Items</span><div class="mm-table-kpi-value" id="upos-kpi-items">3 Courses <span class="mm-table-kpi-sub">KOT #892 Ready</span></div></div></div>
+
+            <!-- 3-Step POS Workflow Stepper -->
+            <nav class="mm-stepper mm-no-print" aria-label="Unified POS workflow">
+                <ol class="mm-stepper-list">
+                    <li class="mm-step is-done" id="upos-step-1"><span class="mm-step-index">✓</span><span class="mm-step-label">1. Outlet, Table / Suite &amp; Courses</span></li>
+                    <li class="mm-step is-current" id="upos-step-2" aria-current="step"><span class="mm-step-index">2</span><span class="mm-step-label">2. Fire KOT to Kitchen &amp; Bar KDS</span></li>
+                    <li class="mm-step" id="upos-step-3"><span class="mm-step-index">3</span><span class="mm-step-label">3. Split / Merge Bill &amp; Folio Settlement</span></li>
+                </ol>
+            </nav>
+
+            <div class="mm-table-kpi-grid mm-no-print" aria-label="Unified POS summary">
+                <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-cutlery"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Active Outlet &amp; Table</span><div class="mm-table-kpi-value" id="upos-kpi-outlet">Heritage Dining <span class="mm-table-kpi-sub">Table #T-04 · Suite #204</span></div></div></div>
+                <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-list"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Order Items &amp; KDS</span><div class="mm-table-kpi-value" id="upos-kpi-items">3 Courses <span class="mm-table-kpi-sub">KOT #892 Ready</span></div></div></div>
                 <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-columns"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Bill Split Mode</span><div class="mm-table-kpi-value" id="upos-kpi-split">Full Single Bill <span class="mm-table-kpi-sub">৳ 4,600 / Guest</span></div></div></div>
-                <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-money"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Gross Payable (w/ Tax)</span><div class="mm-table-kpi-value" id="upos-kpi-total">৳ 4,600 <span class="mm-table-kpi-sub">Incl. Svc &amp; VAT</span></div></div></div>
+                <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-money"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Gross Payable (w/ Tax)</span><div class="mm-table-kpi-value" id="upos-kpi-total">৳ 5,555 <span class="mm-table-kpi-sub">Subtotal: ৳ 4,600</span></div></div></div>
             </div>
 
-            <div id="upos-banner" class="alert alert-success" style="display:none;margin:0;border-radius:10px;">
-                <i class="fa fa-check-circle"></i> <strong id="upos-banner-msg">KOT #892 fired to Kitchen Display Board (KDS) and ৳ 4,600 posted to Suite #204 (Brig. Gen. Mahmudul Hasan) Folio!</strong>
+            <div id="upos-banner" class="alert alert-success mm-no-print" style="display:none;margin:0;border-radius:10px;">
+                <i class="fa fa-check-circle"></i> <strong id="upos-banner-msg">KOT #892 fired to Kitchen Display Board (KDS) and posted to Suite #204 (Brig. Gen. Mahmudul Hasan) Folio!</strong>
             </div>
 
-            <div style="display:grid;grid-template-columns:1.15fr 1fr;gap:16px">
-                <!-- Left: Outlet Switcher & Quick Menu Grid -->
-                <div class="mm-panel tw-p-5">
-                    <div class="tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-2" style="margin-bottom:12px">
-                        <strong><i class="fa fa-th-large"></i> 1. Select Outlet &amp; Tap Menu Item to Add</strong>
-                        <select id="upos-outlet-select" class="form-control input-sm" style="width:230px;">
-                            <option value="Heritage Dining Restaurant" selected>Outlet: Heritage Dining Restaurant</option>
-                            <option value="Skyline Lounge Bar">Outlet: Skyline Lounge Bar</option>
-                            <option value="24h In-Room Suite Dining">Outlet: 24h In-Room Suite Dining</option>
+            <!-- Outlet, Table/Suite & Table Merge Bar -->
+            <div class="mm-panel tw-p-4 mm-no-print">
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;align-items:end">
+                    <div>
+                        <label class="mm-label" for="upos-outlet-select">1. Active POS Outlet</label>
+                        <select id="upos-outlet-select" class="form-control input-sm">
+                            <option value="Heritage Dining Restaurant" selected>Heritage Dining Restaurant (16 Tables)</option>
+                            <option value="Skyline Lounge Bar">Skyline Lounge Bar (12 Tables)</option>
+                            <option value="24h In-Room Suite Dining">24h In-Room Suite Dining (20 Suites)</option>
+                            <option value="Grand Banquet Catering">Grand Banquet Catering</option>
                         </select>
                     </div>
-                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-                        <button type="button" class="mm-button mm-button-secondary upos-menu-btn" data-name="Kacchi Biryani Royal Platter" data-price="1450" style="justify-content:space-between;width:100%"><span>Kacchi Biryani Platter</span><strong>৳ 1,450</strong></button>
-                        <button type="button" class="mm-button mm-button-secondary upos-menu-btn" data-name="Grilled Norwegian Salmon" data-price="2200" style="justify-content:space-between;width:100%"><span>Grilled Norwegian Salmon</span><strong>৳ 2,200</strong></button>
-                        <button type="button" class="mm-button mm-button-secondary upos-menu-btn" data-name="Truffle Mushroom Risotto" data-price="1350" style="justify-content:space-between;width:100%"><span>Truffle Risotto</span><strong>৳ 1,350</strong></button>
-                        <button type="button" class="mm-button mm-button-secondary upos-menu-btn" data-name="Signature Virgin Mojito Pitcher" data-price="850" style="justify-content:space-between;width:100%"><span>Virgin Mojito Pitcher</span><strong>৳ 850</strong></button>
-                        <button type="button" class="mm-button mm-button-secondary upos-menu-btn" data-name="Tandoori Lobster Thermidor" data-price="2800" style="justify-content:space-between;width:100%"><span>Lobster Thermidor</span><strong>৳ 2,800</strong></button>
-                        <button type="button" class="mm-button mm-button-secondary upos-menu-btn" data-name="Belgian Dark Lava Cake" data-price="650" style="justify-content:space-between;width:100%"><span>Belgian Lava Cake</span><strong>৳ 650</strong></button>
+                    <div>
+                        <label class="mm-label" for="upos-table-select">2. Table / In-House Suite</label>
+                        <select id="upos-table-select" class="form-control input-sm">
+                            <option value="Table #T-04 · Suite #204 (Brig. Gen. Mahmud)" selected>Table #T-04 · Suite #204 (Brig. Gen. Mahmud)</option>
+                            <option value="Table #T-01 · Suite #101 (Tanvir Chowdhury)">Table #T-01 · Suite #101 (Tanvir Chowdhury)</option>
+                            <option value="Lounge #B-02 · Suite #301 (Amb. Takahashi)">Lounge #B-02 · Suite #301 (Amb. Takahashi)</option>
+                            <option value="Room Service · Suite #403 (Rubana Huq)">Room Service · Suite #403 (Rubana Huq)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="mm-label" for="upos-merge-select">3. Merge Table / Transfer Ticket</label>
+                        <div style="display:flex;gap:6px">
+                            <select id="upos-merge-select" class="form-control input-sm">
+                                <option value="Table #T-05 (Artisan Mocktail Platter)|1250">Merge Table #T-05 (+৳ 1,250)</option>
+                                <option value="Bar Tab #B-07 (Sparkling High-Tea)|1800">Merge Bar Tab #B-07 (+৳ 1,800)</option>
+                            </select>
+                            <button type="button" id="upos-btn-merge" class="mm-button mm-button-secondary" style="min-height:30px;padding:2px 10px;font-size:11.5px;white-space:nowrap"><i class="fa fa-compress"></i> Merge</button>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="mm-label" for="upos-course-pace">4. KDS Course Fire Pacing</label>
+                        <select id="upos-course-pace" class="form-control input-sm">
+                            <option value="Fire All Courses Together">Fire All Courses Together</option>
+                            <option value="Fire Starters &amp; Bar Now · Hold Mains" selected>Fire Starters &amp; Bar · Hold Mains</option>
+                            <option value="VIP Synchronized Table Service">VIP Synchronized Table Service</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(380px,1fr));gap:16px" class="mm-no-print">
+                <!-- Left: Category Filter, Search & Menu Grid -->
+                <div class="mm-panel tw-p-5">
+                    <div class="tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-2" style="margin-bottom:10px">
+                        <strong><i class="fa fa-th-large"></i> Menu Catalog — Tap Any Item to Add to Ticket</strong>
+                        <input type="search" id="upos-menu-search" class="form-control input-sm" placeholder="Search dish or drink..." style="width:190px;">
+                    </div>
+                    <div class="mm-preview-filter-pills" id="upos-cat-pills" style="margin-bottom:12px">
+                        <button type="button" class="mm-preview-pill is-active" data-upos-cat="all">All (8)</button>
+                        <button type="button" class="mm-preview-pill" data-upos-cat="Mains">Signature Mains</button>
+                        <button type="button" class="mm-preview-pill" data-upos-cat="Grills">Grills &amp; Seafood</button>
+                        <button type="button" class="mm-preview-pill" data-upos-cat="Bar">Bar &amp; Mocktails</button>
+                        <button type="button" class="mm-preview-pill" data-upos-cat="Dessert">Desserts</button>
+                    </div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px" id="upos-menu-grid">
+                        <button type="button" class="mm-button mm-button-secondary upos-menu-btn" data-cat="Mains" data-course="Main" data-name="Kacchi Biryani Royal Platter" data-price="1450" style="justify-content:space-between;width:100%"><span>Kacchi Biryani Platter</span><strong>৳ 1,450</strong></button>
+                        <button type="button" class="mm-button mm-button-secondary upos-menu-btn" data-cat="Grills" data-course="Main" data-name="Grilled Norwegian Salmon" data-price="2200" style="justify-content:space-between;width:100%"><span>Grilled Norwegian Salmon</span><strong>৳ 2,200</strong></button>
+                        <button type="button" class="mm-button mm-button-secondary upos-menu-btn" data-cat="Mains" data-course="Main" data-name="Truffle Mushroom Risotto" data-price="1350" style="justify-content:space-between;width:100%"><span>Truffle Risotto</span><strong>৳ 1,350</strong></button>
+                        <button type="button" class="mm-button mm-button-secondary upos-menu-btn" data-cat="Bar" data-course="Bar" data-name="Signature Virgin Mojito Pitcher" data-price="850" style="justify-content:space-between;width:100%"><span>Virgin Mojito Pitcher</span><strong>৳ 850</strong></button>
+                        <button type="button" class="mm-button mm-button-secondary upos-menu-btn" data-cat="Grills" data-course="Main" data-name="Tandoori Lobster Thermidor" data-price="2800" style="justify-content:space-between;width:100%"><span>Lobster Thermidor</span><strong>৳ 2,800</strong></button>
+                        <button type="button" class="mm-button mm-button-secondary upos-menu-btn" data-cat="Dessert" data-course="Dessert" data-name="Belgian Dark Lava Cake" data-price="650" style="justify-content:space-between;width:100%"><span>Belgian Lava Cake</span><strong>৳ 650</strong></button>
+                        <button type="button" class="mm-button mm-button-secondary upos-menu-btn" data-cat="Bar" data-course="Bar" data-name="Cold-Pressed Pomegranate Elixir" data-price="620" style="justify-content:space-between;width:100%"><span>Pomegranate Elixir</span><strong>৳ 620</strong></button>
+                        <button type="button" class="mm-button mm-button-secondary upos-menu-btn" data-cat="Dessert" data-course="Dessert" data-name="Saffron Pistachio Shahi Tukda" data-price="580" style="justify-content:space-between;width:100%"><span>Saffron Shahi Tukda</span><strong>৳ 580</strong></button>
                     </div>
                 </div>
 
-                <!-- Right: Live Ticket, Bill Splitter & Room Charge -->
+                <!-- Right: Live Ticket, Qty +/-, Tax Breakdown, Bill Splitter & Room Charge -->
                 <div class="mm-panel tw-p-5">
                     <div class="tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-2" style="margin-bottom:10px">
-                        <strong><i class="fa fa-receipt"></i> 2. Active Order Ticket &amp; Split-Bill Calculator</strong>
-                        <select id="upos-split-select" class="form-control input-sm" style="width:190px;">
+                        <strong><i class="fa fa-receipt"></i> Active Order Ticket (#KOT-892) &amp; Split-Bill Engine</strong>
+                        <select id="upos-split-select" class="form-control input-sm" style="width:195px;">
                             <option value="1" selected>Full Single Bill (1 Way)</option>
                             <option value="2">Split Equally · 2 Guests</option>
                             <option value="3">Split Equally · 3 Guests</option>
@@ -1263,55 +1321,171 @@ function buildPlanBPages(shellWith) {
                     </div>
                     <div class="mm-table-scroll" style="margin-bottom:10px">
                         <table class="mm-data-table table table-bordered table-striped">
-                            <thead><tr><th>Course / Item</th><th class="text-center">Qty</th><th class="text-right">Total (৳)</th></tr></thead>
+                            <thead><tr><th>Course &amp; Item</th><th class="text-center">Qty</th><th class="text-right">Line (৳)</th><th class="text-center">×</th></tr></thead>
                             <tbody id="upos-ticket-tbody">
-                                <tr class="upos-row" data-amt="1450"><td><strong>Kacchi Biryani Royal Platter</strong></td><td class="text-center">1</td><td class="text-right">1,450</td></tr>
-                                <tr class="upos-row" data-amt="2200"><td><strong>Grilled Norwegian Salmon</strong></td><td class="text-center">1</td><td class="text-right">2,200</td></tr>
-                                <tr class="upos-row" data-amt="950"><td><strong>Artisan Mezze &amp; Garlic Naan</strong></td><td class="text-center">1</td><td class="text-right">950</td></tr>
+                                <tr class="upos-row" data-unit="1450" data-qty="1" data-amt="1450"><td><span class="mm-badge mm-badge-paid">Main</span> <strong>Kacchi Biryani Royal Platter</strong></td><td class="text-center"><button type="button" class="btn btn-xs btn-default upos-qty-dec">-</button> <span class="upos-qty-val">1</span> <button type="button" class="btn btn-xs btn-default upos-qty-inc">+</button></td><td class="text-right upos-line-cell">1,450</td><td class="text-center"><button type="button" class="btn btn-xs btn-danger upos-row-del">&times;</button></td></tr>
+                                <tr class="upos-row" data-unit="2200" data-qty="1" data-amt="2200"><td><span class="mm-badge mm-badge-paid">Main</span> <strong>Grilled Norwegian Salmon</strong></td><td class="text-center"><button type="button" class="btn btn-xs btn-default upos-qty-dec">-</button> <span class="upos-qty-val">1</span> <button type="button" class="btn btn-xs btn-default upos-qty-inc">+</button></td><td class="text-right upos-line-cell">2,200</td><td class="text-center"><button type="button" class="btn btn-xs btn-danger upos-row-del">&times;</button></td></tr>
+                                <tr class="upos-row" data-unit="950" data-qty="1" data-amt="950"><td><span class="mm-badge mm-badge-partial">Starter</span> <strong>Artisan Mezze &amp; Garlic Naan</strong></td><td class="text-center"><button type="button" class="btn btn-xs btn-default upos-qty-dec">-</button> <span class="upos-qty-val">1</span> <button type="button" class="btn btn-xs btn-default upos-qty-inc">+</button></td><td class="text-right upos-line-cell">950</td><td class="text-center"><button type="button" class="btn btn-xs btn-danger upos-row-del">&times;</button></td></tr>
                             </tbody>
                         </table>
                     </div>
-                    <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-radius:8px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.28)">
-                        <span id="upos-split-summary"><strong>Total Payable: ৳ 4,600</strong> (1 Way · Charge to Suite #204)</span>
-                        <span class="mm-badge mm-badge-paid" id="upos-per-person-badge">৳ 4,600 / bill</span>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;font-size:12px">
+                        <div><label class="mm-label">Discount / Happy Hour (%)</label><input type="number" id="upos-disc-pct" class="form-control input-sm" value="0" min="0" max="50"></div>
+                        <div><label class="mm-label">Settlement Target</label><select id="upos-pay-method" class="form-control input-sm"><option value="Suite #204 Folio">Post to Suite #204 Folio</option><option value="VISA/MC POS + Cash">Multi-Tender: Card + Cash</option><option value="bKash / SSLCommerz QR">bKash / SSLCommerz QR</option></select></div>
+                    </div>
+                    <div style="padding:10px 12px;border-radius:8px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.28);font-size:12px">
+                        <div style="display:flex;justify-content:space-between;margin-bottom:4px"><span id="upos-tax-line">Subtotal: ৳ 4,600 · Svc (5%): ৳ 230 · VAT (15%): ৳ 725</span><span class="mm-badge mm-badge-paid" id="upos-per-person-badge">৳ 4,600 / bill</span></div>
+                        <div style="display:flex;justify-content:space-between;align-items:center"><span id="upos-split-summary"><strong>Net Subtotal: ৳ 4,600 · Gross w/ Tax: ৳ 5,555</strong> (1 Way)</span><button type="button" class="mm-button" id="upos-btn-settle-inline" style="min-height:28px;padding:2px 10px;font-size:11.5px;"><i class="fa fa-check"></i> Settle / Post Folio</button></div>
                     </div>
                 </div>
+            </div>
+
+            <!-- 80mm Thermal KOT & Guest Check Slide-Over Drawer -->
+            <div id="upos-kot-modal" class="modal fade mm-drawer" data-mm-drawer="true" tabindex="-1" role="dialog">
+                <div class="modal-dialog"><div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title"><i class="fa fa-print"></i> 80mm Thermal KOT &amp; Guest Check Receipt (#KOT-2026-892)</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div style="max-width:320px;margin:0 auto;padding:16px;border:1px dashed #64748b;border-radius:8px;background:#fff;color:#0f172a;font-family:monospace;font-size:12px">
+                            <div style="text-align:center;border-bottom:1px dashed #94a3b8;padding-bottom:8px;margin-bottom:8px">
+                                <strong>M&amp;M HERITAGE HOTEL &amp; SUITES</strong><br>
+                                <span id="kot-print-outlet">Heritage Dining Restaurant</span><br>
+                                <span>KOT #2026-892 · 14 Oct 2026</span><br>
+                                <strong id="kot-print-table">Table #T-04 · Suite #204</strong>
+                            </div>
+                            <div id="kot-print-lines" style="border-bottom:1px dashed #94a3b8;padding-bottom:8px;margin-bottom:8px">
+                                1x Kacchi Biryani Platter — ৳ 1,450<br>
+                                1x Grilled Norwegian Salmon — ৳ 2,200<br>
+                                1x Artisan Mezze &amp; Garlic Naan — ৳ 950
+                            </div>
+                            <div style="text-align:right" id="kot-print-totals">
+                                Subtotal: ৳ 4,600<br>
+                                5% Service + 15% VAT: ৳ 955<br>
+                                <strong>GRAND TOTAL: ৳ 5,555</strong>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="mm-button mm-button-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="mm-button" onclick="window.print()"><i class="fa fa-print"></i> Print 80mm Thermal Ticket</button>
+                    </div>
+                </div></div>
             </div>
         </div></section>
         <script>(function(){
             function fmt(n){return Math.round(n).toLocaleString("en-US");}
-            var tbody=document.getElementById("upos-ticket-tbody"),splitSel=document.getElementById("upos-split-select"),outSel=document.getElementById("upos-outlet-select");
+            var tbody=document.getElementById("upos-ticket-tbody"),splitSel=document.getElementById("upos-split-select"),outSel=document.getElementById("upos-outlet-select"),tblSel=document.getElementById("upos-table-select"),discInp=document.getElementById("upos-disc-pct");
             function recalc(){
-                var rows=tbody.querySelectorAll(".upos-row"),sum=0;
-                for(var i=0;i<rows.length;i++)sum+=Number(rows[i].getAttribute("data-amt")||0);
-                var ways=Number(splitSel&&splitSel.value||1),per=Math.round(sum/ways);
+                var rows=tbody.querySelectorAll(".upos-row"),sub=0,kotLines=[];
+                for(var i=0;i<rows.length;i++){
+                    var u=Number(rows[i].getAttribute("data-unit")||rows[i].getAttribute("data-amt")||0);
+                    var q=Number(rows[i].getAttribute("data-qty")||1);
+                    var line=u*q;
+                    rows[i].setAttribute("data-amt",String(line));
+                    var qEl=rows[i].querySelector(".upos-qty-val"),lEl=rows[i].querySelector(".upos-line-cell"),nmEl=rows[i].querySelector("strong");
+                    if(qEl)qEl.textContent=String(q);
+                    if(lEl)lEl.textContent=fmt(line);
+                    sub+=line;
+                    if(nmEl)kotLines.push(q+"x "+nmEl.textContent+" — ৳ "+fmt(line));
+                }
+                var discPct=Number(discInp&&discInp.value||0);
+                var netSub=Math.round(sub*(1-discPct/100));
+                var svc=Math.round(netSub*0.05),vat=Math.round((netSub+svc)*0.15),grand=netSub+svc+vat;
+                var ways=Number(splitSel&&splitSel.value||1),perSub=Math.round(netSub/ways),perGrand=Math.round(grand/ways);
                 var kItems=document.getElementById("upos-kpi-items"),kSplit=document.getElementById("upos-kpi-split"),kTot=document.getElementById("upos-kpi-total");
                 if(kItems)kItems.innerHTML=rows.length+' Courses <span class="mm-table-kpi-sub">KOT #892 Ready</span>';
-                if(kSplit)kSplit.innerHTML=(ways===1?"Full Single Bill":"Split "+ways+" Ways")+' <span class="mm-table-kpi-sub">৳ '+fmt(per)+" / Guest</span>";
-                if(kTot)kTot.innerHTML="৳ "+fmt(sum)+' <span class="mm-table-kpi-sub">Incl. Svc &amp; VAT</span>';
-                var sumEl=document.getElementById("upos-split-summary"),bdgEl=document.getElementById("upos-per-person-badge");
-                if(sumEl)sumEl.innerHTML="<strong>Total Payable: ৳ "+fmt(sum)+"</strong> ("+ways+" Way · Charge to Suite #204)";
-                if(bdgEl)bdgEl.textContent="৳ "+fmt(per)+" / bill";
+                if(kSplit)kSplit.innerHTML=(ways===1?"Full Single Bill":"Split "+ways+" Ways")+' <span class="mm-table-kpi-sub">৳ '+fmt(perSub)+" / Guest</span>";
+                if(kTot)kTot.innerHTML="৳ "+fmt(grand)+' <span class="mm-table-kpi-sub">Subtotal: ৳ '+fmt(netSub)+"</span>";
+                var taxLine=document.getElementById("upos-tax-line"),sumEl=document.getElementById("upos-split-summary"),bdgEl=document.getElementById("upos-per-person-badge");
+                if(taxLine)taxLine.textContent="Subtotal: ৳ "+fmt(netSub)+" · Svc (5%): ৳ "+fmt(svc)+" · VAT (15%): ৳ "+fmt(vat);
+                if(sumEl)sumEl.innerHTML="<strong>Net Subtotal: ৳ "+fmt(netSub)+" · Gross w/ Tax: ৳ "+fmt(grand)+"</strong> ("+ways+" Way · ৳ "+fmt(perGrand)+"/guest)";
+                if(bdgEl)bdgEl.textContent="৳ "+fmt(perSub)+" / bill";
+                var kpLines=document.getElementById("kot-print-lines"),kpTot=document.getElementById("kot-print-totals");
+                if(kpLines)kpLines.innerHTML=kotLines.join("<br>");
+                if(kpTot)kpTot.innerHTML="Subtotal: ৳ "+fmt(netSub)+"<br>5% Service + 15% VAT: ৳ "+fmt(svc+vat)+"<br><strong>GRAND TOTAL: ৳ "+fmt(grand)+"</strong>";
+            }
+            function appendRow(course,nm,pr){
+                var tr=document.createElement("tr");
+                tr.className="upos-row";
+                tr.setAttribute("data-unit",String(pr));
+                tr.setAttribute("data-qty","1");
+                tr.setAttribute("data-amt",String(pr));
+                tr.innerHTML='<td><span class="mm-badge mm-badge-paid">'+(course||"Main")+"</span> <strong>"+nm+'</strong></td><td class="text-center"><button type="button" class="btn btn-xs btn-default upos-qty-dec">-</button> <span class="upos-qty-val">1</span> <button type="button" class="btn btn-xs btn-default upos-qty-inc">+</button></td><td class="text-right upos-line-cell">'+fmt(pr)+'</td><td class="text-center"><button type="button" class="btn btn-xs btn-danger upos-row-del">&times;</button></td>';
+                tbody.appendChild(tr);
+                recalc();
             }
             var mBtns=document.querySelectorAll(".upos-menu-btn");
             for(var j=0;j<mBtns.length;j++){
                 mBtns[j].addEventListener("click",function(){
-                    var nm=this.getAttribute("data-name"),pr=Number(this.getAttribute("data-price")||0);
-                    var tr=document.createElement("tr");
-                    tr.className="upos-row";
-                    tr.setAttribute("data-amt",String(pr));
-                    tr.innerHTML="<td><strong>"+nm+'</strong></td><td class="text-center">1</td><td class="text-right">'+fmt(pr)+"</td>";
-                    tbody.appendChild(tr);
-                    recalc();
+                    appendRow(this.getAttribute("data-course"),this.getAttribute("data-name"),Number(this.getAttribute("data-price")||0));
                 });
             }
-            if(splitSel)splitSel.addEventListener("change",recalc);
-            if(outSel)outSel.addEventListener("change",function(){
-                var kOut=document.getElementById("upos-kpi-outlet");
-                if(kOut)kOut.innerHTML=this.value+' <span class="mm-table-kpi-sub">Table #T-04 · Suite #204</span>';
+            tbody.addEventListener("click",function(e){
+                var t=e.target;
+                if(!t)return;
+                var tr=t.closest(".upos-row");
+                if(!tr)return;
+                if(t.classList.contains("upos-qty-inc")){
+                    tr.setAttribute("data-qty",String(Number(tr.getAttribute("data-qty")||1)+1));
+                    recalc();
+                }else if(t.classList.contains("upos-qty-dec")){
+                    var q=Math.max(1,Number(tr.getAttribute("data-qty")||1)-1);
+                    tr.setAttribute("data-qty",String(q));
+                    recalc();
+                }else if(t.classList.contains("upos-row-del")){
+                    tr.remove();
+                    recalc();
+                }
             });
-            var fireBtn=document.getElementById("upos-btn-fire-kds"),ban=document.getElementById("upos-banner");
-            if(fireBtn&&ban)fireBtn.addEventListener("click",function(){ban.style.display="block";});
+            var mrgBtn=document.getElementById("upos-btn-merge"),mrgSel=document.getElementById("upos-merge-select");
+            if(mrgBtn&&mrgSel){
+                mrgBtn.addEventListener("click",function(){
+                    var pts=(mrgSel.value||"").split("|");
+                    appendRow("Merged",pts[0]||"Merged Table Order",Number(pts[1]||1250));
+                });
+            }
+            var catPills=document.querySelectorAll("[data-upos-cat]"),qInp=document.getElementById("upos-menu-search"),activeCat="all";
+            function filterMenu(){
+                var q=(qInp&&qInp.value||"").toLowerCase().trim();
+                for(var i=0;i<mBtns.length;i++){
+                    var b=mBtns[i],c=b.getAttribute("data-cat"),nm=(b.getAttribute("data-name")||"").toLowerCase();
+                    var ok=(activeCat==="all"||c===activeCat)&&(!q||nm.indexOf(q)>=0);
+                    b.style.display=ok?"":"none";
+                }
+            }
+            for(var c=0;c<catPills.length;c++){
+                catPills[c].addEventListener("click",function(){
+                    for(var k=0;k<catPills.length;k++)catPills[k].classList.remove("is-active");
+                    this.classList.add("is-active");
+                    activeCat=this.getAttribute("data-upos-cat");
+                    filterMenu();
+                });
+            }
+            if(qInp)qInp.addEventListener("input",filterMenu);
+            if(splitSel)splitSel.addEventListener("change",recalc);
+            if(discInp)discInp.addEventListener("input",recalc);
+            function syncOutletHeader(){
+                var kOut=document.getElementById("upos-kpi-outlet"),tVal=tblSel?tblSel.value:"Table #T-04 · Suite #204";
+                if(kOut&&outSel)kOut.innerHTML=outSel.value+' <span class="mm-table-kpi-sub">'+tVal+"</span>";
+                var kpOut=document.getElementById("kot-print-outlet"),kpTbl=document.getElementById("kot-print-table");
+                if(kpOut&&outSel)kpOut.textContent=outSel.value;
+                if(kpTbl)kpTbl.textContent=tVal;
+            }
+            if(outSel)outSel.addEventListener("change",syncOutletHeader);
+            if(tblSel)tblSel.addEventListener("change",syncOutletHeader);
+            var fireBtn=document.getElementById("upos-btn-fire-kds"),settleBtn=document.getElementById("upos-btn-settle-inline"),ban=document.getElementById("upos-banner"),banMsg=document.getElementById("upos-banner-msg");
+            function fireAndPost(){
+                if(ban&&banMsg){
+                    var payM=document.getElementById("upos-pay-method")?document.getElementById("upos-pay-method").value:"Suite #204 Folio";
+                    var pace=document.getElementById("upos-course-pace")?document.getElementById("upos-course-pace").value:"Fire All Courses";
+                    banMsg.textContent="KOT #892 ("+pace+") fired to Kitchen & Bar KDS and settled via "+payM+"!";
+                    ban.style.display="block";
+                }
+            }
+            if(fireBtn)fireBtn.addEventListener("click",fireAndPost);
+            if(settleBtn)settleBtn.addEventListener("click",fireAndPost);
         })();</script>`;
         return shellWith(body, '', '', 'Unified Restaurant & Bar POS Engine', ['Restaurant & Bar', 'POS', 'Unified Split-Bill Engine']);
     }
