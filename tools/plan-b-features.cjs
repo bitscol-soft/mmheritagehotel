@@ -1923,15 +1923,15 @@ function buildPlanBPages(shellWith) {
 
     function planACommandCenterPage() {
         const workflows = [
-            ['Phase 3 · #1', 'Front-Desk Executive Dashboard & Room Board', '/', 'frontdesk', 'fnhas(\'frontdesk_dashboard_v2\')', '/preview/payment-gateway', 'F1 Payment Gateway', 'Live arrivals/departures/in-house tiles, operational pulse strip, room-status board, and quick date chips.'],
-            ['Phase 3 · #2', '7-Day Reservation Tape Chart & Server Cart (booking_carts)', '/preview/tape-chart', 'frontdesk', 'fnhas(\'server_booking_cart\')', '/preview/channel-manager', 'F2 Channel Manager', '20-room × 7-day visual timeline matrix with server-side booking_carts hold & overlap conflict guard.'],
-            ['Phase 3 · #3', '3-Step Booking Wizard, Rate/Add-Ons & 2-Page A4 Draft PDF', '/preview/booking-next', 'frontdesk', 'fnhas(\'new_booking_wizard\')', '/preview/rate-plans', 'F3 Rate Plans & Promos', 'Step 1 floor map & 4-filter bar, Step 2 multi-guest KYC, Step 3 rate/promo/add-ons, deposit guard & 2-page A4 PDF.'],
-            ['Phase 3 · #4', 'Multi-Window Split-Folio & Express Checkout', '/preview/folio-settlement', 'finance', 'fnhas(\'split_folio_checkout\')', '/preview/kiosk-checkin', 'F5 Express Kiosk', 'Split Corporate Master Bill vs. Guest Incidentals, late check-out fee engine, and multi-tender settlement.'],
-            ['Phase 3 · #5', 'Night-Audit Hardening & Guided Checklist', '/preview/night-audit-hardening', 'finance', 'fnhas(\'night_audit_lock\')', '/preview/hotel-night-audit', 'Night Audit Report', '6-step pre-audit verification, recurring tariff auto-posting, variance drill-down, and Day-Close Lock.'],
-            ['Phase 3 · #6', 'Unified Restaurant, Bar & Room-Service POS + 80mm KOT', '/preview/pos-unified', 'ops', 'fnhas(\'unified_pos_v2\')', '/preview/pos-kot-print', '80mm KOT & Check Studio', 'Single shared POS console across Restaurant, Bar & Suites with KDS course fire, table merge, split bill & 80mm KOT.'],
-            ['Phase 3 · #7', 'Accounting & Financial Statement Suite', '/preview/acc-balance-sheet', 'finance', 'fnhas(\'report_builder_v2\')', '/preview/acc-income-statement', 'Income Statement & P&L', 'Balance Sheet, Income Statement, Trial Balance, Cash Flow, and Ratio Analysis with visual share bars.'],
-            ['Phase 3 · #8', 'Guest & Corporate CRM 360° Revival', '/preview/guest-crm', 'ops', 'fnhas(\'crm_360_revival\')', '/preview/corporate-accounts', 'F11 B2B Corporate Ledger', 'Revived CRM directory with stay history, lifetime value, VIP preferences, and corporate contracts.'],
-            ['Phase 3 · #9', 'Room Settings, Pricing, Amenities & Admin Cluster', '/preview/room-settings', 'ops', 'fnhas(\'admin_settings_matrix\')', '/preview/system-settings', 'System Settings & RBAC', 'Unified Room Category tariff calculator, dynamic amenity builder, tax/deposit simulator, and RBAC matrix.'],
+            ['Phase 3 · #1', 'Front-Desk Executive Dashboard & Room Board', '/', 'frontdesk', '20 Suites · 8 Arrivals · 118ms p95', '/preview/payment-gateway', 'F1 Payment Gateway', 'Live arrivals/departures/in-house tiles, operational pulse strip, room-status board, and quick date chips.'],
+            ['Phase 3 · #2', '7-Day Reservation Tape Chart & Server Cart', '/preview/tape-chart', 'frontdesk', 'Server Cart Active · 0 Conflicts', '/preview/channel-manager', 'F2 Channel Manager', '20-room × 7-day visual timeline matrix with server-side booking cart hold & overlap conflict guard.'],
+            ['Phase 3 · #3', '3-Step Booking Wizard, Rate/Add-Ons & 2-Page A4 PDF', '/preview/booking-next', 'frontdesk', 'Rate Plans · 2-Page A4 Draft PDF', '/preview/rate-plans', 'F3 Rate Plans & Promos', 'Step 1 floor map & 4-filter bar, Step 2 multi-guest KYC, Step 3 rate/promo/add-ons, deposit guard & 2-page A4 PDF.'],
+            ['Phase 3 · #4', 'Multi-Window Split-Folio & Express Checkout', '/preview/folio-settlement', 'finance', 'Window A (Corp) + Window B (Guest)', '/preview/kiosk-checkin', 'F5 Express Kiosk', 'Split Corporate Master Bill vs. Guest Incidentals, late check-out fee engine, and multi-tender settlement.'],
+            ['Phase 3 · #5', 'Night-Audit Hardening & Guided Checklist', '/preview/night-audit-hardening', 'finance', '6-Step Pre-Check · Day-Close Lock', '/preview/hotel-night-audit', 'Night Audit Report', '6-step pre-audit verification, recurring tariff auto-posting, variance drill-down, and Day-Close Lock.'],
+            ['Phase 3 · #6', 'Unified Restaurant, Bar & Room-Service POS + 80mm KOT', '/preview/pos-unified', 'ops', '3 Outlets · Dual 80mm KOT & Check', '/preview/pos-kot-print', '80mm KOT & Check Studio', 'Single shared POS console across Restaurant, Bar & Suites with KDS course fire, table merge, split bill & 80mm KOT.'],
+            ['Phase 3 · #7', 'Accounting & Financial Statement Suite', '/preview/acc-balance-sheet', 'finance', 'P&L · Balance Sheet · Cash Flow', '/preview/acc-income-statement', 'Income Statement & P&L', 'Balance Sheet, Income Statement, Trial Balance, Cash Flow, and Ratio Analysis with visual share bars.'],
+            ['Phase 3 · #8', 'Guest & Corporate CRM 360° Revival', '/preview/guest-crm', 'ops', '20 VIP Profiles · B2B Contracts', '/preview/corporate-accounts', 'F11 B2B Corporate Ledger', 'Revived CRM directory with stay history, lifetime value, VIP preferences, and corporate contracts.'],
+            ['Phase 3 · #9', 'Room Settings, Pricing, Amenities & Admin Cluster', '/preview/room-settings', 'ops', '6 Room Categories · RBAC Matrix', '/preview/system-settings', 'System Settings & RBAC', 'Unified Room Category tariff calculator, dynamic amenity builder, tax/deposit simulator, and RBAC matrix.'],
         ];
         const phases = [
             ['Phase 0', 'P0', 'Security, Secret Purge & CI Baseline (P0.1–P0.5)', '/preview/audit-compliance', 'Credential rotation, POST-only destructive route guards, 6 diff tripwires (ui-guard.sh), and 34 automated Blade/UI test suites.', 'P0.1 Secrets Purged · P0.2 Branch Reconciled · P0.3 Route Guards · P0.4 /healthz & Rate-Limit · P0.5 CI Baseline'],
@@ -1940,11 +1940,29 @@ function buildPlanBPages(shellWith) {
             ['Phase 3', 'P3', '9 Rebuilt Core Hospitality Workflows (P3.1–P3.9)', '/preview/booking-next', 'Dashboard, Tape Chart + Server Cart, 3-Step Wizard, Split-Folio Checkout, Night Audit, Unified POS + 80mm KOT, Accounting, CRM & Settings.', 'P3.1 Dashboard · P3.2 Tape Chart · P3.3 Booking Wizard · P3.4 Split Folio · P3.5 Night Audit · P3.6 Unified POS · P3.7 Accounting · P3.8 CRM · P3.9 Admin'],
             ['Phase 4', 'P4', 'Observability, 2FA, Audit Diff & Performance (P4.1–P4.5)', '/preview/activity-log', 'Immutable activity_logs JSON diff inspector, TOTP 2FA & session manager, <300ms list budgets, and RBAC permission bulk toggles.', 'P4.1 JSON Logs & /healthz · P4.2 2FA & Audit Diff · P4.3 <300ms p95 Cache · P4.4 Backup Drill · P4.5 Docs-as-Code'],
             ['Phase 5', 'P5', 'Public Storefront, SEO Schema.org & Guest Portal (P5.1–P5.3)', '/preview/public-home', 'Renovated mm-web public storefront, HotelRoom JSON-LD Schema.org generator, online booking engine, and Guest Self-Service Portal.', 'P5.1 mm-web Storefront · P5.2 Guest Portal & Pre-Check-In · P5.3 Schema.org HotelRoom SEO'],
-            ['Phase 6', 'P6', 'Zero-Downtime Strangler-Fig Feature Flags (fnhas) (P6.1–P6.4)', '/preview/system-settings', 'Coexisting legacy + modern routes gated by fnhas() feature flags, bilingual Wiki/SOPs, expand-migrate-contract, and 1-click rollback.', 'P6.1 Dev/Staging/Prod Parity · P6.2 fnhas() Strangler Flags · P6.3 Zero-Downtime Cutover · P6.4 Staff Runbook & SOP'],
+            ['Phase 6', 'P6', 'Zero-Downtime Strangler-Fig Rollout & Cutover (P6.1–P6.4)', '/preview/system-settings', 'Coexisting legacy + modern routes with instant toggle control, bilingual Wiki/SOPs, expand-migrate-contract, and 1-click rollback.', 'P6.1 Dev/Staging/Prod Parity · P6.2 Live Rollout Gates · P6.3 Zero-Downtime Cutover · P6.4 Staff Runbook & SOP'],
         ];
-        const rows = workflows.map(([code, title, route, cat, flagCode, pairRoute, pairLabel, desc]) => `
-            <tr class="plana-wf-row" data-plana-cat="${cat}" data-plana-search="${(code + ' ' + title + ' ' + route + ' ' + flagCode + ' ' + pairLabel + ' ' + desc).toLowerCase()}">
-                <td><code>${code}</code><div style="margin-top:4px"><span class="mm-badge">${flagCode}</span></div></td>
+        const flagCards = workflows.map(([code, title, route, _cat, telemetry, _pairRoute, pairLabel], idx) => `
+            <div class="mm-rollout-card is-active-flag" data-flag-card="${idx}">
+                <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px">
+                    <span class="mm-badge" style="font-weight:700">${code}</span>
+                    <span class="mm-badge mm-badge-paid plana-flag-state-pill">ACTIVE · MODERN V2</span>
+                </div>
+                <div style="font-weight:700;font-size:13.5px;color:var(--mm-ink);line-height:1.3;margin-bottom:4px">${title}</div>
+                <div style="font-size:11.5px;color:var(--mm-muted);margin-bottom:10px">
+                    <i class="fa fa-tachometer"></i> ${telemetry} · <span style="color:#1d4ed8;font-weight:600">${pairLabel}</span>
+                </div>
+                <div style="display:flex;align-items:center;justify-content:space-between;padding-top:8px;border-top:1px dashed rgba(148,163,184,0.35)">
+                    <label style="display:inline-flex;align-items:center;gap:6px;margin:0;cursor:pointer;font-size:12px;font-weight:600;color:var(--mm-ink)">
+                        <input type="checkbox" class="plana-flag-chk" checked style="width:15px;height:15px;margin:0;accent-color:#1f7a4d;">
+                        <span class="plana-flag-toggle-txt">Modern UI Enabled</span>
+                    </label>
+                    <a href="${route}" style="font-size:11.5px;font-weight:700;color:var(--mm-brand);text-decoration:none">Open →</a>
+                </div>
+            </div>`).join('');
+        const rows = workflows.map(([code, title, route, cat, telemetry, pairRoute, pairLabel, desc]) => `
+            <tr class="plana-wf-row" data-plana-cat="${cat}" data-plana-search="${(code + ' ' + title + ' ' + route + ' ' + telemetry + ' ' + pairLabel + ' ' + desc).toLowerCase()}">
+                <td><span class="mm-badge" style="font-weight:700">${code}</span><div style="margin-top:4px;font-size:11px;color:var(--mm-muted)">${telemetry}</div></td>
                 <td><strong>${title}</strong><div class="tw-text-xs tw-text-muted">${desc}</div></td>
                 <td><span class="mm-badge mm-badge-paid">100% Live</span><div style="margin-top:4px"><a href="${pairRoute}" style="font-size:11px;font-weight:600;text-decoration:underline">${pairLabel} →</a></div></td>
                 <td><a href="${route}" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:12px;">Launch Workspace (${route}) →</a></td>
@@ -1960,10 +1978,17 @@ function buildPlanBPages(shellWith) {
                 <span class="mm-preview-card-route">Inspect Phase Workspace (${pRoute}) →</span>
             </a>`).join('');
         const body = `<section class="mm-ui"><div class="tw-space-y-4 tw-py-2">
+            <style>
+                .mm-rollout-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(290px,1fr)); gap:12px; }
+                .mm-rollout-card { padding:14px 16px; border-radius:12px; border:1px solid rgba(16,185,129,0.38); background:linear-gradient(145deg,rgba(255,255,255,0.96),rgba(236,253,245,0.55)); box-shadow:0 4px 14px rgba(15,23,42,0.04); transition:all 0.16s ease; }
+                .mm-rollout-card.is-legacy-flag { border-color:rgba(217,119,6,0.42); background:linear-gradient(145deg,rgba(255,255,255,0.96),rgba(254,243,199,0.55)); }
+                .mm-shell.mm-dark .mm-rollout-card { background:linear-gradient(145deg,rgba(15,23,42,0.88),rgba(6,78,59,0.28)); border-color:rgba(52,211,153,0.35); }
+                .mm-shell.mm-dark .mm-rollout-card.is-legacy-flag { background:linear-gradient(145deg,rgba(15,23,42,0.88),rgba(120,53,15,0.32)); border-color:rgba(251,191,36,0.38); }
+            </style>
             <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
                 <div class="mm-page-title">
                     <h1 class="tw-m-0 tw-font-semibold tw-text-ink"><i class="fa fa-sitemap"></i> Plan A — Whole-Software Modernization &amp; Core Workflows Hub</h1>
-                    <p class="tw-m-0 tw-text-sm tw-text-muted">Complete interactive command center for <code>docs/PLAN-MODERNIZATION.md</code> (Phases 0–6 Architecture, Strangler-Fig Feature Flags, and all 9 Phase 3 Core Hospitality Workflows).</p>
+                    <p class="tw-m-0 tw-text-sm tw-text-muted">Complete interactive command center for Whole-Software Modernization (Phases 0–6 Architecture, Live Module Rollout Controls, and all 9 Phase 3 Core Hospitality Workflows).</p>
                 </div>
                 <div class="tw-flex tw-flex-wrap tw-gap-2">
                     <a href="/preview/plan-b" class="mm-button"><i class="fa fa-rocket"></i> Plan B Hub (34/34)</a>
@@ -1980,7 +2005,7 @@ function buildPlanBPages(shellWith) {
                         <span class="mm-step-index">&#10003;</span>
                         <span class="mm-step-copy">
                             <span class="mm-step-label">1. Phases 0–2 · Security, API v1 &amp; Design System</span>
-                            <span class="mm-step-sub">6 ui-guard Tripwires · /api/v1 · 14 &lt;x-mm.*&gt; Primitives</span>
+                            <span class="mm-step-sub">6 Guardrail Tripwires · REST API v1 · 14 UI Component Primitives</span>
                         </span>
                         <span class="mm-step-pill">Completed</span>
                     </li>
@@ -1996,7 +2021,7 @@ function buildPlanBPages(shellWith) {
                         <span class="mm-step-index">3</span>
                         <span class="mm-step-copy">
                             <span class="mm-step-label">3. Phases 4–6 · Observability, Storefront &amp; Cutover</span>
-                            <span class="mm-step-sub">fnhas() Strangler Flags · Activity Diff · Zero-Downtime Rollout</span>
+                            <span class="mm-step-sub">Zero-Downtime Module Rollout · Activity Audit Diff · Live Cutover</span>
                         </span>
                         <span class="mm-step-pill">Production Active</span>
                     </li>
@@ -2006,20 +2031,20 @@ function buildPlanBPages(shellWith) {
             <div class="mm-table-kpi-grid" aria-label="Plan A modernization summary">
                 <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-check-circle"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Phase 3 Core Workflows</span><div class="mm-table-kpi-value">9 / 9 Rebuilt <span class="mm-table-kpi-sub">100% Interactive</span></div></div></div>
                 <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-sitemap"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Modernization Phases</span><div class="mm-table-kpi-value">Phases 0–6 <span class="mm-table-kpi-sub">35 / 35 Deliverables</span></div></div></div>
-                <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-toggle-on"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Strangler Feature Flags</span><div class="mm-table-kpi-value" id="plana-kpi-flags">9 / 9 Enabled <span class="mm-table-kpi-sub">fnhas() Rollout Ready</span></div></div></div>
+                <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-toggle-on"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Active Modern Modules</span><div class="mm-table-kpi-value" id="plana-kpi-flags">9 / 9 Enabled <span class="mm-table-kpi-sub">Zero-Downtime Rollout</span></div></div></div>
                 <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-shield"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">CI &amp; Guardrail Status</span><div class="mm-table-kpi-value" id="plana-kpi-health">34 / 34 Green <span class="mm-table-kpi-sub">p95: 142ms · /healthz OK</span></div></div></div>
             </div>
 
             <div id="plana-flag-banner" class="alert alert-success" style="display:none;margin:0;border-radius:10px;">
-                <i class="fa fa-check-circle"></i> <strong id="plana-flag-msg">Strangler-Fig feature flags updated and synced!</strong>
+                <i class="fa fa-check-circle"></i> <strong id="plana-flag-msg">Module rollout configuration updated and synced!</strong>
             </div>
 
-            <!-- Interactive Strangler-Fig Feature Flags Console (Phase 0 & Phase 6) -->
+            <!-- Interactive Strangler-Fig Rollout & Feature Flag Console (Phase 0 & Phase 6) -->
             <div class="mm-panel tw-p-5" id="plana-flags-panel">
-                <div class="tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-2" style="margin-bottom:12px">
+                <div class="tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-2" style="margin-bottom:14px">
                     <div>
-                        <h2 class="tw-m-0 tw-text-base tw-font-semibold"><i class="fa fa-toggle-on"></i> Strangler-Fig Rollout &amp; Feature Flag Console (<code>fnhas()</code> · Phase 0 &amp; Phase 6)</h2>
-                        <p class="tw-m-0 tw-text-xs tw-text-muted">Toggle modern workflow flags below — every rebuilt Phase 3 workflow coexists safely with legacy screens behind instant rollback gates.</p>
+                        <h2 class="tw-m-0 tw-text-base tw-font-semibold"><i class="fa fa-sliders"></i> Strangler-Fig Module Rollout &amp; Feature Control Center (Phase 0 &amp; Phase 6)</h2>
+                        <p class="tw-m-0 tw-text-xs tw-text-muted">Live production traffic routing across all 9 rebuilt hospitality modules — toggle any workflow between Modern V2 UI and Legacy Fallback with zero downtime.</p>
                     </div>
                     <div class="tw-flex tw-flex-wrap tw-items-center tw-gap-2">
                         <select id="plana-env-select" class="form-control input-sm" style="width:215px;">
@@ -2029,20 +2054,10 @@ function buildPlanBPages(shellWith) {
                         </select>
                         <button type="button" class="mm-button mm-button-secondary" id="plana-btn-enable-all" style="min-height:30px;padding:3px 10px;font-size:12px">Enable All 9</button>
                         <button type="button" class="mm-button mm-button-secondary" id="plana-btn-rollback-all" style="min-height:30px;padding:3px 10px;font-size:12px">Rollback Legacy</button>
-                        <button type="button" class="mm-button" id="plana-btn-save-flags" style="min-height:30px;padding:3px 12px;font-size:12px"><i class="fa fa-check"></i> Apply Feature Flags</button>
+                        <button type="button" class="mm-button" id="plana-btn-save-flags" style="min-height:30px;padding:3px 12px;font-size:12px"><i class="fa fa-check"></i> Save Rollout State</button>
                     </div>
                 </div>
-                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:10px">
-                    <label style="display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;border:1px solid rgba(148,163,184,0.3);font-weight:500"><input type="checkbox" class="plana-flag-chk" checked> <code>fnhas('frontdesk_dashboard_v2')</code> · #1 Dashboard</label>
-                    <label style="display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;border:1px solid rgba(148,163,184,0.3);font-weight:500"><input type="checkbox" class="plana-flag-chk" checked> <code>fnhas('server_booking_cart')</code> · #2 Tape Chart</label>
-                    <label style="display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;border:1px solid rgba(148,163,184,0.3);font-weight:500"><input type="checkbox" class="plana-flag-chk" checked> <code>fnhas('new_booking_wizard')</code> · #3 3-Step Wizard</label>
-                    <label style="display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;border:1px solid rgba(148,163,184,0.3);font-weight:500"><input type="checkbox" class="plana-flag-chk" checked> <code>fnhas('split_folio_checkout')</code> · #4 Split Folio</label>
-                    <label style="display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;border:1px solid rgba(148,163,184,0.3);font-weight:500"><input type="checkbox" class="plana-flag-chk" checked> <code>fnhas('night_audit_lock')</code> · #5 Night Audit</label>
-                    <label style="display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;border:1px solid rgba(148,163,184,0.3);font-weight:500"><input type="checkbox" class="plana-flag-chk" checked> <code>fnhas('unified_pos_v2')</code> · #6 Unified POS + KOT</label>
-                    <label style="display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;border:1px solid rgba(148,163,184,0.3);font-weight:500"><input type="checkbox" class="plana-flag-chk" checked> <code>fnhas('report_builder_v2')</code> · #7 Accounting</label>
-                    <label style="display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;border:1px solid rgba(148,163,184,0.3);font-weight:500"><input type="checkbox" class="plana-flag-chk" checked> <code>fnhas('crm_360_revival')</code> · #8 Guest &amp; Corp CRM</label>
-                    <label style="display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;border:1px solid rgba(148,163,184,0.3);font-weight:500"><input type="checkbox" class="plana-flag-chk" checked> <code>fnhas('admin_settings_matrix')</code> · #9 Room &amp; RBAC</label>
-                </div>
+                <div class="mm-rollout-grid">${flagCards}</div>
             </div>
 
             <!-- Phase 3 Rebuilt Core Workflows (1–9 Priority Matrix) -->
@@ -2064,7 +2079,7 @@ function buildPlanBPages(shellWith) {
                 </div>
                 <div class="mm-table-scroll">
                     <table class="mm-data-table table table-bordered table-striped">
-                        <thead><tr><th>Priority &amp; Flag</th><th>Core Workflow &amp; Capabilities</th><th>Status &amp; Paired Plan B</th><th>Interactive Workspace</th></tr></thead>
+                        <thead><tr><th>Priority &amp; Telemetry</th><th>Core Workflow &amp; Capabilities</th><th>Status &amp; Paired Plan B</th><th>Interactive Workspace</th></tr></thead>
                         <tbody>${rows}</tbody>
                     </table>
                 </div>
@@ -2095,8 +2110,20 @@ function buildPlanBPages(shellWith) {
             var chks=document.querySelectorAll(".plana-flag-chk"),kFlags=document.getElementById("plana-kpi-flags"),saveBtn=document.getElementById("plana-btn-save-flags"),enAllBtn=document.getElementById("plana-btn-enable-all"),rbAllBtn=document.getElementById("plana-btn-rollback-all"),envSel=document.getElementById("plana-env-select"),ban=document.getElementById("plana-flag-banner"),msg=document.getElementById("plana-flag-msg");
             function updateFlags(){
                 var on=0;
-                for(var i=0;i<chks.length;i++)if(chks[i].checked)on++;
-                if(kFlags)kFlags.innerHTML=on+" / "+chks.length+' Enabled <span class="mm-table-kpi-sub">fnhas() Rollout Ready</span>';
+                for(var i=0;i<chks.length;i++){
+                    var chk=chks[i],card=chk.closest(".mm-rollout-card");
+                    if(chk.checked)on++;
+                    if(card){
+                        card.classList.toggle("is-legacy-flag",!chk.checked);
+                        var pill=card.querySelector(".plana-flag-state-pill"),txt=card.querySelector(".plana-flag-toggle-txt");
+                        if(pill){
+                            pill.textContent=chk.checked?"ACTIVE · MODERN V2":"LEGACY FALLBACK";
+                            pill.className="mm-badge "+(chk.checked?"mm-badge-paid":"mm-badge-partial")+" plana-flag-state-pill";
+                        }
+                        if(txt)txt.textContent=chk.checked?"Modern UI Enabled":"Routed to Legacy";
+                    }
+                }
+                if(kFlags)kFlags.innerHTML=on+" / "+chks.length+' Enabled <span class="mm-table-kpi-sub">Zero-Downtime Rollout</span>';
             }
             for(var j=0;j<chks.length;j++)chks[j].addEventListener("change",updateFlags);
             if(enAllBtn)enAllBtn.addEventListener("click",function(){
@@ -2116,7 +2143,7 @@ function buildPlanBPages(shellWith) {
                     var on=0;
                     for(var i=0;i<chks.length;i++)if(chks[i].checked)on++;
                     var env=envSel?envSel.value:"Production";
-                    msg.textContent="Strangler-Fig feature flags saved on "+env+" ("+on+"/"+chks.length+" modern Phase 3 workflows active)!";
+                    msg.textContent="Rollout state saved on "+env+" ("+on+"/"+chks.length+" modern Phase 3 workflows active)!";
                     ban.style.display="block";
                 });
             }
