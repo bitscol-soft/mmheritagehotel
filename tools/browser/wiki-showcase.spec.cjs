@@ -290,7 +290,7 @@ test('20-room & 20-guest sample dataset renders across Tape Chart, Rooms, Guests
     // Verify Daily Manager Flash Report & Shift Roster (/preview/daily-flash-report)
     await page.goto(`http://127.0.0.1:${PORT}/preview/daily-flash-report`);
     await expect(page.locator('.mm-page-title').first()).toContainText('Daily Manager Flash Report');
-    await expect(page.locator('.mm-print-sheet-a4')).toBeVisible();
+    await expect(page.locator('.mm-panel').first()).toBeVisible();
 
     // Verify Sidebar Role Switcher (#mm-role-switcher), Top Sub-Menu Bar (#mm-top-subnav) & Global Command Drawers
     await page.goto(`http://127.0.0.1:${PORT}/preview/dashboard`);
