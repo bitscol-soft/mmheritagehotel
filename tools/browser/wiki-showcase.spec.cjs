@@ -409,13 +409,34 @@ test('redesigned Website CMS, Payment Collection, KDS Kitchen Board & Trial Bala
     await page.locator('#pc-submit-btn').click();
     await expect(page.locator('#pc-confirm-banner')).toBeVisible();
 
-    // 5. Live Kitchen Display System (KDS) Board (/preview/rst-kitchen-board)
+    // 5. Live Kitchen Display System (KDS) Board (/preview/rst-kitchen-board) + Focused Fullscreen, badges, SLA timers & recall
     await page.goto(`http://127.0.0.1:${PORT}/preview/rst-kitchen-board`);
-    await page.locator('.mm-board-card[data-order-id="R-0101"] .kds-advance-btn').click();
+    await expect(page.locator('.mm-board-card[data-order-id="R-0101"] .mm-kds-course-badge').first()).toContainText('Course 1');
+    await expect(page.locator('.mm-board-card[data-order-id="R-0101"] .mm-kds-mod-badge.is-allergy')).toContainText('No Peanuts');
+    await expect(page.locator('.mm-board-card[data-order-id="R-0102"] .mm-kds-timer')).toHaveClass(/is-overdue/);
+    await page.locator('#mm-focused-fullscreen-btn').click();
+    await expect(page.locator('body')).toHaveClass(/mm-focused-fullscreen/);
+    await expect(page.locator('#mm-fullscreen-hud')).toBeVisible();
+    await page.locator('#mm-fullscreen-exit-btn').click();
+    await expect(page.locator('body')).not.toHaveClass(/mm-focused-fullscreen/);
+    await page.locator('.mm-board-card[data-order-id="R-0103"] .kds-recall-btn').click();
     await expect(page.locator('#mm-kds-kpi-cooking')).toContainText('2');
+    await expect(page.locator('#kds-confirm-banner')).toContainText('Recalled');
+    await page.locator('.mm-board-card[data-order-id="R-0101"] .kds-advance-btn').click();
+    await expect(page.locator('#mm-kds-kpi-cooking')).toContainText('3');
+    await page.locator('.mm-board-card[data-order-id="R-0103"] .kds-advance-btn').click();
     await page.locator('#kds-bump-ready-btn').click();
     await expect(page.locator('#mm-kds-kpi-ready')).toContainText('0');
     await expect(page.locator('#kds-confirm-banner')).toBeVisible();
+
+    // 5b. 80mm Thermal KOT Print Studio (/preview/pos-kot-print) + Focused Fullscreen
+    await page.goto(`http://127.0.0.1:${PORT}/preview/pos-kot-print`);
+    await expect(page.locator('#kot-print-count')).toContainText('Printed 1');
+    await page.locator('#mm-focused-fullscreen-btn').click();
+    await expect(page.locator('body')).toHaveClass(/mm-focused-fullscreen/);
+    await expect(page.locator('#mm-fullscreen-hud')).toBeVisible();
+    await page.locator('#mm-fullscreen-exit-btn').click();
+    await expect(page.locator('body')).not.toHaveClass(/mm-focused-fullscreen/);
 
     // 6. Double-Entry Trial Balance (/preview/acc-trial-balance)
     await page.goto(`http://127.0.0.1:${PORT}/preview/acc-trial-balance`);

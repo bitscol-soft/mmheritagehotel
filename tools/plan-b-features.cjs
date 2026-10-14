@@ -2365,17 +2365,35 @@ function buildPlanBPages(shellWith) {
     function posKotPrintPage() {
         const body = `<section class="mm-ui"><div class="tw-space-y-4 tw-py-2">
             ${renderThermalStyles()}
+            <div id="mm-fullscreen-hud" class="mm-no-print" role="region" aria-label="Focused fullscreen controls">
+                <div class="mm-fullscreen-hud-left">
+                    <span class="mm-fullscreen-hud-badge"><i class="fa fa-arrows-alt" aria-hidden="true"></i> Focused Fullscreen Mode</span>
+                    <span><strong>80mm Thermal KOT Studio</strong> · Distraction-Free Print Terminal (Press <code>Esc</code> or <code>Alt+Z</code> to exit)</span>
+                </div>
+                <button type="button" id="mm-fullscreen-exit-btn" data-mm-fullscreen-exit class="mm-fullscreen-exit-btn">
+                    <i class="fa fa-compress" aria-hidden="true"></i> Exit Fullscreen
+                </button>
+            </div>
             <header class="mm-page-head mm-no-print tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
                 <div class="mm-page-title">
                     <h1 class="tw-m-0 tw-font-semibold tw-text-ink"><i class="fa fa-print"></i> 80mm Thermal KOT &amp; Guest Tax Check Print Studio</h1>
                     <p class="tw-m-0 tw-text-sm tw-text-muted">Dual-slip 80mm thermal paper layout: Slip 1 (Kitchen &amp; Bar Order Ticket w/ Station SLA &amp; Modifiers) + Slip 2 (Mushak 6.3 Guest Tax Check, Room-Folio Authorization &amp; EFD QR).</p>
                 </div>
                 <div class="tw-flex tw-flex-wrap tw-gap-2">
+                    <button type="button" id="mm-focused-fullscreen-btn" data-mm-fullscreen-toggle aria-pressed="false" class="mm-button mm-button-secondary mm-focused-fs-btn" title="Toggle distraction-free Focused Fullscreen Mode (Alt+Z)"><i class="fa fa-arrows-alt" aria-hidden="true"></i> Focused Fullscreen</button>
                     <a href="/preview/pos-unified" class="mm-button mm-button-secondary"><i class="fa fa-cutlery"></i> Back to Unified POS</a>
                     <a href="/preview/rst-kitchen-board" class="mm-button mm-button-secondary"><i class="fa fa-fire"></i> Kitchen KDS Board</a>
                     <button type="button" class="mm-button" onclick="window.print()"><i class="fa fa-print"></i> Print 80mm Thermal Slips</button>
                 </div>
             </header>
+            <div class="mm-no-print" style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:0 0 4px">
+                <span class="mm-kds-course-badge"><i class="fa fa-clock-o"></i> Course Pacing · Fire Starters, Hold Mains</span>
+                <span class="mm-kds-mod-badge is-allergy"><i class="fa fa-warning"></i> Allergen · Strictly No MSG</span>
+                <span class="mm-kds-mod-badge">Less Ghee</span>
+                <span class="mm-kds-mod-badge">Medium-Well</span>
+                <span class="mm-badge mm-badge-partial" id="kot-print-count">Printed 1× · Original</span>
+                <button type="button" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11.5px" onclick="var el=document.getElementById('kot-print-count');var n=parseInt((el.textContent.match(/\\d+/)||['1'])[0],10)+1;el.textContent='Printed '+n+'× · Reprint #'+(n-1);window.print();"><i class="fa fa-copy"></i> Reprint KOT</button>
+            </div>
             <div class="mm-table-kpi-grid mm-no-print" aria-label="80mm thermal print summary">
                 <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-print"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Thermal Paper Spec</span><div class="mm-table-kpi-value">80mm Roll <span class="mm-table-kpi-sub">72mm Print · 203 DPI</span></div></div></div>
                 <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-fire"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Slip 1 · Kitchen KOT</span><div class="mm-table-kpi-value">#KOT-2026-892 <span class="mm-table-kpi-sub">Course SLA + Allergen</span></div></div></div>

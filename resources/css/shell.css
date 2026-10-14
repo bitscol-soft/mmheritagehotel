@@ -2997,6 +2997,59 @@
     border-color: #1d4ed8 !important;
 }
 
+/* ---------- KDS Course / Modifier Badges, Live SLA Timers & Recall ---------- */
+.mm-shell .mm-kds-badge-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin: 6px 0 2px;
+}
+.mm-shell .mm-kds-course-badge,
+.mm-shell .mm-kds-mod-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    border: 1px solid transparent;
+}
+.mm-shell .mm-kds-course-badge {
+    background: rgba(29, 78, 216, 0.12);
+    border-color: rgba(59, 130, 246, 0.35);
+    color: #1d4ed8;
+}
+.mm-shell .mm-kds-course-badge.is-hold {
+    background: rgba(217, 119, 6, 0.14);
+    border-color: rgba(245, 158, 11, 0.45);
+    color: #b45309;
+}
+.mm-shell .mm-kds-mod-badge {
+    background: rgba(4, 120, 87, 0.1);
+    border-color: rgba(16, 185, 129, 0.35);
+    color: #047857;
+}
+.mm-shell .mm-kds-mod-badge.is-allergy {
+    background: rgba(220, 38, 38, 0.12);
+    border-color: rgba(248, 113, 113, 0.5);
+    color: #b91c1c;
+}
+.mm-shell .mm-kds-timer.is-overdue {
+    background: rgba(220, 38, 38, 0.92) !important;
+    color: #ffffff !important;
+    border-color: rgba(252, 165, 165, 0.7) !important;
+    box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.35);
+}
+.mm-shell .mm-board-card.is-recalled {
+    outline: 2px solid rgba(217, 119, 6, 0.75);
+    outline-offset: -2px;
+}
+.mm-shell.mm-dark .mm-kds-course-badge { color: #93c5fd; }
+.mm-shell.mm-dark .mm-kds-mod-badge { color: #6ee7b7; }
+.mm-shell.mm-dark .mm-kds-mod-badge.is-allergy { color: #fca5a5; }
+
 /* ---------- Advanced POS Command Bar (.mm-pos-advanced-bar) ---------- */
 .mm-shell .mm-pos-advanced-bar {
     display: grid;

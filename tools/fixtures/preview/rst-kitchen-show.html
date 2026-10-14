@@ -60,11 +60,22 @@
 <!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
 <section class="mm-ui mm-invoice-page mm-rst">
     <div class="tw-space-y-4 tw-py-2">
+        <div id="mm-fullscreen-hud" class="mm-no-print" role="region" aria-label="Focused fullscreen controls">
+            <div class="mm-fullscreen-hud-left">
+                <span class="mm-fullscreen-hud-badge"><i class="fa fa-arrows-alt" aria-hidden="true"></i> Focused Fullscreen Mode</span>
+                <span><strong>80mm KOT Detail</strong> · Distraction-Free Print Terminal (Press <code>Esc</code> or <code>Alt+Z</code> to exit)</span>
+            </div>
+            <button type="button" id="mm-fullscreen-exit-btn" data-mm-fullscreen-exit class="mm-fullscreen-exit-btn">
+                <i class="fa fa-compress" aria-hidden="true"></i> Exit Fullscreen
+            </button>
+        </div>
+
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Order details</h1>
                 <p class="tw-m-0 tw-text-sm tw-text-muted">80mm Thermal Kitchen Order Ticket (KOT) — kitchen copy of the order. Printing outputs the document only.</p>            </div>
             <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <button type="button" id="mm-focused-fullscreen-btn" data-mm-fullscreen-toggle aria-pressed="false" class="mm-button mm-button-secondary mm-focused-fs-btn" title="Toggle distraction-free Focused Fullscreen Mode (Alt+Z)"><i class="fa fa-arrows-alt" aria-hidden="true"></i> Focused Fullscreen</button>
                 <a href="/preview/rst-kitchen-board" class="mm-button mm-button-secondary"><i class="fa fa-television"></i> Live KDS Board</a>
                 <a href="/preview/rst-kitchen-list" class="mm-button mm-button-secondary"><i class="fa fa-list-alt"></i> Kitchen List</a>
                 <a href="/preview/rst-pos" class="mm-button mm-button-secondary"><i class="fa fa-cutlery"></i> Restaurant POS</a>

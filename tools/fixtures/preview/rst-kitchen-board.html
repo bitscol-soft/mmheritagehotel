@@ -4,12 +4,23 @@
 <link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
 <section class="mm-ui mm-rst mm-rst-board">
     <div class="tw-space-y-4 tw-py-2">
+        <div id="mm-fullscreen-hud" class="mm-no-print" role="region" aria-label="Focused fullscreen controls">
+            <div class="mm-fullscreen-hud-left">
+                <span class="mm-fullscreen-hud-badge"><i class="fa fa-arrows-alt" aria-hidden="true"></i> Focused Fullscreen Mode</span>
+                <span><strong>Kitchen Display Board (KDS)</strong> · Distraction-Free Pass Terminal (Press <code>Esc</code> or <code>Alt+Z</code> to exit)</span>
+            </div>
+            <button type="button" id="mm-fullscreen-exit-btn" data-mm-fullscreen-exit class="mm-fullscreen-exit-btn">
+                <i class="fa fa-compress" aria-hidden="true"></i> Exit Fullscreen
+            </button>
+        </div>
+
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink"><i class="fa fa-fire"></i> Kitchen board — Live KDS Course Pacing, Allergen Alerts &amp; 80mm KOT Bump Board</h1>
                 <p class="tw-m-0 tw-text-sm tw-text-muted">Live Kitchen Display System (KDS) — accept new orders, check off plated courses, advance cooking stages, and bump ready tickets to service.</p>
             </div>
             <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <button type="button" id="mm-focused-fullscreen-btn" data-mm-fullscreen-toggle aria-pressed="false" class="mm-button mm-button-secondary mm-focused-fs-btn" title="Toggle distraction-free Focused Fullscreen Mode (Alt+Z)"><i class="fa fa-arrows-alt" aria-hidden="true"></i> Focused Fullscreen</button>
                 <button type="button" id="kds-bump-ready-btn" class="mm-button"><i class="fa fa-check-circle"></i> Bump All Ready Tickets</button>
                 <a class="mm-button mm-button-secondary" href="/preview/rst-kitchen-show"><i class="fa fa-print"></i> 80mm Thermal KOT</a>
                 <a class="mm-button mm-button-secondary" href="/preview/rst-kitchen-list"><i class="fa fa-list-alt"></i> Kitchen List</a>
@@ -69,7 +80,7 @@
                     <header class="mm-board-card-head">
                         <h6>Order No : 1 · KOT #R-0101</h6>
                         <div class="mm-kds-head-badges">
-                            <span class="mm-kds-timer"><i class="fa fa-clock-o"></i> 4m · New</span>
+                            <span class="mm-kds-timer" data-kds-elapsed="240"><i class="fa fa-clock-o"></i> 4m · New</span>
                             <a href="/preview/rst-kitchen-show" class="btn btn-minier btn-default" title="Print 80mm KOT"><i class="fa fa-print"></i></a>
                         </div>
                     </header>
@@ -85,6 +96,12 @@
                             <b>Item 1 :</b> Shahi Kacchi Biryani (Hot) × 2<br>
                             <b>Item 2 :</b> Artisanal Mango Lassi × 1
                         </p>
+                        <div class="mm-kds-badge-row">
+                            <span class="mm-kds-course-badge"><i class="fa fa-clock-o"></i> Course 1 · Fire Now</span>
+                            <span class="mm-kds-course-badge is-hold"><i class="fa fa-pause"></i> Main · Hold 6m</span>
+                            <span class="mm-kds-mod-badge is-allergy"><i class="fa fa-warning"></i> No Peanuts</span>
+                            <span class="mm-kds-mod-badge">Medium Spice</span>
+                        </div>
                         <ul class="mm-kds-checklist" aria-label="Course checklist">
                             <li class="mm-kds-check-item" data-kds-check><span><i class="fa fa-square-o"></i> Shahi Kacchi Biryani (Hot)</span><span class="mm-kds-qty-badge">× 2</span></li>
                             <li class="mm-kds-check-item" data-kds-check><span><i class="fa fa-square-o"></i> Artisanal Mango Lassi</span><span class="mm-kds-qty-badge">× 1</span></li>
@@ -106,7 +123,7 @@
                     <header class="mm-board-card-head">
                         <h6>Order No : 2 · KOT #R-0102</h6>
                         <div class="mm-kds-head-badges">
-                            <span class="mm-kds-timer mm-kds-timer-warn"><i class="fa fa-fire"></i> 8m · Cooking</span>
+                            <span class="mm-kds-timer mm-kds-timer-warn" data-kds-elapsed="615"><i class="fa fa-fire"></i> 8m · Cooking</span>
                             <a href="/preview/rst-kitchen-show" class="btn btn-minier btn-default" title="Print 80mm KOT"><i class="fa fa-print"></i></a>
                         </div>
                     </header>
@@ -122,6 +139,12 @@
                             <b>Item 1 :</b> Old Dhaka Chicken Tikka Masala × 2<br>
                             <b>Item 2 :</b> Tandoori Garlic Butter Naan × 4
                         </p>
+                        <div class="mm-kds-badge-row">
+                            <span class="mm-kds-course-badge"><i class="fa fa-fire"></i> Course 2 · On Fire</span>
+                            <span class="mm-kds-mod-badge">Extra Butter</span>
+                            <span class="mm-kds-mod-badge">Fresh Coriander</span>
+                            <span class="mm-kds-mod-badge is-allergy"><i class="fa fa-star"></i> VIP Suite #204</span>
+                        </div>
                         <ul class="mm-kds-checklist" aria-label="Course checklist">
                             <li class="mm-kds-check-item is-plated" data-kds-check><span><i class="fa fa-check-square-o"></i> Chicken Tikka Masala</span><span class="mm-kds-qty-badge">× 2</span></li>
                             <li class="mm-kds-check-item" data-kds-check><span><i class="fa fa-square-o"></i> Garlic Butter Naan</span><span class="mm-kds-qty-badge">× 4</span></li>
@@ -143,7 +166,7 @@
                     <header class="mm-board-card-head">
                         <h6>Order No : 3 · KOT #R-0103</h6>
                         <div class="mm-kds-head-badges">
-                            <span class="mm-kds-timer mm-kds-timer-ready"><i class="fa fa-check-circle"></i> 3m · Ready</span>
+                            <span class="mm-kds-timer mm-kds-timer-ready" data-kds-elapsed="180"><i class="fa fa-check-circle"></i> 3m · Ready</span>
                             <a href="/preview/rst-kitchen-show" class="btn btn-minier btn-default" title="Print 80mm KOT"><i class="fa fa-print"></i></a>
                         </div>
                     </header>
@@ -159,13 +182,18 @@
                             <b>Item 1 :</b> Grilled King Prawn Platter × 2<br>
                             <b>Item 2 :</b> Special Zafrani Borhani × 2
                         </p>
+                        <div class="mm-kds-badge-row">
+                            <span class="mm-kds-course-badge"><i class="fa fa-check-circle"></i> All Courses Plated</span>
+                            <span class="mm-kds-mod-badge">Lemon Butter Sauce</span>
+                            <span class="mm-kds-mod-badge is-allergy"><i class="fa fa-star"></i> Diplomatic VIP</span>
+                        </div>
                         <ul class="mm-kds-checklist" aria-label="Course checklist">
                             <li class="mm-kds-check-item is-plated" data-kds-check><span><i class="fa fa-check-square-o"></i> Grilled King Prawn Platter</span><span class="mm-kds-qty-badge">× 2</span></li>
                             <li class="mm-kds-check-item is-plated" data-kds-check><span><i class="fa fa-check-square-o"></i> Special Zafrani Borhani</span><span class="mm-kds-qty-badge">× 2</span></li>
                         </ul>
                     </div>
                     <footer class="mm-board-card-foot">
-                        <button type="button" class="btn btn-xs btn-danger pull-left"><i class="ace-icon fa fa-times"></i> Recall</button>
+                        <button type="button" class="btn btn-xs btn-danger pull-left kds-recall-btn"><i class="ace-icon fa fa-undo"></i> Recall</button>
                         <form action="http://localhost/kitchen/update-status/3" method="POST" onsubmit="return false;">
                             <input type="hidden" name="_token" value="fixture-csrf-token">
                             <input type="hidden" name="type" value="Complete">
@@ -295,6 +323,56 @@
             }
         });
     }
+    function fmtElapsed(sec) {
+        var m = Math.floor(sec / 60), s = sec % 60;
+        return m + 'm ' + (s < 10 ? '0' : '') + s + 's';
+    }
+    function stateLabel(st) {
+        return st === 'new' ? 'New' : st === 'cooking' ? 'Cooking' : st === 'ready' ? 'Ready' : 'Done';
+    }
+    function paintTimers() {
+        document.querySelectorAll('.mm-board-card').forEach(function (card) {
+            var timer = card.querySelector('.mm-kds-timer[data-kds-elapsed]');
+            if (!timer) return;
+            var sec = parseInt(timer.getAttribute('data-kds-elapsed') || '0', 10) || 0;
+            var st = card.getAttribute('data-kds-state') || 'new';
+            var icon = st === 'ready' ? 'fa-check-circle' : st === 'cooking' ? 'fa-fire' : 'fa-clock-o';
+            timer.innerHTML = '<i class="fa ' + icon + '"></i> ' + fmtElapsed(sec) + ' · ' + stateLabel(st);
+            timer.classList.toggle('is-overdue', st !== 'ready' && sec >= 600);
+        });
+    }
+    paintTimers();
+    setInterval(function () {
+        document.querySelectorAll('.mm-kds-timer[data-kds-elapsed]').forEach(function (t) {
+            t.setAttribute('data-kds-elapsed', String((parseInt(t.getAttribute('data-kds-elapsed') || '0', 10) || 0) + 1));
+        });
+        paintTimers();
+    }, 1000);
+    document.addEventListener('click', function (e) {
+        var recallBtn = e.target.closest('.kds-recall-btn');
+        if (!recallBtn) return;
+        var card = recallBtn.closest('.mm-board-card');
+        if (!card) return;
+        var ordId = card.getAttribute('data-order-id') || 'R-0103';
+        card.setAttribute('data-kds-state', 'cooking');
+        card.classList.add('is-recalled');
+        var advBtn = card.querySelector('.kds-advance-btn');
+        if (advBtn) {
+            advBtn.setAttribute('data-next-state', 'ready');
+            advBtn.className = 'btn btn-xs btn-warning pull-right kds-advance-btn';
+            advBtn.innerHTML = '<span class="bigger-50">Mark Ready</span> <i class="ace-icon fa fa-arrow-right icon-on-right"></i>';
+        }
+        var timer = card.querySelector('.mm-kds-timer');
+        if (timer) timer.className = 'mm-kds-timer mm-kds-timer-warn';
+        paintTimers();
+        syncKdsKpis();
+        filterKdsCards();
+        var banner = document.getElementById('kds-confirm-banner');
+        if (banner) {
+            banner.style.display = 'block';
+            banner.innerHTML = '<i class="fa fa-undo"></i> <strong>KDS Ticket #' + ordId + ' Recalled to Cooking:</strong> Expediter notified — ticket returned to the line for re-fire.';
+        }
+    });
 })();
 </script>
 <!--/MM-JS--></body></html>

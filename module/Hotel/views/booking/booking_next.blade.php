@@ -45,10 +45,22 @@
     <x-mm.styles />
     <x-mm.page class="mm-booking-next" title="New booking" description="Confirm the selected rooms, add guest details and save the booking.">
         <x-slot name="actions">
+            <a href="#" id="mm-focused-fullscreen-btn" data-mm-fullscreen-toggle aria-pressed="false" class="mm-button mm-button-secondary mm-focused-fs-btn" title="Toggle distraction-free Focused Fullscreen Mode (Alt+Z)">
+                <i class="ace-icon fa fa-arrows-alt" aria-hidden="true"></i> Focused Fullscreen
+            </a>
             <a class="mm-button mm-button-secondary" href="{{ route('booking.index') }}">
                 <i class="ace-icon fa fa-list-alt" aria-hidden="true"></i> Booking List
             </a>
         </x-slot>
+        <div id="mm-fullscreen-hud" class="mm-no-print" role="region" aria-label="Focused fullscreen controls">
+            <div class="mm-fullscreen-hud-left">
+                <span class="mm-fullscreen-hud-badge"><i class="fa fa-arrows-alt" aria-hidden="true"></i> Focused Fullscreen Mode</span>
+                <span><strong>3-Step Hotel Booking Wizard</strong> · Distraction-Free Front-Desk Terminal (Press <code>Esc</code> or <code>Alt+Z</code> to exit)</span>
+            </div>
+            <a href="#" id="mm-fullscreen-exit-btn" data-mm-fullscreen-exit class="mm-fullscreen-exit-btn">
+                <i class="fa fa-compress" aria-hidden="true"></i> Exit Fullscreen
+            </a>
+        </div>
         @include('booking._inc._booking-next-steps')
         <x-mm.panel>
                     <div>

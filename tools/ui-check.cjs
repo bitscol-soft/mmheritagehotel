@@ -307,6 +307,7 @@ console.log('PASS: note list/edit expressions, forms and status scripts; legacy 
  const actions=after.slice(after.indexOf('<div class="mm-form-actions">'),after.indexOf("@include('booking/_modal/member-detail-modal')"));
  assert(actions.includes('onclick="submitBookingForm()"')&&actions.includes('type="button"')&&actions.includes('type="Reset"'),'Save must still call submitBookingForm() and Reset must stay a reset button');
  assert(after.includes('<x-alert-message />')&&after.includes("@include('booking._inc._booking-next-input-info')")&&after.includes("@include('booking._script.booking-next-script')")&&after.includes("@include('partials.modal.new_guest_modal')"),'booking_next lost an include');
+ assert(after.includes('data-mm-fullscreen-toggle')&&after.includes('id="mm-fullscreen-hud"')&&after.includes('data-mm-fullscreen-exit'),'booking_next must offer Focused Fullscreen Mode outside the protected booking form');
  assert(!after.includes('widget-box'),'booking_next should use the shared page frame');
  for(const path of ['module/Hotel/views/booking/_inc/_booking-next-input-info.blade.php','module/Hotel/views/booking/_script/booking-next-script.blade.php','module/Hotel/views/booking/_inc/_check-sms-and-email.blade.php','module/Hotel/views/booking/_css/css.blade.php','module/Hotel/Controllers/BookingController.php']) assert.equal(fs.readFileSync(path,'utf8'),execFileSync('git',['show',`HEAD:${path}`],{encoding:'utf8'}),`${path} must be unchanged`);
  const steps=fs.readFileSync('module/Hotel/views/booking/_inc/_booking-next-steps.blade.php','utf8');
@@ -678,6 +679,8 @@ console.log('PASS: note list/edit expressions, forms and status scripts; legacy 
   assert(after.includes('<x-mm.page'),`${f}: shared layout expected`);
   assert(!after.includes('widget-box')&&!after.includes('widget-main')&&!after.includes('widget-header'),`${f}: legacy widget frame should be gone`);
  }
+ // KDS board + queue offer Focused Fullscreen via display-only links (no new controls/expressions/scripts)
+ for(const kf of ['kitchen/create','kitchen/index']) assert(fs.readFileSync(`${dir}${kf}.blade.php`,'utf8').includes('data-mm-fullscreen-toggle')&&fs.readFileSync(`${dir}${kf}.blade.php`,'utf8').includes('id="mm-fullscreen-hud"'),`${kf}: Focused Fullscreen toggle and HUD expected`);
  // the shared partials, controllers and routes stay untouched
  const untouched=execFileSync('git',['diff','--name-only',base,'--','module/Restaurant/Controllers','module/Restaurant/routes','module/Bar/views/bar/_inc','module/Bar/views/bar/purchase-v2/create/','module/Bar/views/bar/purchase-v2/inc','module/Bar/views/bar/inventory/product/_inc/script.blade.php','module/Bar/views/bar/inventory/product/create/','module/Bar/views/bar/inventory/includes','module/Bar/views/bar/sales/_inc','module/Bar/views/partials','module/Restaurant/views/reports/inventory/export','module/Restaurant/views/rst/reports/sales/export','module/Restaurant/views/restaurant-night-audits/export','module/Restaurant/views/restaurant-night-audits/details.blade.php'],{encoding:'utf8'}).trim();
  assert.equal(untouched,'','Restaurant controllers, routes, shared Bar views and export partials must stay unchanged');
@@ -1140,6 +1143,7 @@ console.log('PASS: note list/edit expressions, forms and status scripts; legacy 
   const posEdit=fs.readFileSync('module/Restaurant/views/rst/sales-v2/_inc/edit-sale.blade.php','utf8');
   const posShow=fs.readFileSync('module/Restaurant/views/rst/sales-v2/show.blade.php','utf8');
   assert(posCreate.includes('<x-mm.page') && posCreate.includes('mm-rst-pos') && posCreate.includes('<x-mm.stepper'), 'rst/sales-v2/create.blade.php must use x-mm.page and x-mm.stepper');
+  assert(posCreate.includes('data-mm-fullscreen-toggle') && posCreate.includes('id="mm-fullscreen-hud"') && posCreate.includes('mm-pos-advanced-bar') && posCreate.includes('data-pos-modifier') && posCreate.includes('id="mm-pos-split-seats"'), 'rst/sales-v2/create.blade.php must offer Focused Fullscreen and the advanced POS command bar');
   for(const step of ["'courses'","'fire'","'pay'"]) assert(posCreate.includes(step), `rst/sales-v2/create.blade.php missing stepper step ${step}`);
   assert(!posLeft.includes('widget-header') && !posLeft.includes('form-grpup'), 'rst/sales-v2/_inc/left-side.blade.php must not contain legacy widget-header or form-grpup typo');
   for(const hook of ['id="invoice-list"','duePaymentStatus','paidPaymentStatus','invoice-date','invoice_no','total-due-sum','total-paid-sum']) assert(posLeft.includes(hook), `left-side.blade.php missing ${hook}`);
@@ -1154,6 +1158,7 @@ console.log('PASS: note list/edit expressions, forms and status scripts; legacy 
   const barPosEdit=fs.readFileSync('module/Bar/views/bar/sales-v2/_inc/edit-sale.blade.php','utf8');
   const barPosShow=fs.readFileSync('module/Bar/views/bar/sales-v2/show.blade.php','utf8');
   assert(barPosCreate.includes('<x-mm.page') && barPosCreate.includes('mm-bar') && barPosCreate.includes('mm-rst-pos') && barPosCreate.includes('<x-mm.stepper'), 'bar/sales-v2/create.blade.php must use x-mm.page and x-mm.stepper');
+  assert(barPosCreate.includes('data-mm-fullscreen-toggle') && barPosCreate.includes('id="mm-fullscreen-hud"') && barPosCreate.includes('mm-pos-advanced-bar') && barPosCreate.includes('data-pos-modifier') && barPosCreate.includes('id="mm-pos-split-seats"'), 'bar/sales-v2/create.blade.php must offer Focused Fullscreen and the advanced POS command bar');
   for(const step of ["'courses'","'fire'","'pay'"]) assert(barPosCreate.includes(step), `bar/sales-v2/create.blade.php missing stepper step ${step}`);
   assert(!barPosLeft.includes('widget-header') && !barPosLeft.includes('form-grpup'), 'bar/sales-v2/_inc/left-side.blade.php must not contain legacy widget-header or form-grpup typo');
   for(const hook of ['id="invoice-list"','duePaymentStatus','paidPaymentStatus','invoice-date','invoice_no','total-due-sum','total-paid-sum']) assert(barPosLeft.includes(hook), `bar left-side.blade.php missing ${hook}`);
