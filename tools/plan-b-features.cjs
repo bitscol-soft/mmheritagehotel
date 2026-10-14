@@ -660,18 +660,47 @@ function buildPlanBPages(shellWith) {
         const body = `<section class="mm-ui"><div class="tw-space-y-4 tw-py-2">
             <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
                 <div class="mm-page-title">
-                    <h1 class="tw-m-0 tw-font-semibold tw-text-ink"><i class="fa fa-sliders"></i> Room Settings, Pricing, Amenities &amp; Rules Control Center</h1>
-                    <p class="tw-m-0 tw-text-sm tw-text-muted">Unified interactive configuration hub for Room Categories, Capacity Tariffs, In-Suite Amenities, Check-In/Out Policies, Tax Rules, and Inventory Guards.</p>
+                    <h1 class="tw-m-0 tw-font-semibold tw-text-ink"><i class="fa fa-sliders"></i> Room Settings, Pricing, Amenities &amp; Rules Control Center (Plan A · Phase 3 #9)</h1>
+                    <p class="tw-m-0 tw-text-sm tw-text-muted">Unified interactive configuration hub for Room Categories, Capacity Tariffs, In-Suite Amenities, Check-In/Out Policies, Tax Rules, Inventory Guards, and RBAC Permission Matrix.</p>
                 </div>
                 <div class="tw-flex tw-flex-wrap tw-gap-2">
+                    <a href="/preview/plan-a" class="mm-button mm-button-secondary"><i class="fa fa-sitemap"></i> Plan A Hub (9/9 Complete)</a>
+                    <a href="/preview/system-settings" class="mm-button mm-button-secondary"><i class="fa fa-cogs"></i> System &amp; Company Settings</a>
+                    <a href="/preview/perm-access" class="mm-button mm-button-secondary"><i class="fa fa-shield"></i> Full RBAC Matrix</a>
                     <button type="button" class="mm-button" data-toggle="modal" data-target="#rmset-add-cat-modal"><i class="fa fa-plus-circle"></i> + New Room Category</button>
-                    <a href="/preview/category-create" class="mm-button mm-button-secondary"><i class="fa fa-external-link"></i> Blade Category Form</a>
-                    <a href="/preview/setup-amenities" class="mm-button mm-button-secondary"><i class="fa fa-wifi"></i> Amenities Setup</a>
-                    <a href="/preview/rate-plans" class="mm-button mm-button-secondary"><i class="fa fa-tags"></i> Rate Plans (F3)</a>
-                    <a href="/preview/inventory-guards" class="mm-button mm-button-secondary"><i class="fa fa-shield"></i> OOO &amp; Guards (F7)</a>
-                    <a href="/preview/booking-next" class="mm-button mm-button-secondary"><i class="fa fa-calendar-plus-o"></i> Booking Wizard</a>
                 </div>
             </header>
+
+            <!-- 3-Stage Property, Pricing & RBAC Configuration Stepper -->
+            <nav class="mm-stepper mm-no-print" aria-label="Room settings and RBAC workflow">
+                <ol class="mm-stepper-list">
+                    <li class="mm-step is-done">
+                        <span class="mm-step-index">&#10003;</span>
+                        <span class="mm-step-copy">
+                            <span class="mm-step-label">1. Suite Categories, Tariffs &amp; Amenities</span>
+                            <span class="mm-step-sub">6 Suite Tiers · 20 Physical Rooms · 10 Active Amenities</span>
+                        </span>
+                        <span class="mm-step-pill">Configured</span>
+                    </li>
+                    <li class="mm-step is-current" aria-current="step">
+                        <span class="mm-step-index">2</span>
+                        <span class="mm-step-copy">
+                            <span class="mm-step-label">2. House Booking, Deposit &amp; Tax Rules</span>
+                            <span class="mm-step-sub">20% Min Deposit · 5% Svc + 15% VAT · 14:00 In / 12:00 Out</span>
+                        </span>
+                        <span class="mm-step-pill">Active Rules</span>
+                    </li>
+                    <li class="mm-step">
+                        <span class="mm-step-index">3</span>
+                        <span class="mm-step-copy">
+                            <span class="mm-step-label">3. RBAC Permission Matrix &amp; System Governance</span>
+                            <span class="mm-step-sub">8 Staff Roles · 2FA · EN/বাংলা i18n · Immutable Audit</span>
+                        </span>
+                        <span class="mm-step-pill">Enforced</span>
+                    </li>
+                </ol>
+            </nav>
+
             <div class="mm-table-kpi-grid" aria-label="Room settings summary">
                 <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-bed"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Configured Categories</span><div class="mm-table-kpi-value" id="rmset-kpi-cats">6 Suite Tiers <span class="mm-table-kpi-sub">20 Physical Rooms</span></div></div></div>
                 <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-money"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Base Tariff Range &amp; Avg</span><div class="mm-table-kpi-value" id="rmset-kpi-tariff">৳ 5,500 – ৳ 24,000 <span class="mm-table-kpi-sub">Avg BAR: ৳ 14,000</span></div></div></div>
@@ -688,6 +717,7 @@ function buildPlanBPages(shellWith) {
                         <button type="button" class="mm-preview-pill" data-rmset-tab="amenities"><i class="fa fa-wifi"></i> 2. Room Amenities</button>
                         <button type="button" class="mm-preview-pill" data-rmset-tab="rules"><i class="fa fa-gavel"></i> 3. Booking &amp; Tax Rules</button>
                         <button type="button" class="mm-preview-pill" data-rmset-tab="navmap"><i class="fa fa-compass"></i> 4. Screen &amp; Blade Map</button>
+                        <button type="button" class="mm-preview-pill" data-rmset-tab="rbac"><i class="fa fa-shield"></i> 5. RBAC Permission Matrix</button>
                     </div>
                     <span class="mm-badge mm-badge-paid" id="rmset-sync-badge"><i class="fa fa-bolt"></i> Live Tariff &amp; Tax Calculator Active</span>
                 </div>
@@ -919,6 +949,76 @@ function buildPlanBPages(shellWith) {
                 </div>
             </div>
 
+            <!-- 5. RBAC Permission Matrix & Staff Role Governance (Phase 3 #9) -->
+            <div class="mm-panel tw-p-5 rmset-section" data-rmset-sec="rbac" id="rmset-rbac-panel">
+                <div class="tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-2" style="margin-bottom:12px">
+                    <div>
+                        <h2 class="tw-m-0 tw-text-base tw-font-semibold"><i class="fa fa-shield"></i> 5. Dense Role-Based Permission Matrix &amp; Admin Governance (Phase 3 #9)</h2>
+                        <p class="tw-m-0 tw-text-xs tw-text-muted">Toggle role capabilities across Front Desk, Night Audit, POS, and Finance — all changes are logged to the immutable Activity Log (F33).</p>
+                    </div>
+                    <div class="tw-flex tw-flex-wrap tw-gap-2">
+                        <button type="button" class="mm-button mm-button-secondary" id="rmset-btn-rbac-grant-all" style="min-height:30px;padding:3px 10px;font-size:11.5px"><i class="fa fa-check-square-o"></i> Grant All Capabilities</button>
+                        <button type="button" class="mm-button" id="rmset-btn-save-rbac" style="min-height:30px;padding:3px 12px;font-size:11.5px"><i class="fa fa-save"></i> Save RBAC Matrix</button>
+                    </div>
+                </div>
+                <div class="mm-table-scroll">
+                    <table class="mm-data-table table table-bordered table-striped" id="rmset-rbac-table">
+                        <thead>
+                            <tr>
+                                <th>Operational Capability / Guardrail</th>
+                                <th class="text-center">Front Desk Sup.</th>
+                                <th class="text-center">Night Auditor</th>
+                                <th class="text-center">POS Cashier</th>
+                                <th class="text-center">Accounts &amp; GL</th>
+                                <th class="text-center">Audit Level</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Create &amp; Modify Room Reservations / Rate Overrides</strong></td>
+                                <td class="text-center"><input type="checkbox" class="rmset-rbac-chk" checked></td>
+                                <td class="text-center"><input type="checkbox" class="rmset-rbac-chk" checked></td>
+                                <td class="text-center"><input type="checkbox" class="rmset-rbac-chk"></td>
+                                <td class="text-center"><input type="checkbox" class="rmset-rbac-chk"></td>
+                                <td class="text-center"><span class="mm-badge mm-badge-paid">Standard Log</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Multi-Window Split-Folio Transfer &amp; City Ledger Direct Bill</strong></td>
+                                <td class="text-center"><input type="checkbox" class="rmset-rbac-chk" checked></td>
+                                <td class="text-center"><input type="checkbox" class="rmset-rbac-chk" checked></td>
+                                <td class="text-center"><input type="checkbox" class="rmset-rbac-chk"></td>
+                                <td class="text-center"><input type="checkbox" class="rmset-rbac-chk" checked></td>
+                                <td class="text-center"><span class="mm-badge mm-badge-partial">2FA / Supervisor</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Execute Guided Night-Audit Auto-Post &amp; Day-Close Lock</strong></td>
+                                <td class="text-center"><input type="checkbox" class="rmset-rbac-chk"></td>
+                                <td class="text-center"><input type="checkbox" class="rmset-rbac-chk" checked></td>
+                                <td class="text-center"><input type="checkbox" class="rmset-rbac-chk"></td>
+                                <td class="text-center"><input type="checkbox" class="rmset-rbac-chk" checked></td>
+                                <td class="text-center"><span class="mm-badge mm-badge-partial">Critical Lock</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Unified POS Order Fire, Split-Bill &amp; Void KOT Approval</strong></td>
+                                <td class="text-center"><input type="checkbox" class="rmset-rbac-chk"></td>
+                                <td class="text-center"><input type="checkbox" class="rmset-rbac-chk" checked></td>
+                                <td class="text-center"><input type="checkbox" class="rmset-rbac-chk" checked></td>
+                                <td class="text-center"><input type="checkbox" class="rmset-rbac-chk"></td>
+                                <td class="text-center"><span class="mm-badge mm-badge-paid">PIN Verified</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Financial Report Builder, GL Vouchers &amp; Mushak-6.3 VAT Export</strong></td>
+                                <td class="text-center"><input type="checkbox" class="rmset-rbac-chk"></td>
+                                <td class="text-center"><input type="checkbox" class="rmset-rbac-chk" checked></td>
+                                <td class="text-center"><input type="checkbox" class="rmset-rbac-chk"></td>
+                                <td class="text-center"><input type="checkbox" class="rmset-rbac-chk" checked></td>
+                                <td class="text-center"><span class="mm-badge mm-badge-paid">Statutory Audit</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
             <!-- Add Room Category Slide-Over Drawer -->
             <div id="rmset-add-cat-modal" class="modal fade mm-drawer" data-mm-drawer="true" tabindex="-1" role="dialog">
                 <div class="modal-dialog"><div class="modal-content">
@@ -1039,10 +1139,23 @@ function buildPlanBPages(shellWith) {
             }
             if(b1)b1.addEventListener("click",function(){showSave("Room category tariffs, corporate rates, and tax-inclusive prices saved & synced to Booking Wizard!");});
             if(b2)b2.addEventListener("click",function(){showSave("Check-in/out times, minimum deposit %, and compound VAT/Service rules saved & synced!");});
+            var grantAllBtn=document.getElementById("rmset-btn-rbac-grant-all"),saveRbacBtn=document.getElementById("rmset-btn-save-rbac");
+            if(grantAllBtn){
+                grantAllBtn.addEventListener("click",function(){
+                    var rchks=document.querySelectorAll(".rmset-rbac-chk");
+                    for(var r=0;r<rchks.length;r++)rchks[r].checked=true;
+                    showSave("Granted all operational capabilities across the 5-row RBAC Role Matrix!");
+                });
+            }
+            if(saveRbacBtn){
+                saveRbacBtn.addEventListener("click",function(){
+                    showSave("Role-Based Permission Matrix (RBAC) saved and recorded in immutable Activity Log (F33)!");
+                });
+            }
             recalcAll();
             recalcAmenities();
         })();</script>`;
-        return shellWith(body, '', '', 'Room Settings, Pricing, Amenities & Rules', ['Hotel', 'Setup', 'Room Settings & Rules']);
+        return shellWith(body, '', '', 'Room Settings, Pricing, Amenities & Rules (Phase 3 #9)', ['Hotel', 'Setup', 'Room Settings & Rules']);
     }
 
     function folioSettlementPage() {
