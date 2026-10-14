@@ -32,6 +32,8 @@ const pages={
  '/preview/hotel-night-audit-show':{file:'preview/hotel-night-audit-show.html',title:'Night audit detail',crumbs:['Hotel','Night audit','Detail']},
  '/preview/hotel-monthly':{file:'preview/hotel-monthly.html',title:'Hotel monthly report',crumbs:['Hotel','Reports','Monthly']},
  '/preview/hotel-booking-adjust':{file:'preview/hotel-booking-adjust.html',title:'Booking migration',crumbs:['Hotel','Booking','Migration']},
+ '/preview/booking-migration':{file:'preview/hotel-booking-adjust.html',title:'Booking migration',crumbs:['Hotel','Booking','Migration']},
+ '/preview/bq-booking-migration':{file:'preview/hotel-booking-adjust.html',title:'Booking migration',crumbs:['Banquet Hall','Booking','Migration']},
  '/preview/hservice-services':{file:'preview/hservice-services.html',title:'Hotel services',crumbs:['Hotel service','Services']},
  '/preview/hservice-sales':{file:'preview/hservice-sales.html',title:'Hotel service sales',crumbs:['Hotel service','Sales']},
  '/preview/hservice-sale-create':{file:'preview/hservice-sale-create.html',title:'New hotel service sale',crumbs:['Hotel service','Sales','New']},

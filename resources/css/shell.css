@@ -2857,6 +2857,23 @@
     grid-template-columns: repeat(auto-fit, minmax(195px, 1fr));
     gap: 10px;
 }
+.mm-shell.mm-dark .mm-ui.mm-banquet .mm-bq-step,
+.mm-shell.mm-dark .mm-ui.mm-booking-adjust .mm-mig-step,
+.mm-shell.mm-dark .mm-ui.mm-banquet .mm-bq-venue-card,
+.mm-shell.mm-dark .mm-ui.mm-banquet .mm-bq-section-head,
+.mm-shell.mm-dark .mm-ui.mm-booking-adjust .mm-adjust-room-picks > div,
+.mm-shell.mm-dark .mm-ui.mm-booking-adjust .mm-mig-route-card {
+    background: linear-gradient(145deg, rgba(15, 23, 42, 0.88) 0%, rgba(30, 41, 59, 0.85) 100%);
+    border-color: rgba(148, 163, 184, 0.28);
+    color: #e2e8f0;
+}
+.mm-shell.mm-dark .mm-ui.mm-banquet .mm-bq-venue-card.is-selected,
+.mm-shell.mm-dark .mm-ui.mm-banquet .mm-bq-step.is-active,
+.mm-shell.mm-dark .mm-ui.mm-booking-adjust .mm-mig-step.is-active {
+    background: linear-gradient(145deg, rgba(30, 58, 138, 0.55) 0%, rgba(37, 99, 235, 0.35) 100%);
+    border-color: #60a5fa;
+    color: #bfdbfe;
+}
 @media print {
     .mm-shell .mm-top-subnav {
         display: none !important;

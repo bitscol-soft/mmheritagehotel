@@ -4664,3 +4664,115 @@
         padding-top: 8px !important;
     }
 }
+
+/* ---------- Redesigned New Banquet Booking (.mm-banquet) & Booking Migration (.mm-booking-adjust) ---------- */
+.mm-ui.mm-banquet #submitBookingUpdateForm > .row > .col-lg-5 {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    width: 50%;
+    padding: 0 12px;
+}
+@media (max-width: 991px) {
+    .mm-ui.mm-banquet #submitBookingUpdateForm > .row > .col-lg-5 {
+        width: 100%;
+    }
+}
+.mm-ui.mm-banquet .mm-bq-stepper,
+.mm-ui.mm-booking-adjust .mm-mig-stepper {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 10px;
+}
+.mm-ui.mm-banquet .mm-bq-step,
+.mm-ui.mm-booking-adjust .mm-mig-step {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(148, 163, 184, 0.34);
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.96) 0%, rgba(241, 245, 249, 0.92) 100%);
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--mm-ink);
+}
+.mm-ui.mm-banquet .mm-bq-step.is-active,
+.mm-ui.mm-booking-adjust .mm-mig-step.is-active {
+    border-color: rgba(37, 99, 235, 0.48);
+    background: linear-gradient(135deg, rgba(239, 246, 255, 0.98) 0%, rgba(219, 234, 254, 0.92) 100%);
+    color: #1d4ed8;
+    box-shadow: 0 4px 12px -4px rgba(37, 99, 235, 0.18);
+}
+.mm-ui.mm-banquet .mm-bq-step-num,
+.mm-ui.mm-booking-adjust .mm-mig-step-num {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 800;
+    background: #2563eb;
+    color: #ffffff;
+    flex-shrink: 0;
+}
+.mm-ui.mm-banquet .mm-bq-venue-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+}
+.mm-ui.mm-banquet .mm-bq-venue-card {
+    padding: 13px 15px;
+    border-radius: 12px;
+    border: 1.5px solid rgba(148, 163, 184, 0.35);
+    background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+    cursor: pointer;
+    transition: all 0.16s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+.mm-ui.mm-banquet .mm-bq-venue-card:hover {
+    border-color: #3b82f6;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 18px -8px rgba(37, 99, 235, 0.22);
+}
+.mm-ui.mm-banquet .mm-bq-venue-card.is-selected {
+    border-color: #2563eb;
+    background: linear-gradient(145deg, #eff6ff 0%, #dbeafe 100%);
+    box-shadow: 0 6px 16px -6px rgba(37, 99, 235, 0.25);
+}
+.mm-ui.mm-banquet .mm-bq-section-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 10px 14px;
+    margin: 16px 0 8px;
+    border-radius: 10px;
+    background: linear-gradient(90deg, rgba(239, 246, 255, 0.95) 0%, rgba(248, 250, 252, 0.95) 100%);
+    border: 1px solid rgba(148, 163, 184, 0.30);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--mm-ink);
+}
+.mm-ui.mm-booking-adjust .mm-adjust-room-picks > div {
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1px solid rgba(148, 163, 184, 0.36);
+    background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+}
+.mm-ui.mm-booking-adjust .mm-mig-route-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 12px;
+}
+.mm-ui.mm-booking-adjust .mm-mig-route-card {
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(148, 163, 184, 0.34);
+    background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+}
+

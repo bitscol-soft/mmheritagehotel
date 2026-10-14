@@ -320,6 +320,26 @@ test('14-module sidebar role switcher, top sub-menu bar & global command drawers
     await page.locator('#mm-trn-dispatch-submit').click();
     await expect(page.locator('#mm-trn-kpi-total')).toContainText('7 Trips');
     await expect(page.locator('#mm-trn-confirm-banner')).toBeVisible();
+
+    // Verify Redesigned New Banquet Booking (/preview/bq-booking-create)
+    await page.goto(`http://127.0.0.1:${PORT}/preview/bq-booking-create`);
+    await expect(page.locator('.mm-page-title').first()).toContainText('New banquet booking');
+    await expect(page.locator('#bq-venue-cards .mm-bq-venue-card')).toHaveCount(4);
+    await expect(page.locator('#bq-halls-tbody .bq-calc-row')).toHaveCount(2);
+    await page.locator('#addrow').click();
+    await expect(page.locator('#bq-halls-tbody .bq-calc-row')).toHaveCount(3);
+    await expect(page.locator('#bq-kpi-venues')).toContainText('3 Halls');
+    await page.locator('#bq-btn-book').click();
+    await expect(page.locator('#bq-confirm-banner')).toBeVisible();
+
+    // Verify Redesigned Booking Migration (/preview/hotel-booking-adjust & /preview/booking-migration)
+    await page.goto(`http://127.0.0.1:${PORT}/preview/hotel-booking-adjust`);
+    await expect(page.locator('.mm-page-title').first()).toContainText('Booking migration');
+    await expect(page.locator('.available-rooms .room-item')).toHaveCount(6);
+    await page.locator('.available-rooms .room-item').nth(2).click();
+    await expect(page.locator('#mig-kpi-route')).toContainText('#101 → #202');
+    await page.locator('#mig-submit-btn').click();
+    await expect(page.locator('#mig-confirm-banner')).toBeVisible();
 });
 
 

@@ -1,806 +1,670 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>New Banquet Booking</title>
 <link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
-<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">    <link rel="stylesheet" href="/assets/css/chosen.min.css" />
-    <link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css" />
-    <style>
-        .table {
-            margin-bottom: 0 !important;
-        }
-
-        body {
-            counter-reset: section;
-            /* Set a counter named 'section', and its initial value is 0. */
-        }
-
-        .count:before {
-            counter-increment: section;
-            content: counter(section);
-        }
-
-        select:invalid {
-            height: 0px !important;
-            opacity: 0 !important;
-            position: absolute !important;
-            display: flex !important;
-        }
-
-        select:invalid[multiple] {
-            margin-top: 15px !important;
-        }
-    </style>
-    <style>
-        .page-content {
-            /* overflow-x: hidden; */
-        }
-
-        .ms-1 {
-            margin-left: 5px !important;
-        }
-
-        .me-1 {
-            margin-right: 5px !important;
-        }
-
-        .ms-2 {
-            margin-left: 10px !important;
-        }
-
-        .me-2 {
-            margin-right: 10px !important;
-        }
-
-        .ms-3 {
-            margin-left: 15px !important;
-        }
-
-        .me-3 {
-            margin-right: 15px !important;
-        }
-    </style>
-
-
-    <style>
-    .room-details-tbody tr:first-child td .btn-danger {
-        pointer-events: none;
-    }
-</style>
-<style>
-    .input-group-addon {
-        background: transparent;
-    }
-
-    .chosen-single {
-        background: transparent !important;
-        border-color: #ccc !important;
-    }
-
-    .width-27 {
-        width: 27%;
-    }
-
-    .border-none {
-        border: none;
-    }
-
-    .form-group input[readonly] {
-        background: transparent !important;
-    }
-
-    select {
-        background: transparent !important;
-    }
-</style>
-<style>
-    .did-floating-label-content {
-        position: relative;
-        margin-bottom: 20px;
-    }
-
-    .did-floating-label {
-        color: #1e4c82;
-        font-size: 13px;
-        font-weight: normal;
-        position: absolute;
-        pointer-events: none;
-        left: 15px;
-        top: 11px;
-        padding: 0 5px;
-        background: #fff;
-        transition: 0.2s ease all;
-        -moz-transition: 0.2s ease all;
-        -webkit-transition: 0.2s ease all;
-    }
-
-    .did-floating-input,
-    .did-floating-select {
-        font-size: 12px;
-        display: block;
-        width: 100%;
-        height: 36px;
-        padding: 0 20px;
-        background: #fff;
-        color: #323840;
-        border: 1px solid #3D85D8;
-        border-radius: 4px;
-        box-sizing: border-box;
-    }
-
-    .did-floating-input:focus,
-    .did-floating-select:focus {
-        outline: none;
-    }
-
-    .did-floating-input:focus~.did-floating-label,
-    .did-floating-select:focus~.did-floating-label {
-        top: -8px;
-        font-size: 13px;
-    }
-
-    select.did-floating-select {
-        -webkit-appearance: none;
-        -moz-appearance: none;
-        appearance: none;
-    }
-
-    select.did-floating-select::-ms-expand {
-        display: none;
-    }
-
-    .did-floating-input:not(:placeholder-shown)~.did-floating-label {
-        top: -8px;
-        font-size: 13px;
-    }
-
-    .did-floating-select:not([value=""]):valid~.did-floating-label {
-        top: -8px;
-        font-size: 13px;
-    }
-
-    .did-floating-select[value=""]:focus~.did-floating-label {
-        top: 11px;
-        font-size: 13px;
-    }
-
-    .did-floating-select:not([multiple]):not([size]) {
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='6' viewBox='0 0 8 6'%3E%3Cpath id='Path_1' data-name='Path 1' d='M371,294l4,6,4-6Z' transform='translate(-371 -294)' fill='%23003d71'/%3E%3C/svg%3E%0A");
-        background-position: right 15px top 50%;
-        background-repeat: no-repeat;
-    }
-
-    .did-error-input .did-floating-input,
-    .did-error-input .did-floating-select {
-        border: 2px solid #9d3b3b;
-        color: #9d3b3b;
-    }
-
-    .did-error-input .did-floating-label {
-        font-weight: 600;
-        color: #9d3b3b;
-    }
-
-    .did-error-input .did-floating-select:not([multiple]):not([size]) {
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='6' viewBox='0 0 8 6'%3E%3Cpath id='Path_1' data-name='Path 1' d='M371,294l4,6,4-6Z' transform='translate(-371 -294)' fill='%239d3b3b'/%3E%3C/svg%3E%0A");
-    }
-</style>
-
-
-<style>
-    .show-all-room {
-        font-size: 16px;
-        display: inline-block;
-        cursor: pointer;
-    }
-
-    .select2-container .select2-selection--multiple .select2-selection__rendered {
-        margin: 0;
-        display: flex;
-        flex-wrap: wrap;
-    }
-
-    .show-category-room-modal .modal-dialog.modal-sm {
-        width: 410px !important
-    }
-
-    .show-category-room-modal .select2-container {
-        width: 380px !important
-    }
-
-    .show-category-room-modal .select2-container--default.select2-container--focus .select2-selection {
-        border-width: 3px;
-    }
-
-    .show-category-room-modal .select2-container--default .select2-selection {
-        border: 3px solid #4492C9 !important;
-    }
-</style>
-<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->    
-        <section class="mm-ui mm-banquet mm-booking-next">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css"><!--/MM-HEAD-->
+<link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+<section class="mm-ui mm-banquet mm-booking-next">
     <div class="tw-space-y-4 tw-py-2">
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
-                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">New banquet booking</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Choose the guest and event dates, then add halls, items and payment details.</p>            </div>
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink"><i class="fa fa-glass"></i> New banquet booking — Event &amp; BEO Configurator</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Configure event venue halls, seating layout, per-pax catering packages, AV/stage add-ons, and live BEO contract settlement.</p>
+            </div>
             <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
-                <a class="mm-button mm-button-secondary" href="/preview/bq-rooms-index"><i class="ace-icon fa fa-building-o" aria-hidden="true"></i> Halls</a>
+                <button type="button" id="bq-btn-beo-preview" data-toggle="modal" data-target="#bq-beo-preview-modal" class="mm-button"><i class="fa fa-file-pdf-o"></i> Preview BEO Contract</button>
+                <a class="mm-button mm-button-secondary" href="/preview/bq-rooms-index"><i class="ace-icon fa fa-building-o" aria-hidden="true"></i> Halls (4)</a>
                 <a class="mm-button mm-button-secondary" href="/preview/bq-category-index"><i class="ace-icon fa fa-tags" aria-hidden="true"></i> Categories</a>
-                <a class="mm-button mm-button-secondary" href="http://localhost/bq/banquet/booking/index">
-                    <i class="ace-icon fa fa-list-alt" aria-hidden="true"></i> Booking List
-                </a>
-            </div>        </header>
+                <a class="mm-button mm-button-secondary" href="/preview/bq-booking-index"><i class="ace-icon fa fa-list-alt" aria-hidden="true"></i> Booking List</a>
+            </div>
+        </header>
 
         <div class="mm-table-kpi-grid" aria-label="Banquet event configurator summary">
             <div class="mm-table-kpi-card">
                 <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-building-o"></i></span>
                 <div class="mm-table-kpi-meta">
-                    <span class="mm-table-kpi-label">Available Halls</span>
-                    <div class="mm-table-kpi-value">4 Halls <span class="mm-table-kpi-sub">Grand &amp; Royal</span></div>
+                    <span class="mm-table-kpi-label">Selected Event Venues</span>
+                    <div class="mm-table-kpi-value"><span id="bq-kpi-venues">2 Halls</span> <span class="mm-table-kpi-sub" id="bq-kpi-pax">230 Pax Combined</span></div>
                 </div>
             </div>
             <div class="mm-table-kpi-card">
-                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-users"></i></span>
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-calendar-check-o"></i></span>
                 <div class="mm-table-kpi-meta">
-                    <span class="mm-table-kpi-label">Max Event Capacity</span>
-                    <div class="mm-table-kpi-value">400 Pax <span class="mm-table-kpi-sub">Theater / Banquet</span></div>
+                    <span class="mm-table-kpi-label">Hall Rental Subtotal</span>
+                    <div class="mm-table-kpi-value"><span id="bq-kpi-hall-sub">৳ 95,000</span> <span class="mm-table-kpi-sub">Grand Ballroom + VIP Lounge</span></div>
                 </div>
             </div>
             <div class="mm-table-kpi-card">
                 <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-cutlery"></i></span>
                 <div class="mm-table-kpi-meta">
-                    <span class="mm-table-kpi-label">Catering &amp; AV Addons</span>
-                    <div class="mm-table-kpi-value">3 Tables <span class="mm-table-kpi-sub">Halls · Items · Info</span></div>
+                    <span class="mm-table-kpi-label">Catering, AV &amp; Stage</span>
+                    <div class="mm-table-kpi-value"><span id="bq-kpi-addons-sub">৳ 152,500</span> <span class="mm-table-kpi-sub">F&amp;B Buffet + LED Wall</span></div>
                 </div>
             </div>
             <div class="mm-table-kpi-card">
-                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-check-square-o"></i></span>
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-calculator"></i></span>
                 <div class="mm-table-kpi-meta">
-                    <span class="mm-table-kpi-label">Booking Mode</span>
-                    <div class="mm-table-kpi-value">Live Folio <span class="mm-table-kpi-sub">Auto Tax &amp; Due</span></div>
+                    <span class="mm-table-kpi-label">BEO Grand Total &amp; Due</span>
+                    <div class="mm-table-kpi-value"><span id="bq-kpi-grand">৳ 282,250</span> <span class="mm-table-kpi-sub" id="bq-kpi-due">Due: ৳ 182,250</span></div>
                 </div>
             </div>
         </div>
 
-        <div class="mm-panel tw-p-4 sm:tw-p-6"><form class="form-horizontal" id="submitBookingUpdateForm" action="http://localhost/bq/banquet/booking/store"
-            method="post" enctype="multipart/form-data">
-            <input type="hidden" name="_token" value="fixture-csrf-token">
-            <input type="hidden" value="0" class="is-booking-edit" name="is_from_booking_edit">
-            <input type="hidden" value="1" name="is_from_booking">
-
-            
-            <div id="guest-information-modal" class="guest-information modal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header" style="background: rgb(41, 4, 77)">
-                <button type="button" class="close white" data-dismiss="modal">&times;</button>
-                <h4 class="white bigger"><i class="glyphicon glyphicon-plus "></i> Add Guest Information</h4>
+        <div class="mm-bq-stepper" role="region" aria-label="Banquet booking workflow steps">
+            <div class="mm-bq-step is-active">
+                <span class="mm-bq-step-num">1</span>
+                <div>
+                    <div>Organizer, Schedule &amp; Venue Halls</div>
+                    <div class="tw-text-xs tw-text-muted">Select client, corporate entity, session window &amp; halls</div>
+                </div>
             </div>
+            <div class="mm-bq-step is-active">
+                <span class="mm-bq-step-num">2</span>
+                <div>
+                    <div>Catering Menus, AV &amp; Floral Staging</div>
+                    <div class="tw-text-xs tw-text-muted">Configure per-pax banquet platters, LED wall &amp; decor</div>
+                </div>
+            </div>
+            <div class="mm-bq-step is-active">
+                <span class="mm-bq-step-num">3</span>
+                <div>
+                    <div>VAT, Advance Deposit &amp; BEO Contract</div>
+                    <div class="tw-text-xs tw-text-muted">Auto-calculate 10% VAT, service charge &amp; issue BEO</div>
+                </div>
+            </div>
+        </div>
 
-            <div class="modal-body">
-               
-                    <div class="row">
-                        <div class="col-sm-12">
+        <div id="bq-confirm-banner" class="alert alert-success" style="display:none;margin:0;border-radius:12px;font-size:13px"></div>
 
+        <div class="mm-panel tw-p-4 sm:tw-p-6">
+            <form class="form-horizontal" id="submitBookingUpdateForm" action="http://localhost/bq/banquet/booking/store" method="post" enctype="multipart/form-data" onsubmit="return false;">
+                <input type="hidden" name="_token" value="fixture-csrf-token">
+                <input type="hidden" value="0" class="is-booking-edit" name="is_from_booking_edit">
+                <input type="hidden" value="1" name="is_from_booking">
 
-                            
-                            <div class="col-sm-9 col-sm-offset-1">
-
-                                <!-- Guest Number Entry Table -->
-
-                                <table class="table table-bordered">
-
-                                    <tbody>
-                                        <tr>
-                                            <td width="60%">
-                                                <div class="input-group">
-                                                    <label class="input-group-addon">
-                                                        Number Of Guest(<small class="text-danger">exclude you</small>)
-                                                    </label>
-                                                    <input type="text" name="number_of_guest" class="modal-number-of-guest text-center form-control input-sm">
-                                                    
-                                                </div>
-                                            </td>
-                                            
-
-                                            <td style="width: 25%">
-                                                <div class="btn-group btn-corner">
-
-                                                    <button type="button" class="btn btn-success btn-sm add-guest-into-table" onclick="addGuest()">
-                                                        <i class="fa fa-check"></i> Add Items
-                                                    </button>
-                                                    <button type="button" class="btn btn-danger btn-sm">
-                                                        <i class="fa fa-undo"></i>
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-
-                                </table>
+                <!-- 1. Interactive Venue Hall Quick-Selector Cards -->
+                <div style="margin-bottom:18px">
+                    <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px">
+                        <h2 class="tw-m-0 tw-text-base tw-font-semibold"><i class="fa fa-building-o"></i> 1. Select Banquet &amp; Conference Venue Halls (Click to Toggle on Contract)</h2>
+                        <span class="mm-badge mm-badge-paid">4 Heritage Venues Available · 14 Oct 2026</span>
+                    </div>
+                    <div class="mm-bq-venue-grid" id="bq-venue-cards">
+                        <div class="mm-bq-venue-card is-selected" data-hall-code="BH-101" data-hall-name="Grand Ballroom (#BH-101)" data-hall-pax="180" data-hall-rate="75000">
+                            <div style="display:flex;align-items:center;justify-content:space-between">
+                                <strong><i class="fa fa-diamond"></i> Grand Ballroom (#BH-101)</strong>
+                                <span class="mm-badge mm-badge-paid bq-hall-pill">Selected ✓</span>
                             </div>
-
-                            <div class="clearfix" style="margin-bottom: 10px"></div>
-                            <div class="col-sm-12 guest-information-modal-body">
-                                
+                            <div class="tw-text-xs tw-text-muted">Pillarless Royal Hall · LED Wall · Chandelier Ceiling</div>
+                            <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;margin-top:4px">
+                                <span><i class="fa fa-users"></i> Up to 400 Pax</span>
+                                <strong>৳ 75,000 / session</strong>
                             </div>
-
-
+                        </div>
+                        <div class="mm-bq-venue-card" data-hall-code="BH-102" data-hall-name="Heritage Banquet Hall (#BH-102)" data-hall-pax="120" data-hall-rate="48000">
+                            <div style="display:flex;align-items:center;justify-content:space-between">
+                                <strong><i class="fa fa-institution"></i> Heritage Hall (#BH-102)</strong>
+                                <span class="mm-badge mm-badge-partial bq-hall-pill">Click to Add</span>
+                            </div>
+                            <div class="tw-text-xs tw-text-muted">Mezzanine Wing · Acoustic Panels · Private Buffet Pass</div>
+                            <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;margin-top:4px">
+                                <span><i class="fa fa-users"></i> Up to 220 Pax</span>
+                                <strong>৳ 48,000 / session</strong>
+                            </div>
+                        </div>
+                        <div class="mm-bq-venue-card is-selected" data-hall-code="BH-201" data-hall-name="Executive Boardroom (#BH-201)" data-hall-pax="50" data-hall-rate="25000">
+                            <div style="display:flex;align-items:center;justify-content:space-between">
+                                <strong><i class="fa fa-briefcase"></i> Executive Boardroom (#BH-201)</strong>
+                                <span class="mm-badge mm-badge-paid bq-hall-pill">Selected ✓</span>
+                            </div>
+                            <div class="tw-text-xs tw-text-muted">VIP Pre-Function &amp; Summit Suite · 4K Telepresence</div>
+                            <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;margin-top:4px">
+                                <span><i class="fa fa-users"></i> Up to 60 Pax</span>
+                                <strong>৳ 25,000 / session</strong>
+                            </div>
+                        </div>
+                        <div class="mm-bq-venue-card" data-hall-code="BH-301" data-hall-name="Skyline Rooftop Lawn (#BH-301)" data-hall-pax="150" data-hall-rate="55000">
+                            <div style="display:flex;align-items:center;justify-content:space-between">
+                                <strong><i class="fa fa-star-o"></i> Skyline Rooftop Lawn (#BH-301)</strong>
+                                <span class="mm-badge mm-badge-partial bq-hall-pill">Click to Add</span>
+                            </div>
+                            <div class="tw-text-xs tw-text-muted">Open-Air Diplomatic Reception &amp; Acoustic Pergola</div>
+                            <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;margin-top:4px">
+                                <span><i class="fa fa-users"></i> Up to 180 Pax</span>
+                                <strong>৳ 55,000 / session</strong>
+                            </div>
                         </div>
                     </div>
-
-
-                    <div class="form-actions center" style="text-align: right !important;">
-                        <div class="btn-group btn-corner">
-                            <button type="button" class="btn btn-sm btn-success save-guest-information">
-                                <i class="ace-icon fa fa-save icon-on-right bigger-110"></i>
-                                Save
-                            </button>
-                            <button class="btn btn-sm" data-dismiss="modal">
-                                <i class="ace-icon fa fa-times"></i>
-                                Cancel
-                            </button>
-                        </div>
-                        
-                    </div>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-            <!------------ INCLUDE GUEST INPUT FIELDS ------------>
-            <div class="row">
-                <div class="col-lg-5" style="margin-left: 80px">
-
-
-    <!-- BOOKING DATE -->
-    <div class="form-group mb-1">
-        <div class="input-group width-100">
-            <span class="border-none input-group-addon width-27" style="text-align: left"> Booking Date <span
-                    style="color: red">*</span></span>
-            <input type="text" class="form-control date-picker booking-date-picker" name="booking_date"
-                value="2026-10-01">
-            <span class="input-group-addon"><i class="fa fa-calendar bigger-110"></i></span>
-        </div>
-
-    </div>
-
-
-
-
-    <!-- GUEST NAME -->
-    <div class="form-group mb-1">
-        <div class="input-group width-100">
-            <span class="border-none input-group-addon width-27" style="text-align: left"> Guest Name <span
-                    style="color: red">*</span></span>
-            <select class="form-control chosen-select-100-percent bg-transparent"
-                onchange="showCompany(this), editGuestInfo(this)" name="customer_id" id="customer_id"
-                data-placeholder="Choose Guest">
-                <option></option>
-                                    <option value="1">Rahim &lt;b&gt;Uddin&lt;/b&gt; - 017</option>
-                            </select>
-            <span class="input-group-addon add_guest_info">
-                <a href="#add_guest1" title="Add new guest" data-toggle="modal" role="button">
-                    <i class="glyphicon glyphicon-user"></i>
-                </a>
-            </span>
-            <span class="input-group-addon edit_guest_info" style="display: none">
-                <a href="#edit_guest_info" title="Edit Guest" data-toggle="modal" role="button">
-                    <i class="glyphicon glyphicon-edit"></i>
-                </a>
-            </span>
-        </div>
-    </div>
-
-
-
-    <!-- COMPANY -->
-    <div class="form-group mb-1 guest-company">
-        <div class="input-group width-100">
-            <span class="border-none input-group-addon width-27" style="text-align: left"> Company </span>
-            <select class="form-control bg-transparent chosen-select-100-percent" data-placeholder="--Choose Company--"
-                name="company_id" id="company_id">
-                <option value=""></option>
-                
-                            </select>
-        </div>
-    </div>
-
-
-
-
-    <!-- BOOKING PURPOSE -->
-    <div class="form-group mb-1">
-        <div class="input-group width-100">
-            <span class="border-none input-group-addon width-27" style="text-align: left"> Purpose </span>
-            <select class="form-control chosen-select-100-percent bg-transparent" name="purpose_id" id="purpose"
-                data-placeholder="--Choose Purpose--" style="width: 100%">
-                <option></option>
-                            </select>
-        </div>
-    </div>
-
-
-
-
-    <!-- CHECK IN DATE -->
-    <div class="form-group mb-1">
-        <div class="input-group width-100">
-            <span class="border-none input-group-addon width-27" style="text-align: left"> Check In Date <span
-                    style="color: red">*</span></span>
-            <input class="form-control date-picker check-in-date" value="2026-10-01"
-                name="check_in_date" type="text" required>
-            <span class="input-group-addon">
-                <i class="fa fa-calendar bigger-110"></i>
-            </span>
-        </div>
-    </div>
-
-
-
-
-
-    <!-- CHECK OUT DATE -->
-    
-
-
-
-
-    <!-- BOOKING PAX -->
-    
-
-
-    <!-- Check In Now -->
-    <div class="form-group mb-1">
-        <label class="col-sm-3 col-xs-4 control-label" for="form-field-1-1" style="margin-left:-8px"> Booked Now
-        </label>
-        <div class="col-sm-4 col-xs-4">
-            <label style="margin-top: 7px">
-                <input name="status" class="ace ace-switch ace-switch-6" type="checkbox" value="1">
-                <span class="lbl"></span>
-            </label>
-        </div>
-        <style>
-            .bulk-booking.ace.input-lg+.lbl::before {
-                left: 100px !important;
-                top: 6px !important;
-            }
-        </style>
-    </div>
-
-</div>
-
-
-
-
-
-
-
-<div class="col-lg-5" style="margin-left: 30px; margin-right: 60px">
-
-
-    <!-- REFERENCE -->
-    <div class="form-group mb-1">
-        <div class="input-group width-100">
-            <span class="border-none input-group-addon width-27" style="text-align: left"> Reference Name </span>
-            <input type="text" class="form-control" id="referenceName" name="reference"
-                value="" placeholder="Reference Name">
-        </div>
-    </div>
-
-
-    <!-- TYPE -->
-    <div class="form-group mb-1">
-        <div class="input-group width-100">
-            <span class="border-none input-group-addon width-27" style="text-align: left">Booking Platform </span>
-            <select class="form-control chosen-select-100-percent bg-transparent" name="platform_id"
-                data-placeholder="--Choose Booking Platform--" style="width: 100%">
-                <option></option>
-                            </select>
-        </div>
-    </div>
-
-    <!-- Emergency Contact Name -->
-    <div class="form-group mb-1">
-        <div class="input-group width-100">
-            <span class="border-none input-group-addon width-27" style="text-align: left">Emrg.Cont Name</span>
-            <input type="text" class="form-control" name="emergency_cont_name"
-                value="" placeholder="Emergency Contact Name">
-        </div>
-    </div>
-
-    <!-- Emergency Contact Phone -->
-    <div class="form-group mb-1">
-        <div class="input-group width-100">
-            <span class="border-none input-group-addon width-27" style="text-align: left">Emrg.Cont Phone</span>
-            <input type="text" class="form-control" id="emergency_cont_phone" name="emergency_cont_phone"
-                value="" placeholder="Emergency Contact Phone">
-        </div>
-    </div>
-
-
-    <!-- MEMBERS -->
-    
-
-
-
-    
-
-</div>
-            </div>
-
-
-            <!-- Room Information Table -->
-            <div class="row">
-                <div class="col-sm-12 col-sm-offset-0">
-                    <h3 class="header smaller lighter blue">Booked Information</h3>
-
-                    
-                    <div class="mm-table-scroll" role="region" aria-label="Hall booking details" tabindex="0"><table id="myTable" class="table table-bordered order-list">
-                        <thead>
-                            <tr>
-                                
-                                <td class="text-left">Room<span class="text-danger">*</span></td>
-                                <td class="text-center" style="width: 10%">Guest</td>
-                                <td class="text-left" width="15%">Amount <span
-                                        class="currency-sign"></span></td>
-                                <td class="text-center">Booked</td>
-                                <td class="text-right">Discount</td>
-                                
-                                <td class="text-right" width="15%">T. Amount <span
-                                        class="currency-sign"></span></td>
-                                <td class="text-center" style="width: 5%">
-                                    <button type="button" class="btn btn-xs btn-success" id="addrow">
-                                        <i class="fa fa-plus"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                        </thead>
-                        <tbody class="item-details room-details-tbody">
-
-                        </tbody>
-                    </table></div>
-
-                    
-                    <div class="mm-table-scroll" role="region" aria-label="Restaurant items" tabindex="0"><table id="myTable" class="table table-bordered order-list mt-3">
-                        <thead>
-                            <tr>
-                                
-                                <td class="text-left">Restaurant Item<span class="text-danger">*</span></td>
-                                <td class="text-center" width="10%">Qty</td>
-                                <td class="text-left" width="20%">Amount <span
-                                        class="currency-sign"></span></td>
-                                
-                                <td class="text-right" width="20%">Discount</td>
-                                
-                                <td class="text-right" width="20%">T. Amount <span
-                                        class="currency-sign"></span></td>
-                                <td class="text-center" style="width: 5%">
-                                    <button type="button" class="btn btn-xs btn-success" id="addItem">
-                                        <i class="fa fa-plus"></i>
-                                    </button>
-
-                                    
-                                </td>
-                            </tr>
-                        </thead>
-                        <tbody class="item-details item-details-tbody">
-
-                        </tbody>
-
-                        <!-- TFOOT INCLUDE -->
-                        
-                    </table></div>
-                    
-                    <div class="mm-table-scroll" role="region" aria-label="Other items" tabindex="0"><table id="myTable" class="table table-bordered order-list mt-3">
-                        <thead>
-                            <tr>
-                                
-                                <td class="text-left">Item<span class="text-danger">*</span></td>
-                                <td class="text-center" style="width: 10%">Qty</td>
-                                <td class="text-left" width="20%"">Amount <span
-                                        class="currency-sign"></span></td>
-                                
-                                <td class="text-right" width="20%">Discount</td>
-                                
-                                <td class="text-right" width="20%">T. Amount <span
-                                        class="currency-sign"></span></td>
-                                <td class="text-center" style="width: 5%">
-                                    <button type="button" class="btn btn-xs btn-success" id="addInformation">
-                                        <i class="fa fa-plus"></i>
-                                    </button>
-
-                                    
-                                </td>
-                            </tr>
-                        </thead>
-                        <tbody class="item-details info-details-tbody">
-
-                        </tbody>
-
-                        <!-- TFOOT INCLUDE -->
-                        <tfoot style="position: relative;">
-
-    <tr style="position: absolute; left: 3%; top: 3%;">
-    <td colspan="8" class="text-right borderless">Send Sms :</td>
-    <td class="send-sms borderless text-center">
-        <label>
-            <input name="sms" class="ace ace-switch ace-switch-6" type="checkbox">
-            <span class="lbl"></span>
-        </label>
-    </td>
-    <td colspan="8" class="text-right borderless">Send Email :</td>
-    <td class="send-email borderless text-center">
-        <label>
-            <input name="email" class="ace ace-switch ace-switch-6" type="checkbox">
-            <span class="lbl"></span>
-        </label>
-    </td>
-
-    <td colspan="8" class="text-right borderless">Room Number Print :</td>
-    <td class="borderless text-center">
-        <label>
-            <input name="is_room_in_invoice" class="ace ace-switch ace-switch-6" value="1" type="checkbox" checked>
-            <span class="lbl"></span>
-        </label>
-    </td>
-</tr>
-
-
-
-
-    <tr>
-
-        <td class="text-right borderless" colspan="4">Subtotal <span class="currency-sign"></span></td>
-        <td class="borderless">
-            <input class="form-control subtotal-amount text-right"
-                value="0" readonly style="padding-right: 5px;">
-            <input type="hidden" name="line_total" id="line_total">
-        </td>
-
-    </tr>
-
-    <tr>
-        <td class="text-right borderless" colspan="4">Service Charge <span
-                class="currency-sign"></span></td>
-        <td class="borderless">
-            <input name="service_amount" value="0"
-                class="form-control service_amount text-right" readonly style="padding-right: 5px;">
-        </td>
-    </tr>
-    <tr>
-        <td class="text-right borderless" colspan="4">
-            <input type="hidden" name="vat" id="vat" value="10">
-
-            Vat(10%) <span class="currency-sign"></span>
-        </td>
-        <td class="borderless">
-            <input type="text" name="vat_amount"
-                value="0"
-                class="form-control vat-amount text-right only-number" value="" readonly>
-        </td>
-    </tr>
-    
-
-    <tr>
-        <td class="text-right borderless" colspan="4">Grand Total <span class="currency-sign"></span>
-        </td>
-        <td class="borderless">
-            <input name="sub_total" value=""
-                class="form-control grandtotal text-right" readonly style="padding-right: 5px !important;">
-            <input type="hidden" name="line_total" id="line_total">
-        </td>
-
-    </tr>
-
-    
-    <tr>
-        <td class="text-right borderless" colspan="4">Advanced Amount</td>
-        <td class="borderless">
-                        <label class="choose-currency" id="usdCurrency">
-                <input type="radio" name="currency_type" value="141"
-                    >
-                USD ($)
-            </label>
-
-
-            <div class="show-currency-rate" style="display: none; color:rgb(230, 92, 115); text-align:center"></div>
-            <input type="number" name="advanced_amount"
-                value="0"
-                class="form-control adv-amount text-right">
-        </td>
-    </tr>
-
-    
-    <tr>
-
-        <td class="text-right borderless" colspan="4">Due Amount <span class="currency-sign"></span>
-        </td>
-        <td class="borderless">
-            <input type="number" name="due_amount" value=""
-                class="form-control due-amount text-right" readonly>
-        </td>
-    </tr>
-    <tr>
-        <td class="text-right borderless" colspan="4">Payment Method</td>
-        <td class="borderless">
-            <select class="form-control chosen-select payment-type" name="payment_type"
-                data-placeholder="-Choose Payment Type-" data-selected="">
-                <option></option>
-                                    <option value="0" selected>
-                        
-                    </option>
-                            </select>
-        </td>
-    </tr>
-
-</tfoot>
-
-                    </table></div>
                 </div>
-            </div>
 
-
-            <div id="member-detail-modal" class="modal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header" style="background: rgb(41, 4, 77)">
-                <button type="button" class="close white" data-dismiss="modal" style="display: flex; align-items: center;"><span style="font-size: 20px; margin-right: 5px;">Close</span> &times;</button>
-                <h4 class="white bigger"><i class="glyphicon glyphicon-plus "></i> Add Member Details</h4>
-            </div>
-
-
-            <div class="modal-body">
-
-                <div class="row">
-                    <div class="col-sm-12 member-detail-body">
-
-
-
-                    </div>
-
-
-                    <div class="text-center col-sm-10 col-sm-offset-1" style="background: #abbac3; padding: 10px; border-radius: 8px; cursor: pointer" onclick="addMemberDetialItem()">
-                        <i class="fa fa-plus fa-2x"></i>
+                <!-- 2. Event Organizer, Corporate & Schedule Details -->
+                <div class="mm-bq-section-head">
+                    <span><i class="fa fa-id-card-o"></i> 2. Event Organizer, Corporate Account &amp; Session Schedule</span>
+                    <div style="display:flex;gap:6px">
+                        <a href="#add_guest1" data-toggle="modal" class="mm-button mm-button-secondary" style="min-height:26px;padding:2px 9px;font-size:11.5px"><i class="fa fa-user-plus"></i> + New Organizer</a>
+                        <a href="#guest-information-modal" data-toggle="modal" class="mm-button mm-button-secondary" style="min-height:26px;padding:2px 9px;font-size:11.5px"><i class="fa fa-users"></i> Guest Roster</a>
                     </div>
                 </div>
-            </div>
 
+                <div class="row" style="margin:0 -8px 14px">
+                    <div class="col-md-4" style="padding:6px 8px">
+                        <label class="mm-label">Booking Date <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control date-picker booking-date-picker" name="booking_date" value="2026-10-14">
+                    </div>
+                    <div class="col-md-4" style="padding:6px 8px">
+                        <label class="mm-label">Primary Guest / Host <span class="text-danger">*</span></label>
+                        <select class="form-control chosen-select-100-percent" onchange="if(window.showCompany)showCompany(this);if(window.editGuestInfo)editGuestInfo(this)" name="customer_id" id="customer_id" data-placeholder="Choose Guest">
+                            <option value="1" selected>Rahim &lt;b&gt;Uddin&lt;/b&gt; - 01711-204204</option>
+                            <option value="2">Tanvir Ahmed Chowdhury (UNICEF BD) - 01711-889900</option>
+                            <option value="3">Brig. Gen. Mahmudul Hasan - 01713-301301</option>
+                            <option value="4">Dr. Farhana Rahman (World Bank) - 01715-305305</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4" style="padding:6px 8px">
+                        <label class="mm-label">Corporate Organization / Sponsor</label>
+                        <select class="form-control chosen-select-100-percent" data-placeholder="--Choose Company--" name="company_id" id="company_id">
+                            <option value="1" selected>Apex Pharmaceuticals Ltd. (Corporate AR)</option>
+                            <option value="2">UNICEF Bangladesh Mission</option>
+                            <option value="3">World Bank Dhaka Office</option>
+                            <option value="4">Mohammadi Group Ltd.</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3" style="padding:6px 8px">
+                        <label class="mm-label">Event Date (Check-In) <span class="text-danger">*</span></label>
+                        <input class="form-control date-picker check-in-date" value="2026-10-14" name="check_in_date" type="text" required>
+                    </div>
+                    <div class="col-md-3" style="padding:6px 8px">
+                        <label class="mm-label">Event Purpose / Function Type</label>
+                        <select class="form-control chosen-select-100-percent" name="purpose_id" id="purpose" data-placeholder="--Choose Purpose--">
+                            <option value="1" selected>Corporate Annual Gala &amp; Awards Night</option>
+                            <option value="2">Diplomatic State Reception</option>
+                            <option value="3">Executive Summit &amp; Press Briefing</option>
+                            <option value="4">Royal Heritage Wedding Reception</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3" style="padding:6px 8px">
+                        <label class="mm-label">Session Window &amp; Seating Style</label>
+                        <select class="form-control" id="bq-session-window">
+                            <option value="Evening Gala (18:00–23:00) · Banquet Rounds">Evening Gala (18:00–23:00) · Banquet Rounds</option>
+                            <option value="Full-Day Summit (09:00–17:00) · Theater">Full-Day Summit (09:00–17:00) · Theater</option>
+                            <option value="Morning Session (09:00–13:30) · U-Shape">Morning Session (09:00–13:30) · U-Shape</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3" style="padding:6px 8px">
+                        <label class="mm-label">Booking Channel / Platform</label>
+                        <select class="form-control chosen-select-100-percent" name="platform_id" data-placeholder="--Choose Booking Platform--">
+                            <option value="1" selected>Direct Corporate BEO Desk</option>
+                            <option value="2">Diplomatic Protocol Office</option>
+                            <option value="3">Hotel Website Banquet Inquiry</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3" style="padding:6px 8px">
+                        <label class="mm-label">Event Reference / BEO Code</label>
+                        <input type="text" class="form-control" id="referenceName" name="reference" value="BEO-2026-401 · Apex Annual Gala" placeholder="Reference Name">
+                    </div>
+                    <div class="col-md-3" style="padding:6px 8px">
+                        <label class="mm-label">On-Site Coordinator Name</label>
+                        <input type="text" class="form-control" name="emergency_cont_name" value="Kamrul Islam (Event Director)" placeholder="Emergency Contact Name">
+                    </div>
+                    <div class="col-md-3" style="padding:6px 8px">
+                        <label class="mm-label">Coordinator Mobile</label>
+                        <input type="text" class="form-control" id="emergency_cont_phone" name="emergency_cont_phone" value="+880 1711-908070" placeholder="Emergency Contact Phone">
+                    </div>
+                    <div class="col-md-3" style="padding:6px 8px;display:flex;align-items:flex-end">
+                        <label style="display:flex;align-items:center;gap:8px;margin:0;padding:8px 12px;border:1px solid rgba(148,163,184,0.35);border-radius:10px;width:100%;cursor:pointer">
+                            <input name="status" class="ace ace-switch ace-switch-6" type="checkbox" value="1" checked>
+                            <span class="lbl"></span>
+                            <span style="font-size:12.5px;font-weight:700">Confirm &amp; Lock Hall Now</span>
+                        </label>
+                    </div>
+                </div>
 
-
-
-
-            <div class="modal-footer" style="text-align: right !important;">
-                <div class="btn-group btn-corner">
-                    <button class="btn btn-sm" data-dismiss="modal">
-                        <i class="ace-icon fa fa-edit"></i>
-                        Save
+                <!-- 3. Table 1: Booked Venue Halls -->
+                <div class="mm-bq-section-head">
+                    <span><i class="fa fa-building"></i> 3. Booked Venue Halls &amp; Session Tariff</span>
+                    <button type="button" class="mm-button" id="addrow" style="min-height:28px;padding:2px 10px;font-size:11.5px">
+                        <i class="fa fa-plus"></i> + Add Venue Hall Row
                     </button>
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
+                <div class="mm-table-scroll" role="region" aria-label="Hall booking details" tabindex="0">
+                    <table id="myTable" class="table table-bordered table-striped order-list">
+                        <thead>
+                            <tr>
+                                <th class="text-left">Venue Hall &amp; Setup<span class="text-danger">*</span></th>
+                                <th class="text-center" style="width:12%">Expected Pax</th>
+                                <th class="text-right" style="width:15%">Session Tariff (৳) <span class="currency-sign"></span></th>
+                                <th class="text-center" style="width:12%">Sessions</th>
+                                <th class="text-right" style="width:14%">Discount (৳)</th>
+                                <th class="text-right" style="width:16%">Line Total (৳) <span class="currency-sign"></span></th>
+                                <th class="text-center" style="width:6%">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="item-details room-details-tbody" id="bq-halls-tbody">
+                            <tr class="bq-calc-row" data-hall-code="BH-101">
+                                <td>
+                                    <select class="form-control bq-row-title" name="room_id[]">
+                                        <option value="1" selected>Grand Ballroom (#BH-101) — 18 Banquet Rounds + VIP Stage</option>
+                                        <option value="2">Heritage Banquet Hall (#BH-102) — Theater / Plated</option>
+                                        <option value="3">Executive Boardroom (#BH-201) — U-Shape Summit</option>
+                                        <option value="4">Skyline Rooftop Lawn (#BH-301) — Reception Lawn</option>
+                                    </select>
+                                </td>
+                                <td><input type="number" class="form-control text-center bq-pax-input" name="guest_count[]" value="180" min="1"></td>
+                                <td><input type="number" class="form-control text-right bq-rate-input" name="room_rate[]" value="75000" min="0"></td>
+                                <td><input type="number" class="form-control text-center bq-qty-input" name="session_qty[]" value="1" min="1"></td>
+                                <td><input type="number" class="form-control text-right bq-disc-input" name="room_discount[]" value="5000" min="0"></td>
+                                <td><input type="text" class="form-control text-right bq-line-total" value="70000" readonly></td>
+                                <td class="text-center"><button type="button" class="btn btn-xs btn-danger bq-remove-row" title="Remove row"><i class="fa fa-trash-o"></i></button></td>
+                            </tr>
+                            <tr class="bq-calc-row" data-hall-code="BH-201">
+                                <td>
+                                    <select class="form-control bq-row-title" name="room_id[]">
+                                        <option value="1">Grand Ballroom (#BH-101) — 18 Banquet Rounds + VIP Stage</option>
+                                        <option value="2">Heritage Banquet Hall (#BH-102) — Theater / Plated</option>
+                                        <option value="3" selected>Executive Boardroom (#BH-201) — VIP Green Room &amp; Hold</option>
+                                        <option value="4">Skyline Rooftop Lawn (#BH-301) — Reception Lawn</option>
+                                    </select>
+                                </td>
+                                <td><input type="number" class="form-control text-center bq-pax-input" name="guest_count[]" value="50" min="1"></td>
+                                <td><input type="number" class="form-control text-right bq-rate-input" name="room_rate[]" value="25000" min="0"></td>
+                                <td><input type="number" class="form-control text-center bq-qty-input" name="session_qty[]" value="1" min="1"></td>
+                                <td><input type="number" class="form-control text-right bq-disc-input" name="room_discount[]" value="0" min="0"></td>
+                                <td><input type="text" class="form-control text-right bq-line-total" value="25000" readonly></td>
+                                <td class="text-center"><button type="button" class="btn btn-xs btn-danger bq-remove-row" title="Remove row"><i class="fa fa-trash-o"></i></button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
+                <!-- 4. Table 2: Catering & F&B Menu Packages -->
+                <div class="mm-bq-section-head">
+                    <span><i class="fa fa-cutlery"></i> 4. Banquet Catering &amp; F&amp;B Menu Packages (Kitchen KDS Linked)</span>
+                    <button type="button" class="mm-button" id="addItem" style="min-height:28px;padding:2px 10px;font-size:11.5px">
+                        <i class="fa fa-plus"></i> + Add Catering Package
+                    </button>
+                </div>
+                <div class="mm-table-scroll" role="region" aria-label="Restaurant items" tabindex="0">
+                    <table class="table table-bordered table-striped order-list">
+                        <thead>
+                            <tr>
+                                <th class="text-left">Catering Menu / Beverage Package<span class="text-danger">*</span></th>
+                                <th class="text-center" style="width:12%">Covers (Qty)</th>
+                                <th class="text-right" style="width:16%">Rate / Cover (৳) <span class="currency-sign"></span></th>
+                                <th class="text-right" style="width:16%">Discount (৳)</th>
+                                <th class="text-right" style="width:16%">Line Total (৳) <span class="currency-sign"></span></th>
+                                <th class="text-center" style="width:6%">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="item-details item-details-tbody" id="bq-items-tbody">
+                            <tr class="bq-calc-row">
+                                <td>
+                                    <select class="form-control bq-row-title" name="item_id[]">
+                                        <option value="101" selected>Royal Heritage 7-Course Gala Buffet (Kacchi, Lobster, Carving Pass)</option>
+                                        <option value="102">Continental Executive Plated Dinner (Norwegian Salmon &amp; Tenderloin)</option>
+                                        <option value="103">Corporate Summit High-Tea &amp; Artisan Canapé Package</option>
+                                        <option value="104">Welcome Mocktail, Espresso &amp; Live Dessert Bar</option>
+                                    </select>
+                                </td>
+                                <td><input type="number" class="form-control text-center bq-qty-input" name="item_qty[]" value="180" min="1"></td>
+                                <td><input type="number" class="form-control text-right bq-rate-input" name="item_rate[]" value="650" min="0"></td>
+                                <td><input type="number" class="form-control text-right bq-disc-input" name="item_discount[]" value="3000" min="0"></td>
+                                <td><input type="text" class="form-control text-right bq-line-total" value="114000" readonly></td>
+                                <td class="text-center"><button type="button" class="btn btn-xs btn-danger bq-remove-row" title="Remove row"><i class="fa fa-trash-o"></i></button></td>
+                            </tr>
+                            <tr class="bq-calc-row">
+                                <td>
+                                    <select class="form-control bq-row-title" name="item_id[]">
+                                        <option value="101">Royal Heritage 7-Course Gala Buffet (Kacchi, Lobster, Carving Pass)</option>
+                                        <option value="102">Continental Executive Plated Dinner (Norwegian Salmon &amp; Tenderloin)</option>
+                                        <option value="103">Corporate Summit High-Tea &amp; Artisan Canapé Package</option>
+                                        <option value="104" selected>Welcome Mocktail, Espresso &amp; Live Dessert Bar</option>
+                                    </select>
+                                </td>
+                                <td><input type="number" class="form-control text-center bq-qty-input" name="item_qty[]" value="180" min="1"></td>
+                                <td><input type="number" class="form-control text-right bq-rate-input" name="item_rate[]" value="120" min="0"></td>
+                                <td><input type="number" class="form-control text-right bq-disc-input" name="item_discount[]" value="0" min="0"></td>
+                                <td><input type="text" class="form-control text-right bq-line-total" value="21600" readonly></td>
+                                <td class="text-center"><button type="button" class="btn btn-xs btn-danger bq-remove-row" title="Remove row"><i class="fa fa-trash-o"></i></button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
 
-        </form>
+                <!-- 5. Table 3: AV, Stage, Floral & Event Equipment + Financial Settlement Footer -->
+                <div class="mm-bq-section-head">
+                    <span><i class="fa fa-video-camera"></i> 5. AV Production, Stage Backdrop, Floral &amp; Technical Add-Ons</span>
+                    <button type="button" class="mm-button" id="addInformation" style="min-height:28px;padding:2px 10px;font-size:11.5px">
+                        <i class="fa fa-plus"></i> + Add AV / Decor Item
+                    </button>
+                </div>
+                <div class="mm-table-scroll" role="region" aria-label="Other items" tabindex="0">
+                    <table class="table table-bordered table-striped order-list">
+                        <thead>
+                            <tr>
+                                <th class="text-left">AV / Stage / Decor Service<span class="text-danger">*</span></th>
+                                <th class="text-center" style="width:12%">Qty</th>
+                                <th class="text-right" style="width:16%">Unit Rate (৳) <span class="currency-sign"></span></th>
+                                <th class="text-right" style="width:16%">Discount (৳)</th>
+                                <th class="text-right" style="width:16%">Line Total (৳) <span class="currency-sign"></span></th>
+                                <th class="text-center" style="width:6%">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody class="item-details info-details-tbody" id="bq-info-tbody">
+                            <tr class="bq-calc-row">
+                                <td>
+                                    <select class="form-control bq-row-title" name="info_id[]">
+                                        <option value="201" selected>P3 Indoor LED Wall (16×10 ft), Wireless Mics &amp; Bose Line-Array PA</option>
+                                        <option value="202">Royal Orchid Stage Backdrop &amp; VIP Head Table Floral Styling</option>
+                                        <option value="203">Dedicated Valet Parking &amp; Red-Carpet Protocol Team (8 Staff)</option>
+                                        <option value="204">150 kVA Dedicated Silent Generator Backup</option>
+                                    </select>
+                                </td>
+                                <td><input type="number" class="form-control text-center bq-qty-input" name="info_qty[]" value="1" min="1"></td>
+                                <td><input type="number" class="form-control text-right bq-rate-input" name="info_rate[]" value="12000" min="0"></td>
+                                <td><input type="number" class="form-control text-right bq-disc-input" name="info_discount[]" value="0" min="0"></td>
+                                <td><input type="text" class="form-control text-right bq-line-total" value="12000" readonly></td>
+                                <td class="text-center"><button type="button" class="btn btn-xs btn-danger bq-remove-row" title="Remove row"><i class="fa fa-trash-o"></i></button></td>
+                            </tr>
+                            <tr class="bq-calc-row">
+                                <td>
+                                    <select class="form-control bq-row-title" name="info_id[]">
+                                        <option value="201">P3 Indoor LED Wall (16×10 ft), Wireless Mics &amp; Bose Line-Array PA</option>
+                                        <option value="202" selected>Royal Orchid Stage Backdrop &amp; VIP Head Table Floral Styling</option>
+                                        <option value="203">Dedicated Valet Parking &amp; Red-Carpet Protocol Team (8 Staff)</option>
+                                        <option value="204">150 kVA Dedicated Silent Generator Backup</option>
+                                    </select>
+                                </td>
+                                <td><input type="number" class="form-control text-center bq-qty-input" name="info_qty[]" value="1" min="1"></td>
+                                <td><input type="number" class="form-control text-right bq-rate-input" name="info_rate[]" value="4900" min="0"></td>
+                                <td><input type="number" class="form-control text-right bq-disc-input" name="info_discount[]" value="0" min="0"></td>
+                                <td><input type="text" class="form-control text-right bq-line-total" value="4900" readonly></td>
+                                <td class="text-center"><button type="button" class="btn btn-xs btn-danger bq-remove-row" title="Remove row"><i class="fa fa-trash-o"></i></button></td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="3" style="vertical-align:top;padding:14px">
+                                    <div style="padding:12px 14px;border-radius:10px;border:1px solid rgba(148,163,184,0.3);background:rgba(248,250,252,0.85)">
+                                        <strong style="display:block;margin-bottom:8px"><i class="fa fa-bell-o"></i> Client Notification &amp; BEO Invoice Options</strong>
+                                        <div style="display:flex;flex-wrap:wrap;gap:16px">
+                                            <label class="send-sms" style="display:inline-flex;align-items:center;gap:6px;cursor:pointer">
+                                                <input name="sms" class="ace ace-switch ace-switch-6" type="checkbox" checked>
+                                                <span class="lbl"></span>
+                                                <span>Send Confirmation SMS</span>
+                                            </label>
+                                            <label class="send-email" style="display:inline-flex;align-items:center;gap:6px;cursor:pointer">
+                                                <input name="email" class="ace ace-switch ace-switch-6" type="checkbox" checked>
+                                                <span class="lbl"></span>
+                                                <span>Email BEO PDF</span>
+                                            </label>
+                                            <label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer">
+                                                <input name="is_room_in_invoice" class="ace ace-switch ace-switch-6" value="1" type="checkbox" checked>
+                                                <span class="lbl"></span>
+                                                <span>Print Hall Numbers on Invoice</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td colspan="3" style="padding:12px">
+                                    <table class="table" style="margin:0">
+                                        <tbody>
+                                            <tr>
+                                                <td class="text-right borderless"><strong>Subtotal (Halls + Catering + AV)</strong> <span class="currency-sign">৳</span></td>
+                                                <td class="borderless" style="width:180px">
+                                                    <input class="form-control subtotal-amount text-right" id="bq-subtotal" value="247500" readonly>
+                                                    <input type="hidden" name="line_total" id="line_total" value="247500">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-right borderless">Hospitality Service Charge <span class="currency-sign">৳</span></td>
+                                                <td class="borderless">
+                                                    <input name="service_amount" id="bq-service" value="10000" class="form-control service_amount text-right">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-right borderless">
+                                                    <input type="hidden" name="vat" id="vat" value="10">
+                                                    Mushak-6.3 VAT (10%) <span class="currency-sign">৳</span>
+                                                </td>
+                                                <td class="borderless">
+                                                    <input type="text" name="vat_amount" id="bq-vat" value="24750" class="form-control vat-amount text-right only-number" readonly>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-right borderless"><strong>Grand Total Contract Value</strong> <span class="currency-sign">৳</span></td>
+                                                <td class="borderless">
+                                                    <input name="sub_total" id="bq-grandtotal" value="282250" class="form-control grandtotal text-right" readonly style="font-weight:700">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-right borderless">
+                                                    Advance Deposit Collected
+                                                    <label class="choose-currency" id="usdCurrency" style="margin-left:6px;font-weight:400">
+                                                        <input type="radio" name="currency_type" value="141"> USD ($)
+                                                    </label>
+                                                </td>
+                                                <td class="borderless">
+                                                    <div class="show-currency-rate" style="display:none"></div>
+                                                    <input type="number" name="advanced_amount" id="bq-advance" value="100000" class="form-control adv-amount text-right">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-right borderless"><strong>Net Balance Due on Event</strong> <span class="currency-sign">৳</span></td>
+                                                <td class="borderless">
+                                                    <input type="number" name="due_amount" id="bq-due" value="182250" class="form-control due-amount text-right" readonly style="font-weight:700">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-right borderless">Advance Payment Method</td>
+                                                <td class="borderless">
+                                                    <select class="form-control chosen-select payment-type" name="payment_type" data-placeholder="-Choose Payment Type-">
+                                                        <option value="1" selected>Corporate Bank Transfer / Pay Order</option>
+                                                        <option value="2">Cash at Banquet Desk</option>
+                                                        <option value="3">Visa / Mastercard POS Terminal</option>
+                                                        <option value="4">bKash Merchant Corporate</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                <!-- Guest & Member Drawers preserved for contract compatibility -->
+                <div id="guest-information-modal" class="guest-information modal fade mm-app-drawer" tabindex="-1">
+                    <div class="modal-dialog modal-lg"><div class="modal-content">
+                        <div class="modal-header"><h4 class="modal-title"><i class="fa fa-users"></i> Add Event Guest Roster</h4><button type="button" class="close" data-dismiss="modal">&times;</button></div>
+                        <div class="modal-body">
+                            <div class="input-group" style="max-width:360px"><label class="input-group-addon">Number Of Guests</label><input type="text" name="number_of_guest" value="180" class="modal-number-of-guest text-center form-control"></div>
+                            <div class="guest-information-modal-body" style="margin-top:10px"></div>
+                        </div>
+                        <div class="modal-footer"><button type="button" class="btn btn-sm btn-success save-guest-information" data-dismiss="modal"><i class="fa fa-save"></i> Save</button><button class="btn btn-sm" data-dismiss="modal">Close</button></div>
+                    </div></div>
+                </div>
+                <div id="member-detail-modal" class="modal fade mm-app-drawer" tabindex="-1">
+                    <div class="modal-dialog modal-lg"><div class="modal-content">
+                        <div class="modal-header"><h4 class="modal-title">Add Member Details</h4><button type="button" class="close" data-dismiss="modal">&times;</button></div>
+                        <div class="modal-body"><div class="member-detail-body"></div></div>
+                        <div class="modal-footer"><button class="btn btn-sm" data-dismiss="modal">Save</button></div>
+                    </div></div>
+                </div>
+            </form>
 
             <!-- ACTION/SUBMIT FORM -->
             <div class="mm-form-actions">
-                <button type="button" name="type" value="reserve" onclick="submitBookingForm()"
-                    class="updateBookingBtn next-step-btn mm-button mm-button-secondary">
-                    <i class="fa fa-bookmark" aria-hidden="true"></i> Reserve
+                <button type="button" data-toggle="modal" data-target="#bq-beo-preview-modal" class="mm-button mm-button-secondary">
+                    <i class="fa fa-file-text-o" aria-hidden="true"></i> Preview BEO Sheet
                 </button>
-                <button type="button" name="type" value="book" onclick="submitBookingForm()"
-                    class="updateBookingBtn next-step-btn mm-button">
-                    <i class="fa fa-paper-plane" aria-hidden="true"></i> Book Now
+                <button type="button" name="type" value="reserve" id="bq-btn-reserve" class="updateBookingBtn next-step-btn mm-button mm-button-secondary">
+                    <i class="fa fa-bookmark" aria-hidden="true"></i> Reserve Hold
                 </button>
-                <button class="mm-button mm-button-secondary" type="Reset">
+                <button type="button" name="type" value="book" id="bq-btn-book" class="updateBookingBtn next-step-btn mm-button">
+                    <i class="fa fa-paper-plane" aria-hidden="true"></i> Book Now &amp; Issue BEO
+                </button>
+                <button class="mm-button mm-button-secondary" type="Reset" id="bq-btn-reset">
                     <i class="fa fa-refresh" aria-hidden="true"></i> Reset
                 </button>
-            </div></div>
+            </div>
+        </div>
     </div>
 </section>
-    <div id="add_guest1" class="modal"></div>    <div id="edit_guest_info" class="modal"></div>
+
+<div id="bq-beo-preview-modal" class="modal fade mm-app-drawer" tabindex="-1" role="dialog" aria-labelledby="bq-beo-preview-title">
+    <div class="modal-dialog modal-lg" role="document"><div class="modal-content">
+        <div class="modal-header"><h4 class="modal-title" id="bq-beo-preview-title"><i class="fa fa-file-pdf-o"></i> Banquet Event Order (BEO) Contract Preview — #BEO-2026-401</h4><button type="button" class="close" data-dismiss="modal">&times;</button></div>
+        <div class="modal-body"><section class="mm-ui"><div class="tw-space-y-4">
+            <div class="mm-drawer-card tw-p-4">
+                <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;border-bottom:1px solid rgba(148,163,184,0.25);padding-bottom:10px;margin-bottom:10px">
+                    <div>
+                        <strong style="font-size:15px">M&amp;M HERITAGE HOTEL &amp; BANQUET SUITES</strong>
+                        <div class="tw-text-xs tw-text-muted">Banquet Event Order (BEO) · Mushak-6.3 Tax Registered</div>
+                    </div>
+                    <div class="text-right">
+                        <span class="mm-badge mm-badge-paid">Confirmed Contract</span>
+                        <div class="tw-text-xs tw-text-muted" style="margin-top:3px">Event Date: 14 Oct 2026 · 18:00–23:00</div>
+                    </div>
+                </div>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px">
+                    <div class="mm-shift-note-card"><strong>Organizer &amp; Sponsor</strong><div>Rahim Uddin · Apex Pharma Ltd.</div></div>
+                    <div class="mm-shift-note-card"><strong>Booked Venues</strong><div id="beo-modal-venues">2 Halls · 230 Pax Combined</div></div>
+                    <div class="mm-shift-note-card"><strong>Contract Grand Total</strong><div id="beo-modal-grand" style="font-weight:700;color:#1d4ed8">৳ 282,250</div></div>
+                    <div class="mm-shift-note-card"><strong>Advance &amp; Balance Due</strong><div id="beo-modal-due" style="font-weight:700;color:#15803d">Adv ৳ 100,000 · Due ৳ 182,250</div></div>
+                </div>
+            </div>
+        </div></section></div>
+        <div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button><button type="button" class="mm-button" onclick="window.print()"><i class="fa fa-print"></i> Print BEO Contract</button></div>
+    </div></div>
+</div>
+<div id="add_guest1" class="modal"></div>
+<div id="edit_guest_info" class="modal"></div>
+<script>
+(function(){
+    function fmt(n){ return Number(n||0).toLocaleString('en-US'); }
+    function recalcBanquet(){
+        var hallSub=0, addonSub=0, paxTotal=0, hallCount=0;
+        var hallRows=document.querySelectorAll('#bq-halls-tbody .bq-calc-row');
+        for(var i=0;i<hallRows.length;i++){
+            var r=hallRows[i];
+            var pax=Number((r.querySelector('.bq-pax-input')||{}).value||0);
+            var rate=Number((r.querySelector('.bq-rate-input')||{}).value||0);
+            var qty=Number((r.querySelector('.bq-qty-input')||{}).value||1);
+            var disc=Number((r.querySelector('.bq-disc-input')||{}).value||0);
+            var line=Math.max(0,(rate*qty)-disc);
+            var lt=r.querySelector('.bq-line-total');
+            if(lt) lt.value=String(line);
+            hallSub+=line; paxTotal+=pax; hallCount++;
+        }
+        var otherRows=document.querySelectorAll('#bq-items-tbody .bq-calc-row, #bq-info-tbody .bq-calc-row');
+        for(var j=0;j<otherRows.length;j++){
+            var or=otherRows[j];
+            var oq=Number((or.querySelector('.bq-qty-input')||{}).value||1);
+            var ort=Number((or.querySelector('.bq-rate-input')||{}).value||0);
+            var od=Number((or.querySelector('.bq-disc-input')||{}).value||0);
+            var oline=Math.max(0,(ort*oq)-od);
+            var olt=or.querySelector('.bq-line-total');
+            if(olt) olt.value=String(oline);
+            addonSub+=oline;
+        }
+        var sub=hallSub+addonSub;
+        var svc=Number((document.getElementById('bq-service')||{}).value||0);
+        var vat=Math.round(sub*0.10);
+        var grand=sub+svc+vat;
+        var adv=Number((document.getElementById('bq-advance')||{}).value||0);
+        var due=Math.max(0,grand-adv);
+        var elSub=document.getElementById('bq-subtotal'), elLine=document.getElementById('line_total'), elVat=document.getElementById('bq-vat'), elGrand=document.getElementById('bq-grandtotal'), elDue=document.getElementById('bq-due');
+        if(elSub) elSub.value=String(sub);
+        if(elLine) elLine.value=String(sub);
+        if(elVat) elVat.value=String(vat);
+        if(elGrand) elGrand.value=String(grand);
+        if(elDue) elDue.value=String(due);
+        var kv=document.getElementById('bq-kpi-venues'), kp=document.getElementById('bq-kpi-pax'), kh=document.getElementById('bq-kpi-hall-sub'), ka=document.getElementById('bq-kpi-addons-sub'), kg=document.getElementById('bq-kpi-grand'), kd=document.getElementById('bq-kpi-due');
+        if(kv) kv.textContent=hallCount+(hallCount===1?' Hall':' Halls');
+        if(kp) kp.textContent=paxTotal+' Pax Combined';
+        if(kh) kh.textContent='৳ '+fmt(hallSub);
+        if(ka) ka.textContent='৳ '+fmt(addonSub);
+        if(kg) kg.textContent='৳ '+fmt(grand);
+        if(kd) kd.textContent='Due: ৳ '+fmt(due);
+        var mv=document.getElementById('beo-modal-venues'), mg=document.getElementById('beo-modal-grand'), md=document.getElementById('beo-modal-due');
+        if(mv) mv.textContent=hallCount+' Halls · '+paxTotal+' Pax Combined';
+        if(mg) mg.textContent='৳ '+fmt(grand);
+        if(md) md.textContent='Adv ৳ '+fmt(adv)+' · Due ৳ '+fmt(due);
+    }
+    function bindRowEvents(scope){
+        var inputs=(scope||document).querySelectorAll('.bq-pax-input, .bq-rate-input, .bq-qty-input, .bq-disc-input, #bq-service, #bq-advance');
+        for(var i=0;i<inputs.length;i++) inputs[i].addEventListener('input',recalcBanquet);
+        var rms=(scope||document).querySelectorAll('.bq-remove-row');
+        for(var j=0;j<rms.length;j++){
+            rms[j].addEventListener('click',function(){
+                var tr=this.closest('tr');
+                var tbody=tr&&tr.parentElement;
+                if(tbody&&tbody.children.length>1){ tr.remove(); recalcBanquet(); }
+            });
+        }
+    }
+    bindRowEvents(document);
+    var addHallBtn=document.getElementById('addrow');
+    if(addHallBtn) addHallBtn.addEventListener('click',function(){
+        var tb=document.getElementById('bq-halls-tbody');
+        if(!tb||!tb.firstElementChild) return;
+        var clone=tb.firstElementChild.cloneNode(true);
+        clone.querySelector('.bq-pax-input').value='100';
+        clone.querySelector('.bq-rate-input').value='48000';
+        clone.querySelector('.bq-disc-input').value='0';
+        tb.appendChild(clone);
+        bindRowEvents(clone);
+        recalcBanquet();
+    });
+    var addItemBtn=document.getElementById('addItem');
+    if(addItemBtn) addItemBtn.addEventListener('click',function(){
+        var tb=document.getElementById('bq-items-tbody');
+        if(!tb||!tb.firstElementChild) return;
+        var clone=tb.firstElementChild.cloneNode(true);
+        clone.querySelector('.bq-qty-input').value='100';
+        clone.querySelector('.bq-rate-input').value='450';
+        clone.querySelector('.bq-disc-input').value='0';
+        tb.appendChild(clone);
+        bindRowEvents(clone);
+        recalcBanquet();
+    });
+    var addInfoBtn=document.getElementById('addInformation');
+    if(addInfoBtn) addInfoBtn.addEventListener('click',function(){
+        var tb=document.getElementById('bq-info-tbody');
+        if(!tb||!tb.firstElementChild) return;
+        var clone=tb.firstElementChild.cloneNode(true);
+        clone.querySelector('.bq-qty-input').value='1';
+        clone.querySelector('.bq-rate-input').value='6500';
+        clone.querySelector('.bq-disc-input').value='0';
+        tb.appendChild(clone);
+        bindRowEvents(clone);
+        recalcBanquet();
+    });
+    var venueCards=document.querySelectorAll('#bq-venue-cards .mm-bq-venue-card');
+    for(var vc=0;vc<venueCards.length;vc++){
+        venueCards[vc].addEventListener('click',function(){
+            var selected=this.classList.toggle('is-selected');
+            var pill=this.querySelector('.bq-hall-pill');
+            if(pill){
+                pill.textContent=selected?'Selected ✓':'Click to Add';
+                pill.className='mm-badge '+(selected?'mm-badge-paid':'mm-badge-partial')+' bq-hall-pill';
+            }
+            if(selected && addHallBtn) addHallBtn.click();
+        });
+    }
+    var actionBtns=document.querySelectorAll('.updateBookingBtn');
+    for(var ab=0;ab<actionBtns.length;ab++){
+        actionBtns[ab].addEventListener('click',function(){
+            var banner=document.getElementById('bq-confirm-banner');
+            var mode=this.getAttribute('value')==='reserve'?'Tentative Hall Hold Reserved':'Banquet Booking & BEO Contract Confirmed';
+            var grand=(document.getElementById('bq-grandtotal')||{}).value||'282250';
+            if(banner){
+                banner.style.display='block';
+                banner.innerHTML='<i class="fa fa-check-circle"></i> <strong>'+mode+' (#BEO-2026-401):</strong> Grand Total <strong>৳ '+fmt(grand)+'</strong> posted to Banquet &amp; Corporate Folio — <a href="/preview/bq-booking-index"><strong>View in Banquet Bookings →</strong></a>';
+            }
+        });
+    }
+    recalcBanquet();
+})();
+</script>
 <!--/MM-BODY--></div>
 <script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
 <!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
