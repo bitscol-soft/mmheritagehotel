@@ -3,12 +3,6 @@
 <!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">    <link rel="stylesheet" href="/assets/css/chosen.min.css"/>
     <link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css"/>
     <link rel="stylesheet" href="/assets/custom_css/chosen-required.css"/>
-    <style>
-        td {
-            padding-bottom: 3px !important;
-            padding-top: 3px !important;
-        }
-    </style>
 <!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
 <section class="mm-ui mm-acc mm-rst mm-rst-inv mm-rst-form">
     <div class="tw-space-y-4 tw-py-2">
@@ -17,6 +11,24 @@
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Fund Transfer Edit</h1>
                 <p class="tw-m-0 tw-text-sm tw-text-muted">Update the fund transfer.</p>            </div>
             <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button" href="http://localhost/acc/fund-transfers/index"><i class="fa fa-list"></i> List</a></div>        </header>
+        <div class="mm-table-kpi-grid mm-no-print" style="margin-bottom: 14px;">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-label">Transfer Mode</span>
+                <div class="mm-table-kpi-value">Edit Transfer <span class="mm-table-kpi-badge">Inter-Ledger</span></div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-label">From Account</span>
+                <div class="mm-table-kpi-value">Cash in Hand <span class="mm-table-kpi-badge">Source</span></div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-label">To Account</span>
+                <div class="mm-table-kpi-value">Bank Account <span class="mm-table-kpi-badge is-emerald">Target</span></div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-label">Transfer Amount</span>
+                <div class="mm-table-kpi-value">&#2547; 1,200.00 <span class="mm-table-kpi-badge is-amber">Verified</span></div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><!-- INPUTS -->
         <form action="http://localhost/acc/fund-transfers/update/4" method="post">
             <input type="hidden" name="_token" value="fixture-csrf-token"> <input type="hidden" name="_method" value="PUT">

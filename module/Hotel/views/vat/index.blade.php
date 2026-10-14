@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title','Vat & Services')
-@section('page-header')
-    <i class="fa fa-info-circle"></i> Vat & Services
-@stop
 
 @section('content')
 <x-mm.styles />
@@ -13,112 +10,40 @@
         <form class="form-horizontal" id="companyForm" action="{{ route('vat.update',$vat->id) }}" method="post" enctype="multipart/form-data">
             @csrf
             @method('PUT')
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label" for="form-field-1-1"> Hotel VAT (%)</label>
 
-                        <div class="col-xs-12 col-sm-8">
-                            <div class="input-group">
-                                <input type="number" class="form-control input-sm" name="hotel_vat" value="{{ $vat->hotel_vat }}" placeholder="Enter Vat Number (%)">
-                                <span class="input-group-addon">Persent (%)</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-12">
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label" for="form-field-1-1">Resturent VAT (%)</label>
+            {{-- W3.4: replaced Bootstrap-3 form-group markup with
+                 <x-mm.field>. The field name, value, type="number"
+                 with input-group, placeholder, and validation error
+                 hooks are preserved byte-identically. --}}
+            <div class="tw-grid tw-gap-4 sm:tw-grid-cols-2">
+                <x-mm.field label="Hotel VAT (%)" id="hotel-vat" name="hotel_vat" type="number" value="{{ $vat->hotel_vat }}" placeholder="Enter VAT number (%)" help="Percent (%)" />
+                <x-mm.field label="Restaurant VAT (%)" id="resturent-vat" name="resturent_vat" type="number" value="{{ $vat->resturent_vat }}" placeholder="Enter VAT number (%)" help="Percent (%)" :error="$errors->first('resturent_vat')" />
+                <x-mm.field label="Bar VAT (%)" id="bar-vat" name="bar_vat" type="number" value="{{ $vat->bar_vat }}" placeholder="Enter VAT number (%)" help="Percent (%)" />
+                <x-mm.field label="VAT number" id="vat-number" name="vat_number" value="{{ $vat->vat_number ?? '' }}" placeholder="Enter VAT number" />
+                <x-mm.field label="Room rate" id="room-rate" name="room_rate" value="{{ $vat->room_rate ?? '' }}" placeholder="Enter room rate" help="Amount 126.50 for 10 (%)" />
+                <x-mm.field label="Room service (%)" id="room-service" name="room_service" value="{{ intval($vat->room_service_charge) ?? '' }}" placeholder="Enter room service" help="Percent (%)" />
+                <x-mm.field label="Rst service (%)" id="rst-service-charge" name="rst_service_charge" value="{{ intval($vat->rst_service_charge) ?? '' }}" placeholder="Restaurant service charge" help="Percent (%)" />
 
-                        <div class="col-xs-12 col-sm-8">
-                            <div class="input-group">
-                                <input type="number" class="form-control input-sm" name="resturent_vat" value="{{ $vat->resturent_vat }}" placeholder="Enter Vat Number (%)">
-                                <span class="input-group-addon">Persent (%)</span>
-                            </div>
-                            @error('resturent_vat')
-                            <span class="text-danger"> {{ $message }}</span>
-                            @enderror
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-12">
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label" for="form-field-1-1">Bar VAT (%)</label>
-                        <div class="col-xs-12 col-sm-8 @error('vat_number') has-error @enderror">
-                            <div class="input-group">
-                                <input type="number" class="form-control input-sm" name="bar_vat" value="{{ $vat->bar_vat }}" placeholder="Enter Vat Number (%)">
-                                <span class="input-group-addon">Persent (%)</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-12">
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label" for="form-field-1-1">VAT Number</label>
-
-                        <div class="col-xs-12 col-sm-8 @error('vat_number') has-error @enderror">
-                            <input type="text" class="form-control input-sm" name="vat_number" value="{{ $vat->vat_number ?? '' }}" placeholder="Enter Vat Number">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-12">
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label">Room Rate </label>
-                        <div class="col-xs-12 col-sm-8 @error('room_rate') has-error @enderror"">
-                            <div class="input-group">
-                                <input type="text" class="form-control input-sm" name="room_rate" value="{{ $vat->room_rate ?? '' }}" placeholder="Enter Room Rate">
-                                <span class="input-group-addon">Amount 126.50 For 10(%) </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-12">
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label">Room Service (%)</label>
-                        <div class="col-xs-12 col-sm-8 @error('room_service') has-error @enderror"">
-                            <div class="input-group">
-                                <input type="text" class="form-control input-sm" name="room_service" value="{{ intval($vat->room_service_charge) ?? '' }}" placeholder="Enter room Service">
-                                <span class="input-group-addon">Persent (%)</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-12">
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label">Rst Service (%)</label>
-                        <div class="col-xs-12 col-sm-8 @error('rst_service_charge') has-error @enderror"">
-                            <div class="input-group">
-                                <input type="text" class="form-control input-sm" name="rst_service_charge" value="{{ intval($vat->rst_service_charge) ?? '' }}" placeholder="Restaurant Service Charge">
-                                <span class="input-group-addon">Persent (%)</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-sm-12">
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label">Included VAT Calc</label>
-                        <div class="col-xs-12 col-sm-8" style="background: #EDEDED; border-radius: 10px;">
-                            <label>
+                {{-- Radio group: kept raw (x-mm.field doesn't support
+                     radios). The field id/name pattern is byte-identical. --}}
+                <div>
+                    <span class="tw-block tw-mb-2 tw-text-sm tw-font-semibold tw-text-ink">Included VAT calc</span>
+                    <div class="tw-rounded-lg tw-bg-soft tw-p-3 tw-flex tw-gap-4">
+                        <label class="tw-flex tw-items-center tw-gap-2">
                             <input type="radio" name="key[use_vat_included]"{{ $systemSetting->value == '1' ? 'checked' : '' }} value="1">
-                                Yes
-                            </label>
-                            <label>
+                            Yes
+                        </label>
+                        <label class="tw-flex tw-items-center tw-gap-2">
                             <input type="radio" name="key[use_vat_included]"{{ $systemSetting->value == '0' ? 'checked' : '' }} value="0">
-                                No
-                            </label>
-                        </div>
+                            No
+                        </label>
                     </div>
                 </div>
             </div>
 
-
-            <div class="form-actions center mb-0" style="text-align: right !important;">
+            <div class="tw-mt-6 tw-flex tw-justify-end tw-gap-2">
                 <button type="submit" class="mm-button">
-                    <i class="ace-icon fa fa-save icon-on-right bigger-110"></i>
+                    <i class="fa fa-save" aria-hidden="true"></i>
                     Save
                 </button>
             </div>

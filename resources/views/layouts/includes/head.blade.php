@@ -193,9 +193,17 @@
     <!-- bootstrap4 support css -->
     <link rel="stylesheet" href="{{ asset('assets/custom_css/color-size.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/custom_css/bootstrap4.css') }}" />
+
+    {{-- Design tokens (W1.1) — declarations only, scoped to .mm-ui, safe
+         to load on every page before style.css. Every other consumer rule
+         in the design system can reference --mm-brand, --mm-ink, --mm-radius,
+         etc. as soon as this is in the cascade. --}}
+    <link rel="stylesheet" href="{{ asset('assets/custom_css/tokens.css') }}?v={{ filemtime(public_path('assets/custom_css/tokens.css')) }}" />
     <link rel="stylesheet" href="{{ asset('assets/custom_css/style.css') }}?v=20261001" />
 
-    {{-- Scoped Tailwind layer: requested by the admin shell or an opted-in screen. --}}
+    {{-- Scoped Tailwind + ui.css layer: requested by the admin shell or an
+         opted-in screen. x-mm.styles also pushes tokens.css (no-op duplicate
+         link, harmless) and ui.css (the full consumer layer). --}}
     @if ($mmShell ?? false)
         <x-mm.styles />
         <link rel="stylesheet" href="{{ asset('assets/custom_css/shell.css') }}?v={{ filemtime(public_path('assets/custom_css/shell.css')) }}">

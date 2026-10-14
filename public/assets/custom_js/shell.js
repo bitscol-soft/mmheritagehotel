@@ -18,11 +18,26 @@
     // Preferences are browser-local, not server-side per-user settings.
     function read(key) { try { return localStorage.getItem(key); } catch (e) { return null; } }
     function save(key, value) { try { localStorage.setItem(key, value); } catch (e) {} }
-    collapsed = read('mm-shell-collapsed') === '1';
+    collapsed = read('mm-shell-collapsed') === '1' || read('mm-nav-mode') === 'mm-nav-collapsed';
     // Let Ace own nested dropdowns, but not shell visibility or rail dimensions.
     sidebar.classList.remove('menu-min', 'display', 'responsive-min');
+    if (window.jQuery && window.jQuery.fn && window.jQuery.fn.ace_sidebar) {
+        if (window.jQuery.fn.ace_sidebar.defaults) window.jQuery.fn.ace_sidebar.defaults.duration = 0;
+        var aceInst = window.jQuery(sidebar).data('ace_sidebar');
+        if (aceInst && aceInst.settings) aceInst.settings.duration = 0;
+    }
+    function syncNavModeButtons() {
+        var curMode = body.classList.contains('mm-nav-collapsed') ? 'mm-nav-collapsed' : (body.classList.contains('mm-nav-rail') ? 'mm-nav-rail' : 'mm-nav-full');
+        document.querySelectorAll('[data-mm-nav-toggle]').forEach(function (b) {
+            if (b.dataset.mmNavMode) b.setAttribute('aria-pressed', String(b.dataset.mmNavMode === curMode));
+            else b.setAttribute('aria-pressed', String(curMode !== 'mm-nav-full'));
+        });
+    }
     function render() {
         body.classList.toggle('mm-nav-collapsed', !mobile.matches && collapsed);
+        if (!mobile.matches && !collapsed && !body.classList.contains('mm-nav-rail')) {
+            body.classList.add('mm-nav-full');
+        }
         body.classList.toggle('mm-nav-open', mobile.matches && isOpen);
         var visible = mobile.matches ? isOpen : !collapsed;
         toggle.setAttribute('aria-expanded', String(visible));
@@ -30,6 +45,7 @@
         sidebar.inert = !visible;
         if (backdrop) backdrop.hidden = !(mobile.matches && isOpen);
         if (main) main.inert = mobile.matches && isOpen;
+        syncNavModeButtons();
     }
     function close(restoreFocus) {
         isOpen = false;
@@ -45,13 +61,28 @@
             render();
             if (isOpen && filter) filter.focus();
         } else {
-            collapsed = !collapsed;
+            var isCurrentlyCollapsedOrRail = body.classList.contains('mm-nav-collapsed') || body.classList.contains('mm-nav-rail');
+            collapsed = !isCurrentlyCollapsedOrRail;
+            body.classList.remove('mm-nav-rail');
+            body.classList.toggle('mm-nav-full', !collapsed);
             save('mm-shell-collapsed', collapsed ? '1' : '0');
+            save('mm-nav-mode', collapsed ? 'mm-nav-collapsed' : 'mm-nav-full');
             render();
             // Existing Chosen adapters listen for this Ace compatibility event.
             if (window.jQuery) window.jQuery(document).trigger('settings.ace', ['sidebar_collapsed', collapsed]);
             window.dispatchEvent(new Event('resize'));
         }
+    });
+    // If user clicks a top-level dropdown-toggle while in 68px rail mode, auto-expand to full sidebar.
+    menu.addEventListener('click', function (event) {
+        var link = event.target && event.target.closest ? event.target.closest('a.dropdown-toggle') : null;
+        if (!link || !body.classList.contains('mm-nav-rail')) return;
+        collapsed = false;
+        body.classList.remove('mm-nav-rail', 'mm-nav-collapsed');
+        body.classList.add('mm-nav-full');
+        save('mm-shell-collapsed', '0');
+        save('mm-nav-mode', 'mm-nav-full');
+        render();
     });
     document.querySelectorAll('[data-mm-close]').forEach(function (button) {
         button.addEventListener('click', function () { close(true); });
@@ -159,6 +190,230 @@
         try { url = new URL(link.href, window.location.href); } catch (e) { return; }
         if (url.origin === location.origin && url.pathname === location.pathname && !url.hash && queryKey(url) === queryKey(currentUrl)) link.setAttribute('aria-current', 'page');
     });
+    // Progressive Blade top sub-menu tab bar, role switcher, favorites bar & keyboard shortcuts when not server-rendered.
+    if (location.hostname !== 'mm-shell.test' && !document.getElementById('mm-top-subnav')) {
+        var pageContent = document.querySelector('.page-content');
+        var topItems = Array.from(menu.children).filter(function (el) { return el.tagName === 'LI' && !el.classList.contains('mm-nav-section'); });
+        // 1. Auto-mount Department Role View Switcher (#mm-role-switcher) in sidebar
+        var searchBox = sidebar.querySelector('.mm-sidebar-search');
+        if (searchBox && !document.getElementById('mm-role-switcher') && topItems.length > 1) {
+            topItems.forEach(function (li) {
+                if (li.getAttribute('data-role-tags')) return;
+                var a = directLink(li);
+                var txt = (a ? a.textContent : '').toLowerCase();
+                var tags = ['all'];
+                if (/dashboard|hotel|room|booking|guest|housekeeping|service|concierge|front/.test(txt)) tags.push('frontdesk');
+                if (/dashboard|restaurant|bar|banquet|store|inventory|kitchen|pos|requisition/.test(txt)) tags.push('pos');
+                if (/dashboard|account|voucher|ledger|report|permission|access|setting|website|audit|company/.test(txt)) tags.push('finance');
+                if (tags.length === 1) tags.push('frontdesk', 'Finance');
+                li.setAttribute('data-role-tags', tags.join(' '));
+            });
+            var roleBar = document.createElement('div');
+            roleBar.className = 'mm-role-switcher';
+            roleBar.id = 'mm-role-switcher';
+            roleBar.setAttribute('role', 'group');
+            roleBar.setAttribute('aria-label', 'Filter modules by staff department role');
+            var roles = [
+                ['all', 'All (' + topItems.length + ')'],
+                ['frontdesk', 'Front Desk'],
+                ['pos', 'F&B & Store'],
+                ['finance', 'Finance & Admin']
+            ];
+            var savedRole = read('mm-role-view') || 'all';
+            function applyRoleFilter(role) {
+                save('mm-role-view', role);
+                Array.from(roleBar.querySelectorAll('.mm-role-pill')).forEach(function (btn) {
+                    var act = btn.getAttribute('data-role-view') === role;
+                    btn.classList.toggle('is-active', act);
+                    btn.setAttribute('aria-pressed', String(act));
+                });
+                topItems.forEach(function (li) {
+                    var t = (li.getAttribute('data-role-tags') || 'all').split(/\s+/);
+                    li.style.display = (role === 'all' || t.indexOf(role) >= 0) ? '' : 'none';
+                });
+            }
+            roles.forEach(function (pair) {
+                var btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'mm-role-pill' + (pair[0] === savedRole ? ' is-active' : '');
+                btn.setAttribute('data-role-view', pair[0]);
+                btn.setAttribute('data-role-filter', pair[0]);
+                btn.setAttribute('aria-pressed', String(pair[0] === savedRole));
+                btn.textContent = pair[1];
+                btn.addEventListener('click', function () { applyRoleFilter(pair[0]); });
+                roleBar.appendChild(btn);
+            });
+            searchBox.parentNode.insertBefore(roleBar, searchBox);
+            applyRoleFilter(savedRole);
+        }
+        var activeModLi = topItems.find(function (li) { return li.classList.contains('active') || li.classList.contains('mm-mod-current') || li.querySelector('[aria-current="page"], li.active'); }) || topItems[0];
+        if (pageContent && activeModLi) {
+            var modAnchor = directLink(activeModLi);
+            var modLabelEl = modAnchor && modAnchor.querySelector('.menu-text');
+            var modLabel = (modLabelEl ? modLabelEl.textContent : (modAnchor ? modAnchor.textContent : 'Module')).trim();
+            var subLinks = Array.from(activeModLi.querySelectorAll('.submenu a[href]')).filter(function (a) {
+                var h = a.getAttribute('href');
+                return h && h !== '#' && !/^javascript:/i.test(h);
+            });
+            if (!subLinks.length && modAnchor && modAnchor.getAttribute('href') && modAnchor.getAttribute('href') !== '#') {
+                subLinks = [modAnchor];
+            }
+            if (subLinks.length) {
+                var nav = document.createElement('nav');
+                nav.className = 'mm-top-subnav is-sticky is-slid-up mm-no-print';
+                nav.id = 'mm-top-subnav';
+                nav.setAttribute('aria-label', modLabel + ' sub-menu tabs');
+                var curtain = document.createElement('div');
+                curtain.className = 'mm-top-subnav-curtain';
+                curtain.id = 'mm-top-subnav-curtain';
+                var head = document.createElement('div');
+                head.className = 'mm-top-subnav-head';
+                var titleWrap = document.createElement('div');
+                titleWrap.className = 'mm-top-subnav-title';
+                var titleSpan = document.createElement('span');
+                titleSpan.textContent = modLabel;
+                titleWrap.appendChild(titleSpan);
+                var actIndex = subLinks.findIndex(function (a) { return a.getAttribute('aria-current') === 'page' || (a.parentElement && a.parentElement.classList.contains('active')); });
+                if (actIndex < 0) actIndex = 0;
+                var countBadge = document.createElement('span');
+                countBadge.className = 'mm-badge mm-badge-paid';
+                countBadge.style.fontSize = '11px';
+                countBadge.textContent = (actIndex + 1) + ' / ' + subLinks.length + ' Tabs';
+                titleWrap.appendChild(countBadge);
+                head.appendChild(titleWrap);
+                var rightWrap = document.createElement('div');
+                rightWrap.style.cssText = 'display:flex;flex-wrap:wrap;align-items:center;gap:6px';
+                var pinBtn = document.createElement('button');
+                pinBtn.type = 'button';
+                pinBtn.id = 'mm-top-pin-btn';
+                pinBtn.className = 'mm-button mm-button-secondary';
+                pinBtn.style.cssText = 'min-height:28px;padding:2px 10px;font-size:11.5px';
+                pinBtn.title = 'Pin or unpin top sub-menu bar to sticky top while scrolling';
+                var slideUpBtn = document.createElement('button');
+                slideUpBtn.type = 'button';
+                slideUpBtn.id = 'mm-top-slideup-btn';
+                slideUpBtn.className = 'mm-button mm-button-secondary';
+                slideUpBtn.style.cssText = 'min-height:28px;padding:2px 10px;font-size:11.5px';
+                slideUpBtn.title = 'Slide sub-menu bar up under top navigation';
+                slideUpBtn.innerHTML = '<i class="fa fa-chevron-up"></i> Slide Up';
+                rightWrap.appendChild(pinBtn);
+                rightWrap.appendChild(slideUpBtn);
+                head.appendChild(rightWrap);
+                var tabsWrap = document.createElement('div');
+                tabsWrap.className = 'mm-top-subnav-tabs';
+                tabsWrap.setAttribute('role', 'navigation');
+                tabsWrap.setAttribute('aria-label', 'Module sub-pages');
+                subLinks.forEach(function (a) {
+                    var tab = document.createElement('a');
+                    tab.href = a.href;
+                    var isAct = a.getAttribute('aria-current') === 'page' || (a.parentElement && a.parentElement.classList.contains('active'));
+                    tab.className = 'mm-top-tab' + (isAct ? ' is-active' : '');
+                    if (isAct) tab.setAttribute('aria-current', 'page');
+                    var lbl = document.createElement('span');
+                    lbl.textContent = a.textContent.replace(/\s+/g, ' ').trim();
+                    tab.appendChild(lbl);
+                    tabsWrap.appendChild(tab);
+                });
+                curtain.appendChild(head);
+                curtain.appendChild(tabsWrap);
+                var rail = document.createElement('div');
+                rail.className = 'mm-top-curtain-rail';
+                var curtainBtn = document.createElement('button');
+                curtainBtn.type = 'button';
+                curtainBtn.id = 'mm-top-curtain-btn';
+                curtainBtn.className = 'mm-top-curtain-btn';
+                curtainBtn.setAttribute('aria-expanded', 'false');
+                curtainBtn.setAttribute('aria-controls', 'mm-top-subnav-curtain');
+                curtainBtn.title = 'Pull down or slide up sub-menu curtain under top navbar';
+                var cIcon = document.createElement('i');
+                cIcon.className = 'fa fa-chevron-down mm-top-curtain-arrow';
+                cIcon.id = 'mm-top-curtain-icon';
+                var cLabel = document.createElement('span');
+                cLabel.id = 'mm-top-curtain-label';
+                curtainBtn.appendChild(cIcon);
+                curtainBtn.appendChild(cLabel);
+                rail.appendChild(curtainBtn);
+                nav.appendChild(curtain);
+                nav.appendChild(rail);
+                pageContent.insertBefore(nav, pageContent.firstChild);
+                var pinned = read('mm-top-subnav-pinned') !== '0';
+                function syncPin() {
+                    nav.classList.toggle('is-sticky', pinned);
+                    pinBtn.setAttribute('aria-pressed', String(pinned));
+                    pinBtn.innerHTML = '<i class="fa fa-thumb-tack"></i> ' + (pinned ? 'Pinned' : 'Pin to Top');
+                }
+                syncPin();
+                pinBtn.addEventListener('click', function () {
+                    pinned = !pinned;
+                    save('mm-top-subnav-pinned', pinned ? '1' : '0');
+                    syncPin();
+                });
+                var isOpen = read('mm-top-subnav-open') === '1';
+                function syncCurtain() {
+                    nav.classList.toggle('is-slid-up', !isOpen);
+                    curtainBtn.setAttribute('aria-expanded', String(isOpen));
+                    cLabel.textContent = isOpen ? ('Slide Up · ' + modLabel) : (modLabel + ' (' + subLinks.length + ' Tabs)');
+                }
+                syncCurtain();
+                function toggleCurtain(force) {
+                    isOpen = typeof force === 'boolean' ? force : !isOpen;
+                    save('mm-top-subnav-open', isOpen ? '1' : '0');
+                    syncCurtain();
+                }
+                curtainBtn.addEventListener('click', function () { toggleCurtain(); });
+                slideUpBtn.addEventListener('click', function () { toggleCurtain(false); });
+                document.addEventListener('keydown', function (ev) {
+                    var tag = (ev.target && ev.target.tagName || '').toLowerCase();
+                    if (tag === 'input' || tag === 'textarea' || tag === 'select' || (ev.target && ev.target.isContentEditable)) return;
+                    if (ev.key === '/' && !ev.altKey && !ev.ctrlKey && !ev.metaKey && filter) {
+                        ev.preventDefault();
+                        filter.focus();
+                    }
+                });
+            }
+        }
+    }
+    if (!window.__mmFullscreenBound) {
+        window.__mmFullscreenBound = true;
+        function setFocusedFullscreen(force) {
+            var next = typeof force === 'boolean' ? force : !body.classList.contains('mm-focused-fullscreen');
+            body.classList.toggle('mm-focused-fullscreen', next);
+            var btns = document.querySelectorAll('[data-mm-fullscreen-toggle], #mm-focused-fullscreen-btn');
+            for (var i = 0; i < btns.length; i++) {
+                btns[i].classList.toggle('is-active', next);
+                btns[i].setAttribute('aria-pressed', String(next));
+                btns[i].innerHTML = next
+                    ? '<i class="fa fa-compress" aria-hidden="true"></i> Exit Fullscreen'
+                    : '<i class="fa fa-arrows-alt" aria-hidden="true"></i> Focused Fullscreen';
+            }
+        }
+        window.__mmSetFocusedFullscreen = setFocusedFullscreen;
+        document.addEventListener('click', function (ev) {
+            var tBtn = ev.target && ev.target.closest && ev.target.closest('[data-mm-fullscreen-toggle], #mm-focused-fullscreen-btn');
+            if (tBtn) {
+                ev.preventDefault();
+                setFocusedFullscreen();
+                return;
+            }
+            var xBtn = ev.target && ev.target.closest && ev.target.closest('[data-mm-fullscreen-exit], #mm-fullscreen-exit-btn');
+            if (xBtn) {
+                ev.preventDefault();
+                setFocusedFullscreen(false);
+            }
+        });
+        document.addEventListener('keydown', function (ev) {
+            if (ev.key === 'Escape' && body.classList.contains('mm-focused-fullscreen')) {
+                setFocusedFullscreen(false);
+                return;
+            }
+            var tag = (ev.target && ev.target.tagName || '').toLowerCase();
+            if (tag === 'input' || tag === 'textarea' || tag === 'select' || (ev.target && ev.target.isContentEditable)) return;
+            if (ev.altKey && !ev.ctrlKey && !ev.metaKey && (ev.key || '').toLowerCase() === 'z') {
+                ev.preventDefault();
+                setFocusedFullscreen();
+            }
+        });
+    }
     syncDisclosures();
     render();
 }());

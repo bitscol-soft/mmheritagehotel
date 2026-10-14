@@ -2,9 +2,6 @@
 
 @extends('layouts.master')
 @section('title','GIN List')
-@section('page-header')
-    <i class="fa fa-list"></i> GIN List
-@stop
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -19,21 +16,22 @@
 
 
 @section('content')
+    <x-mm.styles />
+    <x-mm.page class="mm-crud-index mm-rst" title="GIN List">
+        <x-slot name="actions">
+            @if(hasPermission("create.requisitions.index", $slugs))
+                <a class="btn btn-sm btn-default" href="{{ route('goods-requisitions.index') }}">
+                    Requisition List
+                </a>
+            @endif
+            @if(hasPermission("create.requisitions.create", $slugs))
+                <a class="btn btn-sm btn-primary" href="{{ route('goods-requisitions.create') }}">
+                    <i class="fa fa-plus"></i> Create Requisition
+                </a>
+            @endif
+        </x-slot>
 
-    <div class="page-header">
-
-        @if(hasPermission("create.requisitions.create", $slugs))
-            <a class="btn btn-xs btn-info" href="{{ route('goods-requisitions.create') }}" style="float: right; margin: 0 2px;"> <i class="fa fa-plus"></i> Create Requisition </a>
-        @endif
-        @if(hasPermission("create.requisitions.index", $slugs))
-            <a class="btn btn-xs btn-info" href="{{ route('goods-requisitions.index') }}" style="float: right; margin: 0 2px;">  Requisition List</a>
-        @endif
-
-        <h1>
-            @yield('page-header')
-        </h1>
-    </div>
-
+        <x-mm.panel>
     @include('partials._alert_message')
 
     {{-- filter --}}
@@ -193,6 +191,8 @@
         </div>
 
     </div>
+        </x-mm.panel>
+    </x-mm.page>
     <input type="hidden" id="csrf" value="{{ csrf_token() }}">
 
 

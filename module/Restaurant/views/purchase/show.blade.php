@@ -85,32 +85,20 @@
 @endpush
 
 @section('content')
-    <div class="row">
+    <x-mm.styles />
+    <x-mm.page class="mm-invoice-page mm-rst" title="Purchase Details">
+        <x-slot name="actions">
+            <a href="{{ route('rst.purchases.index') }}" class="btn btn-sm btn-default">
+                <i class="ace-icon fa fa-list-alt"></i>
+                All Purchases
+            </a>
 
-        <div class="col-sm-12">
-            <div class="widget-box">
-                <div class="widget-header">
-                    <h4 class="widget-title">
-                        <i class="fa fa-plus-circle"></i> Purchase Details
-                    </h4>
+            <a href="javascript:void(0)" onclick="printPage('print_body')" class="btn btn-sm btn-default">
+                <i class="fa fa-print"></i> Print
+            </a>
+        </x-slot>
 
-                    <span class="widget-toolbar">
-                        <a href="{{ route('rst.purchases.index') }}">
-                            <i class="ace-icon fa fa-list-alt"></i>
-                            All Purchases
-                        </a>
-
-                        <a href="javascript:void(0)" onclick="printPage('print_body')">
-                            <i class="fa fa-print"></i> Print
-                        </a>
-                    </span>
-
-                </div>
-
-                <div class="widget-body">
-                    <div class="widget-main">
-
-
+        <x-mm.panel>
                         <div class="row">
 
                             <div id="print_body" class="col-xs-12">
@@ -288,12 +276,8 @@
                                 <!-- Load First Copy -->
                             </div>
                         </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+        </x-mm.panel>
+    </x-mm.page>
 @endsection
 
 @section('script')

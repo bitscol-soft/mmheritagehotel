@@ -1,10 +1,6 @@
 @extends('layouts.master')
 @section('title', 'Bar Sale Invoice')
 
-@section('page-header')
-    <i class="fa fa-info-circle"></i> Bar Sale Invoice
-@stop
-
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -27,8 +23,6 @@
         .company-info p {
             margin-bottom: 2px;
         }
-
-
 
         .table-border>thead, .table-border>tbody, .table-border>thead>tr>th,.table-border>tbody>tr>td{
             border: 1px solid rgb(231, 219, 219) !important;
@@ -170,7 +164,6 @@
                                         </tr>
                                     @endforeach
                                 </tbody>
-
 
                                 <tfoot>
                                     <tr>

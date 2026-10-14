@@ -2,9 +2,6 @@
 
 @section('title', 'Hall Manage')
 
-@section('page-header')
-    <i class="fa fa-gears"></i> Hall Manage
-@stop
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -24,18 +21,8 @@
 
         <x-mm.panel class="mm-setup-filter tw-mb-4">
             <form action="" class="tw-flex tw-flex-wrap tw-gap-3 tw-items-center">
-                <div class="input-group">
-                    <span class="input-group-addon">Name</span>
-                    <input type="text" name="name" class="form-control" placeholder="Room Name">
-                </div>
-                <div class="input-group">
-                    <span class="input-group-addon">Hall No</span>
-                    <input type="text" name="room_number" class="form-control" placeholder="Hall No.">
-                </div>
-                {{-- <div class="input-group">
-                    <span class="input-group-addon">Card No</span>
-                    <input type="text" name="f_r_id_card" class="form-control" placeholder="Card No.">
-                </div> --}}
+                <x-mm.field label="Name" id="hall-filter-name" name="name" placeholder="Room Name" />
+                <x-mm.field label="Hall No" id="hall-filter-number" name="room_number" placeholder="Hall No." />
                 <div class="tw-flex tw-gap-2">
                     <button class="mm-button">
                         <i class="fa fa-search" aria-hidden="true"></i> Search
@@ -48,79 +35,70 @@
         </x-mm.panel>
 
         <x-mm.panel class="tw-p-4">
-            <x-mm.table-scroll label="Hall list">
-                <table id="data-table" class="table table-striped table-bordered table-hover">
-                    <thead>
-                        <tr>
-                            <th width="5%">SL</th>
-                            <th width="25%" class="text-center">Name</th>
-                            <th width="10%" class="text-center">Hall No</th>
-                            <th width="20%" class="text-center">Category</th>
-                            <th width="10%" class="text-center">Price</th>
-                            <th width="10%" class="text-center">Max Guest</th>
-                            <th width="10%" class="text-center">Status</th>
-                            <th width="10%" class="text-center">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($rooms as $key => $data)
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td class="text-center">{{ $data->name }}</td>
-                                <td class="text-center">
-                                    {{ $data->room_number }}
-                                </td>
-                                <td class="text-center">
-                                    {{ $data->category->name }}
-                                </td>
-                                <td class="text-center">{{ $data->price }} </td>
-                                <td class="text-center">{{ $data->max_guests }} </td>
+            <x-mm.data-table :columns="[
+                ['label' => 'SL', 'width' => '5%'],
+                ['label' => 'Name', 'width' => '25%', 'align' => 'center'],
+                ['label' => 'Hall No', 'width' => '10%', 'align' => 'center'],
+                ['label' => 'Category', 'width' => '20%', 'align' => 'center'],
+                ['label' => 'Price', 'width' => '10%', 'align' => 'center'],
+                ['label' => 'Max Guest', 'width' => '10%', 'align' => 'center'],
+                ['label' => 'Status', 'width' => '10%', 'align' => 'center'],
+                ['label' => 'Action', 'width' => '10%', 'align' => 'center'],
+            ]" id="data-table" label="Hall list" table-class="table table-striped table-bordered table-hover">
+                @forelse ($rooms as $key => $data)
+                    <tr>
+                        <td>{{ $loop->iteration }}</td>
+                        <td class="text-center">{{ $data->name }}</td>
+                        <td class="text-center">
+                            {{ $data->room_number }}
+                        </td>
+                        <td class="text-center">
+                            {{ $data->category->name }}
+                        </td>
+                        <td class="text-center">{{ $data->price }} </td>
+                        <td class="text-center">{{ $data->max_guests }} </td>
 
-                                <td class="text-center">
-                                    @if ($data->status == 1)
-                                        <span class="label label-sm label-success">Ready</span>
-                                    @elseif ($data->status == 0)
-                                        <span class="label label-sm label-danger">Dirty</span>
-                                    @else
-                                        <span class="label label-sm label-warning">Maintenance</span>
-                                    @endif
-                                </td>
-                                <td class="text-center">
-                                    <div class="btn-group btn-corner">
-                                        <a href="{{ route('banquet.hall-rooms.edit', $data->id) }}"
-                                            class="btn btn-xs btn-sm btn-success " title="Edit">
-                                            <i class="fa fa-pencil-square-o"></i>
-                                        </a>
-                                        <button type="button" onclick="delete_check({{ $data->id }})"
-                                            class="btn btn-xs btn-sm btn-danger" title="Delete">
-                                            <i class="fa fa-trash-o"></i>
-                                        </button>
-                                    </div>
+                        <td class="text-center">
+                            @if ($data->status == 1)
+                                <span class="label label-sm label-success">Ready</span>
+                            @elseif ($data->status == 0)
+                                <span class="label label-sm label-danger">Dirty</span>
+                            @else
+                                <span class="label label-sm label-warning">Maintenance</span>
+                            @endif
+                        </td>
+                        <td class="text-center">
+                            <div class="btn-group btn-corner">
+                                <a href="{{ route('banquet.hall-rooms.edit', $data->id) }}"
+                                    class="btn btn-xs btn-sm btn-success " title="Edit">
+                                    <i class="fa fa-pencil-square-o"></i>
+                                </a>
+                                <button type="button" onclick="delete_check({{ $data->id }})"
+                                    class="btn btn-xs btn-sm btn-danger" title="Delete">
+                                    <i class="fa fa-trash-o"></i>
+                                </button>
+                            </div>
 
-                                    <form action="{{ route('banquet.hall-rooms.destroy', $data->id) }}"
-                                        id="deleteCheck_{{ $data->id }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                    </form>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </x-mm.table-scroll>
+                            <form action="{{ route('banquet.hall-rooms.destroy', $data->id) }}"
+                                id="deleteCheck_{{ $data->id }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                            </form>
+                        </td>
+                    </tr>
+                @empty
+                    <x-no-table-record />
+                @endforelse
+            </x-mm.data-table>
         </x-mm.panel>
     </x-mm.page>
 @endsection
 
 @section('js')
 
-    <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('assets/js/jquery.dataTables.bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/custom_js/date-picker.js') }}"></script>
 
-
     @include('rooms.inc.script')
-
 
     <!-- inline scripts related to this page -->
     <script type="text/javascript">
@@ -141,17 +119,5 @@
             })
 
         }
-    </script>
-
-    <script type="text/javascript">
-        jQuery(function($) {
-            $('#data-table').DataTable({
-                "ordering": false,
-                "bPaginate": true,
-                "lengthChange": false,
-                "info": false,
-                "pageLength": 25
-            });
-        })
     </script>
 @stop

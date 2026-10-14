@@ -4,10 +4,6 @@
 @php
     $checkNUll = $nightaudits[0] != null || $nightaudits[0] != '';
 @endphp
-@section('page-header')
-    <i class="fa fa-info-circle"></i>Booking Night Audit <span
-        class="badge badge-info">{{ $checkNUll ? $nightaudits->count() : 0 }}</span>
-@stop
 
 @section('content')
 <x-mm.styles />
@@ -52,7 +48,7 @@
             </x-mm.table-scroll>
             <x-paginate :data="$nightaudits" />
 
-            <x-export-button :pdf=1 :excel=1 />
+            <x-export-button :pdf=1 :excel=1 :print=1 />
         </x-mm.panel>
     @endif
 </x-mm.page>

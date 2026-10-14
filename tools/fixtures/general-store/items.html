@@ -16,10 +16,41 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Item list</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Items, units and opening balances.</p>            </div>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">General store items, measurement units, rates and opening stock balances.</p>            </div>
             <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button" href="http://localhost/gs/items/create"> <i class="fa fa-plus"></i> Add Item </a>
                             <a href="http://localhost/rst/gs/item/upload" class="mm-button mm-button-secondary"><i class="fa fa-upload"></i> Upload CSV</a>
             <a href="http://localhost/rst/gs/item/export" class="mm-button"><i class="fa fa-download"></i> Export Items</a></div>        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="General store items summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-cubes"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Store Catalog</span>
+                    <div class="mm-table-kpi-value">Basmati Rice <span class="mm-table-kpi-sub">MM Heritage</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-balance-scale"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Base Unit</span>
+                    <div class="mm-table-kpi-value">Kg <span class="mm-table-kpi-sub">Standard UOM</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-upload"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Bulk Onboarding</span>
+                    <div class="mm-table-kpi-value">CSV Import <span class="mm-table-kpi-sub">Export Ready</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">GRN / GIN Sync</span>
+                    <div class="mm-table-kpi-value">Active ✓ <span class="mm-table-kpi-sub">Stock Ledger</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 mm-report-filter"><form class="form-horizontal mm-setup-filter mm-report-form" action="" method="get">
             <div class="mm-report-field">
                 <select aria-label="Company" name="company_id" class="form-control chosen-select">

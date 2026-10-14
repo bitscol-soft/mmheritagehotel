@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title','Feature List')
-@section('page-header')
-    <i class="fa fa-gears"></i> Homepage Feature List
-@stop
 @section('css')
 <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
 @stop
@@ -18,20 +15,15 @@
     <x-alert-message />
 
     <x-mm.panel class="tw-p-4">
-        <x-mm.table-scroll label="Homepage features">
-        <table id="data-table" class="table table-striped table-bordered table-hover">
-            <thead>
-                <tr>
-                    <th>SL</th>
-                    <th class="text-center">Feature Title</th>
-                    <th class="text-center">Feature Subtitle</th>
-                    <th class="text-center">Feature Icon</th>
-                    <th class="text-center">Status</th>
-                    <th class="text-center">Action</th>
-                </tr>
-            </thead>
-            <tbody>
-            @foreach($feature_list as $key => $data)
+        <x-mm.data-table :columns="[
+            ['label' => 'SL'],
+            ['label' => 'Feature Title', 'align' => 'center'],
+            ['label' => 'Feature Subtitle', 'align' => 'center'],
+            ['label' => 'Feature Icon', 'align' => 'center'],
+            ['label' => 'Status', 'align' => 'center'],
+            ['label' => 'Action', 'align' => 'center'],
+        ]" id="data-table" label="Homepage features" table-class="table table-striped table-bordered table-hover">
+            @forelse ($feature_list as $key => $data)
                 <tr>
                     <td>{{ $loop->index + 1 }}</td>
                     <td class="text-center">{{ $data->title }}</td>
@@ -40,7 +32,7 @@
                     <td class="text-center">
                         @if ($data->status == 1)
                             <span class="label label-success">Active</span>
-                            @else
+                        @else
                             <span class="label label-danger">IN Active</span>
                         @endif
                     </td>
@@ -56,18 +48,15 @@
 
                     </td>
                 </tr>
-            @endforeach
-            </tbody>
-        </table>
-        </x-mm.table-scroll>
+            @empty
+                <x-no-table-record />
+            @endforelse
+        </x-mm.data-table>
     </x-mm.panel>
 </x-mm.page>
 @endsection
 
 @section('js')
-
-<script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
-<script src="{{ asset('assets/js/jquery.dataTables.bootstrap.min.js') }}"></script>
 
 
 <!-- inline scripts related to this page -->

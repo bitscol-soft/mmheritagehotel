@@ -5,8 +5,44 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Expected arrival list</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Guests due to check in on the selected date.</p>            </div>
-                    </header>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Guests due to check in on the selected date, with airport pickup and room readiness.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/report-expected-departure"><i class="fa fa-sign-out"></i> Expected Departures</a>
+                <a class="mm-button mm-button-secondary" href="/preview/report-in-house-guest"><i class="fa fa-bed"></i> In-House Guests</a>
+                <button type="button" class="mm-button mm-button-secondary" data-toggle="modal" data-target="#hr-arrival-drawer"><i class="fa fa-columns"></i> Pre-Arrival Desk (Drawer)</button>
+            </div>
+        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Expected arrivals summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-suitcase"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Expected Arrivals</span>
+                    <div class="mm-table-kpi-value">16 Bookings <span class="mm-table-kpi-sub">B-0007 to B-0022</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Rooms Ready</span>
+                    <div class="mm-table-kpi-value">100% Ready <span class="mm-table-kpi-sub">16 Suites Inspected</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-plane"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Airport Pickups</span>
+                    <div class="mm-table-kpi-value">9 Flights <span class="mm-table-kpi-sub">DAC Terminal 1 &amp; 2</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-credit-card"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Advance Deposits</span>
+                    <div class="mm-table-kpi-value">৳ 184,500 <span class="mm-table-kpi-sub">Pre-Authorized</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 mm-report-filter"><form action="" method="GET" class="mm-setup-filter mm-report-form">
             <div class="mm-report-field">
                 <div class="input-group">
@@ -58,11 +94,176 @@
                 <td>Airport</td>
                 <td>BG-12</td>
             </tr>
+            <tr class="even gradeX">
+                <td>3</td>
+                <td>B-0009</td>
+                <td>Tanvir Ahmed Chowdhury</td>
+                <td>tanvir.chowdhury@orionpharma.com.bd</td>
+                <td>01711948210</td>
+                <td>BD-8894021562</td>
+                <td>DAC Terminal 1 VIP Lounge</td>
+                <td>BG-201</td>
+            </tr>
+            <tr class="odd gradeX">
+                <td>4</td>
+                <td>B-0010</td>
+                <td>Dr. Farhana Rahman</td>
+                <td>farhana.rahman@squarehospital.com</td>
+                <td>01819334812</td>
+                <td>A09481204</td>
+                <td>Square Hospital Executive Gate</td>
+                <td>Self Chauffeur</td>
+            </tr>
+            <tr class="even gradeX">
+                <td>5</td>
+                <td>B-0011</td>
+                <td>Rafiqul Islam Bhuiyan</td>
+                <td>rafiq.bhuiyan@beximco.com</td>
+                <td>01911458920</td>
+                <td>BD-5521904811</td>
+                <td>DAC Domestic Terminal</td>
+                <td>BS-142</td>
+            </tr>
+            <tr class="odd gradeX">
+                <td>6</td>
+                <td>B-0012</td>
+                <td>Tahmina Akter</td>
+                <td>tahmina.akter@bracbank.com</td>
+                <td>01611883920</td>
+                <td>BD-6630192845</td>
+                <td>BRAC Bank HQ, Tejgaon</td>
+                <td>Corporate Sedan</td>
+            </tr>
+            <tr class="even gradeX">
+                <td>7</td>
+                <td>B-0013</td>
+                <td>Syed Kamrul Hasan</td>
+                <td>kamrul.hasan@grameenphone.com</td>
+                <td>01715609281</td>
+                <td>BD-4489201932</td>
+                <td>GP House, Bashundhara</td>
+                <td>Corporate Transfer</td>
+            </tr>
+            <tr class="odd gradeX">
+                <td>8</td>
+                <td>B-0014</td>
+                <td>Nusrat Jahan</td>
+                <td>nusrat.jahan@unicef.org</td>
+                <td>01819552104</td>
+                <td>BG-0192837</td>
+                <td>DAC Diplomatic Arrival Gate</td>
+                <td>EK-582</td>
+            </tr>
+            <tr class="even gradeX">
+                <td>9</td>
+                <td>B-0015</td>
+                <td>Engr. Tariqul Alam</td>
+                <td>tariqul.alam@summitpower.com</td>
+                <td>01712990412</td>
+                <td>BD-3391028475</td>
+                <td>DAC Domestic Terminal</td>
+                <td>VQ-932</td>
+            </tr>
+            <tr class="odd gradeX">
+                <td>10</td>
+                <td>B-0016</td>
+                <td>Shabnam Mustari</td>
+                <td>shabnam.mustari@biman.com</td>
+                <td>01714772109</td>
+                <td>BP-4491023</td>
+                <td>DAC Crew Dispatch Gate</td>
+                <td>BG-308</td>
+            </tr>
+            <tr class="even gradeX">
+                <td>11</td>
+                <td>B-0017</td>
+                <td>Brig. Gen. Mahmudul Hasan</td>
+                <td>mahmud.hasan@defense.gov.bd</td>
+                <td>01711004921</td>
+                <td>DP-0049182</td>
+                <td>VIP Protocol Escort</td>
+                <td>Protocol Convoy</td>
+            </tr>
+            <tr class="odd gradeX">
+                <td>12</td>
+                <td>B-0018</td>
+                <td>Barrister Zaima Rahman</td>
+                <td>zaima.rahman@chambers.bd</td>
+                <td>01716839201</td>
+                <td>A10293847</td>
+                <td>DAC International Terminal 1</td>
+                <td>QR-638</td>
+            </tr>
+            <tr class="even gradeX">
+                <td>13</td>
+                <td>B-0019</td>
+                <td>Amb. Kenji Takahashi</td>
+                <td>k.takahashi@embassy-jp.org</td>
+                <td>01711889900</td>
+                <td>JP-8839201</td>
+                <td>Embassy of Japan, Baridhara</td>
+                <td>NH-849</td>
+            </tr>
+            <tr class="odd gradeX">
+                <td>14</td>
+                <td>B-0020</td>
+                <td>Capt. Jonathan Vance</td>
+                <td>j.vance@horizon-aviation.uk</td>
+                <td>01713774411</td>
+                <td>UK-5549201</td>
+                <td>DAC Terminal 1 Crew Shuttle</td>
+                <td>BA-145</td>
+            </tr>
+            <tr class="even gradeX">
+                <td>15</td>
+                <td>B-0021</td>
+                <td>Dr. Ahsan Habib</td>
+                <td>ahsan.habib@icddrb.org</td>
+                <td>01711332211</td>
+                <td>A88392019</td>
+                <td>DAC International Terminal 2</td>
+                <td>SQ-446</td>
+            </tr>
+            <tr class="odd gradeX">
+                <td>16</td>
+                <td>B-0022</td>
+                <td>Elena Rostova</td>
+                <td>e.rostova@worldbank.org</td>
+                <td>01719445566</td>
+                <td>WB-6647382</td>
+                <td>DAC Diplomatic VIP Lounge</td>
+                <td>TK-712</td>
+            </tr>
             </tbody>
 </table></div>
             <span class="pull-right"><ul class="pagination"><li class=" disabled"><a class="" href="#">← First</a></li><li class="active"><span>1</span></li><li><a href="#">2</a></li><li><a class="" href="#">Last →</a></li></ul></span>
 
             <div class="pull-left hidden-print" style="margin-top:10px; margin-left:10px"><a href="/hotel/reports/x?export_type=excel&amp;date=2026-10-01" target="_blank" style="margin-right: 5px"><img src="/assets/images/export-icons/excel-icon.png"></a><a href="/hotel/reports/x?export_type=pdf&amp;date=2026-10-01" target="_blank" style="margin-right: 5px"><img src="/assets/images/export-icons/pdf-icon.png"></a></div></div>
+
+        <!-- Slide-Over App Drawer: Pre-Arrival Check-In Desk -->
+        <div class="modal fade mm-drawer mm-drawer" data-mm-drawer="true" id="hr-arrival-drawer" tabindex="-1" role="dialog" aria-labelledby="hr-arrival-drawer-title">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="hr-arrival-drawer-title"><i class="fa fa-plane"></i> Pre-Arrival &amp; Chauffeur Dispatch Inspector</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="tw-text-sm tw-text-muted" style="margin-top:0">Flight arrival tracking, keycard encoding, and room readiness for today's check-ins.</p>
+                        <div class="mm-panel tw-p-4" style="margin-bottom:12px">
+                            <strong>B-0007 · Rahim</strong> — Flight <code>BG-12</code> (Airport Chauffeur Assigned · Room <code>#101</code> Ready)
+                        </div>
+                        <div class="mm-panel tw-p-4">
+                            <strong>B-0008 · Karim</strong> — Flight <code>BG-12</code> (Airport Chauffeur Assigned · Room <code>#102</code> Ready)
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="/preview/booking-next" class="mm-button mm-button-secondary"><i class="fa fa-calendar-plus-o"></i> New Booking</a>
+                        <button type="button" class="mm-button" data-dismiss="modal"><i class="fa fa-check"></i> Done</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 <!--/MM-BODY--></div>

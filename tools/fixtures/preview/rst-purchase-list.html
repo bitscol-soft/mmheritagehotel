@@ -13,10 +13,44 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Purchase list</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Restaurant purchases with required and received quantities.</p>            </div>
-            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button" href="http://localhost/rst/purchases/create">
-                <i class="fa fa-plus" aria-hidden="true"></i> Add Purchase
-            </a></div>        </header>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Kitchen raw-material and F&amp;B supplier purchase orders with required and received quantities.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/rst-inventory-report"><i class="fa fa-cubes" aria-hidden="true"></i> Inventory Report</a>
+                <a class="mm-button" href="http://localhost/rst/purchases/create">
+                    <i class="fa fa-plus" aria-hidden="true"></i> Add Purchase
+                </a>
+            </div>        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Restaurant purchases summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-truck"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Purchase Orders</span>
+                    <div class="mm-table-kpi-value">RP-0021 <span class="mm-table-kpi-sub">01 Oct 2026</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-building-o"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Active Supplier</span>
+                    <div class="mm-table-kpi-value">Fresh Foods <span class="mm-table-kpi-sub">Kitchen Vendor</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-money"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Invoice Payable</span>
+                    <div class="mm-table-kpi-value">৳ 2,400 <span class="mm-table-kpi-sub">Paid ৳ 2,000</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-clock-o"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Supplier Balance</span>
+                    <div class="mm-table-kpi-value">৳ 400 Due <span class="mm-table-kpi-sub">AP Tracked</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 mm-report-filter"><form class="form-horizontal mm-setup-filter mm-report-form" action="http://localhost/rst/purchases" method="get">
             <input type="hidden" name="_token" value="fixture-csrf-token">            <div class="mm-report-field">
                 <select name="company_id" class="form-control chosen-select" aria-label="Company">

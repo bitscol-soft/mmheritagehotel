@@ -1,9 +1,6 @@
 
 @extends('layouts.master')
 @section('title','Edit Guest')
-@section('page-header')
-    <i class="fa fa-gears"></i> Edit Guest User
-@stop
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <!-- page specific plugin styles -->
@@ -39,7 +36,6 @@
                                             </select>
                                         </div>
                                     </div>
-
 
                                     <div class="form-group">
                                         <label for="guest-guest-name" class="col-sm-3 control-label">Guest Name<sup class="text-danger">*</sup></label>
@@ -236,7 +232,6 @@
                                 </div>
                             </div>
 
-
                             <div class="form-actions center" style="text-align: right !important;">
                                 <button type="submit" class="mm-button">
                                     <i class="fa fa-save"></i>
@@ -287,9 +282,6 @@
     });
 </script>
 
-
-
-
 <script src="{{ asset('assets/js/webcam.min.js') }}"></script>
 
 <script language="JavaScript">
@@ -329,6 +321,5 @@
     })
 
 </script>
-
 
 @endsection

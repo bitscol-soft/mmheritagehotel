@@ -8,9 +8,40 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Account Opening Balance</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Enter opening balances for the ledger accounts.</p>            </div>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Configure and post opening balances for general ledger accounts by company, group, and control.</p>            </div>
             <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button mm-button-secondary" href="http://localhost/acc/account-opening-balances/create"><i class="fa fa-refresh"></i> Refresh</a>
                     <a class="mm-button" href="http://localhost/acc/accounts/create"><i class="fa fa-plus"></i> Add New</a></div>        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Account opening balance summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-building-o"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Company Entity</span>
+                    <div class="mm-table-kpi-value">MM Heritage <span class="mm-table-kpi-sub">Fiscal Setup</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-sitemap"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Hierarchy Filter</span>
+                    <div class="mm-table-kpi-value">Group · Control <span class="mm-table-kpi-sub">COA Drill-Down</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-balance-scale"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Trial Balance Sync</span>
+                    <div class="mm-table-kpi-value">Auto-Verified <span class="mm-table-kpi-sub">Dr / Cr Parity</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Ledger Posting</span>
+                    <div class="mm-table-kpi-value">Ready ✓ <span class="mm-table-kpi-sub">Opening Entry</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 mm-report-filter"><form action="" method="GET" class="mm-setup-filter mm-report-form">
                 <div class="input-group">
                     <label class="input-group-addon">Company <strong class="text-danger">*</strong></label>

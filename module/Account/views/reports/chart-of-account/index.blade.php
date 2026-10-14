@@ -2,10 +2,6 @@
 
 @section('title', 'Chart Of Account')
 
-@section('page-header')
-    <i class="fa fa-info-circle"></i> Chart Of Account
-@stop
-
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -69,22 +65,18 @@
         @include('partials._alert_message')
         <!-- FILTER FORM -->
 
-
         <!-- LIST -->
         <div class="row" style="width: 100%; margin: 0 !important;">
             <div class="col-sm-12 px-4">
 
                 @include('reports.chart-of-account.export.excel')
 
-
                 @include('partials._paginate', ['data' => $accounts])
-
 
                 <!-- EXCEL BUTTON -->
                 <a class="hidden-print" href="{{ url()->current() }}?export_type=excel&{{ request()->getQueryString() }}" target="_blank" style="margin: 18px 0 0 20px; display: inline-block;">
                     <img src="{{ asset('assets/images/export-icons/excel-icon.png') }}">
                 </a>
-
 
             </div>
         </div>
@@ -96,7 +88,6 @@
 @section('js')
     <script src="{{ asset('assets/js/chosen.jquery.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap-datepicker.min.js') }}"></script>
-
 
     <script src="{{ asset('assets/custom_js/chosen-box.js') }}"></script>
     <script src="{{ asset('assets/custom_js/date-picker.js') }}"></script>

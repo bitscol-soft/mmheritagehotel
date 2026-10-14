@@ -16,12 +16,48 @@
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Products</h1>
                 <p class="tw-m-0 tw-text-sm tw-text-muted">Restaurant products with stock type, price and status.</p>            </div>
-            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a href="http://localhost/rst/products/create?type=upload" class="mm-button">
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a href="/preview/rsi-inventory-report" class="mm-button mm-button-secondary"><i class="fa fa-cubes"></i> Stock Report</a>
+                <a href="/preview/rsi-production-requisitions" class="mm-button mm-button-secondary"><i class="fa fa-exchange"></i> Requisitions</a>
+                <a href="http://localhost/rst/products/create?type=upload" class="mm-button">
                     <i class="fa fa-upload"></i> Upload Product
                 </a>
                 <a href="http://localhost/rst/products/create" class="mm-button mm-button-secondary">
                     <i class="fa fa-plus-circle"></i> Add New Product
-                </a></div>        </header>
+                </a>
+            </div>        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Restaurant product catalog summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-cutlery"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Active Menu SKUs</span>
+                    <div class="mm-table-kpi-value">2 <span class="mm-table-kpi-sub">POS Ready</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">In-Stock Dishes</span>
+                    <div class="mm-table-kpi-value">100% <span class="mm-table-kpi-sub">Zero Stockouts</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-tags"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Categories</span>
+                    <div class="mm-table-kpi-value">Rice &amp; Drinks <span class="mm-table-kpi-sub">2 Groups</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-money"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Avg Dish Price</span>
+                    <div class="mm-table-kpi-value">৳ 285 <span class="mm-table-kpi-sub">Standard Menu</span></div>
+                </div>
+            </div>
+        </div>
+
         <div class="mm-panel tw-p-4 sm:tw-p-6 mm-report-filter"><div class="col-sm-12">
     <form action="">
         <div class="row">

@@ -1,12 +1,6 @@
 @extends('layouts.master')
 
-
 @section('title', request()->routeIs('report.income-expense-statement') ? 'Income Expense Statement' : 'Income Statement')
-
-
-@section('page-header')
-    <i class="fa fa-info-circle"></i> Income {{ request()->routeIs('report.income-expense-statement') ? 'Expense' : '' }} Statement
-@stop
 
 @push('style')
 
@@ -19,8 +13,6 @@
             background: white;
             color: black !important;
         }
-
-
 
         @media print {
 
@@ -64,7 +56,6 @@
 
     </style>
 @endpush
-
 
 @section('content')
 @php
@@ -138,23 +129,9 @@
         </h3>
         <h4 class="text-center d-print">As On {{ fdate(request('from') ?? today(), 'd/m/Y') }}</h4>
 
-
-
-
-
-
         <div class="row" style="width: 100%; margin: 0 !important; padding: 0 !important;">
 
-
             <!-- FILTER -->
-
-
-
-
-
-
-
-
 
             <!-- DETAIL -->
             @if (request()->routeIs('report.income-expense-statement'))
@@ -170,7 +147,6 @@
                 @include('reports/income-statement/sort-view')
 
             @endif
-
 
             <!-- EXCEL BUTTON -->
             {{-- <a class="hidden-print" href="{{ url()->current() }}?export_type=excel&{{ request()->getQueryString() }}" target="_blank" style="margin: 18px 0 0 20px; display: inline-block;">

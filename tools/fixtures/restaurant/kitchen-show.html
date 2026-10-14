@@ -63,12 +63,39 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Order details</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Kitchen copy of the order. Printing outputs the document only.</p>            </div>
-            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a href="#" class="mm-button" onclick="printPage('print_body'); return false;">
-                <i class="fa fa-print" aria-hidden="true"></i> Print
-            </a></div>        </header>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">80mm Thermal Kitchen Order Ticket (KOT) — kitchen copy of the order. Printing outputs the document only.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a href="/preview/rst-kitchen-board" class="mm-button mm-button-secondary"><i class="fa fa-television"></i> Live KDS Board</a>
+                <a href="/preview/rst-kitchen-list" class="mm-button mm-button-secondary"><i class="fa fa-list-alt"></i> Kitchen List</a>
+                <a href="/preview/rst-pos" class="mm-button mm-button-secondary"><i class="fa fa-cutlery"></i> Restaurant POS</a>
+                <a href="#" class="mm-button" onclick="printPage('print_body'); return false;">
+                    <i class="fa fa-print" aria-hidden="true"></i> Print 80mm KOT
+                </a>
+            </div>        </header>
+        <div class="mm-table-kpi-grid mm-no-print" style="margin-bottom: 14px;">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-label">KOT Slip</span>
+                <div class="mm-table-kpi-value">80mm Thermal KOT <span class="mm-table-kpi-badge">Kitchen Order</span></div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-label">Order Source</span>
+                <div class="mm-table-kpi-value">Dine-In / Room <span class="mm-table-kpi-badge is-emerald">Fired</span></div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-label">Print Format</span>
+                <div class="mm-table-kpi-value">Thermal Roll <span class="mm-table-kpi-badge">Auto-Width</span></div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-label">Kitchen Status</span>
+                <div class="mm-table-kpi-value">Dispatched <span class="mm-table-kpi-badge is-emerald">Live</span></div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><div class="row">
-            <div id="print_body">
+            <div id="print_body" class="mm-thermal-kot-wrap">
+                <div class="text-center" style="border-bottom: 1px dashed #64748b; padding-bottom: 8px; margin-bottom: 12px;">
+                    <strong style="font-size: 14px; letter-spacing: 0.05em;">M&amp;M HERITAGE HOTEL · KITCHEN KOT</strong><br>
+                    <span style="font-size: 11px;">Station: Hot Kitchen &amp; Tandoor · Priority: Fire Now</span>
+                </div>
                 <div id="customer_info" style="padding: 0 10px; margin-bottom: 15px">
                     <div class="row">
                         <div class="customerInfo" style="width: 60%;float: left; ">

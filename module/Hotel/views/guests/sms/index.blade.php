@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title', 'Send SMS')
-@section('page-header')
-    <i class="fa fa-comments"></i> Send SMS
-@stop
 
 @section('content')
     <x-mm.styles />

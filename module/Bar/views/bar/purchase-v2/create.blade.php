@@ -1,11 +1,6 @@
 @extends('layouts.master')
 @section('title', 'Purchase Create')
 
-@section('page-header')
-    Purchase Create
-@stop
-
-
 @push('style')
     <style>
 
@@ -25,7 +20,6 @@
     </style>
 @endpush
 
-
 @section('content')
 
 <x-mm.styles />
@@ -39,7 +33,6 @@
     </x-slot>
     <x-mm.panel class="tw-p-4">
         <x-alert-message />
-
 
         <div class="row">
             <form method="POST" action="{{ route('bar.purchases.store') }}" id="purchase-form">

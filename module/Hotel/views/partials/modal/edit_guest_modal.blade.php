@@ -1,4 +1,4 @@
-<div id="editHotelGuestModal" class="modal" tabindex="-1">
+<div id="editHotelGuestModal" class="modal fade mm-drawer" data-mm-drawer="true" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
 

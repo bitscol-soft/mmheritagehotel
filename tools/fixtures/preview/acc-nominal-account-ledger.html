@@ -5,8 +5,43 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Nominal Account Ledger</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Nominal accounts (revenue and expense) for the period.</p>            </div>
-                    </header>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Nominal accounts (revenue and expense) ledger postings for the selected period.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/acc-income-statement"><i class="fa fa-line-chart"></i> Income Statement</a>
+                <a class="mm-button mm-button-secondary" href="/preview/acc-account-ledger"><i class="fa fa-book"></i> Account Ledger</a>
+            </div>
+        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Nominal account ledger summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-file-text-o"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Nominal Voucher</span>
+                    <div class="mm-table-kpi-value">V-0004 <span class="mm-table-kpi-sub">01 Oct 2026</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-arrow-up"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Total Debits</span>
+                    <div class="mm-table-kpi-value">৳ 150.00 <span class="mm-table-kpi-sub">Rent Expense</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-arrow-down"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Total Credits</span>
+                    <div class="mm-table-kpi-value">৳ 0.00 <span class="mm-table-kpi-sub">Revenue Side</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">P&amp;L Rollup</span>
+                    <div class="mm-table-kpi-value">Synced ✓ <span class="mm-table-kpi-sub">Income Statement</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 mm-report-filter"><form method="GET" class="mm-setup-filter mm-report-form form-inline" style="margin-bottom:12px">
                 <input type="date" name="from" value="2026-10-01" class="form-control input-sm" style="width:160px">
                 <input type="date" name="to" value="2026-10-01" class="form-control input-sm" style="width:160px;margin-left:6px">

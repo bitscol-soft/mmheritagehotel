@@ -1,14 +1,10 @@
 
 @extends('layouts.master')
 @section('title','Add New Guest')
-@section('page-header')
-    <i class="fa fa-plus-circle"></i> Add New Guest
-@stop
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <!-- page specific plugin styles -->
 	<link rel="stylesheet" href="{{ asset('assets/css/dropzone.min.css') }}" />
-
 
 @stop
 

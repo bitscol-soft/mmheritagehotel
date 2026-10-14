@@ -2,10 +2,6 @@
 
 @section('title', 'Nominal Account Ledger')
 
-@section('page-header')
-    <i class="fa fa-book"></i> Nominal Account Ledger
-@stop
-
 @section('content')
     <x-mm.styles />
     <x-mm.page class="mm-report mm-acc mm-rst mm-rst-inv" title="Nominal Account Ledger" description="Nominal accounts (revenue and expense) for the period.">

@@ -23,7 +23,7 @@ if (!function_exists('websiteInfo')) {
 
     function websiteInfo() {
 
-        $web_info = WebsiteSetting::first();
+        $web_info = WebsiteSetting::first() ?? new WebsiteSetting();
         return $web_info;
     }
 
@@ -57,7 +57,7 @@ if (!function_exists('hotelVat')) {
 
     function hotelVat() {
 
-        $hotel_vat = Vat::first();
+        $hotel_vat = Vat::first() ?? new Vat(['hotel_vat' => 0]);
 
         return $hotel_vat;
 
@@ -70,6 +70,9 @@ if (!function_exists('hotelVat')) {
 function roomAminities($id) {
 
     $room = RoomCategory::where('id', $id)->first();
+    if (!$room) {
+        return collect();
+    }
 
     $aminities_list = collect(explode(',', $room->room_aminities))->toArray();
 

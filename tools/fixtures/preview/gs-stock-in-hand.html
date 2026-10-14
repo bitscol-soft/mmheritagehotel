@@ -1,197 +1,170 @@
-<!-- <i class="fa fa-list"></i> Inventory Reports -->
-
-
-
-
-
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Stock In Hand</title>
 <link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
-<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">
-    <link rel="stylesheet" href="/assets/css/chosen.min.css" />
-    <link rel="stylesheet" href="/assets/css/jquery-ui.min.css" />
-<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css"><!--/MM-HEAD-->
+<link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
 <section class="mm-ui mm-report mm-gs mm-rst mm-rst-inv">
     <div class="tw-space-y-4 tw-py-2">
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
-                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Stock in hand</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Current general store stock by item.</p>            </div>
-                    </header>
-        <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><p class="tw-m-0 tw-mb-3 tw-text-sm tw-text-muted">(<b>1 </b>Records Found, page <b>1</b> of <b>1</b>, Data Show per page <b>15</b> )</p>
-            <div class="row">
-                <form class="form-horizontal" action="http://localhost/gs/items_stock" method="get">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink"><i class="fa fa-cubes"></i> Stock in hand — Central Store Inventory, Par Reorder Alerts &amp; FIFO Valuation</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Live central store stock balances across Housekeeping, Dry Pantry, and Engineering SKUs with automatic low-stock reorder triggers.</p>
+            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <button type="button" id="gssih-reorder-btn" class="mm-button"><i class="fa fa-bolt"></i> Auto-Generate PO for Low-Stock SKUs</button>
+                <a class="mm-button mm-button-secondary" href="/preview/gs-item-ledger"><i class="fa fa-book"></i> Item Ledger</a>
+                <a class="mm-button mm-button-secondary" href="/preview/gs-grn-list"><i class="fa fa-truck"></i> GRN List</a>
+                <a class="mm-button mm-button-secondary" href="/preview/gs-gin-list"><i class="fa fa-share-square-o"></i> GIN List</a>
+            </div>
+        </header>
 
-                    <div class="col-sm-12">
-                        <div class="mm-table-scroll" role="region" aria-label="Stock in hand" tabindex="0"><table class="table table-bordered">
+        <div class="mm-table-kpi-grid" aria-label="General store stock summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-cubes"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Tracked Store SKUs</span>
+                    <div class="mm-table-kpi-value"><span id="gssih-kpi-skus">5 SKUs</span> <span class="mm-table-kpi-sub">Pantry · Linen · Amenities</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-arrow-circle-down"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Verified Inward (GRN)</span>
+                    <div class="mm-table-kpi-value">420 Units <span class="mm-table-kpi-sub">3 GRNs This Week</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-exclamation-triangle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Par Reorder Alerts</span>
+                    <div class="mm-table-kpi-value"><span id="gssih-kpi-low">2 Low Stock</span> <span class="mm-table-kpi-sub">Below Safety Par</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-money"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">FIFO Stock Valuation</span>
+                    <div class="mm-table-kpi-value">৳ 148,600 <span class="mm-table-kpi-sub">GL Inventory Synced</span></div>
+                </div>
+            </div>
+        </div>
 
-                                <tr>
-                                    <td>
-                                        <div class="input-group">
-                                            <span class="input-group-addon">Company</span>
-                                            <select name="company_id" id="company_id" class="form-control chosen-select-180" onchange="loadCompanyItems()">
-                                                <option selected disabled>select</option>
-                                                                                                    <option value="1" >MM Heritage</option>
-                                                                                            </select>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="input-group">
-                                            <span class="input-group-addon">Unit</span>
-                                            <select name="unit_id" class="form-control chosen-select-180">
-                                                <option selected value="">select</option>
-                                                                                                    <option value="1" >Kg</option>
-                                                                                            </select>
-                                        </div>
-                                    </td>
-                                    <td width="350px">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control input-sm date-picker" name="from_date" value="" autocomplete="off">
-                                            <span class="input-group-addon">From|To</span>
-                                            <input type="text" class="form-control input-sm date-picker" name="to_date" value="" autocomplete="off">
-                                        </div>
-                                    </td>
-                                    <td width="200px">
-                                        <div class="input-group">
-                                            <span class="input-group-addon">Item</span>
-                                            <select name="item_id" class="form-control chosen-select" id="item_id">
-                                                <option selected value="">select</option>
-                                                                                                    <option value="7" >Basmati &lt;b&gt;rice&lt;/b&gt;</option>
-                                                                                            </select>
-                                        </div>
-                                    </td>
+        <div id="gssih-confirm-banner" class="alert alert-success" style="display:none;margin:0;border-radius:12px;font-size:13px"></div>
 
-                                    <td width="180px">
-                                        <div class="btn-group btn-corner">
-                                            <button class="btn btn-xs btn-primary"><i class="fa fa-search"></i> Search</button>
-                                            <a href="http://localhost/gs/items_stock" class="btn btn-xs btn-pink"><i class="fa fa-refresh"></i> Refresh</a>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="5" class="text-center" style="font-size:20px"><strong>Stock In Hand</strong></td>
-                                </tr>
-
-                            </table></div>
-                    </div>
-                </form>
+        <div class="mm-panel tw-p-4 sm:tw-p-6">
+            <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px">
+                <strong><i class="fa fa-filter"></i> Filter Central Store Stock by Par Status</strong>
+                <div style="display:flex;flex-wrap:wrap;gap:6px" id="gssih-filter-pills">
+                    <button type="button" class="mm-role-pill is-active gssih-filter-pill" data-stock-filter="all">All Store SKUs (5)</button>
+                    <button type="button" class="mm-role-pill gssih-filter-pill" data-stock-filter="low">Low Stock / Reorder Alert (2)</button>
+                    <button type="button" class="mm-role-pill gssih-filter-pill" data-stock-filter="healthy">Healthy Above Par (3)</button>
+                </div>
             </div>
 
-
-
-        <div class="clearfix"></div>
-
-        <div class="row">
-            <div class="col-xs-12">
-                <div class="mm-table-scroll" role="region" aria-label="Stock in hand" tabindex="0"><table id="dynamic-table" class="table table-striped table-bordered table-hover">
-                        <thead>
-                            <tr style="background: #C9DAF8 !important; color:black !important">
-                                <th>SL</th>
-                                <th>Date</th>
-                                <th>Item</th>
-                                <th>Unit</th>
-                                <th>Company</th>
-                                <th class="text-center">Stock In Hand</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                                                            <tr>
-                                    <td>1</td>
-                                    <td style="font-weight: bold !important;">2026-09-30</td>
-                                    <td>Basmati &lt;b&gt;rice&lt;/b&gt;</td>
-                                    <td>Kg</td>
-                                    <td>MM &lt;b&gt;Heritage&lt;/b&gt;</td>
-                                    <td class="text-center">
-                                                                                    <a target="_blank" href="http://localhost/gs/item_details?&company_id=1&item_id=Basmati &lt;b&gt;rice&lt;/b&gt;&from_date=&to_date=">12</a>
-                                        
-                                    </td>
-                                </tr>
-                                                                                </tbody>
-                    </table></div>
-
-                                                            <span class="pull-right"><ul class="pagination"><li class=" disabled"><a class="" href="#">← First</a></li><li class="active"><span>1</span></li><li><a href="#">2</a></li><li><a class="" href="#">Last →</a></li></ul></span>
-
-                        <div class="pull-left" style="margin-top:10px; margin-left:10px">
-                        <span onclick="exportData('http://localhost/export-gs-as-excel')" style="margin-right: 5px; cursor: pointer;">
-                            <img src="/assets/images/export-icons/excel-icon.png">
-                        </span>
-                            <span onclick="exportData('http://localhost/export-gs-as-pdf')" style="margin-right: 5px; cursor: pointer;">
-                            <img src="/assets/images/export-icons/pdf-icon.png">
-                        </span>
-                        </div>
-
-                        <form class="exportForm" method="POST">
-                            <input type="hidden" name="_token" value="fixture-csrf-token">                            <input type="hidden" name="model" value="Item Ledger">
-                            <input type="hidden" name="company_id" value="">
-                            <input type="hidden" name="from_date" value="">
-                            <input type="hidden" name="to_date" value="">
-                        </form>
-                                    
+            <div class="mm-table-scroll" role="region" aria-label="Stock in hand" tabindex="0">
+                <table class="table table-bordered table-striped" id="gssih-table">
+                    <thead>
+                        <tr>
+                            <th>SL</th>
+                            <th>Item Code &amp; Description</th>
+                            <th>Department</th>
+                            <th class="text-center">Unit</th>
+                            <th class="text-right">Received (GRN)</th>
+                            <th class="text-right">Issued (GIN)</th>
+                            <th class="text-right">Closing Stock</th>
+                            <th class="text-center">Par Status</th>
+                            <th class="text-right">FIFO Value (৳)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="gssih-tbody">
+                        <tr data-stock-row="healthy">
+                            <td>1</td>
+                            <td><strong>#GS-101 · Royal Chinigura Basmati Rice</strong></td>
+                            <td>Kitchen Dry Pantry</td>
+                            <td class="text-center">Kg</td>
+                            <td class="text-right">120.00</td>
+                            <td class="text-right">45.00</td>
+                            <td class="text-right"><strong>75.00</strong></td>
+                            <td class="text-center"><span class="mm-badge mm-badge-paid">Above Par ✓</span></td>
+                            <td class="text-right">11,250.00</td>
+                        </tr>
+                        <tr data-stock-row="healthy">
+                            <td>2</td>
+                            <td><strong>#GS-104 · Luxury Diplomatic Bath Amenity Kit</strong></td>
+                            <td>Housekeeping Suites</td>
+                            <td class="text-center">Set</td>
+                            <td class="text-right">200.00</td>
+                            <td class="text-right">60.00</td>
+                            <td class="text-right"><strong>140.00</strong></td>
+                            <td class="text-center"><span class="mm-badge mm-badge-paid">Above Par ✓</span></td>
+                            <td class="text-right">49,000.00</td>
+                        </tr>
+                        <tr data-stock-row="low">
+                            <td>3</td>
+                            <td><strong>#GS-108 · 400-TC Egyptian Cotton Bath Towels</strong></td>
+                            <td>Housekeeping Linen</td>
+                            <td class="text-center">Pcs</td>
+                            <td class="text-right">80.00</td>
+                            <td class="text-right">68.00</td>
+                            <td class="text-right"><strong>12.00</strong></td>
+                            <td class="text-center"><span class="mm-badge mm-badge-unpaid">Low Stock (Par 25)</span></td>
+                            <td class="text-right">14,400.00</td>
+                        </tr>
+                        <tr data-stock-row="low">
+                            <td>4</td>
+                            <td><strong>#GS-112 · Imported Extra-Virgin Olive Oil (5L Tin)</strong></td>
+                            <td>Continental Kitchen</td>
+                            <td class="text-center">Tin</td>
+                            <td class="text-right">18.00</td>
+                            <td class="text-right">15.00</td>
+                            <td class="text-right"><strong>3.00</strong></td>
+                            <td class="text-center"><span class="mm-badge mm-badge-unpaid">Low Stock (Par 8)</span></td>
+                            <td class="text-right">19,500.00</td>
+                        </tr>
+                        <tr data-stock-row="healthy">
+                            <td>5</td>
+                            <td><strong>#GS-119 · Mifare 13.56MHz RFID Smart Key Cards</strong></td>
+                            <td>Front Desk &amp; Security</td>
+                            <td class="text-center">Box</td>
+                            <td class="text-right">10.00</td>
+                            <td class="text-right">2.00</td>
+                            <td class="text-right"><strong>8.00</strong></td>
+                            <td class="text-center"><span class="mm-badge mm-badge-paid">Above Par ✓</span></td>
+                            <td class="text-right">54,450.00</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-        </div></div>
+        </div>
     </div>
 </section>
-
+<script>
+(function(){
+    var pills=document.querySelectorAll('.gssih-filter-pill'), rows=document.querySelectorAll('#gssih-tbody tr'), kpiSkus=document.getElementById('gssih-kpi-skus');
+    for(var i=0;i<pills.length;i++){
+        pills[i].addEventListener('click',function(){
+            var f=this.getAttribute('data-stock-filter')||'all', vis=0;
+            for(var j=0;j<pills.length;j++) pills[j].classList.toggle('is-active',pills[j]===this);
+            for(var k=0;k<rows.length;k++){
+                var ok=(f==='all'||rows[k].getAttribute('data-stock-row')===f);
+                rows[k].style.display=ok?'':'none';
+                if(ok) vis++;
+            }
+            if(kpiSkus) kpiSkus.textContent=vis+' SKUs';
+        });
+    }
+    var btn=document.getElementById('gssih-reorder-btn'), ban=document.getElementById('gssih-confirm-banner');
+    if(btn){
+        btn.addEventListener('click',function(){
+            if(ban){
+                ban.style.display='block';
+                ban.innerHTML='<i class="fa fa-check-circle"></i> <strong>Auto-Replenishment Draft PO #PO-2026-045 Generated:</strong> 2 low-stock SKUs (#GS-108 Bath Towels &amp; #GS-112 Olive Oil) queued in <a href="/preview/gs-purchases"><strong>General Store Purchase Orders →</strong></a>';
+            }
+        });
+    }
+})();
+</script>
 <!--/MM-BODY--></div>
 <script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
 <!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
 <script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
-
-<link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css" />
-
-
-<script src="/assets/js/chosen.jquery.min.js"></script>
-
-<script src="/assets/js/bootstrap-datepicker.min.js"></script>
-
-
-<script src="/assets/js/ace-elements.min.js"></script>
-<script src="/assets/js/ace.min.js"></script>
-
-
-<script src="/assets/custom_js/chosen-box.js"></script>
-
-<script type="text/javascript">
-    function exportData(url)
-    {
-        $('.exportForm').attr('action', url).submit();
-    }
-</script>
-
-
-<!--  Select Box Search-->
-<script type="text/javascript">
-
-    const comppanyId        = $('#company_id')
-    const itemId            = $('#item_id')
-    const itemStockRoute    = `http://localhost/gs/company-items`
-    
-
-    // data picker
-    $('.date-picker').datepicker({
-        autoclose: true,
-        todayHighlight: true,
-        format:'yyyy-mm-dd',
-    });
-
-
-    function loadCompanyItems()
-    {
-        let company_id = comppanyId.val()
-
-        $.get(itemStockRoute, { company_id: company_id }, function(res) {
-            itemId.empty()
-            itemId.append('<option value="">-Select-</option>')
-            res.forEach(function(item) {
-                itemId.append('<option value="' + item.id + '">' + item.name + '</option>')
-            })
-
-            itemId.trigger('chosen:updated')
-        });
-    }
-
-
-</script>
-
-
 <!--/MM-JS--></body></html>

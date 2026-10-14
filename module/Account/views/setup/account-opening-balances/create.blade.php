@@ -2,16 +2,10 @@
 
 @section('title', 'Account Opening Balance')
 
-@section('page-header')
-    <i class="fa fa-info-circle"></i> Account Opening Balance
-@stop
-
-
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}"/>
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}"/>
 @endpush
-
 
 @section('content')
 
@@ -70,13 +64,7 @@
                 <form action="{{ route('account-opening-balances.store') }}" method="POST">
                     @csrf
 
-
-
-
                     <input type="hidden" name="company_id" value="{{ request('company_id') }}">
-
-
-
 
                     <div class="col-sm-10 col-sm-offset-1 mt-2">
 
@@ -105,14 +93,9 @@
                             </table>
                         </x-mm.table-scroll>
 
-
-
                         @include('partials._paginate', ['data' => $accounts])
 
                     </div>
-
-
-
 
                     <div class="col-sm-10 col-sm-offset-1 mb-2 text-right">
                         <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-save"></i> Save</button>
@@ -126,14 +109,9 @@
 
 @endsection
 
-
-
-
-
 @section('js')
     <script src="{{ asset('assets/js/chosen.jquery.min.js') }}"></script>
     <script src="{{ asset('assets/custom_js/chosen-box.js') }}"></script>
-
 
     <script>
         $(document).ready(function () {
@@ -168,5 +146,4 @@
     </script>
 
 @endsection
-
 

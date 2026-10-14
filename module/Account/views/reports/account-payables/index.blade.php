@@ -2,12 +2,6 @@
 
 @section('title', 'Account Payable')
 
-
-@section('page-header')
-    <i class="fa fa-info-circle"></i> Account Payable
-@stop
-
-
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
 
@@ -32,7 +26,6 @@
 
     </style>
 @endpush
-
 
 @section('content')
 
@@ -121,12 +114,10 @@
 
                 @include('partials._paginate', ['data' => $transactions])
 
-
                 <!-- EXCEL BUTTON -->
                 <a class="hidden-print" href="{{ url()->current() }}?export_type=excel&{{ request()->getQueryString() }}" target="_blank" style="margin: 18px 0 0 20px; display: inline-block;">
                     <img src="{{ asset('assets/images/export-icons/excel-icon.png') }}">
                 </a>
-
 
             </div>
         </div>

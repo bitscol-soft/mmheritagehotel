@@ -1,0 +1,797 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Bar POS</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css"><link rel="stylesheet" href="/assets/custom_css/floating-input.css"><!--/MM-HEAD-->
+<link rel="stylesheet" href="/assets/custom_css/tokens.css"><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head>
+<body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+<section class="mm-ui mm-bar mm-rst mm-rst-pos mm-rst-sale">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Bar POS</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Select guest, room or table, add drinks, fire order or collect payment.</p>
+            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a href="/preview/bar-tables" class="mm-button mm-button-secondary">
+                    <i class="ace-icon fa fa-th-large" aria-hidden="true"></i> Tables
+                </a>
+                <a href="/preview/bar-sales-list" class="mm-button mm-button-secondary">
+                    <i class="ace-icon fa fa-list-alt" aria-hidden="true"></i> Sale List
+                </a>
+            </div>
+        </header>
+
+        <nav class="mm-steps" aria-label="Progress">
+            <ol class="mm-stepper" role="tablist">
+                <li class="mm-step is-current mm-step-is-current" role="presentation" aria-current="step">
+                    <a href="#courses" data-step="courses" data-mm-step="courses" class="mm-step-link" role="tab" aria-selected="true">
+                        <span class="mm-step-mark" aria-hidden="true">1</span>
+                        <span class="mm-step-label">1. Guest, Room &amp; Table</span>
+                    </a>
+                </li>
+                <li class="mm-step is-upcoming mm-step-is-upcoming" role="presentation">
+                    <a href="#fire" data-step="fire" data-mm-step="fire" class="mm-step-link" role="tab" aria-selected="false">
+                        <span class="mm-step-mark" aria-hidden="true">2</span>
+                        <span class="mm-step-label">2. Drinks &amp; Items</span>
+                    </a>
+                </li>
+                <li class="mm-step is-upcoming mm-step-is-upcoming" role="presentation">
+                    <a href="#pay" data-step="pay" data-mm-step="pay" class="mm-step-link" role="tab" aria-selected="false">
+                        <span class="mm-step-mark" aria-hidden="true">3</span>
+                        <span class="mm-step-label">3. Bill &amp; Payment</span>
+                    </a>
+                </li>
+            </ol>
+        </nav>
+
+        <div class="mm-panel tw-p-4 sm:tw-p-6 mm-pos-workspace tw-p-4">
+            <div class="row mm-pos-layout">
+                <input type="hidden" value="http://localhost/bar/sales-v2" id="storeSaleUrl">
+
+                <div class="col-sm-3 padding-m-none border-m-right-none mm-pos-sidebar">
+                    <div class="card mm-pos-clock-card">
+                        <div class="card-body text-center">
+                            <p class="card-date mm-pos-clock-date">Sunday, 11 October, 2026</p>
+                            <p id="current-time" class="card-time mm-pos-clock-time">09:30:00am</p>
+                        </div>
+                    </div>
+
+                    <div class="card mm-pos-card">
+                        <div class="card-header mm-pos-card-head">
+                            <h3 class="invoice-list-title">Invoice List</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row d-m-flex">
+                                <div class="col-m-30 col-sm-6">
+                                    <div class="radio">
+                                        <label>
+                                            <input name="payment_status" value="due" type="radio" class="ace payment_status duePaymentStatus" checked>
+                                            <span class="lbl"> Due List</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-m-30 col-sm-6 padding-m-left-none">
+                                    <div class="radio">
+                                        <label>
+                                            <input name="payment_status" value="paid" type="radio" class="ace payment_status paidPaymentStatus">
+                                            <span class="lbl"> Paid List</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-1 mt-1 d-m-flex m-b-none">
+                                <div class="col-sm-6 sale-list-date">
+                                    <div class="form-group has-float-label">
+                                        <input type="text" value="2026-10-01" name="date" id="pos-filter-date" class="form-control date-picker invoice-date">
+                                        <label for="pos-filter-date">Date</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group has-float-label">
+                                        <label for="pos-filter-invoice">Invoice</label>
+                                        <input type="text" name="invoice_no" id="pos-filter-invoice" class="form-control invoice_no" placeholder="Search...">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card mm-pos-card">
+                        <div class="card-body">
+                            <div class="invoiceTableContainer">
+                                <table class="table table-bordered table-hover invoice-table">
+                                    <thead>
+                                        <tr>
+                                            <th>SL</th>
+                                            <th>Guest</th>
+                                            <th>Table</th>
+                                            <th>Invoice No</th>
+                                            <th>Bill</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="invoice-list" class="due-tbody">
+                                        <tr class="pointer" data-pos-invoice="B-0107" data-pos-guest="Aisha Rahman" data-pos-table="1" data-pos-room="101">
+                                            <td>1</td>
+                                            <td>Aisha Rahman</td>
+                                            <td>B1</td>
+                                            <td>B-0107</td>
+                                            <td class="itemAmount">1420</td>
+                                        </tr>
+                                        <tr class="pointer" data-pos-invoice="B-0108" data-pos-guest="Karim Uddin" data-pos-table="2" data-pos-room="102">
+                                            <td>2</td>
+                                            <td>Karim Uddin</td>
+                                            <td>B2</td>
+                                            <td>B-0108</td>
+                                            <td class="itemAmount">960</td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="5" class="footer-td">
+                                                <div class="col-sm-12 d-m-flex padding-m-left-none">
+                                                    <div class="col-sm-6 padding-m-left-none">
+                                                        <button type="button" class="btn btn-whites btn-danger btn-xs btn-block print-action-btn" onclick="window.print()">
+                                                            <i class="fa fa-print"></i> Print
+                                                        </button>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <a class="btn btn-whites btn-info btn-xs btn-block print-action-btn" href="/preview/bar-pos">
+                                                            <i class="fa fa-refresh"></i> Refresh
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card text-center total-due-amount calc-total-amount text-danger">
+                        <span>Total Due: </span>
+                        <span class="total-due-sum">2380</span>
+                    </div>
+
+                    <div class="card text-center total-paid-amount calc-total-amount text-danger" style="display: none">
+                        <span>Total Paid: </span>
+                        <span class="total-paid-sum">5120</span>
+                        <div class="row mt-1 paid-by-payment-method"></div>
+                    </div>
+                </div>
+
+                <div class="col-sm-9 padding-m-none" id="sale-form-data">
+                    <form action="http://localhost/bar/sales-v2" method="POST" id="sale-form">
+                        <input type="hidden" name="_token" value="fixture-csrf-token">
+                        <div id="account-type-modal" class="modal fade mm-drawer mm-drawer" data-mm-drawer="true" tabindex="-1" role="dialog">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                                        <h4 class="modal-title"><i class="fa fa-credit-card"></i> Payment Settlement</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <input type="hidden" name="is_multiple_way" value="1">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered" id="accountTypeTable">
+                                                <thead>
+                                                    <tr>
+                                                        <th width="45%">Payment Method</th>
+                                                        <th>Tendered Amount (৳)</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <select name="modal_account_types[]" class="form-control select-account-type">
+                                                                <option value="1" selected>Cash Counter</option>
+                                                                <option value="2">VISA / MasterCard POS</option>
+                                                                <option value="3">bKash / Nagad Merchant</option>
+                                                                <option value="4">Post to Room Folio</option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <input name="modal_account_paid_amounts[]" id="modal-tendered-input" value="1701.00" type="number" step="0.01" class="form-control account-way-paid-amount">
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:12px;background:var(--mm-bg);border:1px solid var(--mm-line);border-radius:6px;margin-top:10px">
+                                            <div><span style="font-size:12px;color:var(--mm-muted);display:block">Payable Amount</span><strong id="modal-payable-display" style="font-size:18px;color:var(--mm-ink)">৳ 1,701.00</strong></div>
+                                            <div><span style="font-size:12px;color:var(--mm-muted);display:block">Change / Due</span><strong id="modal-change-display" style="font-size:18px;color:#166534">৳ 0.00</strong></div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer" style="display:flex;justify-content:flex-end;gap:8px">
+                                        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal"><i class="fa fa-times"></i> Cancel</button>
+                                        <button type="button" class="btn btn-success btn-sm" data-dismiss="modal" id="modal-confirm-pay"><i class="fa fa-check-circle"></i> Confirm Payment</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="is_soft_save" id="is_soft_save" value="0">
+
+                        <div class="mm-pos-table-view" aria-label="Bar Floor Table View">
+                            <div class="mm-pos-table-view-head">
+                                <span class="mm-pos-table-view-title"><i class="fa fa-th-large"></i> Lounge &amp; Bar Table View <span style="font-size:11px;font-weight:600;color:var(--mm-muted)">(Click any table to switch active tab)</span></span>
+                                <div class="mm-pos-table-filters">
+                                    <button type="button" class="mm-pos-filter-pill is-active" data-pos-table-filter="all">All (6)</button>
+                                    <button type="button" class="mm-pos-filter-pill" data-pos-table-filter="available">Available (3)</button>
+                                    <button type="button" class="mm-pos-filter-pill" data-pos-table-filter="occupied">Occupied (2)</button>
+                                    <button type="button" class="mm-pos-filter-pill" data-pos-table-filter="reserved">Reserved (1)</button>
+                                    <a href="/preview/bar-tables" class="mm-pos-filter-pill" title="Open full Bar Floor Map"><i class="fa fa-external-link"></i> Floor Map</a>
+                                </div>
+                            </div>
+                            <div class="mm-pos-table-grid" id="mm-pos-table-grid">
+                                <button type="button" class="mm-pos-table-card is-selected" data-pos-table-card="1" data-pos-state="occupied" data-pos-guest="Aisha Rahman" data-pos-room="101" data-pos-waiter="Karim" data-pos-bill="B-0109">
+                                    <div class="mm-pos-table-card-top">
+                                        <span class="mm-pos-table-no">#B1</span>
+                                        <span class="mm-pos-table-badge mm-pos-table-badge-occupied">Occupied</span>
+                                    </div>
+                                    <div class="mm-pos-table-name">Lounge 1</div>
+                                    <div class="mm-pos-table-sub"><span><i class="fa fa-users"></i> 4 Seats</span><span>৳ 1,701</span></div>
+                                </button>
+                                <button type="button" class="mm-pos-table-card" data-pos-table-card="2" data-pos-state="occupied" data-pos-guest="Tanvir Ahmed" data-pos-room="102" data-pos-waiter="Sajib" data-pos-bill="B-0108">
+                                    <div class="mm-pos-table-card-top">
+                                        <span class="mm-pos-table-no">#B2</span>
+                                        <span class="mm-pos-table-badge mm-pos-table-badge-occupied">Occupied</span>
+                                    </div>
+                                    <div class="mm-pos-table-name">Bar Counter</div>
+                                    <div class="mm-pos-table-sub"><span><i class="fa fa-users"></i> 2 Seats</span><span>৳ 920</span></div>
+                                </button>
+                                <button type="button" class="mm-pos-table-card" data-pos-table-card="3" data-pos-state="available" data-pos-guest="Walk-in Guest" data-pos-room="" data-pos-waiter="Rafiq" data-pos-bill="B-0110">
+                                    <div class="mm-pos-table-card-top">
+                                        <span class="mm-pos-table-no">#B3</span>
+                                        <span class="mm-pos-table-badge mm-pos-table-badge-available">Available</span>
+                                    </div>
+                                    <div class="mm-pos-table-name">Rooftop Deck</div>
+                                    <div class="mm-pos-table-sub"><span><i class="fa fa-users"></i> 6 Seats</span><span>Ready</span></div>
+                                </button>
+                                <button type="button" class="mm-pos-table-card" data-pos-table-card="4" data-pos-state="available" data-pos-guest="VIP Walk-in" data-pos-room="" data-pos-waiter="Karim" data-pos-bill="B-0111">
+                                    <div class="mm-pos-table-card-top">
+                                        <span class="mm-pos-table-no">#B4</span>
+                                        <span class="mm-pos-table-badge mm-pos-table-badge-available">Available</span>
+                                    </div>
+                                    <div class="mm-pos-table-name">VIP Booth</div>
+                                    <div class="mm-pos-table-sub"><span><i class="fa fa-users"></i> 8 Seats</span><span>Ready</span></div>
+                                </button>
+                                <button type="button" class="mm-pos-table-card" data-pos-table-card="5" data-pos-state="reserved" data-pos-guest="Mr. Karim" data-pos-room="204" data-pos-waiter="Sajib" data-pos-bill="B-0112">
+                                    <div class="mm-pos-table-card-top">
+                                        <span class="mm-pos-table-no">#B5</span>
+                                        <span class="mm-pos-table-badge mm-pos-table-badge-reserved">Reserved</span>
+                                    </div>
+                                    <div class="mm-pos-table-name">High Table</div>
+                                    <div class="mm-pos-table-sub"><span><i class="fa fa-users"></i> 4 Seats</span><span>8:00 PM</span></div>
+                                </button>
+                                <button type="button" class="mm-pos-table-card" data-pos-table-card="6" data-pos-state="available" data-pos-guest="Walk-in Guest" data-pos-room="" data-pos-waiter="Rafiq" data-pos-bill="B-0113">
+                                    <div class="mm-pos-table-card-top">
+                                        <span class="mm-pos-table-no">#B6</span>
+                                        <span class="mm-pos-table-badge mm-pos-table-badge-available">Available</span>
+                                    </div>
+                                    <div class="mm-pos-table-name">Cigar Terrace</div>
+                                    <div class="mm-pos-table-sub"><span><i class="fa fa-users"></i> 4 Seats</span><span>Ready</span></div>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="row tab-d-flex mm-pos-step-row" id="courses" style="margin-top: 5px">
+                            <div class="col-md-3 col-sm-6 mb-2 margin-bottom-10 width-50-per">
+                                <div class="input-group">
+                                    <label class="input-group-addon padding-right-18px">Guest</label>
+                                    <input type="text" class="form-control" name="guest_name" id="guest_name" value="Aisha Rahman" placeholder="Type Guest" autocomplete="off">
+                                </div>
+                            </div>
+
+                            <input type="hidden" name="pay_booking_id" id="pay_booking_id">
+                            <input type="hidden" name="customer_id" id="booking_customer_id">
+
+                            <div class="col-md-2 col-sm-6 mb-2 margin-bottom-10 width-50-per">
+                                <select name="hotel_guest_id" id="room_no" class="select2 form-control" data-placeholder="--Select Room--">
+                                    <option value="">--Room--</option>
+                                    <option value="101" selected>Room 101</option>
+                                    <option value="102">Room 102</option>
+                                    <option value="204">Room 204</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-2 col-sm-6 mb-2 margin-bottom-10 width-50-per">
+                                <select name="hotel_table_id" id="hotel_table_id" class="form-control select2 input-search" data-selected="1" style="width: 100%" data-placeholder="--Select Table--">
+                                    <option value="1" selected>Lounge 1 -&gt; B1</option>
+                                    <option value="2">Bar Counter -&gt; B2</option>
+                                    <option value="3">Rooftop Deck -&gt; B3</option>
+                                    <option value="4">VIP Booth -&gt; B4</option>
+                                    <option value="5">High Table -&gt; B5</option>
+                                    <option value="6">Cigar Terrace -&gt; B6</option>
+                                    <option value="99" hidden>Lounge &lt;b&gt;1&lt;/b&gt; -&gt; B1</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-2 col-sm-6 mb-2 margin-bottom-10 width-50-per">
+                                <div class="form-group margin-bottom-0">
+                                    <div class="input-group">
+                                        <span class="input-group-addon padding-right-18px">Waiter:</span>
+                                        <input type="text" name="waiter_no" id="waiter_no" placeholder="Waiter No" class="form-control" value="Karim">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3 col-sm-6 mb-2 margin-bottom-10 width-50-per">
+                                <div class="form-group margin-bottom-0">
+                                    <div class="input-group">
+                                        <span class="input-group-addon padding-right-41px">Bill</span>
+                                        <input type="text" tabindex="-1" class="form-control" id="invoice_id" placeholder="Invoice ID" name="invoice_no" value="B-0109" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mm-pos-step-row" id="fire">
+                            <div class="col-md-6 col-sm-12 mb-2 margin-bottom-10 width-50-per">
+                                <div class="input-group">
+                                    <span class="input-group-addon">Product</span>
+                                    <select name="product_search" id="product-search" class="form-control select2" data-placeholder="--Choose Drink to Add--">
+                                        <option value="">-- Click to add drink to order --</option>
+                                        <option value="201" data-name="Johnnie Walker Black Label (60ml)" data-code="BR-201" data-unit="Peg" data-price="650" data-vat="32.5">Johnnie Walker Black Label (60ml) — 650 ৳</option>
+                                        <option value="202" data-name="Chivas Regal 12Y (60ml)" data-code="BR-202" data-unit="Peg" data-price="680" data-vat="34">Chivas Regal 12Y (60ml) — 680 ৳</option>
+                                        <option value="203" data-name="Heineken Draught (330ml)" data-code="BR-203" data-unit="Can" data-price="380" data-vat="19">Heineken Draught (330ml) — 380 ৳</option>
+                                        <option value="204" data-name="Classic Virgin Mojito" data-code="BR-204" data-unit="Glass" data-price="240" data-vat="12">Classic Virgin Mojito — 240 ৳</option>
+                                        <option value="205" data-name="Spiced Cashew Bar Platter" data-code="BR-205" data-unit="Plate" data-price="320" data-vat="16">Spiced Cashew Bar Platter — 320 ৳</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-6 mb-2 margin-bottom-10 margin-top-40 width-50-per tab-inline-block tab-product-units">
+                                <div class="input-group margin-bottom-0" id="input-quantity-group">
+                                    <input type="text" class="form-control only-number" id="input-big-unit-id" value="1">
+                                    <span class="input-group-addon" id="input-unit-id">Peg</span>
+                                    <input type="text" class="form-control only-number" id="input-small-qty" value="0">
+                                    <span class="input-group-addon" id="input-pack-unit-id">Bottle</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-3 mb-2 margin-bottom-10">
+                                <input type="text" name="date" class="form-control date-picker pointer sale-date" value="2026-10-01" readonly>
+                            </div>
+                        </div>
+
+                        <div class="mm-pos-quick-menu">
+                            <div class="mm-pos-quick-chips">
+                                <span class="mm-pos-quick-label"><i class="fa fa-bolt"></i> Quick Add:</span>
+                                <button type="button" class="mm-pos-chip" data-quick-id="201" data-quick-name="Johnnie Walker Black Label (60ml)" data-quick-code="BR-201" data-quick-unit="Peg" data-quick-price="650" data-quick-vat="32.5">+ JW Black Label <b>৳650</b></button>
+                                <button type="button" class="mm-pos-chip" data-quick-id="202" data-quick-name="Chivas Regal 12Y (60ml)" data-quick-code="BR-202" data-quick-unit="Peg" data-quick-price="680" data-quick-vat="34">+ Chivas 12Y <b>৳680</b></button>
+                                <button type="button" class="mm-pos-chip" data-quick-id="203" data-quick-name="Heineken Draught (330ml)" data-quick-code="BR-203" data-quick-unit="Can" data-quick-price="380" data-quick-vat="19">+ Heineken <b>৳380</b></button>
+                                <button type="button" class="mm-pos-chip" data-quick-id="204" data-quick-name="Classic Virgin Mojito" data-quick-code="BR-204" data-quick-unit="Glass" data-quick-price="240" data-quick-vat="12">+ Virgin Mojito <b>৳240</b></button>
+                                <button type="button" class="mm-pos-chip" data-quick-id="205" data-quick-name="Spiced Cashew Bar Platter" data-quick-code="BR-205" data-quick-unit="Plate" data-quick-price="320" data-quick-vat="16">+ Cashew Platter <b>৳320</b></button>
+                            </div>
+                            <span class="mm-pos-order-summary-pill" id="mm-pos-item-count-pill"><i class="fa fa-glass"></i> 2 Drinks · 3 Qty</span>
+                        </div>
+
+                        <div class="row" style="margin-top: 10px">
+                            <div class="col-sm-12 tableContainer">
+                                <table class="table table-bordered table-hover table-responsive">
+                                    <thead>
+                                        <tr>
+                                            <th>Product</th>
+                                            <th>Code</th>
+                                            <th width="20%" class="sales-quantity-th">Quantity</th>
+                                            <th width="14%">Complimentary</th>
+                                            <th width="10%" class="sales-price-th">Sales Price</th>
+                                            <th width="10%">Vat</th>
+                                            <th width="10%">Total</th>
+                                            <th width="1%"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="product-details">
+                                        <tr class="product-row row-0 tr-product-201">
+                                            <td>
+                                                <span class="product_name">Johnnie Walker Black Label (60ml)</span>
+                                                <input type="hidden" value="201" name="product_ids[]" class="productId">
+                                            </td>
+                                            <td><span class="product_barcode">BR-201</span></td>
+                                            <td>
+                                                <div class="input-group">
+                                                    <div class="spinbox-buttons input-group-btn">
+                                                        <button type="button" class="btn table-qty-decrease-btn spinbox-down btn-xs btn-danger qty-decrease" data-pos-qty="-1">
+                                                            <i class="fa fa-minus"></i>
+                                                        </button>
+                                                    </div>
+                                                    <input type="number" value="2" name="sales_qty[]" class="form-control big-unit-qty input-sm" readonly>
+                                                    <span class="input-group-addon custom-addon-width">Peg</span>
+                                                    <div class="spinbox-buttons input-group-btn">
+                                                        <button type="button" class="btn table-qty-decrease-btn spinbox-down btn-xs btn-success qty-increase" data-pos-qty="1">
+                                                            <i class="fa fa-plus"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td><input tabindex="-1" type="text" value="0" name="item_discount[]" class="form-control item_discount input-sm width-80px"></td>
+                                            <td><input tabindex="-1" type="text" value="650.00" name="sales_price[]" class="form-control sales-price input-sm width-80px" readonly></td>
+                                            <td><input tabindex="-1" type="text" value="32.50" name="item_vat_amounts[]" class="form-control item-vat-amount input-sm width-60px" readonly></td>
+                                            <td><input tabindex="-1" type="number" min="0" value="1300.00" name="item_price[]" class="form-control total-line-price input-sm width-70px" readonly></td>
+                                            <td><button class="delete btn btn-xs btn-danger" tabindex="-1" type="button" data-pos-remove><i class="fa fa-times"></i></button></td>
+                                        </tr>
+                                        <tr class="product-row row-1 tr-product-205">
+                                            <td>
+                                                <span class="product_name">Spiced Cashew Bar Platter</span>
+                                                <input type="hidden" value="205" name="product_ids[]" class="productId">
+                                            </td>
+                                            <td><span class="product_barcode">BR-205</span></td>
+                                            <td>
+                                                <div class="input-group">
+                                                    <div class="spinbox-buttons input-group-btn">
+                                                        <button type="button" class="btn table-qty-decrease-btn spinbox-down btn-xs btn-danger qty-decrease" data-pos-qty="-1">
+                                                            <i class="fa fa-minus"></i>
+                                                        </button>
+                                                    </div>
+                                                    <input type="number" value="1" name="sales_qty[]" class="form-control big-unit-qty input-sm" readonly>
+                                                    <span class="input-group-addon custom-addon-width">Plate</span>
+                                                    <div class="spinbox-buttons input-group-btn">
+                                                        <button type="button" class="btn table-qty-decrease-btn spinbox-down btn-xs btn-success qty-increase" data-pos-qty="1">
+                                                            <i class="fa fa-plus"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td><input tabindex="-1" type="text" value="0" name="item_discount[]" class="form-control item_discount input-sm width-80px"></td>
+                                            <td><input tabindex="-1" type="text" value="320.00" name="sales_price[]" class="form-control sales-price input-sm width-80px" readonly></td>
+                                            <td><input tabindex="-1" type="text" value="16.00" name="item_vat_amounts[]" class="form-control item-vat-amount input-sm width-60px" readonly></td>
+                                            <td><input tabindex="-1" type="number" min="0" value="320.00" name="item_price[]" class="form-control total-line-price input-sm width-70px" readonly></td>
+                                            <td><button class="delete btn btn-xs btn-danger" tabindex="-1" type="button" data-pos-remove><i class="fa fa-times"></i></button></td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="6" class="text-right">
+                                                <strong>Grand Total: </strong>
+                                            </td>
+                                            <td class="text-left"><span id="grand-total">1701.00</span></td>
+                                            <td></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 padding-bottom-15px mm-pos-totals-box" id="pay">
+                            <div class="row mt-1 mb-1">
+                                <div class="col-sm-6" hidden>
+                                    <div class="form-group margin-bottom-none">
+                                        <label class="col-md-6 control-label padding-m-left-none"><b>Payment Status</b>:</label>
+                                        <div class="col-md-6 padding-m-left-none">
+                                            <label>
+                                                <input name="payment_status" value="Due" type="radio" class="ace sale-payment-status due-sale-payment-status" checked>
+                                                <span class="lbl"> Due</span>
+                                            </label>
+                                            <label>
+                                                <input name="payment_status" value="Paid" type="radio" class="ace sale-payment-status paid-sale-payment-status">
+                                                <span class="lbl"> Paid</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label padding-m-left-none"><b>Vat</b>:</label>
+                                        <div class="input-group col-md-8">
+                                            <span class="input-group-addon currency">৳</span>
+                                            <input value="81.00" type="number" class="form-control vat" name="vat" id="vat">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label padding-m-left-none"><b>Sub Total</b>:</label>
+                                        <div class="input-group col-md-8">
+                                            <div class="input-group-addon currency">৳</div>
+                                            <input value="1620.00" type="number" name="subtotal" class="form-control" id="subTotal" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label padding-m-left-none"><b>Discount</b>:</label>
+                                        <div class="input-group col-md-8">
+                                            <div class="input-group-addon currency">৳</div>
+                                            <input value="0" type="number" min="0" step="any" class="form-control changesNo discount" name="discount" id="discount" placeholder="Discount" tabindex="-1">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label padding-m-left-none"><b>Payable Amount</b>:</label>
+                                        <div class="input-group col-md-8">
+                                            <div class="input-group-addon currency">৳</div>
+                                            <input value="1701.00" type="number" name="payable_amount" class="form-control" id="grandTotal" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label padding-m-left-none"><b>Service Charge</b>:</label>
+                                        <div class="input-group col-md-8">
+                                            <div class="input-group-addon currency">৳</div>
+                                            <input value="0" type="number" class="form-control service_charge" name="service_charge" id="service_charge" placeholder="Service Charge">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label padding-m-left-none"><b>Paid Amount</b>:</label>
+                                        <div class="input-group col-md-8">
+                                            <div class="input-group-addon currency">৳</div>
+                                            <input value="1701.00" type="number" name="paid_amount" class="form-control" id="paid_amount" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label padding-m-left-none"><b>Print MODE</b>:</label>
+                                        <div class="input-group col-md-8">
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <label>
+                                                        <input name="print_mode" value="pos" type="radio" class="ace invoice-type" checked>
+                                                        <span class="lbl"> POS</span>
+                                                    </label>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <label>
+                                                        <input name="print_mode" value="normal" type="radio" class="ace invoice-type">
+                                                        <span class="lbl"> NORMAL</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="col-sm-4"></div>
+                                    <div class="col-sm-8 text-m-center">
+                                        <div class="btn-group">
+                                            <button class="btn btn-primary btn-sm save-only" type="button" name="submit" value="save">
+                                                <i class="fa fa-check-circle"></i> Save
+                                            </button>
+                                            <button class="btn btn-purple btn-sm save-sale" type="button" name="submit">
+                                                <i class="fa fa-file-pdf-o"></i> Save &amp; Print
+                                            </button>
+                                            <button class="btn btn-success btn-sm" type="button" name="button" data-toggle="modal" data-target="#account-type-modal">
+                                                <i class="fa fa-dollar"></i> Payment
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--/MM-BODY--><!--MM-JS-->
+<script>
+(function(){
+    function recalcBarPos() {
+        var rows = document.querySelectorAll('#product-details tr.product-row');
+        var sub = 0, vatSum = 0;
+        rows.forEach(function(r){
+            var qtyEl = r.querySelector('.big-unit-qty');
+            var priceEl = r.querySelector('.sales-price');
+            var discEl = r.querySelector('.item_discount');
+            var vatEl = r.querySelector('.item-vat-amount');
+            var totalEl = r.querySelector('.total-line-price');
+            if (!qtyEl || !priceEl || !totalEl) return;
+            var qty = Math.max(1, parseFloat(qtyEl.value || 1));
+            var price = parseFloat(priceEl.value || 0);
+            var disc = parseFloat(discEl && discEl.value || 0);
+            var unitVat = parseFloat(vatEl && vatEl.value || 0);
+            var lineTotal = Math.max(0, (qty * price) - disc);
+            totalEl.value = lineTotal.toFixed(2);
+            sub += lineTotal;
+            vatSum += qty * unitVat;
+        });
+        var srv = parseFloat((document.getElementById('service_charge') || {}).value || 0);
+        var flatDisc = parseFloat((document.getElementById('discount') || {}).value || 0);
+        var grand = Math.max(0, sub - flatDisc + vatSum + srv);
+        if (document.getElementById('subTotal')) document.getElementById('subTotal').value = sub.toFixed(2);
+        if (document.getElementById('vat')) document.getElementById('vat').value = vatSum.toFixed(2);
+        if (document.getElementById('grandTotal')) document.getElementById('grandTotal').value = grand.toFixed(2);
+        if (document.getElementById('paid_amount')) document.getElementById('paid_amount').value = grand.toFixed(2);
+        if (document.getElementById('grand-total')) document.getElementById('grand-total').textContent = grand.toFixed(2);
+        if (document.getElementById('modal-payable-display')) document.getElementById('modal-payable-display').textContent = '৳ ' + grand.toFixed(2);
+        if (document.getElementById('modal-tendered-input')) document.getElementById('modal-tendered-input').value = grand.toFixed(2);
+        var countPill = document.getElementById('mm-pos-item-count-pill');
+        if (countPill) {
+            var totalQty = 0;
+            rows.forEach(function(r){ var qEl = r.querySelector('.big-unit-qty'); totalQty += Math.max(1, parseInt(qEl && qEl.value || 1, 10)); });
+            countPill.innerHTML = '<i class="fa fa-glass"></i> ' + rows.length + ' Drinks · ' + totalQty + ' Qty';
+        }
+    }
+    function addDrinkToOrder(id, name, code, unit, price, vat, qtyToAdd) {
+        var tbody = document.getElementById('product-details');
+        if (!tbody) return;
+        var existing = tbody.querySelector('.tr-product-' + id);
+        if (existing) {
+            var qEl = existing.querySelector('.big-unit-qty');
+            if (qEl) qEl.value = Math.max(1, parseInt(qEl.value || 1, 10) + (qtyToAdd || 1));
+            recalcBarPos();
+            return;
+        }
+        var qty = Math.max(1, qtyToAdd || 1);
+        var tr = document.createElement('tr');
+        tr.className = 'product-row tr-product-' + id;
+        tr.innerHTML = '<td><span class="product_name">' + name + '</span><input type="hidden" value="' + id + '" name="product_ids[]" class="productId"></td>' +
+            '<td><span class="product_barcode">' + code + '</span></td>' +
+            '<td><div class="input-group"><div class="spinbox-buttons input-group-btn"><button type="button" class="btn table-qty-decrease-btn spinbox-down btn-xs btn-danger qty-decrease" data-pos-qty="-1"><i class="fa fa-minus"></i></button></div>' +
+            '<input type="number" value="' + qty + '" name="sales_qty[]" class="form-control big-unit-qty input-sm" readonly>' +
+            '<span class="input-group-addon custom-addon-width">' + unit + '</span>' +
+            '<div class="spinbox-buttons input-group-btn"><button type="button" class="btn table-qty-decrease-btn spinbox-down btn-xs btn-success qty-increase" data-pos-qty="1"><i class="fa fa-plus"></i></button></div></div></td>' +
+            '<td><input tabindex="-1" type="text" value="0" name="item_discount[]" class="form-control item_discount input-sm width-80px"></td>' +
+            '<td><input tabindex="-1" type="text" value="' + price.toFixed(2) + '" name="sales_price[]" class="form-control sales-price input-sm width-80px" readonly></td>' +
+            '<td><input tabindex="-1" type="text" value="' + vat.toFixed(2) + '" name="item_vat_amounts[]" class="form-control item-vat-amount input-sm width-60px" readonly></td>' +
+            '<td><input tabindex="-1" type="number" min="0" value="' + (price * qty).toFixed(2) + '" name="item_price[]" class="form-control total-line-price input-sm width-70px" readonly></td>' +
+            '<td><button class="delete btn btn-xs btn-danger" tabindex="-1" type="button" data-pos-remove><i class="fa fa-times"></i></button></td>';
+        tbody.appendChild(tr);
+        recalcBarPos();
+    }
+    function selectBarTableCard(card) {
+        if (!card) return;
+        document.querySelectorAll('[data-pos-table-card]').forEach(function(c){ c.classList.remove('is-selected'); });
+        card.classList.add('is-selected');
+        var tblId = card.getAttribute('data-pos-table-card');
+        var guestName = card.getAttribute('data-pos-guest') || '';
+        var roomId = card.getAttribute('data-pos-room') || '';
+        var waiter = card.getAttribute('data-pos-waiter') || 'Karim';
+        var bill = card.getAttribute('data-pos-bill') || 'B-0109';
+        if (document.getElementById('hotel_table_id') && tblId) document.getElementById('hotel_table_id').value = tblId;
+        if (document.getElementById('guest_name') && guestName) document.getElementById('guest_name').value = guestName;
+        if (document.getElementById('room_no')) document.getElementById('room_no').value = roomId;
+        if (document.getElementById('waiter_no')) document.getElementById('waiter_no').value = waiter;
+        if (document.getElementById('invoice_id')) document.getElementById('invoice_id').value = bill;
+    }
+    document.addEventListener('input', function(e){
+        if (e.target.matches('.item_discount, #service_charge, #discount, #vat')) recalcBarPos();
+        if (e.target.id === 'pos-filter-invoice') {
+            var q = (e.target.value || '').toLowerCase();
+            document.querySelectorAll('#invoice-list tr').forEach(function(tr){
+                tr.style.display = tr.textContent.toLowerCase().indexOf(q) !== -1 ? '' : 'none';
+            });
+        }
+        if (e.target.id === 'modal-tendered-input') {
+            var pay = parseFloat((document.getElementById('grandTotal') || {}).value || 0);
+            var tend = parseFloat(e.target.value || 0);
+            var diff = tend - pay;
+            var disp = document.getElementById('modal-change-display');
+            if (disp) {
+                disp.textContent = (diff >= 0 ? 'Change: ৳ ' : 'Due: ৳ ') + Math.abs(diff).toFixed(2);
+                disp.style.color = diff >= 0 ? '#166534' : '#b42318';
+            }
+        }
+    });
+    document.addEventListener('change', function(e){
+        if (e.target.matches('input[name="payment_status"]')) {
+            var isPaid = e.target.value === 'paid';
+            var dueBox = document.querySelector('.total-due-amount');
+            var paidBox = document.querySelector('.total-paid-amount');
+            if (dueBox) dueBox.style.display = isPaid ? 'none' : '';
+            if (paidBox) paidBox.style.display = isPaid ? '' : 'none';
+        }
+    });
+    document.addEventListener('click', function(e){
+        var qtyBtn = e.target.closest('[data-pos-qty]');
+        if (qtyBtn) {
+            var delta = parseInt(qtyBtn.getAttribute('data-pos-qty'), 10);
+            var tr = qtyBtn.closest('tr');
+            var input = tr && tr.querySelector('.big-unit-qty');
+            if (input) {
+                input.value = Math.max(1, parseInt(input.value || 1, 10) + delta);
+                recalcBarPos();
+            }
+        }
+        var rmBtn = e.target.closest('[data-pos-remove]');
+        if (rmBtn) {
+            var row = rmBtn.closest('tr');
+            if (row) { row.remove(); recalcBarPos(); }
+        }
+        var invRow = e.target.closest('[data-pos-invoice]');
+        if (invRow) {
+            var invId = invRow.getAttribute('data-pos-invoice');
+            var guest = invRow.getAttribute('data-pos-guest');
+            var tbl = invRow.getAttribute('data-pos-table');
+            var rm = invRow.getAttribute('data-pos-room');
+            if (document.getElementById('invoice_id')) document.getElementById('invoice_id').value = invId;
+            if (document.getElementById('guest_name') && guest) document.getElementById('guest_name').value = guest;
+            if (document.getElementById('hotel_table_id') && tbl) document.getElementById('hotel_table_id').value = tbl;
+            if (document.getElementById('room_no') && rm) document.getElementById('room_no').value = rm;
+            var matchingCard = document.querySelector('[data-pos-table-card="' + tbl + '"]');
+            if (matchingCard) {
+                document.querySelectorAll('[data-pos-table-card]').forEach(function(c){ c.classList.remove('is-selected'); });
+                matchingCard.classList.add('is-selected');
+            }
+        }
+        var tableCard = e.target.closest('[data-pos-table-card]');
+        if (tableCard) {
+            selectBarTableCard(tableCard);
+        }
+        var filterPill = e.target.closest('[data-pos-table-filter]');
+        if (filterPill) {
+            var flt = filterPill.getAttribute('data-pos-table-filter') || 'all';
+            document.querySelectorAll('[data-pos-table-filter]').forEach(function(p){ p.classList.remove('is-active'); });
+            filterPill.classList.add('is-active');
+            document.querySelectorAll('[data-pos-table-card]').forEach(function(c){
+                var st = c.getAttribute('data-pos-state') || 'available';
+                c.style.display = (flt === 'all' || st === flt) ? '' : 'none';
+            });
+        }
+        var quickChip = e.target.closest('[data-quick-id]');
+        if (quickChip) {
+            addDrinkToOrder(
+                quickChip.getAttribute('data-quick-id'),
+                quickChip.getAttribute('data-quick-name'),
+                quickChip.getAttribute('data-quick-code'),
+                quickChip.getAttribute('data-quick-unit') || 'Peg',
+                parseFloat(quickChip.getAttribute('data-quick-price') || 0),
+                parseFloat(quickChip.getAttribute('data-quick-vat') || 0),
+                1
+            );
+        }
+    });
+    var tblSelect = document.getElementById('hotel_table_id');
+    if (tblSelect) {
+        tblSelect.addEventListener('change', function(){
+            var card = document.querySelector('[data-pos-table-card="' + tblSelect.value + '"]');
+            if (card) selectBarTableCard(card);
+        });
+    }
+    try {
+        var params = new URLSearchParams(window.location.search || '');
+        var urlTbl = params.get('table_id');
+        if (urlTbl && urlTbl !== '1') {
+            var urlCard = document.querySelector('[data-pos-table-card="' + urlTbl + '"]');
+            if (urlCard) selectBarTableCard(urlCard);
+        }
+    } catch (_) {}
+    var prodSel = document.getElementById('product-search');
+    if (prodSel) {
+        prodSel.addEventListener('change', function(){
+            var opt = prodSel.options[prodSel.selectedIndex];
+            if (!opt || !opt.value) return;
+            var id = opt.value;
+            var name = opt.getAttribute('data-name');
+            var code = opt.getAttribute('data-code');
+            var unit = opt.getAttribute('data-unit') || 'Peg';
+            var price = parseFloat(opt.getAttribute('data-price') || 0);
+            var vat = parseFloat(opt.getAttribute('data-vat') || 0);
+            var qty = Math.max(1, parseInt((document.getElementById('input-big-unit-id') || {}).value || 1, 10));
+            var tbody = document.getElementById('product-details');
+            var tr = document.createElement('tr');
+            tr.className = 'product-row tr-product-' + id;
+            tr.innerHTML = '<td><span class="product_name">' + name + '</span><input type="hidden" value="' + id + '" name="product_ids[]" class="productId"></td>' +
+                '<td><span class="product_barcode">' + code + '</span></td>' +
+                '<td><div class="input-group"><div class="spinbox-buttons input-group-btn"><button type="button" class="btn table-qty-decrease-btn spinbox-down btn-xs btn-danger qty-decrease" data-pos-qty="-1"><i class="fa fa-minus"></i></button></div>' +
+                '<input type="number" value="' + qty + '" name="sales_qty[]" class="form-control big-unit-qty input-sm" readonly>' +
+                '<span class="input-group-addon custom-addon-width">' + unit + '</span>' +
+                '<div class="spinbox-buttons input-group-btn"><button type="button" class="btn table-qty-decrease-btn spinbox-down btn-xs btn-success qty-increase" data-pos-qty="1"><i class="fa fa-plus"></i></button></div></div></td>' +
+                '<td><input tabindex="-1" type="text" value="0" name="item_discount[]" class="form-control item_discount input-sm width-80px"></td>' +
+                '<td><input tabindex="-1" type="text" value="' + price.toFixed(2) + '" name="sales_price[]" class="form-control sales-price input-sm width-80px" readonly></td>' +
+                '<td><input tabindex="-1" type="text" value="' + vat.toFixed(2) + '" name="item_vat_amounts[]" class="form-control item-vat-amount input-sm width-60px" readonly></td>' +
+                '<td><input tabindex="-1" type="number" min="0" value="' + (price * qty).toFixed(2) + '" name="item_price[]" class="form-control total-line-price input-sm width-70px" readonly></td>' +
+                '<td><button class="delete btn btn-xs btn-danger" tabindex="-1" type="button" data-pos-remove><i class="fa fa-times"></i></button></td>';
+            tbody.appendChild(tr);
+            prodSel.value = '';
+            recalcBarPos();
+        });
+    }
+    ['service_charge', 'discount', 'vat'].forEach(function(id){
+        var el = document.getElementById(id);
+        if (el) el.addEventListener('input', recalcBarPos);
+    });
+})();
+</script>
+<!--/MM-JS--></div></body></html>

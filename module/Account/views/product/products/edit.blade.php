@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title', 'Product')
-@section('page-header')
-    <i class="fa fa-edit"></i> Product Edit
-@stop
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}"/>
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}"/>
@@ -35,9 +32,6 @@
                                             <input id="name" name="name" type="text" required class="form-control input-sm" placeholder="Name" value="{{ old('name', $product->name) }}">
                                         </div>
                                     </div>
-
-
-
 
                                     <!-- DESCRIPTION -->
                                     <div class="form-group row">
@@ -141,9 +135,7 @@
 @section('js')
     <script src="{{ asset('assets/js/chosen.jquery.min.js') }}"></script>
 
-
     <script src="{{ asset('assets/custom_js/chosen-box.js') }}"></script>
 
 @endsection
-
 

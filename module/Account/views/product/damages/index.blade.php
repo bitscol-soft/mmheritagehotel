@@ -2,11 +2,6 @@
 
 @section('title', 'Damage List')
 
-@section('page-header')
-<i class="fa fa-info-circle"></i> Damage List
-@stop
-
-
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -68,9 +63,6 @@
                     </table>
                 </x-mm.table-scroll>
             </div>
-
-
-
 
             @if(count($damages) <= 0)
                 <div class="text-center">

@@ -14,10 +14,41 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">New hotel service sale</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Pick the guest, add the services sold and confirm the invoice.</p>            </div>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Select an in-house or walk-in guest, add extra services (Laundry, Spa, Airport Transfer), and confirm the invoice.</p>            </div>
             <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a href="http://localhost/hotelservice/service-sales" class="mm-button mm-button-secondary">
                 <i class="fa fa-list-alt" aria-hidden="true"></i> Hotel Service Sale
             </a></div>        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="New hotel service sale summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-concierge-bell"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Service Billing</span>
+                    <div class="mm-table-kpi-value">Guest Folio <span class="mm-table-kpi-sub">In-House / Walk-In</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-plus-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Service Repeater</span>
+                    <div class="mm-table-kpi-value">Multi-Line <span class="mm-table-kpi-sub">Auto-Rate Lookup</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-calculator"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Live Calculation</span>
+                    <div class="mm-table-kpi-value">Tax &amp; Discount <span class="mm-table-kpi-sub">Paid / Due Split</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Night Audit Sync</span>
+                    <div class="mm-table-kpi-value">Ready ✓ <span class="mm-table-kpi-sub">Posts to Room Folio</span></div>
+                </div>
+            </div>
+        </div>
         <form method="POST" action="http://localhost/hotelservice/service-sales"
         class="form-horizontal" id="invForm">
         <input type="hidden" name="_token" value="fixture-csrf-token">

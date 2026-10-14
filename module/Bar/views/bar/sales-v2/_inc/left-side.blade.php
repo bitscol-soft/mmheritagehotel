@@ -1,8 +1,8 @@
-<div class="col-sm-3 padding-m-none border-m-right-none" style="border-right: 1px dotted var(--header);">
+<div class="col-sm-3 padding-m-none border-m-right-none mm-pos-sidebar" style="border-right: 1px dotted var(--header);">
     @include('bar/sales-v2/_inc/date-time')
 
-    <div class="card">
-        <div class="card-header widget-header">
+    <div class="card mm-pos-card">
+        <div class="card-header mm-pos-card-head">
             <h3 class="invoice-list-title">Invoice List</h3>
         </div>
         <div class="card-body">
@@ -27,22 +27,22 @@
 
             <div class="row mb-1 mt-1 d-m-flex m-b-none">
                 <div class="col-sm-6 sale-list-date">
-                    <div class="form-grpup has-float-label">
-                        <input type="text" value="{{ getSaleDate() ?? date('Y-m-d') }}" name="date" class="form-control date-picker invoice-date" onchange="load_data()">
-                        <label for="date">Date</label>
+                    <div class="form-group has-float-label">
+                        <input type="text" value="{{ getSaleDate() ?? date('Y-m-d') }}" name="date" id="pos-filter-date" class="form-control date-picker invoice-date" onchange="load_data()">
+                        <label for="pos-filter-date">Date</label>
                     </div>
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group has-float-label">
-                        <label for="">Invoice</label>
-                        <input type="text" name="invoice_no" class="form-control invoice_no" onkeypress="load_data()">
+                        <label for="pos-filter-invoice">Invoice</label>
+                        <input type="text" name="invoice_no" id="pos-filter-invoice" class="form-control invoice_no" onkeypress="load_data()">
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="card">
+    <div class="card mm-pos-card">
 
         <div class="card-body">
             <div class="invoiceTableContainer">
@@ -59,7 +59,7 @@
                     <tbody id="invoice-list" class="due-tbody">
 
                     </tbody>
-                    <tfoot style="display:nones">
+                    <tfoot>
                         <tr>
                             <td colspan="5" class="footer-td">
                                 <div class="col-sm-12 d-m-flex padding-m-left-none">

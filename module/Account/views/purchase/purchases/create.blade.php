@@ -1,20 +1,11 @@
 @extends('layouts.master')
 
-
 @section('title', 'Purchase Create')
-
-
-
-@section('page-header')
-<i class="fa fa-plus-circle"></i> Purchase Create
-@stop
-
 
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/custom_css/chosen-required.css') }}" />
-
 
     <style>
         .borderRemove {
@@ -44,11 +35,6 @@
     </style>
 @endpush
 
-
-
-
-
-
 @section('content')
 
 <x-mm.styles />
@@ -65,11 +51,7 @@
 
                     <input hidden name="account_id" value="{{ $account->id }}">
 
-
                     <div class="row">
-
-
-
 
                         <!-- Supplier -->
                         <div class="col-sm-5 my-1">
@@ -85,10 +67,6 @@
                                 </select>
                             </div>
                         </div>
-
-
-
-
 
                         <!-- Companies -->
                         <div class="col-sm-5 my-1">
@@ -114,9 +92,6 @@
                             </div>
                         </div>
 
-
-
-
                         <!-- Date -->
                         <div class="col-sm-2 my-1">
                             <div class="input-group">
@@ -127,19 +102,10 @@
                             </div>
                         </div>
 
-
-
-
-
-
-
-
                         <!-- Item Details Table -->
                         <div class="col-sm-12 mt-3">
                             <x-mm.table-scroll label="Purchase Create">
                                 <table id="myTable" class="table table-bordered order-list">
-
-
 
                                     <!-- head -->
                                     <thead>
@@ -155,8 +121,6 @@
                                             <td width="50px;"></td>
                                         </tr>
                                     </thead>
-
-
 
                                     <!-- body -->
                                     <tbody>
@@ -265,9 +229,6 @@
                                         @endif
                                     </tbody>
 
-
-
-
                                     <!-- footer -->
                                     <tfoot>
                                         <tr>
@@ -286,13 +247,6 @@
                                 </table>
                             </x-mm.table-scroll>
 
-
-
-
-
-
-
-
                             <!-- Discount Amount -->
                             <div class="row">
                                 <div class="col-md-5 pull-right">
@@ -307,9 +261,6 @@
                                     </div>
                                 </div>
                             </div>
-
-
-
 
                             <!-- Total Amount -->
                             <div class="row">
@@ -326,9 +277,6 @@
                                 </div>
                             </div>
 
-
-
-
                             <!-- Paid Amount -->
                             <div class="row">
                                 <div class="col-md-5 pull-right">
@@ -344,9 +292,6 @@
                                 </div>
                             </div>
 
-
-
-
                             <!-- Due Amount -->
                             <div class="row">
                                 <div class="col-md-5 pull-right">
@@ -361,10 +306,6 @@
                                     </div>
                                 </div>
                             </div>
-
-
-
-
 
                             <!-- Action -->
                             <div class="row">
@@ -383,16 +324,13 @@
 
 @endsection
 
-
 @section('js')
     <script src="{{ asset('assets/js/chosen.jquery.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap-datepicker.min.js') }}"></script>
     <script src="{{ asset('assets/custom_js/chosen-box.js') }}"></script>
     <script src="{{ asset('assets/custom_js/date-picker.js') }}"></script>
 
-
     <script>
-
 
         const descriptionField      = $('.description')
         const enableField           = $('.quantity-enable')
@@ -448,16 +386,11 @@
                             <td class="text-center"><a class="btn btn-sm btn-danger ibtnDel"><i class="fa fa-trash-o"></i></a></td>
                         </tr>`
 
-
-
-
-
         $('select').chosen({
             allow_single_deselect: true
         });
 
         $(document).on('click', '.show-description', showDescriptionHandler);
-
 
         function showDescriptionHandler() {
             const description = $(this).closest('tr').find('.description-area');
@@ -468,7 +401,6 @@
                 description.show();
             }
         }
-
 
         function enableQty($description, $unit, $purchase_price, $price, $current_stock, $qty, object)
         {
@@ -496,9 +428,6 @@
             qty.attr('disabled', false)
         }
 
-
-
-
         $(document).on("keyup", ".calculate-total", function() {
 
             calculateRowMultiply()
@@ -512,9 +441,6 @@
             enableDiscountField.attr('disabled', false)
         })
 
-
-
-
         $(document).on("keyup", ".calculate-paid", function() {
             calculateDue()
         })
@@ -527,10 +453,6 @@
 
             $(".dueAmount").val(dueAmount)
         }
-
-
-
-
 
         function calculateRowMultiply()
         {
@@ -548,10 +470,6 @@
 
             });
         }
-
-
-
-
 
         function calculateAmount()
         {
@@ -581,23 +499,14 @@
             $(".itemTotal").val(totalAmount)
         }
 
-
-
-
-
-
         function calculateDiscount()
         {
             let itemTotal       = $(".itemTotal").val()
             let discount        = $(".discount").val()
             let totalAmount     = Number(itemTotal) - Number(discount)
 
-
             $(".totalAmount").val(totalAmount)
         }
-
-
-
 
         $(document).ready(function() {
 
@@ -608,9 +517,6 @@
                 chosenSelectInit()
                 i++
             });
-
-
-
 
             $("table.order-list").on("click", ".ibtnDel", function(event) {
                 $(this).closest("tr").remove();

@@ -4,13 +4,17 @@
     $mmStayFirst = $mmStayRows->first();
     $mmNights = (int) $mmStayRows->max('nights');
 @endphp
-<nav class="mm-steps mm-no-print" aria-label="Booking progress">
-    <ol>
-        <li class="is-done"><span class="mm-step-mark" aria-hidden="true">&#10003;</span><span><span class="mm-visually-hidden">Completed: </span>Select rooms</span></li>
-        <li class="is-current" aria-current="step"><span class="mm-step-mark" aria-hidden="true">2</span><span>Guest and stay details</span></li>
-        <li><span class="mm-step-mark" aria-hidden="true">3</span><span>Review and save</span></li>
-    </ol>
-</nav>
+{{-- W3.9: was a hand-rolled <nav class="mm-steps"> <ol> <li>...</ol>. Now uses the shared <x-mm.stepper> component. The 3 steps map to the existing flow: rooms → guest → review. --}}
+<x-mm.stepper
+    :steps="[
+        ['key' => 'rooms',   'label' => 'Select rooms'],
+        ['key' => 'guest',   'label' => 'Guest and stay details'],
+        ['key' => 'review',  'label' => 'Review and save'],
+    ]"
+    current="guest"
+    class="mm-no-print"
+    aria-label="Booking progress"
+/>
 <dl class="mm-stay-summary" aria-label="Selected stay">
     <div><dt>Rooms</dt><dd>{{ $mmStayRows->count() }}</dd></div>
     <div><dt>Check-in</dt><dd>{{ $mmStayFirst['check_in'] ?? '-' }}</dd></div>

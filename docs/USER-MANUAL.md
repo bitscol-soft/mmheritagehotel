@@ -271,7 +271,11 @@ Account → Reports: **Income statement**, **Balance sheet** (auto from vouchers
 
 # Appendix
 
-* **Full screen inventory** — every crawled URL × status × screenshot: `docs/SCREENSHOTS.md` (auto-generated).
+* **Full screen inventory** — every crawled URL × status × screenshot: `docs/SCREENSHOTS.md` (auto-generated), plus the live **315-Screen Interactive Preview Explorer Hub** at `/preview`.
 * **Shortcuts people actually need:** `Front Desk → Booking UI` (new reservation), `Bookings` (today filter), `Check-out` modal, `Night audits`, `Reports → Expected arrival/departure`, `Restaurant → New Sale`, `Bar → New Sale`, `Account → Vouchers`, `Website CMS` for content edits.
-* **Keyboard:** all lists support `/`-style search via DataTables search box; datepickers respond to typing `MM/DD/YYYY - MM/DD/YYYY` in the range fields.
-* **Browser support:** built for Chrome/Edge desktop; mobile admin works only read-mostly (see Plan A Phase 2).
+* **Keyboard & Command Palette (`W2` / `B4`):**
+  * Press **`Ctrl+K`** (or **`Cmd+K`**) anywhere in the admin shell to open the **Command Palette** and search all **315** screens or trigger the **Quick Action Drawer**.
+  * Press **`/`** to focus the sidebar menu search, **`?`** to open the Keyboard Shortcuts help drawer, or **`Esc`** to close any open Slide-Over App Drawer or modal.
+  * **Two-key `g` navigation chords:** `g d` (Dashboard & Room Board), `g b` (3-Step Booking Wizard & Floor Map), `g p` (Restaurant POS), `g r` (Ratio & Share Analysis), `g a` (Balance Sheet), `g s` (Public Hotel Storefront), `g x` (315-Screen Preview Explorer Hub).
+* **Browser support:** Responsive across desktop (`1280px+`), tablet (`768px`), and mobile (`390px`) in both **Light Mode** and **Dark Mode** (`mm-dark`).
+

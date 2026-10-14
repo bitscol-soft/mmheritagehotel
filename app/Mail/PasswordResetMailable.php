@@ -22,7 +22,7 @@ class PasswordResetMailable extends Mailable
     public function build()
     {
         $from = config('mail.from.address', 'hello@banglafire.com');
-        $name = $this->data['user']->company->group->name ?? 'Banglafire Software Ltd.';
+        $name = optional(optional(optional($this->data['user'])->company)->group)->name ?? config('app.name', 'MM Heritage Hotel');
 
         return $this
             ->subject('Reset Your Password')

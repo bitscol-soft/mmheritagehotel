@@ -1,153 +1,97 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Income Statement</title>
 <link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
-<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">
-    <link rel="stylesheet" href="/assets/css/chosen.min.css" />
-    <link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css" />
-
-    <style type="text/css">
-        th,
-        td {
-            background: white;
-            color: black !important;
-        }
-
-
-
-        @media  print {
-
-            .no-print,
-            .no-print * {
-                display: none !important;
-            }
-
-            .d-print {
-                display: block !important;
-            }
-
-            tr {
-                page-break-after: avoid !important;
-            }
-
-            thead {
-                page-break-before: avoid !important;
-            }
-
-            .widget-box {
-                border: none !important;
-                margin: 0 !important;
-                padding: 0 !important;
-                width: 100% !important;
-            }
-
-            .px-4 {
-                padding: 0 !important;
-            }
-        }
-
-        @page  {
-            margin: 0.5in;
-            /*size: landscape;*/
-        }
-
-        .d-print {
-            display: none;
-        }
-
-    </style>
-<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
-<section class="mm-ui mm-report mm-acc mm-rst mm-rst-inv">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css"><!--/MM-HEAD-->
+<link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+<section class="mm-ui mm-report mm-acc mm-rst">
     <div class="tw-space-y-4 tw-py-2">
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
-                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Income  Statement</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Income and expenses for the period.</p>            </div>
-            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button mm-button-secondary" href="http://localhost/acc/report/income-statement"><i class="fa fa-refresh"></i> Refresh</a>
-        <a class="mm-button mm-button-secondary" href="javascript:void(0)" onclick="print()"><i class="fa fa-print"></i> Print</a></div>        </header>
-        <div class="mm-panel tw-p-4 sm:tw-p-6 mm-report-filter"><form class="mm-setup-filter mm-report-form">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink"><i class="fa fa-line-chart"></i> Income Statement — Departmental Profit &amp; Loss (Rooms, Dining, Bar &amp; Banquet)</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Consolidated departmental operating revenue, FIFO cost of goods sold, payroll, and net operating profit (GOP).</p>
+            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/acc-balance-sheet"><i class="fa fa-university"></i> Balance Sheet</a>
+                <a class="mm-button mm-button-secondary" href="/preview/acc-trial-balance"><i class="fa fa-balance-scale"></i> Trial Balance</a>
+            </div>
+        </header>
 
-            <!-- COMPANY NAME -->
-                <div class="input-group">
-                    <label class="input-group-addon">Company</label>
-                    <select class="form-control chosen-select-100-percent" name="company_id[]" data-placeholder="-Select Company-" multiple>
-                        <option></option>
-                                                    <option value="1"
-                                >
-                                MM &lt;b&gt;Heritage&lt;/b&gt;
-                            </option>
-                                            </select>
+        <div class="mm-table-kpi-grid" aria-label="Income statement summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-line-chart"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Gross Operating Revenue</span>
+                    <div class="mm-table-kpi-value">৳ <span id="is-kpi-rev">1,940,000</span> <span class="mm-table-kpi-sub">Rooms · F&amp;B · Banquet</span></div>
                 </div>
-
-            <!-- MONTH -->
-                <div class="input-group">
-                    <label class="input-group-addon">Month</label>
-                    <input type="text" name="month" value="" autocomplete="off" class="form-control month-picker">
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-cubes"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">COGS &amp; Operating Expense</span>
+                    <div class="mm-table-kpi-value">৳ <span id="is-kpi-exp">1,115,000</span> <span class="mm-table-kpi-sub">FIFO BOM + Payroll + Utilities</span></div>
                 </div>
-
-            <!-- YEAR -->
-                <div class="input-group">
-                    <label class="input-group-addon">Year</label>
-                    <input type="text" name="year" value="" autocomplete="off" class="form-control year-picker">
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-trophy"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Net Operating Profit</span>
+                    <div class="mm-table-kpi-value">৳ <span id="is-kpi-net">825,000</span> <span class="mm-table-kpi-sub">Transferred to Equity</span></div>
                 </div>
-
-                            <!-- DETAIL VIEW -->
-                    <label class="block" style="margin-top: 5px;">
-                        <input name="is_details" type="checkbox" class="ace input-lg" value="1" >
-                        <span class="lbl bigger-120"> Details</span>
-                    </label>
-            
-            <!-- ACTION -->
-                <div class="btn-group">
-                    <button type="submit" class="btn btn-primary btn-sm">
-                        <i class="fa fa-search"></i>
-                        Search
-                    </button>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-percent"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">GOP Margin</span>
+                    <div class="mm-table-kpi-value"><span id="is-kpi-margin">42.5%</span> <span class="mm-table-kpi-sub">Above 38% Target ✓</span></div>
                 </div>
-        </form></div>
-    <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><!-- PRINT HEADER -->
-        <h3 class="text-center d-print" style="margin-top: -30px !important;">INCOME  STATEMENT</h3>
-        <h3 class="text-center d-print" style="margin-top: -5px !important;">
-                                        MM &lt;b&gt;Heritage&lt;/b&gt;
-                                </h3>
-        <h4 class="text-center d-print">As On 01/10/2026</h4>
+            </div>
+        </div>
 
+        <div class="mm-panel tw-p-4 sm:tw-p-6">
+            <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px">
+                <strong><i class="fa fa-filter"></i> Filter Income Statement by Stream</strong>
+                <div style="display:flex;flex-wrap:wrap;gap:6px" id="is-filter-pills">
+                    <button type="button" class="mm-role-pill is-active is-filter-pill" data-is-type="all">All P&amp;L Lines (5)</button>
+                    <button type="button" class="mm-role-pill is-filter-pill" data-is-type="Revenue">Operating Revenues (3)</button>
+                    <button type="button" class="mm-role-pill is-filter-pill" data-is-type="Expense">Operating Expenses (2)</button>
+                </div>
+            </div>
 
-
-
-
-
-        <div class="row" style="width: 100%; margin: 0 !important; padding: 0 !important;">
-
-
-            <!-- FILTER -->
-
-
-
-
-
-
-
-
-
-            <!-- DETAIL -->
-            
-                
-
-            
-
-            <!-- EXCEL BUTTON -->
-            
-
-        </div></div>
+            <div class="mm-table-scroll" role="region" aria-label="Income Statement" tabindex="0">
+                <table class="table table-bordered table-striped" id="is-table">
+                    <thead>
+                        <tr>
+                            <th>GL Code</th>
+                            <th>Revenue / Expense Head</th>
+                            <th>Department</th>
+                            <th class="text-right">Amount (৳)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="is-tbody">
+                        <tr data-is-row="Revenue"><td><code>4010</code></td><td><strong>Room Division Nightly Tariff &amp; Corporate Stays</strong></td><td>Rooms Division</td><td class="text-right"><strong>1,120,000.00</strong></td></tr>
+                        <tr data-is-row="Revenue"><td><code>4020</code></td><td><strong>Heritage Dining &amp; Skyline Bar POS Revenue</strong></td><td>Food &amp; Beverage</td><td class="text-right"><strong>490,000.00</strong></td></tr>
+                        <tr data-is-row="Revenue"><td><code>4030</code></td><td><strong>Grand Ballroom Banquet &amp; Diplomatic Events</strong></td><td>Banquet Hall</td><td class="text-right"><strong>330,000.00</strong></td></tr>
+                        <tr data-is-row="Expense"><td><code>5010</code></td><td><strong>Kitchen FIFO Food &amp; Beverage Cost + Housekeeping Amenities</strong></td><td>Direct COGS</td><td class="text-right"><strong>545,000.00</strong></td></tr>
+                        <tr data-is-row="Expense"><td><code>5020</code></td><td><strong>Hospitality Staff Payroll, HVAC Utilities &amp; Maintenance</strong></td><td>Operating Overhead</td><td class="text-right"><strong>570,000.00</strong></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </section>
-
+<script>
+(function(){
+    var pills=document.querySelectorAll('.is-filter-pill'), rows=document.querySelectorAll('#is-tbody tr');
+    for(var i=0;i<pills.length;i++){
+        pills[i].addEventListener('click',function(){
+            var t=this.getAttribute('data-is-type')||'all';
+            for(var j=0;j<pills.length;j++) pills[j].classList.toggle('is-active',pills[j]===this);
+            for(var k=0;k<rows.length;k++){
+                rows[k].style.display=(t==='all'||rows[k].getAttribute('data-is-row')===t)?'':'none';
+            }
+        });
+    }
+})();
+</script>
 <!--/MM-BODY--></div>
 <script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
-<!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
-<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
-    <script src="/assets/js/chosen.jquery.min.js"></script>
-    <script src="/assets/js/bootstrap-datepicker.min.js"></script>
-    <script src="/assets/custom_js/chosen-box.js"></script>
-    <script src="/assets/custom_js/date-picker.js"></script>
-
-<!--/MM-JS--></body></html>
+<!--MM-JS--><!--/MM-JS--></body></html>

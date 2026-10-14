@@ -1,10 +1,6 @@
 @extends('layouts.master')
 @section('title', 'Service Invoice')
 
-@section('page-header')
-    <i class="fa fa-info-circle"></i> Booking Invoice
-@stop
-
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -79,28 +75,20 @@
     @endphp
 
 
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="widget-box">
-                <div class="widget-header hidden-print">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
-                    @if (hasPermission('service.view', $slugs))
-                        <span class="widget-toolbar">
+    <x-mm.styles />
+    <x-mm.page class="mm-invoice-page" title="Booking Invoice">
+        <x-slot name="actions">
+            @if (hasPermission('service.view', $slugs))
+                <a href="#" onclick="printPage('print_body')" class="btn btn-sm btn-default hidden-print">
+                    <i class="fa fa-print"></i> Print
+                </a>
+            @endif
+        </x-slot>
 
-                            <a href="#" onclick="printPage('print_body')">
-                                <i class="fa fa-print"></i>
-                                Print
-                            </a>
-                        </span>
-                    @endif
-
-                </div>
-                <div class="widget-body">
-                    <div class="widget-main">
-
+        <x-mm.panel>
                         <div class="row">
                             <div id="print_body" class="invoice-doc">
-                                <div class="inv-head">
+                                <div class="inv-head mm-inv-head-modern">
                                     <div class="inv-brand">
                                         <h3>{{ $company->name }}</h3>
                                         <p>{{ $company->head_office }}</p>
@@ -110,6 +98,7 @@
                                         <div class="inv-kind">Invoice</div>
                                         <div class="inv-no">BK-{{ $booking->booking_number }}</div>
                                         <div class="inv-printed">Printed {{ date('d M Y, h:i A') }}</div>
+                                        @include('partials.print-codes', ['code' => $booking->booking_number, 'label' => 'Booking Invoice', 'compact' => true])
                                     </div>
                                 </div>
 
@@ -444,11 +433,8 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+        </x-mm.panel>
+    </x-mm.page>
 @endsection
 
 @section('js')

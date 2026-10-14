@@ -175,7 +175,7 @@ class SaleReturnController extends Controller
     {
         $this->hasAccess("account-sales.show");
 
-        $saleReturn = SaleReturn::with('return_details', 'exchange_details', 'customer')->find($id);
+        $saleReturn = SaleReturn::with('return_details', 'exchange_details', 'customer', 'company')->findOrFail($id);
 
         return view('sale.sale-returns.invoice', compact('saleReturn'));
     }

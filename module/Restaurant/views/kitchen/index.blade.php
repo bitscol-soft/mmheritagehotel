@@ -2,10 +2,6 @@
 
 @section('title', 'Kitchen Order List')
 
-@section('page-header')
-    <i class="fa fa-gears"></i> Kitchen Order List
-@stop
-
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -16,7 +12,22 @@
 
 <x-mm.styles />
 <x-mm.page class="mm-hotel-setup mm-rst mm-rst-kitchen" title="Kitchen orders" description="Orders sent to the kitchen, with their table, amount and status.">
+    <x-slot name="actions">
+        <a href="#" id="mm-focused-fullscreen-btn" data-mm-fullscreen-toggle aria-pressed="false" class="mm-button mm-button-secondary mm-focused-fs-btn" title="Toggle distraction-free Focused Fullscreen Mode (Alt+Z)">
+            <i class="ace-icon fa fa-arrows-alt" aria-hidden="true"></i> Focused Fullscreen
+        </a>
+    </x-slot>
     <x-alert-message />
+
+    <div id="mm-fullscreen-hud" class="mm-no-print" role="region" aria-label="Focused fullscreen controls">
+        <div class="mm-fullscreen-hud-left">
+            <span class="mm-fullscreen-hud-badge"><i class="fa fa-arrows-alt" aria-hidden="true"></i> Focused Fullscreen Mode</span>
+            <span><strong>Kitchen Order Queue</strong> · Distraction-Free Pass Terminal (Press <code>Esc</code> or <code>Alt+Z</code> to exit)</span>
+        </div>
+        <a href="#" id="mm-fullscreen-exit-btn" data-mm-fullscreen-exit class="mm-fullscreen-exit-btn">
+            <i class="fa fa-compress" aria-hidden="true"></i> Exit Fullscreen
+        </a>
+    </div>
 
     <x-mm.panel>
         <x-mm.table-scroll label="Kitchen orders">
@@ -75,7 +86,6 @@
                     @endforeach
                 </tbody>
 
-
             </table>
         </x-mm.table-scroll>
     </x-mm.panel>
@@ -103,15 +113,11 @@
 
 @section('js')
 
-    <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('assets/js/jquery.dataTables.bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/custom_js/date-picker.js') }}"></script>
-
 
     @include('currency-conversions.inc.script')
     @include('kitchen.inc.script')
     {{-- @include('kitchen.inc.extend-date-modal') --}}
-
 
     <!-- inline scripts related to this page -->
     <script type="text/javascript">

@@ -1,10 +1,6 @@
 @extends('layouts.master')
 @section('title', 'Cash Flow')
 
-@section('page-header')
-    <i class="fa fa-info-circle"></i> Cash Flow
-@stop
-
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -19,18 +15,9 @@
 
 
 @section('content')
-    <div class="row">
-
-
-        <div class="col-sm-12">
-            <div class="widget-box">
-                <div class="widget-header">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
-
-                </div>
-                <div class="widget-body">
-                    <div class="widget-main">
-
+    <x-mm.styles />
+    <x-mm.page class="mm-report-page mm-rst" title="Cash Flow">
+        <x-mm.panel>
                         @include('partials._alert_message')
 
                         <!-- Search -->
@@ -87,14 +74,8 @@
                                 <x-export-button :pdf=1 :excel=1 />
                             </div>
                         </div>
-
-                    </div>
-                </div>
-            </div>
-
-
-        </div>
-    </div>
+        </x-mm.panel>
+    </x-mm.page>
 
 
 @endsection

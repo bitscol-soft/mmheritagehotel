@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title', 'Unit')
-@section('page-header')
-    <i class="fa fa-plus"></i> Unit Create
-@stop
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}"/>
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}"/>
@@ -47,8 +44,5 @@
 
 @section('js')
 
-
-
 @endsection
-
 

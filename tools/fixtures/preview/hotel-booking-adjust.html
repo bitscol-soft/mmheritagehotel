@@ -1,477 +1,548 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Booking Migration</title>
 <link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
-<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">    <link rel="stylesheet" href="/assets/css/chosen.min.css" />
-    <link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css" />
-    <link rel="stylesheet" href="/assets/css/daterangepicker.min.css" />
-
-
-    <style>
-    .category-item{
-        margin: 0 0 30px 12px;
-        position: relative;
-        font-size: 18px;
-        font-weight: bold;
-        text-transform: uppercase;
-    }
-    .category-item::after{
-        content: '';
-        position: absolute;
-        left: 0;
-        bottom: -12px;
-        height: 2px;
-        width: 100%;
-        max-width: 300px;
-        background: #dbe5f1;
-    }
-    .main-row{
-        padding: 0 15px;
-        margin-bottom: 30px
-    }
-    .room-item {
-        border: 2px solid #9585BF;
-        border-radius: 6px;
-        margin-bottom: 12px;
-        cursor: pointer;
-        height: 70px;
-        text-align: center;
-        font-weight: 500;
-        transition: box-shadow .12s ease, transform .12s ease;
-    }
-    .room-item:hover {
-        box-shadow: 0 3px 9px rgba(47, 99, 168, .18);
-        transform: translateY(-1px);
-    }
-    .category-item b {
-        background: #f4f7fb;
-        border: 1px solid #dbe5f1;
-        border-radius: 4px;
-        padding: 4px 12px;
-        font-size: 14px;
-        display: inline-block;
-    }
-    .room-item .room-number {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        height: 100%;
-    }
-    .room-item.active {
-        background-color: #9585BF !important;
-        color: #fff;
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</style>
-<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
-    
-        <section class="mm-ui mm-booking-adjust">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css"><link rel="stylesheet" href="/assets/css/daterangepicker.min.css"><!--/MM-HEAD-->
+<link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+<section class="mm-ui mm-booking-adjust">
     <div class="tw-space-y-4 tw-py-2">
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
-                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Booking migration</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Move this booking to another room or date.</p>            </div>
-            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a href="http://localhost/hotel/booking" class="mm-button mm-button-secondary">
-                <i class="fa fa-list-alt" aria-hidden="true"></i> Booking List
-            </a></div>        </header>
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink"><i class="fa fa-exchange"></i> Booking migration — Room Transfer &amp; Stay Adjustment</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Move an active guest booking to another suite or adjust stay dates with automatic tariff differential, advance carry-over, and folio recalculation.</p>
+            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <button type="button" data-toggle="modal" data-target="#mig-preview-modal" class="mm-button"><i class="fa fa-file-text-o"></i> Preview Migration Voucher</button>
+                <a href="/preview/room-move" class="mm-button mm-button-secondary"><i class="fa fa-random"></i> In-Stay Upgrade Log (F6)</a>
+                <a href="/preview/booking-next" class="mm-button mm-button-secondary"><i class="fa fa-map-o"></i> Floor Plan Wizard</a>
+                <a href="/preview/bookings" class="mm-button mm-button-secondary"><i class="fa fa-list-alt" aria-hidden="true"></i> Booking List</a>
+            </div>
+        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Booking migration summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-hashtag"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Active Reservation</span>
+                    <div class="mm-table-kpi-value">BK-B-0007 <span class="mm-table-kpi-sub">Rahim Uddin · 2 Suites</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-exchange"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Active Transfer Route</span>
+                    <div class="mm-table-kpi-value"><span id="mig-kpi-route">#101 → #111</span> <span class="mm-table-kpi-sub" id="mig-kpi-cat">Deluxe King · ৳ 4,000/N</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-credit-card"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Carried-Over Folio</span>
+                    <div class="mm-table-kpi-value">Adv ৳ 1,000 <span class="mm-table-kpi-sub">Prev Due: ৳ 8,000</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-calculator"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Recalculated Net Due</span>
+                    <div class="mm-table-kpi-value"><span id="mig-kpi-due">৳ 16,200</span> <span class="mm-table-kpi-sub">Incl. 10% VAT &amp; Svc</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mm-mig-stepper" role="region" aria-label="Booking migration workflow steps">
+            <div class="mm-mig-step is-active">
+                <span class="mm-mig-step-num">1</span>
+                <div>
+                    <div>Select Source Suite &amp; Migration Window</div>
+                    <div class="tw-text-xs tw-text-muted">Verify current checked-in room &amp; target dates</div>
+                </div>
+            </div>
+            <div class="mm-mig-step is-active">
+                <span class="mm-mig-step-num">2</span>
+                <div>
+                    <div>Pick Replacement Suite from Live Floor Grid</div>
+                    <div class="tw-text-xs tw-text-muted">Same-category transfer or VIP suite upgrade</div>
+                </div>
+            </div>
+            <div class="mm-mig-step is-active">
+                <span class="mm-mig-step-num">3</span>
+                <div>
+                    <div>Reconcile Folio Differential &amp; Re-Issue RFID Keys</div>
+                    <div class="tw-text-xs tw-text-muted">Auto-carry advance &amp; previous due into new folio</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="mig-confirm-banner" class="alert alert-success" style="display:none;margin:0;border-radius:12px;font-size:13px"></div>
+
         <!-- Adjust Booking Form -->
-        <form action="http://localhost/hotel/booking-adjusts" class="store-form" method="POST" id="store-form">
+        <form action="http://localhost/hotel/booking-adjusts" class="store-form" method="POST" id="store-form" onsubmit="return false;">
             <input type="hidden" name="_token" value="fixture-csrf-token">
-            <!-- BOOKING ID -->
             <input type="hidden" name="booking_id" value="5" required>
             <input type="hidden" name="type" value="migrate" required>
             <input type="hidden" name="from_booking_migration" value="1">
 
             <div class="board-stay-strip booking-context">
-        <span class="stay-chip"><i class="fa fa-hashtag"></i> <b>B-0007</b></span>
-        <span class="stay-chip">
-            <span class="label label-xs label-danger arrowed arrowed-right">Check In</span>
-        </span>
-        <span class="stay-chip"><i class="fa fa-user"></i> Rahim &lt;b&gt;Uddin&lt;/b&gt;
-                            <span class="ctx-dim">&middot; 2 room(s)</span>
-                    </span>
-        <span class="stay-chip"><i class="fa fa-sign-in"></i>
-            <b>01 Oct 2026</b></span>
-        <span class="stay-chip"><i class="fa fa-sign-out"></i>
-            <b>03 Oct 2026</b></span>
-        <span class="stay-chip"><i class="fa fa-moon-o"></i> <b>2</b>
-            nights</span>
-                    <span class="stay-chip"><i class="fa fa-dollar"></i> <b>9,000.00</b>
-                                    <span class="ctx-due">due 8,000.00</span>
-                            </span>
+                <span class="stay-chip"><i class="fa fa-hashtag"></i> <b>B-0007</b></span>
+                <span class="stay-chip"><span class="label label-xs label-danger arrowed arrowed-right">Check In</span></span>
+                <span class="stay-chip"><i class="fa fa-user"></i> Rahim &lt;b&gt;Uddin&lt;/b&gt; <span class="ctx-dim">&middot; 2 room(s)</span></span>
+                <span class="stay-chip"><i class="fa fa-sign-in"></i> <b>01 Oct 2026</b></span>
+                <span class="stay-chip"><i class="fa fa-sign-out"></i> <b>03 Oct 2026</b></span>
+                <span class="stay-chip"><i class="fa fa-moon-o"></i> <b>2</b> nights</span>
+                <span class="stay-chip"><i class="fa fa-dollar"></i> <b>9,000.00</b> <span class="ctx-due">due 8,000.00</span></span>
             </div>
 
-            
-
-            <div class="mm-panel tw-p-4 sm:tw-p-6 mm-adjust-guest"><!-- GUEST INFORMATION -->
+            <!-- 1. Guest, Reservation & Live Transfer Route Comparison -->
+            <div class="mm-panel tw-p-4 sm:tw-p-6 mm-adjust-guest">
                 <div class="mm-adjust-info">
-                    <div>
-                        <h2 class="mm-adjust-title">Guest's information</h2>
-
-                        <p class="guest"><b>Name </b> :
-                            Rahim &lt;b&gt;Uddin&lt;/b&gt;</p>
-
-                        <p class="guest"><b>Address </b> :
-                            Dhaka
-                        </p>
-                        <p class="guest"><b>Mobile </b> :
-                            01700000000
-                        </p>
-                        <p><b>Nationality </b>
-                            : Bangladesh
-                        </p>
+                    <div class="mm-mig-route-card">
+                        <h2 class="mm-adjust-title"><i class="fa fa-user"></i> Guest's information</h2>
+                        <p class="guest"><b>Name </b> : Rahim &lt;b&gt;Uddin&lt;/b&gt;</p>
+                        <p class="guest"><b>Address </b> : Gulshan-2, Dhaka</p>
+                        <p class="guest"><b>Mobile </b> : 01700000000</p>
+                        <p><b>Nationality </b> : Bangladesh · VIP Corporate</p>
                     </div>
 
-                    <div>
-                        <h2 class="mm-adjust-title">Booking</h2>
+                    <div class="mm-mig-route-card">
+                        <h2 class="mm-adjust-title"><i class="fa fa-calendar-check-o"></i> Active Booking</h2>
                         <table class="table mm-adjust-booking">
                             <tr>
-                                <th> Booking No </th>
-                                <th>
-                                    : BK-B-0007</th>
+                                <th>Booking No</th>
+                                <th>: BK-B-0007</th>
                             </tr>
                             <tr>
-                                <td> Booking Date </td>
-                                <td>: 2026-09-28
-                                </td>
+                                <td>Booking Date</td>
+                                <td>: 2026-09-28</td>
                             </tr>
                             <tr>
-                                <td> Check IN Date </td>
-                                <td>: 2026-10-01
-                                    <input type="hidden" value="2026-10-01"
-                                        class="check-in-date">
-                                </td>
+                                <td>Check IN Date</td>
+                                <td>: 2026-10-01 <input type="hidden" value="2026-10-01" class="check-in-date"></td>
                             </tr>
                             <tr>
-                                <td> Check out Date </td>
-                                <td>: <span
-                                        class="tr-checkout-date">2026-10-03</span>
-                                </td>
+                                <td>Check out Date</td>
+                                <td>: <span class="tr-checkout-date">2026-10-03</span></td>
                             </tr>
                         </table>
                     </div>
-                </div></div>
 
-            <div class="mm-panel tw-p-4 sm:tw-p-6 mm-adjust-rooms"><!-- BOOKING ROOM INFORMATION -->
-                <input type="hidden" value="8000"
-                    id="previousDue">
-                <input type="hidden" value="1000"
-                    id="previousAdvance">
+                    <div class="mm-mig-route-card">
+                        <h2 class="mm-adjust-title"><i class="fa fa-random"></i> Migration Protocol &amp; RFID Key Sync</h2>
+                        <div style="display:flex;flex-direction:column;gap:8px">
+                            <div>
+                                <label class="mm-label">Migration Reason</label>
+                                <select class="form-control" id="mig-reason-select">
+                                    <option value="Guest Panoramic Floor Request">Guest Panoramic Floor Request</option>
+                                    <option value="Complimentary VIP Suite Upgrade">Complimentary VIP Suite Upgrade</option>
+                                    <option value="Preventive HVAC Maintenance">Preventive HVAC Maintenance</option>
+                                    <option value="Stay Extension &amp; Connecting Room">Stay Extension &amp; Connecting Room</option>
+                                </select>
+                            </div>
+                            <div style="display:flex;align-items:center;justify-content:space-between;font-size:12px;padding-top:4px">
+                                <span><i class="fa fa-key"></i> Mifare RFID Keycards:</span>
+                                <span class="mm-badge mm-badge-paid" id="mig-key-badge">Re-Encode to Suite #111</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Source Room Selection, Migration Dates & Visual Target Suite Grid -->
+            <div class="mm-panel tw-p-4 sm:tw-p-6 mm-adjust-rooms">
+                <input type="hidden" value="8000" id="previousDue">
+                <input type="hidden" value="1000" id="previousAdvance">
                 <input type="hidden" value="2026-10-01" id="currentDate">
-                <input type="hidden" name="previous_check_out_date" value="2026-10-03"
-                    id="previous_check_out_date">
-                <input type="hidden"
-                    value="1"
-                    id="selectedRoom">
-                <input type="hidden"
-                    value="101"
-                    id="selectedRoomNumber">
+                <input type="hidden" name="previous_check_out_date" value="2026-10-03" id="previous_check_out_date">
+                <input type="hidden" value="1" id="selectedRoom">
+                <input type="hidden" value="101" id="selectedRoomNumber">
 
-                <h2 class="mm-adjust-title">Room to migrate</h2>
+                <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px">
+                    <h2 class="mm-adjust-title" style="margin:0"><i class="fa fa-bed"></i> 1. Room to migrate (Source Suite on Booking BK-B-0007)</h2>
+                    <span class="mm-badge mm-badge-partial">Select checked-in room to release for housekeeping</span>
+                </div>
                 <div class="mm-adjust-room-picks">
-                                            <div>
-                            <div class="text-danger">
-                                
-                            </div>
-                            <label class="block">
-                                <input name="room_ids" type="checkbox"
-                                    value="101"
-                                    class="ace input-lg room-select"
-                                    data-guest_count="2"
-                                    data-room-id="1"
-                                    data-room-category="Deluxe King"
-                                    data-price="4000"
-                                    data-infant_count="0"
-                                    data-night_count="2"
-                                    data-check_out_date="2026-10-03"
-                                    data-allow_breakfast="1"
-                                    
-                                    
-                                    checked>
-                                <span class="lbl bigger-120"> Room ->
-                                    101</span>
-                            </label>
-                        </div>
-                                            <div>
-                            <div class="text-danger">
-                                
-                            </div>
-                            <label class="block">
-                                <input name="room_ids" type="checkbox"
-                                    value="102"
-                                    class="ace input-lg room-select"
-                                    data-guest_count="1"
-                                    data-room-id="2"
-                                    data-room-category="Standard Twin"
-                                    data-price="3000"
-                                    data-infant_count="0"
-                                    data-night_count="2"
-                                    data-check_out_date="2026-10-03"
-                                    data-allow_breakfast="0"
-                                    
-                                    
-                                    disabled>
-                                <span class="lbl bigger-120"> Room ->
-                                    102</span>
-                            </label>
-                        </div>
-                                    </div>
+                    <div>
+                        <div class="text-danger"></div>
+                        <label class="block" style="margin:0;cursor:pointer">
+                            <input name="room_ids" type="checkbox" value="101" class="ace input-lg room-select"
+                                data-guest_count="2" data-room-id="1" data-room-category="Deluxe King"
+                                data-price="4000" data-infant_count="0" data-night_count="2"
+                                data-check_out_date="2026-10-03" data-allow_breakfast="1" checked>
+                            <span class="lbl bigger-120"> <strong>Room -&gt; 101</strong> (Deluxe King · 2 Guests · ৳ 4,000/Night · Checked-In)</span>
+                        </label>
+                    </div>
+                    <div>
+                        <div class="text-danger"></div>
+                        <label class="block" style="margin:0;cursor:not-allowed;opacity:.75">
+                            <input name="room_ids" type="checkbox" value="102" class="ace input-lg room-select"
+                                data-guest_count="1" data-room-id="2" data-room-category="Standard Twin"
+                                data-price="3000" data-infant_count="0" data-night_count="2"
+                                data-check_out_date="2026-10-03" data-allow_breakfast="0" disabled>
+                            <span class="lbl bigger-120"> <strong>Room -&gt; 102</strong> (Standard Twin · 1 Guest · ৳ 3,000/Night · Locked)</span>
+                        </label>
+                    </div>
+                </div>
 
                 <!-- BOOKING DATE FILTERING -->
+                <h2 class="mm-adjust-title" style="margin-top:8px"><i class="fa fa-calendar"></i> 2. Migration Effective Date &amp; Revised Check-Out Window</h2>
                 <div class="mm-adjust-dates">
                     <div class="input-group">
-                        <label class="input-group-addon">
-                            Migrate Date
-                        </label>
-                        <input type="text" name="migrate_date" autocomplete="off"
+                        <label class="input-group-addon">Migrate Date</label>
+                        <input type="text" name="migrate_date" id="mig-date-in" autocomplete="off"
                             class="form-control date-picker-disable-past pointer migrate_date empty-rooms"
                             value="2026-10-01">
-                        <label class="input-group-addon">
-                            Check Out Date
-                        </label>
-                        <input type="text" name="check_out_date" autocomplete="off"
+                        <label class="input-group-addon">Check Out Date</label>
+                        <input type="text" name="check_out_date" id="mig-date-out" autocomplete="off"
                             class="form-control date-picker-disable-past pointer empty-rooms"
                             value="2026-10-03">
                         <div class="input-group-btn">
-                            <button class="mm-button next-step-btn"
-                                type="button" id="checkRoomStatus">
-                                <i class="fa fa-paper-plane"></i> Search
+                            <button class="mm-button next-step-btn" type="button" id="checkRoomStatus">
+                                <i class="fa fa-search"></i> Search Available Suites
                             </button>
                         </div>
                     </div>
                 </div>
 
-                <div class="available-rooms" style="display: none">
+                <!-- Visual Target Suite Selection Grid -->
+                <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px">
+                    <h2 class="mm-adjust-title" style="margin:0"><i class="fa fa-th-large"></i> 3. Pick Target Replacement Suite (Click a Clean &amp; Inspected Suite Card)</h2>
+                    <span class="mm-badge mm-badge-paid">6 Clean &amp; Inspected Replacement Suites Ready</span>
+                </div>
+                <div class="available-rooms" style="display: block">
                     <div class="row main-row">
-
-            <p class="category-item">
-                <b>Deluxe King - 4000</b>
-            </p>
-
-                            <div class="col-md-1">
-                    <div class="room-item" onclick="pickRoom(this, `Deluxe King`)">
-                        <input type="hidden" class="room-category-id" value="1">
-                        <input type="hidden" class="room-number" value="111">
-                        <input type="hidden" class="room-price" value="4000">
-                        <input type="hidden" class="room-id" value="11">
-                        <p class="room-number">
-                            <span style="font-size: 12px; margin-top: 5px;">Room No</span>
-                            <span style="font-size: 24px">111</span>
-                        </p>
+                        <p class="category-item"><b>Deluxe King — Same-Category Transfer (৳ 4,000 / Night)</b></p>
+                        <div class="col-md-2">
+                            <div class="room-item active" onclick="pickRoom(this, 'Deluxe King')">
+                                <input type="hidden" class="room-category-id" value="1">
+                                <input type="hidden" class="room-number" value="111">
+                                <input type="hidden" class="room-price" value="4000">
+                                <input type="hidden" class="room-id" value="11">
+                                <p class="room-number">
+                                    <span style="font-size: 11px; margin-top: 4px;">Suite No · Clean ✓</span>
+                                    <span style="font-size: 22px; font-weight: 800;">111</span>
+                                    <span style="font-size: 11px;">৳ 4,000 / N</span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="room-item" onclick="pickRoom(this, 'Deluxe King')">
+                                <input type="hidden" class="room-category-id" value="1">
+                                <input type="hidden" class="room-number" value="112">
+                                <input type="hidden" class="room-price" value="4000">
+                                <input type="hidden" class="room-id" value="12">
+                                <p class="room-number">
+                                    <span style="font-size: 11px; margin-top: 4px;">Suite No · Clean ✓</span>
+                                    <span style="font-size: 22px; font-weight: 800;">112</span>
+                                    <span style="font-size: 11px;">৳ 4,000 / N</span>
+                                </p>
+                            </div>
+                        </div>
+                        <p class="category-item" style="margin-top:8px"><b>Heritage &amp; Diplomatic Suites — Executive Upgrade Options</b></p>
+                        <div class="col-md-2">
+                            <div class="room-item" onclick="pickRoom(this, 'Heritage Suite')">
+                                <input type="hidden" class="room-category-id" value="2">
+                                <input type="hidden" class="room-number" value="202">
+                                <input type="hidden" class="room-price" value="6800">
+                                <input type="hidden" class="room-id" value="22">
+                                <p class="room-number">
+                                    <span style="font-size: 11px; margin-top: 4px;">Heritage · Clean ✓</span>
+                                    <span style="font-size: 22px; font-weight: 800;">202</span>
+                                    <span style="font-size: 11px;">৳ 6,800 / N</span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="room-item" onclick="pickRoom(this, 'Heritage Suite')">
+                                <input type="hidden" class="room-category-id" value="2">
+                                <input type="hidden" class="room-number" value="205">
+                                <input type="hidden" class="room-price" value="6800">
+                                <input type="hidden" class="room-id" value="25">
+                                <p class="room-number">
+                                    <span style="font-size: 11px; margin-top: 4px;">Heritage · Clean ✓</span>
+                                    <span style="font-size: 22px; font-weight: 800;">205</span>
+                                    <span style="font-size: 11px;">৳ 6,800 / N</span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="room-item" onclick="pickRoom(this, 'Diplomatic Suite')">
+                                <input type="hidden" class="room-category-id" value="3">
+                                <input type="hidden" class="room-number" value="304">
+                                <input type="hidden" class="room-price" value="8900">
+                                <input type="hidden" class="room-id" value="34">
+                                <p class="room-number">
+                                    <span style="font-size: 11px; margin-top: 4px;">Diplomatic · VIP ✓</span>
+                                    <span style="font-size: 22px; font-weight: 800;">304</span>
+                                    <span style="font-size: 11px;">৳ 8,900 / N</span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="room-item" onclick="pickRoom(this, 'Royal Penthouse')">
+                                <input type="hidden" class="room-category-id" value="4">
+                                <input type="hidden" class="room-number" value="401">
+                                <input type="hidden" class="room-price" value="13200">
+                                <input type="hidden" class="room-id" value="41">
+                                <p class="room-number">
+                                    <span style="font-size: 11px; margin-top: 4px;">Penthouse · VIP ✓</span>
+                                    <span style="font-size: 22px; font-weight: 800;">401</span>
+                                    <span style="font-size: 11px;">৳ 13,200 / N</span>
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
-                            <div class="col-md-1">
-                    <div class="room-item" onclick="pickRoom(this, `Deluxe King`)">
-                        <input type="hidden" class="room-category-id" value="1">
-                        <input type="hidden" class="room-number" value="112">
-                        <input type="hidden" class="room-price" value="4000">
-                        <input type="hidden" class="room-id" value="12">
-                        <p class="room-number">
-                            <span style="font-size: 12px; margin-top: 5px;">Room No</span>
-                            <span style="font-size: 24px">112</span>
-                        </p>
-                    </div>
+
+                <div id="available-room"></div>
+            </div>
+
+            <!-- 3. Room Information Table & Auto-Reconciled Migration Folio Footer -->
+            <div class="mm-panel tw-p-4 sm:tw-p-6 mm-adjust-table">
+                <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px">
+                    <h2 class="mm-adjust-title" style="margin:0"><i class="fa fa-calculator"></i> 4. Target Room Assignment &amp; Auto-Adjusted Folio Calculation</h2>
+                    <span class="mm-badge mm-badge-paid" id="mig-table-badge">Migrating Room #101 → Room #111 (Deluxe King)</span>
                 </div>
-            
-        </div>
-                    </div>
 
-                <div id="available-room">
-
-                </div></div>
-
-            <!-- Room Information Table -->
-            <div class="mm-panel tw-p-4 sm:tw-p-6 mm-adjust-table"><h2 class="mm-adjust-title">Room Information</h2>
-
-                <div class="mm-table-scroll" role="region" aria-label="Room information" tabindex="0"><table class="table table-bordered room-list">
+                <div class="mm-table-scroll" role="region" aria-label="Room information" tabindex="0">
+                    <table class="table table-bordered table-striped room-list">
                         <thead>
                             <tr>
-
-                                <th class="text-center" style="width: 10%">
-                                    Category
-                                </th>
-                                <th class="text-center" style="width: 12%">
-                                    Room
-                                </th>
-                                <th class="text-center" style="width: 10%">Guest</th>
-                                <th style="width:12%">Amount <span class="currency-sign"></span></th>
-                                <th class="text-right">Infant</th>
-                                                                <th class="text-right">Night</th>
-                                <th class="text-right">Discount<span class="currency-sign"></span></th>
-                                <th class="text-center">Breakfast</th>
-                                <th class="text-right" width="15%">T.Amount
-                                    <span class="currency-sign"></span>
-                                </th>
-                                <th class="text-right" style="width: 3%"></th>
+                                <th class="text-left" style="width:16%">Target Category</th>
+                                <th class="text-center" style="width:12%">Target Suite</th>
+                                <th class="text-center" style="width:9%">Adults</th>
+                                <th class="text-right" style="width:13%">Tariff / Night <span class="currency-sign">৳</span></th>
+                                <th class="text-center" style="width:8%">Infants</th>
+                                <th class="text-center" style="width:9%">Nights</th>
+                                <th class="text-right" style="width:12%">Discount <span class="currency-sign">৳</span></th>
+                                <th class="text-center" style="width:9%">Breakfast</th>
+                                <th class="text-right" style="width:14%">Line Total <span class="currency-sign">৳</span></th>
+                                <th class="text-center" style="width:4%"></th>
                             </tr>
                         </thead>
-                        <tbody class="item-details roomTbody">
-
+                        <tbody class="item-details roomTbody" id="mig-room-tbody">
+                            <tr class="mig-calc-row" data-room-no="111">
+                                <td><strong class="mig-row-cat">Deluxe King</strong></td>
+                                <td class="text-center"><span class="mm-badge mm-badge-paid mig-row-num">Suite #111</span></td>
+                                <td><input type="number" class="form-control text-center mig-guest-input" value="2" min="1"></td>
+                                <td><input type="number" class="form-control text-right mig-rate-input" value="4000" min="0"></td>
+                                <td><input type="number" class="form-control text-center mig-infant-input" value="0" min="0"></td>
+                                <td><input type="number" class="form-control text-center mig-night-input" value="2" min="1"></td>
+                                <td><input type="number" class="form-control text-right mig-disc-input" value="0" min="0"></td>
+                                <td class="text-center"><input type="checkbox" checked> Included</td>
+                                <td><input type="text" class="form-control text-right mig-line-total" value="8000" readonly></td>
+                                <td class="text-center"><i class="fa fa-check-circle" style="color:#16a34a"></i></td>
+                            </tr>
                         </tbody>
-                        <tfoot style="position: relative;">
+                        <tfoot>
+                            <tr>
+                                <td colspan="5" style="vertical-align:top;padding:14px">
+                                    <div style="padding:12px 14px;border-radius:10px;border:1px solid rgba(148,163,184,0.3);background:rgba(248,250,252,0.85)">
+                                        <strong style="display:block;margin-bottom:8px"><i class="fa fa-bell-o"></i> Guest Notification &amp; Housekeeping Dispatch</strong>
+                                        <div style="display:flex;flex-wrap:wrap;gap:16px">
+                                            <label class="send-sms" style="display:inline-flex;align-items:center;gap:6px;cursor:pointer">
+                                                <input name="sms" class="ace ace-switch ace-switch-6" type="checkbox" checked>
+                                                <span class="lbl"></span>
+                                                <span>Send Room Transfer SMS</span>
+                                            </label>
+                                            <label class="send-email" style="display:inline-flex;align-items:center;gap:6px;cursor:pointer">
+                                                <input name="email" class="ace ace-switch ace-switch-6" type="checkbox" checked>
+                                                <span class="lbl"></span>
+                                                <span>Email Updated Folio</span>
+                                            </label>
+                                            <label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer">
+                                                <input name="is_room_in_invoice" class="ace ace-switch ace-switch-6" value="1" type="checkbox" checked>
+                                                <span class="lbl"></span>
+                                                <span>Room Number In Print</span>
+                                            </label>
+                                        </div>
+                                        <div class="tw-text-xs tw-text-muted" style="margin-top:8px">
+                                            <i class="fa fa-info-circle"></i> Releasing Suite <code>#101</code> automatically queues a 30-min Housekeeping Turnaround ticket and transfers open POS/Minibar charges to target Suite.
+                                        </div>
+                                    </div>
+                                </td>
+                                <td colspan="5" style="padding:12px">
+                                    <table class="table" style="margin:0">
+                                        <tbody>
+                                            <tr>
+                                                <td class="text-right borderless"><strong>Migrated Room Subtotal</strong> <span class="currency-sign">৳</span></td>
+                                                <td class="borderless" style="width:180px">
+                                                    <input class="form-control subtotal-amount text-right" id="mig-subtotal" value="8000" readonly>
+                                                    <input type="hidden" name="line_total" id="line_total" value="8000">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-right borderless">Service Charge (5%) <span class="currency-sign">৳</span></td>
+                                                <td class="borderless">
+                                                    <input name="service_amount" id="mig-service" value="400" class="form-control service_amount text-right">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-right borderless">
+                                                    <input type="hidden" name="vat" id="vat" value="10">
+                                                    Vat(10%) <span class="currency-sign">৳</span>
+                                                </td>
+                                                <td class="borderless">
+                                                    <input type="text" name="vat_amount" id="mig-vat" value="800" class="form-control vat-amount text-right only-number" readonly>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-right borderless"><strong>New Stay Grand Total</strong> <span class="currency-sign">৳</span></td>
+                                                <td class="borderless">
+                                                    <input name="sub_total" id="mig-grandtotal" value="9200" class="form-control grandtotal text-right" readonly style="font-weight:700">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-right borderless">Prev. Adv Amount (Carried Over) <span class="currency-sign">৳</span></td>
+                                                <td class="borderless">
+                                                    <input type="number" name="previous_advance" id="mig-prev-adv" value="1000" class="form-control previous-advance text-right" readonly>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-right borderless">Additional Advance Collected Now <span class="currency-sign">৳</span></td>
+                                                <td class="borderless">
+                                                    <input type="number" name="advanced_amount" id="mig-new-adv" value="0" class="form-control adv-amount text-right">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-right borderless">Prev. Due Amount (Carried Over) <span class="currency-sign">৳</span></td>
+                                                <td class="borderless">
+                                                    <input type="number" id="mig-prev-due" value="8000" class="form-control previous-due text-right" readonly>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-right borderless"><strong>Net Recalculated Folio Due</strong> <span class="currency-sign">৳</span></td>
+                                                <td class="borderless">
+                                                    <input type="number" name="due_amount" id="mig-net-due" value="16200" class="form-control due-amount text-right" readonly style="font-weight:700">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-right borderless">Settlement / Payment Method</td>
+                                                <td class="borderless">
+                                                    <select class="form-control chosen-select payment-type" name="payment_type" data-placeholder="-Choose Payment Type-">
+                                                        <option value="1" selected>Cash at Front Desk</option>
+                                                        <option value="2">Visa / Mastercard POS</option>
+                                                        <option value="3">bKash / Nagad Merchant</option>
+                                                        <option value="4">Post to Corporate City Ledger</option>
+                                                    </select>
+                                                </td>
+                                            </tr>
+                                            <tr class="card_info" style="display: none">
+                                                <td class="text-right borderless">Card Authorized No</td>
+                                                <td class="borderless">
+                                                    <input type="text" name="card_info" value="" class="form-control text-center" placeholder="XXXX-XXXX-XXX">
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
 
-    <tr style="position: absolute; left: 3%; top: 3%;">
-    <td colspan="8" class="text-right borderless">Send Sms :</td>
-    <td class="send-sms borderless text-center">
-        <label>
-            <input name="sms" class="ace ace-switch ace-switch-6" type="checkbox">
-            <span class="lbl"></span>
-        </label>
-    </td>
-    <td colspan="8" class="text-right borderless">Send Email :</td>
-    <td class="send-email borderless text-center">
-        <label>
-            <input name="email" class="ace ace-switch ace-switch-6" type="checkbox">
-            <span class="lbl"></span>
-        </label>
-    </td>
-
-    <td colspan="8" class="text-right borderless">Room Number In Print :</td>
-    <td class="borderless text-center">
-        <label>
-            <input name="is_room_in_invoice" class="ace ace-switch ace-switch-6" value="1" type="checkbox" checked>
-            <span class="lbl"></span>
-        </label>
-    </td>
-
-    
-
-</tr>
-
-
-
-    <tr>
-
-        <td class="text-right borderless" colspan="8">Subtotal <span class="currency-sign"></span></td>
-        <td class="borderless">
-            <input class="form-control subtotal-amount text-right"
-                value="0" readonly style="padding-right: 5px;">
-            <input type="hidden" name="line_total" id="line_total">
-        </td>
-
-    </tr>
-
-    <tr>
-        <td class="text-right borderless" colspan="8">Service Charge <span
-                class="currency-sign"></span></td>
-        <td class="borderless">
-            <input name="service_amount" value="0"
-                class="form-control service_amount text-right" readonly style="padding-right: 5px;">
-        </td>
-    </tr>
-    <tr>
-        <td class="text-right borderless" colspan="8">
-            <input type="hidden" name="vat" id="vat" value="10">
-
-            Vat(10%) <span class="currency-sign"></span>
-        </td>
-        <td class="borderless">
-            <input type="text" name="vat_amount"
-                value="0"
-                class="form-control vat-amount text-right only-number" value="" readonly>
-        </td>
-    </tr>
-    
-
-    <tr>
-        <td class="text-right borderless" colspan="8">Grand Total <span class="currency-sign"></span>
-        </td>
-        <td class="borderless">
-            <input name="sub_total" value=""
-                class="form-control grandtotal text-right" readonly style="padding-right: 5px !important;">
-            <input type="hidden" name="line_total" id="line_total">
-        </td>
-
-    </tr>
-
-            <tr>
-            <td class="text-right borderless" colspan="8">Prev. Adv Amount <span
-                    class="currency-sign"></span></td>
-            <td class="borderless">
-                <input type="number" name="previous_advance" value=""
-                    class="form-control previous-advance text-right" readonly>
-            </td>
-        </tr>
-    
-    <tr>
-        <td class="text-right borderless" colspan="8">Advanced Amount RM</td>
-        <td class="borderless">
-            
-            <input type="number" name="advanced_amount"
-                value="0"
-                class="form-control adv-amount text-right">
-        </td>
-    </tr>
-
-            <tr>
-            <td class="text-right borderless" colspan="8">Prev. Due Amount <span
-                    class="currency-sign"></span></td>
-            <td class="borderless">
-                <input type="number" value="" class="form-control previous-due text-right" readonly>
-            </td>
-        </tr>
-    
-    <tr>
-
-        <td class="text-right borderless" colspan="8">Due Amount <span class="currency-sign"></span>
-        </td>
-        <td class="borderless">
-            <input type="number" name="due_amount" value=""
-                class="form-control due-amount text-right" readonly>
-        </td>
-    </tr>
-    <tr>
-        <td class="text-right borderless" colspan="8">Payment Method</td>
-        <td class="borderless">
-            <select class="form-control chosen-select payment-type" name="payment_type"
-                data-placeholder="-Choose Payment Type-" data-selected="">
-                <option></option>
-                                    <option value="1" >
-                        Cash
-                    </option>
-                            </select>
-        </td>
-    </tr>
-    <tr class="card_info" style="display: none">
-        <td class="text-right borderless" colspan="8">Card Authorized No</td>
-        <td class="borderless">
-            <input type="text" name="card_info" value=""
-                class="form-control text-center" placeholder="XXXX-XXXX-XXX">
-        </td>
-    </tr>
-
-</tfoot>
-
-                    </table></div>
-
-                <div class="mm-adjust-actions">
-                    <button class="mm-button submit-form-btn" type="button">
-                        <i class="fa fa-bookmark"></i> Book Now
+                <div class="mm-adjust-actions" style="gap:8px">
+                    <button type="button" data-toggle="modal" data-target="#mig-preview-modal" class="mm-button mm-button-secondary">
+                        <i class="fa fa-print"></i> Preview Migration Slip
                     </button>
-                </div></div>
+                    <button class="mm-button submit-form-btn" type="button" id="mig-submit-btn">
+                        <i class="fa fa-bookmark"></i> Book Now &amp; Confirm Migration
+                    </button>
+                </div>
+            </div>
         </form>
     </div>
 </section>
 
+<div id="mig-preview-modal" class="modal fade mm-app-drawer" tabindex="-1" role="dialog" aria-labelledby="mig-preview-title">
+    <div class="modal-dialog modal-lg" role="document"><div class="modal-content">
+        <div class="modal-header"><h4 class="modal-title" id="mig-preview-title"><i class="fa fa-exchange"></i> Room Migration &amp; Folio Transfer Audit Slip — #BK-B-0007</h4><button type="button" class="close" data-dismiss="modal">&times;</button></div>
+        <div class="modal-body"><section class="mm-ui"><div class="tw-space-y-4">
+            <div class="mm-drawer-card tw-p-4">
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px">
+                    <div class="mm-shift-note-card"><strong>Guest &amp; Reservation</strong><div>Rahim Uddin · BK-B-0007</div></div>
+                    <div class="mm-shift-note-card"><strong>Suite Transfer Route</strong><div id="mig-modal-route" style="font-weight:700;color:#1d4ed8">Suite #101 → Suite #111 (Deluxe King)</div></div>
+                    <div class="mm-shift-note-card"><strong>Carried-Over Balances</strong><div>Prev Adv ৳ 1,000 · Prev Due ৳ 8,000</div></div>
+                    <div class="mm-shift-note-card"><strong>Recalculated Net Folio Due</strong><div id="mig-modal-due" style="font-weight:700;color:#15803d">৳ 16,200</div></div>
+                </div>
+            </div>
+        </div></section></div>
+        <div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button><button type="button" class="mm-button" onclick="window.print()"><i class="fa fa-print"></i> Print Migration Slip</button></div>
+    </div></div>
+</div>
+
+<script>
+(function(){
+    function fmt(n){ return Number(n||0).toLocaleString('en-US'); }
+    function recalcMigration(){
+        var row=document.querySelector('#mig-room-tbody .mig-calc-row');
+        if(!row) return;
+        var rate=Number((row.querySelector('.mig-rate-input')||{}).value||0);
+        var nights=Number((row.querySelector('.mig-night-input')||{}).value||1);
+        var disc=Number((row.querySelector('.mig-disc-input')||{}).value||0);
+        var line=Math.max(0,(rate*nights)-disc);
+        var lt=row.querySelector('.mig-line-total');
+        if(lt) lt.value=String(line);
+        var svc=Math.round(line*0.05);
+        var vat=Math.round(line*0.10);
+        var grand=line+svc+vat;
+        var prevAdv=Number((document.getElementById('mig-prev-adv')||{}).value||1000);
+        var newAdv=Number((document.getElementById('mig-new-adv')||{}).value||0);
+        var prevDue=Number((document.getElementById('mig-prev-due')||{}).value||8000);
+        var netDue=Math.max(0,grand+prevDue-prevAdv-newAdv);
+        var elSub=document.getElementById('mig-subtotal'), elLine=document.getElementById('line_total'), elSvc=document.getElementById('mig-service'), elVat=document.getElementById('mig-vat'), elGrand=document.getElementById('mig-grandtotal'), elNet=document.getElementById('mig-net-due');
+        if(elSub) elSub.value=String(line);
+        if(elLine) elLine.value=String(line);
+        if(elSvc) elSvc.value=String(svc);
+        if(elVat) elVat.value=String(vat);
+        if(elGrand) elGrand.value=String(grand);
+        if(elNet) elNet.value=String(netDue);
+        var kd=document.getElementById('mig-kpi-due'), md=document.getElementById('mig-modal-due');
+        if(kd) kd.textContent='৳ '+fmt(netDue);
+        if(md) md.textContent='৳ '+fmt(netDue);
+    }
+    window.pickRoom=function(el, categoryName){
+        var all=document.querySelectorAll('.available-rooms .room-item');
+        for(var i=0;i<all.length;i++) all[i].classList.remove('active');
+        el.classList.add('active');
+        var rNum=(el.querySelector('.room-number input, input.room-number')||{}).value||'111';
+        var rPrice=Number((el.querySelector('input.room-price')||{}).value||4000);
+        var rId=(el.querySelector('input.room-id')||{}).value||'11';
+        var selRm=document.getElementById('selectedRoom'), selNum=document.getElementById('selectedRoomNumber');
+        if(selRm) selRm.value=rId;
+        if(selNum) selNum.value=rNum;
+        var row=document.querySelector('#mig-room-tbody .mig-calc-row');
+        if(row){
+            var cEl=row.querySelector('.mig-row-cat'), nEl=row.querySelector('.mig-row-num'), rtEl=row.querySelector('.mig-rate-input');
+            if(cEl) cEl.textContent=categoryName||'Deluxe King';
+            if(nEl) nEl.textContent='Suite #'+rNum;
+            if(rtEl) rtEl.value=String(rPrice);
+        }
+        var kr=document.getElementById('mig-kpi-route'), kc=document.getElementById('mig-kpi-cat'), kb=document.getElementById('mig-key-badge'), tb=document.getElementById('mig-table-badge'), mr=document.getElementById('mig-modal-route');
+        if(kr) kr.textContent='#101 → #'+rNum;
+        if(kc) kc.textContent=(categoryName||'Deluxe King')+' · ৳ '+fmt(rPrice)+'/N';
+        if(kb) kb.textContent='Re-Encode to Suite #'+rNum;
+        if(tb) tb.textContent='Migrating Room #101 → Room #'+rNum+' ('+(categoryName||'Deluxe King')+')';
+        if(mr) mr.textContent='Suite #101 → Suite #'+rNum+' ('+(categoryName||'Deluxe King')+')';
+        recalcMigration();
+    };
+    var inputs=document.querySelectorAll('.mig-rate-input, .mig-night-input, .mig-disc-input, #mig-new-adv');
+    for(var i=0;i<inputs.length;i++) inputs[i].addEventListener('input',recalcMigration);
+    var searchBtn=document.getElementById('checkRoomStatus');
+    if(searchBtn) searchBtn.addEventListener('click',function(){
+        var av=document.querySelector('.available-rooms');
+        if(av) av.style.display='block';
+    });
+    var subBtn=document.getElementById('mig-submit-btn');
+    if(subBtn) subBtn.addEventListener('click',function(){
+        var banner=document.getElementById('mig-confirm-banner');
+        var route=(document.getElementById('mig-kpi-route')||{}).textContent||'#101 → #111';
+        var due=(document.getElementById('mig-net-due')||{}).value||'16200';
+        if(banner){
+            banner.style.display='block';
+            banner.innerHTML='<i class="fa fa-check-circle"></i> <strong>Room Migration Confirmed (BK-B-0007):</strong> Guest transferred <strong>'+route+'</strong>, RFID keys re-encoded, Suite #101 queued for Housekeeping, and Net Folio Due updated to <strong>৳ '+fmt(due)+'</strong>.';
+        }
+    });
+    recalcMigration();
+})();
+</script>
 <!--/MM-BODY--></div>
 <script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
 <!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>

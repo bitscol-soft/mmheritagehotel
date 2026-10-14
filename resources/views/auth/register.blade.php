@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', __('Register') . ' - ' . config('app.name'))
+
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
@@ -67,6 +69,10 @@
                                     {{ __('Register') }}
                                 </button>
                             </div>
+                        </div>
+
+                        <div class="mm-auth-foot">
+                            <a href="{{ route('login') }}">{{ __('Back to login') }}</a>
                         </div>
                     </form>
                 </div>

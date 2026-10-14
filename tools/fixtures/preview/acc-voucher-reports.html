@@ -29,8 +29,43 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Voucer Reports</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Vouchers for the period.</p>            </div>
-            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button" href="/acc/report/voucher-reports&print=print"><i class="fa fa-print"></i> Print</a></div>        </header>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Consolidated Receive, Payment, Contra and Journal vouchers for the period.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/acc-payments"><i class="fa fa-book"></i> Payment Vouchers</a>
+                <a class="mm-button mm-button-secondary" href="/preview/acc-receives"><i class="fa fa-money"></i> Receive Vouchers</a>
+                <a class="mm-button" href="/acc/report/voucher-reports&print=print"><i class="fa fa-print"></i> Print</a>
+            </div>        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Voucher reports summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-file-text-o"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Posted Vouchers</span>
+                    <div class="mm-table-kpi-value">1 Voucher <span class="mm-table-kpi-sub">V-0004 (Receive)</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-building-o"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Company Entity</span>
+                    <div class="mm-table-kpi-value">MM Heritage <span class="mm-table-kpi-sub">Primary Ledger</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-money"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Grand Total Amount</span>
+                    <div class="mm-table-kpi-value">৳ 150.00 <span class="mm-table-kpi-sub">Reconciled</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Audit Status</span>
+                    <div class="mm-table-kpi-value">Posted ✓ <span class="mm-table-kpi-sub">Double-Entry</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 mm-report-filter"><form class="mm-setup-filter mm-report-form" action="" method="get">
 
                 <div class="input-group">

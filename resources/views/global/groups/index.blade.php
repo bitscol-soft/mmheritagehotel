@@ -1,22 +1,15 @@
 
 @extends('layouts.master')
 @section('title','Group')
-@section('page-header')
-    <i class="fa fa-list"></i> Groups
-@stop
 @section('css')
 
 @stop
 
 
 @section('content')
-
-    <div class="page-header">
-        <h1>
-            @yield('page-header')
-        </h1>
-    </div>
-
+    <x-mm.styles />
+    <x-mm.page class="mm-crud-index" title="Groups">
+        <x-mm.panel>
     @include('partials._alert_message')
 
     <div class="row">
@@ -88,10 +81,12 @@
 
         </div>
     </div>
+        </x-mm.panel>
+    </x-mm.page>
 
     @foreach($groups as $group)
 
-        <div id="view-details{{ $group->id }}" class="modal" tabindex="-1">
+        <div id="view-details{{ $group->id }}" class="modal fade mm-drawer" data-mm-drawer="true" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">

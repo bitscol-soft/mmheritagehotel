@@ -25,61 +25,50 @@
         <x-mm.panel class="mm-hs-info-panel">
             <h2 class="mm-setup-title">Guest and invoice</h2>
             <div class="mm-hs-info">
-                <!-- Search Guest Name -->
+                {{-- W5.3: top-section text inputs → <x-mm.field>. Ids preserved
+                     (JS hooks in @section('js') bind to #guest_name,
+                     #room_number, #booking_number, #invoice_id, #sale_date).
+                     Hidden hotel_guest_id / hotel_room_id / hotel_booking_id
+                     fields are kept as raw <input type="hidden"> (the
+                     <x-mm.field> component renders a visible input only).
+                     The "Add guest" icon-button that used to be an
+                     input-group-addon is now a separate small button so the
+                     field's <input> is unadorned. The product_name
+                     input-group below stays raw (it has a "Product" prefix
+                     addon and is driven by jQuery autocomplete on
+                     #drug-name). --}}
                 <div class="form-group">
-                    <label class="control-label" for="guest_name">Guest:</label>
-
-                    <input type="hidden" name="hotel_guest_id" id="hotel_guest_id" value="">
-
-                    <div class="input-group">
-                        <input type="text" name="guest_name" id="guest_name"
-                            placeholder="Name/Mobile No." class="form-control" required>
-                        <span class="input-group-addon pointer" data-toggle="modal"
-                            data-target="#add-guest-modal" role="button" aria-label="Add guest">
-                            <i class="fa fa-users"></i>
-                        </span>
-                    </div>
+                    <x-mm.field label="Guest" id="guest_name" name="guest_name"
+                        placeholder="Name/Mobile No." required />
+                    <button type="button" class="btn btn-xs btn-default" data-toggle="modal"
+                        data-target="#add-guest-modal" aria-label="Add guest"
+                        style="margin-top:6px">
+                        <i class="fa fa-users"></i> Add new guest
+                    </button>
                 </div>
+                <input type="hidden" name="hotel_guest_id" id="hotel_guest_id" value="">
 
                 {{-- Search By Room --}}
-                <div class="form-group">
-                    <label class="control-label" for="room_number">Room Number :</label>
-
-                    <input type="hidden" name="hotel_room_id" id="hotel_room_id">
-
-                    <input type="text" name="room_number" id="room_number"
-                        placeholder="Room Number" class="form-control">
-                </div>
+                <x-mm.field label="Room Number" id="room_number" name="room_number"
+                    placeholder="Room Number" />
+                <input type="hidden" name="hotel_room_id" id="hotel_room_id">
 
                 {{-- Search By Booking --}}
-                <div class="form-group">
-                    <label class="control-label" for="booking_number">Booking Number :</label>
+                <x-mm.field label="Booking Number" id="booking_number" name="booking_number"
+                    placeholder="Booking Number" />
+                <input type="hidden" name="hotel_booking_id" id="hotel_booking_id" value="">
 
-                    <input type="hidden" name="hotel_booking_id" id="hotel_booking_id"
-                        value="">
+                {{-- Sale Invoice ID (readonly) --}}
+                <x-mm.field label="Invoice ID" id="invoice_id" name="invoice_no"
+                    value="{{ $invoice_id }}" placeholder="Invoice ID" tabindex="-1"
+                    :readonly="true" />
 
-                    <input type="text" name="booking_number" id="booking_number"
-                        placeholder="Booking Number" class="form-control">
-                    {{-- <p class="text-danger text-center">Not Found!</p> --}}
-                </div>
-
-                <!-- Sale Invoice ID -->
-                <div class="form-group">
-                    <label class="control-label" for="invoice_id">Invoice ID #</label>
-                    <input type="text" tabindex="-1" class="form-control" id="invoice_id"
-                        placeholder="Invoice ID" name="invoice_no" value="{{ $invoice_id }}"
-                        readonly>
-                </div>
-
-                <!-- Sale Date -->
-                <div class="form-group">
-                    <label class="control-label" for="sale_date">Date :</label>
-                    <input type="text" name="date" id="sale_date" value="{{ date('Y-m-d') }}"
-                        class="form-control date-picker" autocomplete="off">
-                </div>
+                {{-- Sale Date --}}
+                <x-mm.field label="Date" id="sale_date" name="date"
+                    value="{{ date('Y-m-d') }}" class="date-picker" :autocomplete="'off'" />
             </div>
 
-            <!-- Product Name -->
+            <!-- Product Name (raw: input-group-addon + jQuery autocomplete) -->
             <div class="mm-rst-product-search">
                 <div class="input-group">
                     <span class="input-group-addon">Product</span>

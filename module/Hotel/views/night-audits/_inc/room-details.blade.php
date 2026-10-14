@@ -1,4 +1,4 @@
-<div id="room-detail-modal" data-backdrop="static" class="modal fade in" tabindex="-1">
+<div id="room-detail-modal" data-backdrop="static" class="modal fade in mm-drawer" data-mm-drawer="true" tabindex="-1">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header" style="background: rgb(41, 4, 77)">

@@ -1,53 +1,12 @@
 @extends('layouts.master')
 
-
 @section('title', 'Payment Voucher')
 
-
-@section('page-header')
-    <i class="fa fa-plus-circle"></i> Payment Voucher
-@stop
-
-
 @push('style')
-
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/custom_css/chosen-required.css') }}" />
-
-
-    <style>
-        td {
-            padding-bottom: 3px !important;
-            padding-top: 3px !important;
-        }
-
-        table {
-            counter-reset: section;
-        }
-
-        .count:before {
-            counter-increment: section;
-            content: counter(section);
-        }
-
-        select:invalid {
-            height: 0px !important;
-            opacity: 0 !important;
-            position: absolute !important;
-            display: flex !important;
-        }
-
-        select:invalid[multiple] {
-            margin-top: 15px !important;
-        }
-
-    </style>
 @endpush
-
-
-
-
 
 @section('content')
 
@@ -62,17 +21,14 @@
         <form id="form" action="{{ route('voucher-payments.store') }}" method="post" enctype="multipart/form-data">
             @csrf
 
-
             <input type="hidden" name="voucher_type" value="Payment">
-
 
             <div class="row mt-1">
 
                 <div class="col-sm-12 px-3">
 
-
                     <!-- Filter -->
-                    <div class="row">
+                    <div class="row mm-voucher-meta">
 
                         <!-- Company -->
                         <div class="col-sm-5 my-1">
@@ -103,9 +59,6 @@
                             </div>
                         </div>
 
-
-
-
                         <!-- Reference -->
                         <div class="col-sm-5 my-1">
                             <div class="input-group">
@@ -116,8 +69,6 @@
                                     type="text">
                             </div>
                         </div>
-
-
 
                         <!-- Date -->
                         <div class="col-sm-2 my-1">
@@ -135,13 +86,6 @@
                         </div>
                     </div>
 
-
-
-
-
-
-
-
                     <!-- Item Detail -->
                     <div class="row mt-2">
                         <div class="col-sm-12">
@@ -158,10 +102,6 @@
                                             <td width="50px;"></td>
                                         </tr>
                                     </thead>
-
-
-
-
 
                                     <!-- Item Detail Table Body -->
                                     <tbody>
@@ -223,7 +163,6 @@
                                                             @endforeach
                                                         </select>
 
-
                                                         @error('account_ids')
                                                             <span class="text-danger"> {{ $message }}</span>
                                                         @enderror
@@ -263,7 +202,6 @@
                                                             @endforeach
                                                         </select>
 
-
                                                         @error('account_ids')
                                                             <span class="text-danger"> {{ $message }}</span>
                                                         @enderror
@@ -290,8 +228,6 @@
                                             </tr>
                                         @endif
                                     </tbody>
-
-
 
                                     <!-- Table Footer -->
                                     <tfoot>
@@ -321,20 +257,10 @@
                     </div>
                 </div>
 
-
-
-
-
-
-
-
-
-
-
                 <div class="col-sm-12 px-4 mt-2 mb-2">
 
-                    <div class="row">
-                        <div class="input-group " style="width: 100%!important; float: left; ">
+                    <div class="row mm-voucher-footer">
+                        <div class="input-group">
                             <label class="input-group-addon">Narration/Description</label>
                             <input type="text" required class="form-control" name="description"
                                 value="{{ old('description') }}" placeholder="Narration / Description">
@@ -344,20 +270,12 @@
                             @enderror
                         </div>
 
-                        <div class="input-group input-group-sm"
-                            style="width: 80%!important; height: 40%!important; float: left; margin-top: 10px;">
-                            <div class="col-xs-6" style="padding-left: 0px;;">
-                                <label class="ace-file-input ace-file-multiple">
-                                    <input type="file" name="attachment" id="id-input-file-3" />
-                            </div>
-                        </div>
-
-
-
-
-
                         <!-- Action -->
-                        <div class="pull-right mt-5">
+                        <div class="mm-voucher-actions">
+                            <label class="ace-file-input ace-file-multiple">
+                                <input type="file" name="attachment" id="id-input-file-3" />
+                            </label>
+
                             <div class="btn-group">
                                 <button type="button" id="draft" class="btn btn-sm btn-primary save-btn" disabled>
                                     <i class="fa fa-file"></i>
@@ -379,24 +297,12 @@
 
 @endsection
 
-
-
-
-
 @section('js')
-
 
     <script src="{{ asset('assets/js/chosen.jquery.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap-datepicker.min.js') }}"></script>
     <script src="{{ asset('assets/custom_js/chosen-box.js') }}"></script>
     <script src="{{ asset('assets/custom_js/date-picker.js') }}"></script>
-
-
-
-
-
-
-
 
     <script>
         const saveButton = $('.save-btn')
@@ -433,18 +339,9 @@
                             <td><a class="ibtnDel btn btn-sm btn-danger"><i class="fa fa-trash-o"></i></a></td>
                         </tr>`
 
-
-
-
         $('select').chosen({
             allow_single_deselect: true
         });
-
-
-
-
-
-
 
         $("#draft").click(function() {
 
@@ -453,16 +350,9 @@
             $('#form').submit();
         })
 
-
-
-
         $(document).on("keyup", ".calculate-total", function() {
             calculateAmount()
         });
-
-
-
-
 
         function calculateAmount() {
 
@@ -487,30 +377,14 @@
             }
         }
 
-
-
-
-
-
         function disabledReverse($class_name, object) {
             let disableItem = $(object).closest('tr').find('.' + $class_name)
             disableItem.attr('readonly', true).val('0')
         }
 
-
-
-
-
-
-
         function enableMe(object) {
             $(object).attr('readonly', false)
         }
-
-
-
-
-
 
         $(document).ready(function() {
             var i = 0;

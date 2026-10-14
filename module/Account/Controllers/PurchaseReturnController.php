@@ -173,7 +173,7 @@ class PurchaseReturnController extends Controller
     {
         $this->hasAccess("account-purchases.show");
 
-        $purchaseReturn = PurchaseReturn::with('return_details', 'exchange_details', 'supplier')->find($id);
+        $purchaseReturn = PurchaseReturn::with('return_details', 'exchange_details', 'supplier', 'company')->findOrFail($id);
 
         return view('purchase.purchase-returns.invoice', compact('purchaseReturn'));
     }

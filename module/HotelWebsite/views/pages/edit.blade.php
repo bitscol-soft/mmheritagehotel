@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title', 'Update Page')
-@section('page-header')
-    <i class="fa fa-gears"></i> Update Page
-@stop
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/dropzone.min.css') }}" />
     <style>

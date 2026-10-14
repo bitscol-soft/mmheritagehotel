@@ -7,8 +7,43 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Service report</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Services billed to guests in the selected period.</p>            </div>
-                    </header>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Extra hotel services (laundry, spa, airport transfer) billed to guests in the selected period.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/hservice-sales"><i class="fa fa-concierge-bell fa-bell-o"></i> Service Sales</a>
+                <a class="mm-button mm-button-secondary" href="/preview/hservice-services"><i class="fa fa-cogs"></i> Service Catalog</a>
+            </div>
+        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Hotel service report summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-bell-o"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Service Invoices</span>
+                    <div class="mm-table-kpi-value">01 Oct 2026 <span class="mm-table-kpi-sub">Period Filter</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-bed"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Guest Folios</span>
+                    <div class="mm-table-kpi-value">Room Posted <span class="mm-table-kpi-sub">In-House Billing</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-tags"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Service Categories</span>
+                    <div class="mm-table-kpi-value">Laundry &amp; Spa <span class="mm-table-kpi-sub">Transport &amp; Tours</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Audit Status</span>
+                    <div class="mm-table-kpi-value">Reconciled ✓ <span class="mm-table-kpi-sub">Night Audit Sync</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 mm-report-filter"><form class="mm-setup-filter mm-report-form">
 
             <div class="input-group">

@@ -2,53 +2,28 @@
 
 @section('title', 'Sync Data')
 
-
-@section('page-header')
-    <i class="fa fa-empire"></i> Sync Data
-@stop
-
 @section('css')
 
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
 
-    <style>
-        .bg-dark {
-            background-color: #ededed;
-        }
-    </style>
-
 @stop
 
 
 @section('content')
+    <x-mm.styles />
+    <x-mm.page title="Sync Data" description="Synchronize attendance, schedule, leave, holiday, and master data.">
+        <x-slot name="actions">
+            <a href="#" type="button" data-toggle="modal" data-target="#sync-status-modal" class="btn btn-sm btn-primary">
+                <i class="ace-icon fa fa-list-alt"></i> Sync Status
+            </a>
+        </x-slot>
 
+        @include('partials._alert_message')
 
-    @include('partials._alert_message')
+        @include('system._inc.sync-status-modal')
 
-
-    @include('system._inc.sync-status-modal')
-
-    <div class="row">
-
-        <div class="col-sm-10 col-sm-offset-1">
-            <div class="widget-box">
-                <div class="widget-header border" style="background: #3b8cbb !important;color:whitesmoke">
-                    <h4 class="widget-title">
-                        <i class="ace-icon fa fa-spinner fa-spin white bigger-125"></i>
-                        Sync Data
-                    </h4>
-
-                    <span class="widget-toolbar" style="display: block">
-                        <a href="#" type="button" data-toggle="modal" data-target="#sync-status-modal" class="white">
-                            <i class="ace-icon fa fa-list-alt"></i> Sync Status
-                        </a>
-                    </span>
-
-                </div>
-
-                <div class="widget-body">
-                    <div class="widget-main">
+        <x-mm.panel class="tw-p-4">
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-xs-8 col-sm-6 col-sm-offset-2">
@@ -237,17 +212,8 @@
                             </div>
 
                         </form>
-                        <br>
-                        <br>
-                    </div>
-                </div>
-            </div>
-
-
-        </div>
-    </div>
-
-
+        </x-mm.panel>
+    </x-mm.page>
 @endsection
 
 

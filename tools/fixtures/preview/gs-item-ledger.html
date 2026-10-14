@@ -23,8 +23,43 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Item ledger</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Stock movement of one item over a period.</p>            </div>
-                    </header>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Chronological GRN/GIN stock movement and rolling balance of one general store item.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/gs-stock-in-hand"><i class="fa fa-cubes"></i> Stock in Hand</a>
+                <a class="mm-button mm-button-secondary" href="/preview/gs-weekly-movement"><i class="fa fa-calendar"></i> Weekly Movement</a>
+            </div>
+        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Item ledger summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-cube"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Selected Store Item</span>
+                    <div class="mm-table-kpi-value">Basmati Rice <span class="mm-table-kpi-sub">Unit: Kg</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-truck"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">GRN Inward (#GRN-0001)</span>
+                    <div class="mm-table-kpi-value">+ 10.00 Kg <span class="mm-table-kpi-sub">Opening: 5.00 Kg</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-share-square-o"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">GIN Issue (#GIN-0002)</span>
+                    <div class="mm-table-kpi-value">- 3.00 Kg <span class="mm-table-kpi-sub">Departmental Issue</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Closing Stock Balance</span>
+                    <div class="mm-table-kpi-value">12.00 Kg <span class="mm-table-kpi-sub">Verified Balance</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><form class="form-horizontal" action="http://localhost/gs/item_details" method="get">
             <div class="row">
                 <input type="hidden" name="_token" value="fixture-csrf-token">                <div class="col-sm-12">

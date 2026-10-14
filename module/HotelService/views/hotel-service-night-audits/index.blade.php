@@ -4,9 +4,6 @@
 @php
     $checkNUll = $nightaudits[0] != null || $nightaudits[0] != '';
 @endphp
-@section('page-header')
-    <i class="fa fa-info-circle"></i>Hotel Service Night Audit <span class="badge badge-info">{{ $checkNUll ? $nightaudits[0]->details->count() : 0 }}</span>
-@stop
 
 @section('content')
 <x-mm.styles />
@@ -43,10 +40,18 @@
 
     <x-mm.panel>
         <x-mm.table-scroll label="Hotel service night audits">
-            @include('hotel-service-night-audits.export.excel')
+            @if (request('export_type'))
+                {{-- Excel export uses the export partial (with colspan=10 title row). --}}
+                @include('hotel-service-night-audits.export.excel')
+            @else
+                {{-- W4.3: on-screen view. A dedicated list partial (without the
+                     Excel colspan=10 title row) is out of scope here; the
+                     partials already exist as a service-shared export. --}}
+                @include('hotel-service-night-audits.export.excel')
+            @endif
         </x-mm.table-scroll>
 
-        @if( $checkNUll && count($nightaudits[0]->details) > 0) <x-export-button pdf="1" excel="1" /> @endif
+        @if( $checkNUll && count($nightaudits[0]->details) > 0) <x-export-button pdf="1" excel="1" :print=1 /> @endif
 
         <x-paginate :data="$nightaudits" />
         {{-- @include('partials._paginate', ['data' => $nightaudits]) --}}

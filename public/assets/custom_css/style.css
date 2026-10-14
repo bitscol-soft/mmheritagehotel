@@ -941,3 +941,10 @@
 .room-booking-board .room-info.orange .room-meta,
 .room-booking-board .room-info.store .room-meta,
 .room-booking-board .room-info.booked .room-meta { color: rgba(255, 255, 255, .85); }
+
+.mm-ui.mm-web,
+.mm-ui.mm-web .mm-panel {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+

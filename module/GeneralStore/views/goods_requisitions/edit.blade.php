@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title','Edit Goods Requisition')
-@section('page-header')
-    <i class="fa fa-gear"></i> Edit Goods Requisition
-@stop
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -27,7 +24,6 @@
         <form class="form-horizontal" action="{{ route('goods-requisitions.update', $goodsRequisition->id) }}" method="post" enctype="multipart/form-data">
             @csrf @method('PUT')
 
-
             @if ($errors->any())
                 <div class="alert alert-danger error">
                     <button type="button" class="close" data-dismiss="alert">
@@ -50,7 +46,6 @@
                 @include('partials._alert_message')
             @endif
 
-
             <div class="form-group">
                 <label class="col-sm-3 control-label" for="form-field-1-1"> Company </label>
                 <div class="col-xs-12 col-sm-8 @error('company_id') has-error @enderror">
@@ -68,7 +63,6 @@
                 </div>
             </div>
 
-
             <div class="form-group">
                 <label class="col-sm-3 control-label" for="form-field-1-1"> Department </label>
                 <div class="col-xs-12 col-sm-8 @error('department_id') has-error @enderror">
@@ -84,8 +78,6 @@
                     @enderror
                 </div>
             </div>
-
-
 
             <div class="form-group col-">
                 <label for="inputError" class="col-xs-12 col-sm-3 col-md-3 control-label"> Date </label>
@@ -110,7 +102,6 @@
                 </div>
             </div>
 
-
             <div class="row">
                 <div class="col-sm-10 col-sm-offset-1">
                     <h3 class="header smaller lighter blue">Goods Requisition</h3>
@@ -134,7 +125,6 @@
                                     <td width="5%">Qty</td>
                                 </tr>
                             </thead>
-
 
                             <tbody class="">
 
@@ -291,7 +281,6 @@
     <script src="{{ asset('assets/js/chosen.jquery.min.js') }}"></script>
     <script src="{{ asset('assets/custom_js/jq_repeater.js') }}"></script>
 
-
     <script src="{{ asset('assets/js/bootstrap-datepicker.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap-timepicker.min.js') }}"></script>
 
@@ -316,7 +305,6 @@
         var item_row = 0;
         var items = [];
 
-
         function load_item_stock(element) {
             var id = $(element).val();
             var row = $(element).closest('tr');
@@ -328,7 +316,6 @@
                 success: function(res) {
                     row.find('.item_unit').val(res['item_unit']);
                     row.find('.current_stock').val(res['current_stock']);
-
 
                     // tracking info
                     if (res['receive_items'] != null) {
@@ -394,13 +381,11 @@
             });
         }
 
-
         function insert_Row(el) {
             // alert($(".company_id option:selected").val())
             var item_row = $('.item').length + 1;
             // first delete add item
             $(el).parents("tr").remove();
-
 
             // add new item row
             var r = document.getElementById('goods_requisition_table').insertRow();
@@ -422,7 +407,6 @@
 
             c1.innerHTML = '<select name="item_id[]" class="form-control item item'+ item_row + ' chosen-select" onchange="load_item_stock(this)"></select>';
 
-
             c2.innerHTML = '<input type="text" name="item_unit_id[]" class="form-control item_unit" readonly="readonly" />';
 
             c3.innerHTML = '<input type="text" id="current_stockq"' + item_row + ' name="current_stock[]" class="form-control current_stock" readonly="readonly" />';
@@ -430,8 +414,6 @@
             c4.innerHTML = '<input onkeyup="checkQtyLimit(this)" onkeypress="return event.charCode == 46 || event.charCode >= 48 && event.charCode <= 57" type="text" id="q"' + item_row + ' name="quantity[]" class="form-control quantity" />';
 
             c5.innerHTML = '<input type="text" class="form-control" name="remarks[]" value="">';
-
-
 
             c6.innerHTML = '<td><span class="issue_number"></span></td>';
             c7.innerHTML = '<td><span class="source"></span></td>' + inputs;
@@ -442,7 +424,6 @@
             // again add "+ Add New" Button
             var markup = '<tr><td colspan="11" style="text-align: right;"><button type="button" onclick="insert_Row(this)" class="btn btn-xs btn-inverse add_row r-btnAdd"> + Add New </button></td></tr>';
             $("table tbody").append(markup);
-
 
             var company_id = $(".company_id option:selected").val();
             load_items(null, company_id, item_row);
@@ -457,7 +438,6 @@
             }
 
         }
-
 
         function load_items(element = null, company_id = null, item_row = null) {
             var id = company_id == null ? $(element).val() : company_id;
@@ -485,7 +465,6 @@
             });
         }
     </script>
-
 
     <script type="text/javascript">
         $(() => chosenTrigger() )
@@ -515,7 +494,6 @@
                     });
                 }
 
-
                 if(!ace.vars['touch']) {
                     $('.chosen-select').chosen({allow_single_deselect:true});
                     //resize the chosen on window resize
@@ -540,7 +518,6 @@
 
             })
         }
-
 
         function checkQtyLimit(object)
         {

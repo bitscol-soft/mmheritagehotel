@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title', 'Add Booking')
-@section('page-header')
-    <i class="fa fa-plus-circle"></i> Add New Booking
-@stop
 
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
@@ -10,7 +7,6 @@
     <link rel="stylesheet" href="{{ asset('assets/css/daterangepicker.min.css') }}" />
 
 @endpush
-
 
 @section('content')
 
@@ -78,6 +74,5 @@
 
     <script src="{{ asset('assets/custom_js/stay-range.js') }}"></script>
     @include('home._inc.script')
-
 
 @endsection

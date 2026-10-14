@@ -2,10 +2,6 @@
 
 @section('title', 'Kitchen Order List')
 
-@section('page-header')
-    <i class="fa fa-gears"></i> Kitchen Order List
-@stop
-
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -16,7 +12,29 @@
 
 <x-mm.styles />
 <x-mm.page class="mm-rst mm-rst-board" title="Kitchen board" description="Accept new orders, mark them ready and send them to be served.">
+    <x-slot name="actions">
+        <a href="#" id="mm-focused-fullscreen-btn" data-mm-fullscreen-toggle aria-pressed="false" class="mm-button mm-button-secondary mm-focused-fs-btn" title="Toggle distraction-free Focused Fullscreen Mode (Alt+Z)">
+            <i class="ace-icon fa fa-arrows-alt" aria-hidden="true"></i> Focused Fullscreen
+        </a>
+    </x-slot>
     <x-alert-message />
+
+    <div id="mm-fullscreen-hud" class="mm-no-print" role="region" aria-label="Focused fullscreen controls">
+        <div class="mm-fullscreen-hud-left">
+            <span class="mm-fullscreen-hud-badge"><i class="fa fa-arrows-alt" aria-hidden="true"></i> Focused Fullscreen Mode</span>
+            <span><strong>Kitchen Display Board (KDS)</strong> · Distraction-Free Pass Terminal (Press <code>Esc</code> or <code>Alt+Z</code> to exit)</span>
+        </div>
+        <a href="#" id="mm-fullscreen-exit-btn" data-mm-fullscreen-exit class="mm-fullscreen-exit-btn">
+            <i class="fa fa-compress" aria-hidden="true"></i> Exit Fullscreen
+        </a>
+    </div>
+
+    <div class="mm-kds-badge-row mm-no-print" role="note" aria-label="KDS pacing legend">
+        <span class="mm-kds-course-badge"><i class="fa fa-clock-o" aria-hidden="true"></i> SLA Timer · Green on time</span>
+        <span class="mm-kds-course-badge is-hold"><i class="fa fa-pause" aria-hidden="true"></i> Course Hold · Fire on Call</span>
+        <span class="mm-kds-mod-badge is-allergy"><i class="fa fa-warning" aria-hidden="true"></i> Allergen Alert · Check Before Plating</span>
+        <span class="mm-kds-mod-badge"><i class="fa fa-leaf" aria-hidden="true"></i> Modifier · Prep Note Attached</span>
+    </div>
 
     <div class="mm-board-layout">
         <div class="mm-board-orders">
@@ -77,7 +95,6 @@
                                 <span class="label label-sm label-danger">No New Order Found</span>
                             @endif
 
-
                         </footer>
                     </article>
                 @endif
@@ -116,7 +133,6 @@
                             @endforeach
                         </tbody>
 
-
                     </table>
                 </x-mm.table-scroll>
             </x-mm.panel>
@@ -127,13 +143,9 @@
 
 @section('js')
 
-    <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('assets/js/jquery.dataTables.bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/custom_js/date-picker.js') }}"></script>
 
-
     @include('currency-conversions.inc.script')
-
 
     <!-- inline scripts related to this page -->
     <script type="text/javascript">

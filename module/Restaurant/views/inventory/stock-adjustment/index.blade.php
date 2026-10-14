@@ -3,17 +3,18 @@
 @section('title', 'Stock Adjustment')
 
 @section('content')
-    <div class="page-header">
-        <h4 class="page-title"><i class="fa fa-list"></i> @yield('title')</h4>
-        @if (hasPermission("inv.stock-adjustments.create", $slugs))
-            <a class="btn btn-sm btn-primary" href="{{ route('inv.stock-adjustments.create') }}">
-                <i class="fa fa-plus-circle"></i>
-                Add New
-            </a>
-        @endif
-    </div>
+    <x-mm.styles />
+    <x-mm.page class="mm-crud-index mm-rst" title="Stock Adjustment">
+        <x-slot name="actions">
+            @if (hasPermission("inv.stock-adjustments.create", $slugs))
+                <a class="btn btn-sm btn-primary" href="{{ route('inv.stock-adjustments.create') }}">
+                    <i class="fa fa-plus-circle"></i>
+                    Add New
+                </a>
+            @endif
+        </x-slot>
 
-
+        <x-mm.panel>
     <form action="{{ route('inv.stock-adjustments.index') }}" method="GET">
         <div class="col-sm-12 p-0">
             <table class="table table-bordered">
@@ -169,4 +170,6 @@
             </div>
         </div>
     </div>
+        </x-mm.panel>
+    </x-mm.page>
 @endsection

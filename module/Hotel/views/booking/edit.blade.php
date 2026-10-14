@@ -2,10 +2,6 @@
 
 @section('title', 'Edit Booking')
 
-@section('page-header')
-    <i class="fa fa-edit"></i> Update Booking
-@endsection
-
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -65,7 +61,6 @@
     @include('booking._css.css')
 @endpush
 
-
 @section('content')
 
     <x-mm.styles />
@@ -102,9 +97,6 @@
                             <div class="row">
                                 @include('booking._inc._edit-guest-input-info')
                             </div>
-
-
-
 
                             <!-- Room Booking Configuration -->
                             <div class="row">
@@ -254,7 +246,6 @@
                                             'transaction' => $booking->transection,
                                             'colspan' => 9,
                                         ])
-
 
                                     </table>
                             @include('booking/_modal/member-detail-modal')

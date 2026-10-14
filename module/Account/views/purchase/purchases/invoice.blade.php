@@ -86,6 +86,9 @@
 @endpush
 
 @section('content')
+    <x-mm.styles />
+    <x-mm.print-sheet title="Purchase Invoice">
+        <x-mm.panel class="tw-p-4">
     {{-- <div class="row" style="display: inline">
         <div class="col-md-12 text-center">
             <h1><strong>{{ optional($purchase->company)->name }}</strong></h1>
@@ -204,4 +207,6 @@
             Signature and Date
         </div>
     </div>
+        </x-mm.panel>
+    </x-mm.print-sheet>
 @endsection

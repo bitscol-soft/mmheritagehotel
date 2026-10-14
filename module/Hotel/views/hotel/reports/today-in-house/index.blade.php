@@ -2,10 +2,6 @@
 
 @section('title', 'Today In House Guest List')
 
-@section('page-header')
-    <i class="fa fa-plus-circle"></i> Today In House Guest List
-@stop
-
 @section('content')
 <x-mm.styles />
 <x-mm.page class="mm-report" title="Today in-house guest list" description="Guests staying in the hotel today.">
@@ -16,7 +12,7 @@
         </x-mm.table-scroll>
         <x-paginate :data="$bookings" />
 
-        <x-export-button :pdf=1 :excel=1 />
+        <x-export-button :pdf=1 :excel=1 :print=1 />
     </x-mm.panel>
 </x-mm.page>
 @endsection

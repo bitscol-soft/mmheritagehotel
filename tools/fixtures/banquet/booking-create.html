@@ -220,9 +220,45 @@
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">New banquet booking</h1>
                 <p class="tw-m-0 tw-text-sm tw-text-muted">Choose the guest and event dates, then add halls, items and payment details.</p>            </div>
-            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button mm-button-secondary" href="http://localhost/bq/banquet/booking/index">
-                <i class="ace-icon fa fa-list-alt" aria-hidden="true"></i> Booking List
-            </a></div>        </header>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/bq-rooms-index"><i class="ace-icon fa fa-building-o" aria-hidden="true"></i> Halls</a>
+                <a class="mm-button mm-button-secondary" href="/preview/bq-category-index"><i class="ace-icon fa fa-tags" aria-hidden="true"></i> Categories</a>
+                <a class="mm-button mm-button-secondary" href="http://localhost/bq/banquet/booking/index">
+                    <i class="ace-icon fa fa-list-alt" aria-hidden="true"></i> Booking List
+                </a>
+            </div>        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Banquet event configurator summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-building-o"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Available Halls</span>
+                    <div class="mm-table-kpi-value">4 Halls <span class="mm-table-kpi-sub">Grand &amp; Royal</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-users"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Max Event Capacity</span>
+                    <div class="mm-table-kpi-value">400 Pax <span class="mm-table-kpi-sub">Theater / Banquet</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-cutlery"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Catering &amp; AV Addons</span>
+                    <div class="mm-table-kpi-value">3 Tables <span class="mm-table-kpi-sub">Halls · Items · Info</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-check-square-o"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Booking Mode</span>
+                    <div class="mm-table-kpi-value">Live Folio <span class="mm-table-kpi-sub">Auto Tax &amp; Due</span></div>
+                </div>
+            </div>
+        </div>
+
         <div class="mm-panel tw-p-4 sm:tw-p-6"><form class="form-horizontal" id="submitBookingUpdateForm" action="http://localhost/bq/banquet/booking/store"
             method="post" enctype="multipart/form-data">
             <input type="hidden" name="_token" value="fixture-csrf-token">

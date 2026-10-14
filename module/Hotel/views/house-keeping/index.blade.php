@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title', 'House Keeping')
-@section('page-header')
-    <i class="fa fa-plus-circle"></i> House Keeping
-@stop
 
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
@@ -10,7 +7,6 @@
     <link rel="stylesheet" href="{{ asset('assets/css/daterangepicker.min.css') }}" />
 
 @endpush
-
 
 @section('content')
 
@@ -39,7 +35,6 @@
         </x-mm.panel>
     </x-mm.page>
 
-
 @endsection
 
 @section('script')
@@ -51,6 +46,5 @@
 
     {{-- @include('home._script.script') --}}
     @include('house-keeping._script.script')
-
 
 @endsection

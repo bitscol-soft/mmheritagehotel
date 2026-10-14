@@ -3,20 +3,45 @@
 <!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">    <link rel="stylesheet" href="/assets/css/chosen.min.css"/>
     <link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css"/>
     <link rel="stylesheet" href="/assets/custom_css/chosen-required.css"/>
-    <style>
-        td {
-            padding-bottom: 3px !important;
-            padding-top: 3px !important;
-        }
-    </style>
 <!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
 <section class="mm-ui mm-acc mm-rst mm-rst-inv mm-rst-form">
     <div class="tw-space-y-4 tw-py-2">
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Fund Transfer Create</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Move an amount from one account to another.</p>            </div>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Transfer funds directly from a source account to a destination account with reference tracking.</p>            </div>
             <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button" href="http://localhost/acc/fund-transfers/index"><i class="fa fa-list"></i> List</a></div>        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Fund transfer create summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-random"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Transfer Mode</span>
+                    <div class="mm-table-kpi-value">From → To <span class="mm-table-kpi-sub">Direct Account Move</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-university"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Source Balance</span>
+                    <div class="mm-table-kpi-value">Validated <span class="mm-table-kpi-sub">Live Balance Check</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-file-text-o"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Audit Reference</span>
+                    <div class="mm-table-kpi-value">Ref &amp; Notes <span class="mm-table-kpi-sub">Cheque / EFT Tag</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Ledger Posting</span>
+                    <div class="mm-table-kpi-value">Auto-Paired ✓ <span class="mm-table-kpi-sub">Dr &amp; Cr Generated</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><!-- INPUTS -->
         <form action="http://localhost/acc/fund-transfers/store" method="post">
             <input type="hidden" name="_token" value="fixture-csrf-token">            <div class="row" style="width: 100%; margin: 0 0 20px !important;">

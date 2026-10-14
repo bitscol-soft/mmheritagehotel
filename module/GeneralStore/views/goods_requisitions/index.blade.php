@@ -2,9 +2,6 @@
 
 @extends('layouts.master')
 @section('title','Goods Requisition')
-@section('page-header')
-    <i class="fa fa-list"></i> Goods Requisition List
-@stop
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
@@ -97,101 +94,85 @@
 
             <div class="row">
                 <div class="col-xs-12">
-                    <x-mm.table-scroll label="Requisitions">
-                        <table class="table table-striped table-bordered table-hover">
-                            <thead>
-                                <tr style="background: #C9DAF8 !important; color:black !important">
-                                    <th>SL</th>
-                                    <th>Date</th>
-                                    <th>Requisition No</th>
-                                    <th>Company</th>
-                                    <th>Department</th>
-                                    <th>Issue Date</th>
-                                    <th>GIN Number</th>
-                                    <th>{{ $systemSetting->value != null ? $systemSetting->value : "Reference" }}</th>
-                                    <th>Total Qty</th>
-                                    <th style="width: 120px !important;"></th>
-                                </tr>
-                            </thead>
-
-                            <tbody>
-
-                            @foreach($goods_requisitions as $key => $goods_requisition)
-                                <tr>
-                                    <td>{{ $key+1 }}</td>
-                                    <td><span style="font-weight: bold !important;">{{ $goods_requisition->goods_requisition_date }}</span></td>
-                                    <td class="text-primary">{{ $goods_requisition->form_number }}</td>
-                                    <td>{{ $goods_requisition->company->name }}</td>
-                                    <td>{{ optional($goods_requisition->department)->name }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($goods_requisition->issue_date)->format('Y-m-d') }}</td>
-                                    <td>
-
-                                        @if($goods_requisition->is_approved == 1)
+                    <x-mm.data-table :columns="[
+                        ['label' => 'SL', 'width' => '5%'],
+                        ['label' => 'Date'],
+                        ['label' => 'Requisition No'],
+                        ['label' => 'Company'],
+                        ['label' => 'Department'],
+                        ['label' => 'Issue Date'],
+                        ['label' => 'GIN Number'],
+                        ['label' => $systemSetting->value != null ? $systemSetting->value : 'Reference'],
+                        ['label' => 'Total Qty'],
+                        ['label' => 'Action', 'width' => '150px', 'align' => 'center'],
+                    ]" id="data-table" label="Requisitions" table-class="table table-striped table-bordered table-hover">
+                        @forelse ($goods_requisitions as $key => $goods_requisition)
+                            <tr>
+                                <td>{{ $key + 1 }}</td>
+                                <td><span style="font-weight: bold !important;">{{ $goods_requisition->goods_requisition_date }}</span></td>
+                                <td class="text-primary">{{ $goods_requisition->form_number }}</td>
+                                <td>{{ $goods_requisition->company->name }}</td>
+                                <td>{{ optional($goods_requisition->department)->name }}</td>
+                                <td>{{ \Carbon\Carbon::parse($goods_requisition->issue_date)->format('Y-m-d') }}</td>
+                                <td>
+                                    @if ($goods_requisition->is_approved == 1)
                                         {{ $goods_requisition->issue_number }}
-                                        @endif
-                                    </td>
-                                    <td>{{ $goods_requisition->goods_requisition_reference }}</td>
-                                    <td>{{ $goods_requisition->goods_requisition_details->sum('quantity') }}</td>
-                                    <td style="min-width: 150px" class="text-center">
-                                        <span class="btn btn-info btn-minier btn-round popover-success"
-                                              data-rel="popover"
-                                              data-placement="top"
-                                              data-original-title="<i class='ace-icon fa fa-info-circle green'></i> Log Information"
-                                              data-content="<p>Created By: {{ $goods_requisition->created_user->name }}.</p> <p> Created At : {{ $goods_requisition->created_at }} </p>
+                                    @endif
+                                </td>
+                                <td>{{ $goods_requisition->goods_requisition_reference }}</td>
+                                <td>{{ $goods_requisition->goods_requisition_details->sum('quantity') }}</td>
+                                <td class="text-center">
+                                    <span class="btn btn-info btn-minier btn-round popover-success"
+                                          data-rel="popover"
+                                          data-placement="top"
+                                          data-original-title="<i class='ace-icon fa fa-info-circle green'></i> Log Information"
+                                          data-content="<p>Created By: {{ $goods_requisition->created_user->name }}.</p> <p> Created At : {{ $goods_requisition->created_at }} </p>
                                                <hr/>
                                                <p>Updated By: {{ $goods_requisition->updated_user->name }}.</p> <p> Updated At : {{ $goods_requisition->updated_at }} </p>">
-                                            <i class="fa fa-info-circle"></i>
-                                        </span>
-                                        <div class="btn-group btn-corner">
-
-                                            <a  href="#goods-requisition-details{{ $goods_requisition->id }}" role="button" data-toggle="modal" class="btn btn-xs btn-purple" title="View Details">
-                                                <i class="fa fa-eye"></i>
-                                            </a>
-                                            @if($goods_requisition->is_approved == 0)
-                                                @if(hasPermission("create.requisitions.edit", $slugs))
-                                                    <a href="{{ route('goods-requisitions.edit', $goods_requisition->id) }}"  class="btn btn-xs btn-success" title="Edit Goods Requisition">
-                                                        <i class="fa fa-edit"></i>
-                                                    </a>
-                                                @endif
-
-                                                @if(hasPermission("create.requisitions.approve", $slugs))
-                                                    <a href="{{ route('approve.goods.requisition.show', $goods_requisition->id) }}" class="btn btn-xs btn-success" title="Approve">
-                                                        <i class="fa fa-check"></i>
-                                                    </a>
-                                                @endif
-                                            @else
-                                                @if(hasPermission("create.requisitions.approve", $slugs))
-                                                    <a href="{{ route('unapprove.goods.requisition', $goods_requisition->id) }}" class="btn btn-xs btn-success" title="Unapprove">
-                                                        <i class="fa fa-thumbs-down"></i>
-                                                    </a>
-                                                @endif
+                                        <i class="fa fa-info-circle"></i>
+                                    </span>
+                                    <div class="btn-group btn-corner">
+                                        <a href="#goods-requisition-details{{ $goods_requisition->id }}" role="button" data-toggle="modal" class="btn btn-xs btn-purple" title="View Details">
+                                            <i class="fa fa-eye"></i>
+                                        </a>
+                                        @if ($goods_requisition->is_approved == 0)
+                                            @if (hasPermission('create.requisitions.edit', $slugs))
+                                                <a href="{{ route('goods-requisitions.edit', $goods_requisition->id) }}" class="btn btn-xs btn-success" title="Edit Goods Requisition">
+                                                    <i class="fa fa-edit"></i>
+                                                </a>
                                             @endif
-
-                                            @if(hasPermission("create.requisitions.delete", $slugs) && $goods_requisition->is_approved == 0)
-                                                <button type="button" onclick="delete_check({{ $goods_requisition->id }})" class="btn btn-xs btn-danger" title="Delete">
-                                                    <i class="fa fa-trash-o"></i>
-                                                </button>
+                                            @if (hasPermission('create.requisitions.approve', $slugs))
+                                                <a href="{{ route('approve.goods.requisition.show', $goods_requisition->id) }}" class="btn btn-xs btn-success" title="Approve">
+                                                    <i class="fa fa-check"></i>
+                                                </a>
                                             @endif
-                                        </div>
-
-                                        <form action="{{ route('goods-requisitions.destroy',$goods_requisition->id)}}" id="deleteCheck_{{ $goods_requisition->id }}" method="POST">
-                                            @csrf
-                                            @method("DELETE")
-                                        </form>
-                                    </td>
-                                </tr>
-                            @endforeach
-
-                            @if (count($goods_requisitions) == 0)
-                                <tr>
-                                    <td colspan="12" class="text-center">
-                                        <b class="text-danger">No records found!</b>
-                                    </td>
-                                </tr>
-                            @endif
-                            </tbody>
-                        </table>
-                    </x-mm.table-scroll>
+                                        @else
+                                            @if (hasPermission('create.requisitions.approve', $slugs))
+                                                <a href="{{ route('unapprove.goods.requisition', $goods_requisition->id) }}" class="btn btn-xs btn-success" title="Unapprove">
+                                                    <i class="fa fa-thumbs-down"></i>
+                                                </a>
+                                            @endif
+                                        @endif
+                                        @if (hasPermission('create.requisitions.delete', $slugs) && $goods_requisition->is_approved == 0)
+                                            <button type="button" onclick="delete_check({{ $goods_requisition->id }})" class="btn btn-xs btn-danger" title="Delete">
+                                                <i class="fa fa-trash-o"></i>
+                                            </button>
+                                        @endif
+                                    </div>
+                                    <form action="{{ route('goods-requisitions.destroy', $goods_requisition->id) }}" id="deleteCheck_{{ $goods_requisition->id }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                    </form>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="10" class="text-center">
+                                    <b class="text-danger">No records found!</b>
+                                </td>
+                            </tr>
+                        @endforelse
+                    </x-mm.data-table>
 
                     @if (count($goods_requisitions) != 0)
                         @include('partials._paginate', ['data' => $goods_requisitions])
@@ -221,8 +202,6 @@
         </div>
 
         <input type="hidden" id="csrf" value="{{ csrf_token() }}">
-
-
 
         {{-- purchase_receives   modals --}}
         @foreach($goods_requisitions as $key => $goods_requisition)
@@ -296,13 +275,9 @@
 
 @section('js')
 
-    <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
-    <script src="{{ asset('assets/js/jquery.dataTables.bootstrap.min.js') }}"></script>
 
     <script src="{{ asset('assets/js/chosen.jquery.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap-datepicker.min.js') }}"></script>
-
-
 
     {{-- export excel/pdf --}}
     <script type="text/javascript">
@@ -311,7 +286,6 @@
             $('.exportForm').attr('action', url).submit();
         }
     </script>
-
 
     <script type="text/javascript">
         $('[data-rel=popover]').popover({html:true});
@@ -381,7 +355,5 @@
 
         })
     </script>
-
-
 
 @stop

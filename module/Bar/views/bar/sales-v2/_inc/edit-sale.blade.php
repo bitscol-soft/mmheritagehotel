@@ -12,7 +12,7 @@
 
     <input type="hidden" name="is_soft_save" id="is_soft_save" value="0">
 
-    <div class="row" style="margin-top: 5px">
+    <div class="row mm-pos-step-row" id="courses" style="margin-top: 5px">
         <!-- Search Guest Name -->
         <div class="col-md-3">
             <x-widget.text-input-group title="Guest" name="guest_name" :value="$sale->guest_name" />
@@ -67,7 +67,7 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="row mm-pos-step-row" id="fire">
         @if ($sale->payment_status == 'Due')
             <div class="col-md-6">
                 <x-widget.product-select />
@@ -220,7 +220,7 @@
         </div>
     </div>
 
-    <div class="col-sm-12" style="background: aliceblue; border: 2px solid;margin-top:20px">
+    <div class="col-sm-12 mm-pos-totals-box" id="pay">
 
         <div class="row mt-1 mb-1">
             {{-- <div class="col-sm-6">

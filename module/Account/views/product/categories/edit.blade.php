@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title', 'Category')
-@section('page-header')
-    <i class="fa fa-edit"></i> Category Edit
-@stop
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}"/>
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}"/>
@@ -22,7 +19,6 @@
         <!-- INPUTS -->
         <form action="{{ route('categories.update', $category->id) }}" method="post">
             @csrf @method('PUT')
-
 
             <div class="row" style="width: 100%; margin: 0 0 20px !important;">
                 <div class="col-sm-12 px-4">
@@ -49,8 +45,5 @@
 
 @section('js')
 
-
-
 @endsection
-
 

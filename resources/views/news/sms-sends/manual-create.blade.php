@@ -2,62 +2,36 @@
 
 @section('title','Send Sms')
 
-@section('page-header')
-    <i class="fa fa-list"></i> Send Sms Manually
-@stop
-
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/jquery-ui.custom.min.css') }}" />
-
-    <style type="text/css">
-        .table-border-none td, tr {
-            border: none !important;
-        }
-        .has-mobile {
-            color: red !important;
-        }
-    </style>
 @stop
 
 
 @section('content')
-
-    <div class="row">
-        <div class="col-sm-12">
-
-            <!-- heading -->
-            <div class="widget-box widget-color-white ui-sortable-handle clearfix" id="widget-box-7">
-                <div class="widget-header widget-header-small">
-                    <h3 class="widget-title smaller text-primary">
-                        @yield('page-header')
-                    </h3>
+    <x-mm.styles />
+    <x-mm.page title="Send Sms Manually" description="Send an SMS message to manually entered phone numbers.">
+        <x-mm.panel class="tw-p-4">
+            <!-- entry form -->
+            <div class="row px-1" style="width: 100%; margin: 0 !important;">
+                <div class="alert-message"></div>
+                <div class="col-sm-6 pr-1">
+                    <label style="width: 100%">Add Numbers</label>
+                    <textarea class="form-control number-area" maxlength="640" rows="5" placeholder="8801xxxxxxxxx,8801xxxxxxxxx,....."></textarea>
                 </div>
-
-
-                <!-- entry form -->
-                <div class="row px-1" style="width: 100%; margin: 0 !important;">
-                    <div class="alert-message"></div>
-                    <div class="col-sm-6 pr-1">
-                        <label style="width: 100%">Add Numbers</label>
-                        <textarea class="form-control number-area" maxlength="640" rows="5" placeholder="8801xxxxxxxxx,8801xxxxxxxxx,....."></textarea>
-                    </div>
-                    <div class="col-sm-6" style="padding: 0 !important;">
-                        <label style="width: 100%">Message
-                            <strong class="pull-right"><span class="total-character-count">0</span>/640</strong> <!-- character length count  -->
-                            <strong class="pull-right text-center" style="width: 30px !important;">|</strong>
-                            <strong class="pull-right"><span class="part-count">0</span>/4</strong> <!-- sms count -->
-                        </label>
-                        <textarea class="form-control message-area" maxlength="640" rows="5" placeholder="Type your message here..."></textarea>
-                    </div>
-                    <button type="button" class="btn btn-primary btn-sm pull-right send-message-btn" style="margin-top: 10px; margin-bottom: 20px">Send Message</button>
+                <div class="col-sm-6" style="padding: 0 !important;">
+                    <label style="width: 100%">Message
+                        <strong class="pull-right"><span class="total-character-count">0</span>/640</strong> <!-- character length count  -->
+                        <strong class="pull-right text-center" style="width: 30px !important;">|</strong>
+                        <strong class="pull-right"><span class="part-count">0</span>/4</strong> <!-- sms count -->
+                    </label>
+                    <textarea class="form-control message-area" maxlength="640" rows="5" placeholder="Type your message here..."></textarea>
                 </div>
+                <button type="button" class="btn btn-primary btn-sm pull-right send-message-btn" style="margin-top: 10px; margin-bottom: 20px">Send Message</button>
             </div>
-        </div>
-    </div>
-
-
+        </x-mm.panel>
+    </x-mm.page>
 @endsection
 
 @section('js')

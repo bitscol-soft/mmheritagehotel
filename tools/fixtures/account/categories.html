@@ -8,18 +8,49 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Category List</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Product categories.</p>            </div>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Commercial product categories used across Account purchases, sales and inventory.</p>            </div>
             <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button mm-button-secondary" href="http://localhost/acc/categories"><i class="fa fa-refresh"></i> Refresh Data</a>
                     <a class="mm-button" href="http://localhost/acc/categories/create"><i class="fa fa-plus"></i> Create New</a></div>        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Account product categories summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-tags"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Product Category</span>
+                    <div class="mm-table-kpi-value">Beverage <span class="mm-table-kpi-sub">Active Group</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Catalog Sync</span>
+                    <div class="mm-table-kpi-value">Linked ✓ <span class="mm-table-kpi-sub">Product Master</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-cube"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Mapped Items</span>
+                    <div class="mm-table-kpi-value">Juice SKU <span class="mm-table-kpi-sub">Trading Ready</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-bar-chart"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Reporting</span>
+                    <div class="mm-table-kpi-value">Category-Wise <span class="mm-table-kpi-sub">Sales &amp; Margin</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><!-- LIST -->
         <div class="row" style="width: 100%; margin: 0 !important;">
             <div class="col-sm-12 px-4">
                 <div class="mm-table-scroll" role="region" aria-label="Category List" tabindex="0"><table id="data-table" class="table table-bordered table-striped">
                         <thead>
                             <tr class="table-header-bg">
-                                <th class="text-center" style="color: white !important;" width="8%">Sl</th>
-                                <th class="pl-3" style="color: white !important;" >Name</th>
-                                <th class="text-center" style="color: white !important;" width="15%">Actions</th>
+                                <th class="text-center" width="8%">Sl</th>
+                                <th class="pl-3">Name</th>
+                                <th class="text-center" width="15%">Actions</th>
                             </tr>
                         </thead>
 

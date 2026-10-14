@@ -2,10 +2,6 @@
 
 @section('title', 'Edit Booking')
 
-@section('page-header')
-    <i class="fa fa-edit"></i> Update Booking
-@endsection
-
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -67,24 +63,16 @@
 
 
 @section('content')
+    <x-mm.styles />
+    <x-mm.page class="mm-booking-form" title="Update Booking">
+        <x-slot name="actions">
+            <a href="{{ route('booking.index') }}" class="btn btn-sm btn-default">
+                <i class="ace-icon fa fa-list-alt"></i> Booking List
+            </a>
+        </x-slot>
 
-    <div class="row">
-
-        <div class="col-sm-12">
-            <div class="widget-box">
-                <div class="widget-header">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
-
-                    <span class="widget-toolbar">
-                        <a href="{{ route('booking.index') }}">
-                            <i class="ace-icon fa fa-list-alt"></i> Booking List
-                        </a>
-                    </span>
-
-                </div>
-
-                <div class="widget-body">
-                    <div class="widget-main" style="padding-bottom: 44px;">
+        <x-mm.panel>
+                    <div style="padding-bottom: 44px;">
 
                         <!-- Include Alert Message -->
                         <x-alert-message />
@@ -282,12 +270,8 @@
                         </div>
 
                     </div>
-                </div>
-            </div>
-
-
-        </div>
-    </div>
+        </x-mm.panel>
+    </x-mm.page>
     @include('partials/modal/edit_guest_modal')
 
 @endsection

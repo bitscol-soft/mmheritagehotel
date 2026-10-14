@@ -17,6 +17,7 @@ class Kernel extends ConsoleKernel
         \App\Console\Commands\SyncAttendance::class,
         \App\Console\Commands\ToggleDebugbar::class,
         \App\Console\Commands\ToggleDebug::class,
+        \App\Console\Commands\MmRenderPublicFixtures::class,
     ];
 
     /**

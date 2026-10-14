@@ -2,10 +2,6 @@
 
 @section('title', 'Add Booking')
 
-@section('page-header')
-    <i class="fa fa-plus-circle"></i> Add New Hall Booking
-@stop
-
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -65,10 +61,8 @@
         }
     </style>
 
-
     @include('hall_booking._css.css')
 @endpush
-
 
 @section('content')
     @php
@@ -96,12 +90,10 @@
             @include('partials._alert_message')
             @include('hall_booking._modal._guest-details-modal')
 
-
             <!------------ INCLUDE GUEST INPUT FIELDS ------------>
             <div class="row">
                 @include('hall_booking._inc._add-guest-input-info')
             </div>
-
 
             <!-- Room Information Table -->
             <div class="row">
@@ -210,7 +202,6 @@
                 </div>
             </div>
 
-
             @include('hall_booking/_modal/member-detail-modal')
 
         </form>
@@ -239,7 +230,6 @@
 @section('script')
 
     @include('hall_booking._script.script')
-
 
 @endsection
 

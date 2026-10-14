@@ -484,7 +484,7 @@
 
 </style>
 <!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
-<div class="modal fade" id="add-guest-modal">
+<div class="modal fade mm-drawer mm-drawer" data-mm-drawer="true" id="add-guest-modal">
     <div class="modal-dialog">
         <div class="modal-content">
             <form method="POST" action="" class="form-horizontal" role="form">
@@ -553,6 +553,24 @@
             <i class="ace-icon fa fa-list-alt"></i>
             Sale List
         </a></div>        </header>
+        <div class="mm-table-kpi-grid mm-no-print" style="margin-bottom: 14px;">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-label">Invoice No</span>
+                <div class="mm-table-kpi-value">#B-0105 <span class="mm-table-kpi-badge">New Bar Sale</span></div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-label">Channel</span>
+                <div class="mm-table-kpi-value">Lounge / Room <span class="mm-table-kpi-badge">Walk-In or Folio</span></div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-label">Payment Modes</span>
+                <div class="mm-table-kpi-value">Cash / Card / Due <span class="mm-table-kpi-badge is-emerald">Flexible</span></div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-label">Net Payable</span>
+                <div class="mm-table-kpi-value">&#2547; 0.00 <span class="mm-table-kpi-badge is-amber">Live Total</span></div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><!-- Form -->
         <form method="POST" action="http://localhost/x/bar/sales/store" accept-charset="UTF-8"
             class="form-horizontal sales-form sales-create-form" role="form" data-parsley-validate

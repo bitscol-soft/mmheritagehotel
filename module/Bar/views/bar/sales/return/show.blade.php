@@ -1,10 +1,6 @@
 @extends('layouts.master')
 @section('title', 'Sale Return Details')
 
-@section('page-header')
-    <i class="fa fa-bars"></i> Sale Return Details
-@stop
-
 @section('css')
     <style>
         @media print {
@@ -27,7 +23,6 @@
         }
     </style>
 @stop
-
 
 @section('content')
 
@@ -56,8 +51,6 @@
             <!-- Print This area -->
             <div id="print_body" class="col-lg-12">
 
-
-
                 <!-- Invoice Header -->
                 <div id="customer_info" style="padding: 0 10px;margin-bottom:20px">
                     <div class="row">
@@ -78,10 +71,7 @@
                             </b>
                         </h6>
 
-
-
                         <hr>
-
 
                         <!-- Customer Info Right side -->
                         <div class="customerInfo" style="width: 50%;float: left;">
@@ -96,7 +86,6 @@
                             <p class="patient"><b>Mobile : </b>
                                 {{ optional($sale->guest)->mobile_number }}
                             </p>
-
 
                             <p class="patient">
                                 <b>Sales By : </b>
@@ -113,13 +102,9 @@
                     </div>
                 </div>
 
-
-
                 <!-- Invoice Content -->
                 <div class="invoice-content">
                     <div class="table-responsive">
-
-
 
                         <!-- Table -->
                         <x-mm.table-scroll label="Sale return">
@@ -221,7 +206,6 @@
 
 @section('script')
 
-
     <script src="{{ url('assets/custom_js/printThis.js') }}"></script>
     <script type="text/javascript">
         $(document).ready(function() {
@@ -229,9 +213,6 @@
                 print()
             }, 5000);
         })
-
-
-
 
         function printPage(id) {
             $('#' + id).printThis({

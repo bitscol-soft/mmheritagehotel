@@ -5,8 +5,44 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">In-house guest list</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Guests staying in the hotel, filtered by date.</p>            </div>
-                    </header>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Checked-in guests currently staying in the hotel, filtered by date.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/report-expected-arrival"><i class="fa fa-sign-in"></i> Arrivals</a>
+                <a class="mm-button mm-button-secondary" href="/preview/report-expected-departure"><i class="fa fa-sign-out"></i> Departures</a>
+                <button type="button" class="mm-button mm-button-secondary" data-toggle="modal" data-target="#hr-inhouse-drawer"><i class="fa fa-columns"></i> Guest Folio Inspector (Drawer)</button>
+            </div>
+        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="In-house guests summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-bed"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Occupied Rooms</span>
+                    <div class="mm-table-kpi-value">16 Suites <span class="mm-table-kpi-sub">#101 to #403</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-users"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">In-House Pax</span>
+                    <div class="mm-table-kpi-value">36 Guests <span class="mm-table-kpi-sub">16 Active Folios</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-calendar"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Stay Duration</span>
+                    <div class="mm-table-kpi-value">2 Nights <span class="mm-table-kpi-sub">01 Oct → 03 Oct</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-cutlery"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">POS Room Charge</span>
+                    <div class="mm-table-kpi-value">Enabled ✓ <span class="mm-table-kpi-sub">Breakfast Included</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 mm-report-filter"><form action="" method="GET" class="mm-setup-filter mm-report-form">
             <div class="mm-report-field">
                 <div class="input-group">
@@ -42,9 +78,8 @@
     </thead>
 
             <tbody>
-                                            <tr class="odd gradeX">
+                <tr class="odd gradeX">
                     <td>101</td>
-                    
                     <td>Nadia</td>
                     <td>0170000000</td>
                     <td>Dhaka</td>
@@ -54,7 +89,172 @@
                     <td>2026-10-03</td>
                     <td>N-1</td>
                 </tr>
-                    </tbody>
+                <tr class="even gradeX">
+                    <td>102</td>
+                    <td>Tanvir Ahmed Chowdhury</td>
+                    <td>01711948210</td>
+                    <td>Gulshan-2, Dhaka</td>
+                    <td>Orion Pharma Ltd.</td>
+                    <td>2</td>
+                    <td>2026-10-14</td>
+                    <td>2026-10-17</td>
+                    <td>BD-8894021562</td>
+                </tr>
+                <tr class="odd gradeX">
+                    <td>103</td>
+                    <td>Dr. Farhana Rahman</td>
+                    <td>01819334812</td>
+                    <td>Dhanmondi, Dhaka</td>
+                    <td>Square Hospitals Ltd.</td>
+                    <td>2</td>
+                    <td>2026-10-14</td>
+                    <td>2026-10-19</td>
+                    <td>A09481204</td>
+                </tr>
+                <tr class="even gradeX">
+                    <td>105</td>
+                    <td>Tahmina Akter</td>
+                    <td>01611883920</td>
+                    <td>Banani, Dhaka</td>
+                    <td>BRAC Bank PLC</td>
+                    <td>2</td>
+                    <td>2026-10-14</td>
+                    <td>2026-10-17</td>
+                    <td>BD-6630192845</td>
+                </tr>
+                <tr class="odd gradeX">
+                    <td>106</td>
+                    <td>Syed Kamrul Hasan</td>
+                    <td>01715609281</td>
+                    <td>Bashundhara R/A, Dhaka</td>
+                    <td>Grameenphone Ltd.</td>
+                    <td>1</td>
+                    <td>2026-10-14</td>
+                    <td>2026-10-18</td>
+                    <td>BD-4489201932</td>
+                </tr>
+                <tr class="even gradeX">
+                    <td>201</td>
+                    <td>Nusrat Jahan</td>
+                    <td>01819552104</td>
+                    <td>Baridhara Diplomatic Zone</td>
+                    <td>UNICEF Bangladesh</td>
+                    <td>2</td>
+                    <td>2026-10-14</td>
+                    <td>2026-10-18</td>
+                    <td>BG-0192837</td>
+                </tr>
+                <tr class="odd gradeX">
+                    <td>202</td>
+                    <td>Engr. Tariqul Alam</td>
+                    <td>01712990412</td>
+                    <td>Tejgaon, Dhaka</td>
+                    <td>Summit Power Int.</td>
+                    <td>2</td>
+                    <td>2026-10-14</td>
+                    <td>2026-10-18</td>
+                    <td>BD-3391028475</td>
+                </tr>
+                <tr class="even gradeX">
+                    <td>203</td>
+                    <td>Shabnam Mustari</td>
+                    <td>01714772109</td>
+                    <td>Kurmitola, Dhaka</td>
+                    <td>Biman Bangladesh Airlines</td>
+                    <td>2</td>
+                    <td>2026-10-14</td>
+                    <td>2026-10-16</td>
+                    <td>BP-4491023</td>
+                </tr>
+                <tr class="odd gradeX">
+                    <td>204</td>
+                    <td>Brig. Gen. Mahmudul Hasan</td>
+                    <td>01711004921</td>
+                    <td>Dhaka Cantonment</td>
+                    <td>Defense Delegation</td>
+                    <td>3</td>
+                    <td>2026-10-14</td>
+                    <td>2026-10-18</td>
+                    <td>DP-0049182</td>
+                </tr>
+                <tr class="even gradeX">
+                    <td>205</td>
+                    <td>Ashraful Alam Siddiqui</td>
+                    <td>01817203948</td>
+                    <td>Motijheel, Dhaka</td>
+                    <td>Walton Hi-Tech</td>
+                    <td>2</td>
+                    <td>2026-10-14</td>
+                    <td>2026-10-17</td>
+                    <td>BD-9182736450</td>
+                </tr>
+                <tr class="odd gradeX">
+                    <td>301</td>
+                    <td>Amb. Kenji Takahashi</td>
+                    <td>01711889900</td>
+                    <td>Baridhara, Dhaka</td>
+                    <td>Embassy of Japan</td>
+                    <td>2</td>
+                    <td>2026-10-14</td>
+                    <td>2026-10-19</td>
+                    <td>JP-8839201</td>
+                </tr>
+                <tr class="even gradeX">
+                    <td>302</td>
+                    <td>Capt. Jonathan Vance</td>
+                    <td>01713774411</td>
+                    <td>London / Dhaka</td>
+                    <td>Horizon Aviation UK</td>
+                    <td>4</td>
+                    <td>2026-10-14</td>
+                    <td>2026-10-20</td>
+                    <td>UK-5549201</td>
+                </tr>
+                <tr class="odd gradeX">
+                    <td>303</td>
+                    <td>Meher Afroz Shaon</td>
+                    <td>01912665432</td>
+                    <td>Uttara Sector 7, Dhaka</td>
+                    <td>Berger Paints BD</td>
+                    <td>2</td>
+                    <td>2026-10-14</td>
+                    <td>2026-10-17</td>
+                    <td>BD-2201938476</td>
+                </tr>
+                <tr class="even gradeX">
+                    <td>305</td>
+                    <td>Imran Hossain &amp; Family</td>
+                    <td>01811902384</td>
+                    <td>Chattogram / Dhaka</td>
+                    <td>City Group Ltd.</td>
+                    <td>4</td>
+                    <td>2026-10-14</td>
+                    <td>2026-10-18</td>
+                    <td>BD-7788990011</td>
+                </tr>
+                <tr class="odd gradeX">
+                    <td>402</td>
+                    <td>Elena Rostova</td>
+                    <td>01719445566</td>
+                    <td>Agargaon, Dhaka</td>
+                    <td>World Bank South Asia</td>
+                    <td>2</td>
+                    <td>2026-10-14</td>
+                    <td>2026-10-19</td>
+                    <td>WB-6647382</td>
+                </tr>
+                <tr class="even gradeX">
+                    <td>403</td>
+                    <td>Rubana Huq</td>
+                    <td>01711223344</td>
+                    <td>Gulshan-1, Dhaka</td>
+                    <td>Mohammadi Group</td>
+                    <td>3</td>
+                    <td>2026-10-14</td>
+                    <td>2026-10-20</td>
+                    <td>A77482910</td>
+                </tr>
+            </tbody>
     
     
 
@@ -69,6 +269,31 @@
             <span class="pull-right"><ul class="pagination"><li class=" disabled"><a class="" href="#">← First</a></li><li class="active"><span>1</span></li><li><a href="#">2</a></li><li><a class="" href="#">Last →</a></li></ul></span>
 
             <div class="pull-left hidden-print" style="margin-top:10px; margin-left:10px"><a href="/hotel/reports/x?export_type=excel&amp;date=2026-10-01" target="_blank" style="margin-right: 5px"><img src="/assets/images/export-icons/excel-icon.png"></a><a href="/hotel/reports/x?export_type=pdf&amp;date=2026-10-01" target="_blank" style="margin-right: 5px"><img src="/assets/images/export-icons/pdf-icon.png"></a></div></div>
+
+        <!-- Slide-Over App Drawer: In-House Guest Folio Inspector -->
+        <div class="modal fade mm-drawer mm-drawer" data-mm-drawer="true" id="hr-inhouse-drawer" tabindex="-1" role="dialog" aria-labelledby="hr-inhouse-drawer-title">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="hr-inhouse-drawer-title"><i class="fa fa-bed"></i> In-House Guest Folio — Room #101 (Nadia)</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="tw-text-sm tw-text-muted" style="margin-top:0">Live room folio summary and outlet charge privileges for Room #101.</p>
+                        <div class="mm-panel tw-p-4" style="margin-bottom:12px">
+                            <strong>Guest Profile:</strong> Nadia · Corporate Account: <code>Acme</code> · Pax: <code>2</code> · NID: <code>N-1</code>
+                        </div>
+                        <div class="mm-panel tw-p-4">
+                            <strong>Stay Window:</strong> Check-In <code>2026-10-01</code> → Check-Out <code>2026-10-03</code> · Deluxe King (DK)
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="/preview/hservice-sale-create" class="mm-button mm-button-secondary"><i class="fa fa-plus"></i> Post Room Service</a>
+                        <button type="button" class="mm-button" data-dismiss="modal"><i class="fa fa-check"></i> Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 <!--/MM-BODY--></div>

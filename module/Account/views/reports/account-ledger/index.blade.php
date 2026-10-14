@@ -14,12 +14,6 @@
 
 @section('title', $title)
 
-
-@section('page-header')
-    <i class="fa fa-info-circle"></i> {{ $title }}
-@stop
-
-
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -45,7 +39,6 @@
 
     </style>
 @endpush
-
 
 @section('content')
 
@@ -121,10 +114,8 @@
 
                             @if (request('account_id'))
 
-
                                 @php
                                     if ($selected_account->accountGroup->balance_type == 'Debit') {
-
 
                                         $balance = ($debit_balance + $paginate_debit_balance) - ($credit_balance + $paginate_credit_balance);
 
@@ -218,7 +209,6 @@
 @section('js')
     <script src="{{ asset('assets/js/chosen.jquery.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap-datepicker.min.js') }}"></script>
-
 
     <script src="{{ asset('assets/custom_js/chosen-box.js') }}"></script>
     <script src="{{ asset('assets/custom_js/date-picker.js') }}"></script>

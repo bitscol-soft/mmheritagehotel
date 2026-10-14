@@ -179,7 +179,7 @@ class PaymentVoucherController extends Controller
     {
         $this->hasAccess("voucher-payments.view");
 
-        $voucher = Voucher::with('details', 'company')->find($id);
+        $voucher = Voucher::with('details', 'company')->findOrFail($id);
 
         return view('voucher.payments.invoice', compact('voucher'));
     }
@@ -204,7 +204,7 @@ class PaymentVoucherController extends Controller
 
         if ($payment->is_approved == 1) {
 
-            return redirect()->back()->withInput()->with('error', 'This Vocuher Already Approved');
+            return redirect()->back()->withInput()->with('error', 'This Voucher Already Approved');
         }
 
         try {

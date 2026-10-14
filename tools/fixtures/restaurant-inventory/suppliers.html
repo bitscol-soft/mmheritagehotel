@@ -6,11 +6,45 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Suppliers</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Restaurant suppliers.</p>            </div>
-            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a href="#modal-dialog" data-toggle="modal" class="mm-button">
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Restaurant food &amp; kitchen raw-material suppliers with contact details and payable balances.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a href="/preview/rst-purchases-index" class="mm-button mm-button-secondary"><i class="fa fa-truck"></i> Purchases</a>
+                <a href="#modal-dialog" data-toggle="modal" class="mm-button">
                     <i class="fa fa-plus-circle"></i> Add New Supplier
-                </a></div>        </header>
-        <div class="mm-panel tw-p-4 sm:tw-p-6"><div class="modal fade" id="modal-dialog">
+                </a>
+            </div>        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Restaurant suppliers summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-truck"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Kitchen Vendors</span>
+                    <div class="mm-table-kpi-value">Fresh Foods <span class="mm-table-kpi-sub">Approved Supplier</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-phone"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Contact Directory</span>
+                    <div class="mm-table-kpi-value">Verified ✓ <span class="mm-table-kpi-sub">Phone &amp; Email</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-columns"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Vendor Editor</span>
+                    <div class="mm-table-kpi-value">App Drawer <span class="mm-table-kpi-sub">#modal-dialog</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Procurement Sync</span>
+                    <div class="mm-table-kpi-value">Active ✓ <span class="mm-table-kpi-sub">Kitchen PO Linked</span></div>
+                </div>
+            </div>
+        </div>
+        <div class="mm-panel tw-p-4 sm:tw-p-6"><div class="modal fade mm-drawer mm-drawer" data-mm-drawer="true" id="modal-dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <form method="POST" action="http://localhost/rst/suppliers/store" class="form-horizontal" role="form"
@@ -107,7 +141,7 @@
                                                 </button>
                                             
                                         </div>
-                                        <div class="modal fade" id="modal-dialog1">
+                                        <div class="modal fade mm-drawer mm-drawer" data-mm-drawer="true" id="modal-dialog1">
     <div class="modal-dialog">
         <div class="modal-content">
             <form method="POST" action="http://localhost/rst/suppliers/store" class="form-horizontal" role="form">

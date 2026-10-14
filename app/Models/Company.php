@@ -40,7 +40,7 @@ class Company extends Model
         if (!App::runningInConsole()) {
             static::creating(function ($model) {
                 $model->fill([
-                    'group_id' => auth()->user()->company->group->id,
+                    'group_id' => optional(optional(optional(auth()->user())->company)->group)->id ?? optional(Group::first())->id,
                     'created_at' => Carbon::now(),
                     'updated_at' => Carbon::now(),
                 ]);
@@ -109,7 +109,7 @@ class Company extends Model
     {
         $companyId = $this->create([
 
-            'group_id'          => auth()->user()->company->group->id,
+            'group_id'          => optional(optional(optional(auth()->user())->company)->group)->id ?? optional(Group::first())->id,
             'name'              => $request->name,
             'business_type'     => $request->business_type,
             'business_type_id'  => $request->business_type_id,
@@ -197,7 +197,7 @@ class Company extends Model
     {
 
         $this->update([
-            'group_id'          => auth()->user()->company->group->id,
+            'group_id'          => optional(optional(optional(auth()->user())->company)->group)->id ?? optional(Group::first())->id,
             'name'              => $request->name,
             'business_type'     => $request->business_type,
             'business_type_id'  => $request->business_type_id,

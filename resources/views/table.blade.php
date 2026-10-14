@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title','Table')
-@section('page-header')
-    <i class="fa fa-list"></i> Table
-@stop
 @section('css')
 
     <link rel="stylesheet" href="{{ asset('assets/css/jquery-ui.min.css') }}" />
@@ -262,24 +259,21 @@
 {{--    End Add New Modal--}}
 
 
-    <div class="page-header">
+    <x-mm.styles />
+    <x-mm.page class="mm-crud-index" title="Table">
+        <x-slot name="actions">
+            <a class="btn btn-sm btn-primary" href="#modal-form" role="button" data-toggle="modal">
+                <i class="fa fa-plus"></i> Add New
+            </a>
+            <button type="button" onclick="delete_all_check()" class="btn btn-sm btn-danger" title="Delete">
+                <i class="fa fa-trash-o"></i> Delete All
+            </button>
+            <form action="" id="deleteAllCheck" method="POST" style="display: none;">
+                @csrf
+            </form>
+        </x-slot>
 
-        <button type="button" onclick="delete_all_check()" class="btn btn-xs btn-danger" title="Delete"
-                style="float: right; margin: 0 2px;">
-            <i class="fa fa-trash-o"></i> Delete All
-        </button>
-
-        <form action="" id="deleteAllCheck" method="POST">
-            @csrf
-        </form>
-        <a class="btn btn-xs btn-info" href="#modal-form" role="button" class="blue" data-toggle="modal" style="float: right; margin: 0 2px;"> <i class="fa fa-plus"></i> Add New</a>
-
-        <h1>
-            @yield('page-header')
-        </h1>
-    </div>
-
-
+        <x-mm.panel>
     <div class="row">
         <div class="col-xs-12">
 
@@ -363,6 +357,8 @@
 
         </div>
     </div>
+        </x-mm.panel>
+    </x-mm.page>
 
 
 

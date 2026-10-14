@@ -1,10 +1,6 @@
 @extends('layouts.master')
 @section('title', 'Hotel Service Invoice')
 
-@section('page-header')
-    <i class="fa fa-gear"></i> Hotel Service Invoice
-@stop
-
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -68,32 +64,23 @@
 
 {{-- @dd($invoice) --}}
 @section('content')
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="widget-box">
-                <div class="widget-header hidden-print">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
-                    @if (hasPermission('service.view', $slugs))
-                        <span class="widget-toolbar">
-                            <a href="{{ route('hotelservice.service-sales.create') }}">
-                                <i class="fa fa-plus"></i>
-                                Create New
-                            </a>
-                            <a href="{{ route('hotelservice.service-sales.index') }}">
-                                <i class="fa fa-list"></i>
-                                All Sales
-                            </a>
-                            <a href="#" onclick="printPage('print_body')">
-                                <i class="fa fa-print"></i>
-                                Print
-                            </a>
-                        </span>
-                    @endif
+    <x-mm.styles />
+    <x-mm.page class="mm-invoice-page" title="Hotel Service Invoice">
+        <x-slot name="actions">
+            @if (hasPermission('service.view', $slugs))
+                <a href="{{ route('hotelservice.service-sales.create') }}" class="btn btn-sm btn-primary hidden-print">
+                    <i class="fa fa-plus"></i> Create New
+                </a>
+                <a href="{{ route('hotelservice.service-sales.index') }}" class="btn btn-sm btn-default hidden-print">
+                    <i class="fa fa-list"></i> All Sales
+                </a>
+                <a href="#" onclick="printPage('print_body')" class="btn btn-sm btn-default hidden-print">
+                    <i class="fa fa-print"></i> Print
+                </a>
+            @endif
+        </x-slot>
 
-                </div>
-                <div class="widget-body">
-                    <div class="widget-main">
-
+        <x-mm.panel>
                         <div class="row">
                             <div id="print_body">
                                 <div id="customer_info" style="padding: 0 10px;">
@@ -255,13 +242,8 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-
-
-        </div>
-    </div>
+        </x-mm.panel>
+    </x-mm.page>
 @endsection
 
 @section('js')

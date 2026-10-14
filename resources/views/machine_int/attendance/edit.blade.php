@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title','Attendance Device Integration')
-@section('page-header')
-    <i class="fa fa-gears"></i> Attendance Device Integration
-@stop
 @section('css')
 
     <link rel="stylesheet" href="{{ asset('assets/css/jquery-ui.min.css') }}" />
@@ -15,25 +12,9 @@
 
 
 @section('content')
-
-    <div class="row">
-        <div class="col-sm-12">
-
-
-
-                <div class="col-sm-12 widget-container-col ui-sortable" id="widget-container-col-7">
-                    <div class="widget-box widget-color-grey ui-sortable-handle" id="widget-box-7">
-                        <div class="widget-header widget-header-small">
-                            <h5 class="widget-title smaller">
-                                @yield('page-header')
-                            </h5>
-                            <div class="widget-toolbar">
-
-                            </div>
-                        </div>
-                        <div class="widget-body">
-                            <div class="widget-main">
-
+    <x-mm.styles />
+    <x-mm.page class="mm-crud-form" title="Attendance Device Integration">
+        <x-mm.panel>
                                 <form action="{{ route('attendance-device.update', $attendanceDevice->id) }}" method="post">
                                     @csrf
                                     @method('PUT')
@@ -105,23 +86,8 @@
                                         </div>
                                     </div>
                                 </form>
-
-
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-
-
-
-
-
-
-        </div>
-    </div>
+        </x-mm.panel>
+    </x-mm.page>
 
 @endsection
 

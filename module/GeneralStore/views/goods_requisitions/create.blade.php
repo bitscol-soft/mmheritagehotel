@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title', 'Goods Requisition')
-@section('page-header')
-    <i class="fa fa-gear"></i> Create Goods Requisition
-@stop
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -14,7 +11,6 @@
 
     </style>
 @stop
-
 
 @section('content')
 
@@ -99,9 +95,6 @@
                 </div>
             </div>
 
-
-
-
             <!-- product entry form -->
             <div class="row text-center">
                 <div class="col-sm-12">
@@ -126,9 +119,6 @@
                                     <td width="5%">Qty</td>
                                 </tr>
                             </thead>
-
-
-
 
                             <tbody class="text-left">
                                 @if (old('item_id'))
@@ -174,7 +164,6 @@
                                                     class="ibtnDel btn btn-sm btn-danger delete_row"
                                                     onclick="removeRow(this)"><i
                                                         class="fa fa-times-circle"></i></button></td>
-
 
                                             <input type="hidden" name="issue_number[]"
                                                 class="issue_number_input"
@@ -260,7 +249,6 @@
 
             <input type="hidden" id="total" value="0" name="total">
 
-
         </form>
     </x-mm.panel>
 </x-mm.page>
@@ -274,11 +262,8 @@
     <script src="{{ asset('assets/js/chosen.jquery.min.js') }}"></script>
     <script src="{{ asset('assets/custom_js/jq_repeater.js') }}"></script>
 
-
     <script src="{{ asset('assets/js/bootstrap-datepicker.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap-timepicker.min.js') }}"></script>
-
-
 
     <!--datepicker plugin-->
     <script type="text/javascript">
@@ -286,9 +271,6 @@
         $('.date-picker').datepicker().on('changeDate', function(e) {
             $('.date-picker').datepicker('hide');
         });
-
-
-
 
         $(document).on('ready', function() {
 
@@ -299,9 +281,6 @@
 
             }
         })
-
-
-
 
         jQuery(function($) {
 
@@ -318,20 +297,14 @@
         })
     </script>
 
-
-
     <script>
         var item_row = 0;
         var items = [];
-
-
-
 
         // insert new row
         function insert_Row(el) {
             // first delete add item
             $(el).parents("tr").remove();
-
 
             // add new item row
             var r = document.getElementById('purchase_table').insertRow();
@@ -346,8 +319,6 @@
             var c8 = r.insertCell(7);
             var c9 = r.insertCell(8);
             var c10 = r.insertCell(9);
-
-
 
             var inputs =
                 '<input type="hidden" name="issue_number[]" class="issue_number_input"><input type="hidden" name="source[]" class="source_input"><input type="hidden" name="issue_rates[]" class="issue_rate_input"><input type="hidden" name="issue_quantities[]" class="issue_quantity_input">';
@@ -375,12 +346,10 @@
             c10.innerHTML =
                 '<button type="button" class="ibtnDel btn btn-sm btn-danger delete_row" onclick="removeRow(this)"><i class="fa fa-times-circle"></i></button>';
 
-
             // again add "+ Add New" Button
             var markup =
                 '<tr><td colspan="11" style="text-align: right;"><button type="button" onclick="insert_Row(this)" class="btn btn-xs btn-inverse add_row r-btnAdd"> + Add New </button></td></tr>';
             $("table tbody").append(markup);
-
 
             $('.item' + item_row).empty();
             $('.item' + item_row).append('<option></option>');
@@ -403,9 +372,6 @@
 
         }
 
-
-
-
         // load items to the select box when change company
         function load_items(element) {
             var id = $(element).val() || element;
@@ -426,7 +392,6 @@
                 }
             });
         }
-
 
         // load item unit and current stock when change item
         function load_item_stock(element) {
@@ -453,13 +418,11 @@
                     data: 'id=' + id,
                     success: function(res) {
 
-
                         // tracking info
                         if (res['receive_items'] != null) {
                             // gin number
                             if (res['requisition_number'] != null) {
                                 var gin_url = '/gs/gin-list/' + res['requisition_number'].id;
-
 
                                 // manage item
                                 var rates = "";
@@ -526,7 +489,6 @@
         }
     </script>
 
-
     {{-- chosen select --}}
     <script type="text/javascript">
         $(() => chosenTrigger())
@@ -562,7 +524,6 @@
                     });
                 }
 
-
                 if (!ace.vars['touch']) {
                     $('.chosen-select').chosen({
                         allow_single_deselect: true
@@ -594,7 +555,6 @@
             })
         }
 
-
         function checkQtyLimit(object) {
             let current_stock = Number($(object).closest('tr').find('.current_stock').val() | 0)
             let qty = Number($(object).val() | 0)
@@ -605,6 +565,5 @@
             }
         }
     </script>
-
 
 @stop

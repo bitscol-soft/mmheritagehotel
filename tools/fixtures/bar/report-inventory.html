@@ -16,8 +16,43 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Product inventory</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Stock on hand for the selected product filters.</p>            </div>
-                    </header>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Bar cellar stock on hand, bottle/peg balances, and valuation for the selected filters.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/bar-products"><i class="fa fa-glass"></i> Bar Products</a>
+                <a class="mm-button" href="/preview/bar-pos"><i class="fa fa-bolt"></i> Open Bar POS</a>
+            </div>
+        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Bar product inventory summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-glass"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Cellar Stock</span>
+                    <div class="mm-table-kpi-value">RST-0101 <span class="mm-table-kpi-sub">Spirits &amp; Wine</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-money"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Inventory Value</span>
+                    <div class="mm-table-kpi-value">৳ 1,250.00 <span class="mm-table-kpi-sub">Current Filter</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Pour Readiness</span>
+                    <div class="mm-table-kpi-value">In Stock ✓ <span class="mm-table-kpi-sub">Bar POS Synced</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-file-excel-o"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Export Report</span>
+                    <div class="mm-table-kpi-value">Excel Ready <span class="mm-table-kpi-sub">1-Click Download</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 mm-report-filter"><div class="col-sm-12 mb-2 ml-4"><form method="get"><div class="row"><div class="col-md-4"><div class="input-group"><div class="input-group-addon"><label class="input-group-text">Product</label></div><input type="text" name="id" class="form-control"></div></div><div class="col-md-3"><div class="input-group"><div class="input-group-addon"><label class="input-group-text">Category</label></div><select name="category_id" class="form-control"><option>All</option></select></div></div><div class="col-md-3"><div class="input-group"><div class="input-group-addon"><label class="input-group-text">From</label></div><input type="text" name="from_date" class="form-control date-picker"></div></div><div class="col-md-2"><button type="submit" class="btn btn-sm btn-primary">Search</button></div></div></form><script>function loadSelect2() {} function formatProduct() {} function formatSelection() {} // the product-select widget defines this in the real filter</script></div></div>
     <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><div class="json_table mt-2">
 

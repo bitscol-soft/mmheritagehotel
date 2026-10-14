@@ -159,6 +159,62 @@
                 </li>
 
 
+                {{-- W2.2: topbar additions. --}}
+                {{-- 1. "Today" date button → booking board with the
+                     current day as default stay range. The board's
+                     $availablity_check default is the request
+                     'booking_date' param or today/tomorrow, so a
+                     plain link to the route lands the user on
+                     today's board. --}}
+                <li class="light-10" title="Open today's booking board">
+                    <a href="{{ route('booking.ui') }}" aria-label="Today's booking board">
+                        <i class="fa fa-2x fa-calendar dark" style="margin-top: 10px;"></i>
+                        <span class="topbar-text-color" style="font-size: 12px; margin-left: 4px;">Today</span>
+                    </a>
+                </li>
+
+                {{-- 2. Quick-add dropdown. Three entries, each gated
+                     by the same permission that gates the create
+                     route's create button. New Booking and New
+                     Guest are the most common. The "Reservation
+                     confirmation" entry navigates to the
+                     reservation-invoice screen for an existing
+                     booking — but the plan scope is "create" only,
+                     so this is left as a future addition. --}}
+                <li class="light-10 dropdown-modal" title="Quick add">
+                    <a data-toggle="dropdown" class="dropdown-toggle" href="#" aria-label="Quick add menu">
+                        <i class="fa fa-2x fa-plus-circle dark" style="margin-top: 10px;"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                        @if (hasPermission('bookings.add'))
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="{{ route('booking.create') }}">
+                                    <i class="fa fa-bed" aria-hidden="true"></i> New Booking
+                                </a>
+                            </li>
+                        @endif
+                        @if (hasPermission('guests.add'))
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="{{ route('guests.create') }}">
+                                    <i class="fa fa-user-plus" aria-hidden="true"></i> New Guest
+                                </a>
+                            </li>
+                        @endif
+                        {{-- Fallback when neither permission is held:
+                             show a single disabled entry so the menu
+                             still opens and the user can see the
+                             affordance. --}}
+                        @if (!hasPermission('bookings.add') && !hasPermission('guests.add'))
+                            <li role="presentation" class="disabled">
+                                <a role="menuitem" tabindex="-1" href="#" aria-disabled="true">
+                                    <i class="fa fa-lock" aria-hidden="true"></i> No quick-add actions available
+                                </a>
+                            </li>
+                        @endif
+                    </ul>
+                </li>
+
+
                 <li class="light-10 dropdown-modal notification-dropdown" title="Recommend Notifications">
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#" aria-label="Notifications">
                         <i class="fa fa-2x fa-bell dark" style="margin-top: 10px;"></i>

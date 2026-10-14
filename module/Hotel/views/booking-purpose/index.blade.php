@@ -1,10 +1,5 @@
 @extends('layouts.master')
 @section('title', 'Booking Purpose')
-@section('page-header') <i class="fa fa-info-circle"></i> Booking Purpose @stop
-
-@section('css')
-    {{-- @include('guests.include.css') --}}
-@endsection
 
 @section('content')
     <x-mm.styles />
@@ -19,87 +14,77 @@
 
             <!-- For Purpose -->
             @if (request('type') == 'purpose')
-                <div>
-                    <x-mm.table-scroll label="Booking setup records"><table class="table table-striped table-bordered table-hover">
-                        <thead>
+                <x-mm.panel class="tw-p-4">
+                    <x-mm.data-table :columns="[
+                        ['label' => 'SL', 'width' => '5%', 'align' => 'center'],
+                        ['label' => 'Name', 'width' => '50%', 'align' => 'center'],
+                        ['label' => 'Status', 'width' => '20%', 'align' => 'center'],
+                        ['label' => 'Action', 'width' => '10%', 'align' => 'center'],
+                    ]" label="Booking setup records" table-class="table table-striped table-bordered table-hover">
+                        @forelse ($booking_purpose->where('rule', 1)->get() as $item)
                             <tr>
-                                <th scope="col" width="5%" >SL</th>
-                                <th scope="col" width="50%" class="center">Name</th>
-                                <th scope="col" width="20%" class="center">Status</th>
-                                <th scope="col" width="10%" class="center">Action</th>
+                                <td class="center">{{ $loop->index + 1 }}</td>
+                                <td>{{ $item->name }}</td>
+                                <td>{{ $item->status }}</td>
+
+                                <td class="center">
+                                    <div class="btn-group">
+                                        <a aria-label="Edit booking label" class="btn btn-sm btn-success"
+                                            href="{{ route('booking-purpose.edit', $item->id) }}?type={{ request('type') }}">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+
+                                        <button type="button"
+                                            onclick="delete_item(`{{ route('booking-purpose.destroy', $item->id) }}`)"
+                                            class="btn btn-sm btn-danger" title="Delete">
+                                            <i class="fa fa-trash-o"></i>
+                                        </button>
+                                    </div>
+                                </td>
                             </tr>
-                        </thead>
-
-                        <tbody>
-                            @foreach ($booking_purpose->where('rule', 1)->get() as $item)
-                                <tr>
-                                    <td class="center">{{ $loop->index + 1 }}</td>
-                                    <td>{{ $item->name }}</td>
-                                    <td>{{ $item->status }}</td>
-
-                                    <td class="center">
-                                        <div class="btn-group">
-                                            <a aria-label="Edit booking label" class="btn btn-sm btn-success"
-                                                href="{{ route('booking-purpose.edit', $item->id) }}?type={{ request('type') }}">
-                                                <i class="fa fa-edit"></i>
-                                            </a>
-
-                                            <button type="button"
-                                                onclick="delete_item(`{{ route('booking-purpose.destroy', $item->id) }}`)"
-                                                class="btn btn-sm btn-danger" title="Delete">
-                                                <i class="fa fa-trash-o"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table></x-mm.table-scroll>
-                </div>
+                        @empty
+                            <x-no-table-record />
+                        @endforelse
+                    </x-mm.data-table>
+                </x-mm.panel>
             @endif
-
 
             <!-- For Platform -->
             @if (request('type') == 'platform')
-                <div>
-                    <x-mm.table-scroll label="Booking setup records"><table class="table table-striped table-bordered table-hover">
-                        <thead>
+                <x-mm.panel class="tw-p-4">
+                    <x-mm.data-table :columns="[
+                        ['label' => 'SL', 'width' => '5%', 'align' => 'center'],
+                        ['label' => 'Name', 'width' => '50%', 'align' => 'center'],
+                        ['label' => 'Status', 'width' => '20%', 'align' => 'center'],
+                        ['label' => 'Action', 'width' => '10%', 'align' => 'center'],
+                    ]" label="Booking setup records" table-class="table table-striped table-bordered table-hover">
+                        @forelse ($booking_purpose->where('rule', 2)->get() as $item)
                             <tr>
-                                <th scope="col" width="5%" >SL</th>
-                                <th scope="col" width="50%" class="center">Name</th>
-                                <th scope="col" width="20%" class="center">Status</th>
-                                <th scope="col" width="10%" class="center">Action</th>
+                                <td class="center">{{ $loop->index + 1 }}</td>
+                                <td>{{ $item->name }}</td>
+                                <td>{{ $item->status }}</td>
+
+                                <td class="center">
+                                    <div class="btn-group">
+                                        <a aria-label="Edit booking label" class="btn btn-sm btn-success"
+                                            href="{{ route('booking-purpose.edit', $item->id) }}?type={{ request('type') }}">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
+
+                                        <button type="button"
+                                            onclick="delete_item(`{{ route('booking-purpose.destroy', $item->id) }}`)"
+                                            class="btn btn-sm btn-danger" title="Delete">
+                                            <i class="fa fa-trash-o"></i>
+                                        </button>
+                                    </div>
+                                </td>
                             </tr>
-                        </thead>
-
-                        <tbody>
-                            @foreach ($booking_purpose->where('rule', 2)->get() as $item)
-                                <tr>
-                                    <td class="center">{{ $loop->index + 1 }}</td>
-                                    <td>{{ $item->name }}</td>
-                                    <td>{{ $item->status }}</td>
-
-                                    <td class="center">
-                                        <div class="btn-group">
-                                            <a aria-label="Edit booking label" class="btn btn-sm btn-success"
-                                                href="{{ route('booking-purpose.edit', $item->id) }}?type={{ request('type') }}">
-                                                <i class="fa fa-edit"></i>
-                                            </a>
-
-                                            <button type="button"
-                                                onclick="delete_item(`{{ route('booking-purpose.destroy', $item->id) }}`)"
-                                                class="btn btn-sm btn-danger" title="Delete">
-                                                <i class="fa fa-trash-o"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table></x-mm.table-scroll>
-                </div>
+                        @empty
+                            <x-no-table-record />
+                        @endforelse
+                    </x-mm.data-table>
+                </x-mm.panel>
             @endif
-            {{-- @include('partials._paginate', ['data' => $booking_purpose]) --}}
 
         </div>
     </div>

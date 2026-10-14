@@ -7,9 +7,43 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Suppliers</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Suppliers, their contact details and types.</p>            </div>
-            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button" href="http://localhost/gs/suppliers/create"> <i
-                    class="fa fa-plus"></i> Add  Supplier </a></div>        </header>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">General store vendors, contact details and supplier classifications.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/gs-purchases"><i class="fa fa-shopping-cart"></i> Store Purchases</a>
+                <a class="mm-button" href="http://localhost/gs/suppliers/create"> <i
+                    class="fa fa-plus"></i> Add  Supplier </a>
+            </div>        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="General store suppliers summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-truck"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Registered Vendors</span>
+                    <div class="mm-table-kpi-value">Sarker Traders <span class="mm-table-kpi-sub">Local Supplier</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-phone"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Contact Info</span>
+                    <div class="mm-table-kpi-value">Verified ✓ <span class="mm-table-kpi-sub">Dhaka Office</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-columns"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Vendor Profile</span>
+                    <div class="mm-table-kpi-value">App Drawer <span class="mm-table-kpi-sub">#view-details1</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Procurement Status</span>
+                    <div class="mm-table-kpi-value">Approved ✓ <span class="mm-table-kpi-sub">PO &amp; GRN Ready</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6"><div class="table-responsive" style="border: 1px #cdd9e8 solid;">
             <div class="mm-table-scroll" role="region" aria-label="Suppliers" tabindex="0"><table id="data-table" class="table table-striped table-bordered table-hover">
                     <thead>

@@ -14,8 +14,43 @@
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Purchase list</h1>
                 <p class="tw-m-0 tw-text-sm tw-text-muted">Requisitions, approvals and receipts of general store purchases.</p>            </div>
-            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button" href="http://localhost/gs/purchases/create"> <i
-                    class="fa fa-plus"></i> Add Purchase </a></div>        </header>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/gs-gr-list"><i class="fa fa-exchange"></i> Requisitions</a>
+                <a class="mm-button mm-button-secondary" href="/preview/gs-grn-list"><i class="fa fa-truck"></i> GRN List</a>
+                <a class="mm-button" href="http://localhost/gs/purchases/create"> <i class="fa fa-plus"></i> Add Purchase </a>
+            </div>        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="General store purchase summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-shopping-cart"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Purchase Orders</span>
+                    <div class="mm-table-kpi-value">2 POs <span class="mm-table-kpi-sub">This Period</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Approved &amp; GRN</span>
+                    <div class="mm-table-kpi-value">1 PO <span class="mm-table-kpi-sub">Received in Store</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-clock-o"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Pending Approval</span>
+                    <div class="mm-table-kpi-value">1 PO <span class="mm-table-kpi-sub">Awaiting Sign-off</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-money"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Procurement Value</span>
+                    <div class="mm-table-kpi-value">৳ 24,500 <span class="mm-table-kpi-sub">Central Store</span></div>
+                </div>
+            </div>
+        </div>
+
         <div class="mm-panel tw-p-4 sm:tw-p-6 mm-report-filter"><form class="form-horizontal mm-setup-filter mm-report-form" action="http://localhost/purchases" method="get">
             <input type="hidden" name="_token" value="fixture-csrf-token">
             <div class="mm-report-field">

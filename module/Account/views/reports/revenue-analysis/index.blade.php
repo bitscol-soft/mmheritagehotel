@@ -2,10 +2,6 @@
 
 @section('title', 'Revenue Analysis')
 
-@section('page-header')
-    <i class="fa fa-line-chart"></i> Revenue Analysis
-@stop
-
 @section('content')
 
 <x-mm.styles />

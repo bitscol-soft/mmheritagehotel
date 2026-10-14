@@ -14,10 +14,44 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Sale return list</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Returns raised against bar invoices.</p>            </div>
-            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button" href="http://localhost/x/bar/sale-returns/create">
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Credit returns and bottle adjustments raised against bar invoices.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/bar-sales-list"><i class="fa fa-glass"></i> Bar Sale List</a>
+                <a class="mm-button" href="http://localhost/x/bar/sale-returns/create">
                     <i class="fa fa-plus"></i> Add New
-                </a></div>        </header>
+                </a>
+            </div>        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Bar sale return summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-undo"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Return Vouchers</span>
+                    <div class="mm-table-kpi-value">RET-0101 <span class="mm-table-kpi-sub">Rahim · Room #101</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-money"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Returned Value</span>
+                    <div class="mm-table-kpi-value">৳ 240.00 <span class="mm-table-kpi-sub">Folio Credited</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-cubes"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Stock Restored</span>
+                    <div class="mm-table-kpi-value">Auto-Synced <span class="mm-table-kpi-sub">Bar Cellar</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Approval Status</span>
+                    <div class="mm-table-kpi-value">Verified ✓ <span class="mm-table-kpi-sub">Manager Signed</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 mm-report-filter"><form class="mm-setup-filter mm-report-form">
             <input type="text" class="form-control">
 

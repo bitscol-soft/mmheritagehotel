@@ -5,8 +5,43 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Booking night audit report</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Night audits closed in the selected period.</p>            </div>
-                    </header>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Closed front-desk night audits with daily occupancy, revenue and due reconciliation.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/night-audit"><i class="fa fa-moon-o"></i> Night Audit List</a>
+                <a class="mm-button mm-button-secondary" href="/preview/night-audit-generate"><i class="fa fa-check-square-o"></i> Generate Audit</a>
+            </div>
+        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Booking night audit report summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-moon-o"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Closed Audit Days</span>
+                    <div class="mm-table-kpi-value">1 Audit Day <span class="mm-table-kpi-sub">30 Sep 2026</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-bed"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Audited Rooms</span>
+                    <div class="mm-table-kpi-value">2 Check-Ins <span class="mm-table-kpi-sub">1 Check-Out</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-money"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Day Collection</span>
+                    <div class="mm-table-kpi-value">৳ 7,300.00 <span class="mm-table-kpi-sub">INV-0007</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-columns"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Day Detail View</span>
+                    <div class="mm-table-kpi-value">App Drawer <span class="mm-table-kpi-sub">#audit-view-details7</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 mm-report-filter"><form action="" method="GET" class="mm-setup-filter mm-report-form">
                 <div class="mm-report-field">
                     <div class="input-group">
@@ -104,7 +139,7 @@
     </div>
 </section>
 
-    <div class="modal fade" id="audit-view-details7" role="dialog">
+    <div class="modal fade mm-drawer mm-drawer" data-mm-drawer="true" id="audit-view-details7" role="dialog">
     <div class="modal-dialog modal-lg">
 
       <!-- Modal content-->

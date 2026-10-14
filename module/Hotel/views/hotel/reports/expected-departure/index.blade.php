@@ -2,10 +2,6 @@
 
 @section('title', 'Expected Departure List')
 
-@section('page-header')
-    <i class="fa fa-plus-circle"></i> Expected Departure List
-@stop
-
 @section('content')
 <x-mm.styles />
 <x-mm.page class="mm-report" title="Expected departure list" description="Guests due to check out on the selected date.">
@@ -33,10 +29,9 @@
             </x-mm.table-scroll>
             <x-paginate :data="$bookings" />
 
-            <x-export-button :pdf=1 :excel=1 />
+            <x-export-button :pdf=1 :excel=1 :print=1 />
         </x-mm.panel>
     @endif
 </x-mm.page>
 @endsection
-
 

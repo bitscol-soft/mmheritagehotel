@@ -2,10 +2,6 @@
 
 @section('title', 'Received Payment Statement')
 
-@section('page-header')
-    <i class="fa fa-money"></i> Received Payment Statement
-@stop
-
 @section('content')
 
 <x-mm.styles />

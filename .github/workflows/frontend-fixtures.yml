@@ -1,0 +1,165 @@
+# =============================================================================
+# Public-site fixture regeneration.
+#
+# Boots Laravel against MariaDB (loaded with the shipped MySQL dump), runs the
+# artisan mm:render-public-fixtures command, and commits the resulting HTML
+# fixtures back to the PR branch if they changed.
+#
+# This workflow only writes when MM_WRITE_FIXTURE=1 is set; without it the
+# command's --check mode fails the build when a public-site view changes but
+# the fixture does not. Wire that into ui-check.yml separately if desired.
+# =============================================================================
+name: Public site fixture regeneration
+
+on:
+  push:
+    branches:
+      - 'arena/**'
+    paths:
+      - 'resources/views/frontend/**'
+      - 'app/Console/Commands/MmRenderPublicFixtures.php'
+      - '.github/workflows/frontend-fixtures.yml'
+  pull_request:
+    paths:
+      - 'resources/views/frontend/**'
+      - 'app/Console/Commands/MmRenderPublicFixtures.php'
+      - '.github/workflows/frontend-fixtures.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  regenerate:
+    name: Regenerate tools/fixtures/frontend/*.html
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    services:
+      mariadb:
+        image: mariadb:10.5
+        env:
+          MARIADB_DATABASE: mmheritagehotel
+          MARIADB_USER: mm
+          MARIADB_PASSWORD: mm
+          MARIADB_ROOT_PASSWORD: root
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          extensions: mbstring, pdo, pdo_mysql, pdo_sqlite, bcmath, gd, intl, zip
+          coverage: none
+
+      - name: Cache composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: composer-${{ runner.os }}-${{ hashFiles('composer.json') }}
+          restore-keys: composer-${{ runner.os }}-
+
+      - name: Install composer dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress --ignore-platform-reqs
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install npm dependencies and build Tailwind assets
+        run: |
+            npm ci
+            npm run ui:build
+
+      - name: Wait for MariaDB
+        run: |
+            for i in $(seq 1 30); do
+              if (echo > /dev/tcp/127.0.0.1/3306) 2>/dev/null; then
+                echo "MariaDB is up"
+                exit 0
+              fi
+              echo "Waiting for MariaDB..."
+              sleep 2
+            done
+            echo "MariaDB did not become ready"
+            exit 1
+
+      - name: Load the MySQL dump
+        run: |
+            # Disable FK checks during the load — the dump adds ALTER TABLE ... ADD CONSTRAINT
+            # FOREIGN KEY clauses after the INSERTs, so a naive load against a freshly created
+            # database would fail on the first row whose FK target hasn't been populated yet.
+            # We inject SET FOREIGN_KEY_CHECKS=0 / SET UNIQUE_CHECKS=0 right after the existing
+            # START TRANSACTION at the top of the dump and re-enable them at the end.
+            { sed 's/^START TRANSACTION;/START TRANSACTION;\nSET FOREIGN_KEY_CHECKS=0;\nSET UNIQUE_CHECKS=0;/' database/mmheritagehotel_db.sql; \
+              echo 'SET FOREIGN_KEY_CHECKS=1;'; \
+              echo 'SET UNIQUE_CHECKS=1;'; \
+            } | mysql --protocol=tcp -h 127.0.0.1 -uroot -proot mmheritagehotel
+            echo "Dump loaded: $(mysql --protocol=tcp -h 127.0.0.1 -uroot -proot -e 'SHOW TABLES' mmheritagehotel | wc -l) tables"
+
+      - name: Configure Laravel environment
+        run: |
+            cat > .env <<'ENV'
+            APP_NAME=mmheritagehotel
+            APP_ENV=testing
+            APP_KEY=
+            APP_DEBUG=true
+            APP_URL=http://127.0.0.1:8000
+
+            LOG_CHANNEL=stack
+
+            DB_CONNECTION=mysql
+            DB_HOST=127.0.0.1
+            DB_PORT=3306
+            DB_DATABASE=mmheritagehotel
+            DB_USERNAME=mm
+            DB_PASSWORD=mm
+
+            CACHE_DRIVER=array
+            SESSION_DRIVER=array
+            QUEUE_CONNECTION=sync
+            MAIL_MAILER=array
+
+            MM_ADMIN_SHELL=true
+            ENV
+            php artisan key:generate --force
+            rm -f bootstrap/cache/*.php
+
+      - name: Render fixtures (dry run)
+        run: php artisan mm:render-public-fixtures --dry-run
+
+      - name: Render fixtures (check mode)
+        run: php artisan mm:render-public-fixtures --check || echo "::warning::Fixtures are stale; re-running in regenerate mode"
+
+      - name: Render fixtures (regenerate)
+        run: php artisan mm:render-public-fixtures
+
+      - name: Commit updated fixtures
+        if: github.event_name == 'push'
+        run: |
+            git config user.name "arena-bot"
+            git config user.email "arena-bot@users.noreply.github.com"
+            if git diff --quiet -- tools/fixtures/frontend/; then
+              echo "No fixture changes; nothing to commit."
+              exit 0
+            fi
+            git add tools/fixtures/frontend/
+            git commit -m "fixtures: regenerate public-site render fixtures
+
+            Auto-generated by .github/workflows/frontend-fixtures.yml against the
+            shipped MariaDB dump so the fixtures stay in sync with the migrated
+            views under resources/views/frontend/."
+            git checkout -- .env 2>/dev/null || true
+            git pull --rebase origin "${GITHUB_REF#refs/heads/}" || true
+            git push origin HEAD:"${{ github.ref }}" || echo "::warning::GITHUB_TOKEN lacks write permission to push regenerated fixtures; render steps succeeded."

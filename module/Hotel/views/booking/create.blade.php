@@ -2,10 +2,6 @@
 
 @section('title', 'Add Booking')
 
-@section('page-header')
-    <i class="fa fa-plus-circle"></i> Add New Booking
-@stop
-
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -65,10 +61,8 @@
         }
     </style>
 
-
     @include('booking._css.css')
 @endpush
-
 
 @section('content')
     @php
@@ -98,12 +92,10 @@
                             @include('partials._alert_message')
                             @include('booking._modal._guest-details-modal')
 
-
                             <!------------ INCLUDE GUEST INPUT FIELDS ------------>
                             <div class="row">
                                 @include('booking._inc._add-guest-input-info')
                             </div>
-
 
                             <!-- Room Information Table -->
                             <div class="row">
@@ -143,11 +135,9 @@
                                 </div>
                             </div>
 
-
                             @include('booking/_modal/member-detail-modal')
 
                         </form>
-
 
                         <!-- ACTION/SUBMIT FORM -->
                         <div class="mm-form-actions">
@@ -175,6 +165,5 @@
 
     @include('booking._script.script')
     <script src="{{ asset('assets/custom_js/stay-dates.js') }}"></script>
-
 
 @endsection

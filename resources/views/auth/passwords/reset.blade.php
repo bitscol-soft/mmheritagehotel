@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', __('Reset Password') . ' - ' . config('app.name'))
+
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
@@ -55,6 +57,10 @@
                                     {{ __('Reset Password') }}
                                 </button>
                             </div>
+                        </div>
+
+                        <div class="mm-auth-foot">
+                            <a href="{{ route('login') }}">{{ __('Back to login') }}</a>
                         </div>
                     </form>
                 </div>

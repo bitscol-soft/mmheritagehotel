@@ -4,35 +4,23 @@
 
 @extends('layouts.master')
 @section('title','Edit Group')
-@section('page-header')
-    <i class="fa fa-pencil-square-o"></i> Edit Group
-@stop
 @section('css')
 
 @stop
 
 
 @section('content')
+    <x-mm.styles />
+    <x-mm.page class="mm-crud-form" title="Edit Group">
+        <x-slot name="actions">
+            @if (hasPermission("groups.view", $slugs))
+                <a href="{{ route('group.index') }}" class="btn btn-sm btn-default">
+                    <i class="ace-icon fa fa-list-alt"></i> Group List
+                </a>
+            @endif
+        </x-slot>
 
-    <div class="row">
-
-        <div class="col-sm-8 col-sm-offset-2">
-            <div class="widget-box">
-                <div class="widget-header">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
-
-                    @if (hasPermission("groups.view", $slugs))
-                    <span class="widget-toolbar">
-                                <a href="{{ route('group.index') }}">
-                                    <i class="ace-icon fa fa-list-alt"></i> Group List
-                                </a>
-                            </span>
-                    @endif
-
-                </div>
-
-                <div class="widget-body">
-                    <div class="widget-main">
+        <x-mm.panel>
                         <form class="form-horizontal" action="{{ route('group.update',$group->id) }}" method="post" enctype="multipart/form-data">
                             @csrf
                             @method('PUT')
@@ -158,13 +146,8 @@
                             </div>
 
                         </form>
-                    </div>
-                </div>
-            </div>
-
-
-        </div>
-    </div>
+        </x-mm.panel>
+    </x-mm.page>
 
 
 

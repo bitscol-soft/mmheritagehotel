@@ -1,4 +1,4 @@
-<form action="" method="get" class="booking-filter-panel mm-booking-filter">
+<form id="searchForm" action="" method="get" class="booking-filter-panel mm-booking-filter">
     <div class="tw-grid tw-gap-4 sm:tw-grid-cols-2 lg:tw-grid-cols-4 tw-items-end">
 
 

@@ -1,0 +1,2539 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>3-Step Booking Wizard — M&amp;M Heritage Hotel</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">
+<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+<section class="mm-ui mm-booking mm-booking-next">
+    <div class="tw-space-y-4 tw-py-2">
+        <div id="mm-fullscreen-hud" class="mm-no-print" role="region" aria-label="Focused fullscreen controls">
+            <div class="mm-fullscreen-hud-left">
+                <span class="mm-fullscreen-hud-badge"><i class="fa fa-arrows-alt" aria-hidden="true"></i> Focused Fullscreen Mode</span>
+                <span><strong>3-Step Hotel Booking Wizard</strong> · Distraction-Free Front-Desk Terminal (Press <code>Esc</code> or <code>Alt+Z</code> to exit)</span>
+            </div>
+            <button type="button" id="mm-fullscreen-exit-btn" data-mm-fullscreen-exit class="mm-fullscreen-exit-btn">
+                <i class="fa fa-compress" aria-hidden="true"></i> Exit Fullscreen
+            </button>
+        </div>
+
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">New room booking — 3-Step Wizard</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Configure selected rooms, capture guest identification, and collect advance deposit to confirm the reservation.</p>
+            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <button type="button" id="mm-focused-fullscreen-btn" data-mm-fullscreen-toggle aria-pressed="false" class="mm-button mm-button-secondary mm-focused-fs-btn" title="Toggle distraction-free Focused Fullscreen Mode (Alt+Z)">
+                    <i class="fa fa-arrows-alt" aria-hidden="true"></i> Focused Fullscreen
+                </button>
+                <a class="mm-button mm-button-secondary" href="/preview/room-settings"><i class="fa fa-sliders"></i> Room Settings &amp; Pricing</a>
+                <a class="mm-button mm-button-secondary" href="/preview/plan-b"><i class="fa fa-rocket"></i> Plan B Hub (34/34)</a>
+                <a class="mm-button mm-button-secondary" href="/"><i class="fa fa-th-large"></i> Room Board</a>
+                <a class="mm-button mm-button-secondary" href="/preview/draft-booking-pdf"><i class="fa fa-file-pdf-o"></i> Standalone A4 PDF</a>
+                <a class="mm-button mm-button-secondary" href="/preview/kiosk-checkin"><i class="fa fa-tablet"></i> Kiosk Check-In (F10)</a>
+                <a class="mm-button mm-button-secondary" href="/preview/room-move"><i class="fa fa-exchange"></i> Room Move (F9)</a>
+                <a class="mm-button mm-button-secondary" href="/preview/checkout"><i class="fa fa-credit-card"></i> Checkout Folio</a>
+                <a class="mm-button mm-button-secondary" href="/preview/booking-list"><i class="fa fa-list-alt"></i> Booking List</a>
+            </div>
+        </header>
+
+        <nav class="mm-steps" aria-label="Booking progress">
+            <ol>
+                <li class="is-done" data-wiz-step-nav="1" style="cursor:pointer;">
+                    <span class="mm-step-mark" aria-hidden="true">✓</span>
+                    <span class="mm-step-copy">
+                        <span class="mm-step-title"><span class="mm-visually-hidden">Completed: </span>1. Select rooms</span>
+                        <span class="mm-step-sub" id="wiz-step1-sub">2 rooms assigned (#101, #201)</span>
+                    </span>
+                    <span class="mm-step-pill">Done</span>
+                </li>
+                <li class="is-current" aria-current="step" data-wiz-step-nav="2" style="cursor:pointer;">
+                    <span class="mm-step-mark" aria-hidden="true">2</span>
+                    <span class="mm-step-copy">
+                        <span class="mm-step-title">2. Guest and stay details</span>
+                        <span class="mm-step-sub">Primary guest ID &amp; stay preferences</span>
+                    </span>
+                    <span class="mm-step-pill">Active</span>
+                </li>
+                <li data-wiz-step-nav="3" style="cursor:pointer;">
+                    <span class="mm-step-mark" aria-hidden="true">3</span>
+                    <span class="mm-step-copy">
+                        <span class="mm-step-title">3. Payment and confirm</span>
+                        <span class="mm-step-sub">Folio summary &amp; advance deposit</span>
+                    </span>
+                    <span class="mm-step-pill">Step 3</span>
+                </li>
+            </ol>
+        </nav>
+
+        <div class="mm-stay-summary" role="region" aria-label="Selected stay">
+            <div class="mm-stay-card">
+                <span class="mm-stay-card-icon" aria-hidden="true"><i class="fa fa-calendar-check-o"></i></span>
+                <div class="mm-stay-card-body">
+                    <div class="mm-stay-summary-label">Check-in</div>
+                    <div class="mm-stay-summary-value" id="wiz-summary-checkin">2026-10-14</div>
+                    <div class="mm-stay-summary-sub" id="wiz-summary-checkin-sub">From 02:00 PM · Standard</div>
+                </div>
+            </div>
+            <div class="mm-stay-card">
+                <span class="mm-stay-card-icon" aria-hidden="true"><i class="fa fa-calendar-times-o"></i></span>
+                <div class="mm-stay-card-body">
+                    <div class="mm-stay-summary-label">Check-out</div>
+                    <div class="mm-stay-summary-value" id="wiz-summary-checkout">2026-10-16</div>
+                    <div class="mm-stay-summary-sub" id="wiz-summary-checkout-sub">Until 12:00 PM · Late OK</div>
+                </div>
+            </div>
+            <div class="mm-stay-card">
+                <span class="mm-stay-card-icon is-amber" aria-hidden="true"><i class="fa fa-moon-o"></i></span>
+                <div class="mm-stay-card-body">
+                    <div class="mm-stay-summary-label">Stay Duration</div>
+                    <div class="mm-stay-summary-value"><span id="wiz-summary-nights">2</span> Nights</div>
+                    <div class="mm-stay-summary-sub" id="wiz-summary-rate-avg">৳ 10,700 / night total</div>
+                </div>
+            </div>
+            <div class="mm-stay-card">
+                <span class="mm-stay-card-icon is-emerald" aria-hidden="true"><i class="fa fa-bed"></i></span>
+                <div class="mm-stay-card-body">
+                    <div class="mm-stay-summary-label">Assigned Rooms</div>
+                    <div class="mm-stay-summary-value" id="wiz-summary-rooms">2 Rooms (#101, #201)</div>
+                    <div class="mm-stay-summary-sub" id="wiz-summary-guests-sub">3 Guests · Breakfast Included</div>
+                </div>
+            </div>
+            <div class="mm-stay-card">
+                <div class="mm-stay-card-body" style="display:flex; flex-direction:column; gap:6px;">
+                    <div class="mm-stay-summary-label">Quick Reservation Actions</div>
+                    <div class="tw-flex tw-flex-wrap tw-gap-2" style="margin-top:2px;">
+                        <button type="button" class="mm-button mm-button-secondary mm-button-sm" id="wiz-focus-dates-btn" style="min-height:30px; padding:3px 10px; font-size:11.5px;">
+                            <i class="fa fa-calendar"></i> Pick Dates &amp; Time
+                        </button>
+                        <button type="button" class="mm-button mm-button-sm" data-toggle="modal" data-target="#add-guest-modal" style="min-height:30px; padding:3px 10px; font-size:11.5px;">
+                            <i class="fa fa-user-plus"></i> + Guest
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Plan A Workflow #3 · Rate Plan, Promo Code, Stay Add-Ons & Draft Autosave Bar -->
+        <div class="mm-panel tw-p-4 mm-no-print" id="wiz-rateplan-addons-panel" role="region" aria-label="Rate plan, promo code, stay add-ons and draft autosave">
+            <div class="tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-2" style="margin-bottom:10px;">
+                <div>
+                    <strong><i class="fa fa-tags"></i> Workflow #3 · Rate Plan, Promo Engine &amp; Stay Add-Ons (Services · Banquet · F&amp;B)</strong>
+                    <span class="mm-badge mm-badge-paid" id="wiz-autosave-badge" style="margin-left:6px;"><i class="fa fa-cloud-upload"></i> Draft #DRF-2026-1094 Autosaved · Just now</span>
+                </div>
+                <div class="tw-flex tw-gap-2">
+                    <button type="button" class="mm-button mm-button-secondary mm-button-sm" id="wiz-btn-save-draft" style="min-height:28px;padding:2px 10px;font-size:11.5px;"><i class="fa fa-save"></i> Autosave Draft Now</button>
+                    <a href="/preview/rate-plans" class="mm-button mm-button-secondary mm-button-sm" style="min-height:28px;padding:2px 10px;font-size:11.5px;"><i class="fa fa-external-link"></i> Rate Plans (F3)</a>
+                </div>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;align-items:end">
+                <div>
+                    <label class="mm-label" for="wiz-rate-plan-select">Rate Plan (F3)</label>
+                    <select id="wiz-rate-plan-select" class="form-control input-sm">
+                        <option value="0" selected>BAR-2026 · Best Available Flexible (100%)</option>
+                        <option value="1500">CORP-VIP · Corporate / Diplomatic (-৳ 1,500)</option>
+                        <option value="2000">WKND-3N · Autumn 3-Night Escape (-৳ 2,000)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="mm-label" for="wiz-promo-input">Promo / Coupon Code</label>
+                    <div style="display:flex;gap:6px">
+                        <input type="text" id="wiz-promo-input" class="form-control input-sm" value="HERITAGE20" placeholder="e.g. HERITAGE20">
+                        <button type="button" id="wiz-btn-apply-promo" class="mm-button mm-button-secondary" style="min-height:30px;padding:2px 10px;font-size:11.5px;white-space:nowrap">Apply</button>
+                    </div>
+                </div>
+                <div style="grid-column:span 2">
+                    <label class="mm-label">Pre-Arrival &amp; In-Stay Add-Ons (Auto-Posted to Folio)</label>
+                    <div class="tw-flex tw-flex-wrap tw-gap-3" style="padding-top:4px;font-size:12px;">
+                        <label style="display:inline-flex;align-items:center;gap:5px;margin:0;cursor:pointer;"><input type="checkbox" class="wiz-addon-chk" data-amt="1600" checked> Airport Pickup (+৳ 1,600)</label>
+                        <label style="display:inline-flex;align-items:center;gap:5px;margin:0;cursor:pointer;"><input type="checkbox" class="wiz-addon-chk" data-amt="2000" checked> Half-Board Dinner (+৳ 2,000)</label>
+                        <label style="display:inline-flex;align-items:center;gap:5px;margin:0;cursor:pointer;"><input type="checkbox" class="wiz-addon-chk" data-amt="3500"> Banquet / Boardroom 2h (+৳ 3,500)</label>
+                        <label style="display:inline-flex;align-items:center;gap:5px;margin:0;cursor:pointer;"><input type="checkbox" class="wiz-addon-chk" data-amt="1200"> Late Check-Out 4 PM (+৳ 1,200)</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mm-wiz-grid">
+            <div class="tw-space-y-4">
+                <section class="mm-panel tw-p-4 sm:tw-p-6" id="wiz-step-panel-1">
+                    <header class="mm-section-head">
+                        <h2 class="mm-section-title">
+                            <span class="mm-wiz-sec-icon"><i class="fa fa-bed"></i></span>
+                            <span>Step 1 · Interactive Floor Plan &amp; Selected Rooms</span>
+                        </h2>
+                        <div class="tw-flex tw-flex-wrap tw-items-center tw-gap-2">
+                            <span class="mm-badge mm-badge-paid" id="wiz-rooms-badge">2 Rooms Assigned</span>
+                            <button type="button" class="mm-button mm-button-secondary mm-button-sm" id="wiz-scroll-toggle" aria-pressed="true" style="min-height:30px; padding:3px 10px; font-size:12px;" title="Toggle fixed-height scrollable containers vs full expanded height">
+                                <i class="fa fa-arrows-v"></i> <span id="wiz-scroll-toggle-lbl">Fixed-Height Scroll ✓</span>
+                            </button>
+                            <button type="button" class="mm-button mm-button-secondary mm-button-sm" data-toggle="modal" data-target="#wiz-floorplan-modal" style="min-height:30px; padding:3px 10px; font-size:12px;">
+                                <i class="fa fa-map-o"></i> Floor Map Drawer
+                            </button>
+                            <a href="/" class="mm-button mm-button-secondary mm-button-sm" style="min-height:30px; padding:3px 10px; font-size:12px;">
+                                <i class="fa fa-th-large"></i> Full Board
+                            </a>
+                        </div>
+                    </header>
+
+                    <!-- Step 1 Check-In & Check-Out Calendar Date Range & Time Picker Bar -->
+                    <div class="mm-wiz-stay-bar" id="wiz-stay-calendar-bar" role="region" aria-label="Check-in and Check-out calendar and time range">
+                        <div class="mm-wiz-subhead" style="margin-top:0;">
+                            <span><i class="fa fa-calendar"></i> 1A. Select Check-In &amp; Check-Out Date Range &amp; Time</span>
+                            <span class="tw-text-xs tw-text-muted" id="wiz-date-status">✓ 2 Nights Selected · Standard Check-In 02:00 PM → Check-Out 12:00 PM</span>
+                        </div>
+                        <div class="mm-wiz-stay-grid">
+                            <div class="mm-field">
+                                <label class="mm-label" for="wiz-checkin-date">Check-In Date (Calendar) <span class="mm-req">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-calendar-check-o"></i></span>
+                                    <input id="wiz-checkin-date" name="check_in_date" type="date" class="form-control" value="2026-10-14" min="2026-10-14">
+                                </div>
+                            </div>
+                            <div class="mm-field">
+                                <label class="mm-label" for="wiz-checkin-time">Check-In Time</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                                    <input id="wiz-checkin-time" name="check_in_time" type="time" class="form-control" value="14:00">
+                                </div>
+                            </div>
+                            <div class="mm-field">
+                                <label class="mm-label" for="wiz-checkout-date">Check-Out Date (Calendar) <span class="mm-req">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-calendar-times-o"></i></span>
+                                    <input id="wiz-checkout-date" name="check_out_date" type="date" class="form-control" value="2026-10-16" min="2026-10-15">
+                                </div>
+                            </div>
+                            <div class="mm-field">
+                                <label class="mm-label" for="wiz-checkout-time">Check-Out Time</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                                    <input id="wiz-checkout-time" name="check_out_time" type="time" class="form-control" value="12:00">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mm-wiz-chip-bar">
+                            <div class="tw-flex tw-flex-wrap tw-items-center tw-gap-1.5">
+                                <span class="tw-text-xs tw-text-muted" style="font-weight:700; margin-right:4px;">Quick Stay Range:</span>
+                                <button type="button" class="mm-wiz-chip" data-wiz-range-preset="1">Tonight (1 Night)</button>
+                                <button type="button" class="mm-wiz-chip is-active" data-wiz-range-preset="2">2 Nights ✓</button>
+                                <button type="button" class="mm-wiz-chip" data-wiz-range-preset="3">Weekend (3 Nights)</button>
+                                <button type="button" class="mm-wiz-chip" data-wiz-range-preset="5">5 Nights</button>
+                                <button type="button" class="mm-wiz-chip" data-wiz-range-preset="7">Weekly (7 Nights)</button>
+                            </div>
+                            <div class="tw-text-xs tw-text-muted">
+                                <i class="fa fa-info-circle"></i> Min 1 night required · Changing dates auto-updates nights &amp; room tariffs
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mm-wiz-floorplan-box" role="region" aria-label="Interactive hotel floor plan">
+                        <div class="mm-wiz-fp-bar">
+                            <div class="mm-wiz-fp-tabs" role="tablist" aria-label="Filter rooms by floor">
+                                <button type="button" class="mm-wiz-fp-tab is-active" data-fp-floor="all">All Floors (18)</button>
+                                <button type="button" class="mm-wiz-fp-tab" data-fp-floor="1">1st Floor · Deluxe Wing (6)</button>
+                                <button type="button" class="mm-wiz-fp-tab" data-fp-floor="2">2nd Floor · Suite Wing (6)</button>
+                                <button type="button" class="mm-wiz-fp-tab" data-fp-floor="3">3rd Floor · Executive &amp; VIP (6)</button>
+                            </div>
+                            <div class="mm-wiz-fp-legend">
+                                <span><span class="mm-wiz-fp-dot" style="background:#2563eb;"></span>Selected</span>
+                                <span><span class="mm-wiz-fp-dot" style="background:#10b981;"></span>Available</span>
+                                <span><span class="mm-wiz-fp-dot" style="background:#ef4444;"></span>Occupied / Booked</span>
+                                <span><span class="mm-wiz-fp-dot" style="background:#f59e0b;"></span>HouseKeeping / Hold</span>
+                            </div>
+                        </div>
+
+                        <!-- Step 1 Dropdown Filters: By Status, Room Type, Bed Type, and Floor -->
+                        <div class="mm-wiz-filter-bar" id="wiz-room-filter-bar" role="region" aria-label="Room dropdown filters">
+                            <div class="mm-wiz-filter-grid">
+                                <div class="mm-field">
+                                    <label class="mm-label" for="wiz-filter-status"><i class="fa fa-filter"></i> By Room Status</label>
+                                    <select id="wiz-filter-status" class="form-control">
+                                        <option value="all" selected>All Statuses (18 Rooms)</option>
+                                        <option value="Available">Available (6 Selectable)</option>
+                                        <option value="Selected">Selected in Wizard</option>
+                                        <option value="Occupied">Occupied (6 In-House)</option>
+                                        <option value="HouseKeeping">HouseKeeping (2 Cleaning)</option>
+                                        <option value="Hold">Hold / Maintenance (2 Blocked)</option>
+                                        <option value="Booked">Booked / Reserved (2 Arrivals)</option>
+                                    </select>
+                                </div>
+                                <div class="mm-field">
+                                    <label class="mm-label" for="wiz-filter-type"><i class="fa fa-building-o"></i> By Room Type</label>
+                                    <select id="wiz-filter-type" class="form-control">
+                                        <option value="all" selected>All Room Types (12 Categories)</option>
+                                        <option value="Deluxe Double">Deluxe Double</option>
+                                        <option value="Deluxe King">Deluxe King</option>
+                                        <option value="Executive Twin">Executive Twin</option>
+                                        <option value="Executive King">Executive King</option>
+                                        <option value="Superior Double">Superior Double</option>
+                                        <option value="Superior Twin">Superior Twin</option>
+                                        <option value="Standard Single">Standard Single</option>
+                                        <option value="Heritage Suite">Heritage Suite</option>
+                                        <option value="Royal Family Suite">Royal Family Suite</option>
+                                        <option value="Diplomatic Suite">Diplomatic Suite</option>
+                                        <option value="Presidential Suite">Presidential Suite</option>
+                                        <option value="Family Suite">Family Suite</option>
+                                    </select>
+                                </div>
+                                <div class="mm-field">
+                                    <label class="mm-label" for="wiz-filter-bed"><i class="fa fa-bed"></i> By Bed Type</label>
+                                    <select id="wiz-filter-bed" class="form-control">
+                                        <option value="all" selected>All Bed Types</option>
+                                        <option value="King">King Bed (5)</option>
+                                        <option value="Twin">Twin Beds (3)</option>
+                                        <option value="Double">Double / Queen Bed (3)</option>
+                                        <option value="Single">Single Bed (1)</option>
+                                        <option value="Suite">Multi-Bed / Suite (6)</option>
+                                    </select>
+                                </div>
+                                <div class="mm-field">
+                                    <label class="mm-label" for="wiz-filter-floor"><i class="fa fa-layers"></i> By Floor</label>
+                                    <select id="wiz-filter-floor" class="form-control">
+                                        <option value="all" selected>All Floors (1st–3rd Floor)</option>
+                                        <option value="1">1st Floor · Deluxe Wing (6)</option>
+                                        <option value="2">2nd Floor · Suite Wing (6)</option>
+                                        <option value="3">3rd Floor · Executive &amp; VIP (6)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-2" style="margin-top:8px;">
+                                <span class="tw-text-xs tw-text-muted" id="wiz-filter-count">Showing <strong>18</strong> of 18 floor-plan rooms &amp; <strong>6</strong> of 6 assignable list rooms</span>
+                                <button type="button" class="mm-button mm-button-secondary mm-button-sm" id="wiz-filter-reset" style="min-height:26px; padding:2px 10px; font-size:11px;">
+                                    <i class="fa fa-refresh"></i> Reset Room Filters
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="mm-wiz-fp-grid is-scrollable" id="wiz-floorplan-grid">
+                            <button type="button" class="mm-wiz-fp-tile is-selected" data-fp-room="#101" data-floor="1" data-status="Available" data-room-type="Deluxe Double" data-bed-type="King" title="Click to toggle Room #101">
+                                <div class="mm-wiz-fp-top">
+                                    <span class="mm-wiz-fp-room">#101</span>
+                                    <span class="mm-wiz-fp-floor">1F · City</span>
+                                </div>
+                                <div class="mm-wiz-fp-cat">Deluxe Double</div>
+                                <div class="mm-wiz-fp-meta">
+                                    <span><i class="fa fa-users"></i> 2P · King</span>
+                                    <span class="mm-wiz-fp-rate">৳ 4,200</span>
+                                </div>
+                                <div><span class="mm-badge mm-badge-paid wiz-fp-status-badge" style="font-size:10px;">Selected ✓</span></div>
+                            </button>
+
+                            <button type="button" class="mm-wiz-fp-tile is-occupied" data-floor="1" data-status="Occupied" data-room-type="Deluxe King" data-bed-type="King" disabled title="Room #102 — Occupied by Nadia Islam">
+                                <div class="mm-wiz-fp-top">
+                                    <span class="mm-wiz-fp-room">#102</span>
+                                    <span class="mm-wiz-fp-floor">1F · City</span>
+                                </div>
+                                <div class="mm-wiz-fp-cat">Deluxe King</div>
+                                <div class="mm-wiz-fp-meta">
+                                    <span><i class="fa fa-user"></i> Nadia Islam</span>
+                                    <span class="mm-wiz-fp-rate">৳ 4,500</span>
+                                </div>
+                                <div><span class="mm-badge mm-badge-unpaid" style="font-size:10px;">Occupied</span></div>
+                            </button>
+
+                            <button type="button" class="mm-wiz-fp-tile is-occupied" data-floor="1" data-status="Occupied" data-room-type="Deluxe King" data-bed-type="King" disabled title="Room #103 — Occupied by Dr. Farhana Rahman">
+                                <div class="mm-wiz-fp-top">
+                                    <span class="mm-wiz-fp-room">#103</span>
+                                    <span class="mm-wiz-fp-floor">1F · Garden</span>
+                                </div>
+                                <div class="mm-wiz-fp-cat">Deluxe King</div>
+                                <div class="mm-wiz-fp-meta">
+                                    <span><i class="fa fa-user"></i> Dr. Farhana</span>
+                                    <span class="mm-wiz-fp-rate">৳ 4,500</span>
+                                </div>
+                                <div><span class="mm-badge mm-badge-unpaid" style="font-size:10px;">Occupied</span></div>
+                            </button>
+
+                            <button type="button" class="mm-wiz-fp-tile" data-fp-room="#104" data-floor="1" data-status="Available" data-room-type="Executive Twin" data-bed-type="Twin" title="Click to toggle Room #104">
+                                <div class="mm-wiz-fp-top">
+                                    <span class="mm-wiz-fp-room">#104</span>
+                                    <span class="mm-wiz-fp-floor">1F · Garden</span>
+                                </div>
+                                <div class="mm-wiz-fp-cat">Executive Twin</div>
+                                <div class="mm-wiz-fp-meta">
+                                    <span><i class="fa fa-users"></i> 2P · Twin</span>
+                                    <span class="mm-wiz-fp-rate">৳ 3,600</span>
+                                </div>
+                                <div><span class="mm-badge mm-badge-partial wiz-fp-status-badge" style="font-size:10px;">Available · + Add</span></div>
+                            </button>
+
+                            <button type="button" class="mm-wiz-fp-tile is-dirty" data-floor="1" data-status="Hold" data-room-type="Superior Double" data-bed-type="Double" disabled title="Room #105 — On Corporate Hold">
+                                <div class="mm-wiz-fp-top">
+                                    <span class="mm-wiz-fp-room">#105</span>
+                                    <span class="mm-wiz-fp-floor">1F · Courtyard</span>
+                                </div>
+                                <div class="mm-wiz-fp-cat">Superior Double</div>
+                                <div class="mm-wiz-fp-meta">
+                                    <span><i class="fa fa-pause-circle"></i> Double</span>
+                                    <span class="mm-wiz-fp-rate">৳ 3,800</span>
+                                </div>
+                                <div><span class="mm-badge mm-badge-partial" style="font-size:10px;">Hold · Block</span></div>
+                            </button>
+
+                            <button type="button" class="mm-wiz-fp-tile" data-fp-room="#106" data-floor="1" data-status="Available" data-room-type="Standard Single" data-bed-type="Single" title="Click to toggle Room #106">
+                                <div class="mm-wiz-fp-top">
+                                    <span class="mm-wiz-fp-room">#106</span>
+                                    <span class="mm-wiz-fp-floor">1F · West</span>
+                                </div>
+                                <div class="mm-wiz-fp-cat">Standard Single</div>
+                                <div class="mm-wiz-fp-meta">
+                                    <span><i class="fa fa-users"></i> 1P · Single</span>
+                                    <span class="mm-wiz-fp-rate">৳ 3,200</span>
+                                </div>
+                                <div><span class="mm-badge mm-badge-partial wiz-fp-status-badge" style="font-size:10px;">Available · + Add</span></div>
+                            </button>
+
+                            <button type="button" class="mm-wiz-fp-tile is-selected" data-fp-room="#201" data-floor="2" data-status="Available" data-room-type="Heritage Suite" data-bed-type="Suite" title="Click to toggle Room #201">
+                                <div class="mm-wiz-fp-top">
+                                    <span class="mm-wiz-fp-room">#201</span>
+                                    <span class="mm-wiz-fp-floor">2F · VIP</span>
+                                </div>
+                                <div class="mm-wiz-fp-cat">Heritage Suite</div>
+                                <div class="mm-wiz-fp-meta">
+                                    <span><i class="fa fa-users"></i> 3P · Suite</span>
+                                    <span class="mm-wiz-fp-rate">৳ 6,500</span>
+                                </div>
+                                <div><span class="mm-badge mm-badge-paid wiz-fp-status-badge" style="font-size:10px;">Selected ✓</span></div>
+                            </button>
+
+                            <button type="button" class="mm-wiz-fp-tile is-dirty" data-floor="2" data-status="HouseKeeping" data-room-type="Heritage Suite" data-bed-type="Suite" disabled title="Room #202 — Housekeeping in progress">
+                                <div class="mm-wiz-fp-top">
+                                    <span class="mm-wiz-fp-room">#202</span>
+                                    <span class="mm-wiz-fp-floor">2F · VIP</span>
+                                </div>
+                                <div class="mm-wiz-fp-cat">Heritage Suite</div>
+                                <div class="mm-wiz-fp-meta">
+                                    <span><i class="fa fa-magic"></i> Suite</span>
+                                    <span class="mm-wiz-fp-rate">৳ 6,500</span>
+                                </div>
+                                <div><span class="mm-badge mm-badge-partial" style="font-size:10px;">HouseKeeping</span></div>
+                            </button>
+
+                            <button type="button" class="mm-wiz-fp-tile is-occupied" data-floor="2" data-status="Occupied" data-room-type="Superior Twin" data-bed-type="Twin" disabled title="Room #203 — Occupied by Shabnam Mustari">
+                                <div class="mm-wiz-fp-top">
+                                    <span class="mm-wiz-fp-room">#203</span>
+                                    <span class="mm-wiz-fp-floor">2F · East</span>
+                                </div>
+                                <div class="mm-wiz-fp-cat">Superior Twin</div>
+                                <div class="mm-wiz-fp-meta">
+                                    <span><i class="fa fa-user"></i> Twin</span>
+                                    <span class="mm-wiz-fp-rate">৳ 4,000</span>
+                                </div>
+                                <div><span class="mm-badge mm-badge-unpaid" style="font-size:10px;">Occupied</span></div>
+                            </button>
+
+                            <button type="button" class="mm-wiz-fp-tile is-occupied" data-floor="2" data-status="Booked" data-room-type="Royal Family Suite" data-bed-type="Suite" disabled title="Room #204 — Booked VIP Arrival (Brig. Gen. Mahmudul Hasan)">
+                                <div class="mm-wiz-fp-top">
+                                    <span class="mm-wiz-fp-room">#204</span>
+                                    <span class="mm-wiz-fp-floor">2F · Balcony</span>
+                                </div>
+                                <div class="mm-wiz-fp-cat">Royal Family Suite</div>
+                                <div class="mm-wiz-fp-meta">
+                                    <span><i class="fa fa-lock"></i> Suite</span>
+                                    <span class="mm-wiz-fp-rate">৳ 8,500</span>
+                                </div>
+                                <div><span class="mm-badge mm-badge-unpaid" style="font-size:10px;">Booked</span></div>
+                            </button>
+
+                            <button type="button" class="mm-wiz-fp-tile is-occupied" data-floor="2" data-status="Occupied" data-room-type="Deluxe Double" data-bed-type="Double" disabled title="Room #205 — Occupied by Ashraful Alam">
+                                <div class="mm-wiz-fp-top">
+                                    <span class="mm-wiz-fp-room">#205</span>
+                                    <span class="mm-wiz-fp-floor">2F · West</span>
+                                </div>
+                                <div class="mm-wiz-fp-cat">Deluxe Double</div>
+                                <div class="mm-wiz-fp-meta">
+                                    <span><i class="fa fa-user"></i> Double</span>
+                                    <span class="mm-wiz-fp-rate">৳ 4,800</span>
+                                </div>
+                                <div><span class="mm-badge mm-badge-unpaid" style="font-size:10px;">Occupied</span></div>
+                            </button>
+
+                            <button type="button" class="mm-wiz-fp-tile" data-fp-room="#206" data-floor="2" data-status="Available" data-room-type="Executive King" data-bed-type="King" title="Click to toggle Room #206">
+                                <div class="mm-wiz-fp-top">
+                                    <span class="mm-wiz-fp-room">#206</span>
+                                    <span class="mm-wiz-fp-floor">2F · Corner</span>
+                                </div>
+                                <div class="mm-wiz-fp-cat">Executive King</div>
+                                <div class="mm-wiz-fp-meta">
+                                    <span><i class="fa fa-users"></i> 2P · King</span>
+                                    <span class="mm-wiz-fp-rate">৳ 5,200</span>
+                                </div>
+                                <div><span class="mm-badge mm-badge-partial wiz-fp-status-badge" style="font-size:10px;">Available · + Add</span></div>
+                            </button>
+
+                            <button type="button" class="mm-wiz-fp-tile is-occupied" data-floor="3" data-status="Occupied" data-room-type="Diplomatic Suite" data-bed-type="Suite" disabled title="Room #301 — Occupied by Amb. Kenji Takahashi">
+                                <div class="mm-wiz-fp-top">
+                                    <span class="mm-wiz-fp-room">#301</span>
+                                    <span class="mm-wiz-fp-floor">3F · VIP</span>
+                                </div>
+                                <div class="mm-wiz-fp-cat">Diplomatic Suite</div>
+                                <div class="mm-wiz-fp-meta">
+                                    <span><i class="fa fa-user"></i> Suite</span>
+                                    <span class="mm-wiz-fp-rate">৳ 9,200</span>
+                                </div>
+                                <div><span class="mm-badge mm-badge-unpaid" style="font-size:10px;">Occupied</span></div>
+                            </button>
+
+                            <button type="button" class="mm-wiz-fp-tile is-occupied" data-floor="3" data-status="Occupied" data-room-type="Presidential Suite" data-bed-type="Suite" disabled title="Room #302 — Occupied by Capt. Jonathan Vance">
+                                <div class="mm-wiz-fp-top">
+                                    <span class="mm-wiz-fp-room">#302</span>
+                                    <span class="mm-wiz-fp-floor">3F · VIP</span>
+                                </div>
+                                <div class="mm-wiz-fp-cat">Presidential Suite</div>
+                                <div class="mm-wiz-fp-meta">
+                                    <span><i class="fa fa-user"></i> Suite</span>
+                                    <span class="mm-wiz-fp-rate">৳ 12,500</span>
+                                </div>
+                                <div><span class="mm-badge mm-badge-unpaid" style="font-size:10px;">Occupied</span></div>
+                            </button>
+
+                            <button type="button" class="mm-wiz-fp-tile is-dirty" data-floor="3" data-status="HouseKeeping" data-room-type="Executive Twin" data-bed-type="Twin" disabled title="Room #303 — Housekeeping Turnaround">
+                                <div class="mm-wiz-fp-top">
+                                    <span class="mm-wiz-fp-room">#303</span>
+                                    <span class="mm-wiz-fp-floor">3F · East</span>
+                                </div>
+                                <div class="mm-wiz-fp-cat">Executive Twin</div>
+                                <div class="mm-wiz-fp-meta">
+                                    <span><i class="fa fa-magic"></i> Twin</span>
+                                    <span class="mm-wiz-fp-rate">৳ 4,600</span>
+                                </div>
+                                <div><span class="mm-badge mm-badge-partial" style="font-size:10px;">HouseKeeping</span></div>
+                            </button>
+
+                            <button type="button" class="mm-wiz-fp-tile" data-fp-room="#304" data-floor="3" data-status="Available" data-room-type="Executive King" data-bed-type="King" title="Click to toggle Room #304">
+                                <div class="mm-wiz-fp-top">
+                                    <span class="mm-wiz-fp-room">#304</span>
+                                    <span class="mm-wiz-fp-floor">3F · East</span>
+                                </div>
+                                <div class="mm-wiz-fp-cat">Executive King</div>
+                                <div class="mm-wiz-fp-meta">
+                                    <span><i class="fa fa-users"></i> 2P · King</span>
+                                    <span class="mm-wiz-fp-rate">৳ 5,400</span>
+                                </div>
+                                <div><span class="mm-badge mm-badge-partial wiz-fp-status-badge" style="font-size:10px;">Available · + Add</span></div>
+                            </button>
+
+                            <button type="button" class="mm-wiz-fp-tile is-occupied" data-floor="3" data-status="Booked" data-room-type="Family Suite" data-bed-type="Suite" disabled title="Room #305 — Booked Arrival (Imran Hossain &amp; Family)">
+                                <div class="mm-wiz-fp-top">
+                                    <span class="mm-wiz-fp-room">#305</span>
+                                    <span class="mm-wiz-fp-floor">3F · South</span>
+                                </div>
+                                <div class="mm-wiz-fp-cat">Family Suite</div>
+                                <div class="mm-wiz-fp-meta">
+                                    <span><i class="fa fa-users"></i> 4P · Suite</span>
+                                    <span class="mm-wiz-fp-rate">৳ 7,800</span>
+                                </div>
+                                <div><span class="mm-badge mm-badge-unpaid" style="font-size:10px;">Booked</span></div>
+                            </button>
+
+                            <button type="button" class="mm-wiz-fp-tile is-dirty" data-floor="3" data-status="Hold" data-room-type="Superior Double" data-bed-type="Double" disabled title="Room #306 — Maintenance Hold">
+                                <div class="mm-wiz-fp-top">
+                                    <span class="mm-wiz-fp-room">#306</span>
+                                    <span class="mm-wiz-fp-floor">3F · West</span>
+                                </div>
+                                <div class="mm-wiz-fp-cat">Superior Double</div>
+                                <div class="mm-wiz-fp-meta">
+                                    <span><i class="fa fa-wrench"></i> Double</span>
+                                    <span class="mm-wiz-fp-rate">৳ 4,100</span>
+                                </div>
+                                <div><span class="mm-badge mm-badge-partial" style="font-size:10px;">Hold · Maint.</span></div>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="mm-wiz-subhead">
+                        <span><i class="fa fa-list-ul"></i> 1B. Selected &amp; Available Rooms List (Fixed-Height Scroll)</span>
+                        <span class="tw-text-xs tw-text-muted">Scroll to inspect tariffs &amp; toggle rooms (#101–#304)</span>
+                    </div>
+                    <div class="tw-space-y-3 mm-wiz-room-scroll is-scrollable" id="wiz-room-list">
+                        <div class="mm-wiz-room-row is-selected" data-room-rate="4200" data-floor="1" data-status="Available" data-room-type="Deluxe Double" data-bed-type="King">
+                            <div class="mm-wiz-room-main">
+                                <span class="mm-wiz-room-num"><span>RM</span><span>101</span></span>
+                                <div style="min-width:0;">
+                                    <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                                        <strong style="font-size:14.5px;">Room #101 — Deluxe Double</strong>
+                                        <span class="mm-badge mm-badge-paid" style="font-size:10.5px;">1st Floor</span>
+                                    </div>
+                                    <div class="mm-wiz-room-tags">
+                                        <span class="mm-wiz-tag"><i class="fa fa-bed"></i> King Bed</span>
+                                        <span class="mm-wiz-tag"><i class="fa fa-coffee"></i> Free Breakfast</span>
+                                        <span class="mm-wiz-tag"><i class="fa fa-users"></i> Max 2 Adults</span>
+                                        <span class="mm-wiz-tag"><i class="fa fa-wifi"></i> High-Speed Wi-Fi</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tw-flex tw-items-center tw-gap-3">
+                                <div style="text-align:right;">
+                                    <div style="font-weight:800; font-size:14px; color:var(--mm-ink);">৳ 4,200 <span class="tw-text-xs tw-text-muted" style="font-weight:600;">/ night</span></div>
+                                    <div class="tw-text-xs tw-text-muted wiz-room-line-sub" data-base-rate="4200">2 nights = ৳ 8,400</div>
+                                </div>
+                                <label class="mm-wiz-room-toggle-pill">
+                                    <input type="checkbox" class="wiz-room-toggle" checked data-rate="4200" data-label="#101">
+                                    <span class="wiz-room-toggle-text">Included ✓</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="mm-wiz-room-row is-selected" data-room-rate="6500" data-floor="2" data-status="Available" data-room-type="Heritage Suite" data-bed-type="Suite">
+                            <div class="mm-wiz-room-main">
+                                <span class="mm-wiz-room-num"><span>RM</span><span>201</span></span>
+                                <div style="min-width:0;">
+                                    <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                                        <strong style="font-size:14.5px;">Room #201 — Heritage Suite</strong>
+                                        <span class="mm-badge mm-badge-partial" style="font-size:10.5px;">2nd Floor · VIP</span>
+                                    </div>
+                                    <div class="mm-wiz-room-tags">
+                                        <span class="mm-wiz-tag"><i class="fa fa-star"></i> Suite Lounge + Balcony</span>
+                                        <span class="mm-wiz-tag"><i class="fa fa-car"></i> Airport Pickup</span>
+                                        <span class="mm-wiz-tag"><i class="fa fa-users"></i> Max 3 Adults</span>
+                                        <span class="mm-wiz-tag"><i class="fa fa-coffee"></i> Buffet Breakfast</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tw-flex tw-items-center tw-gap-3">
+                                <div style="text-align:right;">
+                                    <div style="font-weight:800; font-size:14px; color:var(--mm-ink);">৳ 6,500 <span class="tw-text-xs tw-text-muted" style="font-weight:600;">/ night</span></div>
+                                    <div class="tw-text-xs tw-text-muted wiz-room-line-sub" data-base-rate="6500">2 nights = ৳ 13,000</div>
+                                </div>
+                                <label class="mm-wiz-room-toggle-pill">
+                                    <input type="checkbox" class="wiz-room-toggle" checked data-rate="6500" data-label="#201">
+                                    <span class="wiz-room-toggle-text">Included ✓</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="mm-wiz-room-row" data-room-rate="3600" data-floor="1" data-status="Available" data-room-type="Executive Twin" data-bed-type="Twin">
+                            <div class="mm-wiz-room-main">
+                                <span class="mm-wiz-room-num"><span>RM</span><span>104</span></span>
+                                <div style="min-width:0;">
+                                    <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                                        <strong style="font-size:14.5px;">Room #104 — Executive Twin</strong>
+                                        <span class="mm-badge mm-badge-unpaid" style="font-size:10.5px;">Available Add-On</span>
+                                    </div>
+                                    <div class="mm-wiz-room-tags">
+                                        <span class="mm-wiz-tag"><i class="fa fa-bed"></i> Twin Beds</span>
+                                        <span class="mm-wiz-tag"><i class="fa fa-tree"></i> Garden View</span>
+                                        <span class="mm-wiz-tag"><i class="fa fa-users"></i> Max 2 Adults</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tw-flex tw-items-center tw-gap-3">
+                                <div style="text-align:right;">
+                                    <div style="font-weight:800; font-size:14px; color:var(--mm-ink);">৳ 3,600 <span class="tw-text-xs tw-text-muted" style="font-weight:600;">/ night</span></div>
+                                    <div class="tw-text-xs tw-text-muted wiz-room-line-sub" data-base-rate="3600">2 nights = ৳ 7,200</div>
+                                </div>
+                                <label class="mm-wiz-room-toggle-pill">
+                                    <input type="checkbox" class="wiz-room-toggle" data-rate="3600" data-label="#104">
+                                    <span class="wiz-room-toggle-text">+ Add Room</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="mm-wiz-room-row" data-room-rate="3200" data-floor="1" data-status="Available" data-room-type="Standard Single" data-bed-type="Single">
+                            <div class="mm-wiz-room-main">
+                                <span class="mm-wiz-room-num"><span>RM</span><span>106</span></span>
+                                <div style="min-width:0;">
+                                    <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                                        <strong style="font-size:14.5px;">Room #106 — Standard Single</strong>
+                                        <span class="mm-badge mm-badge-unpaid" style="font-size:10.5px;">1st Floor · Available</span>
+                                    </div>
+                                    <div class="mm-wiz-room-tags">
+                                        <span class="mm-wiz-tag"><i class="fa fa-bed"></i> Single Bed</span>
+                                        <span class="mm-wiz-tag"><i class="fa fa-laptop"></i> Business Desk</span>
+                                        <span class="mm-wiz-tag"><i class="fa fa-users"></i> Max 1 Adult</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tw-flex tw-items-center tw-gap-3">
+                                <div style="text-align:right;">
+                                    <div style="font-weight:800; font-size:14px; color:var(--mm-ink);">৳ 3,200 <span class="tw-text-xs tw-text-muted" style="font-weight:600;">/ night</span></div>
+                                    <div class="tw-text-xs tw-text-muted wiz-room-line-sub" data-base-rate="3200">2 nights = ৳ 6,400</div>
+                                </div>
+                                <label class="mm-wiz-room-toggle-pill">
+                                    <input type="checkbox" class="wiz-room-toggle" data-rate="3200" data-label="#106">
+                                    <span class="wiz-room-toggle-text">+ Add Room</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="mm-wiz-room-row" data-room-rate="5200" data-floor="2" data-status="Available" data-room-type="Executive King" data-bed-type="King">
+                            <div class="mm-wiz-room-main">
+                                <span class="mm-wiz-room-num"><span>RM</span><span>206</span></span>
+                                <div style="min-width:0;">
+                                    <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                                        <strong style="font-size:14.5px;">Room #206 — Executive King</strong>
+                                        <span class="mm-badge mm-badge-unpaid" style="font-size:10.5px;">2nd Floor · Corner</span>
+                                    </div>
+                                    <div class="mm-wiz-room-tags">
+                                        <span class="mm-wiz-tag"><i class="fa fa-bed"></i> King Bed</span>
+                                        <span class="mm-wiz-tag"><i class="fa fa-eye"></i> Corner Balcony</span>
+                                        <span class="mm-wiz-tag"><i class="fa fa-users"></i> Max 2 Adults</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tw-flex tw-items-center tw-gap-3">
+                                <div style="text-align:right;">
+                                    <div style="font-weight:800; font-size:14px; color:var(--mm-ink);">৳ 5,200 <span class="tw-text-xs tw-text-muted" style="font-weight:600;">/ night</span></div>
+                                    <div class="tw-text-xs tw-text-muted wiz-room-line-sub" data-base-rate="5200">2 nights = ৳ 10,400</div>
+                                </div>
+                                <label class="mm-wiz-room-toggle-pill">
+                                    <input type="checkbox" class="wiz-room-toggle" data-rate="5200" data-label="#206">
+                                    <span class="wiz-room-toggle-text">+ Add Room</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="mm-wiz-room-row" data-room-rate="5400" data-floor="3" data-status="Available" data-room-type="Executive King" data-bed-type="King">
+                            <div class="mm-wiz-room-main">
+                                <span class="mm-wiz-room-num"><span>RM</span><span>304</span></span>
+                                <div style="min-width:0;">
+                                    <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                                        <strong style="font-size:14.5px;">Room #304 — Executive King</strong>
+                                        <span class="mm-badge mm-badge-unpaid" style="font-size:10.5px;">3rd Floor · East</span>
+                                    </div>
+                                    <div class="mm-wiz-room-tags">
+                                        <span class="mm-wiz-tag"><i class="fa fa-bed"></i> King Bed</span>
+                                        <span class="mm-wiz-tag"><i class="fa fa-glass"></i> Club Lounge</span>
+                                        <span class="mm-wiz-tag"><i class="fa fa-users"></i> Max 2 Adults</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tw-flex tw-items-center tw-gap-3">
+                                <div style="text-align:right;">
+                                    <div style="font-weight:800; font-size:14px; color:var(--mm-ink);">৳ 5,400 <span class="tw-text-xs tw-text-muted" style="font-weight:600;">/ night</span></div>
+                                    <div class="tw-text-xs tw-text-muted wiz-room-line-sub" data-base-rate="5400">2 nights = ৳ 10,800</div>
+                                </div>
+                                <label class="mm-wiz-room-toggle-pill">
+                                    <input type="checkbox" class="wiz-room-toggle" data-rate="5400" data-label="#304">
+                                    <span class="wiz-room-toggle-text">+ Add Room</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="mm-panel tw-p-4 sm:tw-p-6" id="wiz-step-panel-2">
+                    <header class="mm-section-head">
+                        <h2 class="mm-section-title">
+                            <span class="mm-wiz-sec-icon"><i class="fa fa-user"></i></span>
+                            <span>Step 2 · Primary Guest &amp; Stay Details</span>
+                        </h2>
+                        <div class="tw-flex tw-items-center tw-gap-2">
+                            <a href="/preview/guests" class="mm-button mm-button-secondary mm-button-sm">
+                                <i class="fa fa-address-book-o"></i> 20 Guests Directory
+                            </a>
+                            <button type="button" class="mm-button mm-button-secondary mm-button-sm" data-toggle="modal" data-target="#add-guest-modal">
+                                <i class="fa fa-user-plus"></i> + Quick Add Guest (Drawer)
+                            </button>
+                            <span class="mm-badge mm-badge-partial">In Progress</span>
+                        </div>
+                    </header>
+                    <form id="mm-booking-wiz-form" onsubmit="return false;">
+                        <div class="mm-field" style="margin-bottom:14px;">
+                            <label class="mm-label" for="wiz-guest-preset">Quick Load Returning / Sample Guest (18 Registered Profiles)</label>
+                            <select id="wiz-guest-preset" class="form-control">
+                                <option value="Tanvir Ahmed Chowdhury|+880 1711-948210|BD-8894021562|tanvir.chowdhury@orionpharma.com.bd" selected>#GST-1001 · Tanvir Ahmed Chowdhury — Orion Pharma Ltd. (VIP Platinum)</option>
+                                <option value="Nadia Islam|+880 1713-220491|BD-7741029384|nadia.islam@acmeglobal.com">#GST-1002 · Nadia Islam — Acme Global Ltd. (Corporate Gold)</option>
+                                <option value="Dr. Farhana Rahman|+880 1819-334812|A09481204|farhana.rahman@squarehospital.com">#GST-1003 · Dr. Farhana Rahman — Square Hospitals Ltd. (VIP Platinum)</option>
+                                <option value="Rafiqul Islam Bhuiyan|+880 1911-458920|BD-5521904811|rafiq.bhuiyan@beximco.com">#GST-1004 · Rafiqul Islam Bhuiyan — Beximco Group (Corporate Gold)</option>
+                                <option value="Tahmina Akter|+880 1611-883920|BD-6630192845|tahmina.akter@bracbank.com">#GST-1005 · Tahmina Akter — BRAC Bank PLC (Corporate Gold)</option>
+                                <option value="Syed Kamrul Hasan|+880 1715-609281|BD-4489201932|kamrul.hasan@grameenphone.com">#GST-1006 · Syed Kamrul Hasan — Grameenphone Ltd. (Corporate Silver)</option>
+                                <option value="Nusrat Jahan|+880 1819-552104|BG-0192837|nusrat.jahan@unicef.org">#GST-1007 · Nusrat Jahan — UNICEF Bangladesh (Diplomatic)</option>
+                                <option value="Engr. Tariqul Alam|+880 1712-990412|BD-3391028475|tariqul.alam@summitpower.com">#GST-1008 · Engr. Tariqul Alam — Summit Power Int. (Corporate Gold)</option>
+                                <option value="Shabnam Mustari|+880 1714-772109|BP-4491023|shabnam.mustari@biman.com">#GST-1009 · Shabnam Mustari — Biman Bangladesh Airlines (Airline Crew)</option>
+                                <option value="Brig. Gen. Mahmudul Hasan|+880 1711-004921|DP-0049182|mahmud.hasan@defense.gov.bd">#GST-1010 · Brig. Gen. Mahmudul Hasan — Defense Delegation (VIP Protocol)</option>
+                                <option value="Ashraful Alam Siddiqui|+880 1817-203948|BD-9182736450|ashraful@waltonbd.com">#GST-1011 · Ashraful Alam Siddiqui — Walton Hi-Tech (Corporate Silver)</option>
+                                <option value="Barrister Zaima Rahman|+880 1716-839201|A10293847|zaima.rahman@chambers.bd">#GST-1012 · Barrister Zaima Rahman — Supreme Court Chambers (VIP Platinum)</option>
+                                <option value="Amb. Kenji Takahashi|+880 1711-889900|JP-8839201|k.takahashi@embassy-jp.org">#GST-1013 · Amb. Kenji Takahashi — Embassy of Japan (Diplomatic)</option>
+                                <option value="Capt. Jonathan Vance|+880 1713-774411|UK-5549201|j.vance@horizon-aviation.uk">#GST-1014 · Capt. Jonathan Vance — Horizon Aviation UK (Airline Crew)</option>
+                                <option value="Meher Afroz Shaon|+880 1912-665432|BD-2201938476|meher.shaon@bergerbd.com">#GST-1015 · Meher Afroz Shaon — Berger Paints BD (Corporate Gold)</option>
+                                <option value="Imran Hossain &amp; Family|+880 1811-902384|BD-7788990011|imran.hossain@citygroup.com.bd">#GST-1017 · Imran Hossain &amp; Family — City Group Ltd. (Family Leisure)</option>
+                                <option value="Elena Rostova|+880 1719-445566|WB-6647382|e.rostova@worldbank.org">#GST-1019 · Elena Rostova — World Bank South Asia (Diplomatic)</option>
+                                <option value="Rubana Huq|+880 1711-223344|A77482910|rubana.huq@mohammadi.group">#GST-1020 · Rubana Huq — Mohammadi Group (VIP Platinum)</option>
+                            </select>
+                        </div>
+                        <div class="mm-wiz-field-grid">
+                            <div class="mm-field">
+                                <label class="mm-label" for="wiz-guest-name">Primary Guest Name <span class="mm-req">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                    <input id="wiz-guest-name" type="text" class="form-control" value="Tanvir Ahmed Chowdhury" required>
+                                </div>
+                            </div>
+                            <div class="mm-field">
+                                <label class="mm-label" for="wiz-guest-phone">Mobile Phone <span class="mm-req">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-phone"></i></span>
+                                    <input id="wiz-guest-phone" type="tel" class="form-control" value="+880 1711-948210" required>
+                                </div>
+                            </div>
+                            <div class="mm-field">
+                                <label class="mm-label" for="wiz-guest-nid">NID / Passport No. <span class="mm-req">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-id-card-o"></i></span>
+                                    <input id="wiz-guest-nid" type="text" class="form-control" value="BD-8894021562" required>
+                                </div>
+                            </div>
+                            <div class="mm-field">
+                                <label class="mm-label" for="wiz-guest-email">Email Address</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-envelope-o"></i></span>
+                                    <input id="wiz-guest-email" type="email" class="form-control" value="tanvir.chowdhury@example.com">
+                                </div>
+                            </div>
+                            <div class="mm-field">
+                                <label class="mm-label" for="wiz-nights">Length of Stay (Nights)</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-moon-o"></i></span>
+                                    <input id="wiz-nights" type="number" min="1" max="30" class="form-control" value="2">
+                                </div>
+                            </div>
+                            <div class="mm-field">
+                                <label class="mm-label" for="wiz-adults">Occupancy (Adults / Children)</label>
+                                <select id="wiz-adults" class="form-control">
+                                    <option value="2">2 Adults · 0 Children</option>
+                                    <option value="3" selected>3 Adults · 1 Child</option>
+                                    <option value="4">4 Adults · 2 Children</option>
+                                </select>
+                            </div>
+                            <div class="mm-field">
+                                <label class="mm-label" for="wiz-booking-source">Booking Source / Corporate Tier</label>
+                                <select id="wiz-booking-source" class="form-control">
+                                    <option value="Corporate" selected>Corporate Partner — Direct Desk</option>
+                                    <option value="VIP">VIP Heritage Loyalty Member</option>
+                                    <option value="OTA">Online Travel Agency (OTA)</option>
+                                    <option value="WalkIn">Walk-In Front Desk</option>
+                                </select>
+                            </div>
+                            <div class="mm-field">
+                                <label class="mm-label" for="wiz-arrival-time">Expected Check-In Time</label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                                    <input id="wiz-arrival-time" type="text" class="form-control" value="14:00 PM (Airport Transfer)">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mm-field" style="margin-top:14px;">
+                            <label class="mm-label" for="wiz-notes">Front-Desk &amp; Housekeeping Instructions</label>
+                            <div class="input-group">
+                                <span class="input-group-addon"><i class="fa fa-commenting-o"></i></span>
+                                <input id="wiz-notes" type="text" class="form-control" value="VIP corporate arrival at 14:00 · Prepare welcome fruit basket &amp; high-floor quiet room.">
+                            </div>
+                        </div>
+
+                        <!-- Step 2B: Multiple Guest / Accompanying Room Occupants Repeater -->
+                        <div class="mm-wiz-coguests-box" id="wiz-co-guests-section" role="region" aria-label="Multiple guest and accompanying occupants">
+                            <div class="mm-wiz-subhead" style="margin-top:0; margin-bottom:10px;">
+                                <span><i class="fa fa-users"></i> 2B. Accompanying Guests &amp; Room Occupants (Multiple Guest Information)</span>
+                                <span class="mm-badge mm-badge-paid" id="wiz-total-guests-badge">3 Guests Total (1 Primary + 2 Accompanying)</span>
+                            </div>
+                            <div class="tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-2" style="margin-bottom:10px;">
+                                <div class="tw-flex tw-flex-wrap tw-items-center tw-gap-2" style="flex:1 1 280px; min-width:0;">
+                                    <select id="wiz-coguest-preset" class="form-control" style="max-width:320px; flex:1 1 200px;">
+                                        <option value="#201|Dr. Farhana Rahman|+880 1819-334812|A09481204|Colleague|38|Female">Quick Pick: Dr. Farhana Rahman (A09481204 · #201)</option>
+                                        <option value="#101|Syed Kamrul Hasan|+880 1715-609281|BD-4489201932|Colleague|34|Male">Quick Pick: Syed Kamrul Hasan (BD-4489201932 · #101)</option>
+                                        <option value="#201|Tahmina Akter|+880 1611-883920|BD-6630192845|Spouse|31|Female">Quick Pick: Tahmina Akter (BD-6630192845 · #201)</option>
+                                        <option value="#201|Amb. Kenji Takahashi|+880 1711-889900|JP-8839201|VIP Escort|52|Male">Quick Pick: Amb. Kenji Takahashi (JP-8839201 · #201)</option>
+                                        <option value="#101|Barrister Zaima Rahman|+880 1716-839201|A10293847|Colleague|36|Female">Quick Pick: Barrister Zaima Rahman (A10293847 · #101)</option>
+                                    </select>
+                                    <button type="button" class="mm-button mm-button-secondary mm-button-sm" id="wiz-add-preset-coguest-btn" style="min-height:34px; padding:4px 12px;">
+                                        <i class="fa fa-user-plus"></i> + Add Selected Guest
+                                    </button>
+                                </div>
+                                <div class="tw-flex tw-flex-wrap tw-gap-2">
+                                    <button type="button" class="mm-button mm-button-sm" id="wiz-add-coguest-btn" style="min-height:34px; padding:4px 12px;">
+                                        <i class="fa fa-plus"></i> + Add Blank Guest Row
+                                    </button>
+                                    <button type="button" class="mm-button mm-button-secondary mm-button-sm" data-toggle="modal" data-target="#add-guest-modal" style="min-height:34px; padding:4px 12px;">
+                                        <i class="fa fa-id-card-o"></i> New Guest Drawer
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="mm-table-scroll">
+                                <table class="mm-data-table table table-bordered table-striped" id="wiz-coguests-table">
+                                    <thead>
+                                        <tr>
+                                            <th width="12%">Room</th>
+                                            <th width="22%">Accompanying Guest Name <span class="mm-req">*</span></th>
+                                            <th width="18%">Mobile Phone <span class="mm-req">*</span></th>
+                                            <th width="18%">NID / Passport No. <span class="mm-req">*</span></th>
+                                            <th width="14%">Relation / Role</th>
+                                            <th width="10%">Age / Gender</th>
+                                            <th width="6%" class="text-center">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="wiz-coguests-tbody">
+                                        <tr class="wiz-coguest-row">
+                                            <td>
+                                                <select name="member_room[]" class="form-control wiz-cg-room">
+                                                    <option value="#101" selected>#101</option>
+                                                    <option value="#201">#201</option>
+                                                    <option value="#104">#104</option>
+                                                    <option value="#106">#106</option>
+                                                    <option value="#206">#206</option>
+                                                    <option value="#304">#304</option>
+                                                </select>
+                                            </td>
+                                            <td><input type="text" name="member_names[]" class="form-control wiz-cg-name" value="Rafiqul Islam Bhuiyan" placeholder="Full Name" required></td>
+                                            <td><input type="tel" name="member_phone_nos[]" class="form-control wiz-cg-phone" value="+880 1911-458920" placeholder="+880 1..." required></td>
+                                            <td><input type="text" name="registration_nos[]" class="form-control wiz-cg-nid" value="BD-5521904811" placeholder="NID / Passport" required></td>
+                                            <td>
+                                                <select name="relation[]" class="form-control wiz-cg-rel">
+                                                    <option value="Colleague" selected>Colleague</option>
+                                                    <option value="Spouse">Spouse</option>
+                                                    <option value="Child">Child</option>
+                                                    <option value="Family">Family</option>
+                                                    <option value="VIP Escort">VIP Escort</option>
+                                                </select>
+                                            </td>
+                                            <td><input type="text" name="member_age[]" class="form-control wiz-cg-age" value="35 / M" placeholder="Age/M-F"></td>
+                                            <td class="text-center"><button type="button" class="mm-button mm-button-secondary wiz-remove-coguest" style="min-height:28px;padding:2px 8px;" title="Remove Guest Row"><i class="fa fa-trash-o"></i></button></td>
+                                        </tr>
+                                        <tr class="wiz-coguest-row">
+                                            <td>
+                                                <select name="member_room[]" class="form-control wiz-cg-room">
+                                                    <option value="#101">#101</option>
+                                                    <option value="#201" selected>#201</option>
+                                                    <option value="#104">#104</option>
+                                                    <option value="#106">#106</option>
+                                                    <option value="#206">#206</option>
+                                                    <option value="#304">#304</option>
+                                                </select>
+                                            </td>
+                                            <td><input type="text" name="member_names[]" class="form-control wiz-cg-name" value="Nusrat Jahan" placeholder="Full Name" required></td>
+                                            <td><input type="tel" name="member_phone_nos[]" class="form-control wiz-cg-phone" value="+880 1819-552104" placeholder="+880 1..." required></td>
+                                            <td><input type="text" name="registration_nos[]" class="form-control wiz-cg-nid" value="BG-0192837" placeholder="NID / Passport" required></td>
+                                            <td>
+                                                <select name="relation[]" class="form-control wiz-cg-rel">
+                                                    <option value="Colleague">Colleague</option>
+                                                    <option value="Spouse" selected>Spouse</option>
+                                                    <option value="Child">Child</option>
+                                                    <option value="Family">Family</option>
+                                                    <option value="VIP Escort">VIP Escort</option>
+                                                </select>
+                                            </td>
+                                            <td><input type="text" name="member_age[]" class="form-control wiz-cg-age" value="29 / F" placeholder="Age/M-F"></td>
+                                            <td class="text-center"><button type="button" class="mm-button mm-button-secondary wiz-remove-coguest" style="min-height:28px;padding:2px 8px;" title="Remove Guest Row"><i class="fa fa-trash-o"></i></button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </form>
+                </section>
+            </div>
+
+            <aside class="mm-panel tw-p-4 sm:tw-p-6" id="wiz-step-panel-3" style="position:sticky; top:16px;">
+                <header class="mm-section-head">
+                    <h2 class="mm-section-title">
+                        <span class="mm-wiz-sec-icon"><i class="fa fa-calculator"></i></span>
+                        <span>Step 3 · Live Folio &amp; Deposit</span>
+                    </h2>
+                    <span class="mm-badge mm-badge-paid">Live Calc</span>
+                </header>
+                <div class="mm-wiz-breakdown-box">
+                    <div class="mm-wiz-summary-line">
+                        <span>Nightly Room Tariff</span>
+                        <strong id="wiz-calc-nightly">৳ 10,700</strong>
+                    </div>
+                    <div class="mm-wiz-summary-line">
+                        <span>Room Subtotal (<span id="wiz-calc-nights-lbl">2</span> Nights)</span>
+                        <strong id="wiz-calc-subtotal">৳ 21,400</strong>
+                    </div>
+                    <div class="mm-wiz-summary-line">
+                        <span>Service Charge (10%)</span>
+                        <strong id="wiz-calc-sc">৳ 2,140</strong>
+                    </div>
+                    <div class="mm-wiz-summary-line">
+                        <span>Government VAT (15%)</span>
+                        <strong id="wiz-calc-vat">৳ 3,210</strong>
+                    </div>
+                </div>
+
+                <div class="mm-wiz-summary-total">
+                    <span>Total Stay Payable</span>
+                    <span id="wiz-calc-total">৳ 26,750</span>
+                </div>
+
+                <div class="tw-space-y-3" style="margin-top:16px;">
+                    <div class="mm-field">
+                        <label class="mm-label" for="wiz-discount">Promotional / Corporate Discount</label>
+                        <div class="input-group">
+                            <span class="input-group-addon">৳</span>
+                            <input id="wiz-discount" type="number" min="0" class="form-control" value="1750">
+                        </div>
+                    </div>
+                    <div class="mm-field">
+                        <label class="mm-label" for="wiz-advance-policy">Minimum Advance Deposit Policy</label>
+                        <select id="wiz-advance-policy" class="form-control">
+                            <option value="min30" selected>Standard Policy — Min 30% of Net Payable</option>
+                            <option value="first_night">1st Night Room Tariff Minimum</option>
+                            <option value="min50">Peak / Corporate — Min 50% Advance</option>
+                            <option value="full100">Full Prepayment (100% Required)</option>
+                        </select>
+                    </div>
+                    <div class="mm-field">
+                        <div class="tw-flex tw-items-center tw-justify-between" style="margin-bottom:4px;">
+                            <label class="mm-label" for="wiz-advance" style="margin:0;">Booking Money / Advance Paid Now <span class="mm-req">*</span></label>
+                            <span class="tw-text-xs tw-font-semibold" id="wiz-min-advance-lbl" style="color:var(--mm-brand);">Min Required (30%): ৳ 7,500</span>
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon">৳</span>
+                            <input id="wiz-advance" name="advanced_amount" type="number" min="7500" class="form-control" value="10000" aria-describedby="wiz-advance-feedback">
+                        </div>
+                        <div class="tw-flex tw-flex-wrap tw-gap-1.5" style="margin-top:8px;">
+                            <button type="button" class="mm-wiz-chip" data-wiz-adv-pct="30">Min 30% (৳ 7,500)</button>
+                            <button type="button" class="mm-wiz-chip" data-wiz-adv-pct="first_night">1st Night</button>
+                            <button type="button" class="mm-wiz-chip" data-wiz-adv-pct="50">50% Advance</button>
+                            <button type="button" class="mm-wiz-chip" data-wiz-adv-pct="100">100% Full Pay</button>
+                        </div>
+                    </div>
+                    <div id="wiz-advance-error" class="mm-wiz-adv-alert is-error" role="alert" style="display:none;">
+                        <i class="fa fa-exclamation-triangle"></i> <span id="wiz-advance-error-text">Minimum advance deposit of ৳ 7,500 is required to confirm this booking.</span>
+                    </div>
+                    <div id="wiz-advance-ok" class="mm-wiz-adv-alert is-ok" id="wiz-advance-feedback">
+                        <i class="fa fa-check-circle"></i> <span id="wiz-advance-ok-text">Advance deposit meets minimum requirement (40% · ৳ 10,000 received).</span>
+                    </div>
+                    <div class="mm-field">
+                        <label class="mm-label" for="wiz-pay-method">Settlement Account / Terminal</label>
+                        <select id="wiz-pay-method" class="form-control">
+                            <option value="Card">VISA / MasterCard POS Terminal</option>
+                            <option value="Cash">Front-Desk Cash Drawer</option>
+                            <option value="bKash">bKash Merchant Wallet</option>
+                            <option value="Bank">Corporate Bank Transfer</option>
+                        </select>
+                    </div>
+                    <div class="mm-wiz-due-box">
+                        <span><i class="fa fa-check-circle-o"></i> Balance Due at Checkout</span>
+                        <strong id="wiz-calc-due" style="font-size:16px;">৳ 15,000</strong>
+                    </div>
+                    <div id="wiz-draft-print-banner" class="mm-wiz-adv-alert is-ok" style="display:none; margin-bottom:6px;">
+                        <i class="fa fa-file-pdf-o"></i> <span id="wiz-draft-print-banner-text">Whole Booking Preview — Draft Reservation Summary PDF generated and prepared for A4 Print / PDF Save.</span>
+                    </div>
+                    <div id="wiz-confirm-banner" class="alert alert-success" style="display:none; margin-bottom:8px; font-size:12px;">
+                        <i class="fa fa-check-circle"></i> <strong>Booking #BK-2026-1094 Confirmed!</strong> Guest checked in &amp; room keys encoded.
+                    </div>
+                    <!-- Pre-Confirmation Whole Booking Preview & Print Draft PDF Bar -->
+                    <div class="tw-flex tw-flex-wrap tw-gap-2" style="padding-top:2px;">
+                        <button type="button" id="wiz-btn-draft-preview" class="mm-button mm-button-secondary" data-toggle="modal" data-target="#wiz-draft-summary-modal" style="flex:1; justify-content:center;">
+                            <i class="fa fa-file-pdf-o"></i> Preview Draft Summary PDF
+                        </button>
+                        <button type="button" id="wiz-btn-print-draft-direct" class="mm-button mm-button-secondary" title="Open &amp; Print Whole Booking Draft Reservation Summary PDF">
+                            <i class="fa fa-print"></i> Print Draft Summary
+                        </button>
+                    </div>
+                    <div class="tw-flex tw-flex-wrap tw-gap-2" style="padding-top:2px;">
+                        <a href="/assets/docs/draft-reservation-summary.pdf?download=1" download="MM-Heritage-Draft-Booking-Summary.pdf" id="wiz-btn-download-draft-step3" class="mm-button mm-button-secondary" style="flex:1; justify-content:center;" title="Download 2-Page A4 Vector Draft Reservation Summary PDF">
+                            <i class="fa fa-download"></i> Download Draft PDF
+                        </a>
+                        <a href="/preview/draft-booking-pdf" id="wiz-btn-standalone-a4-step3" class="mm-button mm-button-secondary" style="flex:1; justify-content:center;" title="Open Standalone 2-Page A4 View (/preview/draft-booking-pdf)">
+                            <i class="fa fa-external-link"></i> Standalone A4 View
+                        </a>
+                    </div>
+                    <div class="tw-flex tw-flex-wrap tw-gap-2" style="padding-top:4px;">
+                        <button type="button" id="wiz-btn-confirm" class="mm-button" style="flex:1; justify-content:center;">
+                            <i class="fa fa-check"></i> Confirm Booking &amp; Check-In
+                        </button>
+                        <button type="button" class="mm-button mm-button-secondary" data-toggle="modal" data-target="#account-type-modal" title="Open Multi-Account Split Payment Drawer">
+                            <i class="fa fa-columns"></i> Split Pay
+                        </button>
+                        <a href="/preview/checkout" class="mm-button mm-button-secondary" title="Proceed to Checkout Folio">
+                            <i class="fa fa-arrow-right"></i> Folio
+                        </a>
+                    </div>
+                </div>
+            </aside>
+        </div>
+
+        <!-- Slide-Over App Drawer 1: Quick Add Guest -->
+        <div class="modal fade" id="add-guest-modal" tabindex="-1" role="dialog" aria-labelledby="add-guest-drawer-title">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="add-guest-drawer-title"><i class="fa fa-user-plus"></i> Add New Guest Profile</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="wiz-drawer-guest-form" onsubmit="return false;" class="tw-space-y-3">
+                            <div class="mm-field">
+                                <label class="mm-label" for="drawer-guest-name">Full Name <span class="mm-req">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-user"></i></span>
+                                    <input id="drawer-guest-name" type="text" class="form-control" value="Nusrat Jahan" placeholder="Guest full name">
+                                </div>
+                            </div>
+                            <div class="mm-field">
+                                <label class="mm-label" for="drawer-guest-phone">Mobile Number <span class="mm-req">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-phone"></i></span>
+                                    <input id="drawer-guest-phone" type="tel" class="form-control" value="+880 1819-552104" placeholder="+880 1...">
+                                </div>
+                            </div>
+                            <div class="mm-field">
+                                <label class="mm-label" for="drawer-guest-nid">NID / Passport Number <span class="mm-req">*</span></label>
+                                <input id="drawer-guest-nid" type="text" class="form-control" value="BD-9930481205">
+                            </div>
+                            <div class="mm-field">
+                                <label class="mm-label" for="drawer-guest-type">Guest Tier / Corporate Account</label>
+                                <select id="drawer-guest-type" class="form-control">
+                                    <option value="VIP">VIP Heritage Member (10% Loyalty)</option>
+                                    <option value="Corporate">Corporate Partner Account</option>
+                                    <option value="WalkIn">Standard Walk-In Guest</option>
+                                </select>
+                            </div>
+                            <div class="mm-field">
+                                <label class="mm-label" for="drawer-guest-email">Email Address</label>
+                                <input id="drawer-guest-email" type="email" class="form-control" value="nusrat.jahan@example.com">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="mm-button mm-button-secondary" id="wiz-append-guest-drawer" data-dismiss="modal"><i class="fa fa-users"></i> + Append as Accompanying Guest</button>
+                        <button type="button" class="mm-button" id="wiz-apply-guest-drawer" data-dismiss="modal"><i class="fa fa-check"></i> Save as Primary Guest</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide-Over App Drawer 2: Multi-Account Split Payment -->
+        <div class="modal fade" id="account-type-modal" tabindex="-1" role="dialog" aria-labelledby="split-pay-drawer-title">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="split-pay-drawer-title"><i class="fa fa-credit-card"></i> Multi-Account Advance Deposit Drawer</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="tw-text-sm tw-text-muted" style="margin-top:0">Split the guest's advance deposit across Cash, POS Card Terminal, and Mobile Banking accounts.</p>
+                        <div class="mm-table-scroll">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Payment Account</th>
+                                        <th>Reference / Card Last 4</th>
+                                        <th class="text-right">Amount (৳)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>VISA / MasterCard POS</strong></td>
+                                        <td><input type="text" class="form-control" value="VISA-4829"></td>
+                                        <td><input type="number" class="form-control text-right wiz-split-amt" value="7000"></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>bKash Merchant Wallet</strong></td>
+                                        <td><input type="text" class="form-control" value="TRX-994102"></td>
+                                        <td><input type="number" class="form-control text-right wiz-split-amt" value="3000"></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>Front-Desk Cash Drawer</strong></td>
+                                        <td><input type="text" class="form-control" value="CASH-FD01"></td>
+                                        <td><input type="number" class="form-control text-right wiz-split-amt" value="0"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" class="mm-button" id="wiz-apply-split-drawer" data-dismiss="modal"><i class="fa fa-check"></i> Apply Split Deposit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide-Over App Drawer 3: Interactive Architectural Floor Plan Inspector -->
+        <div class="modal fade" id="wiz-floorplan-modal" tabindex="-1" role="dialog" aria-labelledby="wiz-fp-drawer-title">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="wiz-fp-drawer-title"><i class="fa fa-map-o"></i> Hotel Wing &amp; Floor Plan Inspector</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="tw-text-sm tw-text-muted" style="margin-top:0">Live architectural wing summary for Check-in <strong>2026-10-11</strong> → Check-out <strong>2026-10-13</strong>. Click any available room on the floor map to assign or release it.</p>
+                        <div class="mm-table-scroll">
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Floor / Wing</th>
+                                        <th>Room No.</th>
+                                        <th>Category &amp; View</th>
+                                        <th>Status</th>
+                                        <th class="text-right">Tariff / Night</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td><strong>1st Floor · East</strong></td><td><code>#101</code></td><td>Deluxe Double · City View</td><td><span class="mm-badge mm-badge-paid">Selected in Wizard</span></td><td class="text-right">৳ 4,200</td></tr>
+                                    <tr><td><strong>1st Floor · East</strong></td><td><code>#102</code></td><td>Deluxe King · City View</td><td><span class="mm-badge mm-badge-unpaid">Occupied · Nadia Islam</span></td><td class="text-right">৳ 4,500</td></tr>
+                                    <tr><td><strong>1st Floor · Garden</strong></td><td><code>#103</code></td><td>Deluxe King · Garden View</td><td><span class="mm-badge mm-badge-unpaid">Occupied · Dr. Farhana Rahman</span></td><td class="text-right">৳ 4,500</td></tr>
+                                    <tr><td><strong>1st Floor · West</strong></td><td><code>#104</code></td><td>Executive Twin · Garden View</td><td><span class="mm-badge mm-badge-partial">Available to Add</span></td><td class="text-right">৳ 3,600</td></tr>
+                                    <tr><td><strong>1st Floor · Courtyard</strong></td><td><code>#105</code></td><td>Superior Double · Courtyard</td><td><span class="mm-badge mm-badge-unpaid">Occupied · Tahmina Akter</span></td><td class="text-right">৳ 3,800</td></tr>
+                                    <tr><td><strong>1st Floor · West</strong></td><td><code>#106</code></td><td>Standard Single · Quiet Wing</td><td><span class="mm-badge mm-badge-partial">Available to Add</span></td><td class="text-right">৳ 3,200</td></tr>
+                                    <tr><td><strong>2nd Floor · VIP</strong></td><td><code>#201</code></td><td>Heritage Suite · Balcony Lounge</td><td><span class="mm-badge mm-badge-paid">Selected in Wizard</span></td><td class="text-right">৳ 6,500</td></tr>
+                                    <tr><td><strong>2nd Floor · VIP</strong></td><td><code>#202</code></td><td>Heritage Suite · Panoramic View</td><td><span class="mm-badge mm-badge-partial">Housekeeping</span></td><td class="text-right">৳ 6,500</td></tr>
+                                    <tr><td><strong>2nd Floor · East</strong></td><td><code>#203</code></td><td>Superior Twin · Poolside View</td><td><span class="mm-badge mm-badge-unpaid">Occupied · Shabnam Mustari</span></td><td class="text-right">৳ 4,000</td></tr>
+                                    <tr><td><strong>2nd Floor · Balcony</strong></td><td><code>#204</code></td><td>Royal Family Suite · Dual Balcony</td><td><span class="mm-badge mm-badge-unpaid">Reserved · Brig. Gen. Mahmud</span></td><td class="text-right">৳ 8,500</td></tr>
+                                    <tr><td><strong>2nd Floor · West</strong></td><td><code>#205</code></td><td>Deluxe Double · City View</td><td><span class="mm-badge mm-badge-unpaid">Occupied · Ashraful Alam</span></td><td class="text-right">৳ 4,800</td></tr>
+                                    <tr><td><strong>2nd Floor · Corner</strong></td><td><code>#206</code></td><td>Executive King · Corner Balcony</td><td><span class="mm-badge mm-badge-partial">Available to Add</span></td><td class="text-right">৳ 5,200</td></tr>
+                                    <tr><td><strong>3rd Floor · VIP</strong></td><td><code>#301</code></td><td>Diplomatic Suite · Lounge</td><td><span class="mm-badge mm-badge-unpaid">Occupied · Amb. Kenji Takahashi</span></td><td class="text-right">৳ 9,200</td></tr>
+                                    <tr><td><strong>3rd Floor · VIP</strong></td><td><code>#302</code></td><td>Presidential Suite · Skyline</td><td><span class="mm-badge mm-badge-unpaid">Occupied · Capt. Jonathan Vance</span></td><td class="text-right">৳ 12,500</td></tr>
+                                    <tr><td><strong>3rd Floor · East</strong></td><td><code>#303</code></td><td>Executive Twin · Garden View</td><td><span class="mm-badge mm-badge-unpaid">Occupied · Meher Afroz Shaon</span></td><td class="text-right">৳ 4,600</td></tr>
+                                    <tr><td><strong>3rd Floor · East</strong></td><td><code>#304</code></td><td>Executive King · Club Access</td><td><span class="mm-badge mm-badge-partial">Available to Add</span></td><td class="text-right">৳ 5,400</td></tr>
+                                    <tr><td><strong>3rd Floor · South</strong></td><td><code>#305</code></td><td>Family Suite · Interconnecting</td><td><span class="mm-badge mm-badge-unpaid">Occupied · Imran Hossain</span></td><td class="text-right">৳ 7,800</td></tr>
+                                    <tr><td><strong>3rd Floor · West</strong></td><td><code>#306</code></td><td>Superior Double · Quiet Wing</td><td><span class="mm-badge mm-badge-partial">Maintenance · AC Service</span></td><td class="text-right">৳ 4,100</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <a href="/" class="mm-button mm-button-secondary"><i class="fa fa-th-large"></i> Open Full 32-Room Board</a>
+                        <button type="button" class="mm-button" data-dismiss="modal"><i class="fa fa-check"></i> Done</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide-Over / Printable App Drawer 4: Whole Booking Draft Summary Preview & Print PDF -->
+        <div class="modal fade mm-drawer" id="wiz-draft-summary-modal" data-mm-drawer="true" tabindex="-1" role="dialog" aria-labelledby="wiz-draft-summary-title">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="wiz-draft-summary-title"><i class="fa fa-file-pdf-o"></i> Whole Booking Preview — Draft Reservation Summary PDF</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Top PDF Document Viewer Toolbar (Hidden in @media print) -->
+                        <div class="mm-wiz-pdf-toolbar" id="wiz-pdf-toolbar" style="max-width:980px; margin:0 auto 14px; border-radius:10px; border:1px solid rgba(148,163,184,0.36); box-shadow:0 4px 12px rgba(15,23,42,0.06);">
+                            <div class="tw-flex tw-flex-wrap tw-items-center tw-gap-2">
+                                <span class="mm-badge mm-badge-paid"><i class="fa fa-file-pdf-o"></i> 2-Page A4 Executive PDF (210 × 297 mm)</span>
+                                <span class="tw-text-xs tw-text-muted">Page 1: Stay, Guest KYC &amp; Suites · Page 2: Financial Folio, Policy &amp; Signatures</span>
+                            </div>
+                            <div class="tw-flex tw-flex-wrap tw-gap-2">
+                                <button type="button" class="mm-button" id="wiz-btn-print-draft-top" style="min-height:30px; padding:3px 12px; font-size:11.5px;">
+                                    <i class="fa fa-print"></i> Print 2-Page Draft PDF
+                                </button>
+                                <a href="/assets/docs/draft-reservation-summary.pdf?download=1" download="MM-Heritage-Draft-Booking-Summary.pdf" class="mm-button mm-button-secondary" id="wiz-btn-download-draft-pdf" style="min-height:30px; padding:3px 11px; font-size:11.5px;">
+                                    <i class="fa fa-download"></i> Download Draft PDF
+                                </a>
+                                <a href="/preview/draft-booking-pdf" class="mm-button mm-button-secondary" id="wiz-btn-open-pdf-tab" style="min-height:30px; padding:3px 11px; font-size:11.5px;">
+                                    <i class="fa fa-external-link"></i> Standalone A4 View
+                                </a>
+                            </div>
+                        </div>
+                        <div id="wiz-pdf-download-toast" class="mm-wiz-adv-alert is-ok mm-no-print" style="display:none; max-width:980px; margin:0 auto 14px; background:#ecfdf5; border:1px solid #34d399; color:#065f46; border-radius:10px; padding:10px 14px;">
+                            <div class="tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-2">
+                                <span><i class="fa fa-check-circle"></i> <strong>MM-Heritage-Draft-Booking-Summary.pdf (2 Pages · A4 Vector)</strong> ready — download started automatically.</span>
+                                <div class="tw-flex tw-flex-wrap tw-gap-2">
+                                    <a href="/assets/docs/draft-reservation-summary.pdf?download=1" download="MM-Heritage-Draft-Booking-Summary.pdf" id="wiz-pdf-direct-link" class="mm-button mm-button-secondary" style="min-height:26px; padding:2px 10px; font-size:11px;">
+                                        <i class="fa fa-download"></i> Save PDF File
+                                    </a>
+                                    <button type="button" id="wiz-btn-toggle-drawer-embed" class="mm-button mm-button-secondary" onclick="var w=document.getElementById('wiz-drawer-pdf-embed-wrap');if(w){w.style.display=w.style.display==='none'?'block':'none';}" style="min-height:26px; padding:2px 10px; font-size:11px;">
+                                        <i class="fa fa-eye"></i> Embedded PDF Viewer
+                                    </button>
+                                    <a href="/preview/draft-booking-pdf" class="mm-button mm-button-secondary" style="min-height:26px; padding:2px 10px; font-size:11px;">
+                                        <i class="fa fa-external-link"></i> Open Standalone A4 View
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="wiz-drawer-pdf-embed-wrap" class="mm-panel tw-p-3 mm-no-print" style="display:none; max-width:980px; margin:0 auto 14px;">
+                            <iframe id="wiz-drawer-pdf-iframe" src="/assets/docs/draft-reservation-summary.pdf" title="Draft Reservation Summary Vector PDF" style="width:100%; height:520px; border:1px solid #cbd5e1; border-radius:8px; background:#fff;"></iframe>
+                        </div>
+
+                        <div class="mm-wiz-draft-sheet" id="wiz-draft-sheet">
+                            <!-- ==================== PAGE 1 OF 2: LETTERHEAD, STAY, GUEST KYC & SUITES ==================== -->
+                            <div class="mm-wiz-pdf-page" id="wiz-draft-page-1">
+                                <!-- Redesigned Architectural Luxury Hotel PDF Letterhead -->
+                                <div class="mm-wiz-pdf-hero">
+                                    <div class="mm-wiz-pdf-brand">
+                                        <div class="mm-wiz-pdf-crest" aria-hidden="true">
+                                            <span style="font-size:7px; letter-spacing:0.15em; color:#fcd34d;">★★★</span>
+                                            <span>M&amp;M</span>
+                                            <span style="font-size:6px; letter-spacing:0.14em; color:#93c5fd; font-weight:700;">EST.BD</span>
+                                        </div>
+                                        <div style="min-width:0;">
+                                            <div class="mm-wiz-pdf-kicker">
+                                                <span><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i></span>
+                                                <span>Five-Star Boutique Hospitality · Dhaka, Bangladesh</span>
+                                            </div>
+                                            <div class="mm-wiz-pdf-title">M&amp;M HERITAGE HOTEL &amp; SUITES</div>
+                                            <div class="mm-wiz-pdf-sub">
+                                                <span><i class="fa fa-map-marker" style="color:#d97706;"></i> Plot 42, Road 90, Gulshan-2, Dhaka-1212</span>
+                                                <span>·</span>
+                                                <span><i class="fa fa-phone" style="color:#2563eb;"></i> +880 2-55051920</span>
+                                                <span>·</span>
+                                                <span><i class="fa fa-certificate" style="color:#059669;"></i> BIN: 004192837-0101</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mm-wiz-pdf-docmeta">
+                                        <div style="text-align:right;">
+                                            <div style="font-size:9.5px; font-weight:800; letter-spacing:0.06em; text-transform:uppercase; color:#1e3a8a;">Draft Reservation Summary · Page 1/2</div>
+                                            <div style="margin-top:2px;"><span class="mm-badge mm-badge-paid" id="draft-status-badge">DRAFT · READY TO CONFIRM</span></div>
+                                            <div style="font-size:10.5px; color:#334155; font-weight:700; margin-top:3px;">Ref: <code id="draft-ref-code" style="background:rgba(37,99,235,0.10); color:#1d4ed8; padding:1px 5px; border-radius:4px; font-weight:800;">#DRAFT-BK-2026-1094</code></div>
+                                            <div style="font-size:9.5px; color:#64748b; margin-top:1px;" id="draft-issued-at">Issued: 2026-10-14 · 14:00 BST</div>
+                                        </div>
+                                        <div class="mm-print-codes-top" aria-label="Booking verification codes">
+                                            <span class="mm-print-qr-top"><svg data-mm-qr="booking" xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 41 41" shape-rendering="crispEdges"><path fill="#ffffff" d="M0 0h41v41H0z"/><path stroke="#000000" d="M0 0.5h7m2 0h1m3 0h1m2 0h1m2 0h1m1 0h2m1 0h3m4 0h1m2 0h7M0 1.5h1m5 0h1m3 0h1m1 0h1m1 0h3m1 0h2m1 0h2m2 0h1m1 0h1m2 0h2m2 0h1m5 0h1M0 2.5h1m1 0h3m1 0h1m1 0h1m2 0h1m1 0h2m1 0h1m2 0h1m2 0h1m1 0h1m5 0h2m2 0h1m1 0h3m1 0h1M0 3.5h1m1 0h3m1 0h1m1 0h1m9 0h1m1 0h2m1 0h2m4 0h2m3 0h1m1 0h3m1 0h1M0 4.5h1m1 0h3m1 0h1m1 0h2m2 0h6m5 0h1m2 0h1m2 0h1m2 0h1m1 0h1m1 0h3m1 0h1M0 5.5h1m5 0h1m1 0h1m1 0h2m1 0h1m5 0h5m3 0h2m3 0h1m1 0h1m5 0h1M0 6.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M8 7.5h1m4 0h3m1 0h1m1 0h4m3 0h3m1 0h1M0 8.5h1m1 0h5m3 0h2m1 0h3m1 0h1m1 0h1m3 0h2m1 0h1m7 0h5M0 9.5h1m1 0h3m2 0h1m3 0h1m3 0h7m1 0h1m1 0h1m1 0h1m1 0h1m2 0h2m3 0h2m1 0h1M1 10.5h3m2 0h1m1 0h1m2 0h2m4 0h2m2 0h2m3 0h2m2 0h1m1 0h1m1 0h1m1 0h5M0 11.5h2m5 0h1m1 0h1m1 0h1m2 0h4m3 0h1m3 0h4m1 0h2m1 0h1m1 0h3m1 0h2M3 12.5h1m1 0h2m2 0h1m1 0h1m1 0h1m1 0h2m1 0h2m1 0h1m1 0h1m2 0h3m3 0h3m1 0h1m2 0h1M0 13.5h2m1 0h1m3 0h2m2 0h1m1 0h1m1 0h2m1 0h1m1 0h2m1 0h2m4 0h2m6 0h3M2 14.5h6m1 0h1m1 0h1m4 0h4m1 0h1m1 0h1m3 0h2m1 0h1m2 0h2m3 0h2M2 15.5h2m3 0h1m1 0h1m1 0h3m2 0h1m1 0h4m2 0h2m2 0h2m1 0h1m1 0h3m1 0h1m1 0h2M3 16.5h1m2 0h2m6 0h3m1 0h3m2 0h1m1 0h1m1 0h1m1 0h5m1 0h2m3 0h1M0 17.5h3m1 0h2m4 0h1m1 0h2m2 0h4m1 0h1m1 0h2m1 0h1m4 0h1m2 0h3m2 0h2M3 18.5h1m2 0h1m6 0h2m2 0h1m1 0h1m1 0h1m1 0h2m2 0h1m1 0h3m2 0h1m1 0h1m2 0h1M0 19.5h2m1 0h3m1 0h1m2 0h3m2 0h7m5 0h1m3 0h1m3 0h3M2 20.5h1m1 0h1m1 0h1m1 0h2m2 0h2m2 0h1m4 0h1m2 0h2m1 0h1m1 0h3m1 0h1m1 0h1m4 0h1M0 21.5h1m3 0h1m3 0h1m5 0h2m1 0h2m6 0h2m1 0h1m3 0h3m1 0h1m1 0h1m1 0h1M0 22.5h8m1 0h1m2 0h1m2 0h2m4 0h3m3 0h3m1 0h2m2 0h1m1 0h1m1 0h2M0 23.5h2m1 0h2m4 0h1m1 0h2m1 0h1m2 0h1m4 0h1m1 0h1m2 0h4m1 0h1m3 0h1m2 0h1M4 24.5h1m1 0h1m2 0h2m1 0h3m4 0h1m1 0h4m1 0h1m3 0h4m1 0h6M2 25.5h1m4 0h2m2 0h1m1 0h2m3 0h1m4 0h1m1 0h1m1 0h1m1 0h1m2 0h3m1 0h3m1 0h1M0 26.5h2m1 0h1m1 0h2m1 0h1m3 0h5m1 0h1m3 0h2m2 0h1m6 0h1m5 0h1M1 27.5h2m2 0h1m7 0h2m1 0h1m1 0h1m1 0h1m4 0h1m3 0h1m1 0h1m1 0h1m2 0h3m1 0h1M2 28.5h1m3 0h3m4 0h1m1 0h4m1 0h1m1 0h2m1 0h2m1 0h2m2 0h2m5 0h2M0 29.5h2m6 0h1m1 0h2m1 0h1m1 0h2m1 0h1m2 0h4m4 0h3m2 0h1m1 0h5M0 30.5h1m1 0h2m2 0h3m2 0h2m1 0h1m1 0h1m3 0h2m1 0h4m1 0h4m1 0h2m1 0h2M0 31.5h1m1 0h3m5 0h1m1 0h4m7 0h2m1 0h1m1 0h1m1 0h1m4 0h1m2 0h3M0 32.5h1m1 0h3m1 0h2m2 0h6m1 0h2m1 0h1m4 0h1m1 0h2m1 0h1m1 0h5m1 0h2M8 33.5h1m2 0h3m4 0h2m2 0h3m1 0h2m1 0h1m1 0h2m3 0h2m1 0h1M0 34.5h7m2 0h1m1 0h5m2 0h1m3 0h1m2 0h1m1 0h2m1 0h3m1 0h1m1 0h2m2 0h1M0 35.5h1m5 0h1m1 0h2m3 0h1m1 0h2m3 0h1m2 0h2m2 0h2m3 0h1m3 0h1m1 0h2M0 36.5h1m1 0h3m1 0h1m1 0h1m1 0h2m1 0h3m2 0h1m2 0h5m3 0h10m1 0h1M0 37.5h1m1 0h3m1 0h1m1 0h5m1 0h3m7 0h3m1 0h1m2 0h2m1 0h1m2 0h1m1 0h1M0 38.5h1m1 0h3m1 0h1m1 0h4m1 0h1m1 0h4m2 0h2m1 0h1m1 0h1m1 0h3m8 0h1M0 39.5h1m5 0h1m2 0h3m1 0h1m4 0h1m1 0h1m4 0h5m2 0h1m1 0h1m3 0h3M0 40.5h7m1 0h1m1 0h1m4 0h1m1 0h3m2 0h1m1 0h3m2 0h4m4 0h3"/></svg></span>
+                                            <span class="mm-print-codes-top-meta">
+                                                <span class="mm-print-barcode-top"><svg viewBox="0 0 180 42" xmlns="http://www.w3.org/2000/svg">
+<path stroke="#000000" stroke-width="3" d="M1.50 42L1.50 0M28.50 42L28.50 0M39.50 42L39.50 0M71.50 42L71.50 0M101.50 42L101.50 0M106.50 42L106.50 0M113.50 42L113.50 0M117.50 42L117.50 0M127.50 42L127.50 0M141.50 42L141.50 0M148.50 42L148.50 0M153.50 42L153.50 0M159.50 42L159.50 0M177.50 42L177.50 0" />
+<path stroke="#000000" stroke-width="2" d="M6 42L6 0M10 42L10 0M18 42L18 0M25 42L25 0M36 42L36 0M54 42L54 0M78 42L78 0M97 42L97 0M124 42L124 0M174 42L174 0" />
+<path stroke="#000000" stroke-width="5" d="M48.50 42L48.50 0M57.50 42L57.50 0M83.50 42L83.50 0M89.50 42L89.50 0M133.50 42L133.50 0M168.50 42L168.50 0" />
+<path stroke="#000000" stroke-width="7" d="M65.50 42L65.50 0" />
+</svg></span>
+                                                <span class="mm-print-codes-top-caption">BK-2026-0142 · Scan to verify</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mm-wiz-pdf-body">
+                                    <!-- Section 1: Stay & Check-In/Out Schedule -->
+                                    <div class="mm-wiz-pdf-section-title" style="margin-top:0;">
+                                        <span><i class="fa fa-calendar"></i> 1. Stay Schedule &amp; Check-In / Check-Out Window</span>
+                                        <span class="tw-text-xs tw-text-muted">Guaranteed Reservation Hold · Standard Check-In 14:00 / Check-Out 12:00</span>
+                                    </div>
+                                    <div class="mm-wiz-draft-meta-grid">
+                                        <div class="mm-wiz-draft-kv">
+                                            <div class="mm-wiz-draft-kv-lbl">Check-In Date &amp; Time</div>
+                                            <div class="mm-wiz-draft-kv-val" id="draft-checkin">2026-10-14 · 02:00 PM</div>
+                                        </div>
+                                        <div class="mm-wiz-draft-kv">
+                                            <div class="mm-wiz-draft-kv-lbl">Check-Out Date &amp; Time</div>
+                                            <div class="mm-wiz-draft-kv-val" id="draft-checkout">2026-10-16 · 12:00 PM</div>
+                                        </div>
+                                        <div class="mm-wiz-draft-kv">
+                                            <div class="mm-wiz-draft-kv-lbl">Stay Duration &amp; Occupancy</div>
+                                            <div class="mm-wiz-draft-kv-val" id="draft-nights">2 Nights · 3 Guests</div>
+                                        </div>
+                                        <div class="mm-wiz-draft-kv">
+                                            <div class="mm-wiz-draft-kv-lbl">Booking Source / Tier</div>
+                                            <div class="mm-wiz-draft-kv-val" id="draft-source">Corporate Partner — Direct Desk</div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Section 2: Primary Guest & Accompanying Guests -->
+                                    <div class="mm-wiz-pdf-section-title">
+                                        <span><i class="fa fa-users"></i> 2. Primary Folio Holder &amp; Accompanying Occupants (KYC)</span>
+                                        <span class="tw-text-xs tw-text-muted" id="draft-guests-count-lbl">3 Guests Registered (1 Primary + 2 Accompanying)</span>
+                                    </div>
+                                    <div class="mm-wiz-draft-kv" style="margin-bottom:10px; border-left:3.5px solid #059669;" id="draft-primary-guest">
+                                        <div class="mm-wiz-draft-kv-lbl">Primary Guest (Master Folio Holder · Govt. ID Verified)</div>
+                                        <div class="mm-wiz-draft-kv-val" id="draft-primary-guest-val">Tanvir Ahmed Chowdhury · +880 1711-948210 · NID/Passport: BD-8894021562 · tanvir.chowdhury@example.com</div>
+                                    </div>
+                                    <div class="mm-table-scroll" style="margin-bottom:12px;">
+                                        <table class="mm-data-table mm-wiz-pdf-table table table-bordered table-striped" id="draft-guests-table">
+                                            <colgroup>
+                                                <col style="width:5%;">
+                                                <col style="width:11%;">
+                                                <col style="width:26%;">
+                                                <col style="width:17%;">
+                                                <col style="width:18%;">
+                                                <col style="width:13%;">
+                                                <col style="width:10%;">
+                                            </colgroup>
+                                            <thead>
+                                                <tr>
+                                                    <th data-priority="1">#</th>
+                                                    <th data-priority="1">Assigned Room</th>
+                                                    <th data-priority="1">Accompanying Guest Full Name</th>
+                                                    <th data-priority="1">Mobile Phone</th>
+                                                    <th data-priority="1">NID / Passport No.</th>
+                                                    <th data-priority="1">Relation / Role</th>
+                                                    <th data-priority="1">Age / Gender</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="draft-guests-tbody">
+                                                <tr><td>1</td><td><code>#101</code></td><td><strong>Rafiqul Islam Bhuiyan</strong></td><td>+880 1911-458920</td><td><code>BD-5521904811</code></td><td>Colleague</td><td>35 / M</td></tr>
+                                                <tr><td>2</td><td><code>#201</code></td><td><strong>Nusrat Jahan</strong></td><td>+880 1819-552104</td><td><code>BG-0192837</code></td><td>Spouse</td><td>29 / F</td></tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <!-- Section 3: Assigned Rooms & Tariff Breakdown -->
+                                    <div class="mm-wiz-pdf-section-title">
+                                        <span><i class="fa fa-bed"></i> 3. Assigned Rooms &amp; Nightly Tariff Schedule</span>
+                                        <span class="tw-text-xs tw-text-muted" id="draft-rooms-count-lbl">2 Rooms Assigned · Complimentary Buffet Breakfast &amp; Wi-Fi</span>
+                                    </div>
+                                    <div class="mm-table-scroll" style="margin-bottom:10px;">
+                                        <table class="mm-data-table mm-wiz-pdf-table table table-bordered table-striped" id="draft-rooms-table">
+                                            <colgroup>
+                                                <col style="width:6%;">
+                                                <col style="width:18%;">
+                                                <col style="width:34%;">
+                                                <col style="width:15%;">
+                                                <col style="width:10%;">
+                                                <col style="width:17%;">
+                                            </colgroup>
+                                            <thead>
+                                                <tr>
+                                                    <th data-priority="1">SL</th>
+                                                    <th data-priority="1">Room &amp; Floor</th>
+                                                    <th data-priority="1">Suite Category &amp; Bed Type</th>
+                                                    <th data-priority="1" class="text-right">Nightly Tariff</th>
+                                                    <th data-priority="1" class="text-center">Nights</th>
+                                                    <th data-priority="1" class="text-right">Line Subtotal</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="draft-rooms-tbody">
+                                                <tr><td>1</td><td><strong>#101</strong> (Floor 1)</td><td>Deluxe Double · King Bed</td><td class="text-right">৳ 4,200</td><td class="text-center">2</td><td class="text-right"><strong>৳ 8,400</strong></td></tr>
+                                                <tr><td>2</td><td><strong>#201</strong> (Floor 2)</td><td>Heritage Suite · Suite</td><td class="text-right">৳ 6,500</td><td class="text-center">2</td><td class="text-right"><strong>৳ 13,000</strong></td></tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="mm-wiz-pdf-footbar" style="margin-top:auto;">
+                                        <span>Document ID: <strong>PDF-DRAFT-BK-2026-1094</strong> · Continued on Page 2 (Financial Folio &amp; Signatures) →</span>
+                                        <span><strong>Page 1 of 2</strong> · Stay Schedule, Guest KYC &amp; Assigned Suites</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ==================== PAGE 2 OF 2: FINANCIAL FOLIO, DEPOSIT POLICY & SIGNATURES ==================== -->
+                            <div class="mm-wiz-pdf-page" id="wiz-draft-page-2">
+                                <div class="mm-wiz-pdf-page2-head">
+                                    <div class="tw-flex tw-items-center tw-gap-2">
+                                        <span class="mm-badge mm-badge-paid" style="background:#0f172a; color:#fcd34d; border-color:#f59e0b;">M&amp;M HERITAGE</span>
+                                        <div>
+                                            <div style="font-size:13px; font-weight:900; color:var(--mm-ink);">M&amp;M HERITAGE HOTEL &amp; SUITES — DRAFT RESERVATION SUMMARY (CONTINUED)</div>
+                                            <div class="tw-text-xs tw-text-muted">Folio Ref: <code>#DRAFT-BK-2026-1094</code> · Financial Settlement, Deposit Compliance &amp; Guest Authorization</div>
+                                        </div>
+                                    </div>
+                                    <span class="mm-badge mm-badge-partial">Page 2 of 2</span>
+                                </div>
+
+                                <div class="mm-wiz-pdf-body">
+                                    <!-- Section 4: Two-Column Financial Folio & Advance Deposit Policy -->
+                                    <div class="mm-wiz-pdf-section-title" style="margin-top:0;">
+                                        <span><i class="fa fa-calculator"></i> 4. Financial Folio, Advance Deposit Policy &amp; Balance Summary</span>
+                                        <span class="tw-text-xs tw-text-muted">All amounts in Bangladeshi Taka (BDT · ৳)</span>
+                                    </div>
+                                    <div class="mm-wiz-pdf-finance-grid">
+                                        <div class="mm-wiz-pdf-policy-box">
+                                            <div>
+                                                <div style="font-size:11.5px; font-weight:800; text-transform:uppercase; letter-spacing:0.04em; color:#2563eb; margin-bottom:6px;">
+                                                    <i class="fa fa-shield"></i> Advance Deposit Policy &amp; Compliance
+                                                </div>
+                                                <div class="mm-wiz-summary-line"><span>Selected Deposit Policy</span><strong id="draft-policy-name">Standard — Min 30% of Net Payable</strong></div>
+                                                <div class="mm-wiz-summary-line"><span>Minimum Required Advance</span><strong id="draft-min-adv">৳ 7,500</strong></div>
+                                                <div class="mm-wiz-summary-line"><span>Settlement Tender Channel</span><strong id="draft-pay-method-badge"><span class="mm-badge mm-badge-paid" id="draft-pay-method">Card</span></strong></div>
+                                                <div class="mm-wiz-summary-line"><span>Deposit Policy Verification</span><strong id="draft-compliance-pill"><span class="mm-badge mm-badge-paid">✓ Minimum Satisfied</span></strong></div>
+                                            </div>
+                                            <div style="padding-top:8px; border-top:1px dashed rgba(148,163,184,0.45); font-size:11.5px; line-height:1.45;" id="draft-notes">
+                                                <strong>Front-Desk &amp; Housekeeping Instructions:</strong> VIP corporate arrival at 14:00 · Prepare welcome fruit basket &amp; high-floor quiet room.
+                                            </div>
+                                            <div style="font-size:10.5px; color:#64748b; line-height:1.45;">
+                                                <strong>Reservation Terms &amp; Check-In Policy:</strong> Government NID/Passport is mandatory at check-in for all registered occupants. Standard check-in is 02:00 PM and standard check-out is 12:00 PM. Any remaining folio balance &amp; incidental charges are payable upon checkout.
+                                            </div>
+                                        </div>
+                                        <div class="mm-wiz-pdf-totals-box">
+                                            <div class="mm-wiz-summary-line"><span>Combined Nightly Room Tariff</span><strong id="draft-nightly">৳ 10,700</strong></div>
+                                            <div class="mm-wiz-summary-line"><span>Room Stay Subtotal</span><strong id="draft-subtotal">৳ 21,400</strong></div>
+                                            <div class="mm-wiz-summary-line"><span>Service Charge (10%) + Govt. VAT (15%)</span><strong id="draft-tax">৳ 5,350</strong></div>
+                                            <div class="mm-wiz-summary-line"><span>Gross Stay Payable</span><strong id="draft-total">৳ 26,750</strong></div>
+                                            <div class="mm-wiz-summary-line"><span>Promotional / Corporate Discount</span><strong id="draft-discount">- ৳ 1,750</strong></div>
+                                            <div class="mm-wiz-summary-line" style="border-top:1px solid rgba(37,99,235,0.25); padding-top:6px; margin-top:4px;"><span><strong>Net Stay Payable</strong></span><strong id="draft-net" style="font-size:14px;">৳ 25,000</strong></div>
+                                            <div class="mm-wiz-summary-line"><span>Advance Paid Now</span><strong id="draft-advance" style="color:#059669; font-size:14px;">৳ 10,000</strong></div>
+                                            <div class="mm-wiz-pdf-due-bar">
+                                                <span><i class="fa fa-credit-card"></i> Balance Due at Checkout</span>
+                                                <strong id="draft-due" style="font-size:16px; color:#fcd34d;">৳ 15,000</strong>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Section 5: Guest Declaration & Authorized Signatures -->
+                                    <div class="mm-wiz-pdf-section-title" style="margin-top:16px;">
+                                        <span><i class="fa fa-pencil-square-o"></i> 5. Guest Acceptance Declaration &amp; Authorized Signatures</span>
+                                        <span class="tw-text-xs tw-text-muted">Pre-Confirmation Verification</span>
+                                    </div>
+                                    <div class="mm-wiz-draft-kv" style="margin-bottom:14px; font-size:11px; color:#334155; line-height:1.5;">
+                                        I/We hereby verify that the guest KYC particulars, suite assignments, stay dates, nightly tariffs, and advance deposit recorded in this 2-page Draft Reservation Summary are accurate, and authorize M&amp;M Heritage Hotel &amp; Suites to confirm this reservation.
+                                    </div>
+
+                                    <div class="mm-wiz-draft-sign">
+                                        <div>
+                                            <div style="border-bottom:1.5px solid rgba(100,116,139,0.55); height:38px; margin-bottom:6px;"></div>
+                                            <strong>Primary Guest Signature</strong><br>
+                                            <span>Agree to Stay Dates, Occupant KYC &amp; Tariff Terms</span>
+                                        </div>
+                                        <div style="text-align:center;">
+                                            <div style="border:1.5px dashed rgba(37,99,235,0.45); border-radius:8px; height:42px; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:800; color:#2563eb; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:5px;">
+                                                M&amp;M Heritage Official Front-Desk Seal
+                                            </div>
+                                            <span>Verified Pre-Confirmation Draft</span>
+                                        </div>
+                                        <div style="text-align:right;">
+                                            <div style="border-bottom:1.5px solid rgba(100,116,139,0.55); height:38px; margin-bottom:6px;"></div>
+                                            <strong>Front-Desk Reservation Officer</strong><br>
+                                            <span>M&amp;M Heritage Hotel &amp; Suites</span>
+                                        </div>
+                                    </div>
+
+                                    
+                                    </div>
+
+                                    <div class="mm-wiz-pdf-footbar" style="margin-top:auto;">
+                                        <span>Document ID: <strong>PDF-DRAFT-BK-2026-1094</strong> · M&amp;M Heritage PMS v2.4</span>
+                                        <span><strong>Page 2 of 2</strong> · Financial Folio, Deposit Policy &amp; Signatures</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close Preview</button>
+                        <a href="/preview/draft-booking-pdf" class="mm-button mm-button-secondary" id="wiz-btn-open-pdf-footer">
+                            <i class="fa fa-external-link"></i> Standalone A4 View
+                        </a>
+                        <a href="/assets/docs/draft-reservation-summary.pdf?download=1" download="MM-Heritage-Draft-Booking-Summary.pdf" class="mm-button mm-button-secondary" id="wiz-btn-download-draft-footer">
+                            <i class="fa fa-download"></i> Download Draft PDF
+                        </a>
+                        <button type="button" class="mm-button mm-button-secondary" id="wiz-btn-print-draft">
+                            <i class="fa fa-print"></i> Print Draft Summary PDF
+                        </button>
+                        <button type="button" class="mm-button" id="wiz-draft-confirm-btn" data-dismiss="modal">
+                            <i class="fa fa-check"></i> Confirm Booking &amp; Check-In
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script>
+<!--MM-JS-->
+<script>
+(function () {
+    function fmt(n) {
+        return '৳ ' + Math.round(n).toLocaleString('en-US');
+    }
+    function formatTime12(hm) {
+        if (!hm) return '02:00 PM';
+        var p = hm.split(':');
+        var h = parseInt(p[0] || '14', 10);
+        var m = p[1] || '00';
+        var ampm = h >= 12 ? 'PM' : 'AM';
+        var h12 = h % 12 || 12;
+        return (h12 < 10 ? '0' + h12 : h12) + ':' + m + ' ' + ampm;
+    }
+    function addDaysIso(isoDate, daysToAdd) {
+        var d = new Date((isoDate || '2026-10-14') + 'T00:00:00');
+        if (isNaN(d.getTime())) d = new Date('2026-10-14T00:00:00');
+        d.setDate(d.getDate() + daysToAdd);
+        var y = d.getFullYear();
+        var m = String(d.getMonth() + 1).padStart(2, '0');
+        var day = String(d.getDate()).padStart(2, '0');
+        return y + '-' + m + '-' + day;
+    }
+    function syncDatesFromCalendar(source) {
+        var inEl = document.getElementById('wiz-checkin-date');
+        var outEl = document.getElementById('wiz-checkout-date');
+        var inTimeEl = document.getElementById('wiz-checkin-time');
+        var outTimeEl = document.getElementById('wiz-checkout-time');
+        var nightsEl = document.getElementById('wiz-nights');
+        var statusEl = document.getElementById('wiz-date-status');
+        if (!inEl || !outEl) return;
+
+        var inVal = inEl.value || '2026-10-14';
+        var outVal = outEl.value || '2026-10-16';
+        var minOut = addDaysIso(inVal, 1);
+        outEl.min = minOut;
+
+        var autoAdjusted = false;
+        if (source === 'nights' && nightsEl) {
+            var nReq = Math.max(1, parseInt(nightsEl.value || '2', 10));
+            outVal = addDaysIso(inVal, nReq);
+            outEl.value = outVal;
+        } else {
+            var dIn = new Date(inVal + 'T00:00:00');
+            var dOut = new Date(outVal + 'T00:00:00');
+            var diffDays = Math.round((dOut - dIn) / 86400000);
+            if (isNaN(diffDays) || diffDays < 1) {
+                diffDays = 1;
+                outVal = minOut;
+                outEl.value = outVal;
+                autoAdjusted = true;
+            }
+            if (nightsEl) nightsEl.value = String(diffDays);
+        }
+
+        var finalNights = Math.max(1, parseInt((nightsEl || {}).value || '2', 10));
+        var tIn = formatTime12(inTimeEl ? inTimeEl.value : '14:00');
+        var tOut = formatTime12(outTimeEl ? outTimeEl.value : '12:00');
+
+        var sumIn = document.getElementById('wiz-summary-checkin');
+        var sumInSub = document.getElementById('wiz-summary-checkin-sub');
+        var sumOut = document.getElementById('wiz-summary-checkout');
+        var sumOutSub = document.getElementById('wiz-summary-checkout-sub');
+        if (sumIn) sumIn.textContent = inVal;
+        if (sumInSub) sumInSub.textContent = 'From ' + tIn + ' · Check-In';
+        if (sumOut) sumOut.textContent = outVal;
+        if (sumOutSub) sumOutSub.textContent = 'Until ' + tOut + ' · Check-Out';
+        if (statusEl) {
+            statusEl.textContent = (autoAdjusted ? '⚠ Adjusted to min 1 night · ' : '✓ ') +
+                finalNights + ' Night' + (finalNights === 1 ? '' : 's') +
+                ' (' + inVal + ' ' + tIn + ' → ' + outVal + ' ' + tOut + ')';
+        }
+        document.querySelectorAll('[data-wiz-range-preset]').forEach(function (chip) {
+            var p = parseInt(chip.getAttribute('data-wiz-range-preset') || '0', 10);
+            chip.classList.toggle('is-active', p === finalNights);
+        });
+    }
+    function updateCoGuestsCount() {
+        var rows = document.querySelectorAll('#wiz-coguests-tbody .wiz-coguest-row');
+        var coCount = rows.length;
+        var totalGuests = 1 + coCount;
+        var badge = document.getElementById('wiz-total-guests-badge');
+        var sub = document.getElementById('wiz-summary-guests-sub');
+        if (badge) {
+            badge.textContent = totalGuests + ' Guest' + (totalGuests === 1 ? '' : 's') +
+                ' Total (1 Primary + ' + coCount + ' Accompanying)';
+        }
+        if (sub) {
+            sub.textContent = totalGuests + ' Guest' + (totalGuests === 1 ? '' : 's') + ' · Breakfast Included';
+        }
+    }
+    function recalcWizard() {
+        var nights = Math.max(1, parseInt((document.getElementById('wiz-nights') || {}).value || '2', 10));
+        var nightly = 0;
+        var labels = [];
+        document.querySelectorAll('.wiz-room-toggle').forEach(function (cb) {
+            var row = cb.closest('.mm-wiz-room-row');
+            var txt = row ? row.querySelector('.wiz-room-toggle-text') : null;
+            var roomCode = cb.getAttribute('data-label');
+            var fpTile = roomCode ? document.querySelector('[data-fp-room="' + roomCode + '"]') : null;
+            var fpBadge = fpTile ? fpTile.querySelector('.wiz-fp-status-badge') : null;
+            if (cb.checked) {
+                nightly += parseInt(cb.getAttribute('data-rate') || '0', 10);
+                labels.push(roomCode);
+                if (row) row.classList.add('is-selected');
+                if (txt) txt.textContent = 'Included ✓';
+                if (fpTile) fpTile.classList.add('is-selected');
+                if (fpBadge) {
+                    fpBadge.className = 'mm-badge mm-badge-paid wiz-fp-status-badge';
+                    fpBadge.textContent = 'Selected ✓';
+                }
+            } else {
+                if (row) row.classList.remove('is-selected');
+                if (txt) txt.textContent = '+ Add Room';
+                if (fpTile) fpTile.classList.remove('is-selected');
+                if (fpBadge) {
+                    fpBadge.className = 'mm-badge mm-badge-partial wiz-fp-status-badge';
+                    fpBadge.textContent = 'Available · + Add';
+                }
+            }
+        });
+        document.querySelectorAll('.wiz-room-line-sub').forEach(function (subEl) {
+            var base = parseInt(subEl.getAttribute('data-base-rate') || '0', 10);
+            subEl.textContent = nights + ' night' + (nights === 1 ? '' : 's') + ' = ' + fmt(base * nights);
+        });
+        var sub = nightly * nights;
+        var sc = Math.round(sub * 0.10);
+        var vat = Math.round(sub * 0.15);
+        var total = sub + sc + vat;
+        var disc = Math.max(0, parseInt((document.getElementById('wiz-discount') || {}).value || '0', 10));
+        var netPayable = Math.max(0, total - disc);
+        var advEl = document.getElementById('wiz-advance');
+        var adv = Math.max(0, parseInt((advEl || {}).value || '0', 10));
+        var due = Math.max(0, netPayable - adv);
+
+        var policyEl = document.getElementById('wiz-advance-policy');
+        var policy = policyEl ? policyEl.value : 'min30';
+        var minRequired = Math.round(netPayable * 0.30);
+        var policyLabel = 'Min Required (30%)';
+        if (policy === 'first_night') {
+            minRequired = Math.min(netPayable, nightly);
+            policyLabel = 'Min Required (1st Night)';
+        } else if (policy === 'min50') {
+            minRequired = Math.round(netPayable * 0.50);
+            policyLabel = 'Min Required (50%)';
+        } else if (policy === 'full100') {
+            minRequired = netPayable;
+            policyLabel = 'Min Required (100%)';
+        }
+        if (advEl) advEl.min = String(minRequired);
+
+        var minLbl = document.getElementById('wiz-min-advance-lbl');
+        if (minLbl) minLbl.textContent = policyLabel + ': ' + fmt(minRequired);
+        var chip30 = document.querySelector('[data-wiz-adv-pct="30"]');
+        if (chip30) chip30.textContent = 'Min 30% (' + fmt(Math.round(netPayable * 0.30)) + ')';
+
+        var errBox = document.getElementById('wiz-advance-error');
+        var errTxt = document.getElementById('wiz-advance-error-text');
+        var okBox = document.getElementById('wiz-advance-ok');
+        var okTxt = document.getElementById('wiz-advance-ok-text');
+        if (netPayable > 0 && adv < minRequired) {
+            var shortfall = minRequired - adv;
+            if (advEl) {
+                advEl.classList.add('is-invalid');
+                advEl.setAttribute('aria-invalid', 'true');
+            }
+            if (errBox) errBox.style.display = 'block';
+            if (errTxt) {
+                errTxt.textContent = 'Minimum advance deposit of ' + fmt(minRequired) +
+                    ' is required to confirm this booking (Shortfall: ' + fmt(shortfall) + ').';
+            }
+            if (okBox) okBox.style.display = 'none';
+            var bannerHide = document.getElementById('wiz-confirm-banner');
+            if (bannerHide) bannerHide.style.display = 'none';
+        } else if (adv > netPayable && netPayable > 0) {
+            if (advEl) {
+                advEl.classList.add('is-invalid');
+                advEl.setAttribute('aria-invalid', 'true');
+            }
+            if (errBox) errBox.style.display = 'block';
+            if (errTxt) {
+                errTxt.textContent = 'Advance deposit (' + fmt(adv) + ') cannot exceed Net Payable (' + fmt(netPayable) + ').';
+            }
+            if (okBox) okBox.style.display = 'none';
+        } else {
+            if (advEl) {
+                advEl.classList.remove('is-invalid');
+                advEl.removeAttribute('aria-invalid');
+            }
+            if (errBox) errBox.style.display = 'none';
+            if (okBox) okBox.style.display = 'block';
+            var pctPaid = netPayable > 0 ? Math.round((adv / netPayable) * 100) : 100;
+            if (okTxt) {
+                okTxt.textContent = 'Advance deposit meets minimum requirement (' + pctPaid + '% · ' + fmt(adv) + ' received).';
+            }
+        }
+
+        var elNightly = document.getElementById('wiz-calc-nightly');
+        var elNightsLbl = document.getElementById('wiz-calc-nights-lbl');
+        var elSummaryNights = document.getElementById('wiz-summary-nights');
+        var elSummaryRooms = document.getElementById('wiz-summary-rooms');
+        var elSummaryRateAvg = document.getElementById('wiz-summary-rate-avg');
+        var elStep1Sub = document.getElementById('wiz-step1-sub');
+        var elRoomsBadge = document.getElementById('wiz-rooms-badge');
+        var elSub = document.getElementById('wiz-calc-subtotal');
+        var elSc = document.getElementById('wiz-calc-sc');
+        var elVat = document.getElementById('wiz-calc-vat');
+        var elTotal = document.getElementById('wiz-calc-total');
+        var elDue = document.getElementById('wiz-calc-due');
+
+        var roomText = labels.length + ' Room' + (labels.length === 1 ? '' : 's') + ' (' + (labels.join(', ') || 'None') + ')';
+        if (elNightly) elNightly.textContent = fmt(nightly);
+        if (elNightsLbl) elNightsLbl.textContent = String(nights);
+        if (elSummaryNights) elSummaryNights.textContent = String(nights);
+        if (elSummaryRooms) elSummaryRooms.textContent = roomText;
+        if (elSummaryRateAvg) elSummaryRateAvg.textContent = fmt(nightly) + ' / night total';
+        if (elStep1Sub) elStep1Sub.textContent = labels.length + ' room' + (labels.length === 1 ? '' : 's') + ' assigned (' + (labels.join(', ') || 'none') + ')';
+        if (elRoomsBadge) elRoomsBadge.textContent = labels.length + ' Room' + (labels.length === 1 ? '' : 's') + ' Assigned';
+        if (elSub) elSub.textContent = fmt(sub);
+        if (elSc) elSc.textContent = fmt(sc);
+        if (elVat) elVat.textContent = fmt(vat);
+        if (elTotal) elTotal.textContent = fmt(total);
+        if (elDue) elDue.textContent = fmt(due);
+    }
+
+    var scrollToggleBtn = document.getElementById('wiz-scroll-toggle');
+    if (scrollToggleBtn) {
+        scrollToggleBtn.addEventListener('click', function () {
+            var fpGrid = document.getElementById('wiz-floorplan-grid');
+            var rmList = document.getElementById('wiz-room-list');
+            var lbl = document.getElementById('wiz-scroll-toggle-lbl');
+            var isScroll = fpGrid ? !fpGrid.classList.contains('is-scrollable') : false;
+            if (fpGrid) fpGrid.classList.toggle('is-scrollable', isScroll);
+            if (rmList) rmList.classList.toggle('is-scrollable', isScroll);
+            scrollToggleBtn.setAttribute('aria-pressed', isScroll ? 'true' : 'false');
+            if (lbl) lbl.textContent = isScroll ? 'Fixed-Height Scroll ✓' : 'Expanded Full Height';
+        });
+    }
+
+    var focusDatesBtn = document.getElementById('wiz-focus-dates-btn');
+    if (focusDatesBtn) {
+        focusDatesBtn.addEventListener('click', function () {
+            var inEl = document.getElementById('wiz-checkin-date');
+            if (inEl) {
+                if (inEl.scrollIntoView) inEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                inEl.focus();
+            }
+        });
+    }
+
+    ['wiz-checkin-date', 'wiz-checkout-date', 'wiz-checkin-time', 'wiz-checkout-time'].forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) {
+            el.addEventListener('change', function () {
+                syncDatesFromCalendar('calendar');
+                recalcWizard();
+            });
+            el.addEventListener('input', function () {
+                syncDatesFromCalendar('calendar');
+                recalcWizard();
+            });
+        }
+    });
+
+    document.querySelectorAll('[data-wiz-range-preset]').forEach(function (chip) {
+        chip.addEventListener('click', function () {
+            var n = Math.max(1, parseInt(chip.getAttribute('data-wiz-range-preset') || '2', 10));
+            var nightsEl = document.getElementById('wiz-nights');
+            if (nightsEl) nightsEl.value = String(n);
+            syncDatesFromCalendar('nights');
+            recalcWizard();
+        });
+    });
+
+    document.querySelectorAll('.wiz-room-toggle, #wiz-discount, #wiz-advance, #wiz-advance-policy').forEach(function (el) {
+        el.addEventListener('input', recalcWizard);
+        el.addEventListener('change', recalcWizard);
+    });
+    var nightsInput = document.getElementById('wiz-nights');
+    if (nightsInput) {
+        nightsInput.addEventListener('input', function () {
+            syncDatesFromCalendar('nights');
+            recalcWizard();
+        });
+        nightsInput.addEventListener('change', function () {
+            syncDatesFromCalendar('nights');
+            recalcWizard();
+        });
+    }
+
+    document.querySelectorAll('[data-wiz-adv-pct]').forEach(function (chip) {
+        chip.addEventListener('click', function () {
+            var mode = chip.getAttribute('data-wiz-adv-pct');
+            var nights = Math.max(1, parseInt((document.getElementById('wiz-nights') || {}).value || '2', 10));
+            var nightly = 0;
+            document.querySelectorAll('.wiz-room-toggle:checked').forEach(function (cb) {
+                nightly += parseInt(cb.getAttribute('data-rate') || '0', 10);
+            });
+            var sub = nightly * nights;
+            var total = sub + Math.round(sub * 0.10) + Math.round(sub * 0.15);
+            var disc = Math.max(0, parseInt((document.getElementById('wiz-discount') || {}).value || '0', 10));
+            var netPayable = Math.max(0, total - disc);
+            var targetAdv = Math.round(netPayable * 0.30);
+            if (mode === 'first_night') targetAdv = Math.min(netPayable, nightly);
+            else if (mode === '50') targetAdv = Math.round(netPayable * 0.50);
+            else if (mode === '100') targetAdv = netPayable;
+            var advEl = document.getElementById('wiz-advance');
+            if (advEl) {
+                advEl.value = String(targetAdv);
+                recalcWizard();
+            }
+        });
+    });
+
+    function appendCoGuestRow(room, name, phone, nid, rel, ageGender) {
+        var tbody = document.getElementById('wiz-coguests-tbody');
+        if (!tbody) return;
+        var tr = document.createElement('tr');
+        tr.className = 'wiz-coguest-row';
+        var rooms = ['#101', '#201', '#104', '#106', '#206', '#304'];
+        var roomOpts = rooms.map(function (r) {
+            return '<option value="' + r + '"' + (r === (room || '#101') ? ' selected' : '') + '>' + r + '</option>';
+        }).join('');
+        var rels = ['Colleague', 'Spouse', 'Child', 'Family', 'VIP Escort'];
+        var relOpts = rels.map(function (rl) {
+            return '<option value="' + rl + '"' + (rl === (rel || 'Colleague') ? ' selected' : '') + '>' + rl + '</option>';
+        }).join('');
+        tr.innerHTML =
+            '<td><select name="member_room[]" class="form-control wiz-cg-room">' + roomOpts + '</select></td>' +
+            '<td><input type="text" name="member_names[]" class="form-control wiz-cg-name" value="' + (name || '').replace(/"/g, '&quot;') + '" placeholder="Full Name" required></td>' +
+            '<td><input type="tel" name="member_phone_nos[]" class="form-control wiz-cg-phone" value="' + (phone || '').replace(/"/g, '&quot;') + '" placeholder="+880 1..." required></td>' +
+            '<td><input type="text" name="registration_nos[]" class="form-control wiz-cg-nid" value="' + (nid || '').replace(/"/g, '&quot;') + '" placeholder="NID / Passport" required></td>' +
+            '<td><select name="relation[]" class="form-control wiz-cg-rel">' + relOpts + '</select></td>' +
+            '<td><input type="text" name="member_age[]" class="form-control wiz-cg-age" value="' + (ageGender || '30 / M').replace(/"/g, '&quot;') + '" placeholder="Age/M-F"></td>' +
+            '<td class="text-center"><button type="button" class="mm-button mm-button-secondary wiz-remove-coguest" style="min-height:28px;padding:2px 8px;" title="Remove Guest Row"><i class="fa fa-trash-o"></i></button></td>';
+        tbody.appendChild(tr);
+        updateCoGuestsCount();
+    }
+
+    var coGuestsTbody = document.getElementById('wiz-coguests-tbody');
+    if (coGuestsTbody) {
+        coGuestsTbody.addEventListener('click', function (e) {
+            var btn = e.target.closest('.wiz-remove-coguest');
+            if (btn) {
+                var row = btn.closest('.wiz-coguest-row');
+                if (row) row.remove();
+                updateCoGuestsCount();
+            }
+        });
+    }
+    var addBlankCoGuestBtn = document.getElementById('wiz-add-coguest-btn');
+    if (addBlankCoGuestBtn) {
+        addBlankCoGuestBtn.addEventListener('click', function () {
+            appendCoGuestRow('#101', '', '+880 1', '', 'Colleague', '30 / M');
+        });
+    }
+    var addPresetCoGuestBtn = document.getElementById('wiz-add-preset-coguest-btn');
+    if (addPresetCoGuestBtn) {
+        addPresetCoGuestBtn.addEventListener('click', function () {
+            var sel = document.getElementById('wiz-coguest-preset');
+            var parts = ((sel && sel.value) || '').split('|');
+            if (parts.length >= 6) {
+                appendCoGuestRow(parts[0], parts[1], parts[2], parts[3], parts[4], parts[5] + ' / ' + (parts[6] ? parts[6].charAt(0) : 'M'));
+            }
+        });
+    }
+    var btnAppendGuestDrawer = document.getElementById('wiz-append-guest-drawer');
+    if (btnAppendGuestDrawer) {
+        btnAppendGuestDrawer.addEventListener('click', function () {
+            var gName = (document.getElementById('drawer-guest-name') || {}).value || 'New Guest';
+            var gPhone = (document.getElementById('drawer-guest-phone') || {}).value || '+880 1';
+            var gNid = (document.getElementById('drawer-guest-nid') || {}).value || 'BD-0000';
+            appendCoGuestRow('#201', gName, gPhone, gNid, 'Colleague', '32 / F');
+        });
+    }
+
+    function applyRoomFilters() {
+        var fStatus = (document.getElementById('wiz-filter-status') || {}).value || 'all';
+        var fType = (document.getElementById('wiz-filter-type') || {}).value || 'all';
+        var fBed = (document.getElementById('wiz-filter-bed') || {}).value || 'all';
+        var fFloor = (document.getElementById('wiz-filter-floor') || {}).value || 'all';
+
+        document.querySelectorAll('[data-fp-floor]').forEach(function (t) {
+            t.classList.toggle('is-active', (t.getAttribute('data-fp-floor') || 'all') === fFloor);
+        });
+
+        var fpShown = 0;
+        var fpTotal = 0;
+        document.querySelectorAll('#wiz-floorplan-grid [data-floor]').forEach(function (tile) {
+            fpTotal++;
+            var fl = tile.getAttribute('data-floor') || '';
+            var st = tile.getAttribute('data-status') || '';
+            var rType = tile.getAttribute('data-room-type') || '';
+            var bType = tile.getAttribute('data-bed-type') || '';
+            var isSel = tile.classList.contains('is-selected');
+
+            var matchFloor = (fFloor === 'all' || fl === fFloor);
+            var matchStatus = (fStatus === 'all') ||
+                (fStatus === 'Selected' && isSel) ||
+                (fStatus !== 'Selected' && st === fStatus);
+            var matchType = (fType === 'all' || rType === fType);
+            var matchBed = (fBed === 'all' || bType === fBed);
+
+            var show = matchFloor && matchStatus && matchType && matchBed;
+            tile.style.display = show ? '' : 'none';
+            if (show) fpShown++;
+        });
+
+        var listShown = 0;
+        var listTotal = 0;
+        document.querySelectorAll('#wiz-room-list .mm-wiz-room-row').forEach(function (row) {
+            listTotal++;
+            var fl = row.getAttribute('data-floor') || '';
+            var st = row.getAttribute('data-status') || 'Available';
+            var rType = row.getAttribute('data-room-type') || '';
+            var bType = row.getAttribute('data-bed-type') || '';
+            var isSel = row.classList.contains('is-selected');
+
+            var matchFloor = (fFloor === 'all' || fl === fFloor);
+            var matchStatus = (fStatus === 'all') ||
+                (fStatus === 'Selected' && isSel) ||
+                (fStatus === 'Available' && st === 'Available');
+            var matchType = (fType === 'all' || rType === fType);
+            var matchBed = (fBed === 'all' || bType === fBed);
+
+            var show = matchFloor && matchStatus && matchType && matchBed;
+            row.style.display = show ? '' : 'none';
+            if (show) listShown++;
+        });
+
+        var countEl = document.getElementById('wiz-filter-count');
+        if (countEl) {
+            countEl.innerHTML = 'Showing <strong>' + fpShown + '</strong> of ' + fpTotal +
+                ' floor-plan rooms &amp; <strong>' + listShown + '</strong> of ' + listTotal + ' assignable list rooms';
+        }
+    }
+
+    ['wiz-filter-status', 'wiz-filter-type', 'wiz-filter-bed', 'wiz-filter-floor'].forEach(function (id) {
+        var sel = document.getElementById(id);
+        if (sel) {
+            sel.addEventListener('change', applyRoomFilters);
+        }
+    });
+    var resetFilterBtn = document.getElementById('wiz-filter-reset');
+    if (resetFilterBtn) {
+        resetFilterBtn.addEventListener('click', function () {
+            ['wiz-filter-status', 'wiz-filter-type', 'wiz-filter-bed', 'wiz-filter-floor'].forEach(function (id) {
+                var sel = document.getElementById(id);
+                if (sel) sel.value = 'all';
+            });
+            applyRoomFilters();
+        });
+    }
+
+    document.querySelectorAll('[data-fp-room]').forEach(function (tile) {
+        tile.addEventListener('click', function () {
+            var code = tile.getAttribute('data-fp-room');
+            var cb = code ? document.querySelector('.wiz-room-toggle[data-label="' + code + '"]') : null;
+            if (cb) {
+                cb.checked = !cb.checked;
+                recalcWizard();
+                applyRoomFilters();
+            }
+        });
+    });
+    document.querySelectorAll('[data-fp-floor]').forEach(function (tab) {
+        tab.addEventListener('click', function () {
+            var floor = tab.getAttribute('data-fp-floor') || 'all';
+            var floorSel = document.getElementById('wiz-filter-floor');
+            if (floorSel) floorSel.value = floor;
+            applyRoomFilters();
+        });
+    });
+
+    function buildDraftBookingSummary() {
+        recalcWizard();
+        var inVal = (document.getElementById('wiz-checkin-date') || {}).value || '2026-10-14';
+        var outVal = (document.getElementById('wiz-checkout-date') || {}).value || '2026-10-16';
+        var tIn = formatTime12((document.getElementById('wiz-checkin-time') || {}).value || '14:00');
+        var tOut = formatTime12((document.getElementById('wiz-checkout-time') || {}).value || '12:00');
+        var nights = Math.max(1, parseInt((document.getElementById('wiz-nights') || {}).value || '2', 10));
+        var srcSel = document.getElementById('wiz-booking-source');
+        var srcTxt = (srcSel && srcSel.options && srcSel.selectedIndex >= 0)
+            ? srcSel.options[srcSel.selectedIndex].text
+            : 'Corporate Partner — Direct Desk';
+
+        var gName = (document.getElementById('wiz-guest-name') || {}).value || 'Tanvir Ahmed Chowdhury';
+        var gPhone = (document.getElementById('wiz-guest-phone') || {}).value || '+880 1711-948210';
+        var gNid = (document.getElementById('wiz-guest-nid') || {}).value || 'BD-8894021562';
+        var gEmail = (document.getElementById('wiz-guest-email') || {}).value || '';
+        var notes = (document.getElementById('wiz-notes') || {}).value || '';
+
+        var coRows = document.querySelectorAll('#wiz-coguests-tbody .wiz-coguest-row');
+        var totalGuests = 1 + coRows.length;
+
+        var elIn = document.getElementById('draft-checkin');
+        var elOut = document.getElementById('draft-checkout');
+        var elNights = document.getElementById('draft-nights');
+        var elSrc = document.getElementById('draft-source');
+        var elPrim = document.getElementById('draft-primary-guest-val');
+        var elGCount = document.getElementById('draft-guests-count-lbl');
+        var elNotes = document.getElementById('draft-notes');
+
+        if (elIn) elIn.textContent = inVal + ' · ' + tIn;
+        if (elOut) elOut.textContent = outVal + ' · ' + tOut;
+        if (elNights) elNights.textContent = nights + ' Night' + (nights === 1 ? '' : 's') + ' · ' + totalGuests + ' Guest' + (totalGuests === 1 ? '' : 's');
+        if (elSrc) elSrc.textContent = srcTxt;
+        if (elPrim) elPrim.textContent = gName + ' · ' + gPhone + ' · NID/Passport: ' + gNid + (gEmail ? ' · ' + gEmail : '');
+        if (elGCount) elGCount.textContent = totalGuests + ' Guests Registered (1 Primary + ' + coRows.length + ' Accompanying)';
+        if (elNotes) elNotes.innerHTML = '<strong>Front-Desk &amp; Housekeeping Instructions:</strong> ' + notes.replace(/</g, '&lt;');
+
+        var gTbody = document.getElementById('draft-guests-tbody');
+        if (gTbody) {
+            var gHtml = '';
+            coRows.forEach(function (r, idx) {
+                var rm = (r.querySelector('.wiz-cg-room') || {}).value || '#101';
+                var nm = (r.querySelector('.wiz-cg-name') || {}).value || 'Guest ' + (idx + 2);
+                var ph = (r.querySelector('.wiz-cg-phone') || {}).value || '';
+                var nd = (r.querySelector('.wiz-cg-nid') || {}).value || '';
+                var rl = (r.querySelector('.wiz-cg-rel') || {}).value || 'Colleague';
+                var ag = (r.querySelector('.wiz-cg-age') || {}).value || '';
+                gHtml += '<tr><td>' + (idx + 1) + '</td><td><code>' + rm + '</code></td><td><strong>' +
+                    nm.replace(/</g, '&lt;') + '</strong></td><td>' + ph.replace(/</g, '&lt;') +
+                    '</td><td><code>' + nd.replace(/</g, '&lt;') + '</code></td><td>' + rl +
+                    '</td><td>' + ag.replace(/</g, '&lt;') + '</td></tr>';
+            });
+            if (!gHtml) {
+                gHtml = '<tr><td colspan="7" class="text-center tw-text-muted">No accompanying guests added (Primary Guest only).</td></tr>';
+            }
+            gTbody.innerHTML = gHtml;
+        }
+
+        var rTbody = document.getElementById('draft-rooms-tbody');
+        var nightly = 0;
+        var rCount = 0;
+        var rHtml = '';
+        document.querySelectorAll('.wiz-room-toggle:checked').forEach(function (cb, idx) {
+            rCount++;
+            var rate = parseInt(cb.getAttribute('data-rate') || '0', 10);
+            var code = cb.getAttribute('data-label') || '#101';
+            var row = cb.closest('.mm-wiz-room-row');
+            var fl = row ? (row.getAttribute('data-floor') || '1') : '1';
+            var rType = row ? (row.getAttribute('data-room-type') || 'Deluxe') : 'Deluxe';
+            var bType = row ? (row.getAttribute('data-bed-type') || 'King') : 'King';
+            var line = rate * nights;
+            nightly += rate;
+            rHtml += '<tr><td>' + (idx + 1) + '</td><td><strong>' + code + '</strong> (Floor ' + fl + ')</td><td>' +
+                rType + ' · ' + bType + '</td><td class="text-right">' + fmt(rate) +
+                '</td><td class="text-center">' + nights + '</td><td class="text-right"><strong>' + fmt(line) + '</strong></td></tr>';
+        });
+        if (rTbody) {
+            rTbody.innerHTML = rHtml || '<tr><td colspan="6" class="text-center tw-text-muted">No rooms selected.</td></tr>';
+        }
+        var elRCount = document.getElementById('draft-rooms-count-lbl');
+        if (elRCount) elRCount.textContent = rCount + ' Room' + (rCount === 1 ? '' : 's') + ' Assigned';
+
+        var sub = nightly * nights;
+        var sc = Math.round(sub * 0.10);
+        var vat = Math.round(sub * 0.15);
+        var total = sub + sc + vat;
+        var disc = Math.max(0, parseInt((document.getElementById('wiz-discount') || {}).value || '0', 10));
+        var net = Math.max(0, total - disc);
+        var adv = Math.max(0, parseInt((document.getElementById('wiz-advance') || {}).value || '0', 10));
+        var due = Math.max(0, net - adv);
+        var policyEl = document.getElementById('wiz-advance-policy');
+        var policy = (policyEl || {}).value || 'min30';
+        var policyTxt = (policyEl && policyEl.options && policyEl.selectedIndex >= 0)
+            ? policyEl.options[policyEl.selectedIndex].text
+            : 'Standard — Min 30% of Net Payable';
+        var minReq = Math.round(net * 0.30);
+        if (policy === 'first_night') minReq = Math.min(net, nightly);
+        else if (policy === 'min50') minReq = Math.round(net * 0.50);
+        else if (policy === 'full100') minReq = net;
+
+        var payMethod = (document.getElementById('wiz-pay-method') || {}).value || 'Card';
+        if (document.getElementById('draft-policy-name')) document.getElementById('draft-policy-name').textContent = policyTxt;
+        if (document.getElementById('draft-nightly')) document.getElementById('draft-nightly').textContent = fmt(nightly);
+        if (document.getElementById('draft-subtotal')) document.getElementById('draft-subtotal').textContent = fmt(sub);
+        if (document.getElementById('draft-tax')) document.getElementById('draft-tax').textContent = fmt(sc + vat);
+        if (document.getElementById('draft-total')) document.getElementById('draft-total').textContent = fmt(total);
+        if (document.getElementById('draft-discount')) document.getElementById('draft-discount').textContent = '- ' + fmt(disc);
+        if (document.getElementById('draft-net')) document.getElementById('draft-net').textContent = fmt(net);
+        if (document.getElementById('draft-min-adv')) document.getElementById('draft-min-adv').textContent = fmt(minReq);
+        if (document.getElementById('draft-pay-method')) document.getElementById('draft-pay-method').textContent = payMethod;
+        if (document.getElementById('draft-advance')) document.getElementById('draft-advance').textContent = fmt(adv);
+        if (document.getElementById('draft-due')) document.getElementById('draft-due').textContent = fmt(due);
+
+        var stBadge = document.getElementById('draft-status-badge');
+        var compPill = document.getElementById('draft-compliance-pill');
+        if (adv < minReq && net > 0) {
+            if (stBadge) {
+                stBadge.className = 'mm-badge mm-badge-unpaid';
+                stBadge.textContent = 'DRAFT · ADVANCE BELOW MINIMUM';
+            }
+            if (compPill) {
+                compPill.innerHTML = '<span class="mm-badge mm-badge-unpaid">⚠ Shortfall ' + fmt(minReq - adv) + '</span>';
+            }
+        } else {
+            if (stBadge) {
+                stBadge.className = 'mm-badge mm-badge-paid';
+                stBadge.textContent = 'DRAFT · READY TO CONFIRM';
+            }
+            if (compPill) {
+                compPill.innerHTML = '<span class="mm-badge mm-badge-paid">✓ Minimum Satisfied</span>';
+            }
+        }
+    }
+
+    function printDraftBookingSummary() {
+        buildDraftBookingSummary();
+        document.body.classList.add('mm-printing-draft-pdf');
+        var modal = document.getElementById('wiz-draft-summary-modal');
+        if (modal) {
+            if (window.jQuery && typeof window.jQuery(modal).modal === 'function' && !modal.classList.contains('in')) {
+                window.jQuery(modal).modal('show');
+            } else {
+                modal.classList.add('in', 'show');
+                modal.style.display = 'block';
+                modal.setAttribute('aria-hidden', 'false');
+            }
+        }
+        var printBanner = document.getElementById('wiz-draft-print-banner');
+        var printBannerText = document.getElementById('wiz-draft-print-banner-text');
+        if (printBannerText) {
+            printBannerText.textContent = 'Whole Booking Preview — Draft Reservation Summary PDF generated and prepared for A4 Print / PDF Save.';
+        }
+        if (printBanner) printBanner.style.display = 'block';
+        if (typeof window.print === 'function') {
+            try { window.print(); } catch (e) {}
+        }
+    }
+    window.addEventListener('afterprint', function () {
+        document.body.classList.remove('mm-printing-draft-pdf');
+    });
+
+    function buildDynamicPdfBlob() {
+        function pdfEsc(s) {
+            return String(s || '').replace(/[^\x20-\x7E]/g, ' ').replace(/\\/g, '\\\\').replace(/\(/g, '\\(').replace(/\)/g, '\\)');
+        }
+        function fmtBdt(n) {
+            return 'BDT ' + Math.round(n || 0).toLocaleString('en-US');
+        }
+        var inVal = (document.getElementById('wiz-checkin-date') || {}).value || '2026-10-14';
+        var outVal = (document.getElementById('wiz-checkout-date') || {}).value || '2026-10-16';
+        var tIn = formatTime12((document.getElementById('wiz-checkin-time') || {}).value || '14:00');
+        var tOut = formatTime12((document.getElementById('wiz-checkout-time') || {}).value || '12:00');
+        var nights = Math.max(1, parseInt((document.getElementById('wiz-nights') || {}).value || '2', 10));
+        var gName = (document.getElementById('wiz-guest-name') || {}).value || 'Tanvir Ahmed Chowdhury';
+        var gPhone = (document.getElementById('wiz-guest-phone') || {}).value || '+880 1711-948210';
+        var gNid = (document.getElementById('wiz-guest-nid') || {}).value || 'BD-8894021562';
+        var gEmail = (document.getElementById('wiz-guest-email') || {}).value || '';
+        var coRows = document.querySelectorAll('#wiz-coguests-tbody .wiz-coguest-row');
+        var totalGuests = 1 + coRows.length;
+
+        var ops = [];
+        var rgbF = function (r, g, b) { ops.push((r / 255).toFixed(3) + ' ' + (g / 255).toFixed(3) + ' ' + (b / 255).toFixed(3) + ' rg'); };
+        var rgbS = function (r, g, b) { ops.push((r / 255).toFixed(3) + ' ' + (g / 255).toFixed(3) + ' ' + (b / 255).toFixed(3) + ' RG'); };
+        var rF = function (x, y, w, h) { ops.push(x + ' ' + y + ' ' + w + ' ' + h + ' re f'); };
+        var rFS = function (x, y, w, h, lw) { ops.push((lw || 0.75) + ' w ' + x + ' ' + y + ' ' + w + ' ' + h + ' re B'); };
+        var txt = function (x, y, sz, f, s, r, g, b) {
+            rgbF(r === undefined ? 15 : r, g === undefined ? 23 : g, b === undefined ? 42 : b);
+            ops.push('BT /' + f + ' ' + sz + ' Tf 1 0 0 1 ' + x + ' ' + y + ' Tm (' + pdfEsc(s) + ') Tj ET');
+        };
+
+        rgbF(255, 255, 255); rF(0, 0, 595, 842);
+        rgbS(203, 213, 225); ops.push('0.9 w 24 24 547 794 re S');
+        rgbF(250, 251, 253); rF(24, 732, 547, 86);
+        rgbF(15, 23, 42); rF(24, 813, 547, 5);
+        rgbF(217, 119, 6); rF(24, 730, 547, 2);
+        rgbF(15, 23, 42); rgbS(245, 158, 11); rFS(36, 746, 48, 54, 1.5);
+        txt(47, 787, 6.5, 'F2', '* * *', 252, 211, 77);
+        txt(43, 769, 13, 'F2', 'M&M', 252, 211, 77);
+        txt(46, 754, 6, 'F2', 'EST. BD', 147, 197, 253);
+        txt(94, 791, 7.5, 'F2', '* * * * *   FIVE-STAR BOUTIQUE HOSPITALITY  |  DHAKA, BANGLADESH', 180, 83, 9);
+        txt(94, 771, 15.5, 'F2', 'M&M HERITAGE HOTEL & SUITES', 15, 23, 42);
+        txt(94, 756, 8, 'F1', 'Plot 42, Road 90, Gulshan-2, Dhaka-1212   |   Tel: +880 2-55051920', 71, 85, 105);
+        txt(94, 744, 8, 'F1', 'BIN: 004192837-0101   |   Whole Booking Preview - Draft Summary PDF', 100, 116, 139);
+
+        rgbF(255, 255, 255); rgbS(203, 213, 225); rFS(366, 742, 193, 64, 0.85);
+        rgbF(30, 58, 138); rF(366, 742, 3.5, 64);
+        txt(376, 794, 7, 'F2', 'DRAFT RESERVATION SUMMARY', 30, 58, 138);
+        rgbF(5, 150, 105); rF(376, 776, 132, 13);
+        txt(382, 780, 7.2, 'F2', 'DRAFT - READY TO CONFIRM', 255, 255, 255);
+        txt(376, 763, 8.2, 'F2', 'Ref: #DRAFT-BK-2026-1094', 29, 78, 216);
+        txt(376, 750, 7.2, 'F1', 'Issued: ' + inVal + ' 14:00 BST', 100, 116, 139);
+
+        rgbF(239, 246, 255); rF(36, 702, 523, 18);
+        rgbF(37, 99, 235); rF(36, 702, 3.5, 18);
+        txt(46, 708, 8.5, 'F2', '1. STAY SCHEDULE & CHECK-IN / CHECK-OUT WINDOW', 15, 23, 42);
+
+        var kpis = [
+            ['CHECK-IN DATE & TIME', inVal + ' ' + tIn, 'Guaranteed Arrival'],
+            ['CHECK-OUT DATE & TIME', outVal + ' ' + tOut, 'Standard Departure'],
+            ['STAY & OCCUPANCY', nights + ' Nights | ' + totalGuests + ' Guests', 'Breakfast Included'],
+            ['BOOKING CHANNEL', 'Corporate Direct Desk', 'VIP Priority']
+        ];
+        kpis.forEach(function (k, i) {
+            var kx = 36 + i * 132;
+            rgbF(248, 250, 252); rgbS(203, 213, 225); rFS(kx, 654, 127, 42, 0.7);
+            txt(kx + 8, 684, 6.8, 'F2', k[0], 100, 116, 139);
+            txt(kx + 8, 671, 9, 'F2', k[1], 15, 23, 42);
+            txt(kx + 8, 660, 7, 'F1', k[2], 37, 99, 235);
+        });
+
+        rgbF(239, 246, 255); rF(36, 628, 523, 18);
+        rgbF(37, 99, 235); rF(36, 628, 3.5, 18);
+        txt(46, 634, 8.5, 'F2', '2. PRIMARY FOLIO HOLDER & ACCOMPANYING OCCUPANTS (KYC)', 15, 23, 42);
+
+        rgbF(240, 253, 244); rgbS(167, 243, 208); rFS(36, 588, 523, 34, 0.75);
+        rgbF(5, 150, 105); rF(36, 588, 3.5, 34);
+        txt(46, 611, 7, 'F2', 'PRIMARY GUEST (MASTER FOLIO HOLDER - GOVT. ID VERIFIED)', 4, 120, 87);
+        txt(46, 597, 8.5, 'F2', gName + '  |  ' + gPhone + '  |  NID: ' + gNid + (gEmail ? '  |  ' + gEmail : ''), 15, 23, 42);
+
+        rgbF(241, 245, 249); rgbS(203, 213, 225); rFS(36, 562, 523, 18, 0.7);
+        txt(44, 568, 7.5, 'F2', '#', 51, 65, 85);
+        txt(66, 568, 7.5, 'F2', 'ROOM', 51, 65, 85);
+        txt(115, 568, 7.5, 'F2', 'ACCOMPANYING GUEST FULL NAME', 51, 65, 85);
+        txt(275, 568, 7.5, 'F2', 'MOBILE PHONE', 51, 65, 85);
+        txt(365, 568, 7.5, 'F2', 'NID / PASSPORT', 51, 65, 85);
+        txt(455, 568, 7.5, 'F2', 'RELATION', 51, 65, 85);
+
+        Array.prototype.slice.call(coRows, 0, 3).forEach(function (r, idx) {
+            var ry = 544 - idx * 18;
+            rgbF(255, 255, 255); rgbS(226, 232, 240); rFS(36, ry, 523, 18, 0.6);
+            txt(44, ry + 5, 8, 'F1', String(idx + 1));
+            txt(66, ry + 5, 8, 'F2', (r.querySelector('.wiz-cg-room') || {}).value || '#101', 37, 99, 235);
+            txt(115, ry + 5, 8, 'F2', (r.querySelector('.wiz-cg-name') || {}).value || 'Guest');
+            txt(275, ry + 5, 8, 'F1', (r.querySelector('.wiz-cg-phone') || {}).value || '');
+            txt(365, ry + 5, 8, 'F1', (r.querySelector('.wiz-cg-nid') || {}).value || '');
+            txt(455, ry + 5, 8, 'F1', (r.querySelector('.wiz-cg-rel') || {}).value || 'Colleague');
+        });
+
+        rgbF(239, 246, 255); rF(36, 480, 523, 18);
+        rgbF(37, 99, 235); rF(36, 480, 3.5, 18);
+        txt(46, 486, 8.5, 'F2', '3. ASSIGNED SUITES & NIGHTLY TARIFF SCHEDULE', 15, 23, 42);
+
+        rgbF(241, 245, 249); rgbS(203, 213, 225); rFS(36, 456, 523, 18, 0.7);
+        txt(44, 462, 7.5, 'F2', 'SL', 51, 65, 85);
+        txt(72, 462, 7.5, 'F2', 'ROOM & FLOOR', 51, 65, 85);
+        txt(175, 462, 7.5, 'F2', 'SUITE CATEGORY & BED TYPE', 51, 65, 85);
+        txt(365, 462, 7.5, 'F2', 'NIGHTLY RATE', 51, 65, 85);
+        txt(442, 462, 7.5, 'F2', 'NIGHTS', 51, 65, 85);
+        txt(492, 462, 7.5, 'F2', 'LINE TOTAL', 51, 65, 85);
+
+        var nightly = 0;
+        var checkedRooms = Array.prototype.slice.call(document.querySelectorAll('.wiz-room-toggle:checked'), 0, 4);
+        checkedRooms.forEach(function (cb, idx) {
+            var ry = 438 - idx * 18;
+            var rate = parseInt(cb.getAttribute('data-rate') || '0', 10);
+            var code = cb.getAttribute('data-label') || '#101';
+            var row = cb.closest('.mm-wiz-room-row');
+            var fl = row ? (row.getAttribute('data-floor') || '1') : '1';
+            var rType = row ? (row.getAttribute('data-room-type') || 'Deluxe') : 'Deluxe';
+            var bType = row ? (row.getAttribute('data-bed-type') || 'King') : 'King';
+            nightly += rate;
+            rgbF(255, 255, 255); rgbS(226, 232, 240); rFS(36, ry, 523, 18, 0.6);
+            txt(44, ry + 5, 8, 'F1', String(idx + 1));
+            txt(72, ry + 5, 8, 'F2', code + ' (Floor ' + fl + ')', 37, 99, 235);
+            txt(175, ry + 5, 8, 'F1', rType + ' | ' + bType);
+            txt(365, ry + 5, 8, 'F1', fmtBdt(rate));
+            txt(452, ry + 5, 8, 'F2', String(nights));
+            txt(492, ry + 5, 8.5, 'F2', fmtBdt(rate * nights));
+        });
+
+        var sub = nightly * nights;
+        var sc = Math.round(sub * 0.10);
+        var vat = Math.round(sub * 0.15);
+        var total = sub + sc + vat;
+        var disc = Math.max(0, parseInt((document.getElementById('wiz-discount') || {}).value || '0', 10));
+        var net = Math.max(0, total - disc);
+        var adv = Math.max(0, parseInt((document.getElementById('wiz-advance') || {}).value || '0', 10));
+        var due = Math.max(0, net - adv);
+
+        txt(48, 52, 8, 'F2', 'Document ID: PDF-DRAFT-BK-2026-1094  |  Continued on Page 2 (Financial Folio & Signatures) ->  |  Page 1 of 2', 30, 58, 138);
+        var stream1 = ops.join('\n');
+
+        ops = [];
+        rgbF(255, 255, 255); rF(0, 0, 595, 842);
+        rgbS(203, 213, 225); ops.push('0.9 w 24 24 547 794 re S');
+        rgbF(250, 251, 253); rF(24, 754, 547, 64);
+        rgbF(15, 23, 42); rF(24, 813, 547, 5);
+        rgbF(217, 119, 6); rF(24, 752, 547, 2);
+        rgbF(15, 23, 42); rgbS(245, 158, 11); rFS(36, 764, 72, 34, 1.2);
+        txt(45, 777, 10, 'F2', 'M&M HOTEL', 252, 211, 77);
+        txt(118, 788, 12.5, 'F2', 'M&M HERITAGE HOTEL & SUITES - DRAFT SUMMARY (PAGE 2 OF 2)', 15, 23, 42);
+        txt(118, 771, 8.5, 'F1', 'Folio Ref: #DRAFT-BK-2026-1094   |   Primary Guest: ' + gName, 71, 85, 105);
+
+        rgbF(239, 246, 255); rF(36, 710, 523, 22);
+        rgbF(37, 99, 235); rF(36, 710, 3.5, 22);
+        txt(46, 718, 9, 'F2', '4. FINANCIAL FOLIO, ADVANCE DEPOSIT POLICY & BALANCE SUMMARY', 15, 23, 42);
+
+        rgbF(245, 250, 255); rgbS(147, 197, 253); rFS(36, 480, 523, 215, 0.85);
+        txt(48, 672, 9, 'F2', 'Combined Nightly Tariff: ' + fmtBdt(nightly) + '   |   Room Stay Subtotal (' + nights + ' Nights): ' + fmtBdt(sub), 15, 23, 42);
+        txt(48, 648, 9, 'F1', 'Service Charge (10%) + Govt. VAT (15%): ' + fmtBdt(sc + vat) + '   |   Gross Payable: ' + fmtBdt(total), 51, 65, 85);
+        txt(48, 624, 9, 'F1', 'Promotional / Corporate Discount: - ' + fmtBdt(disc) + '   |   Net Stay Payable: ' + fmtBdt(net), 15, 23, 42);
+        txt(48, 598, 9.5, 'F2', 'Advance Deposit Paid Now: ' + fmtBdt(adv), 5, 150, 105);
+        rgbF(15, 23, 42); rF(48, 500, 499, 36);
+        txt(62, 514, 10.5, 'F2', 'BALANCE DUE AT CHECKOUT', 255, 255, 255);
+        txt(430, 514, 11.5, 'F2', fmtBdt(due), 252, 211, 77);
+
+        rgbF(239, 246, 255); rF(36, 434, 523, 22);
+        rgbF(37, 99, 235); rF(36, 434, 3.5, 22);
+        txt(46, 442, 9, 'F2', '5. GUEST ACCEPTANCE DECLARATION & AUTHORIZED SIGNATURES', 15, 23, 42);
+        txt(48, 402, 8.2, 'F1', 'I/We hereby verify that the guest KYC particulars, suite assignments, stay dates, nightly tariffs, and advance deposit', 51, 65, 85);
+        txt(48, 386, 8.2, 'F1', 'recorded in this 2-page Draft Reservation Summary are accurate, and authorize M&M Heritage Hotel & Suites to confirm.', 51, 65, 85);
+
+        txt(48, 250, 8.5, 'F2', 'Primary Guest Signature: ___________________________', 15, 23, 42);
+        txt(330, 250, 8.5, 'F2', 'Front-Desk Officer: ___________________________', 15, 23, 42);
+        txt(48, 52, 8, 'F2', 'Document ID: PDF-DRAFT-BK-2026-1094  |  M&M Heritage PMS v2.4  |  Page 2 of 2 (Financial Folio & Signatures)', 30, 58, 138);
+        var stream2 = ops.join('\n');
+
+        var objs = [
+            '1 0 obj\n<< /Type /Catalog /Pages 2 0 R >>\nendobj\n',
+            '2 0 obj\n<< /Type /Pages /Kids [3 0 R 7 0 R] /Count 2 >>\nendobj\n',
+            '3 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 4 0 R /F2 5 0 R >> >> /Contents 6 0 R >>\nendobj\n',
+            '4 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>\nendobj\n',
+            '5 0 obj\n<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold >>\nendobj\n',
+            '6 0 obj\n<< /Length ' + stream1.length + ' >>\nstream\n' + stream1 + '\nendstream\nendobj\n',
+            '7 0 obj\n<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 4 0 R /F2 5 0 R >> >> /Contents 8 0 R >>\nendobj\n',
+            '8 0 obj\n<< /Length ' + stream2.length + ' >>\nstream\n' + stream2 + '\nendstream\nendobj\n'
+        ];
+        var pdf = '%PDF-1.4\n';
+        var offs = [0];
+        objs.forEach(function (o) { offs.push(pdf.length); pdf += o; });
+        var xref = pdf.length;
+        pdf += 'xref\n0 ' + (objs.length + 1) + '\n0000000000 65535 f \n';
+        for (var i = 1; i < offs.length; i++) {
+            pdf += String(offs[i]).padStart(10, '0') + ' 00000 n \n';
+        }
+        pdf += 'trailer\n<< /Size ' + (objs.length + 1) + ' /Root 1 0 R >>\nstartxref\n' + xref + '\n%%EOF\n';
+        return new Blob([pdf], { type: 'application/pdf' });
+    }
+
+    function downloadDraftBookingPdf(ev) {
+        buildDraftBookingSummary();
+        var printBanner = document.getElementById('wiz-draft-print-banner');
+        var printBannerText = document.getElementById('wiz-draft-print-banner-text');
+        if (printBannerText) {
+            printBannerText.textContent = 'Whole Booking Preview — Draft Reservation Summary PDF downloaded (MM-Heritage-Draft-Booking-Summary.pdf).';
+        }
+        if (printBanner) printBanner.style.display = 'block';
+        var dlToast = document.getElementById('wiz-pdf-download-toast');
+        if (dlToast) dlToast.style.display = 'block';
+        try {
+            var blob = buildDynamicPdfBlob();
+            var url = URL.createObjectURL(blob);
+            var directLink = document.getElementById('wiz-pdf-direct-link');
+            if (directLink) {
+                directLink.href = url;
+                directLink.setAttribute('download', 'MM-Heritage-Draft-Booking-Summary.pdf');
+            }
+            if (!ev || !ev.currentTarget || ev.currentTarget.tagName !== 'A') {
+                var a = document.createElement('a');
+                a.href = url;
+                a.download = 'MM-Heritage-Draft-Booking-Summary.pdf';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            }
+        } catch (e) {}
+    }
+
+    var btnDraftPreview = document.getElementById('wiz-btn-draft-preview');
+    if (btnDraftPreview) {
+        btnDraftPreview.addEventListener('click', buildDraftBookingSummary);
+    }
+    var btnPrintDraftDirect = document.getElementById('wiz-btn-print-draft-direct');
+    if (btnPrintDraftDirect) {
+        btnPrintDraftDirect.addEventListener('click', printDraftBookingSummary);
+    }
+    var btnPrintDraftTop = document.getElementById('wiz-btn-print-draft-top');
+    if (btnPrintDraftTop) {
+        btnPrintDraftTop.addEventListener('click', printDraftBookingSummary);
+    }
+    var btnPrintDraftModal = document.getElementById('wiz-btn-print-draft');
+    if (btnPrintDraftModal) {
+        btnPrintDraftModal.addEventListener('click', printDraftBookingSummary);
+    }
+    ['wiz-btn-download-draft-pdf', 'wiz-btn-download-draft-footer', 'wiz-btn-download-draft-step3'].forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) el.addEventListener('click', downloadDraftBookingPdf);
+    });
+    var btnDraftConfirm = document.getElementById('wiz-draft-confirm-btn');
+    if (btnDraftConfirm) {
+        btnDraftConfirm.addEventListener('click', function () {
+            var confirmMain = document.getElementById('wiz-btn-confirm');
+            if (confirmMain) confirmMain.click();
+        });
+    }
+    document.querySelectorAll('[data-wiz-step-nav]').forEach(function (stepLi) {
+        stepLi.addEventListener('click', function () {
+            var targetStep = parseInt(stepLi.getAttribute('data-wiz-step-nav') || '1', 10);
+            document.querySelectorAll('[data-wiz-step-nav]').forEach(function (li) {
+                var num = parseInt(li.getAttribute('data-wiz-step-nav') || '1', 10);
+                var mark = li.querySelector('.mm-step-mark');
+                var pill = li.querySelector('.mm-step-pill');
+                li.classList.remove('is-done', 'is-current');
+                li.removeAttribute('aria-current');
+                if (num < targetStep) {
+                    li.classList.add('is-done');
+                    if (mark) mark.textContent = '✓';
+                    if (pill) pill.textContent = 'Done';
+                } else if (num === targetStep) {
+                    li.classList.add('is-current');
+                    li.setAttribute('aria-current', 'step');
+                    if (mark) mark.textContent = String(num);
+                    if (pill) pill.textContent = 'Active';
+                } else {
+                    if (mark) mark.textContent = String(num);
+                    if (pill) pill.textContent = 'Step ' + num;
+                }
+            });
+            var panel = document.getElementById('wiz-step-panel-' + targetStep);
+            if (panel && panel.scrollIntoView) {
+                panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+        });
+    });
+    var btnConfirm = document.getElementById('wiz-btn-confirm');
+    if (btnConfirm) {
+        btnConfirm.addEventListener('click', function () {
+            recalcWizard();
+            var advEl = document.getElementById('wiz-advance');
+            if (advEl && advEl.classList.contains('is-invalid')) {
+                advEl.focus();
+                return;
+            }
+            var banner = document.getElementById('wiz-confirm-banner');
+            if (banner) banner.style.display = 'block';
+            document.querySelectorAll('.mm-steps li').forEach(function (li) {
+                li.className = 'is-done';
+                var mark = li.querySelector('.mm-step-mark');
+                var pill = li.querySelector('.mm-step-pill');
+                if (mark) mark.textContent = '✓';
+                if (pill) pill.textContent = 'Confirmed';
+            });
+        });
+    }
+    var presetGuest = document.getElementById('wiz-guest-preset');
+    if (presetGuest) {
+        presetGuest.addEventListener('change', function () {
+            var parts = (presetGuest.value || '').split('|');
+            if (parts.length === 4) {
+                if (document.getElementById('wiz-guest-name')) document.getElementById('wiz-guest-name').value = parts[0];
+                if (document.getElementById('wiz-guest-phone')) document.getElementById('wiz-guest-phone').value = parts[1];
+                if (document.getElementById('wiz-guest-nid')) document.getElementById('wiz-guest-nid').value = parts[2];
+                if (document.getElementById('wiz-guest-email')) document.getElementById('wiz-guest-email').value = parts[3];
+            }
+        });
+    }
+    var btnApplyGuest = document.getElementById('wiz-apply-guest-drawer');
+    if (btnApplyGuest) {
+        btnApplyGuest.addEventListener('click', function () {
+            var gName = document.getElementById('drawer-guest-name');
+            var gPhone = document.getElementById('drawer-guest-phone');
+            var gNid = document.getElementById('drawer-guest-nid');
+            var gEmail = document.getElementById('drawer-guest-email');
+            if (gName && document.getElementById('wiz-guest-name')) document.getElementById('wiz-guest-name').value = gName.value;
+            if (gPhone && document.getElementById('wiz-guest-phone')) document.getElementById('wiz-guest-phone').value = gPhone.value;
+            if (gNid && document.getElementById('wiz-guest-nid')) document.getElementById('wiz-guest-nid').value = gNid.value;
+            if (gEmail && document.getElementById('wiz-guest-email')) document.getElementById('wiz-guest-email').value = gEmail.value;
+        });
+    }
+    var btnApplySplit = document.getElementById('wiz-apply-split-drawer');
+    if (btnApplySplit) {
+        btnApplySplit.addEventListener('click', function () {
+            var sum = 0;
+            document.querySelectorAll('.wiz-split-amt').forEach(function (inp) {
+                sum += Math.max(0, parseInt(inp.value || '0', 10));
+            });
+            var advEl = document.getElementById('wiz-advance');
+            if (advEl) {
+                advEl.value = String(sum);
+                recalcWizard();
+            }
+        });
+    }
+    syncDatesFromCalendar('init');
+    updateCoGuestsCount();
+    recalcWizard();
+    applyRoomFilters();
+    buildDraftBookingSummary();
+
+    // Workflow #3 interactive Rate Plan, Promo Code, Add-Ons & Draft Autosave bindings
+    var rpSel = document.getElementById('wiz-rate-plan-select');
+    if (rpSel) {
+        rpSel.addEventListener('change', function () {
+            var discEl = document.getElementById('wiz-discount');
+            if (discEl && Number(rpSel.value) > 0) {
+                discEl.value = rpSel.value;
+                recalcWizard();
+            }
+            var asBdg = document.getElementById('wiz-autosave-badge');
+            if (asBdg) asBdg.innerHTML = '<i class="fa fa-check-circle"></i> Rate Plan Synced &amp; Draft Autosaved';
+        });
+    }
+    var promoBtn = document.getElementById('wiz-btn-apply-promo');
+    if (promoBtn) {
+        promoBtn.addEventListener('click', function () {
+            var code = (document.getElementById('wiz-promo-input') && document.getElementById('wiz-promo-input').value || 'HERITAGE20').trim().toUpperCase();
+            var discEl = document.getElementById('wiz-discount');
+            if (discEl) {
+                discEl.value = code === 'HERITAGE20' ? '2000' : '1500';
+                recalcWizard();
+            }
+            var asBdg = document.getElementById('wiz-autosave-badge');
+            if (asBdg) asBdg.innerHTML = '<i class="fa fa-tag"></i> Promo ' + code + ' Applied (-৳ ' + (discEl ? discEl.value : '2000') + ') · Draft Saved';
+        });
+    }
+    document.querySelectorAll('.wiz-addon-chk').forEach(function (chk) {
+        chk.addEventListener('change', function () {
+            var sum = 0;
+            document.querySelectorAll('.wiz-addon-chk:checked').forEach(function (c) {
+                sum += Number(c.getAttribute('data-amt') || 0);
+            });
+            var svcEl = document.getElementById('wiz-service');
+            if (svcEl) {
+                svcEl.value = String(sum);
+                recalcWizard();
+            }
+            var asBdg = document.getElementById('wiz-autosave-badge');
+            if (asBdg) asBdg.innerHTML = '<i class="fa fa-check-circle"></i> Add-Ons (৳ ' + sum.toLocaleString('en-US') + ') Synced to Folio';
+        });
+    });
+    var saveDraftBtn = document.getElementById('wiz-btn-save-draft');
+    if (saveDraftBtn) {
+        saveDraftBtn.addEventListener('click', function () {
+            var asBdg = document.getElementById('wiz-autosave-badge');
+            if (asBdg) asBdg.innerHTML = '<i class="fa fa-check-circle"></i> Draft #DRF-2026-1094 Saved to Server Cart!';
+        });
+    }
+})();
+</script>
+<!--/MM-JS--></body></html>

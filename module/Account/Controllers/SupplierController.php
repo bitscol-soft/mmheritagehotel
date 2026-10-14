@@ -111,7 +111,7 @@ class SupplierController extends Controller
     {
         $this->hasAccess("account-suppliers.edit");
 
-        $supplier = Supplier::query()->find($id);
+        $supplier = Supplier::query()->findOrFail($id);
 
         return view('party.suppliers.edit', compact('supplier'));
     }

@@ -1,20 +1,11 @@
 @extends('layouts.master')
 
-
 @section('title', 'Purchase Return Create')
-
-
-
-@section('page-header')
-    <i class="fa fa-plus-circle"></i> Purchase Return Create
-@stop
-
 
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/custom_css/chosen-required.css') }}" />
-
 
     <style>
         .borderRemove {
@@ -43,11 +34,6 @@
     </style>
 @endpush
 
-
-
-
-
-
 @section('content')
 
 <x-mm.styles />
@@ -64,14 +50,7 @@
 
                     <input hidden name="account_id" value="{{ $account->id }}">
 
-
                     <div class="row">
-
-
-
-
-
-
 
                         <!-- Companies -->
                         <div class="col-sm-3 my-1">
@@ -93,11 +72,6 @@
                             </div>
                         </div>
 
-
-
-
-
-
                         <!-- Supplier -->
                         <div class="col-sm-3 my-1">
                             <div class="input-group">
@@ -113,10 +87,6 @@
                             </div>
                         </div>
 
-
-
-
-
                         <!-- Date -->
                         <div class="col-sm-2 my-1">
                             <div class="input-group">
@@ -126,11 +96,6 @@
                                 <input name="date" class="form-control date-picker" id="id-date-picker-1" type="text" value=" {{ old('date') ?:  date('Y-m-d') }}" data-date-format="yyyy-mm-dd">
                             </div>
                         </div>
-
-
-
-
-
 
                         <!-- Invoice -->
                         <div class="col-sm-4 my-1">
@@ -145,20 +110,11 @@
                             </div>
                         </div>
 
-
-
-
-
-
-
-
                         <!-- PRODUCT RETURN INFORMATION -->
                         <div class="col-sm-12 mt-3">
                             <h4>Product Return Information</h4>
                             <x-mm.table-scroll label="Purchase Return Create">
                                 <table id="myTable" class="table table-bordered order-list">
-
-
 
                                     <!-- head -->
                                     <thead>
@@ -173,16 +129,10 @@
                                         </tr>
                                     </thead>
 
-
-
                                     <!-- body -->
                                     <tbody class="returnable-purchase-items">
 
-
                                     </tbody>
-
-
-
 
                                     <!-- footer -->
                                     <tfoot>
@@ -200,19 +150,9 @@
                             </x-mm.table-scroll>
                         </div>
 
-
-
-
-
-
-
                         <!-- PRODUCT EXCHANGE INFORMATION -->
                         <div class="col-sm-12 mt-3">
                             <h4>Product Exchange Information</h4>
-
-
-
-
 
                            <div class="row">
                                 <!-- Product -->
@@ -230,8 +170,6 @@
                                     </div>
                                 </div>
 
-
-
                                 <!-- Product -->
                                 <div class="col-sm-3 my-1">
                                     <div class="input-group">
@@ -241,7 +179,6 @@
                                         <input class="form-control only-number text-center input-price" placeholder="Purchase Price">
                                     </div>
                                 </div>
-
 
                                 <!-- Product -->
                                 <div class="col-sm-3 my-1">
@@ -253,8 +190,6 @@
                                     </div>
                                 </div>
 
-
-
                                 <!-- ACTION -->
                                 <div class="col-sm-2 my-1">
                                     <button type="button" class="btn btn-sm btn-primary add-exchange-prduct-btn">
@@ -263,11 +198,8 @@
                                 </div>
                            </div>
 
-
                             <x-mm.table-scroll label="Purchase Return Create">
                                 <table id="myTable" class="table table-bordered order-list">
-
-
 
                                     <!-- head -->
                                     <thead>
@@ -282,16 +214,10 @@
                                         </tr>
                                     </thead>
 
-
-
                                     <!-- body -->
                                     <tbody class="exchange-product-details">
 
-
                                     </tbody>
-
-
-
 
                                     <!-- footer -->
                                     <tfoot>
@@ -310,17 +236,7 @@
                             </x-mm.table-scroll>
                         </div>
 
-
-
-
-
                         <div class="col-sm-12 mt-3">
-
-
-
-
-
-
 
                             <!-- Total Amount -->
                             <div class="row">
@@ -334,9 +250,6 @@
                                 </div>
                             </div>
 
-
-
-
                             <!-- Paid Amount -->
                             <div class="row">
                                 <div class="col-md-5 pull-right">
@@ -348,9 +261,6 @@
                                     </div>
                                 </div>
                             </div>
-
-
-
 
                             <!-- Due Amount -->
                             <div class="row">
@@ -366,10 +276,6 @@
                                     </div>
                                 </div>
                             </div>
-
-
-
-
 
                             <!-- Action -->
                             <div class="row">
@@ -388,16 +294,13 @@
 
 @endsection
 
-
 @section('js')
     <script src="{{ asset('assets/js/chosen.jquery.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap-datepicker.min.js') }}"></script>
     <script src="{{ asset('assets/custom_js/chosen-box.js') }}"></script>
     <script src="{{ asset('assets/custom_js/date-picker.js') }}"></script>
 
-
     <script>
-
 
         const enableField           = $('.quantity-enable')
         const enableDiscountField   = $('.dicount-enable')
@@ -405,7 +308,6 @@
 
         const url_returnable_purchase_invoices  = "{{ route('acc-returnable-purchase-invoices') }}"
         const url_returnable_purchase_items     = "{{ route('acc-returnable-purchase-items') }}"
-
 
         $(document).on('keyup', '.return-price, .return-quantity', calculateReturnTotal)
 
@@ -417,14 +319,11 @@
 
         $(document).on('keyup', '.paid-amount', calculateGrandTotal)
 
-
-
         function removeExchangeItem()
         {
             $(this).closest('tr').remove()
             calculateExchangeTotal()
         }
-
 
         function addExchangeProduct()
         {
@@ -474,10 +373,6 @@
             $('.select-product').val('').trigger('chosen:updated')
         }
 
-
-
-
-
         function calculateExchangeTotal()
         {
             let subtotal        = 0
@@ -498,14 +393,11 @@
                 $(this).closest('tr').find('.exchange-product-subtotal').val(subtotal)
             })
 
-
             $('.exchange-total-qty').val(total_qty)
             $('.exchange-total-amount').val(total_amount)
 
             calculateGrandTotal()
         }
-
-
 
         function setProductPrice()
         {
@@ -515,9 +407,6 @@
 
             $('.input-qty').focus()
         }
-
-
-
 
         function calculateReturnTotal()
         {
@@ -530,7 +419,6 @@
                 let returnbale_qty  = Number($(this).closest('tr').find('.returnable-qty').val())
                 let return_price    = Number($(this).closest('tr').find('.return-price').val())
                 let return_qty      = Number($(this).closest('tr').find('.return-quantity').val())
-
 
                 if(return_qty > returnbale_qty) {
 
@@ -548,14 +436,11 @@
                 $(this).closest('tr').find('.return-subtotal').val(subtotal)
             })
 
-
             $('.return-total-qty').val(total_qty)
             $('.return-total-amount').val(total_amount)
 
             calculateGrandTotal()
         }
-
-
 
         function calculateGrandTotal()
         {
@@ -568,7 +453,6 @@
             $('.grand-total-amount').val(grand_total_amount)
             $('.due-amount').val(grand_total_amount - paid_amount)
         }
-
 
         $('.select-supplier').change(function() {
 
@@ -592,17 +476,9 @@
             }
         })
 
-
-
-
-
-
-
-
         $('.select-invoice').change(function() {
 
             let purchase_id = $(this).val()
-
 
             if(purchase_id != '')
             {

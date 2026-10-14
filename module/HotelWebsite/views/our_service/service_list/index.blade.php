@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title','Service List')
-@section('page-header')
-    <i class="fa fa-gears"></i> Service List
-@stop
 @section('css')
 <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
 @stop
@@ -18,21 +15,16 @@
     @include('partials._alert_message')
 
     <x-mm.panel class="tw-p-4">
-        <x-mm.table-scroll label="Service boxes">
-        <table id="data-table" class="table table-striped table-bordered table-hover">
-            <thead>
-                <tr>
-                    <th>SL</th>
-                    <th class="text-center">Heading</th>
-                    <th class="text-center">Description</th>
-                    <th class="text-center">List</th>
-                    <th class="text-center">Icon</th>
-                    <th class="text-center">Status</th>
-                    <th class="text-center">Action</th>
-                </tr>
-            </thead>
-            <tbody>
-            @foreach($service as $key => $item)
+        <x-mm.data-table :columns="[
+            ['label' => 'SL'],
+            ['label' => 'Heading', 'align' => 'center'],
+            ['label' => 'Description', 'align' => 'center'],
+            ['label' => 'List', 'align' => 'center'],
+            ['label' => 'Icon', 'align' => 'center'],
+            ['label' => 'Status', 'align' => 'center'],
+            ['label' => 'Action', 'align' => 'center'],
+        ]" id="data-table" label="Service boxes" table-class="table table-striped table-bordered table-hover">
+            @forelse ($service as $key => $item)
                 <tr>
                     <td>{{ $loop->index + 1 }}</td>
                     <td style="width: 20%">{{ $item->service_title }}</td>
@@ -42,7 +34,7 @@
                     <td class="text-center">
                         @if ($item->status == 1)
                             <span class="label label-success">Active</span>
-                            @else
+                        @else
                             <span class="label label-danger">IN Active</span>
                         @endif
                     </td>
@@ -62,18 +54,15 @@
                         </form>
                     </td>
                 </tr>
-            @endforeach
-            </tbody>
-        </table>
-        </x-mm.table-scroll>
+            @empty
+                <x-no-table-record />
+            @endforelse
+        </x-mm.data-table>
     </x-mm.panel>
 </x-mm.page>
 @endsection
 
 @section('js')
-
-<script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
-<script src="{{ asset('assets/js/jquery.dataTables.bootstrap.min.js') }}"></script>
 
 
 <!-- inline scripts related to this page -->

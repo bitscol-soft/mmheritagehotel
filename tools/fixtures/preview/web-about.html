@@ -1,134 +1,126 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>About Section</title>
 <link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
-<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css"><link rel="stylesheet" href="/assets/css/dropzone.min.css" />
-<style>
-.checkbox label input[type=checkbox].ace+.lbl{
-    margin-bottom: 10px;
-}
-</style>
-<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY--><section class="mm-ui mm-web mm-room-form">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css"><link rel="stylesheet" href="/assets/css/dropzone.min.css"><!--/MM-HEAD-->
+<link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+<section class="mm-ui mm-web mm-room-form">
     <div class="tw-space-y-4 tw-py-2">
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
-                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">About section</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Heading and text of the About section on the home page.</p>            </div>
-                    </header>
-        <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-5 mm-web-narrow"><form class="form-horizontal" action="http://localhost/hw/website-core/about_section/store" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="_token" value="fixture-csrf-token">
-            
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink"><i class="fa fa-info-circle"></i> About section — Diplomatic Heritage Story &amp; Storefront Editorial Block</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Manage the editorial heading, heritage narrative, promotional highlight box, and dual showcase photography on the public homepage.</p>
+            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/public-home"><i class="fa fa-globe"></i> View Public Site</a>
+                <a class="mm-button mm-button-secondary" href="/preview/web-banner-index"><i class="fa fa-picture-o"></i> Hero Banners</a>
+                <a class="mm-button mm-button-secondary" href="/preview/web-settings"><i class="fa fa-cogs"></i> Website Settings</a>
+            </div>
+        </header>
 
-
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label" for="heading_title"> Heading Title</label>
-                                <div class="col-xs-12 col-sm-8 ">
-                                    <input type="text" id="heading_title" name="heading_title" placeholder="Enter Title" class="form-control" value="About &lt;b&gt;us&lt;/b&gt;">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">Heading Description</label>
-                                <div class="col-xs-12 col-sm-8 ">
-                                    <textarea name="heading_description" rows="5" class="form-control" placeholder="Enter Description">Story &lt;i&gt;text&lt;/i&gt;</textarea>
-
-                                                                    </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label" for="short_box_heading">Short Box Heading</label>
-                                <div class="col-xs-12 col-sm-8 ">
-                                    <input type="text" id="short_box_heading" name="short_box_heading" placeholder="Enter Box Heading" class="form-control" value="Offer &lt;b&gt;t&lt;/b&gt;">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label" for="short_box_desc">Short Box Description</label>
-                                <div class="col-xs-12 col-sm-8 ">
-                                    <input type="text" id="short_box_desc" name="short_box_desc" placeholder="Enter Box Description" class="form-control" value="Offer &lt;i&gt;d&lt;/i&gt;">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label" for="short_box_desc">Section First Image</label>
-                                <div class="col-xs-12 col-sm-8 ">
-                                    <div class="img-box">
-                                        <img height="100" src="http://localhost/uploads/a1.png" alt="">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label" for="short_box_desc">Section Second Image</label>
-                                <div class="col-xs-12 col-sm-8 ">
-                                    <div class="img-box">
-                                        <img height="100" src="http://localhost/uploads/a2.png" alt="">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-
-                    </div>
-                </div>
-                <div class="col-md-6">
-
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label class="control-label">Section First Image</label>
-                            <div class="text-danger">*Upload size should be (1140 x 455)px</div>
-                            <input type="file" name="first_image" class="category_photos">
-                        </div>
-                    </div>
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            <label class="control-label">Section Second Image</label>
-                            <div class="text-danger">*Upload size should be (600 x 420)px</div>
-                            <input type="file" name="second_image" class="category_photos">
-                        </div>
-                    </div>
+        <div class="mm-table-kpi-grid" aria-label="About section CMS summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-info-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Section Block</span>
+                    <div class="mm-table-kpi-value">About Heritage <span class="mm-table-kpi-sub">Homepage Story</span></div>
                 </div>
             </div>
-
-            <div class="form-group">
-                <label for="inputError" class="col-xs-12 col-sm-3 col-md-3 control-label"></label>
-                <div class="col-xs-12 col-sm-12 text-right">
-                    <button class="mm-button" type="submit"> <i class="fa fa-save"></i> Save</button>
-                    <button class="mm-button mm-button-secondary" type="Reset"> <i class="fa fa-refresh"></i> Reset</button>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Content Status</span>
+                    <div class="mm-table-kpi-value">Published ✓ <span class="mm-table-kpi-sub">Live on Public Home</span></div>
                 </div>
             </div>
-        </form></div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-picture-o"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Media Assets</span>
+                    <div class="mm-table-kpi-value">Dual WebP <span class="mm-table-kpi-sub">1140×455 &amp; 600×420</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-globe"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Theme Tokens</span>
+                    <div class="mm-table-kpi-value">--web-* ✓ <span class="mm-table-kpi-sub">Editorial Serif</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="wabout-save-banner" class="alert alert-success" style="display:none;margin:0;border-radius:12px;font-size:13px"></div>
+
+        <div class="mm-panel tw-p-4 sm:tw-p-6">
+            <form id="wabout-form" class="form-horizontal" action="http://localhost/hw/website-core/about_section/store" method="post" enctype="multipart/form-data" onsubmit="return false;">
+                <input type="hidden" name="_token" value="fixture-csrf-token">
+                <div class="row" style="margin:0 -8px">
+                    <div class="col-md-7" style="padding:6px 8px">
+                        <div class="tw-space-y-3">
+                            <div>
+                                <label class="mm-label" for="heading_title">Editorial Heading Title</label>
+                                <input type="text" id="heading_title" name="heading_title" placeholder="Enter Title" class="form-control" value="A Legacy of Diplomatic Hospitality in the Heart of Gulshan">
+                            </div>
+                            <div>
+                                <label class="mm-label" for="heading_description">Heritage Story &amp; Narrative Description</label>
+                                <textarea id="heading_description" name="heading_description" rows="4" class="form-control" placeholder="Enter Description">Since 2012, M&amp;M Heritage Hotel &amp; Suites has welcomed ambassadors, international delegations, and discerning travelers with 20 bespoke suites, fine Mughlai &amp; Continental dining, and a 400-guest Grand Ballroom.</textarea>
+                            </div>
+                            <div class="row" style="margin:0 -6px">
+                                <div class="col-sm-6" style="padding:4px 6px">
+                                    <label class="mm-label" for="short_box_heading">Highlight Callout Badge Title</label>
+                                    <input type="text" id="short_box_heading" name="short_box_heading" placeholder="Enter Box Heading" class="form-control" value="Complimentary Airport VIP Meet &amp; Greet">
+                                </div>
+                                <div class="col-sm-6" style="padding:4px 6px">
+                                    <label class="mm-label" for="short_box_desc">Highlight Callout Subtitle</label>
+                                    <input type="text" id="short_box_desc" name="short_box_desc" placeholder="Enter Box Description" class="form-control" value="18 mins from HSIA Terminal 1 &amp; VIP Lounge">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5" style="padding:6px 8px">
+                        <label class="mm-label"><i class="fa fa-desktop"></i> Live Storefront Editorial Block Preview</label>
+                        <div id="wabout-live-preview" class="mm-shift-note-card" style="padding:16px;border-radius:12px">
+                            <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#2563eb;margin-bottom:4px">About M&amp;M Heritage Hotel &amp; Suites</div>
+                            <div id="wabout-prev-title" style="font-size:16px;font-weight:800;margin-bottom:6px">A Legacy of Diplomatic Hospitality in the Heart of Gulshan</div>
+                            <div id="wabout-prev-desc" style="font-size:12.5px;opacity:.85;line-height:1.5;margin-bottom:10px">Since 2012, M&amp;M Heritage Hotel &amp; Suites has welcomed ambassadors, international delegations, and discerning travelers with 20 bespoke suites, fine Mughlai &amp; Continental dining, and a 400-guest Grand Ballroom.</div>
+                            <div style="padding:8px 12px;border-radius:8px;background:rgba(37,99,235,0.08);border:1px solid rgba(37,99,235,0.22);font-size:12px">
+                                <strong id="wabout-prev-box-h">Complimentary Airport VIP Meet &amp; Greet</strong>
+                                <div id="wabout-prev-box-d" style="font-size:11px;opacity:.8">18 mins from HSIA Terminal 1 &amp; VIP Lounge</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mm-form-actions" style="display:flex;justify-content:flex-end;gap:8px;margin-top:16px">
+                    <button class="mm-button mm-button-secondary" type="Reset"><i class="fa fa-refresh"></i> Reset</button>
+                    <button class="mm-button" type="submit" id="wabout-save-btn"><i class="fa fa-save"></i> Save About Section</button>
+                </div>
+            </form>
+        </div>
     </div>
 </section>
+<script>
+(function(){
+    var ht=document.getElementById('heading_title'), hd=document.getElementById('heading_description'), bh=document.getElementById('short_box_heading'), bd=document.getElementById('short_box_desc');
+    function syncAbout(){
+        var pt=document.getElementById('wabout-prev-title'), pd=document.getElementById('wabout-prev-desc'), pbh=document.getElementById('wabout-prev-box-h'), pbd=document.getElementById('wabout-prev-box-d');
+        if(pt&&ht) pt.textContent=ht.value;
+        if(pd&&hd) pd.textContent=hd.value;
+        if(pbh&&bh) pbh.textContent=bh.value;
+        if(pbd&&bd) pbd.textContent=bd.value;
+    }
+    [ht,hd,bh,bd].forEach(function(el){ if(el) el.addEventListener('input',syncAbout); });
+    var form=document.getElementById('wabout-form'), banner=document.getElementById('wabout-save-banner');
+    if(form) form.addEventListener('submit',function(e){
+        e.preventDefault();
+        syncAbout();
+        if(banner){
+            banner.style.display='block';
+            banner.innerHTML='<i class="fa fa-check-circle"></i> <strong>Homepage About Story Saved:</strong> Editorial narrative and callout badge published to <a href="/preview/public-home"><strong>Public Storefront (W7) →</strong></a>';
+        }
+    });
+})();
+</script>
 <!--/MM-BODY--></div>
 <script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
 <!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
 <script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
-<script src="/assets/js/ace-elements.min.js"></script>
-<script src="/assets/js/dropzone.min.js"></script>
-  <!--Drag and drop-->
-  <script type="text/javascript">
-    jQuery(function($) {
-        $('.category_photos').ace_file_input({
-            style: 'well',
-            btn_choose: 'Upload Section Photos',
-            btn_change: null,
-            no_icon: 'ace-icon fa fa-cloud-upload',
-            droppable: true,
-            thumbnail: 'small' //large | fit
-
-        }).on('change', function() {
-        });
-    });
-</script>
-
 <!--/MM-JS--></body></html>

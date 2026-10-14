@@ -27,8 +27,39 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Create purchase</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Request items from the general store suppliers.</p>            </div>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Create a general store purchase requisition with supplier quotes, item units, and required quantities.</p>            </div>
             <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a href="http://localhost/purchases" class="mm-button"><i class="ace-icon fa fa-list-alt"></i> Purchase List</a></div>        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="General store create purchase summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-shopping-cart"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Requisition Type</span>
+                    <div class="mm-table-kpi-value">Store PO <span class="mm-table-kpi-sub">General Store</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-cubes"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Item Repeater</span>
+                    <div class="mm-table-kpi-value">Multi-Row <span class="mm-table-kpi-sub">Unit &amp; Rate Auto-Fill</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-paperclip"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Vendor Quote</span>
+                    <div class="mm-table-kpi-value">Attachment <span class="mm-table-kpi-sub">Proforma Upload</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Next Stage</span>
+                    <div class="mm-table-kpi-value">PO Approval <span class="mm-table-kpi-sub">Then GRN Receive</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><form class="form-horizontal" action="http://localhost/gs/purchases/store" method="post"
             enctype="multipart/form-data">
             <input type="hidden" name="_token" value="fixture-csrf-token">

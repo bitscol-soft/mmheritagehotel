@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title', 'Add New Booking Purpose')
-@section('page-header')
-    <i class="fa fa-plus-circle"></i> Add New Booking @if (request('type') == 'purpose') Purpose @else Platform @endif
-@stop
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <!-- page specific plugin styles -->
@@ -25,17 +22,7 @@
                             <input type="hidden" name="rule" value="2">
                             @endif
 
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="form-group">
-                                        <label for="booking-setup-name" class="col-sm-3 control-label"> @if (request('type') == 'purpose') Purpose @else Platform @endif <sup class="text-danger">*</sup></label>
-                                        <div class="col-xs-12 col-sm-8">
-                                            <input type="text" class="form-control input-sm" name="name" id="booking-setup-name"
-                                                value="{{ old('name') }}" placeholder="@if (request('type') == 'purpose') Purpose @else Platform @endif" required>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <x-mm.field :label="request('type') == 'purpose' ? 'Purpose' : 'Platform'" id="booking-setup-name" name="name" value="{{ old('name') }}" :placeholder="request('type') == 'purpose' ? 'Purpose' : 'Platform'" required :error="$errors->first('name')" />
 
                             <div class="form-actions center" style="text-align: right !important;">
                                 <button type="submit" class="btn btn-sm btn-success">
@@ -46,7 +33,6 @@
                                     <i class="fa fa-backward"></i> Back List
                                 </a>
                             </div>
-                        @error('name')<p class="tw-text-sm" role="alert">{{ $message }}</p>@enderror
 </form>
 </x-mm.panel>
 </x-mm.page>

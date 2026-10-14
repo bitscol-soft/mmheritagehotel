@@ -1,7 +1,7 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
 <link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
 <!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css"><!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
-<div class="modal fade" id="add-guest-modal">
+<div class="modal fade mm-drawer mm-drawer" data-mm-drawer="true" id="add-guest-modal">
     <div class="modal-dialog">
         <div class="modal-content">
             <form method="POST" action="" class="form-horizontal" role="form">
@@ -69,6 +69,24 @@
             <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a href="http://localhost/rst/sales" class="mm-button mm-button-secondary">
             <i class="ace-icon fa fa-list-alt" aria-hidden="true"></i> Sale List
         </a></div>        </header>
+        <div class="mm-table-kpi-grid mm-no-print" style="margin-bottom: 14px;">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-label">Invoice No</span>
+                <div class="mm-table-kpi-value">#R-0105 <span class="mm-table-kpi-badge">New Dining Sale</span></div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-label">Guest &amp; Room</span>
+                <div class="mm-table-kpi-value">Walk-In or Folio <span class="mm-table-kpi-badge">Quick Add Guest</span></div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-label">Order Lines</span>
+                <div class="mm-table-kpi-value">Repeater Table <span class="mm-table-kpi-badge is-emerald">VAT &amp; Discount</span></div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-label">Grand Total</span>
+                <div class="mm-table-kpi-value">&#2547; 0.00 <span class="mm-table-kpi-badge is-amber">Cash / Card / Room</span></div>
+            </div>
+        </div>
         <!-- Form -->
     <form method="POST" action="http://localhost/rst/sales" accept-charset="UTF-8"
         class="form-horizontal sales-form" role="form" data-parsley-validate novalidate>

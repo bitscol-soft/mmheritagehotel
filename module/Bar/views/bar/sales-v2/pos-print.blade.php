@@ -22,10 +22,23 @@
         }
 
         @media print {
+            @page {
+                size: 80mm auto;
+                margin: 0;
+            }
+
+            html,
+            body {
+                background: #ffffff !important;
+            }
+
             #invoice {
+                display: block !important;
+                visibility: visible !important;
                 margin-top: 0 !important;
                 margin-bottom: 0 !important;
                 padding-top: 2px !important;
+                box-shadow: none !important;
             }
 
             .company-logo {
@@ -233,6 +246,7 @@
 
     <div class="no-print">
         <a href="javascript:void(0)" onclick="window.print()" class="btn btn-print"> Print</a>
+        <a href="{{ route('bar.sales-v2.create') }}" class="btn btn-back">POS</a>
         <a href="{{ route('bar.sales.index') }}" class="btn btn-back">Back</a>
         {{-- <a href="{{ request()->url() }}" class="btn btn-back">Back</a> --}}
     </div>
@@ -240,7 +254,7 @@
     <section id="invoice">
         <div class="container">
             <div class="company-logo">
-                <img src="{{ asset('uploads/company/' . $sale->company->logo) }}" alt="Logo" class="logo">
+                <img src="{{ asset('uploads/company/' . optional($sale->company)->logo) }}" alt="Logo" class="logo">
             </div>
 
 
@@ -294,8 +308,8 @@
                         @endphp
                         @foreach ($sale->items->where('is_bar', 1) as $key => $item)
                             @php
-                                $total_amount = +$item->sales_price;
-                                $total_cp     = +$item->item_discount;
+                                $total_amount += $item->sales_price;
+                                $total_cp     += $item->item_discount;
                             @endphp
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
@@ -335,8 +349,8 @@
                             @endphp
                             @foreach ($sale->items->where('is_bar', 0) as $key => $item)
                                 @php
-                                    $total_amount = +$item->sales_price;
-                                    $total_cp     = +$item->item_discount;
+                                    $total_amount += $item->sales_price;
+                                    $total_cp     += $item->item_discount;
 
                                 @endphp
                                 <tr>
@@ -469,12 +483,17 @@
                 <p>For any queries complaints or feedback.</p>
                 <p>Please call {{ optional($sale->company)->phone }}</p>
             </div>
+            @include('partials.print-codes', ['code' => $sale->invoice_no, 'label' => 'Skyline Rooftop Bar POS Receipt'])
         </div>
     </section>
 
 
     <script>
-        window.print()
+        // Auto-open the print dialog once the receipt has fully rendered
+        // (deferred to the load event so the print preview is never blank).
+        window.addEventListener('load', function () {
+            setTimeout(function () { window.print(); }, 350);
+        });
     </script>
 </body>
 

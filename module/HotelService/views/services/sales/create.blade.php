@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title', 'Add New Hotel Service Sale')
-@section('page-header')
-    <i class="fa fa-plus-circle"></i> New Hotel Service Sale
-@stop
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
@@ -15,7 +12,6 @@
 
     </style>
 @stop
-
 
 @section('content')
 <x-mm.styles />
@@ -44,48 +40,29 @@
             <h2 class="mm-setup-title">Guest and invoice</h2>
             <!-- info -->
             <div class="mm-hs-info">
-                <div class="form-group">
-                    <label class="control-label" for="guest_name">Guest Name :</label>
-
-                    <input class="form-control" type="text" id="guest_name" name="guest_name" placeholder="Guest Name" autocomplete="off"
-                    required />
-                    <input type="hidden" value="" name="hotel_guest_id" id="hotel_guest_id">
-                </div>
+                {{-- W4.3b: the 5 top-section text inputs are converted to <x-mm.field>.
+                     The id attributes are preserved (the JS hooks in the @section('js')
+                     block below bind to #guest_name, #room_number, #booking_number,
+                     #invoice_id, and #sale_date). The hidden hotel_guest_id /
+                     hotel_room_id / hotel_booking_id fields are kept as raw
+                     <input type="hidden"> (the <x-mm.field> component renders a
+                     visible input, not a hidden one). --}}
+                <x-mm.field label="Guest Name" id="guest_name" name="guest_name" placeholder="Guest Name" required />
+                <input type="hidden" value="" name="hotel_guest_id" id="hotel_guest_id">
 
                 {{-- Search By Room --}}
-                <div class="form-group">
-                    <label class="control-label" for="room_number">Room Number :</label>
-
-                    <input type="hidden" name="hotel_room_id" id="hotel_room_id">
-
-                    <input type="text" name="room_number" id="room_number"
-                        placeholder="Room Number" class="form-control">
-                </div>
+                <x-mm.field label="Room Number" id="room_number" name="room_number" placeholder="Room Number" />
+                <input type="hidden" name="hotel_room_id" id="hotel_room_id">
 
                 {{-- Search By Booking --}}
-                <div class="form-group">
-                    <label class="control-label" for="booking_number">Booking Number :</label>
+                <x-mm.field label="Booking Number" id="booking_number" name="booking_number" placeholder="Booking Number" />
+                <input type="hidden" name="hotel_booking_id" id="hotel_booking_id" value="">
 
-                    <input type="hidden" name="hotel_booking_id" id="hotel_booking_id" value="">
+                {{-- Sale Invoice ID (readonly) --}}
+                <x-mm.field label="Invoice ID" id="invoice_id" name="invoice_no" value="" placeholder="Invoice ID" :readonly="true" />
 
-                    <input type="text" name="booking_number" id="booking_number"
-                        placeholder="Booking Number" class="form-control">
-                </div>
-
-                <!-- Sale Invoice ID -->
-                <div class="form-group">
-                    <label class="control-label" for="invoice_id">Invoice ID #</label>
-                    <input type="text" tabindex="-1" class="form-control" id="invoice_id"
-                        placeholder="Invoice ID" name="invoice_no" value=""
-                        readonly>
-                </div>
-
-                <!-- Sale Date -->
-                <div class="form-group">
-                    <label class="control-label" for="sale_date">Date :</label>
-                    <input type="text" name="date" id="sale_date" value="{{ date('Y-m-d') }}"
-                        class="form-control date-picker" autocomplete="off">
-                </div>
+                {{-- Sale Date --}}
+                <x-mm.field label="Date" id="sale_date" name="date" value="{{ date('Y-m-d') }}" class="date-picker" :autocomplete="'off'" />
             </div>
         </x-mm.panel>
 
@@ -220,7 +197,6 @@
         function submitForm() {
             let is_submit = true;
 
-
             if ($('#guest_name').val() == '') {
                 is_submit = false;
                 warning('toster', 'Please select Guest Type!')
@@ -266,7 +242,6 @@
         }
     </script>
 
-
     {{-- Get Room Number --}}
     <script>
         $(document).on('focus', '#room_number', function() {
@@ -297,7 +272,6 @@
             })
         })
     </script>
-
 
     {{-- Get Booking Number --}}
     <script>
@@ -408,11 +382,9 @@
             $('.container').append(html);
         }
 
-
         function deleteRow(obj) {
             $(obj).parents('.repeat-group').remove();
         }
-
 
         function itemTotal(object) {
             let price = parseFloat($(object).closest('tr').find('.service-prices').val());
@@ -453,7 +425,6 @@
                         }
                     })
 
-
                     if (check == true) {
                         item.parents('tr').find('.service-prices').val(ui.item.data.price);
                         item.parents('tr').find('.service-ids').val(ui.item.data.id);
@@ -464,8 +435,6 @@
             });
         })
 
-
-
         function requestUrl(urlParts) {
             urlParts = $.extend({
                 basePath: '{{ url('/') }}/',
@@ -474,7 +443,6 @@
             }, urlParts);
             return urlParts.basePath + urlParts.path + urlParts.param;
         }
-
 
         function patientFilter() {
             selfFilter('service');
@@ -485,6 +453,5 @@
             referenceFilter();
         }
     </script>
-
 
 @endsection

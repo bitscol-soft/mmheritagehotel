@@ -2,10 +2,6 @@
 
 @section('title', 'Ratio Analysis')
 
-@section('page-header')
-    <i class="fa fa-balance-scale"></i> Ratio Analysis
-@stop
-
 @section('content')
 
 <x-mm.styles />

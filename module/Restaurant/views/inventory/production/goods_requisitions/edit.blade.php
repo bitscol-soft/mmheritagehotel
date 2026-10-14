@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title','Edit Goods Requisition')
-@section('page-header')
-    <i class="fa fa-gear"></i> Edit Goods Requisition
-@stop
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -17,24 +14,15 @@
 @stop
 
 @section('content')
+    <x-mm.styles />
+    <x-mm.page class="mm-requisition-form mm-rst" title="Edit Goods Requisition">
+        <x-slot name="actions">
+            <a href="{{ route('goods-requisitions.index') }}" class="btn btn-sm btn-default">
+                <i class="ace-icon fa fa-list-alt"></i> Requisition List
+            </a>
+        </x-slot>
 
-    <div class="row">
-
-        <div class="col-sm-12">
-            <div class="widget-box">
-                <div class="widget-header">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
-
-                    <span class="widget-toolbar">
-                    <a href="{{ route('goods-requisitions.index') }}">
-                        <i class="ace-icon fa fa-list-alt"></i> Requisition List
-                    </a>
-                </span>
-
-                </div>
-
-                <div class="widget-body">
-                    <div class="widget-main">
+        <x-mm.panel>
                         <form class="form-horizontal" action="{{ route('goods-requisitions.update', $goodsRequisition->id) }}" method="post" enctype="multipart/form-data">
                             @csrf @method('PUT')
 
@@ -288,13 +276,8 @@
                             </div>
 
                         </form>
-                    </div>
-                </div>
-            </div>
-
-
-        </div>
-    </div>
+        </x-mm.panel>
+    </x-mm.page>
 
 
 @endsection

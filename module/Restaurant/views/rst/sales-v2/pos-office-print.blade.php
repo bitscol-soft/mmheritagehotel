@@ -22,10 +22,23 @@
         }
 
         @media print {
+            @page {
+                size: 80mm auto;
+                margin: 0;
+            }
+
+            html,
+            body {
+                background: #ffffff !important;
+            }
+
             #invoice {
+                display: block !important;
+                visibility: visible !important;
                 margin-top: 0 !important;
                 margin-bottom: 0 !important;
                 padding-top: 2px !important;
+                box-shadow: none !important;
             }
 
             .company-logo {
@@ -242,6 +255,7 @@
 
     <div class="no-print">
         <a href="javascript:void(0)" onclick="window.print()" class="btn btn-print"> Print</a>
+        <a href="{{ route('rst.sales-v2.create') }}" class="btn btn-back">POS</a>
         <a href="{{ route('rst.sales.index') }}" class="btn btn-back">Back</a>
     </div>
 
@@ -249,8 +263,8 @@
         <div class="container">
             <div class="company-logo">
                 {{-- <img src="{{ asset('uploads/company/' . $sale->company->logo) }}" alt="Logo" class="logo"> --}}
-                @if($sale->company->logo && file_exists('uploads/company/' . $sale->company->logo))
-                    <img src="{{ asset('uploads/company/' . $sale->company->logo) }}" alt="Logo" class="logo">
+                @if(optional($sale->company)->logo && file_exists('uploads/company/' . optional($sale->company)->logo))
+                    <img src="{{ asset('uploads/company/' . optional($sale->company)->logo) }}" alt="Logo" class="logo">
                 @endif
             </div>
 
@@ -323,7 +337,7 @@
                         @endphp
                         @foreach ($sale->items as $key => $item)
                             @php
-                                $total_amount = +$item->sales_price;
+                                $total_amount += $item->sales_price;
                             @endphp
                             <tr>
                                 <td>
@@ -466,12 +480,17 @@
                     <span>Guest Sign</span>
                 </div>
             </div>
+            @include('partials.print-codes', ['code' => $sale->invoice_no, 'label' => 'Restaurant POS Receipt (Office Copy)'])
         </div>
     </section>
 
 
     <script>
-        // window.print()
+        // Auto-open the print dialog once the receipt has fully rendered
+        // (deferred to the load event so the print preview is never blank).
+        window.addEventListener('load', function () {
+            setTimeout(function () { window.print(); }, 350);
+        });
     </script>
 </body>
 

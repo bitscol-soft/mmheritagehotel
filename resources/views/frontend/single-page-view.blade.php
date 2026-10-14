@@ -1,4 +1,4 @@
-@extends('frontend.layouts.master')
+@extends('frontend.layouts.mm-web')
 
 @section('menu_about', $page->title ?? '')
 
@@ -11,7 +11,7 @@
             <div class="service-body" style="margin-top: 50px">
                 @if (file_exists($page->image))
                 <div class="col-md-6">
-                    <img src="{{ asset($page->image) }}" style="width: 100%; height: 400px;" alt="{{ $page->title }}">
+                    <img src="{{ asset($page->image) }}" style="width: 100%; height: 400px;" alt="{{ $page->title }}" loading="lazy">
                 </div>
                 @endif
                 <div class="@if (file_exists($page->image)) col-md-6 @else col-md-12 @endif ">

@@ -89,10 +89,44 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Booking migration</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Move this booking to another room or date.</p>            </div>
-            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a href="http://localhost/hotel/booking" class="mm-button mm-button-secondary">
-                <i class="fa fa-list-alt" aria-hidden="true"></i> Booking List
-            </a></div>        </header>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Move an active guest booking to another room or adjust stay dates with automatic folio recalculation.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a href="/preview/booking-next" class="mm-button mm-button-secondary"><i class="fa fa-map-o"></i> Floor Plan Wizard</a>
+                <a href="http://localhost/hotel/booking" class="mm-button mm-button-secondary">
+                    <i class="fa fa-list-alt" aria-hidden="true"></i> Booking List
+                </a>
+            </div>        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Booking migration summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-hashtag"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Active Booking</span>
+                    <div class="mm-table-kpi-value">B-0007 <span class="mm-table-kpi-sub">Rahim · 2 Rooms</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-bed"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Current Tariff</span>
+                    <div class="mm-table-kpi-value">৳ 4,000 <span class="mm-table-kpi-sub">Per Room / Night</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-credit-card"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Previous Advance</span>
+                    <div class="mm-table-kpi-value">৳ 1,000 <span class="mm-table-kpi-sub">Carried Over</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-calculator"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Previous Folio Due</span>
+                    <div class="mm-table-kpi-value">৳ 8,000 <span class="mm-table-kpi-sub">Auto-Adjusted</span></div>
+                </div>
+            </div>
+        </div>
         <!-- Adjust Booking Form -->
         <form action="http://localhost/hotel/booking-adjusts" class="store-form" method="POST" id="store-form">
             <input type="hidden" name="_token" value="fixture-csrf-token">

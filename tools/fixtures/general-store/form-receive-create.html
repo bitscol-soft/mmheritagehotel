@@ -15,8 +15,39 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Purchase receive</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Record the items received against an approved purchase.</p>            </div>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Record Goods Received Note (GRN) quantities and supplier challan details against an approved purchase.</p>            </div>
             <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a href="http://localhost/purchases" class="mm-button"><i class="ace-icon fa fa-list-alt"></i> Purchase Receive List</a></div>        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Purchase receive create summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-truck"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Receipt Mode</span>
+                    <div class="mm-table-kpi-value">New GRN <span class="mm-table-kpi-sub">Against PO #P-0001</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-cubes"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Delivery Check</span>
+                    <div class="mm-table-kpi-value">Full / Partial <span class="mm-table-kpi-sub">Tracks Remaining Qty</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-file-text-o"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Challan &amp; Docs</span>
+                    <div class="mm-table-kpi-value">Challan ID <span class="mm-table-kpi-sub">Attachment Ready</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Inventory Posting</span>
+                    <div class="mm-table-kpi-value">Auto-Increment <span class="mm-table-kpi-sub">Store Stock Ledger</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><form class="form-horizontal" action="http://localhost/gs/purchase/receives/store" method="post"
             enctype="multipart/form-data">
             <input type="hidden" name="_token" value="fixture-csrf-token">

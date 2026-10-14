@@ -69,7 +69,9 @@
 @endpush
 
 @section('content')
-    <main class="app-content">
+    <x-mm.styles />
+    <x-mm.print-sheet title="Purchase Return Invoice">
+        <x-mm.panel class="tw-p-4">
         <div class="row" style="display: inline">
             <div class="col-md-12 text-center">
                 <h1><strong>{{ optional($purchaseReturn->company)->name }}</strong></h1>
@@ -236,7 +238,8 @@
                 </div>
             </div>
         </div>
-    </main>
+        </x-mm.panel>
+    </x-mm.print-sheet>
 
 @endsection
 

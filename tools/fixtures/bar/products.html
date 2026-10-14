@@ -14,13 +14,47 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Products</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Bar products with stock type, price and status.</p>            </div>
-            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button" href="http://localhost/x/bar/products/create?type=upload">
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Bar beverage catalog, SKU barcodes, purchase costs and POS selling prices.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/bar-pos"><i class="fa fa-glass"></i> Bar POS</a>
+                <a class="mm-button" href="http://localhost/x/bar/products/create?type=upload">
                     <i class="fa fa-upload"></i> Upload Product
                 </a>
                 <a class="mm-button mm-button-secondary" href="http://localhost/x/bar/products/create">
                     <i class="fa fa-plus-circle"></i> Add New Product
-                </a></div>        </header>
+                </a>
+            </div>        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Bar products catalog summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-glass"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Catalog SKUs</span>
+                    <div class="mm-table-kpi-value">Black Label <span class="mm-table-kpi-sub">SKU #P-0101</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-tag"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Purchase Cost</span>
+                    <div class="mm-table-kpi-value">৳ 180.00 <span class="mm-table-kpi-sub">Per Bottle / Peg</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-money"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">POS Sale Price</span>
+                    <div class="mm-table-kpi-value">৳ 280.00 <span class="mm-table-kpi-sub">35.7% Gross Margin</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">POS Menu Sync</span>
+                    <div class="mm-table-kpi-value">Active ✓ <span class="mm-table-kpi-sub">Bar &amp; Lounge</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 mm-report-filter"><div class="col-sm-12">
     <form action="">
         <div class="row">

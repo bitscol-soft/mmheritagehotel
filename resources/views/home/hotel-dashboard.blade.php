@@ -1,24 +1,15 @@
 @extends('layouts.master')
 @section('title', 'Dashboard')
-@section('page-header')
-    <i class="fa fa-tachometer"></i> Dashboard
-@stop
 @section('css')
 
-
-
-
     {{-- Room Price Design And CSS --}}
-
 
     @if ($settings->where('key', 'visible_booking_ui_dashboard')->first()->value == 1)
         @include('home._inc.style')
     @endif
 @stop
 
-
 @section('content')
-
 
     <x-mm.styles />
     <x-mm.page title="Hotel dashboard" description="Daily activity and room availability at a glance." class="mm-dashboard">
@@ -74,8 +65,6 @@
 
     </div>
 
-
-
     <!-- BOOKING UI IF VISIBLE ON DASHBOARD -->
     @if ($settings->where('key', 'visible_booking_ui_dashboard')->first()->value == 1)
         <section class="mm-dashboard-board" aria-labelledby="dashboard-board-title">
@@ -97,18 +86,13 @@
     <script type="text/javascript" src="{{ asset('assets/custom_js/canvasjs.js') }}"></script>
     {{-- <script type="text/javascript" src="{{ asset('assets/custom_js/canvasjs.js') }}"></script> --}}
 
-
-
     <script src="{{ asset('assets/js/moment.min.js') }}"></script>
     <script src="{{ asset('assets/js/fullcalendar.min.js') }}"></script>
     <script src="{{ asset('assets/js/chosen.jquery.min.js') }}"></script>
     <script src="{{ asset('assets/custom_js/chosen-box.js') }}"></script>
 
-
     <script src="{{ asset('assets/js/daterangepicker.min.js') }}"></script>
     <script src="{{ asset('assets/custom_js/date-picker.js') }}"></script>
-
-
 
     <script src="{{ asset('assets/custom_js/stay-range.js') }}"></script>
     @include('home._inc.script')
@@ -117,8 +101,6 @@
     <script type="text/javascript">
         $(document).ready(function() {
             $('.collapse-card1').trigger('clicked')
-
-
 
             // sync attendance
             // $.ajax({
@@ -133,7 +115,6 @@
             // });
         })
 
-
         function manageIcon(object) {
             if ($(object).closest('.card').find('.card-body').is(":visible")) {
                 $(object).find('i').addClass("fa-minus").removeClass("fa-plus")
@@ -142,6 +123,5 @@
             }
         }
     </script>
-
 
 @stop

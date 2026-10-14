@@ -2,15 +2,9 @@
 
 @section('title', 'Hotel Monthly Booking Report')
 
-@section('page-header')
-    <i class="fa fa-info-circle"></i> Hotel Monthly Booking Report
-@stop
-
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/fullcalendar.min.css') }}" />
 @endpush
-
-
 
 @section('content')
 <x-mm.styles />
@@ -154,7 +148,6 @@
 @endsection
 
 @section('js')
-
 
     <script src="{{ asset('assets/custom_js/month-picker.js') }}"></script>
     <script src="{{ asset('assets/js/moment.min.js') }}"></script>

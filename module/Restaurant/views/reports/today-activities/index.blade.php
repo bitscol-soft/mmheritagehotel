@@ -1,10 +1,6 @@
 @extends('layouts.master')
 @section('title', 'Today Report')
 
-@section('page-header')
-    <i class="fa fa-info-circle"></i> Today Report
-@stop
-
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -16,7 +12,6 @@
 
     </style>
 @stop
-
 
 @section('content')
 

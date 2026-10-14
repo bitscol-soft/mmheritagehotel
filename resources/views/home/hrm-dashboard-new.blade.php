@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title', 'Dashboard')
-@section('page-header')
-    <i class="fa fa-tachometer"></i> Dashboard
-@stop
 @section('css')
 
     <link rel="stylesheet" href="{{ asset('assets/css/fullcalendar.min.css') }}" />
@@ -122,6 +119,8 @@
 
 
 @section('content')
+    <x-mm.styles />
+    <x-mm.page class="mm-dashboard" title="Dashboard">
     {{-- <div class="dash-header">
         <strong>Managenent <span class="text-center"><strong>HR|Admin|Accounts|IT</strong></span></strong>
     </div> --}}
@@ -274,6 +273,7 @@
 
     <br>
     <br>
+    </x-mm.page>
 
 @endsection
 

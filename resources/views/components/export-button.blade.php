@@ -10,8 +10,13 @@
         </a>
     @endif
     @if ($print == 1)
-        <span class="only-print" onclick="window.print()" style="margin-right: 5px; margin-top:5px; cursor: pointer;">
-            <img src="{{ asset('assets/images/export-icons/printer-icon.png') }}">
-        </span>
+        {{-- W3.7: print button now uses data-mm-print (the new pattern
+             from W3.1). The data-mm-print hook in public/assets/custom_js/mm-ui.js
+             binds the click to window.print(). The ExportService is
+             untouched (PDF and Excel still go through the export_type
+             query param). --}}
+        <button type="button" data-mm-print class="mm-hdr-btn" style="margin-right: 5px; margin-top:5px;" aria-label="Print this report">
+            <i class="fa fa-print" aria-hidden="true"></i>
+        </button>
     @endif
 </div>

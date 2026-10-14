@@ -2,19 +2,11 @@
 
 @section('title', 'Product Stock In Hand')
 
-@section('page-header')
-    <i class="fa fa-info-circle"></i> Product Stock In Hand
-@stop
-
-
-
-
 @section('css')
 
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/jquery-ui.min.css') }}" />
 @stop
-
 
 @section('content')
 
@@ -77,8 +69,6 @@
         <x-mm.table-scroll label="Product Stock In Hand">
             <table id="dynamic-table" class="table table-striped table-bordered table-hover">
 
-
-
                             <thead>
                                 <tr style="background: #C9DAF8 !important; color:black !important">
                                     <th>SL</th>
@@ -89,9 +79,6 @@
                                     <th class="text-right">Total Avg. Price</th>
                                 </tr>
                             </thead>
-
-
-
 
                             <tbody>
                                 @forelse($itemStocks as $item)
@@ -112,7 +99,6 @@
                                 @endforelse
                             </tbody>
 
-
                             <tfoot>
                                 {{-- <tr>
                                 <td colspan="6" class="text-right">Total</td>
@@ -127,7 +113,6 @@
                         <img src="{{ asset('assets/images/export-icons/printer-icon.png') }}">
                     </span>
 
-
                     @include('partials._paginate', ['data' => $itemStocks])
     </x-mm.panel>
 </x-mm.page>
@@ -135,8 +120,6 @@
 @endsection
 
 @section('js')
-
-
 
     <script src="{{ asset('assets/js/chosen.jquery.min.js') }}"></script>
     <script src="{{ asset('assets/custom_js/chosen-box.js') }}"></script>
@@ -171,6 +154,5 @@
             })
         })
     </script>
-
 
 @stop

@@ -2,9 +2,6 @@
 
 @extends('layouts.master')
 @section('title','GIN List')
-@section('page-header')
-    <i class="fa fa-list"></i> GIN List
-@stop
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -16,7 +13,6 @@
     </style>
 
 @stop
-
 
 @section('content')
 
@@ -90,82 +86,71 @@
 
             <div class="row">
                 <div class="col-xs-12">
-                    <x-mm.table-scroll label="GIN list">
-                        <table class="table table-striped table-bordered table-hover">
-                            <thead>
-                                <tr style="background: #C9DAF8 !important; color:black !important">
-                                    <th>SL</th>
-                                    <th>Issue Date</th>
-                                    <th>GIN Number</th>
-                                    <th>Date</th>
-                                    <th>Requisition No</th>
-                                    <th>Company</th>
-                                    <th>Department</th>
-                                    <th>{{ $systemSetting->value != null ? $systemSetting->value : "Reference" }}</th>
-                                    <th>Total Qty</th>
-                                    <th>Received By</th>
-                                    <th style="width: 120px !important;"></th>
-                                </tr>
-                            </thead>
+                    <x-mm.data-table :columns="[
+                        ['label' => 'SL', 'width' => '5%'],
+                        ['label' => 'Issue Date'],
+                        ['label' => 'GIN Number'],
+                        ['label' => 'Date'],
+                        ['label' => 'Requisition No'],
+                        ['label' => 'Company'],
+                        ['label' => 'Department'],
+                        ['label' => $systemSetting->value != null ? $systemSetting->value : 'Reference'],
+                        ['label' => 'Total Qty'],
+                        ['label' => 'Received By'],
+                        ['label' => 'Action', 'width' => '120px', 'align' => 'center'],
+                    ]" id="data-table" label="GIN list" table-class="table table-striped table-bordered table-hover">
+                        @forelse ($goods_requisitions as $key => $goods_requisition)
+                            <tr>
+                                <td>{{ $key + 1 }}</td>
+                                <td style="font-weight: bold !important;">{{ fdate($goods_requisition->issue_date ?? '', 'Y-m-d') }}</td>
+                                <td class="text-primary">{{ $goods_requisition->issue_number }}</td>
+                                <td>{{ $goods_requisition->goods_requisition_date }}</td>
+                                <td>{{ $goods_requisition->form_number }}</td>
+                                <td>{{ $goods_requisition->company->name }}</td>
+                                <td>{{ optional($goods_requisition->department)->name }}</td>
+                                <td>{{ $goods_requisition->goods_requisition_reference }}</td>
+                                <td>{{ $goods_requisition->goods_requisition_details->sum('quantity') }}</td>
+                                <td>
+                                    <p title="Update Time : {{ $goods_requisition->updated_at }}">{{ $goods_requisition->updated_user->name }}</p>
+                                    <p style="margin-top:-10px !important; font-size: 10px !important;">{{ fdate($goods_requisition->updated_at, 'Y-m-d') }}</p>
+                                </td>
+                                <td class="text-center">
+                                    <div class="btn-group btn-corner">
 
-                            <tbody>
+                                        <a href="{{ route('print.gin-details', $goods_requisition->id) }}" role="button" target="__blank" class="btn btn-xs btn-info" title="Print">
+                                            <i class="fa fa-print"></i>
+                                        </a>
+                                        <a  href="#goods-requisition-details{{ $goods_requisition->id }}" role="button" data-toggle="modal" class="btn btn-xs btn-purple" title="View Details">
+                                            <i class="fa fa-eye"></i>
+                                        </a>
 
-                                @foreach($goods_requisitions as $key => $goods_requisition)
-                                    <tr>
-                                        <td>{{ $key+1 }}</td>
-                                        <td style="font-weight: bold !important;">{{ fdate($goods_requisition->issue_date ?? '', 'Y-m-d') }}</td>
-                                        <td class="text-primary">{{ $goods_requisition->issue_number }}</td>
-                                        <td>{{ $goods_requisition->goods_requisition_date }}</td>
-                                        <td>{{ $goods_requisition->form_number }}</td>
-                                        <td>{{ $goods_requisition->company->name }}</td>
-                                        <td>{{ optional($goods_requisition->department)->name }}</td>
-                                        <td>{{ $goods_requisition->goods_requisition_reference }}</td>
-                                        <td>{{ $goods_requisition->goods_requisition_details->sum('quantity') }}</td>
-                                        <td>
-                                            <p title="Update Time : {{ $goods_requisition->updated_at }}">{{ $goods_requisition->updated_user->name }}</p>
-                                            <p style="margin-top:-10px !important; font-size: 10px !important;">{{ fdate($goods_requisition->updated_at, 'Y-m-d') }}</p>
-                                        </td>
-                                        <td style="min-width: 90px" class="text-center">
-                                            <div class="btn-group btn-corner">
+                                        @if(hasPermission("create.requisitions.approve", $slugs))
+                                            <a href="{{ route('unapprove.goods.requisition', $goods_requisition->id) }}" class="btn btn-xs btn-success" title="Unapprove">
+                                                <i class="fa fa-thumbs-down"></i>
+                                            </a>
+                                        @endif
 
-                                                <a href="{{ route('print.gin-details', $goods_requisition->id) }}" role="button" target="__blank" class="btn btn-xs btn-info" title="Print">
-                                                    <i class="fa fa-print"></i>
-                                                </a>
-                                                <a  href="#goods-requisition-details{{ $goods_requisition->id }}" role="button" data-toggle="modal" class="btn btn-xs btn-purple" title="View Details">
-                                                    <i class="fa fa-eye"></i>
-                                                </a>
+                                        @if(hasPermission("create.requisitions.delete", $slugs) && $goods_requisition->is_approved == 0)
+                                            <button type="button" onclick="delete_check({{ $goods_requisition->id }})" class="btn btn-xs btn-danger" title="Delete">
+                                                <i class="fa fa-trash-o"></i>
+                                            </button>
+                                        @endif
+                                    </div>
 
-                                                @if(hasPermission("create.requisitions.approve", $slugs))
-                                                    <a href="{{ route('unapprove.goods.requisition', $goods_requisition->id) }}" class="btn btn-xs btn-success" title="Unapprove">
-                                                        <i class="fa fa-thumbs-down"></i>
-                                                    </a>
-                                                @endif
-
-                                                @if(hasPermission("create.requisitions.delete", $slugs) && $goods_requisition->is_approved == 0)
-                                                    <button type="button" onclick="delete_check({{ $goods_requisition->id }})" class="btn btn-xs btn-danger" title="Delete">
-                                                        <i class="fa fa-trash-o"></i>
-                                                    </button>
-                                                @endif
-                                            </div>
-
-                                            <form action="{{ route('goods-requisitions.destroy',$goods_requisition->id)}}" id="deleteCheck_{{ $goods_requisition->id }}" method="POST">
-                                                @csrf
-                                                @method("DELETE")
-                                            </form>
-                                        </td>
-                                    </tr>
-                                @endforeach
-
-                                @if (count($goods_requisitions) == 0)
-                                    <tr>
-                                        <td colspan="11" class="text-center">
-                                            <b class="text-danger">No records found!</b>
-                                        </td>
-                                    </tr>
-                                @endif
-                            </tbody>
-                        </table>
-                    </x-mm.table-scroll>
+                                    <form action="{{ route('goods-requisitions.destroy',$goods_requisition->id)}}" id="deleteCheck_{{ $goods_requisition->id }}" method="POST">
+                                        @csrf
+                                        @method("DELETE")
+                                    </form>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="11" class="text-center">
+                                    <b class="text-danger">No records found!</b>
+                                </td>
+                            </tr>
+                        @endforelse
+                    </x-mm.data-table>
 
                     @if (count($goods_requisitions) != 0)
                     @include('partials._paginate', ['data' => $goods_requisitions])
@@ -195,8 +180,6 @@
 
         </div>
         <input type="hidden" id="csrf" value="{{ csrf_token() }}">
-
-
 
         {{-- goods_requisitions detail modals --}}
         @foreach($goods_requisitions as $key => $goods_requisition)
@@ -272,15 +255,12 @@
     <script src="{{ asset('assets/js/chosen.jquery.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap-datepicker.min.js') }}"></script>
 
-
-
     <script type="text/javascript">
         function exportData(url)
         {
             $('.exportForm').attr('action', url).submit();
         }
     </script>
-
 
     <!--  Select Box Search-->
     <script type="text/javascript">
@@ -307,7 +287,6 @@
                         $this.next().css({'width':'220px'});
                     })
                 });
-
 
                 $('#chosen-multiple-style .btn').on('click', function(e){
                     var target = $(this).find('input[type=radio]');

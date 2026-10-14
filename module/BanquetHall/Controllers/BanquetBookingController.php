@@ -2,6 +2,7 @@
 
 namespace Module\BanquetHall\Controllers;
 
+use Carbon\Carbon;
 use Exception;
 use App\Models\Company;
 use App\Models\Country;
@@ -250,7 +251,7 @@ class BanquetBookingController extends Controller{
     {
         $this->hasAccess("bookings.view");
 
-        $data['booking']        = $booking = Booking::with('transection', 'hotelServiceSale.transactions', 'resturentServiceSale.RstTransactions', 'booking_members')->find($id);
+        $data['booking']        = $booking = Booking::with('transection', 'hotelServiceSale.transactions', 'resturentServiceSale.RstTransactions', 'booking_members')->findOrFail($id);
         $data['account_type']   = AccountType::where('status', 1)->pluck('name', 'id');
 
         $data['transactions']  = HotelTransection::with('source')
@@ -266,7 +267,7 @@ class BanquetBookingController extends Controller{
 
         $data['total_night']    = Carbon::parse($booking->check_out_date)->diffInDays(Carbon::parse($booking->check_in_date));
 
-        return view('booking/view', $data);
+        return view('hall_booking/view', $data);
     }
 
 
@@ -306,20 +307,22 @@ class BanquetBookingController extends Controller{
 
                 // UPDATE GUEST
                 $guest = Guest::find($booking->customer_id);
-                $guest->update([
-                    'company_id'    => $request->company_id
-                ]);
+                if ($guest) {
+                    $guest->update([
+                        'company_id'    => $request->company_id
+                    ]);
+                }
 
 
                 //--------- SEND SMS TO GUEST ---------//
-                if (isset($request->sms)) {
+                if (isset($request->sms) && $guest) {
                     $messages = 'Your booking have been successfully Reserved. Booking No. '.$this->service->booking->booking_number;
                     $this->sendSmsNotification($messages , $guest->phone_no);
                 }
 
 
                 //-------- SEND EMAIL TO GUEST --------//
-                if (isset($request->email)) {
+                if (isset($request->email) && $guest) {
                     $this->sendEmailNotification($booking->id, $guest->email);
                 }
 
@@ -952,6 +955,15 @@ class BanquetBookingController extends Controller{
      | bookingUi METHOD FOR Box Style Room Booking
      |--------------------------------------------------------------------------
     */
+    /**
+     * @deprecated since W3.8 (this method is not wired to any route in
+     *             module/BanquetHall/routes/web_banquet_hall.php).
+     *             It was originally the "box style room booking" UI, but
+     *             the box-style flow is no longer in use. Kept for now
+     *             in case an external client (webhook, scheduled task)
+     *             still calls it via routing-by-reflection. Remove in
+     *             W3.9 if no caller emerges.
+     */
     public function bookingUi(Request $request)
     {
         $this->hasAccess("bookings.create");
@@ -1067,6 +1079,16 @@ class BanquetBookingController extends Controller{
      | available METHOD FOR Check availability for new room
      |--------------------------------------------------------------------------
     */
+    /**
+     * @deprecated since W3.8 (this method is not wired to any route in
+     *             module/BanquetHall/routes/web_banquet_hall.php).
+     *             The "check availability for new room" flow is no longer
+     *             used; the available-room check is now done inline by
+     *             RoomStatusService::availableRoom() at the controller
+     *             entry points. Kept for now in case an external caller
+     *             still hits it via routing-by-reflection. Remove in
+     *             W3.9 if no caller emerges.
+     */
     public function available(Request $request)
     {
 

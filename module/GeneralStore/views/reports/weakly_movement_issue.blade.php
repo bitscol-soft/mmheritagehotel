@@ -2,9 +2,6 @@
 
 @extends('layouts.master')
 @section('title','Weekly movement')
-@section('page-header')
-    <i class="fa fa-list"></i> Weekly movement (Issue)
-@stop
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -17,14 +14,12 @@
 
 @stop
 
-
 @section('content')
 
 <x-mm.styles />
 <x-mm.page class="mm-report mm-gs mm-rst mm-rst-inv" title="Weekly movement (issue)" description="Items issued from the general store, week by week.">
     <x-mm.panel class="tw-p-4">
         @include('partials._alert_message')
-
 
         <!-- filter -->
         <div class="row">
@@ -173,8 +168,6 @@
         </div>
         <input type="hidden" id="csrf" value="{{ csrf_token() }}">
 
-
-
         {{-- goods_requisitions detail modals --}}
         @foreach($goods_requisitions as $key => $goods_requisition)
 
@@ -297,7 +290,6 @@
                         $this.next().css({'width':'220px'});
                     })
                 });
-
 
                 $('#chosen-multiple-style .btn').on('click', function(e){
                     var target = $(this).find('input[type=radio]');

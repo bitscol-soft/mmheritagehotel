@@ -1,150 +1,166 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Restaurant Product Inventory</title>
 <link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
-<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">    <link rel="stylesheet" href="/assets/css/chosen.min.css" />
-    <link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css" />
-
-    <style>
-        .bg-dark {
-            background-color: #C9DAF8;
-        }
-    </style>
-
-<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css"><!--/MM-HEAD-->
+<link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
 <section class="mm-ui mm-report mm-rst mm-rst-inventory mm-rst-inv">
     <div class="tw-space-y-4 tw-py-2">
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
-                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Product inventory</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Stock on hand for the selected product filters.</p>            </div>
-                    </header>
-        <div class="mm-panel tw-p-4 sm:tw-p-6 mm-report-filter"><div class="col-sm-12 mb-2 ml-4">
-    <form method="get">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink"><i class="fa fa-cutlery"></i> Product inventory — Kitchen &amp; Cold-Room Ingredient Stock, BOM Deduction &amp; Par Alerts</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Real-time kitchen ingredient balances after automated POS KOT recipe deductions, with cold-chain batch tracking and store requisition triggers.</p>
+            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <button type="button" id="rsi-req-btn" class="mm-button"><i class="fa fa-exchange"></i> Request Store Transfer for Low-Par Items</button>
+                <a href="/preview/rsi-products" class="mm-button mm-button-secondary"><i class="fa fa-cutlery"></i> Menu &amp; Raw Products</a>
+                <a href="/preview/rsi-production-requisitions" class="mm-button mm-button-secondary"><i class="fa fa-list-alt"></i> Kitchen Requisitions</a>
+                <a href="/preview/gs-stock-in-hand" class="mm-button mm-button-secondary"><i class="fa fa-cubes"></i> Central Store</a>
+            </div>
+        </header>
 
-        <div class="row">
-
-
-
-
-
-
-            <!-- Product Name -->
-            <div class="col-md-5">
-                <div class="input-group">
-                    <div class="input-group-addon">
-                        <label class="input-group-text">Product </label>
-                    </div>
-
-                    <input class="form-control" type="text" value="" id="name" name="name"
-                        placeholder="Product Name" autocomplete="off" />
+        <div class="mm-table-kpi-grid" aria-label="Product inventory stock summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-cubes"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Kitchen &amp; Cold-Room SKUs</span>
+                    <div class="mm-table-kpi-value"><span id="rsi-kpi-skus">4 SKUs</span> <span class="mm-table-kpi-sub">Auto-BOM Deducted</span></div>
                 </div>
             </div>
-
-
-
-
-
-            <!-- Category -->
-            <div class="col-md-3">
-                <div class="input-group">
-                    <div class="input-group-addon">
-                        <label class="input-group-text">Category </label>
-                    </div>
-
-                    <input class="form-control" type="text" value="" id="name"
-                        name="category_name" placeholder="Category Name" autocomplete="off" />
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Healthy Par Stock</span>
+                    <div class="mm-table-kpi-value">3 Items <span class="mm-table-kpi-sub">Fresh Batch Verified</span></div>
                 </div>
             </div>
-
-
-
-
-
-
-
-
-            <!-- Stock Type -->
-            <div class="col-md-2">
-                <div class="input-group">
-                    <div class="input-group-addon">
-                        <label class="input-group-text">Type </label>
-                    </div>
-
-                    <select name="is_bar" class="form-control chosen-select-100-percent" data-selected="">
-                        <option value="1">Bar</option>
-                        <option value="0">Restaurant</option>
-                    </select>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-exclamation-triangle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Low Par Alerts</span>
+                    <div class="mm-table-kpi-value"><span id="rsi-kpi-low">1 Item</span> <span class="mm-table-kpi-sub">Saffron &amp; Pistachio</span></div>
                 </div>
             </div>
-
-
-
-
-
-
-
-            <!-- Action -->
-            <div class="col-md-2">
-                <div class="btn-group">
-                    <a class="btn btn-sm" href="http://localhost/rst/inventory-report/index"><i
-                            class="fa fa-refresh"></i></a>
-                    <button type="submit" class="btn btn-success btn-sm"><i class="fa fa-search"></i> Search</button>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-money"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Kitchen Stock Value</span>
+                    <div class="mm-table-kpi-value">৳ 68,400 <span class="mm-table-kpi-sub">FIFO Cost Basis</span></div>
                 </div>
             </div>
         </div>
-    </form>
-</div></div>
 
-    <div class="mm-panel tw-p-4 sm:tw-p-6"><div class="json_table mt-2">
+        <div id="rsi-confirm-banner" class="alert alert-success" style="display:none;margin:0;border-radius:12px;font-size:13px"></div>
 
-                    <div class="mm-table-scroll" role="region" aria-label="Product inventory" tabindex="0"><table id="datatable" class="table table-striped table-bordered table-hover mb-2">
-                            <thead>
-                                <tr style="background: #C9DAF8 !important; color:black !important">
-                                    <th>SL</th>
-                                    <th>Product Name</th>
-                                    <th>Category</th>
-                                    <th class="text-right">Opening Qty</th>
-                                    <th class="text-right">Purchase Qty</th>
-                                    <th class="text-right">Sold Qty</th>
-                                    <th class="text-right">Return Qty</th>
-                                    <th class="text-right">Available Qty</th>
-                                </tr>
-                            </thead>
+        <div class="mm-panel tw-p-4 sm:tw-p-6">
+            <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px">
+                <div style="display:flex;flex-wrap:wrap;gap:6px" id="rsi-filter-pills">
+                    <button type="button" class="mm-role-pill is-active rsi-filter-pill" data-rsi-cat="all">All Kitchen Items (4)</button>
+                    <button type="button" class="mm-role-pill rsi-filter-pill" data-rsi-cat="Chilled">Chilled Seafood &amp; Meat (2)</button>
+                    <button type="button" class="mm-role-pill rsi-filter-pill" data-rsi-cat="Dry">Dry Spices &amp; Basmati (2)</button>
+                </div>
+                <input type="search" id="rsi-search-input" class="form-control" style="max-width:260px" placeholder="Search Salmon, Mutton, Saffron...">
+            </div>
 
-                            <tbody>
-
-                                                                    <tr>
-                                        <td>1</td>
-                                        <td>Chicken &lt;b&gt;Biryani&lt;/b&gt;</td>
-                                        <td>Rice dishes</td>
-                                        <td class="text-right">3</td>
-                                        <td class="text-right">5
-                                        </td>
-                                        <td class="text-right">2</td>
-                                        <td class="text-right">0</td>
-                                        <td class="text-right">8
-                                        </td>
-                                    </tr>
-
-                                                            </tbody>
-                        </table></div>
-
+            <div class="mm-table-scroll" role="region" aria-label="Product inventory" tabindex="0">
+                <table class="table table-bordered table-striped" id="rsi-table">
+                    <thead>
+                        <tr>
+                            <th>SL</th>
+                            <th>Ingredient / Product Name</th>
+                            <th>Storage Zone</th>
+                            <th class="text-center">Unit</th>
+                            <th class="text-right">Opening + GIN</th>
+                            <th class="text-right">KOT Recipe Used</th>
+                            <th class="text-right">On-Hand Stock</th>
+                            <th class="text-center">Par Status</th>
+                            <th class="text-right">FIFO Value (৳)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rsi-tbody">
+                        <tr data-rsi-row="Chilled">
+                            <td>1</td>
+                            <td><strong>#RSI-01 · Norwegian Atlantic Salmon Fillet</strong></td>
+                            <td>Cold Room +2°C</td>
+                            <td class="text-center">Kg</td>
+                            <td class="text-right">18.00</td>
+                            <td class="text-right">6.50</td>
+                            <td class="text-right"><strong>11.50</strong></td>
+                            <td class="text-center"><span class="mm-badge mm-badge-paid">Optimal ✓</span></td>
+                            <td class="text-right">25,300.00</td>
+                        </tr>
+                        <tr data-rsi-row="Chilled">
+                            <td>2</td>
+                            <td><strong>#RSI-02 · Premium Shahi Mutton Cut (Kacchi Grade)</strong></td>
+                            <td>Chiller +4°C</td>
+                            <td class="text-center">Kg</td>
+                            <td class="text-right">35.00</td>
+                            <td class="text-right">15.00</td>
+                            <td class="text-right"><strong>20.00</strong></td>
+                            <td class="text-center"><span class="mm-badge mm-badge-paid">Optimal ✓</span></td>
+                            <td class="text-right">22,000.00</td>
+                        </tr>
+                        <tr data-rsi-row="Dry">
+                            <td>3</td>
+                            <td><strong>#RSI-03 · Kashmiri Zafrani Saffron &amp; Pistachio Blend</strong></td>
+                            <td>Chef Dry Vault</td>
+                            <td class="text-center">Gm</td>
+                            <td class="text-right">500.00</td>
+                            <td class="text-right">410.00</td>
+                            <td class="text-right"><strong>90.00</strong></td>
+                            <td class="text-center"><span class="mm-badge mm-badge-unpaid">Low Par (Min 150g)</span></td>
+                            <td class="text-right">12,600.00</td>
+                        </tr>
+                        <tr data-rsi-row="Dry">
+                            <td>4</td>
+                            <td><strong>#RSI-04 · Aged Kalijeera &amp; Basmati Biryani Rice</strong></td>
+                            <td>Kitchen Dry Store</td>
+                            <td class="text-center">Kg</td>
+                            <td class="text-right">90.00</td>
+                            <td class="text-right">33.30</td>
+                            <td class="text-right"><strong>56.70</strong></td>
+                            <td class="text-center"><span class="mm-badge mm-badge-paid">Optimal ✓</span></td>
+                            <td class="text-right">8,500.00</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <input type="hidden" id="csrf" value="fixture-csrf-token"></div>
     </div>
 </section>
-
+<script>
+(function(){
+    var activeCat='all', pills=document.querySelectorAll('.rsi-filter-pill'), rows=document.querySelectorAll('#rsi-tbody tr'), searchEl=document.getElementById('rsi-search-input'), kpiSkus=document.getElementById('rsi-kpi-skus');
+    function filterRsi(){
+        var q=(searchEl&&searchEl.value||'').toLowerCase().trim(), vis=0;
+        for(var i=0;i<rows.length;i++){
+            var c=rows[i].getAttribute('data-rsi-row');
+            var txt=(rows[i].textContent||'').toLowerCase();
+            var ok=(activeCat==='all'||c===activeCat)&&(!q||txt.indexOf(q)!==-1);
+            rows[i].style.display=ok?'':'none';
+            if(ok) vis++;
+        }
+        if(kpiSkus) kpiSkus.textContent=vis+' SKUs';
+    }
+    for(var p=0;p<pills.length;p++){
+        pills[p].addEventListener('click',function(){
+            for(var j=0;j<pills.length;j++) pills[j].classList.toggle('is-active',pills[j]===this);
+            activeCat=this.getAttribute('data-rsi-cat')||'all';
+            filterRsi();
+        });
+    }
+    if(searchEl) searchEl.addEventListener('input',filterRsi);
+    var reqBtn=document.getElementById('rsi-req-btn'), ban=document.getElementById('rsi-confirm-banner');
+    if(reqBtn){
+        reqBtn.addEventListener('click',function(){
+            if(ban){
+                ban.style.display='block';
+                ban.innerHTML='<i class="fa fa-check-circle"></i> <strong>Kitchen Goods Requisition #GR-2026-119 Dispatched:</strong> 250g Kashmiri Saffron &amp; Pistachio Blend requested from Central Store (<a href="/preview/gs-gr-list"><strong>Inspect Requisition →</strong></a>).';
+            }
+        });
+    }
+})();
+</script>
 <!--/MM-BODY--></div>
 <script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
 <!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
 <script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
-
-    <script>
-        loadSelect2({
-            url: "/bar/inventory/get-products",
-            select: '#product-search',
-            templateResult: formatProduct,
-            templateSelection: formatSelection
-        })
-    </script>
-
 <!--/MM-JS--></body></html>

@@ -19,7 +19,7 @@ class BookingNoteController extends Controller
 
     public function index()
     {
-        $bookingNotes = BookingNote::queryLike('name')->get();
+        $bookingNotes = BookingNote::queryLike('title')->get();
 
         $table       = BookingNote::getTableName();
 
@@ -106,7 +106,7 @@ class BookingNoteController extends Controller
     {
         // $this->hasAccess("guests.edit");
 
-        $bookingNote     = BookingNote::find($id);
+        $bookingNote     = BookingNote::findOrFail($id);
 
         return view('booking-note.edit', compact('bookingNote'));
     }
@@ -132,7 +132,7 @@ class BookingNoteController extends Controller
         ]);
 
         try {
-            $bookingNote = BookingNote::find($id);
+            $bookingNote = BookingNote::findOrFail($id);
 
             $bookingNote->update([
                 'title'                  => $request->title,

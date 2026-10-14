@@ -1,4 +1,4 @@
-<div class="modal fade" id="edit-modal">
+<div class="modal fade mm-drawer" data-mm-drawer="true" id="edit-modal">
     <div class="modal-dialog">
         <div class="modal-content">
             <form method="POST" class="form-horizontal" role="form" id="editForm">

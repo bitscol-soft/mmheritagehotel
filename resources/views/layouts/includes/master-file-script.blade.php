@@ -366,6 +366,15 @@
 
 @yield('script')
 
+{{-- The mm design-system scripts stack. <x-mm.scripts /> pushes mm-ui.js
+     (the shared vanilla JS that wires modal focus traps, daterange quick
+     chips, chip remove, data-table priority fold, print-sheet) here. Adding
+     the @stack call exposes the W1.5 contract to every page in the admin
+     shell — without it, x-mm.scripts is a silent no-op on admin pages.
+     Mirrors the @stack('custom_js') already exposed in layouts/app.blade.php
+     (auth), frontend/layouts/master.blade.php, and mm-web.blade.php. --}}
+@stack('custom_js')
+
 
 <!-- software payment notification script -->
 @if (request()->segment(1) != 'em')

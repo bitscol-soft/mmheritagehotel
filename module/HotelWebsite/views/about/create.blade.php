@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title','About Section')
-@section('page-header')
-    <i class="fa fa-gears"></i> About Heading Section
-@stop
 @push('style')
 <link rel="stylesheet" href="{{ asset('assets/css/dropzone.min.css') }}" />
 <style>
@@ -20,7 +17,6 @@
             @csrf
 
             @include('partials._alert_message')
-
 
             <div class="row">
                 <div class="col-md-6">
@@ -83,7 +79,6 @@
                                 </div>
                             </div>
                         </div>
-
 
                     </div>
                 </div>

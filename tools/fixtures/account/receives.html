@@ -16,8 +16,44 @@
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Receive Vouchers</h1>
                 <p class="tw-m-0 tw-text-sm tw-text-muted">Receive vouchers with approval status.</p>            </div>
-            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button mm-button-secondary" href="http://localhost/acc/voucher-receives"><i class="fa fa-refresh"></i> Refresh</a>
-                        <a class="mm-button" href="http://localhost/acc/voucher-receives/create"><i class="fa fa-plus"></i> Create</a></div>        </header>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/acc-payments"><i class="fa fa-arrow-up"></i> Payments</a>
+                <a class="mm-button mm-button-secondary" href="/preview/acc-journals"><i class="fa fa-book"></i> Journals</a>
+                <a class="mm-button mm-button-secondary" href="http://localhost/acc/voucher-receives"><i class="fa fa-refresh"></i> Refresh</a>
+                <a class="mm-button" href="http://localhost/acc/voucher-receives/create"><i class="fa fa-plus"></i> Create</a>
+            </div>        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Receive vouchers summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-file-text-o"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Receive Vouchers</span>
+                    <div class="mm-table-kpi-value">2 Vouchers <span class="mm-table-kpi-sub">Current Period</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Approved Receipts</span>
+                    <div class="mm-table-kpi-value">1 Voucher <span class="mm-table-kpi-sub">GL Synced</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-clock-o"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Unapproved Queue</span>
+                    <div class="mm-table-kpi-value">1 Voucher <span class="mm-table-kpi-sub">Pending Review</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-money"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Total Received</span>
+                    <div class="mm-table-kpi-value">৳ 3,000 <span class="mm-table-kpi-sub">Cash &amp; Bank</span></div>
+                </div>
+            </div>
+        </div>
+
         <div class="mm-panel tw-p-4 sm:tw-p-6 mm-report-filter"><form class="mm-setup-filter mm-report-form" action="" method="get">
             <div class="input-group">
                 <label class="input-group-addon" for="">

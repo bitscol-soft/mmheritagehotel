@@ -14,7 +14,7 @@ class Supplier extends Model
             static::creating(function ($model) {
                 $model->fill([
                     'created_by' => auth()->id(),
-                    'company_id' => auth()->user()->company->id,
+                    'company_id' => optional(optional(auth()->user())->company)->id ?? optional(auth()->user())->company_id,
                     'updated_by' => auth()->id(),
                 ]);
             });

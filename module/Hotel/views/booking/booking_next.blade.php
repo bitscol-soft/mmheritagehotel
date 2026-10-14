@@ -1,10 +1,6 @@
 @extends('layouts.master')
 @section('title', 'Add Booking')
 
-@section('page-header')
-    <i class="fa fa-plus-circle"></i> Add New Booking
-@stop
-
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -38,7 +34,6 @@
     @include('booking._css.css')
 @endpush
 
-
 @section('content')
 
     @php
@@ -50,10 +45,22 @@
     <x-mm.styles />
     <x-mm.page class="mm-booking-next" title="New booking" description="Confirm the selected rooms, add guest details and save the booking.">
         <x-slot name="actions">
+            <a href="#" id="mm-focused-fullscreen-btn" data-mm-fullscreen-toggle aria-pressed="false" class="mm-button mm-button-secondary mm-focused-fs-btn" title="Toggle distraction-free Focused Fullscreen Mode (Alt+Z)">
+                <i class="ace-icon fa fa-arrows-alt" aria-hidden="true"></i> Focused Fullscreen
+            </a>
             <a class="mm-button mm-button-secondary" href="{{ route('booking.index') }}">
                 <i class="ace-icon fa fa-list-alt" aria-hidden="true"></i> Booking List
             </a>
         </x-slot>
+        <div id="mm-fullscreen-hud" class="mm-no-print" role="region" aria-label="Focused fullscreen controls">
+            <div class="mm-fullscreen-hud-left">
+                <span class="mm-fullscreen-hud-badge"><i class="fa fa-arrows-alt" aria-hidden="true"></i> Focused Fullscreen Mode</span>
+                <span><strong>3-Step Hotel Booking Wizard</strong> · Distraction-Free Front-Desk Terminal (Press <code>Esc</code> or <code>Alt+Z</code> to exit)</span>
+            </div>
+            <a href="#" id="mm-fullscreen-exit-btn" data-mm-fullscreen-exit class="mm-fullscreen-exit-btn">
+                <i class="fa fa-compress" aria-hidden="true"></i> Exit Fullscreen
+            </a>
+        </div>
         @include('booking._inc._booking-next-steps')
         <x-mm.panel>
                     <div>
@@ -73,14 +80,10 @@
                                         $date = array_map('trim', explode('-', $range));
                                     @endphp
 
-
-
                                     <!------------ INCLUDE GUEST INPUT FIELDS ------------>
                                     <div class="row">
                                         @include('booking._inc._booking-next-input-info')
                                     </div>
-
-
 
                                 </div>
                             </div>
@@ -265,7 +268,6 @@
                                                     // $grand_total = $total_without_vat + $vat_amount;
                                                     $grand_total = $sub_total;
 
-
                                                     // var rate = (subtotal / room_rate) * 100;
                                                     // var service_amount = (rate * service_percent) / 100;
                                                     // var total_without_vat = rate + service_amount;
@@ -424,7 +426,6 @@
                                                 </td>
                                             </tr>
 
-
                                         </tfoot>
                                     </table>
                                 </div>
@@ -452,7 +453,6 @@
     @include('partials.modal.new_guest_modal')
     @include('partials/modal/edit_v1_guest_modal')
 
-
 @endsection
 
 @section('script')
@@ -462,8 +462,6 @@
     <script src="{{ asset('assets/custom_js/date-picker.js') }}"></script>
     <script src="{{ asset('assets/custom_js/chosen-box.js') }}"></script>
 
-
     @include('booking._script.booking-next-script')
-
 
 @endsection

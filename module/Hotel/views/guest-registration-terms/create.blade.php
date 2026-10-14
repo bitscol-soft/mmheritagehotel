@@ -1,9 +1,6 @@
 
 @extends('layouts.master')
 @section('title','Add New Guest')
-@section('page-header')
-    <i class="fa fa-plus-circle"></i> Add New Guest
-@stop
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <!-- page specific plugin styles -->
@@ -11,27 +8,17 @@
 @stop
 
 @section('content')
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="widget-box">
-                <div class="widget-header">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
-                    <span class="widget-toolbar">
+    <x-mm.styles />
+    <x-mm.page class="mm-hotel-setup" title="Add New Guest">
+        <x-slot name="actions">
+            <a class="mm-button mm-button-secondary" href="{{ route('guests.index') }}">
+                <i class="ace-icon fa fa-list-alt"></i> List
+            </a>
+        </x-slot>
 
-                            <a href="{{ route('guests.index') }}">
-                                <i class="ace-icon fa fa-list-alt"></i> List
-                            </a>
+        @include('partials._alert_message')
 
-                    </span>
-                </div>
-
-                <div class="widget-body">
-                    <div class="widget-main no-padding">
-
-                        <div style="margin: 20px;">
-                            @include('partials._alert_message')
-                        </div>
-
+        <x-mm.panel>
                         <form class="form-horizontal" id="companyForm" action="{{ route('guests.store') }}" method="post" enctype="multipart/form-data">
                             @csrf
 
@@ -160,14 +147,8 @@
                                 </a>
                             </div>
                         </form>
-
-                    </div>
-                </div>
-            </div>
-
-
-        </div>
-    </div>
+        </x-mm.panel>
+    </x-mm.page>
 @endsection
 
 @section('js')

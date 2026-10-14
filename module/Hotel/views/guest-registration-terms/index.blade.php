@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title','Registration Terms List')
-@section('page-header')
-    <i class="fa fa-info-circle"></i> Registration Terms List
-@stop
 
 @section('content')
 <x-mm.styles />

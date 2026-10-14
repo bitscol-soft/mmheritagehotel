@@ -1,4 +1,4 @@
-@extends('frontend.layouts.master')
+@extends('frontend.layouts.mm-web')
 @section('website_header') Guest Registration |@endsection
 @push('custom_css')
     <link rel="stylesheet" href="{{ asset('frontend/assets/css/custom.css') }}">

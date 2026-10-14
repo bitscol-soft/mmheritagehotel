@@ -2,14 +2,7 @@
 
 @section('title', 'Sale Detail')
 
-@section('page-header')
-    <i class="fa fa-info-circle"></i> Sale Details
-@stop
-
-
 @push('style')
-
-
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
 
@@ -28,41 +21,17 @@
 @endpush
 
 
-
-
-
-
-
 @section('content')
+    <x-mm.styles />
+    <x-mm.page class="mm-invoice-page mm-acc" title="Sale Details">
+        <x-slot name="actions">
+            <a class="mm-button mm-button-secondary" href="{{ route('acc-sales.index') }}"><i class="fa fa-list-alt"></i> List</a>
+            <a class="mm-button" href="{{ route('acc-sales.create') }}"><i class="fa fa-plus"></i> Create</a>
+        </x-slot>
 
-    <div class="row">
-        <div class="col-sm-12">
+        @include('partials._alert_message')
 
-            @include('partials._alert_message')
-
-            <div class="widget-box widget-color-white ui-sortable-handle clearfix" id="widget-box-7" style="width: 90%; margin-left: 5%; margin-top: 30px">
-                
-                <!-- heading -->
-                <div class="widget-header widget-header-small">
-                    <h3 class="widget-title smaller text-primary">
-                        @yield('page-header')
-                    </h3>
-
-                    <div class="widget-toolbar">
-                        <a href="{{ route('acc-sales.index') }}" ><i class="fa fa-list-alt"></i> List</a>
-                    </div>
-
-                    <div class="widget-toolbar">
-                        <a href="{{ route('acc-sales.create') }}" ><i class="fa fa-plus"></i> Create</a>
-                    </div>
-                </div>
-
-
-                <div class="space"></div>
-
-
-
-
+        <x-mm.panel>
                 <div class="row px-2 pb-3">
                     <div class="col-md-5">
                         <p><span style="width: 130px">Date:</span> {{ $sale->date }}</p>
@@ -121,8 +90,7 @@
                             </tfoot>
                         </table>
                     </div>
-                </div>  
-            </div>
-        </div>
-    </div>
+                </div>
+        </x-mm.panel>
+    </x-mm.page>
 @endsection

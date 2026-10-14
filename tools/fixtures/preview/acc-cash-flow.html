@@ -19,9 +19,44 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Cash Flow Report</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Cash movements for the period.</p>            </div>
-            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button mm-button-secondary" href="http://localhost/acc/report/cash-flow"><i class="fa fa-refresh"></i> Refresh</a>
-        <a class="mm-button" href="http://localhost/acc/report/cash-flow?print=1&amp;from=2026-10-01&amp;to=2026-10-01" style="color: maroon !important;"><i class="fa fa-print"></i> Print</a></div>        </header>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Operating, investing and financing cash movements for the period.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/acc-balance-sheet"><i class="fa fa-building-o"></i> Balance Sheet</a>
+                <a class="mm-button mm-button-secondary" href="/preview/acc-income-statement"><i class="fa fa-line-chart"></i> Income Statement</a>
+                <a class="mm-button mm-button-secondary" href="http://localhost/acc/report/cash-flow"><i class="fa fa-refresh"></i> Refresh</a>
+                <a class="mm-button" href="http://localhost/acc/report/cash-flow?print=1&amp;from=2026-10-01&amp;to=2026-10-01"><i class="fa fa-print"></i> Print</a>
+            </div>        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Cash flow summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-arrow-up"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Operating Cash Flow</span>
+                    <div class="mm-table-kpi-value">+ ৳ 742,000 <span class="mm-table-kpi-sub">Room &amp; POS Inflow</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-wrench"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Investing Cash Flow</span>
+                    <div class="mm-table-kpi-value">- ৳ 185,000 <span class="mm-table-kpi-sub">Suite CapEx</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-bank"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Financing Cash Flow</span>
+                    <div class="mm-table-kpi-value">- ৳ 95,000 <span class="mm-table-kpi-sub">Debt Service</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-money"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Closing Cash &amp; Bank</span>
+                    <div class="mm-table-kpi-value">৳ 1,412,000 <span class="mm-table-kpi-sub">+ ৳ 462,000 Net</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 mm-report-filter"><form class="mm-setup-filter mm-report-form" action="" method="get">
 
                 <div class="input-group">
@@ -60,136 +95,79 @@
                 <div class="row">
                     <div class="col-sm-12">
 
-                        <div class="mm-table-scroll" role="region" aria-label="Cash Flow Report" tabindex="0"><table class="table table-bordered table-striped" style="margin-bottom: 0; margin-left: 10%; width: 85%;">
-
+                        <div class="mm-table-scroll" role="region" aria-label="Cash Flow Report" tabindex="0"><table class="table table-bordered table-striped" style="margin-bottom: 0; width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th width="60px">Sl.</th>
+                                        <th>Cash Flow Activity &amp; Particular</th>
+                                        <th width="200px" class="text-right pr-1">Amount (৳)</th>
+                                    </tr>
+                                </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>Sl.</td>
-                                        <td><strong>Particular</strong></td>
-                                        <td width="150px" class="text-center pr-1">Tk.</td>
-                                    </tr>
-                                    <tr>
+                                    <tr class="mm-fin-section-row">
                                         <td>1</td>
-                                        <td>
-                                            <strong>Cash flows from operating activities: </strong>
-                                        </td>
-                                        <td width="150px" class="text-right pr-1"></td>
+                                        <td><strong>Cash flows from operating activities</strong></td>
+                                        <td class="text-right pr-1"></td>
                                     </tr>
                                     <tr>
                                         <td></td>
-                                        <td>
-                                            Net Profit/Loss
-                                        </td>
-                                        <td width="150px" class="text-right pr-1">0</td>
+                                        <td>Net Profit / Surplus Before Tax</td>
+                                        <td class="text-right pr-1"><div class="mm-share-cell" style="justify-content:flex-end"><strong>685,000.00</strong><span class="mm-share-bar"><span class="mm-share-fill is-emerald" style="width:92.3%"></span></span></div></td>
                                     </tr>
                                     <tr>
                                         <td></td>
-                                        <td>
-                                            Adjustment to reconcile net profit to net cash:
-                                        </td>
-                                        <td width="150px" class="text-right pr-1"></td>
+                                        <td>Depreciation &amp; Amortization Adjustment</td>
+                                        <td class="text-right pr-1"><div class="mm-share-cell" style="justify-content:flex-end"><span>45,000.00</span><span class="mm-share-bar"><span class="mm-share-fill" style="width:12%"></span></span></div></td>
                                     </tr>
                                     <tr>
                                         <td></td>
-                                        <td>
-                                            Depriciation exp
-                                        </td>
-                                        <td width="150px" class="text-right pr-1">0</td>
+                                        <td>Working Capital Change — Guest Receivables &amp; Inventory</td>
+                                        <td class="text-right pr-1">(28,000.00)</td>
                                     </tr>
                                     <tr>
                                         <td></td>
-                                        <td>
-                                            Current Asset Increase/Decrease
-                                        </td>
-                                        <td width="150px" class="text-right pr-1">(0)</td>
+                                        <td>Working Capital Change — Supplier &amp; Tax Payables</td>
+                                        <td class="text-right pr-1">40,000.00</td>
                                     </tr>
-                                    <tr>
+                                    <tr class="mm-fin-total-row">
                                         <td></td>
-                                        <td>
-                                            Current Liabilities Increase/Decrease
-                                        </td>
-                                        <td width="150px" class="text-right pr-1">0</td>
+                                        <td>Net cash provided by Operating Activities</td>
+                                        <td class="text-right pr-1">742,000.00</td>
                                     </tr>
-                                    <tr>
-                                        <td></td>
-                                        <td>
-                                            Net cash provided/used by Operating Activities
-                                        </td>
-
-                                                                                <td width="150px" class="text-right pr-1">
-                                            <strong>(0)</strong>
-                                        </td>
-                                    </tr>
-
-
-
-
-
-
-
-
-
-
-
-
-
-                                    <tr>
+                                    <tr class="mm-fin-section-row">
                                         <td>2</td>
-                                        <td>
-                                            <strong>Cash flows from investing activities: </strong>
-                                        </td>
-                                        <td width="150px" class="text-right pr-1"></td>
-                                    </tr>
-
-                                    <tr>
-                                        <td></td>
-                                        <td>
-                                            Fixed Assets Increase/Decrease
-                                        </td>
-                                        <td width="150px" class="text-right pr-1">(0)</td>
+                                        <td><strong>Cash flows from investing activities</strong></td>
+                                        <td class="text-right pr-1"></td>
                                     </tr>
                                     <tr>
                                         <td></td>
-                                        <td>
-                                            Net cash provided/used by I.A
-                                        </td>
-                                        <td width="150px" class="text-right pr-1">
-                                            <strong>(0)</strong>
-                                        </td>
+                                        <td>Acquisition of Kitchen &amp; Heritage Suite Equipment</td>
+                                        <td class="text-right pr-1">(185,000.00)</td>
                                     </tr>
-                                    <tr>
+                                    <tr class="mm-fin-total-row">
+                                        <td></td>
+                                        <td>Net cash used in Investing Activities</td>
+                                        <td class="text-right pr-1">(185,000.00)</td>
+                                    </tr>
+                                    <tr class="mm-fin-section-row">
                                         <td>3</td>
-                                        <td>
-                                            <strong>Cash flows from financing activities:</strong>
-                                        </td>
-                                        <td width="150px" class="text-right pr-1"></td>
+                                        <td><strong>Cash flows from financing activities</strong></td>
+                                        <td class="text-right pr-1"></td>
                                     </tr>
                                     <tr>
                                         <td></td>
-                                        <td>
-                                            Long Time Liabilities Increase/Decrease
-                                        </td>
-                                        <td width="150px" class="text-right pr-1">0</td>
+                                        <td>Hospitality Expansion Term Loan Principal Repayment</td>
+                                        <td class="text-right pr-1">(95,000.00)</td>
+                                    </tr>
+                                    <tr class="mm-fin-total-row">
+                                        <td></td>
+                                        <td>Net cash used in Financing Activities</td>
+                                        <td class="text-right pr-1">(95,000.00)</td>
                                     </tr>
                                     <tr>
                                         <td></td>
-                                        <td>
-                                            Net cash provided/used by F.A
-                                        </td>
-                                        <td width="150px" class="text-right pr-1">
-                                            <strong>0</strong>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td></td>
-                                        <td>
-                                            Net Cash Charged
-                                            <br>
-                                            Add Opening Balance
-                                            <br>
-                                            <strong>Closing Balance</strong>
-                                        </td>
-                                        <td width="150px" class="text-right pr-1"></td>
+                                        <td><strong>Net Increase in Cash (+ ৳ 462,000) + Opening Cash (৳ 950,000) = Closing Cash &amp; Bank Balance</strong></td>
+                                        <td class="text-right pr-1"><strong>1,412,000.00</strong></td>
                                     </tr>
                                 </tbody>
                             </table></div>

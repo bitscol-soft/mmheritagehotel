@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title','Expense Analysis')
-@section('page-header')
-    <i class="fa fa-list"></i> Expense Analysis
-@stop
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}"/>
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}"/>
@@ -25,7 +22,6 @@
         }
     </style>
 @endpush
-
 
 @section('content')
 
@@ -243,7 +239,6 @@
     <script src="{{ asset('assets/js/chosen.jquery.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap-datepicker.min.js') }}"></script>
 
-
     <script src="{{ asset('assets/custom_js/chosen-box.js') }}"></script>
     <script src="{{ asset('assets/custom_js/date-picker.js') }}"></script>
 
@@ -278,7 +273,6 @@
                 })
             });
 
-
             accountSubsidiaryId.change(function () {
                 accountId.empty();
                 accountId.append(`<option value="">- Select Account -</option>`);
@@ -298,5 +292,4 @@
     </script>
 
 @endsection
-
 

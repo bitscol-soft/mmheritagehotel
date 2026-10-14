@@ -4,12 +4,6 @@
 @section('title', 'Chart Of Account')
 
 
-@section('page-header')
-    <i class="fa fa-info-circle"></i> Chart Of Account
-@stop
-
-
-
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -38,42 +32,20 @@
 
 
 @section('content')
-    <div class="row">
-        <div class="col-sm-12">
+    <x-mm.styles />
+    <x-mm.page class="mm-report mm-acc" title="Chart Of Account">
+        <x-slot name="actions">
+            <a class="mm-button mm-button-secondary" href="{{ request()->url() }}">
+                <i class="fa fa-refresh"></i> Refresh
+            </a>
+            <a class="mm-button" href="{{ request()->getRequestUri() }}?print=print">
+                <i class="fa fa-print"></i> Print
+            </a>
+        </x-slot>
 
-            @include('partials._alert_message')
+        @include('partials._alert_message')
 
-            <!-- heading -->
-            <div class="widget-box widget-color-white ui-sortable-handle clearfix" id="widget-box-7">
-                <div class="widget-header widget-header-small">
-                    <h3 class="widget-title smaller text-primary">
-                        @yield('page-header')
-                    </h3>
-
-                    <div class="widget-toolbar border smaller">
-                        <a href="{{ request()->url() }}" >
-                            <i class="fa fa-refresh bigger-110"></i> Refresh
-                        </a>
-                    </div>
-
-                    <div class="widget-toolbar border smaller">
-                        <a href="{{ request()->getRequestUri() }}?print=print" >
-                            <i class="fa fa-print bigger-110"></i> Print
-                        </a>
-                    </div>
-                </div>
-
-                <div class="space"></div>
-
-
-
-
-
-
-
-
-
-
+        <x-mm.panel>
                 <!-- filter -->
                 <div class="row px-3 pb-2 no-print">
                     <form action="" method="get">
@@ -144,9 +116,8 @@
                         @include('partials._paginate', ['data' => $accounts])
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
+        </x-mm.panel>
+    </x-mm.page>
 @endsection
 
 @section('js')

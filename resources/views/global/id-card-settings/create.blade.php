@@ -1,9 +1,6 @@
 
 @extends('layouts.master')
 @section('title','Add New Setting')
-@section('page-header')
-    <i class="fa fa-plus-circle"></i> Add New Id Card Setting
-@stop
 
 @push('style')
 
@@ -13,25 +10,17 @@
 
 
 @section('content')
+    <x-mm.styles />
+    <x-mm.page class="mm-crud-form" title="Add New Id Card Setting">
+        <x-slot name="actions">
+            @if (hasPermission("company.infos.view", $slugs))
+                <a href="{{ route('id-card-settings.index') }}" class="btn btn-sm btn-default">
+                    <i class="ace-icon fa fa-list-alt"></i> Setting List
+                </a>
+            @endif
+        </x-slot>
 
-    <div class="row">
-
-        <div class="col-sm-12">
-            <div class="widget-box">
-                <div class="widget-header">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
-                    <span class="widget-toolbar">
-                        @if (hasPermission("company.infos.view", $slugs))
-                            <a href="{{ route('id-card-settings.index') }}">
-                                <i class="ace-icon fa fa-list-alt"></i> Setting List
-                            </a>
-                        @endif
-                    </span>
-                </div>
-
-                <div class="widget-body">
-                    <div class="widget-main no-padding">
-
+        <x-mm.panel>
                         <div style="margin: 20px;">
                             @include('partials._alert_message')
                         </div>
@@ -211,11 +200,8 @@
                                 @endif
                             </div>
                         </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+        </x-mm.panel>
+    </x-mm.page>
 
 
 

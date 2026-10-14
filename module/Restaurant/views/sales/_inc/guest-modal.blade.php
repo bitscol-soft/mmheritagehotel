@@ -1,4 +1,4 @@
-<div class="modal fade" id="add-guest-modal">
+<div class="modal fade mm-drawer" data-mm-drawer="true" id="add-guest-modal">
     <div class="modal-dialog">
         <div class="modal-content">
             <form method="POST" action="" class="form-horizontal" role="form">

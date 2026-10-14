@@ -2,11 +2,6 @@
 
 @section('title', 'Ledger Journal')
 
-
-@section('page-header')
-    <i class="fa fa-info-circle"></i> Ledger Journal
-@stop
-
 @push('style')
 
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
@@ -19,7 +14,6 @@
         tr {
             border: none !important;
         }
-
 
         @media print {
 
@@ -61,7 +55,6 @@
             display: none;
         }
 
-
         .header-bg {
             background: #bce4e5 !important;
             padding: 10px !important;
@@ -77,10 +70,6 @@
 
     </style>
 @endpush
-
-
-
-
 
 @section('content')
 
@@ -117,18 +106,12 @@
     <x-mm.panel class="tw-p-4">
         <!-- filter -->
 
-
-
-
-
         <!-- LIST -->
         <div class="row" style="width: 100%; margin: 0 !important; padding: 0 !important;">
             <div class="col-sm-12">
 
-
                 <x-mm.table-scroll label="Ledger Journal">
                     <table class="table" style="margin-bottom: 0; width: 100% !important;">
-
 
                         <!-- table header -->
                         <thead>
@@ -141,8 +124,6 @@
                             </tr>
                         </thead>
 
-
-
                         <!-- body -->
                         <tbody>
 
@@ -151,7 +132,6 @@
                                 $totalCredit    = 0;
                                 $sl             = 1;
                             @endphp
-
 
                             @forelse ($transactions->groupBy('invoice_no') as $items)
 
@@ -162,8 +142,6 @@
 
                                         $totalCredit += $item->credit_amount;
                                     @endphp
-
-
 
                                     <tr class="{{ $sl % 2 == 0 ? 'even-bg' : 'odd-bg' }}">
                                         <td class="text-center">
@@ -191,8 +169,6 @@
                             @endforelse
                         </tbody>
 
-
-
                         <!-- table footer -->
                         @if (count($transactions) > 0)
                             <tfoot>
@@ -212,11 +188,9 @@
                     </table>
                 </x-mm.table-scroll>
 
-
                 <br>
 
                 @include('partials._paginate', ['data' => $transactions])
-
 
                 <!-- EXCEL BUTTON -->
                 <a class="hidden-print" href="{{ url()->current() }}?export_type=excel&{{ request()->getQueryString() }}" target="_blank" style="margin: 18px 0 0 20px; display: inline-block;">
@@ -229,7 +203,6 @@
 </x-mm.page>
 
 @endsection
-
 
 {{-- <td colspan="2">
     <table class="table" style="border: none;">
@@ -249,7 +222,6 @@
 @section('js')
     <script src="{{ asset('assets/js/chosen.jquery.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap-datepicker.min.js') }}"></script>
-
 
     <script src="{{ asset('assets/custom_js/chosen-box.js') }}"></script>
     <script src="{{ asset('assets/custom_js/date-picker.js') }}"></script>

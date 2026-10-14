@@ -14,13 +14,44 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Material products</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Products and the materials they are made from.</p>            </div>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Menu products and the bill-of-materials (BOM) raw ingredients they are made from.</p>            </div>
             <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a href="http://localhost/rst/mat-products/create?type=upload" class="mm-button">
                     <i class="fa fa-upload"></i> Upload Product
                 </a>
                 <a href="http://localhost/rst/mat-products/create" class="mm-button mm-button-secondary">
                     <i class="fa fa-plus-circle"></i> Add New Product
                 </a></div>        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Material products summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-cutlery"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Recipe Products</span>
+                    <div class="mm-table-kpi-value">Chicken Biryani <span class="mm-table-kpi-sub">SKU #P-0101</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-sitemap"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">BOM Ingredients</span>
+                    <div class="mm-table-kpi-value">Linked ✓ <span class="mm-table-kpi-sub">Raw Material Ratio</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-money"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Sale Tariff</span>
+                    <div class="mm-table-kpi-value">৳ 280.00 <span class="mm-table-kpi-sub">Cost-Tracked</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Auto-Depletion</span>
+                    <div class="mm-table-kpi-value">Enabled ✓ <span class="mm-table-kpi-sub">POS → Kitchen Stock</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 mm-report-filter"><div class="col-sm-12">
     <form action="">
         <div class="row">

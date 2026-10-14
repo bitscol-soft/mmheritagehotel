@@ -5,6 +5,20 @@
             <i class="fa fa-times" aria-hidden="true"></i>
         </button>
     </div>
+    <div class="mm-shell-nav-mode tw-mb-4" role="group" aria-label="Sidebar layout">
+        <span class="tw-block tw-text-sm tw-font-semibold tw-mb-2">Sidebar layout</span>
+        <div class="tw-flex tw-gap-1" role="group">
+            <button type="button" class="mm-button mm-button-secondary" data-mm-nav-toggle data-mm-nav-mode="mm-nav-full" aria-label="Full sidebar with text labels">
+                <i class="fa fa-list" aria-hidden="true"></i> Full
+            </button>
+            <button type="button" class="mm-button mm-button-secondary" data-mm-nav-toggle data-mm-nav-mode="mm-nav-rail" aria-label="Icon-only rail (68px)">
+                <i class="fa fa-bars" aria-hidden="true"></i> Rail
+            </button>
+            <button type="button" class="mm-button mm-button-secondary" data-mm-nav-toggle data-mm-nav-mode="mm-nav-collapsed" aria-label="Hide the sidebar">
+                <i class="fa fa-times-circle" aria-hidden="true"></i> Hidden
+            </button>
+        </div>
+    </div>
     <label for="mm-menu-filter" class="tw-block tw-text-sm tw-font-semibold tw-mb-2">Find a menu</label>
     <div class="mm-shell-search-row">
     <input id="mm-menu-filter" class="mm-input" type="search" placeholder="Type a screen name…" autocomplete="off" aria-controls="mm-primary-menu" aria-describedby="mm-menu-help">

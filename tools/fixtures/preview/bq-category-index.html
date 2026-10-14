@@ -5,10 +5,45 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Hall categories</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Hall types and their guest capacity.</p>            </div>
-            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button" href="http://localhost/bq/banquet/hall-categories/create">
-                <i class="fa fa-plus" aria-hidden="true"></i> Add New Category
-            </a></div>        </header>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Banquet and conference hall types, guest capacities and status.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/bq-rooms-index"><i class="fa fa-building-o"></i> Halls</a>
+                <a class="mm-button mm-button-secondary" href="/preview/bq-aminities-index"><i class="fa fa-lightbulb-o"></i> Hall Amenities</a>
+                <a class="mm-button" href="http://localhost/bq/banquet/hall-categories/create">
+                    <i class="fa fa-plus" aria-hidden="true"></i> Add New Category
+                </a>
+            </div>        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Banquet categories summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-sitemap"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Hall Categories</span>
+                    <div class="mm-table-kpi-value">2 Categories <span class="mm-table-kpi-sub">Grand &amp; Executive</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-users"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Max Capacity</span>
+                    <div class="mm-table-kpi-value">400 Person <span class="mm-table-kpi-sub">Gala Configuration</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-lightbulb-o"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Bundled Amenities</span>
+                    <div class="mm-table-kpi-value">Stage &amp; AV <span class="mm-table-kpi-sub">Pre-Configured</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Booking Engine</span>
+                    <div class="mm-table-kpi-value">Active ✓ <span class="mm-table-kpi-sub">Event Reservations</span></div>
+                </div>
+            </div>
+        </div>
         <div class="row">
         <div class="col-xs-12">
             <div class="clearfix">

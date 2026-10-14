@@ -2,10 +2,6 @@
 
 @section('title', 'Assign Booking')
 
-@section('page-header')
-    <i class="fa fa-edit"></i> Assign Booking
-@endsection
-
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -67,35 +63,24 @@
 
 
 @section('content')
+    @php
+        $date = date('Y-m-d');
+        $date1 = str_replace('-', '/', $date);
+        $tomorrow = date('Y-m-d', strtotime($date1 . '+1 days'));
+    @endphp
 
-    <div class="row">
+    <x-mm.styles />
+    <x-mm.page class="mm-booking-form" title="Assign Booking">
+        <x-slot name="actions">
+            <a class="mm-button mm-button-secondary" href="{{ route('booking.index') }}">
+                <i class="ace-icon fa fa-list-alt"></i> Booking List
+            </a>
+        </x-slot>
 
-        @php
-            $date = date('Y-m-d');
-            $date1 = str_replace('-', '/', $date);
-            $tomorrow = date('Y-m-d', strtotime($date1 . '+1 days'));
+        <!-- Include Alert Message -->
+        <x-alert-message />
 
-        @endphp
-
-        <div class="col-sm-12">
-            <div class="widget-box">
-                <div class="widget-header">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
-
-                    <span class="widget-toolbar">
-                        <a href="{{ route('booking.index') }}">
-                            <i class="ace-icon fa fa-list-alt"></i> Booking List
-                        </a>
-                    </span>
-
-                </div>
-
-                <div class="widget-body">
-                    <div class="widget-main" style="padding-bottom: 44px;">
-
-                        <!-- Include Alert Message -->
-                        <x-alert-message />
-
+        <x-mm.panel>
                         @include('booking._inc._booking-context', ['booking' => $booking])
 
 
@@ -293,14 +278,8 @@
                             </button>
 
                         </div>
-
-                    </div>
-                </div>
-            </div>
-
-
-        </div>
-    </div>
+        </x-mm.panel>
+    </x-mm.page>
     @include('partials/modal/edit_guest_modal')
 
 @endsection

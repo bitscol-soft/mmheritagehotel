@@ -3,21 +3,6 @@
 <!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css"><link rel="stylesheet" href="/assets/css/chosen.min.css" />
 <link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css" />
 <link rel="stylesheet" href="/assets/custom_css/chosen-required.css" />
-<style>
-    td {
-        padding-bottom: 3px !important;
-        padding-top: 3px !important;
-    }
-
-    table {
-        counter-reset: section;
-    }
-
-    .count:before {
-        counter-increment: section;
-        content: counter(section);
-    }
-</style>
 <!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
 <section class="mm-ui mm-acc mm-rst mm-rst-inv mm-rst-form">
     <div class="tw-space-y-4 tw-py-2">
@@ -26,14 +11,32 @@
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Edit Journal Voucher</h1>
                 <p class="tw-m-0 tw-text-sm tw-text-muted">Update the journal voucher.</p>            </div>
             <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button" href="http://localhost/acc/contra/index"><i class="fa fa-list"></i> List</a></div>        </header>
+        <div class="mm-table-kpi-grid mm-no-print" style="margin-bottom: 14px;">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-label">Voucher Mode</span>
+                <div class="mm-table-kpi-value">Edit Journal <span class="mm-table-kpi-badge">Double-Entry</span></div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-label">Voucher Date</span>
+                <div class="mm-table-kpi-value">2026-10-01 <span class="mm-table-kpi-badge">Draft</span></div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-label">Total Debit</span>
+                <div class="mm-table-kpi-value">&#2547; 500.00 <span class="mm-table-kpi-badge is-emerald">Dr Side</span></div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-label">Total Credit</span>
+                <div class="mm-table-kpi-value">&#2547; 500.00 <span class="mm-table-kpi-badge is-emerald">Cr Balanced</span></div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><!-- INPUTS -->
         <form action="http://localhost/acc/vouchers/update/4" method="post" enctype="multipart/form-data">
             <input type="hidden" name="_token" value="fixture-csrf-token">            <input type="hidden" name="_method" value="PUT">            <input type="hidden" name="voucher_type" value="Journal">
             <div class="row">
                 <div class="col-sm-12 px-4">
 
-                    <div class="row">
-                        <div class="col-md-9" style="padding-left: 0px;">
+                    <div class="row mm-voucher-meta">
+                        <div class="col-md-9">
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-xs-4 col-sm-12">
@@ -48,7 +51,7 @@
                             </div>
                         </div>
 
-                        <div class="col-md-3" style="padding-right: 0px;">
+                        <div class="col-md-3">
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col-xs-4 col-sm-12">
@@ -137,37 +140,28 @@
                                 </table></div>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="input-group " style="width: 100%!important; float: left; ">
+                    <div class="row mm-voucher-footer">
+                        <div class="input-group">
                             <label class="input-group-addon">Narration/Description</label>
                             <input type="text" required class="form-control" name="description" value="Rent &lt;b&gt;paid&lt;/b&gt;" placeholder="Narration / Description">
 
                                                     </div>
-                    </div>
-                    <div class="row mt-2">
-                        <div class="col-xs-12 col-sm-7" style="padding-left: 0px;">
+
+                        <div class="mm-voucher-actions">
                             <label class="ace-file-input ace-file-multiple">
                                 <input type="file" name="attachment" id="footer">
                                 <a class="remove" href="#"><i class=" ace-icon fa fa-times"></i></a>
                             </label>
-                        </div>
 
-                        <div class="col-md-3">
-                            <div class="form-group">
-                            <div class="col-xs-12 col-sm-12">
-                                                                        <label>No file uploaded!<label>
-                                                                    </div>
-                            </div>
-                        </div>
-                        <div class="col-md-2" style="padding-right: 0px;">
-                            <div class="form-group">
-                                <div class="pull-right mt-5">
-                                    <button type="submit" class="btn btn-sm btn-success save-btn">
-                                        <i class="fa fa fa-save"></i>
-                                        Update
-                                    </button>
-                                </div>
+                            <div>
+                                                                <label>No file uploaded!</label>
+                                                            </div>
 
+                            <div>
+                                <button type="submit" class="btn btn-sm btn-success save-btn">
+                                    <i class="fa fa fa-save"></i>
+                                    Update
+                                </button>
                             </div>
                         </div>
                     </div>

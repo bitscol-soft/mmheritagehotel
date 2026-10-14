@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title','Customer Ledger')
-@section('page-header')
-<i class="fa fa-info-circle"></i> Customer Ledger
-@stop
 @push('style')
 <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
 <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -27,7 +24,6 @@
     }
 </style>
 @endpush
-
 
 @section('content')
 
@@ -117,8 +113,6 @@
                                 $totalbalance = 0;
                             @endphp
 
-
-
                             @foreach($transactions as $transaction)
                                 @php
 
@@ -139,8 +133,6 @@
                             @endforeach
                         </tbody>
 
-
-
                         <tfoot>
                             @if(request('account_id'))
                                 <tr>
@@ -152,8 +144,6 @@
                         </tfoot>
                     </table>
                 </x-mm.table-scroll>
-
-
 
                 @include('partials._paginate', ['data' => $transactions])
 

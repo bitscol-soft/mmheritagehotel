@@ -1,4 +1,4 @@
-<div id="account-type-modal" class="modal">
+<div id="account-type-modal" class="modal fade mm-drawer" data-mm-drawer="true">
 
     <div class="modal-dialog">
 

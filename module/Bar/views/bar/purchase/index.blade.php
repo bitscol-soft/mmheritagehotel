@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title', 'Purchases')
-@section('page-header')
-    <i class="fa fa-info-circle"></i> Purchases
-@stop
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
@@ -15,7 +12,6 @@
 
     </style>
 @stop
-
 
 @section('content')
 
@@ -93,13 +89,11 @@
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" /> --}}
 
-
     <script type="text/javascript">
         function exportData(url) {
             $('.exportForm').attr('action', url).submit();
         }
     </script>
-
 
     <!--  Select Box Search-->
     <script type="text/javascript">
@@ -155,7 +149,6 @@
 
         }
     </script>
-
 
     <script type="text/javascript">
         // date picker

@@ -2,12 +2,6 @@
 
 @section('title', 'Supplier Ledger')
 
-@section('page-header')
-    <i class="fa fa-info-circle"></i> Supplier Ledger
-@stop
-
-
-
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -33,7 +27,6 @@
 
     </style>
 @endpush
-
 
 @section('content')
 
@@ -119,10 +112,8 @@
 
                             @if (request('account_id'))
 
-
                                 @php
                                     if ($selected_account->accountGroup != null && $selected_account->accountGroup->balance_type == 'Debit') {
-
 
                                         $balance = ($debit_balance + $paginate_debit_balance) - ($credit_balance + $paginate_credit_balance);
 
@@ -190,7 +181,6 @@
                 </x-mm.table-scroll>
 
                 @include('partials._paginate', ['data' => $transactions])
-
 
                 <!-- EXCEL BUTTON -->
                 <a class="hidden-print" href="{{ url()->current() }}?export_type=excel&{{ request()->getQueryString() }}" target="_blank" style="margin: 18px 0 0 20px; display: inline-block;">

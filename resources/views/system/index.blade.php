@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title', 'System Setting')
-@section('page-header')
-    <i class="fa fa-empire"></i> System Setting
-@stop
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-colorpicker.min.css') }}" />
@@ -21,21 +18,24 @@
 
 
 @section('content')
+    <x-mm.styles />
+    <x-mm.page title="System Setting" description="Global hotel, POS, booking, and appearance configuration.">
+        <x-slot name="actions">
+            <button type="submit" form="systemSettingForm" class="btn btn-sm btn-primary">
+                <i class="fa fa-check"></i> Save
+            </button>
+        </x-slot>
 
+        <x-mm.panel class="tw-p-4">
+            <x-alert-message />
 
-    <x-alert-message />
+            <form id="systemSettingForm" class="form-horizontal" action="{{ route('system-setting.store') }}" method="post">
+                @csrf
 
-
-    <div class="row mt-5">
-        <form class="form-horizontal" action="{{ route('system-setting.store') }}" method="post">
-            @csrf
-
-            <div class="col-sm-8 col-sm-offset-2">
-                <table class="table table-bordered">
-                    <tr>
-                        <th class="bg-dark">Title</th>
-                        <th class="bg-dark">Value</th>
-                    </tr>
+                <x-mm.data-table :columns="[
+                    ['label' => 'Title', 'width' => '45%'],
+                    ['label' => 'Value'],
+                ]" table-class="table table-bordered table-striped" label="System Setting">
 
                     @foreach ($systemSettings as $key => $systemSetting)
                         <tr>
@@ -384,18 +384,18 @@
                             </td>
                         </tr>
                     @endforeach
-                    <tr>
-                        <th class="bg-dark text-center" colspan="2">
-                            <button class="btn-sm btn-outline-success"><i class="fa fa-check"></i> Save</button>
-                        </th>
-                    </tr>
 
-                </table>
-            </div>
-        </form>
-    </div>
-
-
+                    <x-slot name="footer">
+                        <tr>
+                            <th class="bg-dark text-center" colspan="2">
+                                <button class="btn-sm btn-outline-success"><i class="fa fa-check"></i> Save</button>
+                            </th>
+                        </tr>
+                    </x-slot>
+                </x-mm.data-table>
+            </form>
+        </x-mm.panel>
+    </x-mm.page>
 @endsection
 
 

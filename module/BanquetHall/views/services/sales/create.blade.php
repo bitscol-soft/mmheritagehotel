@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title', 'Add New Hotel Service Sale')
-@section('page-header')
-    <i class="fa fa-plus-circle"></i> New Hotel Service Sale
-@stop
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
@@ -18,24 +15,17 @@
 
 
 @section('content')
-    <div class="row">
+    <x-mm.styles />
+    <x-mm.page class="mm-sale-form" title="New Hotel Service Sale">
+        <x-slot name="actions">
+            @if (hasPermission('service.view', $slugs))
+                <a href="{{ route('hotelservice.service-sales.index') }}" class="btn btn-sm btn-default">
+                    <i class="fa fa-list-alt"></i> Hotel Service Sale
+                </a>
+            @endif
+        </x-slot>
 
-
-        <div class="col-sm-12">
-            <div class="widget-box">
-                <div class="widget-header">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
-                    @if (hasPermission('service.view', $slugs))
-                        <span class="widget-toolbar">
-                            <a href="{{ route('hotelservice.service-sales.index') }}"><i class="fa fa-list-alt"></i>
-                                Hotel Service Sale
-                            </a>
-                        </span>
-                    @endif
-
-                </div>
-                <div class="widget-body">
-                    <div class="widget-main">
+        <x-mm.panel>
                         @include('partials._alert_message')
 
                         <div class="row">
@@ -236,13 +226,8 @@
                                 </form>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-    </div>
+        </x-mm.panel>
+    </x-mm.page>
 
 @endsection
 

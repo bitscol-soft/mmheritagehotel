@@ -28,8 +28,44 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Account Payable</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Balances payable by account.</p>            </div>
-            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button" href="http://localhost/acc/report/account-payables?print=print&company_id=&account_id="><i class="fa fa-print"></i> Print</a></div>        </header>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Supplier &amp; trade vendor balances payable by account.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/acc-account-receivables"><i class="fa fa-briefcase"></i> Account Receivable</a>
+                <a class="mm-button mm-button-secondary" href="/preview/acc-supplier-ledger"><i class="fa fa-book"></i> Supplier Ledger</a>
+                <button type="button" class="mm-button mm-button-secondary" data-toggle="modal" data-target="#acc-ap-drawer"><i class="fa fa-columns"></i> Vendor Aging Drawer</button>
+                <a class="mm-button" href="http://localhost/acc/report/account-payables?print=print&company_id=&account_id="><i class="fa fa-print"></i> Print</a>
+            </div>        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Account payable summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-truck"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Total Payables</span>
+                    <div class="mm-table-kpi-value">৳ 340,150 <span class="mm-table-kpi-sub">3 Active Vendors</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-calendar-check-o"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Due Within 7 Days</span>
+                    <div class="mm-table-kpi-value">৳ 115,150 <span class="mm-table-kpi-sub">Scheduled Payout</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">30-Day Credit Terms</span>
+                    <div class="mm-table-kpi-value">৳ 225,000 <span class="mm-table-kpi-sub">F&amp;B &amp; Linen Supply</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-money"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Paid MTD</span>
+                    <div class="mm-table-kpi-value">৳ 490,000 <span class="mm-table-kpi-sub">18 Vouchers</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 mm-report-filter"><form class="mm-setup-filter mm-report-form" action="" method="get">
 
                 <div class="input-group">
@@ -80,28 +116,68 @@
                         </thead>
 
                         <tbody>
-                                                            <tr>
-                                    <td class="text-center">1</td>
-                                    <td>Karim &lt;i&gt;Traders&lt;/i&gt;</td>
-                                    <td class="text-right pr-1">
-                                                                                    <a target="_blank" href="http://localhost/acc/report/account-ledger?company_id=&account_id=1&from=2010-01-01">
-                                                150.00
-                                            </a>
-                                                                            </td>
-                                </tr>
-                                                    </tbody>
+                            <tr>
+                                <td class="text-center">1</td>
+                                <td>Karim &lt;i&gt;Traders&lt;/i&gt; <span class="mm-badge mm-badge-partial" style="margin-left:8px">Due in 5 Days</span></td>
+                                <td class="text-right pr-1">
+                                    <div class="mm-share-cell" style="justify-content:flex-end"><a target="_blank" href="http://localhost/acc/report/account-ledger?company_id=&account_id=1&from=2010-01-01"><strong>150.00</strong></a><span class="mm-share-bar"><span class="mm-share-fill is-amber" style="width:12%"></span></span></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">2</td>
+                                <td>Bengal Fresh Agro &amp; Seafood Suppliers <span class="mm-badge mm-badge-partial" style="margin-left:8px">Due in 7 Days</span></td>
+                                <td class="text-right pr-1">
+                                    <div class="mm-share-cell" style="justify-content:flex-end"><a href="/preview/acc-supplier-ledger"><strong>115,000.00</strong></a><span class="mm-share-bar"><span class="mm-share-fill is-amber" style="width:33.8%"></span></span></div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">3</td>
+                                <td>Heritage Hospitality Linen &amp; Amenities Ltd. <span class="mm-badge mm-badge-paid" style="margin-left:8px">Net 30</span></td>
+                                <td class="text-right pr-1">
+                                    <div class="mm-share-cell" style="justify-content:flex-end"><a href="/preview/acc-supplier-ledger"><strong>225,000.00</strong></a><span class="mm-share-bar"><span class="mm-share-fill is-emerald" style="width:66.1%"></span></span></div>
+                                </td>
+                            </tr>
+                        </tbody>
 
-                                                    <tfoot>
-                                <tr style="font-size: 18px">
-                                    <th class="text-right" colspan="2">
-                                        <strong>Total=</strong>
-                                    </th>
-                                    <th class="text-right pr-1">
-                                        <strong>0.00</strong>
-                                    </th>
-                                </tr>
-                            </tfoot>
-                                            </table></div>
+                        <tfoot>
+                            <tr class="mm-fin-total-row">
+                                <th class="text-right" colspan="2">
+                                    <strong>Total=</strong>
+                                </th>
+                                <th class="text-right pr-1">
+                                    <strong>340,150.00</strong>
+                                </th>
+                            </tr>
+                        </tfoot>
+                    </table></div>
+
+                <!-- Slide-Over App Drawer: Supplier Payable Aging -->
+                <div class="modal fade mm-drawer mm-drawer" data-mm-drawer="true" id="acc-ap-drawer" tabindex="-1" role="dialog" aria-labelledby="acc-ap-drawer-title">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="acc-ap-drawer-title"><i class="fa fa-truck"></i> Supplier Payable Schedule &amp; Settlement</h4>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <p class="tw-text-sm tw-text-muted" style="margin-top:0">Scheduled supplier disbursements approved against GRN &amp; Purchase Orders.</p>
+                                <div class="mm-panel tw-p-4" style="margin-bottom:12px">
+                                    <strong>1. Bengal Fresh Agro &amp; Seafood Suppliers</strong> — <code>৳ 115,000.00</code> (GRN Verified · Due 18 Oct 2026)
+                                </div>
+                                <div class="mm-panel tw-p-4" style="margin-bottom:12px">
+                                    <strong>2. Heritage Hospitality Linen &amp; Amenities Ltd.</strong> — <code>৳ 225,000.00</code> (Net 30 · Due 30 Oct 2026)
+                                </div>
+                                <div class="mm-panel tw-p-4">
+                                    <strong>3. Karim Traders</strong> — <code>৳ 150.00</code> (Approved for Petty Cash Settlement)
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <a href="/preview/acc-form-payments-create" class="mm-button mm-button-secondary"><i class="fa fa-plus"></i> Payment Voucher</a>
+                                <button type="button" class="mm-button" data-dismiss="modal"><i class="fa fa-check"></i> Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 
 

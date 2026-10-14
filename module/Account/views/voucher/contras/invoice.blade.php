@@ -98,6 +98,9 @@
 @endpush
 
 @section('content')
+    <x-mm.styles />
+    <x-mm.print-sheet title="Contra Voucher Invoice">
+        <x-mm.panel class="tw-p-4">
     <div class="row heading">
         <div class="col-xs-4">
             @if(file_exists('uploads/company/'. optional($voucher->company)->logo))
@@ -210,4 +213,6 @@
             Received By
         </div>
     </div>
+        </x-mm.panel>
+    </x-mm.print-sheet>
 @endsection

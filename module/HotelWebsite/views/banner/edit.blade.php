@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title','Edit Banner')
-@section('page-header')
-    <i class="fa fa-edit"></i> Edit Banner
-@stop
 @push('style')
 <link rel="stylesheet" href="{{ asset('assets/css/dropzone.min.css') }}" />
 <style>
@@ -28,7 +25,6 @@
             @method('PUT')
 
             <x-alert-message />
-
 
             <div class="row">
                 <div class="col-md-6">

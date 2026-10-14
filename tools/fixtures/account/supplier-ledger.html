@@ -29,9 +29,43 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Supplier Ledger</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Supplier transactions and balance.</p>            </div>
-            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button mm-button-secondary" href="http://localhost/acc/report/supplier-ledger"><i class="fa fa-refresh"></i> Refresh Data</a>
-        <a class="mm-button" href="/acc/report/supplier-ledger&print=print" style="color: maroon !important;"><i class="fa fa-print"></i> Print Data</a></div>        </header>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Supplier purchase bills, payments and running balance.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/acc-account-payables"><i class="fa fa-truck"></i> Payables</a>
+                <a class="mm-button mm-button-secondary" href="http://localhost/acc/report/supplier-ledger"><i class="fa fa-refresh"></i> Refresh Data</a>
+                <a class="mm-button" href="/acc/report/supplier-ledger&print=print"><i class="fa fa-print"></i> Print Data</a>
+            </div>        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Supplier ledger summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-truck"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Supplier Account</span>
+                    <div class="mm-table-kpi-value">Karim Traders <span class="mm-table-kpi-sub">Approved Vendor</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-arrow-up"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Payments Made (Dr.)</span>
+                    <div class="mm-table-kpi-value">৳ 150.00 <span class="mm-table-kpi-sub">Settled Vouchers</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-arrow-down"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Purchase Bills (Cr.)</span>
+                    <div class="mm-table-kpi-value">৳ 90.00 <span class="mm-table-kpi-sub">GRN Invoices</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Closing Balance</span>
+                    <div class="mm-table-kpi-value">৳ 120.00 <span class="mm-table-kpi-sub">Reconciled</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 mm-report-filter"><form class="mm-setup-filter mm-report-form" action="" method="get">
 
                 <div class="input-group">
@@ -95,45 +129,37 @@
                         </thead>
 
                         <tbody>
-
-                                                            <tr>
-                                    <td colspan="7" style="font-size: 16px" class="text-center text-danger">NO RECORDS
-                                        FOUND!</td>
-                                </tr>
-                            
-                            
-                                                                                            <tr>
-                                    <td class="text-center">1</td>
-                                    <td class="text-center">2026-10-01</td>
-                                    <td class="text-center">V-0004</td>
-                                    <td class="pl-3">Rent &lt;b&gt;paid&lt;/b&gt;</td>
-                                    <td class="text-right pr-1">150.00</td>
-                                    <td class="text-right pr-1">0.00</td>
-                                    <td class="text-right pr-1">210.00</td>
-                                </tr>
-                                                                                            <tr>
-                                    <td class="text-center">2</td>
-                                    <td class="text-center">2026-10-01</td>
-                                    <td class="text-center">V-0005</td>
-                                    <td class="pl-3">Rent &lt;b&gt;paid&lt;/b&gt;</td>
-                                    <td class="text-right pr-1">0.00</td>
-                                    <td class="text-right pr-1">90.00</td>
-                                    <td class="text-right pr-1">120.00</td>
-                                </tr>
-                            
                             <tr>
+                                <td class="text-center">1</td>
+                                <td class="text-center">2026-10-01</td>
+                                <td class="text-center"><code>V-0004</code></td>
+                                <td class="pl-3">Rent &lt;b&gt;paid&lt;/b&gt;</td>
+                                <td class="text-right pr-1">150.00</td>
+                                <td class="text-right pr-1">0.00</td>
+                                <td class="text-right pr-1"><strong>210.00</strong></td>
+                            </tr>
+                            <tr>
+                                <td class="text-center">2</td>
+                                <td class="text-center">2026-10-01</td>
+                                <td class="text-center"><code>V-0005</code></td>
+                                <td class="pl-3">Rent &lt;b&gt;paid&lt;/b&gt;</td>
+                                <td class="text-right pr-1">0.00</td>
+                                <td class="text-right pr-1">90.00</td>
+                                <td class="text-right pr-1"><strong>120.00</strong></td>
+                            </tr>
+                            <tr class="mm-fin-section-row">
                                 <th class="text-center" colspan="4">Total In Page</th>
                                 <th class="text-right pr-1">150.00</th>
                                 <th class="text-right pr-1">90.00</th>
                                 <th></th>
                             </tr>
-                                                            <tr style="font-size: 18px">
-                                    <th class="text-center" colspan="4">Grand Total</th>
-                                    <th class="text-right pr-1">150.00</th>
-                                    <th class="text-right pr-1">90.00</th>
-                                    <th></th>
-                                </tr>
-                                                    </tbody>
+                            <tr class="mm-fin-total-row">
+                                <th class="text-center" colspan="4">Grand Total</th>
+                                <th class="text-right pr-1">150.00</th>
+                                <th class="text-right pr-1">90.00</th>
+                                <th class="text-right pr-1">120.00</th>
+                            </tr>
+                        </tbody>
                     </table></div>
 
                 

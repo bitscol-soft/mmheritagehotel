@@ -15,8 +15,43 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Cash flow</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Cash received and paid out for the selected invoice and dates.</p>            </div>
-                    </header>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Restaurant cash received and paid out for the selected invoice and dates.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/rst-sales-list"><i class="fa fa-cutlery"></i> Sale List</a>
+                <a class="mm-button mm-button-secondary" href="/preview/rst-report-today"><i class="fa fa-calendar-check-o"></i> Today&#039;s Activities</a>
+            </div>
+        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Restaurant cash flow summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-file-text-o"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Tracked Invoice</span>
+                    <div class="mm-table-kpi-value">RST-0101 <span class="mm-table-kpi-sub">POS Register</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-arrow-up"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Cash Inflow</span>
+                    <div class="mm-table-kpi-value">৳ 1,250.00 <span class="mm-table-kpi-sub">Settled Orders</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-credit-card"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Payment Modes</span>
+                    <div class="mm-table-kpi-value">Cash &amp; Card <span class="mm-table-kpi-sub">Room Folio Sync</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Shift Till Status</span>
+                    <div class="mm-table-kpi-value">Balanced ✓ <span class="mm-table-kpi-sub">Night Audit Ready</span></div>
+                </div>
+            </div>
+        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 mm-report-filter"><form class="mm-setup-filter mm-report-form">
 
             <div class="input-group">
@@ -47,7 +82,7 @@
                 </a>
             </div>
         </form></div>
-    <div class="mm-panel tw-p-4 sm:tw-p-6"><div class="mm-table-scroll" role="region" aria-label="Cash flow" tabindex="0"><table class="table table-striped table-bordered"><thead><tr><th>SL</th><th>Invoice</th><th>Total</th></tr></thead><tbody><tr><td>1</td><td>RST-0101</td><td>1,250.00</td></tr></tbody></table></div>
+    <div class="mm-panel tw-p-4 sm:tw-p-6"><div class="mm-table-scroll" role="region" aria-label="Cash flow" tabindex="0"><table class="table table-striped table-bordered"><thead><tr><th>SL</th><th>Invoice</th><th>Payment Channel</th><th>Share</th><th class="text-right">Total</th></tr></thead><tbody><tr><td>1</td><td>RST-0101</td><td><span class="mm-badge mm-badge-paid">Cash &amp; Card POS</span></td><td><div class="mm-share-cell"><span>100%</span><span class="mm-share-bar"><span class="mm-share-fill is-emerald" style="width:100%"></span></span></div></td><td class="text-right">1,250.00</td></tr></tbody></table></div>
 
         <span class="pull-right"><ul class="pagination"><li class=" disabled"><a class="" href="#">← First</a></li><li class="active"><span>1</span></li><li><a href="#">2</a></li><li><a class="" href="#">Last →</a></li></ul></span>
 

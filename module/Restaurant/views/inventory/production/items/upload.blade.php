@@ -1,32 +1,20 @@
 @extends('layouts.master')
 @section('title','Upload Items')
-@section('page-header')
-    <i class="fa fa-upload"></i> Upload Items
-@stop
 @section('css')
 
 @stop
 
 
 @section('content')
+    <x-mm.styles />
+    <x-mm.page class="mm-crud-form mm-rst" title="Upload Items">
+        <x-slot name="actions">
+            <a href="{{ route('items.index') }}" class="btn btn-sm btn-default">
+                <i class="ace-icon fa fa-list"></i> Item List
+            </a>
+        </x-slot>
 
-
-    <div class="row">
-
-        <div class="col-sm-8 col-sm-offset-2">
-            <div class="widget-box">
-                <div class="widget-header">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
-
-                    <span class="widget-toolbar no-border">
-                        <a href="{{ route('items.index') }}">
-                            <i class="ace-icon fa fa-list"></i> Item List
-                        </a>
-                    </span>
-                </div>
-
-                <div class="widget-body">
-                    <div class="widget-main">
+        <x-mm.panel>
                         <form class="form-horizontal" role="form" action="" method="post" enctype="multipart/form-data">
                             @csrf
 
@@ -58,13 +46,8 @@
                             </div>
 
                         </form>
-                    </div>
-                </div>
-            </div>
-
-
-        </div>
-    </div>
+        </x-mm.panel>
+    </x-mm.page>
 
 
 @endsection

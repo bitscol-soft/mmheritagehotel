@@ -2,34 +2,29 @@
 
 @section('title','Notice Create')
 
-@section('page-header')
-    <i class="fa fa-list"></i> Notice Create
-@stop
-
 @section('css')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/trix/1.2.1/trix.css" />
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/custom_css/chosen-required.css') }}" />
-
 @endsection
 
-
 @section('content')
-    <form class="form-horizontal supplier-pi-form" action="{{ route('notices.store') }}" method="post" style="width: 98%; margin-left: 1%;">
-        @csrf
-        <div style="margin-bottom: 20px !important; margin-top: 20px !important;">
-            <!-- panel heading -->
-            <div class="row panel-head" style="height: 30px; margin: 0 0 10px 0 !important;">
-                <span style="line-height: 30px; font-size: 22px; color: #1B6AAA !important; text-decoration: underline" class="text-primary;">Notice Create</span>
-            </div>
+    <x-mm.styles />
+    <x-mm.page title="Notice Create" description="Create and publish a company notice.">
+        <x-slot name="actions">
+            <a href="{{ route('notices.index') }}" class="btn btn-sm btn-success">
+                <i class="fa fa-list"></i> List
+            </a>
+        </x-slot>
 
-            @include('partials._alert_message')
+        <x-mm.panel class="tw-p-4">
+            <form class="form-horizontal supplier-pi-form" action="{{ route('notices.store') }}" method="post">
+                @csrf
+                @include('partials._alert_message')
 
-            <div class="row">
-
-                <div class="col-sm-12">
-                    <form class="form-horizontal" action="" method="get">
+                <div class="row">
+                    <div class="col-sm-12">
                         <table class="table table-bordered">
                             <tr>
                                 <td>Company <strong class="text-danger">*</strong></td>
@@ -55,38 +50,35 @@
                                     </select>
                                 </td>
                                 <td width="160px">
-                                    <input type="text" name="publish_at" required class="form-control input-sm date-picker"  autocomplete="off" value="{{ old('publish_at') ?? fdate(now(), 'Y-m-d') }}">
+                                    <input type="text" name="publish_at" required class="form-control input-sm date-picker" autocomplete="off" value="{{ old('publish_at') ?? fdate(now(), 'Y-m-d') }}">
                                 </td>
                                 <td width="160px">
-                                    <input type="text" name="expire_at" required class="form-control input-sm date-picker"  autocomplete="off" value="{{ old('expire_at') }}">
+                                    <input type="text" name="expire_at" required class="form-control input-sm date-picker" autocomplete="off" value="{{ old('expire_at') }}">
                                 </td>
                             </tr>
                         </table>
-                    </form>
-                </div>
+                    </div>
 
-
-                <div class="col-sm-12">
-                    <label for="">Title</label>
-                    <input type="text" name="title" class="form-control" value="{{ old('title') }}" required>
+                    <div class="col-sm-12">
+                        <label for="title">Title</label>
+                        <input id="title" type="text" name="title" class="form-control" value="{{ old('title') }}" required>
+                    </div>
+                    <div class="col-sm-12 mt-2">
+                        <label for="x">Description</label>
+                        <input id="x" type="hidden" name="description" required>
+                        <trix-editor input="x" style="height: 250px"></trix-editor>
+                    </div>
+                    <div class="col-sm-12 mt-1">
+                        <button type="submit" class="btn btn-sm btn-info pull-right ml-1"><i class="fa fa-file-archive-o"></i> Save</button>
+                        <a href="{{ route('notices.index') }}" class="btn btn-sm btn-success pull-right"><i class="fa fa-list"></i> List</a>
+                    </div>
                 </div>
-                <div class="col-sm-12 mt-2">
-                    <label for="">Description</label>
-                    <input id="x" type="hidden" name="description" required>
-                    <trix-editor input="x" style="height: 250px"></trix-editor>
-                </div>
-                <div class="col-sm-12 mt-1">
-                    <button type="submit" class="btn btn-sm btn-info pull-right ml-1"><i class="fa fa-file-archive-o"></i> Save</button>
-                    <a href="{{ route('notices.index') }}" class="btn btn-sm btn-success pull-right"><i class="fa fa-list"></i> List</a>
-                </div>
-
-            </div>
-        </div>
-    </form>
+            </form>
+        </x-mm.panel>
+    </x-mm.page>
 @endsection
 
 @section('js')
-    
     <script src="{{ asset('assets/js/chosen.jquery.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap-datepicker.min.js') }}"></script>
 
@@ -98,5 +90,4 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/trix/1.2.1/trix-core.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/trix/1.2.1/trix.js"></script>
-
 @endsection

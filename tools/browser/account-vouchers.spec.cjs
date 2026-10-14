@@ -27,7 +27,7 @@ const screens = {
     'contras-show': 'Contra Voucher Details',
     'contras': 'Contra Vouchers',
     'form-contras-create': 'Create Contra Voucher',
-    'form-contras-edit': 'Create Contra Voucher',
+    'form-contras-edit': 'Edit Contra Voucher',
     'form-fund-transfer-create': 'Fund Transfer Create',
     'form-fund-transfer-edit': 'Fund Transfer Edit',
     'form-journals-create': 'Create Journal Voucher',

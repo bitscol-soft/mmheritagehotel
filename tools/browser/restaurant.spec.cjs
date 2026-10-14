@@ -51,6 +51,7 @@ const screens = {
     'purchase-show': 'Purchase requisition details',
     'purchase-approve': 'Purchase approve',
     'purchase-create': 'Purchase create',
+    'pos-create': 'Restaurant POS',
 };
 
 for (const [name, title] of Object.entries(screens)) {
@@ -270,3 +271,18 @@ test('purchase create puts the lines and totals side by side on desktop and stac
     const narrow = await page.evaluate(() => ({ lines: document.querySelector('#products').closest('table').getBoundingClientRect(), total: document.querySelector('[name="subtotal"]').getBoundingClientRect() }));
     expect(narrow.total.top).toBeGreaterThan(narrow.lines.top);
 });
+
+test('restaurant POS (sales-v2) renders stepper, invoice sidebar, and order form with preselected table', async ({ page }) => {
+    await open(page, 'pos-create');
+    await expect(page.locator('.mm-stepper .mm-step')).toHaveCount(3);
+    await expect(page.locator('form#sale-form[action$="/rst/sales-v2"]')).toHaveCount(1);
+    await expect(page.locator('#invoice_id')).toHaveValue('R-0109');
+    await expect(page.locator('#hotel_table_id')).toHaveValue('1');
+    for (const name of ['hotel_guest_id', 'room_id', 'hotel_table_id', 'waiter_no', 'invoice_no', 'service_charge', 'subtotal', 'discount', 'payable_amount', 'vat', 'paid_amount', 'print_mode']) {
+        await expect(page.locator(`form#sale-form [name="${name}"]`).first()).toHaveCount(1);
+    }
+    await expect(page.locator('button.save-only, button.save-sale')).toHaveCount(2);
+    const wide = await page.evaluate(() => ({ sidebar: document.querySelector('.mm-pos-sidebar').getBoundingClientRect(), form: document.querySelector('#sale-form-data').getBoundingClientRect() }));
+    expect(wide.form.left).toBeGreaterThan(wide.sidebar.right - 2);
+});
+

@@ -2,17 +2,12 @@
 
 @section('title', 'Today Check In')
 
-@section('page-header')
-    <i class="fa fa-plus-circle"></i> Today Check In
-@stop
-
 @section('content')
 <x-mm.styles />
 <x-mm.page class="mm-report" title="Today check in" description="Guests checking in on the selected date.">
     <x-alert-message />
     <x-mm.panel>
         <x-mm.table-scroll label="Today check in">
-
 
             <input type="hidden" name="date" value="{{ $date }}">
             <div class="text-center">
@@ -88,7 +83,6 @@
                 </tbody>
 
             </table>
-
 
         </x-mm.table-scroll>
     </x-mm.panel>

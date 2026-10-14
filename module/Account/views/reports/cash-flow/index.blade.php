@@ -1,13 +1,6 @@
 @extends('layouts.master')
 
-
 @section('title', 'Cash Flow')
-
-
-@section('page-header')
-    <i class="fa fa-info-circle"></i> Cash Flow Report
-@stop
-
 
 @push('style')
 
@@ -24,7 +17,6 @@
         }
     </style>
 @endpush
-
 
 @section('content')
 @php
@@ -61,12 +53,6 @@
     </x-mm.panel>
     <x-mm.panel class="tw-p-4">
         @include('partials._alert_message')
-
-
-
-
-
-
 
         <!-- LIST -->
         <div class="row" style="width: 100%; margin: 0 !important;">
@@ -146,18 +132,6 @@
                                         </td>
                                     </tr>
 
-
-
-
-
-
-
-
-
-
-
-
-
                                     <tr>
                                         <td>2</td>
                                         <td>
@@ -220,7 +194,6 @@
                             </table>
                         </x-mm.table-scroll>
 
-
                         <!-- EXCEL BUTTON -->
                         <a class="hidden-print" href="{{ url()->current() }}?export_type=excel&{{ request()->getQueryString() }}" target="_blank" style="margin: 18px 0 0 20px; display: inline-block;">
                             <img src="{{ asset('assets/images/export-icons/excel-icon.png') }}">
@@ -238,14 +211,11 @@
 
 @section('js')
 
-
     <script src="{{ asset('assets/js/chosen.jquery.min.js') }}"></script>
     <script src="{{ asset('assets/custom_js/chosen-box.js') }}"></script>
-
 
     <script src="{{ asset('assets/js/bootstrap-datepicker.min.js') }}"></script>
     <script src="{{ asset('assets/custom_js/date-picker.js') }}"></script>
 
 @endsection
-
 

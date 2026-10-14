@@ -1,10 +1,6 @@
 @extends('layouts.master')
 @section('title', 'Booking')
 
-@section('page-header')
-    <i class="fa fa-info-circle"></i> Booking
-@stop
-
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datepicker3.min.css') }}" />
@@ -49,6 +45,11 @@
                             @csrf
             <x-alert-message />
             @include('booking._inc._booking-context', ['booking' => $booking])
+
+            <div class="mm-no-print" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 12px; padding: 8px 14px; border: 1px solid rgba(37, 99, 235, 0.25); border-radius: 10px; background: linear-gradient(90deg, #f8fafc 0%, #eff6ff 100%);">
+                <strong style="font-size: 12.5px; letter-spacing: 0.04em; text-transform: uppercase; color: #1e3a8a;"><i class="fa fa-file-text-o" aria-hidden="true"></i> Booking Summary · Verification Codes</strong>
+                @include('partials.print-codes', ['code' => $booking->booking_number, 'label' => 'Booking Summary', 'compact' => true])
+            </div>
 
             <div class="mm-co-grid">
                 <section class="mm-panel mm-co-card" aria-labelledby="mm-co-guest">
@@ -347,7 +348,6 @@
         const room_service_amount = `{{ vatSetting()->room_service_charge }}`
         const hotel_vat_percentage = `{{ vatSetting()->hotel_vat }}`
 
-
         $(document).on("input", ".discount", function() {
             calculateDiscount()
         });
@@ -355,7 +355,6 @@
         $(document).on("input", ".paid-amount", function() {
             calculatePayment()
         });
-
 
         $(document).on("click", "#check-full-payment", function() {
             let get_due = $('#get-due').val()
@@ -372,7 +371,6 @@
             }
 
         });
-
 
         function calculateDiscount() {
             let total_due = 0
@@ -399,9 +397,6 @@
             $('.current-due').html(total_payment);
         }
 
-
-
-
         increase = (e) => {
             let _this = $(e);
             let night = Number(_this.closest('tr').find('.night-count').val());
@@ -420,14 +415,12 @@
             calculateNightWiseAmount(e);
         }
 
-
         function calculateNightWiseAmount(e) {
             let night = Number($(e).closest('tr').find('.night-count').val())
             let amount = Number($(e).closest('tr').find('.per-night-amount').val())
             let line_wise_amount = night * amount;
             calculateAmount()
         }
-
 
         calculateAmount = (e) => {
             let grand_total_amount = 0
@@ -463,13 +456,11 @@
                 grand_total_amount += total_calc_amount
                 grand_total_due_amount += total_due_amount
 
-
                 $(this).closest('tr').find('.amount').text(per_night_amount)
                 $(this).closest('tr').find('.vat-amount').text(vat_amount.toFixed(2))
                 $(this).closest('tr').find('.service-charge').text(service_amount)
                 $(this).closest('tr').find('.total-amount').text(total_calc_amount)
                 $(this).closest('tr').find('.due-amount').text(total_due_amount)
-
 
                 //only for hidden input
                 $(this).closest('tr').find('.input-total-amount').val(total_calc_amount)

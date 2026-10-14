@@ -1,9 +1,6 @@
 
 @extends('layouts.master')
 @section('title','Edit Booking Note')
-@section('page-header')
-    <i class="fa fa-gears"></i> Edit Booking Note
-@stop
 @section('content')
 <x-mm.styles />
 <x-mm.page title="Edit booking note" description="Update the title of an existing booking note." class="mm-booking-setup mm-booking-notes">
@@ -28,7 +25,6 @@
 
                                 </div>
                             </div>
-
 
                             <div class="form-actions center" style="text-align: right !important;">
                                 <button type="submit" class=" btn-sm btn-outline-success">

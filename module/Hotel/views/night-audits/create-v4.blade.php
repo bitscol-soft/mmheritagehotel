@@ -2,10 +2,6 @@
 
 @section('title', 'Night Audit')
 
-@section('page-header')
-    <i class="fa fa-plus-circle"></i> Night Audit
-@stop
-
 
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-datetimepicker.min.css') }}">
@@ -50,28 +46,17 @@
 
 
 @section('content')
+    <x-mm.styles />
+    <x-mm.page class="mm-night-audit" title="Night Audit">
+        <x-slot name="actions">
+            <a class="mm-button mm-button-secondary" href="{{ route('night-audits.index') }}">
+                <i class="ace-icon fa fa-list-alt"></i> List
+            </a>
+        </x-slot>
 
-    <div class="row">
+        <x-alert-message />
 
-        <div class="col-sm-12">
-            <div class="widget-box">
-                <div class="widget-header">
-                    <h4 class="widget-title"> @yield('page-header')</h4>
-
-                    <span class="widget-toolbar">
-                        <a href="{{ route('night-audits.index') }}">
-                            <i class="ace-icon fa fa-list-alt"></i> List
-                        </a>
-                    </span>
-                </div>
-
-
-
-                <div class="widget-body">
-
-                    <x-alert-message />
-
-                    <div class="widget-main">
+        <x-mm.panel>
 
                         <div class="row mb-2 hidden-print">
                             <form action="" method="GET">
@@ -463,12 +448,8 @@
                             {{-- @endif --}}
 
                         @endif
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+        </x-mm.panel>
+    </x-mm.page>
 
 
 @endsection

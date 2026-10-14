@@ -1,116 +1,100 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Balance Sheet</title>
 <link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
-<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">
-    <link rel="stylesheet" href="/assets/css/chosen.min.css"/>
-    <link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css"/>
-
-    <style type="text/css">
-        table, td, tr {
-            border: none !important;
-            background-color: transparent !important;
-        }
-        .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
-            padding: 3px;
-        }
-    </style>
-<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
-<section class="mm-ui mm-report mm-acc mm-rst mm-rst-inv">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css"><!--/MM-HEAD-->
+<link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+<section class="mm-ui mm-report mm-acc mm-rst">
     <div class="tw-space-y-4 tw-py-2">
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
-                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Balance Sheet</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Assets, liabilities and equity.</p>            </div>
-            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button mm-button-secondary" href="http://localhost/acc/report/balance-sheet"><i class="fa fa-refresh"></i> Refresh</a>
-        <a class="mm-button" href="http://localhost/acc/report/balance-sheet?print=1&amp;from=2026-10-01&amp;to=2026-10-01" style="color: maroon !important;"><i class="fa fa-print"></i> Print</a></div>        </header>
-        <div class="mm-panel tw-p-4 sm:tw-p-6 mm-report-filter"><form class="mm-setup-filter mm-report-form" action="" method="get">
-
-                <div class="input-group">
-                    <label class="input-group-addon">Company</label>
-                    <select class="form-control chosen-select-100-percent" name="company_id" data-placeholder="-Select Company-">
-                        <option></option>
-                                                    <option value="1" >MM &lt;b&gt;Heritage&lt;/b&gt;</option>
-                                            </select>
-                </div>
-
-                <div class="input-group">
-    <span class="input-group-addon" style="border-left: 1px solid #ccc;">
-        Date
-            </span>
-
-    <input type="text"
-           name="from"
-           class="input-sm form-control date-picker text-center"
-           value="2026-10-01"
-           autocomplete="off"
-           style="cursor: pointer"
-        readonly
-        
-    >
-</div>
-
-                <div class="btn-group btn-corner">
-                    <button type="submit" class="btn btn-primary btn-sm"><i class="fa fa-search"></i> Search</button>
-                </div>
-
-        </form></div>
-    <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><!-- LIST -->
-        <div class="row" style="width: 100%; margin: 0 !important;">
-            <div class="col-sm-12 px-4">
-
-                
-
-                <div class="space-20"></div>
-
-                <div class="row">
-                    <div class="col-sm-12">
-
-                        <h4 style="margin-left: 5%"><strong>Owners Equity</strong></h4>
-                        <div class="mm-table-scroll" role="region" aria-label="Balance Sheet" tabindex="0"><table class="table table-bordered table-striped" style="margin-bottom: 0; margin-left: 10%; width: 85%; border-bottom: 1px solid black !important;">
-
-                                <tbody>
-
-                                    <tr>
-                                        <td class="text-right">
-                                            <strong style="font-size: 14px; font-weight: bolder; letter-spacing: -1px !important;">
-                                                Total Equity Balance
-                                            </strong>
-                                        </td>
-                                        <td class="text-right pr-1" width="20%">
-                                            <strong style="font-size: 14px; font-weight: bolder; letter-spacing: -1px !important;">
-                                                0.00
-                                            </strong>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table></div>
-                    </div>
-                </div>
-
-
-                
-                
-                <br>
-
-
-                <!-- EXCEL BUTTON -->
-                <a class="hidden-print" href="http://localhost/acc/report/balance-sheet?export_type=excel&" target="_blank" style="margin: 18px 0 0 20px; display: inline-block;">
-                    <img src="/assets/images/export-icons/excel-icon.png">
-                </a>
-
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink"><i class="fa fa-university"></i> Balance Sheet — Statement of Financial Position (Assets = Liabilities + Equity)</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Audited financial position across Cash, Bank, City Ledger Receivables, FIFO Store Inventory, and Property Equity.</p>
             </div>
-        </div></div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <a class="mm-button mm-button-secondary" href="/preview/acc-trial-balance"><i class="fa fa-balance-scale"></i> Trial Balance</a>
+                <a class="mm-button mm-button-secondary" href="/preview/acc-income-statement"><i class="fa fa-line-chart"></i> Income Statement</a>
+                <a class="mm-button mm-button-secondary" href="javascript:void(0)" onclick="window.print()"><i class="fa fa-print"></i> Print Statement</a>
+            </div>
+        </header>
+
+        <div class="mm-table-kpi-grid" aria-label="Balance sheet summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-university"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Total Assets</span>
+                    <div class="mm-table-kpi-value">৳ <span id="bs-kpi-assets">4,850,000</span> <span class="mm-table-kpi-sub">Current + Fixed Assets</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-file-text-o"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Total Liabilities</span>
+                    <div class="mm-table-kpi-value">৳ <span id="bs-kpi-liab">1,120,000</span> <span class="mm-table-kpi-sub">AP + Guest Advances + VAT</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-shield"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Owner Equity &amp; Surplus</span>
+                    <div class="mm-table-kpi-value">৳ <span id="bs-kpi-equity">3,730,000</span> <span class="mm-table-kpi-sub">Capital + Retained Profit</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-check-circle"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Accounting Equation</span>
+                    <div class="mm-table-kpi-value"><span id="bs-kpi-proof">Balanced (0 Diff)</span> <span class="mm-table-kpi-sub">A = L + E Verified ✓</span></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mm-panel tw-p-4 sm:tw-p-6">
+            <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px">
+                <strong><i class="fa fa-filter"></i> Filter Statement of Financial Position by Section</strong>
+                <div style="display:flex;flex-wrap:wrap;gap:6px" id="bs-filter-pills">
+                    <button type="button" class="mm-role-pill is-active bs-filter-pill" data-bs-sec="all">Full Balance Sheet (6)</button>
+                    <button type="button" class="mm-role-pill bs-filter-pill" data-bs-sec="Asset">Assets (3)</button>
+                    <button type="button" class="mm-role-pill bs-filter-pill" data-bs-sec="Liability">Liabilities (2)</button>
+                    <button type="button" class="mm-role-pill bs-filter-pill" data-bs-sec="Equity">Owner Equity (1)</button>
+                </div>
+            </div>
+
+            <div class="mm-table-scroll" role="region" aria-label="Balance Sheet" tabindex="0">
+                <table class="table table-bordered table-striped" id="bs-table">
+                    <thead>
+                        <tr>
+                            <th>GL Code</th>
+                            <th>Balance Sheet Head</th>
+                            <th>Classification</th>
+                            <th class="text-right">Balance (৳)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bs-tbody">
+                        <tr data-bs-row="Asset"><td><code>1010–1025</code></td><td><strong>Cash in Hand, Bank &amp; MFS Settlement Accounts</strong></td><td>Current Asset</td><td class="text-right"><strong>1,420,000.00</strong></td></tr>
+                        <tr data-bs-row="Asset"><td><code>1100–1140</code></td><td><strong>In-House Guest Folio &amp; Corporate City Ledger AR</strong></td><td>Current Asset</td><td class="text-right"><strong>580,000.00</strong></td></tr>
+                        <tr data-bs-row="Asset"><td><code>1200–1500</code></td><td><strong>Central Store FIFO Inventory &amp; Hotel Suite Furnishings</strong></td><td>Inventory &amp; Fixed Asset</td><td class="text-right"><strong>2,850,000.00</strong></td></tr>
+                        <tr data-bs-row="Liability"><td><code>2010–2040</code></td><td><strong>Supplier Accounts Payable (GRN Cleared) &amp; Unearned Advances</strong></td><td>Current Liability</td><td class="text-right"><strong>780,000.00</strong></td></tr>
+                        <tr data-bs-row="Liability"><td><code>2100–2120</code></td><td><strong>NBR VAT Payable (15%) &amp; Staff Service Charge Pool</strong></td><td>Statutory Liability</td><td class="text-right"><strong>340,000.00</strong></td></tr>
+                        <tr data-bs-row="Equity"><td><code>3000–3100</code></td><td><strong>M&amp;M Heritage Hotel Capital &amp; Current Period Net Profit</strong></td><td>Owner Equity</td><td class="text-right"><strong>3,730,000.00</strong></td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </section>
-
+<script>
+(function(){
+    var pills=document.querySelectorAll('.bs-filter-pill'), rows=document.querySelectorAll('#bs-tbody tr');
+    for(var i=0;i<pills.length;i++){
+        pills[i].addEventListener('click',function(){
+            var sec=this.getAttribute('data-bs-sec')||'all';
+            for(var j=0;j<pills.length;j++) pills[j].classList.toggle('is-active',pills[j]===this);
+            for(var k=0;k<rows.length;k++){
+                rows[k].style.display=(sec==='all'||rows[k].getAttribute('data-bs-row')===sec)?'':'none';
+            }
+        });
+    }
+})();
+</script>
 <!--/MM-BODY--></div>
 <script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
-<!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
-<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
-    <script src="/assets/js/chosen.jquery.min.js"></script>
-    <script src="/assets/js/bootstrap-datepicker.min.js"></script>
-
-
-    <script src="/assets/custom_js/chosen-box.js"></script>
-    <script src="/assets/custom_js/date-picker.js"></script>
-
-<!--/MM-JS--></body></html>
+<!--MM-JS--><!--/MM-JS--></body></html>

@@ -2,10 +2,6 @@
 
 @section('title', 'User Activity Logs')
 
-@section('page-header')
-    <i class="fa fa-list"></i> User Activity Logs
-@stop
-
 @section('css')
 <style>
     table td {
@@ -16,14 +12,9 @@
 
 
 @section('content')
-
-    <div class="page-header" style="display: flex; justify-content: space-between">
-
-        <h1>
-            @yield('page-header')
-        </h1>
-    </div>
-
+    <x-mm.styles />
+    <x-mm.page class="mm-crud-index" title="User Activity Logs">
+        <x-mm.panel>
     @include('partials._alert_message')
 
 
@@ -142,6 +133,8 @@
 
         </div>
     </div>
+        </x-mm.panel>
+    </x-mm.page>
 
 
 @endsection

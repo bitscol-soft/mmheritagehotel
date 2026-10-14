@@ -1,8 +1,5 @@
 @extends('layouts.master')
 @section('title','Supplier Type')
-@section('page-header')
-    <i class="fa fa-plus"></i> Supplier Type
-@stop
 @section('css')
 
     <style>
@@ -15,25 +12,9 @@
 
 
 @section('content')
-
-
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="widget-box widget-color-white ui-sortable-handle" id="widget-box-7">
-                <div class="widget-header widget-header-small">
-                    <h4 class="widget-title smaller dark">
-                        @yield('page-header')
-                    </h4>
-
-
-                    <div class="widget-toolbar border smaller">
-
-                    </div>
-                </div>
-
-                <div class="widget-body">
-                    <div class="widget-main">
-
+    <x-mm.styles />
+    <x-mm.page class="mm-crud-index" title="Supplier Type">
+        <x-mm.panel>
                         <div class="row">
                             @include('partials._alert_message')
 
@@ -130,7 +111,7 @@
 
 
                                         @if(hasPermission('supplier.types.edit', $slugs))
-                                            <div id="edit{{ $supplierType->id }}" class="modal" tabindex="-1">
+                                            <div id="edit{{ $supplierType->id }}" class="modal fade mm-drawer" data-mm-drawer="true" tabindex="-1">
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
@@ -193,12 +174,8 @@
                                 @include('partials._paginate', ['data' => $supplierTypes])
                             </div>
                         </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+        </x-mm.panel>
+    </x-mm.page>
 
 
 @endsection
