@@ -1233,7 +1233,60 @@ const specialPages={
  '/preview/activity-log':{fn:activityLogPage,title:'System Audit & Activity Log',crumbs:['System','Activity Log']},
  '/preview/attendance-devices':{fn:attendanceDevicesPage,title:'Biometric Attendance Devices',crumbs:['System','Attendance Devices']},
  '/preview/payment-schedules':{fn:paymentSchedulesPage,title:'Software & AMC Payment Schedules',crumbs:['System','Payment Schedules']},
+ '/preview/daily-flash-report':{fn:dailyFlashReportPage,title:'Daily Manager Flash Report & Shift Roster (14 Oct 2026)',crumbs:['Hotel','Reports','Daily Flash Report']},
 };
+function dailyFlashReportPage(){
+ const body=`<section class="mm-ui"><div class="tw-space-y-4 tw-py-2">
+ <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+  <div class="mm-page-title">
+   <h1 class="tw-m-0 tw-font-semibold tw-text-ink"><i class="fa fa-bolt"></i> Daily Manager Flash Report &amp; On-Duty Shift Roster — 14 Oct 2026</h1>
+   <p class="tw-m-0 tw-text-sm tw-text-muted">Executive one-page hospitality flash brief: Room Division RevPAR, Outlet F&amp;B Revenue vs Budget, Cash/POS Collections, and Biometric On-Duty Shift Roster.</p>
+  </div>
+  <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+   <button type="button" data-toggle="modal" data-target="#mm-express-drawer" class="mm-button"><i class="fa fa-plus-circle"></i> + Quick Create (Alt+Q)</button>
+   <a href="/preview/manager-bi" class="mm-button mm-button-secondary"><i class="fa fa-bar-chart"></i> Manager BI (F29)</a>
+   <a href="/preview/attendance-biometric" class="mm-button mm-button-secondary"><i class="fa fa-id-card-o"></i> Biometric Roster</a>
+   <button type="button" class="mm-button mm-button-secondary" onclick="window.print()"><i class="fa fa-print"></i> Print A4 Flash Report</button>
+  </div>
+ </header>
+ <div class="mm-table-kpi-grid" aria-label="Daily flash report KPIs">
+  <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-bed"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Occupancy &amp; RevPAR</span><div class="mm-table-kpi-value">90.0% · ৳ 6,705 <span class="mm-table-kpi-sub">18/20 Suites · ADR ৳ 7,450</span></div></div></div>
+  <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-line-chart"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Today Gross Revenue</span><div class="mm-table-kpi-value">৳ 248,650 <span class="mm-table-kpi-sub">+11.2% vs Daily Budget</span></div></div></div>
+  <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-credit-card"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Collections &amp; Tender</span><div class="mm-table-kpi-value">৳ 214,200 <span class="mm-table-kpi-sub">86.1% Realized Today</span></div></div></div>
+  <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-users"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">On-Duty Shift Roster</span><div class="mm-table-kpi-value">14 Staff Active <span class="mm-table-kpi-sub">Afternoon Shift (14:00–22:00)</span></div></div></div>
+ </div>
+ <div class="mm-panel tw-p-5">
+  <h2 class="tw-m-0 tw-mb-3 tw-text-base tw-font-semibold"><i class="fa fa-pie-chart"></i> 1. Department Revenue vs Daily Target Breakdown (14 Oct 2026)</h2>
+  <div class="mm-table-scroll">
+   <table class="mm-data-table table table-bordered table-striped">
+    <thead><tr><th>Cost Center / Outlet</th><th>Daily Target</th><th class="text-right">Actual Today</th><th>Target Achievement</th><th>Status</th></tr></thead>
+    <tbody>
+     <tr><td><strong>Room Division (20 Suites · 18 Sold)</strong></td><td>৳ 125,000</td><td class="text-right"><strong>৳ 134,100</strong></td><td><div class="mm-share-cell"><span>107.3%</span><span class="mm-share-bar"><span class="mm-share-fill is-emerald" style="width:100%"></span></span></div></td><td><span class="mm-badge mm-badge-paid">Above Target</span></td></tr>
+     <tr><td><strong>Heritage Dining Restaurant POS</strong></td><td>৳ 45,000</td><td class="text-right"><strong>৳ 46,850</strong></td><td><div class="mm-share-cell"><span>104.1%</span><span class="mm-share-bar"><span class="mm-share-fill is-emerald" style="width:100%"></span></span></div></td><td><span class="mm-badge mm-badge-paid">Above Target</span></td></tr>
+     <tr><td><strong>Skyline Lounge Bar &amp; In-Room Minibar</strong></td><td>৳ 22,000</td><td class="text-right"><strong>৳ 21,700</strong></td><td><div class="mm-share-cell"><span>98.6%</span><span class="mm-share-bar"><span class="mm-share-fill" style="width:98.6%"></span></span></div></td><td><span class="mm-badge mm-badge-paid">On Track</span></td></tr>
+     <tr><td><strong>Grand Ballroom Banquet &amp; Services</strong></td><td>৳ 40,000</td><td class="text-right"><strong>৳ 46,000</strong></td><td><div class="mm-share-cell"><span>115.0%</span><span class="mm-share-bar"><span class="mm-share-fill is-violet" style="width:100%"></span></span></div></td><td><span class="mm-badge mm-badge-paid">180-Pax Gala</span></td></tr>
+    </tbody>
+   </table>
+  </div>
+ </div>
+ <div class="mm-panel tw-p-5">
+  <h2 class="tw-m-0 tw-mb-3 tw-text-base tw-font-semibold"><i class="fa fa-id-card-o"></i> 2. Active On-Duty Shift Roster (Biometric Verified · 14 Oct 2026)</h2>
+  <div class="mm-table-scroll">
+   <table class="mm-data-table table table-bordered table-striped">
+    <thead><tr><th>Badge ID</th><th>Staff Member</th><th>Department &amp; Role</th><th>Shift Window</th><th>Assigned Station</th><th>Biometric Status</th></tr></thead>
+    <tbody>
+     <tr><td><code>#EMP-101</code></td><td><strong>Nusrat Jahan</strong></td><td>Front Desk Supervisor</td><td>14:00 – 22:00</td><td>Lobby Reception Desk 1</td><td><span class="mm-badge mm-badge-paid">On Duty · 13:52</span></td></tr>
+     <tr><td><code>#EMP-104</code></td><td><strong>Tariqul Islam</strong></td><td>Night Auditor &amp; Folio Lead</td><td>14:00 – 23:59</td><td>Folio &amp; City Ledger Desk</td><td><span class="mm-badge mm-badge-paid">On Duty · 13:55</span></td></tr>
+     <tr><td><code>#EMP-202</code></td><td><strong>Chef Kamrul Hasan</strong></td><td>Executive Sous Chef</td><td>12:00 – 22:00</td><td>Main Kitchen &amp; KDS Pass</td><td><span class="mm-badge mm-badge-paid">On Duty · 11:50</span></td></tr>
+     <tr><td><code>#EMP-208</code></td><td><strong>Rafiqul Alam</strong></td><td>F&amp;B Outlet Captain</td><td>14:00 – 22:00</td><td>Heritage Dining &amp; Ballroom</td><td><span class="mm-badge mm-badge-paid">On Duty · 13:48</span></td></tr>
+     <tr><td><code>#EMP-305</code></td><td><strong>Sharmin Akter</strong></td><td>Housekeeping Floor Lead</td><td>08:00 – 17:00</td><td>Floors 2 &amp; 3 VIP Turnaround</td><td><span class="mm-badge mm-badge-paid">On Duty · 07:54</span></td></tr>
+    </tbody>
+   </table>
+  </div>
+ </div>
+ </div></section>`;
+ return shellWith(body,'','','Daily Manager Flash Report & Shift Roster',['Hotel','Reports','Daily Flash Report']);
+}
 function moduleOf(p){
  if(p.startsWith('/preview/public-')) return 'Public Storefront';
  if(p.startsWith('/preview/acc-')) return 'Account & Finance';
@@ -1275,6 +1328,7 @@ function menuLinks(page,currentPath){
    aliases:['/','/home','/dashboard','/preview/dashboard','/preview/room-board'],
    tabs:[
     ['/dashboard','fa-tachometer','Front-Desk Command Board'],
+    ['/preview/daily-flash-report','fa-bolt','Daily Manager Flash & Roster'],
     ['/preview/payment-gateway','fa-credit-card','Payment Gateway & Deposits (F1)'],
     ['/preview/late-checkout','fa-clock-o','Late Checkout & Fees (F10)'],
     ['/preview/enterprise-suite','fa-building-o','Enterprise Suite Overview'],
@@ -1664,6 +1718,7 @@ function menuLinks(page,currentPath){
   '/preview/report-expected-arrival':'8 Today',
   '/preview/report-expected-departure':'4 Today',
   '/preview/system-settings':'RBAC & 2FA',
+  '/preview/daily-flash-report':'14 Oct',
  };
 
  const tabsHtml=tabsList.map(([href,icon,lbl])=>{
@@ -1690,6 +1745,8 @@ function menuLinks(page,currentPath){
    '</div>'+
    '<div style="display:flex;flex-wrap:wrap;align-items:center;gap:6px">'+
     '<input type="search" id="mm-top-tab-filter" class="mm-top-tab-filter" placeholder="Filter '+modScreens.length+' module screens..." aria-label="Filter sub-menu tabs and module screens">'+
+    '<button type="button" id="mm-express-create-btn" data-toggle="modal" data-target="#mm-express-drawer" class="mm-button" style="min-height:28px;padding:2px 10px;font-size:11.5px" title="Express Walk-In Room Hold, 80mm KOT Order &amp; GL Voucher Quick-Create (Alt+Q)"><i class="fa fa-plus-circle"></i> + Quick Create</button>'+
+    '<button type="button" id="mm-flash-report-btn" data-toggle="modal" data-target="#mm-flash-drawer" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 9px;font-size:11.5px" title="Daily Manager Flash Report &amp; Active Shift Roster Inspector (Alt+M)"><i class="fa fa-bolt"></i> Flash Report</button>'+
     '<button type="button" id="mm-top-fav-btn" aria-pressed="false" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 9px;font-size:11.5px" title="Star or unstar this screen to Pinned Favorites"><i class="fa fa-star-o"></i> Star</button>'+
     '<button type="button" id="mm-top-favs-toggle" aria-expanded="false" aria-controls="mm-top-favs-bar" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 9px;font-size:11.5px" title="Show or hide cross-module Pinned Favorites bar (Alt+B)"><i class="fa fa-bookmark"></i> Favorites (<span id="mm-top-favs-count">6</span>)</button>'+
     '<button type="button" id="mm-notif-center-btn" data-toggle="modal" data-target="#mm-notif-drawer" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 9px;font-size:11.5px" title="Open Live Operational Alerts &amp; Shift Handover Center (Alt+N)"><i class="fa fa-bell"></i> Alerts <span class="mm-top-tab-badge" id="mm-notif-unread-badge" style="background:rgba(220,38,38,0.14);color:#dc2626">8 Live</span></button>'+
@@ -1712,6 +1769,86 @@ function menuLinks(page,currentPath){
     '</div>'+
    '</div>'+
    '<div class="mm-top-more-grid" id="mm-top-more-grid">'+moreCardsHtml+'</div>'+
+  '</div>'+
+  '<div class="modal fade mm-app-drawer" id="mm-express-drawer" tabindex="-1" role="dialog" aria-labelledby="mm-express-drawer-title">'+
+   '<div class="modal-dialog modal-lg" role="document"><div class="modal-content">'+
+    '<div class="modal-header"><h4 class="modal-title" id="mm-express-drawer-title"><i class="fa fa-plus-circle"></i> Express Walk-In Hold, 80mm KOT &amp; GL Voucher Quick-Create (Alt+Q)</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button></div>'+
+    '<div class="modal-body"><section class="mm-ui"><div class="tw-space-y-4">'+
+     '<div style="display:flex;flex-wrap:wrap;gap:6px" id="mm-express-tab-group">'+
+      '<button type="button" class="mm-role-pill is-active" data-express-tab="walkin"><i class="fa fa-bed"></i> 1. Express Walk-In Room Hold</button>'+
+      '<button type="button" class="mm-role-pill" data-express-tab="pos"><i class="fa fa-cutlery"></i> 2. Express 80mm KOT Order</button>'+
+      '<button type="button" class="mm-role-pill" data-express-tab="voucher"><i class="fa fa-calculator"></i> 3. Instant GL / Petty Cash Voucher</button>'+
+     '</div>'+
+     '<div id="mm-express-confirm-banner" class="alert alert-success" style="display:none;margin:0;border-radius:10px;font-size:12.5px"></div>'+
+     '<div class="mm-panel tw-p-4" data-express-pane="walkin">'+
+      '<form id="mm-express-walkin-form" onsubmit="return false;" class="tw-space-y-3">'+
+       '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">'+
+        '<div><label class="mm-label">Available Suite</label><select id="exp-walkin-room" class="form-control"><option value="Suite #104 (Deluxe Double · ৳ 4,200)">Suite #104 — Deluxe Double (৳ 4,200/night)</option><option value="Suite #202 (Heritage Suite · ৳ 6,800)">Suite #202 — Heritage Suite (৳ 6,800/night)</option><option value="Suite #304 (Diplomatic Suite · ৳ 8,900)">Suite #304 — Diplomatic Suite (৳ 8,900/night)</option></select></div>'+
+        '<div><label class="mm-label">Guest Full Name</label><input type="text" id="exp-walkin-guest" class="form-control" value="Dr. Arman Hossain" required></div>'+
+        '<div><label class="mm-label">Stay Nights &amp; Advance (৳)</label><div style="display:grid;grid-template-columns:80px 1fr;gap:8px"><input type="number" id="exp-walkin-nights" class="form-control" value="2" min="1" max="30"><input type="number" id="exp-walkin-adv" class="form-control" value="5000"></div></div>'+
+       '</div>'+
+       '<div style="display:flex;wrap:wrap;justify-content:space-between;align-items:center;gap:8px">'+
+        '<a href="/preview/booking-next" class="mm-button mm-button-secondary"><i class="fa fa-magic"></i> Open Full 3-Step Booking Wizard →</a>'+
+        '<button type="submit" class="mm-button"><i class="fa fa-check"></i> Create Walk-In Room Hold</button>'+
+       '</div>'+
+      '</form>'+
+     '</div>'+
+     '<div class="mm-panel tw-p-4" data-express-pane="pos" style="display:none">'+
+      '<form id="mm-express-pos-form" onsubmit="return false;" class="tw-space-y-3">'+
+       '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">'+
+        '<div><label class="mm-label">F&amp;B Outlet</label><select id="exp-pos-outlet" class="form-control"><option value="Heritage Dining Restaurant">Heritage Dining Restaurant</option><option value="Skyline Lounge Bar">Skyline Lounge Bar</option><option value="In-Room Dining (Room Charge)">In-Room Dining (Room Charge)</option></select></div>'+
+        '<div><label class="mm-label">Target Suite / Table</label><select id="exp-pos-target" class="form-control"><option value="Suite #204 (Tanvir Ahmed)">Suite #204 — Tanvir Ahmed</option><option value="Suite #301 (Brig. Gen. Mahmudul)">Suite #301 — Brig. Gen. Mahmudul</option><option value="Table T-04 (Main Dining)">Table T-04 — Main Dining</option></select></div>'+
+        '<div><label class="mm-label">Menu Item / Platter</label><select id="exp-pos-item" class="form-control"><option value="Royal Heritage Mezze Platter (৳ 1,850)">Royal Heritage Mezze Platter (৳ 1,850)</option><option value="Grilled Norwegian Salmon (৳ 2,400)">Grilled Norwegian Salmon (৳ 2,400)</option><option value="Artisan Espresso &amp; Pastry Duo (৳ 680)">Artisan Espresso &amp; Pastry Duo (৳ 680)</option></select></div>'+
+       '</div>'+
+       '<div style="display:flex;wrap:wrap;justify-content:space-between;align-items:center;gap:8px">'+
+        '<a href="/preview/pos-kot-print" class="mm-button mm-button-secondary"><i class="fa fa-print"></i> View 80mm Thermal KOT →</a>'+
+        '<button type="submit" class="mm-button"><i class="fa fa-fire"></i> Fire Instant 80mm KOT to Kitchen</button>'+
+       '</div>'+
+      '</form>'+
+     '</div>'+
+     '<div class="mm-panel tw-p-4" data-express-pane="voucher" style="display:none">'+
+      '<form id="mm-express-vch-form" onsubmit="return false;" class="tw-space-y-3">'+
+       '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">'+
+        '<div><label class="mm-label">Voucher Type</label><select id="exp-vch-type" class="form-control"><option value="Receive Voucher (Guest Advance)">Receive Voucher (Guest Advance)</option><option value="Payment Voucher (Petty Cash)">Payment Voucher (Petty Cash)</option><option value="Contra Voucher (Cash to Bank)">Contra Voucher (Cash to Bank)</option></select></div>'+
+        '<div><label class="mm-label">Ledger Account Head</label><select id="exp-vch-head" class="form-control"><option value="Cash in Hand — Front Desk">Cash in Hand — Front Desk</option><option value="City Bank Corporate A/C">City Bank Corporate A/C</option><option value="bKash Merchant Settlement">bKash Merchant Settlement</option></select></div>'+
+        '<div><label class="mm-label">Voucher Amount (৳)</label><input type="number" id="exp-vch-amt" class="form-control" value="8500" required></div>'+
+       '</div>'+
+       '<div style="display:flex;wrap:wrap;justify-content:space-between;align-items:center;gap:8px">'+
+        '<a href="/preview/acc-receives" class="mm-button mm-button-secondary"><i class="fa fa-book"></i> Open Voucher Register →</a>'+
+        '<button type="submit" class="mm-button"><i class="fa fa-check"></i> Post Instant GL Voucher</button>'+
+       '</div>'+
+      '</form>'+
+     '</div>'+
+     '<div class="mm-panel tw-p-4">'+
+      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px"><strong><i class="fa fa-history"></i> Recent Express Transactions (<span id="mm-express-log-count">3</span>)</strong><span class="mm-badge mm-badge-paid">Session Synced</span></div>'+
+      '<div id="mm-express-log-list" style="display:flex;flex-direction:column;gap:6px"></div>'+
+     '</div>'+
+    '</div></section></div>'+
+    '<div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button></div>'+
+   '</div></div>'+
+  '</div>'+
+  '<div class="modal fade mm-app-drawer" id="mm-flash-drawer" tabindex="-1" role="dialog" aria-labelledby="mm-flash-drawer-title">'+
+   '<div class="modal-dialog modal-lg" role="document"><div class="modal-content">'+
+    '<div class="modal-header"><h4 class="modal-title" id="mm-flash-drawer-title"><i class="fa fa-bolt"></i> Daily Manager Flash Report &amp; Shift Roster Inspector — 14 Oct 2026 (Alt+M)</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button></div>'+
+    '<div class="modal-body"><section class="mm-ui"><div class="tw-space-y-4">'+
+     '<div class="mm-table-kpi-grid" aria-label="Flash drawer KPIs">'+
+      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-bed"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Occupancy &amp; RevPAR</span><div class="mm-table-kpi-value">90.0% · ৳ 6,705 <span class="mm-table-kpi-sub">18/20 Suites · ADR ৳ 7,450</span></div></div></div>'+
+      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-line-chart"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Gross Revenue Today</span><div class="mm-table-kpi-value">৳ 248,650 <span class="mm-table-kpi-sub">+11.2% vs Target</span></div></div></div>'+
+      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-credit-card"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Realized Collections</span><div class="mm-table-kpi-value">৳ 214,200 <span class="mm-table-kpi-sub">Cash/POS/bKash/AR</span></div></div></div>'+
+      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-users"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Active Shift Roster</span><div class="mm-table-kpi-value">14 On Duty <span class="mm-table-kpi-sub">14:00–22:00 Shift</span></div></div></div>'+
+     '</div>'+
+     '<div class="mm-panel tw-p-4">'+
+      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px"><strong><i class="fa fa-pie-chart"></i> Outlet Revenue vs Target &amp; On-Duty Department Leads</strong><a href="/preview/daily-flash-report" class="mm-button" style="min-height:28px;padding:2px 10px;font-size:11.5px"><i class="fa fa-print"></i> Open Full Printable A4 Flash Report →</a></div>'+
+      '<div class="mm-table-scroll"><table class="mm-data-table table table-bordered table-striped"><thead><tr><th>Department / Outlet</th><th>Lead On Duty</th><th>Target</th><th class="text-right">Actual Today</th><th>Achievement</th></tr></thead><tbody>'+
+       '<tr><td><strong>Room Division (18/20 Suites)</strong></td><td>Nusrat Jahan (Front Desk)</td><td>৳ 125,000</td><td class="text-right"><strong>৳ 134,100</strong></td><td><span class="mm-badge mm-badge-paid">107.3%</span></td></tr>'+
+       '<tr><td><strong>Heritage Dining Restaurant</strong></td><td>Chef Kamrul Hasan (Kitchen)</td><td>৳ 45,000</td><td class="text-right"><strong>৳ 46,850</strong></td><td><span class="mm-badge mm-badge-paid">104.1%</span></td></tr>'+
+       '<tr><td><strong>Skyline Lounge Bar &amp; Minibar</strong></td><td>Rafiqul Alam (F&amp;B Captain)</td><td>৳ 22,000</td><td class="text-right"><strong>৳ 21,700</strong></td><td><span class="mm-badge mm-badge-paid">98.6%</span></td></tr>'+
+       '<tr><td><strong>Grand Ballroom Banquet</strong></td><td>Tariqul Islam (Folio/Audit)</td><td>৳ 40,000</td><td class="text-right"><strong>৳ 46,000</strong></td><td><span class="mm-badge mm-badge-paid">115.0%</span></td></tr>'+
+      '</tbody></table></div>'+
+     '</div>'+
+    '</div></section></div>'+
+    '<div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button><a href="/preview/daily-flash-report" class="mm-button"><i class="fa fa-external-link"></i> Full Printable Flash Report</a></div>'+
+   '</div></div>'+
   '</div>'+
   '<div class="modal fade mm-app-drawer" id="mm-notif-drawer" tabindex="-1" role="dialog" aria-labelledby="mm-notif-drawer-title">'+
    '<div class="modal-dialog modal-lg" role="document"><div class="modal-content">'+
@@ -1772,6 +1909,8 @@ function menuLinks(page,currentPath){
        '<div class="mm-shortcut-row"><span>Cycle Sidebar Department Role View</span><span class="mm-kbd-badge">Alt + R</span></div>'+
        '<div class="mm-shortcut-row"><span>Expand / Collapse Left Side Menu</span><span class="mm-kbd-badge">Alt + S</span></div>'+
        '<div class="mm-shortcut-row"><span>Toggle Cross-Module Pinned Favorites</span><span class="mm-kbd-badge">Alt + B</span></div>'+
+       '<div class="mm-shortcut-row"><span>Open Express Walk-In / KOT / Voucher Drawer</span><span class="mm-kbd-badge">Alt + Q</span></div>'+
+       '<div class="mm-shortcut-row"><span>Open Daily Manager Flash Report &amp; Roster</span><span class="mm-kbd-badge">Alt + M</span></div>'+
        '<div class="mm-shortcut-row"><span>Open Live Alerts &amp; Shift Handover Drawer</span><span class="mm-kbd-badge">Alt + N</span></div>'+
        '<div class="mm-shortcut-row"><span>Focus Top Sub-Menu Screen Filter</span><span class="mm-kbd-badge">Alt + F</span></div>'+
        '<div class="mm-shortcut-row"><span>Open Keyboard Shortcut Cheat-Sheet</span><span class="mm-kbd-badge">?</span></div>'+
@@ -1821,6 +1960,27 @@ function menuLinks(page,currentPath){
     'for(var rIdx=0;rIdx<rBtns.length;rIdx++){rBtns[rIdx].addEventListener("click",function(){applyRole(this.getAttribute("data-role-filter")||"all");});}'+
    '}'+
    'if(!nav)return;'+
+   'var expTabs=document.querySelectorAll("[data-express-tab]"),expPanes=document.querySelectorAll("[data-express-pane]"),expBanner=document.getElementById("mm-express-confirm-banner"),expLogList=document.getElementById("mm-express-log-list"),expLogCnt=document.getElementById("mm-express-log-count");'+
+   'for(var et=0;et<expTabs.length;et++){expTabs[et].addEventListener("click",function(){'+
+    'var tgt=this.getAttribute("data-express-tab");'+
+    'for(var a=0;a<expTabs.length;a++)expTabs[a].classList.toggle("is-active",expTabs[a]===this);'+
+    'for(var b=0;b<expPanes.length;b++)expPanes[b].style.display=expPanes[b].getAttribute("data-express-pane")===tgt?"":"none";'+
+   '});}'+
+   'var defExp=[["Walk-In Hold","#BK-2026-120 · Suite #204 · Tanvir Ahmed (2 Nights · ৳ 5,000 Adv)","/preview/booking-next"],["80mm KOT","#KOT-1052 · Heritage Dining → Suite #301 · Royal Mezze Platter","/preview/pos-kot-print"],["GL Voucher","#VCH-2026-890 · Receive Voucher · Cash in Hand (৳ 12,600)","/preview/acc-receives"]];'+
+   'var expLogs=defExp;try{var rawE=localStorage.getItem("mm-express-log");if(rawE){var pE=JSON.parse(rawE);if(Array.isArray(pE)&&pE.length)expLogs=pE;}}catch(e){}'+
+   'function renderExpLogs(){'+
+    'if(expLogCnt)expLogCnt.textContent=String(expLogs.length);'+
+    'if(expLogList)expLogList.innerHTML=expLogs.map(function(x){return "<div class=\\"mm-shift-note-card\\" style=\\"display:flex;align-items:center;justify-content:space-between;gap:8px\\"><div><span class=\\"mm-badge mm-badge-paid\\" style=\\"margin-right:6px\\">"+x[0]+"</span><strong>"+x[1]+"</strong></div><a href=\\""+x[2]+"\\" class=\\"mm-button mm-button-secondary\\" style=\\"min-height:24px;padding:1px 8px;font-size:11px\\">Open →</a></div>";}).join("");'+
+   '}'+
+   'renderExpLogs();'+
+   'function pushExp(kind,summary,link){'+
+    'expLogs.unshift([kind,summary,link]);try{localStorage.setItem("mm-express-log",JSON.stringify(expLogs));}catch(e){}renderExpLogs();'+
+    'if(expBanner){expBanner.style.display="block";expBanner.innerHTML="<i class=\\"fa fa-check-circle\\"></i> <strong>"+kind+" Created:</strong> "+summary+" — <a href=\\""+link+"\\"><strong>Inspect Now →</strong></a>";}'+
+   '}'+
+   'var wf=document.getElementById("mm-express-walkin-form"),pf=document.getElementById("mm-express-pos-form"),vf=document.getElementById("mm-express-vch-form");'+
+   'if(wf)wf.addEventListener("submit",function(){var rm=document.getElementById("exp-walkin-room").value,g=document.getElementById("exp-walkin-guest").value,n=document.getElementById("exp-walkin-nights").value,ad=document.getElementById("exp-walkin-adv").value;pushExp("Walk-In Hold","#BK-2026-121 · "+rm+" · "+g+" ("+n+" Nights · ৳ "+ad+" Adv)","/preview/booking-next");});'+
+   'if(pf)pf.addEventListener("submit",function(){var out=document.getElementById("exp-pos-outlet").value,tg=document.getElementById("exp-pos-target").value,it=document.getElementById("exp-pos-item").value;pushExp("80mm KOT","#KOT-1054 · "+out+" → "+tg+" · "+it,"/preview/pos-kot-print");});'+
+   'if(vf)vf.addEventListener("submit",function(){var vt=document.getElementById("exp-vch-type").value,vh=document.getElementById("exp-vch-head").value,va=document.getElementById("exp-vch-amt").value;pushExp("GL Voucher","#VCH-2026-892 · "+vt+" · "+vh+" (৳ "+va+")","/preview/acc-receives");});'+
    'var favBtn=document.getElementById("mm-top-fav-btn"),favsToggle=document.getElementById("mm-top-favs-toggle"),favsBar=document.getElementById("mm-top-favs-bar"),favsCnt=document.getElementById("mm-top-favs-count");'+
    'var defFavs=[["/dashboard","Front-Desk Board"],["/preview/booking-next","3-Step Booking Wizard"],["/preview/folio-settlement","Split-Folio Settlement"],["/preview/pos-unified","Unified Split-Bill POS"],["/preview/acc-balance-sheet","Balance Sheet Builder"],["/preview/room-settings","Room Settings & Pricing"]];'+
    'var favs=defFavs;try{var rawF=localStorage.getItem("mm-top-favs");if(rawF){var parsed=JSON.parse(rawF);if(Array.isArray(parsed)&&parsed.length)favs=parsed;}}catch(e){}'+
@@ -1898,6 +2058,8 @@ function menuLinks(page,currentPath){
      'if(kLower==="r"){e.preventDefault();var nextR=roleOrder[(roleOrder.indexOf(curRole)+1)%roleOrder.length];applyRole(nextR);return;}'+
      'if(kLower==="s"&&topSbBtn){e.preventDefault();topSbBtn.click();return;}'+
      'if(kLower==="b"&&favsToggle){e.preventDefault();favsToggle.click();return;}'+
+     'if(kLower==="q"){e.preventDefault();var qb=document.getElementById("mm-express-create-btn");if(qb)qb.click();return;}'+
+     'if(kLower==="m"){e.preventDefault();var mb=document.getElementById("mm-flash-report-btn");if(mb)mb.click();return;}'+
      'if(kLower==="n"){e.preventDefault();var nb=document.getElementById("mm-notif-center-btn");if(nb)nb.click();return;}'+
      'if(kLower==="f"&&flt){e.preventDefault();flt.focus();return;}'+
     '}'+
