@@ -439,7 +439,7 @@ $naHtml = $app->make('view')->make('night-audits.create-v2', ['errors' => new Il
     ])])->render();
 $naHtml = preg_replace('/(name="_token" value=")[A-Za-z0-9]+"/', '$1fixture-csrf-token"', str_replace('http://localhost/assets', '/assets', $naHtml));
 foreach (['name="from_date"', 'name="to_date"', 'name="date"', 'name="total_reservation"', 'name="total_booked_room"', 'name="total_check_in"', 'name="total_check_out"', 'name="total_room"', 'name="total_cancelled"', 'name="total_dirty_room"', 'name="total_room_maintenance"',
-    'name="transaction_ledger_ids[11]"', 'name="transaction_ids[11]"', 'name="total_amounts[11]"', 'name="previous_paid"', 'name="collections[11]"', 'name="due_amounts[11]"', 'name="total_amount"', 'name="collection"', 'name="due_amount"',
+    'name="transaction_ledger_ids[11]"', 'name="transaction_ids[11]"', 'name="total_amounts[11]"', 'name="previous_paid[11]"', 'name="previous_paid[12]"', 'name="previous_paid[21]"', 'name="collections[11]"', 'name="due_amounts[11]"', 'name="total_amount"', 'name="collection"', 'name="due_amount"',
     'id="formSubmit"', 'action="http://localhost/hotel/night-audits"', 'save-btn', 'mm-night-audit'] as $marker) {
     if (strpos($naHtml, $marker) === false) throw new RuntimeException('Night audit view missing ' . $marker);
 }

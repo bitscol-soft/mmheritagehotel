@@ -305,17 +305,20 @@ class BookingService
     public function update($request, $booking)
     {
 
-        $this->check_in_date    = Carbon::parse($request->check_in)->format('Y-m-d');
-        $this->check_out_date   = Carbon::parse($request->check_out)->format('Y-m-d');
-
         $this->booking          = $booking;
+
+        // The edit form posts `check_in_date` / `check_out`; the extend-date
+        // modal posts `check_in` / `check_out`. Accept either pair (falling
+        // back to the stored dates) so check-in is never overwritten empty.
+        $this->check_in_date    = Carbon::parse($request->check_in_date ?? $request->check_in ?? $booking->check_in_date)->format('Y-m-d');
+        $this->check_out_date   = Carbon::parse($request->check_out ?? $request->check_out_date ?? $booking->check_out_date)->format('Y-m-d');
 
         $this->booking->update([
             'customer_id'    => $request->customer_id,
             'purpose'        => $request->purpose,
             'booking_date'   => $request->booking_date,
-            'check_in_date'  => $request->check_in,
-            'check_out_date' => $request->check_out,
+            'check_in_date'  => $this->check_in_date,
+            'check_out_date' => $this->check_out_date,
             'reference'      => $request->reference,
             'pickup'         => $request->pickup,
             'drop'           => $request->drop,

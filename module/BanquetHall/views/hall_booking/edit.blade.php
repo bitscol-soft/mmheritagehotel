@@ -253,7 +253,7 @@
                                 <i class="fa fa-save"></i>
                                 Save
                             </button>
-                            <button class="btn-sm btn-outline-danger" type="Reset">
+                            <button class="btn-sm btn-outline-danger" type="reset" form="submitBookingUpdateForm">
                                 <i class="fa fa-refresh"></i>
                                 Reset
                             </button>

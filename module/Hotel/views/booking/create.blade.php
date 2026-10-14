@@ -151,7 +151,7 @@
                                 class="updateBookingBtn next-step-btn mm-button">
                                 <i class="fa fa-paper-plane" aria-hidden="true"></i> Book Now
                             </button>
-                            <button class="mm-button mm-button-secondary" type="Reset">
+                            <button class="mm-button mm-button-secondary" type="reset" form="submitBookingUpdateForm">
                                 <i class="fa fa-refresh" aria-hidden="true"></i> Reset
                             </button>
                         </div>

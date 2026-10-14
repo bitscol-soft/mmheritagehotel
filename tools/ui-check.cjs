@@ -345,7 +345,7 @@ console.log('PASS: note list/edit expressions, forms and status scripts; legacy 
   assert(after.includes("{{ asset('assets/custom_js/stay-dates.js') }}")&&after.indexOf('stay-dates.js')>after.indexOf("@include('booking._script.script')"),`${name}: stay-dates.js must load after the legacy booking script`);
   const actions=after.slice(after.indexOf('<div class="mm-form-actions">'),after.indexOf('</x-mm.panel>'));
   assert((actions.match(/onclick="submitBookingForm\(\)"/g)||[]).length===(name==='create'?2:1),`${name}: submit buttons must keep onclick="submitBookingForm()"`);
-  assert(actions.includes('updateBookingBtn')&&actions.includes('type="Reset"'),`${name}: action classes/reset changed`);
+  assert(actions.includes('updateBookingBtn')&&actions.includes('type="reset"')&&actions.includes('form="submitBookingUpdateForm"'),`${name}: action classes/reset changed`);
   if(name==='create') assert(actions.includes('value="reserve"')&&actions.includes('value="book"')&&actions.includes('next-step-btn'),'create: reserve/book buttons changed');
   if(name==='edit') assert(after.includes("@include('booking._inc._booking-context', ['booking' => $booking])")&&after.includes("action=\"{{ route('booking.update', $booking->id) }}\""),'edit: context strip or update route changed');
  }
@@ -472,6 +472,8 @@ assert(bqV3.includes("partials.print-codes") && bqV3.includes("'codes' => 'qr'")
  const tbl=s=>(nc(s).match(/<table[\s\S]*?<\/table>/g)||[]).filter(t=>t.includes('Invoice No')).map(t=>t.replace(/\s+/g,' ')).join('|');
  assert.equal(tbl(cAfter),tbl(cBefore),'night audit form: transaction tables changed');
  assert(cAfter.includes('<x-mm.page class="mm-night-audit"')&&cAfter.includes('id="formSubmit"')&&!cAfter.includes('widget-box')&&!cAfter.includes('<style>'),'night audit form: shared frame expected');
+ assert(cAfter.includes('name="previous_paid[{{ $transaction->id }}]"')&&!cAfter.includes('name="previous_paid"'),'night audit form: previous_paid must post one indexed value per transaction row');
+ assert(cAfter.includes("onclick=\"window.location.href='{{ route('night-audits.index') }}'\"")&&/type="button"[^>]*class="mm-button mm-button-secondary"/.test(cAfter),'night audit form: Close must be a plain button that leaves the form');
  const idxPath='module/Hotel/views/night-audits/index.blade.php', iAfter=read(idxPath), iBefore=read(idxPath,base);
  assert.deepEqual(only(ex(iBefore),ex(iAfter)),[],'night audit list: Blade expressions changed');
  assert.deepEqual(only(ctl(iBefore),ctl(iAfter)),[],'night audit list: controls changed');
