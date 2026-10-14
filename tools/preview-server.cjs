@@ -294,7 +294,7 @@ const pages={
  '/preview/setup-aminities-edit':{file:'preview/setup-aminities-edit.html',title:'Edit Amenity',crumbs:['Hotel','Setup','Edit Amenity']},
  '/preview/setup-guest-registration-terms-edit':{file:'preview/setup-guest-registration-terms-edit.html',title:'Edit Registration Terms',crumbs:['Hotel','Setup','Edit Registration Terms']},
 };
-const between=(h,a,b)=>{const i=h.indexOf(a);return h.slice(i+a.length,h.indexOf(b,i+a.length));};
+const between=(h,a,b)=>{const i=h.indexOf(a);return i<0?'':h.slice(i+a.length,h.indexOf(b,i+a.length));};
 function shellWith(content,head,js,title,crumbs){
  let raw=fix('dashboard.html');
  const a='<!--SHELL-TOOLBAR-->',b='</div></div></div><!--SHELL-FOOTER-->';
