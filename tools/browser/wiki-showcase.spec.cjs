@@ -359,10 +359,10 @@ test('redesigned Express Quick-Create Drawer (Alt+Q) & Website Settings (/previe
     await expect(page.locator('#mm-express-drawer')).toBeVisible();
     await expect(page.locator('#mm-express-drawer .mm-drawer-kpi-grid .mm-table-kpi-card')).toHaveCount(4);
     await page.locator('#exp-suite-pills .exp-suite-pill').nth(2).click();
-    await expect(page.locator('#exp-walkin-est-text')).toContainText('7,800');
+    await expect(page.locator('#exp-walkin-est-text')).toContainText('19,580');
     await page.locator('#mm-express-drawer [data-express-tab="pos"]').click();
     await page.locator('#exp-kot-chips .exp-kot-chip').nth(1).click();
-    await expect(page.locator('#exp-kot-preview-text')).toContainText('Lamb Rogan Josh');
+    await expect(page.locator('#exp-kot-preview-text')).toContainText('Grilled Norwegian Salmon');
     await page.locator('#mm-express-drawer [data-express-tab="banquet"]').click();
     await page.locator('#exp-bq-submit').click();
     await expect(page.locator('#mm-express-log-count')).toContainText('4');
