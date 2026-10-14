@@ -1183,6 +1183,11 @@ assert(bqV3.includes("partials.print-codes") && bqV3.includes("'codes' => 'qr'")
     assert(!pv.includes('// window.print()'), `${pf} must not keep the commented-out auto-print`);
   }
   assert(posShow.includes("partials.print-codes") && posShow.includes("@stack('ui-styles')"), 'rst sale invoice must include QR/barcode codes and render the pushed ui styles');
+  // Line totals must ACCUMULATE across items: the legacy '= +$item' typo overwrote the
+  // running total with each row, so multi-item receipts showed only the last item's amount.
+  for(const pf of ['module/Restaurant/views/rst/sales-v2/pos-print.blade.php','module/Restaurant/views/rst/sales-v2/pos-office-print.blade.php','module/Bar/views/bar/sales-v2/pos-print.blade.php','module/Restaurant/views/rst/sales-v2/show.blade.php','module/Bar/views/bar/sales-v2/show.blade.php','module/Restaurant/views/sales/show.blade.php','module/Restaurant/views/kitchen/show.blade.php']) {
+    assert(!fs.readFileSync(pf,'utf8').includes('= +$item'), `${pf} must accumulate line totals with += (the '= +' typo kept only the last item)`);
+  }
 
   // W5 Bar POS v2 (module/Bar/views/bar/sales-v2): twin of Restaurant POS v2
   const barPosCreate=fs.readFileSync('module/Bar/views/bar/sales-v2/create.blade.php','utf8');

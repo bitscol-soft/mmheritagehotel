@@ -139,7 +139,7 @@
                             @endphp
                             @foreach ($sale->items as $key => $item)
                                 @php
-                                    $total_amount = +$item->sales_price;
+                                    $total_amount += $item->sales_price;
                                 @endphp
                                 <tr>
                                     <td>{{ ++$loop->index }}</td>

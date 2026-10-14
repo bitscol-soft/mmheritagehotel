@@ -308,8 +308,8 @@
                         @endphp
                         @foreach ($sale->items->where('is_bar', 1) as $key => $item)
                             @php
-                                $total_amount = +$item->sales_price;
-                                $total_cp     = +$item->item_discount;
+                                $total_amount += $item->sales_price;
+                                $total_cp     += $item->item_discount;
                             @endphp
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
@@ -349,8 +349,8 @@
                             @endphp
                             @foreach ($sale->items->where('is_bar', 0) as $key => $item)
                                 @php
-                                    $total_amount = +$item->sales_price;
-                                    $total_cp     = +$item->item_discount;
+                                    $total_amount += $item->sales_price;
+                                    $total_cp     += $item->item_discount;
 
                                 @endphp
                                 <tr>

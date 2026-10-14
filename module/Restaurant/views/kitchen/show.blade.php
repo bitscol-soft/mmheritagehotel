@@ -130,7 +130,7 @@
                                 order_items --}}
                                 @foreach ($orders->order_items as $key => $item)
                                     @php
-                                        $total_amount = +$item->price;
+                                        $total_amount += $item->price;
                                     @endphp
                                     <tr>
                                         <td>{{ ++$loop->index }}</td>
