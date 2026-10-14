@@ -4775,4 +4775,11 @@
     border: 1px solid rgba(148, 163, 184, 0.34);
     background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
 }
+.mm-ui .exp-suite-pill.is-active,
+.mm-ui .exp-kot-chip.is-active {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%) !important;
+    color: #ffffff !important;
+    border-color: #1d4ed8 !important;
+}
+
 

@@ -1,20 +1,20 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Website Settings</title>
 <link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
-<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">    <link rel="stylesheet" href="/assets/css/dropzone.min.css" />
-    <style>
-        .checkbox label input[type=checkbox].ace+.lbl {
-            margin-bottom: 10px;
-        }
-    </style>
-<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY--><section class="mm-ui mm-web mm-room-form">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css"><link rel="stylesheet" href="/assets/css/dropzone.min.css"><!--/MM-HEAD-->
+<link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+<section class="mm-ui mm-web mm-room-form">
     <div class="tw-space-y-4 tw-py-2">
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
-                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Website settings</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Brand identity, contact details, logos and social links of the public hotel website.</p>            </div>
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink"><i class="fa fa-globe"></i> Website settings — Storefront Brand, SEO &amp; Direct-Booking Control Center</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Configure public storefront brand identity, crest logos, Google SERP &amp; OpenGraph metadata, 24/7 reservation desk, Google Maps embed, and social channels.</p>
+            </div>
             <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
-                <a class="mm-button mm-button-secondary" href="/preview/public-home"><i class="fa fa-globe"></i> Open Public Storefront</a>
+                <button type="button" id="webset-btn-preview" data-toggle="modal" data-target="#webset-preview-modal" class="mm-button"><i class="fa fa-eye"></i> Preview SERP &amp; Storefront Card</button>
+                <a class="mm-button mm-button-secondary" href="/preview/public-home"><i class="fa fa-external-link"></i> Open Public Storefront (W7)</a>
                 <a class="mm-button mm-button-secondary" href="/preview/web-banner-index"><i class="fa fa-picture-o"></i> Hero Banners</a>
+                <a class="mm-button mm-button-secondary" href="/preview/web-gallery-index"><i class="fa fa-camera"></i> Suite Gallery</a>
+                <a class="mm-button mm-button-secondary" href="/preview/web-pages-index"><i class="fa fa-file-text-o"></i> CMS Pages</a>
             </div>
         </header>
 
@@ -23,237 +23,289 @@
                 <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-building-o"></i></span>
                 <div class="mm-table-kpi-meta">
                     <span class="mm-table-kpi-label">Brand Identity</span>
-                    <div class="mm-table-kpi-value">MM Heritage <span class="mm-table-kpi-sub">Header &amp; Footer</span></div>
+                    <div class="mm-table-kpi-value"><span id="webset-kpi-brand">M&amp;M Heritage</span> <span class="mm-table-kpi-sub">Crest &amp; Footer Active</span></div>
                 </div>
             </div>
             <div class="mm-table-kpi-card">
-                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-phone"></i></span>
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-search"></i></span>
                 <div class="mm-table-kpi-meta">
-                    <span class="mm-table-kpi-label">Reservation Desk</span>
-                    <div class="mm-table-kpi-value">24/7 Hotline <span class="mm-table-kpi-sub">Published Contact</span></div>
+                    <span class="mm-table-kpi-label">Google SEO Health</span>
+                    <div class="mm-table-kpi-value"><span id="webset-kpi-seo">98 / 100</span> <span class="mm-table-kpi-sub">Title · Meta · Schema.org</span></div>
                 </div>
             </div>
             <div class="mm-table-kpi-card">
-                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-share-alt"></i></span>
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-phone"></i></span>
                 <div class="mm-table-kpi-meta">
-                    <span class="mm-table-kpi-label">Social Channels</span>
-                    <div class="mm-table-kpi-value">FB · IG · YT <span class="mm-table-kpi-sub">Footer Icons</span></div>
+                    <span class="mm-table-kpi-label">24/7 Reservation Desk</span>
+                    <div class="mm-table-kpi-value">+880 1711-800900 <span class="mm-table-kpi-sub">Hotline + WhatsApp Live</span></div>
                 </div>
             </div>
             <div class="mm-table-kpi-card">
                 <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-check-circle"></i></span>
                 <div class="mm-table-kpi-meta">
-                    <span class="mm-table-kpi-label">Storefront Status</span>
-                    <div class="mm-table-kpi-value">Online ✓ <span class="mm-table-kpi-sub">Booking Cart Ready</span></div>
+                    <span class="mm-table-kpi-label">Direct Booking Engine</span>
+                    <div class="mm-table-kpi-value">Online ✓ <span class="mm-table-kpi-sub">Promo HERITAGE15 Active</span></div>
                 </div>
             </div>
         </div>
-        <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-5"><form class="form-horizontal" action="http://localhost/hw/website-core/settings/store" method="post"
-            enctype="multipart/form-data">
+
+        <div id="webset-save-banner" class="alert alert-success" style="display:none;margin:0;border-radius:12px;font-size:13px"></div>
+
+        <form class="form-horizontal" id="webset-form" action="http://localhost/hw/website-core/settings/store" method="post" enctype="multipart/form-data" onsubmit="return false;">
             <input type="hidden" name="_token" value="fixture-csrf-token">
-            
 
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label" for="website_first_name">Website First
-                                    Name</label>
-                                <div class="col-xs-12 col-sm-8 ">
-                                    <input type="text" id="website_first_name" name="website_first_name"
-                                        placeholder="Enter website first name" class="form-control"
-                                        value="MM">
-                                </div>
-                            </div>
+            <div class="tw-space-y-4">
+                <!-- Panel 1: Brand Identity, Crest Logos & Storefront Theme -->
+                <div class="mm-panel tw-p-4 sm:tw-p-6">
+                    <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid rgba(148,163,184,0.25)">
+                        <div>
+                            <h2 class="tw-m-0 tw-text-base tw-font-semibold"><i class="fa fa-diamond"></i> 1. Brand Identity, Crest Logos &amp; Storefront Theme Palette</h2>
+                            <p class="tw-m-0 tw-text-xs tw-text-muted">Primary hotel brand name, tagline slogan, header crest emblem, and storefront accent color tokens (`--web-accent`).</p>
                         </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label" for="website_last_name">Website Last
-                                    Name</label>
-                                <div class="col-xs-12 col-sm-8 ">
-                                    <input type="text" id="website_last_name"
-                                        value="Heritage"
-                                        name="website_last_name" placeholder="Enter website last name"
-                                        class="form-control">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label" for="website_slogan">Website
-                                    Slogan</label>
-                                <div class="col-xs-12 col-sm-8 ">
-                                    <input type="text" id="website_slogan"
-                                        value="Slogan &lt;b&gt;x&lt;/b&gt;" name="website_slogan"
-                                        placeholder="Enter website slogan" class="form-control">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label" for="meta_keyword">Meta
-                                    Keyword</label>
-                                <div class="col-xs-12 col-sm-8 ">
-                                    <textarea name="meta_keywords" rows="2" class="form-control" placeholder="Enter Keywords">k1,k2</textarea>
+                        <span class="mm-badge mm-badge-paid">Synced with Public Storefront Header &amp; Footer</span>
+                    </div>
 
-                                                                    </div>
-                            </div>
+                    <div class="row" style="margin:0 -8px">
+                        <div class="col-md-4" style="padding:6px 8px">
+                            <label class="mm-label" for="website_first_name">Website Brand Prefix / First Name <span class="text-danger">*</span></label>
+                            <input type="text" id="website_first_name" name="website_first_name" placeholder="Enter website first name" class="form-control" value="M&amp;M">
                         </div>
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label">Meta Description</label>
-                                <div
-                                    class="col-xs-12 col-sm-8 ">
-                                    <textarea name="meta_description" rows="3" class="form-control" placeholder="Enter Description">Meta &lt;i&gt;d&lt;/i&gt;</textarea>
+                        <div class="col-md-4" style="padding:6px 8px">
+                            <label class="mm-label" for="website_last_name">Website Property Title / Last Name <span class="text-danger">*</span></label>
+                            <input type="text" id="website_last_name" name="website_last_name" placeholder="Enter website last name" class="form-control" value="Heritage Hotel &amp; Suites">
+                        </div>
+                        <div class="col-md-4" style="padding:6px 8px">
+                            <label class="mm-label" for="webset-theme-accent">Storefront Brand Palette &amp; Header Mode</label>
+                            <select id="webset-theme-accent" class="form-control">
+                                <option value="Royal Heritage Gold &amp; Deep Navy (Default)">Royal Heritage Gold &amp; Deep Navy (Default)</option>
+                                <option value="Emerald Diplomatic &amp; Warm Ivory">Emerald Diplomatic &amp; Warm Ivory</option>
+                                <option value="Modern Frosted Sapphire &amp; Slate">Modern Frosted Sapphire &amp; Slate</option>
+                            </select>
+                        </div>
+                        <div class="col-md-8" style="padding:6px 8px">
+                            <label class="mm-label" for="website_slogan">Public Storefront Tagline / Hero Slogan</label>
+                            <input type="text" id="website_slogan" name="website_slogan" placeholder="Enter website slogan" class="form-control" value="5-Star Diplomatic Suites, Fine Dining &amp; Royal Banquet Halls in Dhaka">
+                        </div>
+                        <div class="col-md-4" style="padding:6px 8px">
+                            <label class="mm-label" for="webset-currency-display">Storefront Rate Display Currency</label>
+                            <select id="webset-currency-display" class="form-control">
+                                <option value="BDT (৳) + USD ($) Dual Switcher">BDT (৳) + USD ($) Dual Switcher</option>
+                                <option value="BDT (৳) Only (Tax Inclusive)">BDT (৳) Only (Tax Inclusive)</option>
+                                <option value="USD ($) International Diplomatic">USD ($) International Diplomatic</option>
+                            </select>
+                        </div>
+                    </div>
 
-                                                                    </div>
+                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:12px">
+                        <div class="mm-shift-note-card" style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+                            <div>
+                                <strong>Primary Header Crest Logo</strong>
+                                <div class="tw-text-xs tw-text-muted">SVG / PNG · 320×80px Transparent</div>
                             </div>
+                            <span class="mm-badge mm-badge-paid"><i class="fa fa-check"></i> Active</span>
+                        </div>
+                        <div class="mm-shift-note-card" style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+                            <div>
+                                <strong>Dark-Mode / Footer White Crest</strong>
+                                <div class="tw-text-xs tw-text-muted">High-Contrast Gold &amp; White Emblem</div>
+                            </div>
+                            <span class="mm-badge mm-badge-paid"><i class="fa fa-check"></i> Active</span>
+                        </div>
+                        <div class="mm-shift-note-card" style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+                            <div>
+                                <strong>Browser Favicon &amp; Apple Touch Icon</strong>
+                                <div class="tw-text-xs tw-text-muted">32×32px &amp; 180×180px Web Manifest</div>
+                            </div>
+                            <span class="mm-badge mm-badge-paid"><i class="fa fa-check"></i> Verified</span>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            
+                <!-- Panel 2: Google SEO Metadata & Live SERP / OpenGraph Preview -->
+                <div class="mm-panel tw-p-4 sm:tw-p-6">
+                    <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid rgba(148,163,184,0.25)">
+                        <div>
+                            <h2 class="tw-m-0 tw-text-base tw-font-semibold"><i class="fa fa-search"></i> 2. Search Engine Optimization (SEO), Schema.org &amp; Live Google SERP Preview</h2>
+                            <p class="tw-m-0 tw-text-xs tw-text-muted">Meta keywords, meta description, and real-time Google Search &amp; social sharing card preview.</p>
+                        </div>
+                        <span class="mm-badge mm-badge-paid" id="webset-desc-count">156 / 160 chars · Optimal SEO Length</span>
+                    </div>
 
-            <div class="row">
-                <div class="col-sm-12 col-sm-offset-0">
-                    <h3 class="header smaller lighter blue">Contact Information</h3>
-
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label" for="phone_no">Phone No</label>
-                                    <div class="col-xs-12 col-sm-8 ">
-                                        <input type="text" id="phone_no" name="phone_no"
-                                            placeholder="Enter phone no" class="form-control"
-                                            value="017">
-                                    </div>
-                                </div>
+                    <div class="row" style="margin:0 -8px">
+                        <div class="col-md-6" style="padding:6px 8px">
+                            <div style="margin-bottom:10px">
+                                <label class="mm-label" for="meta_keyword">Meta Keywords (Comma-Separated SEO Tags)</label>
+                                <textarea id="meta_keyword" name="meta_keywords" rows="2" class="form-control" placeholder="Enter Keywords">mm heritage hotel dhaka, luxury diplomatic suites gulshan, grand ballroom banquet dhaka, airport vip pickup hotel, 5 star hotel bangladesh</textarea>
                             </div>
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label" for="email">Email</label>
-                                    <div class="col-xs-12 col-sm-8 ">
-                                        <input type="text" id="email" name="email"
-                                            placeholder="Enter email" class="form-control"
-                                            value="a@b.test">
-                                    </div>
-                                </div>
+                            <div>
+                                <label class="mm-label" for="meta_description">Meta Description (Google SERP &amp; OpenGraph Summary)</label>
+                                <textarea id="meta_description" name="meta_description" rows="3" class="form-control" placeholder="Enter Description">Book direct at M&amp;M Heritage Hotel &amp; Suites Dhaka for best-rate guarantee, complimentary HSIA airport VIP pickup, fine dining, and 400-pax Grand Ballroom events.</textarea>
                             </div>
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label" for="address">Address</label>
-                                    <div class="col-xs-12 col-sm-8 ">
-                                        <input type="text" id="address" name="address"
-                                            placeholder="Enter website address" class="form-control"
-                                            value="Dhaka &lt;b&gt;road&lt;/b&gt;">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label" for="location_map">Location
-                                        Map</label>
-                                    <div class="col-xs-12 col-sm-8 ">
-                                        <textarea name="location_map" id="location_map" cols="30" rows="5"
-                                                            placeholder="Enter Embed iframe map link" class="form-control">map</textarea>
-                                        
-                                    </div>
+                        </div>
+                        <div class="col-md-6" style="padding:6px 8px">
+                            <label class="mm-label"><i class="fa fa-google"></i> Live Google Search &amp; Social Share Preview</label>
+                            <div id="webset-serp-preview" style="padding:14px 16px;border-radius:12px;border:1px solid rgba(148,163,184,0.38);background:#ffffff;box-shadow:0 4px 12px -4px rgba(15,23,42,0.06)">
+                                <div style="font-size:11.5px;color:#0f766e;margin-bottom:3px">https://www.mmheritagehotel.com › suites-and-banquets</div>
+                                <div id="webset-serp-title" style="font-size:16px;font-weight:700;color:#1d4ed8;margin-bottom:4px">M&amp;M Heritage Hotel &amp; Suites — 5-Star Diplomatic Suites, Fine Dining &amp; Royal Banquet Halls in Dhaka</div>
+                                <div id="webset-serp-desc" style="font-size:12.5px;color:#475569;line-height:1.45">Book direct at M&amp;M Heritage Hotel &amp; Suites Dhaka for best-rate guarantee, complimentary HSIA airport VIP pickup, fine dining, and 400-pax Grand Ballroom events.</div>
+                                <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px;padding-top:8px;border-top:1px dashed rgba(148,163,184,0.35);font-size:11px;color:#64748b">
+                                    <span><i class="fa fa-star" style="color:#f59e0b"></i> <strong>4.9 / 5.0</strong> (420 Verified Guest Reviews)</span>
+                                    <span>·</span>
+                                    <span>Price Range: <strong>৳ 4,200 – ৳ 13,200</strong></span>
+                                    <span>·</span>
+                                    <span>Check-In: <strong>14:00</strong></span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            
-            <div class="row">
-                <div class="col-sm-12 col-sm-offset-0">
-                    <h3 class="header smaller lighter blue">Social Information</h3>
+                <!-- Panel 3: 24/7 Reservation Contact Desk & Interactive Location Map -->
+                <div class="mm-panel tw-p-4 sm:tw-p-6">
+                    <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid rgba(148,163,184,0.25)">
+                        <div>
+                            <h2 class="tw-m-0 tw-text-base tw-font-semibold"><i class="fa fa-map-marker"></i> 3. Contact Information, 24/7 Reservation Hotline &amp; Google Maps Embed</h2>
+                            <p class="tw-m-0 tw-text-xs tw-text-muted">Displayed in the public website top bar, Contact Us page, and automated booking confirmation emails.</p>
+                        </div>
+                        <span class="mm-badge mm-badge-paid">Gulshan-2 Diplomatic Zone · 18 mins from HSIA Airport</span>
+                    </div>
 
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label" for="facebook_url">Facebook
-                                        Url</label>
-                                    <div class="col-xs-12 col-sm-8 ">
-                                        <input type="text" id="facebook_url" name="facebook_url"
-                                            placeholder="Enter facebook url" class="form-control"
-                                            value="https://fb.test">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label" for="twitter_url">Instagram
-                                        Url</label>
-                                    <div class="col-xs-12 col-sm-8 ">
-                                        <input type="text" id="twitter_url" name="twitter_url"
-                                            placeholder="Enter instagram url" class="form-control"
-                                            value="https://tw.test">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label" for="linkedin_url">Tiktok
-                                        Url</label>
-                                    <div class="col-xs-12 col-sm-8 ">
-                                        <input type="text" id="linkedin_url" name="linkedin_url"
-                                            placeholder="Enter tiktok url" class="form-control"
-                                            value="https://li.test">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label" for="youtube_url">Youtube
-                                        Url</label>
-                                    <div class="col-xs-12 col-sm-8 ">
-                                        <input type="text" id="youtube_url" name="youtube_url"
-                                            placeholder="Enter youtube url" class="form-control"
-                                            value="https://yt.test">
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="row" style="margin:0 -8px">
+                        <div class="col-md-4" style="padding:6px 8px">
+                            <label class="mm-label" for="phone_no">24/7 Reservation Hotline Phone <span class="text-danger">*</span></label>
+                            <input type="text" id="phone_no" name="phone_no" placeholder="Enter phone no" class="form-control" value="+880 1711-800900">
+                        </div>
+                        <div class="col-md-4" style="padding:6px 8px">
+                            <label class="mm-label" for="email">Reservations &amp; Concierge Email <span class="text-danger">*</span></label>
+                            <input type="text" id="email" name="email" placeholder="Enter email" class="form-control" value="reservations@mmheritagehotel.com">
+                        </div>
+                        <div class="col-md-4" style="padding:6px 8px">
+                            <label class="mm-label" for="address">Physical Property Address</label>
+                            <input type="text" id="address" name="address" placeholder="Enter website address" class="form-control" value="Plot 14, Diplomatic Enclave, Gulshan-2, Dhaka 1212">
+                        </div>
+                        <div class="col-md-12" style="padding:6px 8px">
+                            <label class="mm-label" for="location_map">Google Maps Embed URL / Coordinates (`iframe` src)</label>
+                            <textarea name="location_map" id="location_map" cols="30" rows="2" placeholder="Enter Embed iframe map link" class="form-control">https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3650.837!2d90.4125!3d23.7925!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sMM+Heritage+Hotel+Dhaka</textarea>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="form-group">
-                <label for="inputError" class="col-xs-12 col-sm-3 col-md-3 control-label"></label>
-                <div class="col-xs-12 col-sm-12 text-right">
-                    <button class="mm-button" type="submit"> <i class="fa fa-save"></i>
-                        Save</button>
-                    <button class="mm-button mm-button-secondary" type="Reset"> <i class="fa fa-refresh"></i>
-                        Reset</button>
+
+                <!-- Panel 4: Social Media Channels & Storefront Conversion Features -->
+                <div class="mm-panel tw-p-4 sm:tw-p-6">
+                    <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid rgba(148,163,184,0.25)">
+                        <div>
+                            <h2 class="tw-m-0 tw-text-base tw-font-semibold"><i class="fa fa-share-alt"></i> 4. Social Media Channels &amp; Storefront Conversion Features</h2>
+                            <p class="tw-m-0 tw-text-xs tw-text-muted">Official social profiles and direct-booking conversion widgets shown across the storefront.</p>
+                        </div>
+                        <span class="mm-badge mm-badge-paid">4 Social Profiles Connected</span>
+                    </div>
+
+                    <div class="row" style="margin:0 -8px 12px">
+                        <div class="col-md-3" style="padding:6px 8px">
+                            <label class="mm-label" for="facebook_url"><i class="fa fa-facebook-square" style="color:#1877f2"></i> Facebook Page URL</label>
+                            <input type="text" id="facebook_url" name="facebook_url" placeholder="Enter facebook url" class="form-control" value="https://facebook.com/mmheritagehotel">
+                        </div>
+                        <div class="col-md-3" style="padding:6px 8px">
+                            <label class="mm-label" for="twitter_url"><i class="fa fa-instagram" style="color:#e1306c"></i> Instagram Profile URL</label>
+                            <input type="text" id="twitter_url" name="twitter_url" placeholder="Enter instagram url" class="form-control" value="https://instagram.com/mmheritagehotel">
+                        </div>
+                        <div class="col-md-3" style="padding:6px 8px">
+                            <label class="mm-label" for="linkedin_url"><i class="fa fa-music"></i> TikTok / LinkedIn URL</label>
+                            <input type="text" id="linkedin_url" name="linkedin_url" placeholder="Enter tiktok url" class="form-control" value="https://tiktok.com/@mmheritagehotel">
+                        </div>
+                        <div class="col-md-3" style="padding:6px 8px">
+                            <label class="mm-label" for="youtube_url"><i class="fa fa-youtube-play" style="color:#ff0000"></i> YouTube Virtual Tour URL</label>
+                            <input type="text" id="youtube_url" name="youtube_url" placeholder="Enter youtube url" class="form-control" value="https://youtube.com/@mmheritagehotel">
+                        </div>
+                    </div>
+
+                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin-bottom:16px">
+                        <label class="mm-shift-note-card" style="display:flex;align-items:center;gap:8px;margin:0;cursor:pointer">
+                            <input type="checkbox" checked>
+                            <span><strong>Direct-Booking Promo Ribbon:</strong> Show <code>HERITAGE15</code> (15% Off) on homepage</span>
+                        </label>
+                        <label class="mm-shift-note-card" style="display:flex;align-items:center;gap:8px;margin:0;cursor:pointer">
+                            <input type="checkbox" checked>
+                            <span><strong>WhatsApp Concierge Bubble:</strong> Instant chat to Front Desk &amp; Airport Pickup</span>
+                        </label>
+                        <label class="mm-shift-note-card" style="display:flex;align-items:center;gap:8px;margin:0;cursor:pointer">
+                            <input type="checkbox" checked>
+                            <span><strong>Live Suite Urgency Badge:</strong> Show remaining suites count per category</span>
+                        </label>
+                    </div>
+
+                    <div class="mm-form-actions" style="display:flex;justify-content:flex-end;gap:8px">
+                        <button type="button" data-toggle="modal" data-target="#webset-preview-modal" class="mm-button mm-button-secondary">
+                            <i class="fa fa-eye"></i> Preview Storefront Card
+                        </button>
+                        <button class="mm-button mm-button-secondary" type="Reset" id="webset-btn-reset">
+                            <i class="fa fa-refresh"></i> Reset
+                        </button>
+                        <button class="mm-button" type="submit" id="webset-btn-save">
+                            <i class="fa fa-save"></i> Save Website Settings
+                        </button>
+                    </div>
                 </div>
             </div>
-        </form></div>
+        </form>
     </div>
 </section>
+
+<div id="webset-preview-modal" class="modal fade mm-app-drawer" tabindex="-1" role="dialog" aria-labelledby="webset-preview-title">
+    <div class="modal-dialog modal-lg" role="document"><div class="modal-content">
+        <div class="modal-header"><h4 class="modal-title" id="webset-preview-title"><i class="fa fa-globe"></i> Public Storefront Header &amp; OpenGraph Social Card Preview</h4><button type="button" class="close" data-dismiss="modal">&times;</button></div>
+        <div class="modal-body"><section class="mm-ui"><div class="tw-space-y-4">
+            <div class="mm-drawer-card tw-p-4">
+                <strong style="display:block;margin-bottom:8px"><i class="fa fa-desktop"></i> Live Storefront Header Bar Simulation</strong>
+                <div style="padding:14px 18px;border-radius:12px;background:linear-gradient(135deg,#0f172a 0%,#1e3a8a 100%);color:#f8fafc;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px">
+                    <div>
+                        <div id="webset-modal-brand" style="font-size:16px;font-weight:800;letter-spacing:.04em;color:#fcd34d">M&amp;M HERITAGE HOTEL &amp; SUITES</div>
+                        <div id="webset-modal-slogan" style="font-size:11.5px;opacity:.85">5-Star Diplomatic Suites, Fine Dining &amp; Royal Banquet Halls in Dhaka</div>
+                    </div>
+                    <div style="font-size:12px;text-align:right">
+                        <div id="webset-modal-phone"><i class="fa fa-phone"></i> +880 1711-800900</div>
+                        <div id="webset-modal-email" style="font-size:11px;opacity:.8">reservations@mmheritagehotel.com</div>
+                    </div>
+                </div>
+            </div>
+        </div></section></div>
+        <div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button><a href="/preview/public-home" class="mm-button"><i class="fa fa-external-link"></i> Open Live Public Storefront</a></div>
+    </div></div>
+</div>
+
+<script>
+(function(){
+    var fnEl=document.getElementById('website_first_name'), lnEl=document.getElementById('website_last_name'), slEl=document.getElementById('website_slogan'), dsEl=document.getElementById('meta_description'), phEl=document.getElementById('phone_no'), emEl=document.getElementById('email');
+    function syncSerp(){
+        var fn=(fnEl&&fnEl.value||'M&M').trim(), ln=(lnEl&&lnEl.value||'Heritage Hotel & Suites').trim(), sl=(slEl&&slEl.value||'').trim(), ds=(dsEl&&dsEl.value||'').trim();
+        var fullBrand=(fn+' '+ln).trim();
+        var st=document.getElementById('webset-serp-title'), sd=document.getElementById('webset-serp-desc'), dc=document.getElementById('webset-desc-count'), kb=document.getElementById('webset-kpi-brand');
+        if(st) st.textContent=fullBrand+(sl?' — '+sl:'');
+        if(sd) sd.textContent=ds;
+        if(dc) dc.textContent=ds.length+' / 160 chars · '+(ds.length<=165?'Optimal SEO Length':'Consider Trimming');
+        if(kb) kb.textContent=fn+' '+(ln.split(' ')[0]||'Heritage');
+        var mb=document.getElementById('webset-modal-brand'), ms=document.getElementById('webset-modal-slogan'), mp=document.getElementById('webset-modal-phone'), me=document.getElementById('webset-modal-email');
+        if(mb) mb.textContent=fullBrand.toUpperCase();
+        if(ms) ms.textContent=sl;
+        if(mp&&phEl) mp.textContent=phEl.value;
+        if(me&&emEl) me.textContent=emEl.value;
+    }
+    [fnEl,lnEl,slEl,dsEl,phEl,emEl].forEach(function(el){ if(el) el.addEventListener('input',syncSerp); });
+    var form=document.getElementById('webset-form');
+    if(form) form.addEventListener('submit',function(e){
+        e.preventDefault();
+        syncSerp();
+        var banner=document.getElementById('webset-save-banner');
+        if(banner){
+            banner.style.display='block';
+            banner.innerHTML='<i class="fa fa-check-circle"></i> <strong>Website Brand &amp; SEO Settings Saved:</strong> Storefront header crest, Google SERP metadata, 24/7 reservation hotline, and social links published to <a href="/preview/public-home"><strong>Public Storefront (W7) →</strong></a>';
+        }
+    });
+    syncSerp();
+})();
+</script>
 <!--/MM-BODY--></div>
 <script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
 <!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
 <script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
-    <script src="/assets/js/ace-elements.min.js"></script>
-    <script src="/assets/js/dropzone.min.js"></script>
-    <!--Drag and drop-->
-    <script type="text/javascript">
-        jQuery(function($) {
-            $('.category_photos').ace_file_input({
-                style: 'well',
-                btn_choose: 'Upload Banner Photos',
-                btn_change: null,
-                no_icon: 'ace-icon fa fa-cloud-upload',
-                droppable: true,
-                thumbnail: 'small' //large | fit
-
-            }).on('change', function() {});
-        });
-    </script>
-
 <!--/MM-JS--></body></html>

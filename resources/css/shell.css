@@ -2874,6 +2874,16 @@
     border-color: #60a5fa;
     color: #bfdbfe;
 }
+.mm-shell.mm-dark .mm-ui #webset-serp-preview {
+    background: rgba(15, 23, 42, 0.85) !important;
+    border-color: rgba(148, 163, 184, 0.25) !important;
+}
+.mm-shell.mm-dark .mm-ui #webset-serp-title {
+    color: #93c5fd !important;
+}
+.mm-shell.mm-dark .mm-ui #webset-serp-desc {
+    color: #cbd5e1 !important;
+}
 @media print {
     .mm-shell .mm-top-subnav {
         display: none !important;

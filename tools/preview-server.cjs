@@ -2001,57 +2001,114 @@ function menuLinks(page,currentPath){
    '<div class="modal-dialog modal-lg" role="document"><div class="modal-content">'+
     '<div class="modal-header"><h4 class="modal-title" id="mm-express-drawer-title"><i class="fa fa-plus-circle"></i> Express Walk-In Hold, 80mm KOT &amp; GL Voucher Quick-Create (Alt+Q)</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button></div>'+
     '<div class="modal-body"><section class="mm-ui"><div class="tw-space-y-4">'+
+     '<div class="mm-drawer-kpi-grid" aria-label="Express command drawer KPIs">'+
+      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-bed"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Vacant Ready Suites</span><div class="mm-table-kpi-value"><span id="exp-kpi-suites">6 Ready</span> <span class="mm-table-kpi-sub">#104 · #202 · #304 · #403</span></div></div></div>'+
+      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-fire"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">80mm KDS &amp; BOT Pass</span><div class="mm-table-kpi-value">3 Stations <span class="mm-table-kpi-sub">Kitchen · Bar · Room Svc</span></div></div></div>'+
+      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-calculator"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Auto-GL &amp; Treasury</span><div class="mm-table-kpi-value">৳ 214,200 <span class="mm-table-kpi-sub">Dr = Cr Real-Time Sync</span></div></div></div>'+
+      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-bolt"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Session Express Log</span><div class="mm-table-kpi-value"><span id="mm-express-log-count">3</span> Posted <span class="mm-table-kpi-sub">Instant Folio Linked</span></div></div></div>'+
+     '</div>'+
      '<div style="display:flex;flex-wrap:wrap;gap:6px" id="mm-express-tab-group">'+
       '<button type="button" class="mm-role-pill is-active" data-express-tab="walkin"><i class="fa fa-bed"></i> 1. Express Walk-In Room Hold</button>'+
-      '<button type="button" class="mm-role-pill" data-express-tab="pos"><i class="fa fa-cutlery"></i> 2. Express 80mm KOT Order</button>'+
+      '<button type="button" class="mm-role-pill" data-express-tab="pos"><i class="fa fa-cutlery"></i> 2. Express 80mm KOT / BOT Order</button>'+
       '<button type="button" class="mm-role-pill" data-express-tab="voucher"><i class="fa fa-calculator"></i> 3. Instant GL / Petty Cash Voucher</button>'+
+      '<button type="button" class="mm-role-pill" data-express-tab="banquet"><i class="fa fa-glass"></i> 4. Express Banquet Hall Hold</button>'+
      '</div>'+
      '<div id="mm-express-confirm-banner" class="alert alert-success" style="display:none;margin:0;border-radius:10px;font-size:12.5px"></div>'+
      '<div class="mm-drawer-card tw-p-4" data-express-pane="walkin">'+
-      '<form id="mm-express-walkin-form" onsubmit="return false;" class="tw-space-y-3">'+
-       '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">'+
-        '<div><label class="mm-label">Available Suite</label><select id="exp-walkin-room" class="form-control"><option value="Suite #104 (Deluxe Double · ৳ 4,200)">Suite #104 — Deluxe Double (৳ 4,200/night)</option><option value="Suite #202 (Heritage Suite · ৳ 6,800)">Suite #202 — Heritage Suite (৳ 6,800/night)</option><option value="Suite #304 (Diplomatic Suite · ৳ 8,900)">Suite #304 — Diplomatic Suite (৳ 8,900/night)</option></select></div>'+
-        '<div><label class="mm-label">Guest Full Name</label><input type="text" id="exp-walkin-guest" class="form-control" value="Dr. Arman Hossain" required></div>'+
-        '<div><label class="mm-label">Stay Nights &amp; Advance (৳)</label><div style="display:grid;grid-template-columns:80px 1fr;gap:8px"><input type="number" id="exp-walkin-nights" class="form-control" value="2" min="1" max="30"><input type="number" id="exp-walkin-adv" class="form-control" value="5000"></div></div>'+
+      '<div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px">'+
+       '<strong><i class="fa fa-key"></i> 1. Instant Walk-In Suite Hold, Tariff Preview &amp; RFID Keycard Issue</strong>'+
+       '<div style="display:flex;flex-wrap:wrap;gap:5px" id="exp-suite-pills">'+
+        '<button type="button" class="mm-role-pill is-active exp-suite-pill" data-suite-val="Suite #104 (Deluxe Double · ৳ 4,200)" data-suite-rate="4200">#104 Deluxe (৳ 4,200)</button>'+
+        '<button type="button" class="mm-role-pill exp-suite-pill" data-suite-val="Suite #202 (Heritage Suite · ৳ 6,800)" data-suite-rate="6800">#202 Heritage (৳ 6,800)</button>'+
+        '<button type="button" class="mm-role-pill exp-suite-pill" data-suite-val="Suite #304 (Diplomatic Suite · ৳ 8,900)" data-suite-rate="8900">#304 Diplomatic (৳ 8,900)</button>'+
+        '<button type="button" class="mm-role-pill exp-suite-pill" data-suite-val="Suite #403 (Royal Penthouse · ৳ 13,200)" data-suite-rate="13200">#403 Penthouse (৳ 13,200)</button>'+
        '</div>'+
-       '<div style="display:flex;wrap:wrap;justify-content:space-between;align-items:center;gap:8px">'+
+      '</div>'+
+      '<form id="mm-express-walkin-form" onsubmit="return false;" class="tw-space-y-3">'+
+       '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:10px">'+
+        '<div><label class="mm-label">Available Clean Suite</label><select id="exp-walkin-room" class="form-control"><option value="Suite #104 (Deluxe Double · ৳ 4,200)" data-rate="4200">Suite #104 — Deluxe Double (৳ 4,200/N)</option><option value="Suite #202 (Heritage Suite · ৳ 6,800)" data-rate="6800">Suite #202 — Heritage Suite (৳ 6,800/N)</option><option value="Suite #304 (Diplomatic Suite · ৳ 8,900)" data-rate="8900">Suite #304 — Diplomatic Suite (৳ 8,900/N)</option><option value="Suite #403 (Royal Penthouse · ৳ 13,200)" data-rate="13200">Suite #403 — Royal Penthouse (৳ 13,200/N)</option></select></div>'+
+        '<div><label class="mm-label">Guest Full Name</label><input type="text" id="exp-walkin-guest" class="form-control" value="Dr. Arman Hossain" required></div>'+
+        '<div><label class="mm-label">Mobile &amp; Passport / NID</label><input type="text" id="exp-walkin-phone" class="form-control" value="+880 1711-445566 · NID Verified"></div>'+
+        '<div><label class="mm-label">Stay Nights &amp; Advance (৳)</label><div style="display:grid;grid-template-columns:75px 1fr;gap:6px"><input type="number" id="exp-walkin-nights" class="form-control text-center" value="2" min="1" max="30"><input type="number" id="exp-walkin-adv" class="form-control text-right" value="5000"></div></div>'+
+       '</div>'+
+       '<div class="mm-shift-note-card" id="exp-walkin-calc-strip" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;font-size:12px">'+
+        '<span><i class="fa fa-calculator"></i> <strong>Live Folio Estimate:</strong> <span id="exp-walkin-est-text">2 Nights × ৳ 4,200 + 10% VAT = <strong>৳ 9,240</strong> · Advance: <strong>৳ 5,000</strong> · Net Due: <strong>৳ 4,240</strong></span></span>'+
+        '<span class="mm-badge mm-badge-paid"><i class="fa fa-key"></i> 2 Mifare RFID Keys Staged</span>'+
+       '</div>'+
+       '<div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px">'+
         '<a href="/preview/booking-next" class="mm-button mm-button-secondary"><i class="fa fa-magic"></i> Open Full 3-Step Booking Wizard →</a>'+
-        '<button type="submit" class="mm-button"><i class="fa fa-check"></i> Create Walk-In Room Hold</button>'+
+        '<button type="submit" id="exp-walkin-submit" class="mm-button"><i class="fa fa-check"></i> Create Walk-In Room Hold &amp; Encode Key</button>'+
        '</div>'+
       '</form>'+
      '</div>'+
      '<div class="mm-drawer-card tw-p-4" data-express-pane="pos" style="display:none">'+
-      '<form id="mm-express-pos-form" onsubmit="return false;" class="tw-space-y-3">'+
-       '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">'+
-        '<div><label class="mm-label">F&amp;B Outlet</label><select id="exp-pos-outlet" class="form-control"><option value="Heritage Dining Restaurant">Heritage Dining Restaurant</option><option value="Skyline Lounge Bar">Skyline Lounge Bar</option><option value="In-Room Dining (Room Charge)">In-Room Dining (Room Charge)</option></select></div>'+
-        '<div><label class="mm-label">Target Suite / Table</label><select id="exp-pos-target" class="form-control"><option value="Suite #204 (Tanvir Ahmed)">Suite #204 — Tanvir Ahmed</option><option value="Suite #301 (Brig. Gen. Mahmudul)">Suite #301 — Brig. Gen. Mahmudul</option><option value="Table T-04 (Main Dining)">Table T-04 — Main Dining</option></select></div>'+
-        '<div><label class="mm-label">Menu Item / Platter</label><select id="exp-pos-item" class="form-control"><option value="Royal Heritage Mezze Platter (৳ 1,850)">Royal Heritage Mezze Platter (৳ 1,850)</option><option value="Grilled Norwegian Salmon (৳ 2,400)">Grilled Norwegian Salmon (৳ 2,400)</option><option value="Artisan Espresso &amp; Pastry Duo (৳ 680)">Artisan Espresso &amp; Pastry Duo (৳ 680)</option></select></div>'+
+      '<div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px">'+
+       '<strong><i class="fa fa-fire"></i> 2. Instant 80mm Thermal KOT / BOT Kitchen &amp; Bar Order Dispatch</strong>'+
+       '<div style="display:flex;flex-wrap:wrap;gap:5px" id="exp-kot-chips">'+
+        '<button type="button" class="mm-role-pill is-active exp-kot-chip" data-kot-item="Royal Heritage Mezze Platter (৳ 1,850)">Royal Mezze (৳ 1,850)</button>'+
+        '<button type="button" class="mm-role-pill exp-kot-chip" data-kot-item="Grilled Norwegian Salmon (৳ 2,400)">Grilled Salmon (৳ 2,400)</button>'+
+        '<button type="button" class="mm-role-pill exp-kot-chip" data-kot-item="Kacchi Biriyani Royal Platter (৳ 1,650)">Royal Kacchi (৳ 1,650)</button>'+
+        '<button type="button" class="mm-role-pill exp-kot-chip" data-kot-item="Artisan Espresso &amp; Pastry Duo (৳ 680)">Espresso Duo (৳ 680)</button>'+
        '</div>'+
-       '<div style="display:flex;wrap:wrap;justify-content:space-between;align-items:center;gap:8px">'+
-        '<a href="/preview/pos-kot-print" class="mm-button mm-button-secondary"><i class="fa fa-print"></i> View 80mm Thermal KOT →</a>'+
-        '<button type="submit" class="mm-button"><i class="fa fa-fire"></i> Fire Instant 80mm KOT to Kitchen</button>'+
+      '</div>'+
+      '<form id="mm-express-pos-form" onsubmit="return false;" class="tw-space-y-3">'+
+       '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:10px">'+
+        '<div><label class="mm-label">F&amp;B Outlet &amp; KDS Pass</label><select id="exp-pos-outlet" class="form-control"><option value="Heritage Dining Restaurant">Heritage Dining Restaurant (Hot Pass)</option><option value="Skyline Lounge Bar">Skyline Lounge Bar (BOT Pass)</option><option value="In-Room Dining (Room Charge)">In-Room Dining (24/7 Butler Pass)</option></select></div>'+
+        '<div><label class="mm-label">Target Suite / Dining Table</label><select id="exp-pos-target" class="form-control"><option value="Suite #204 (Tanvir Ahmed)">Suite #204 — Tanvir Ahmed (Window A)</option><option value="Suite #301 (Brig. Gen. Mahmudul)">Suite #301 — Brig. Gen. Mahmudul</option><option value="Suite #401 (Ambassador Kenji Sato)">Suite #401 — Ambassador Kenji Sato</option><option value="Table T-04 (Main Dining)">Table T-04 — Main Dining (6 Covers)</option></select></div>'+
+        '<div><label class="mm-label">Menu Platter / Beverage</label><select id="exp-pos-item" class="form-control"><option value="Royal Heritage Mezze Platter (৳ 1,850)">Royal Heritage Mezze Platter (৳ 1,850)</option><option value="Grilled Norwegian Salmon (৳ 2,400)">Grilled Norwegian Salmon (৳ 2,400)</option><option value="Kacchi Biriyani Royal Platter (৳ 1,650)">Kacchi Biriyani Royal Platter (৳ 1,650)</option><option value="Artisan Espresso &amp; Pastry Duo (৳ 680)">Artisan Espresso &amp; Pastry Duo (৳ 680)</option></select></div>'+
+        '<div><label class="mm-label">Qty &amp; Firing Priority</label><div style="display:grid;grid-template-columns:70px 1fr;gap:6px"><input type="number" id="exp-pos-qty" class="form-control text-center" value="1" min="1" max="20"><select id="exp-pos-priority" class="form-control"><option value="Fire Now (Course 1)">Fire Now (Course 1)</option><option value="VIP Priority Rush">VIP Priority Rush</option><option value="Hold for Main">Hold for Main</option></select></div></div>'+
+       '</div>'+
+       '<div class="mm-shift-note-card" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;font-size:12px">'+
+        '<span><i class="fa fa-print"></i> <strong>80mm Thermal KOT Slip Preview:</strong> <code id="exp-kot-preview-text">KOT #1055 · Heritage Dining → Suite #204 · 1× Royal Heritage Mezze Platter (৳ 1,850)</code></span>'+
+        '<span class="mm-badge mm-badge-paid">Auto-Posts to Guest Folio</span>'+
+       '</div>'+
+       '<div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px">'+
+        '<div style="display:flex;gap:6px"><a href="/preview/pos-kot-print" class="mm-button mm-button-secondary"><i class="fa fa-print"></i> 80mm KOT Ticket →</a><a href="/preview/pos-unified" class="mm-button mm-button-secondary"><i class="fa fa-cutlery"></i> Unified POS →</a></div>'+
+        '<button type="submit" id="exp-pos-submit" class="mm-button"><i class="fa fa-fire"></i> Fire Instant 80mm KOT to Kitchen</button>'+
        '</div>'+
       '</form>'+
      '</div>'+
      '<div class="mm-drawer-card tw-p-4" data-express-pane="voucher" style="display:none">'+
+      '<div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px">'+
+       '<strong><i class="fa fa-book"></i> 3. Instant Double-Entry GL, Guest Advance &amp; Petty Cash Voucher</strong>'+
+       '<span class="mm-badge mm-badge-paid" id="exp-vch-balance-badge">Double-Entry Balanced: Dr ৳ 8,500 = Cr ৳ 8,500 ✓</span>'+
+      '</div>'+
       '<form id="mm-express-vch-form" onsubmit="return false;" class="tw-space-y-3">'+
-       '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">'+
-        '<div><label class="mm-label">Voucher Type</label><select id="exp-vch-type" class="form-control"><option value="Receive Voucher (Guest Advance)">Receive Voucher (Guest Advance)</option><option value="Payment Voucher (Petty Cash)">Payment Voucher (Petty Cash)</option><option value="Contra Voucher (Cash to Bank)">Contra Voucher (Cash to Bank)</option></select></div>'+
-        '<div><label class="mm-label">Ledger Account Head</label><select id="exp-vch-head" class="form-control"><option value="Cash in Hand — Front Desk">Cash in Hand — Front Desk</option><option value="City Bank Corporate A/C">City Bank Corporate A/C</option><option value="bKash Merchant Settlement">bKash Merchant Settlement</option></select></div>'+
-        '<div><label class="mm-label">Voucher Amount (৳)</label><input type="number" id="exp-vch-amt" class="form-control" value="8500" required></div>'+
+       '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:10px">'+
+        '<div><label class="mm-label">Voucher Type</label><select id="exp-vch-type" class="form-control"><option value="Receive Voucher (Guest Advance)">Receive Voucher (Guest Advance)</option><option value="Payment Voucher (Petty Cash)">Payment Voucher (Petty Cash)</option><option value="Contra Voucher (Cash to Bank)">Contra Voucher (Cash to Bank)</option><option value="Journal Adjustment (Folio/AR)">Journal Adjustment (Folio/AR)</option></select></div>'+
+        '<div><label class="mm-label">Debit (Dr) Ledger Head</label><select id="exp-vch-dr" class="form-control"><option value="1010 · Cash in Hand — Front Desk">1010 · Cash in Hand — Front Desk</option><option value="1020 · City Bank Corporate A/C">1020 · City Bank Corporate A/C</option><option value="5040 · Housekeeping &amp; F&amp;B Supplies">5040 · Housekeeping &amp; F&amp;B Supplies</option></select></div>'+
+        '<div><label class="mm-label">Credit (Cr) Ledger Head</label><select id="exp-vch-head" class="form-control"><option value="Cash in Hand — Front Desk">2010 · Guest Advance Liability</option><option value="City Bank Corporate A/C">1040 · Corporate City Ledger AR</option><option value="bKash Merchant Settlement">1015 · bKash Merchant Clearing</option></select></div>'+
+        '<div><label class="mm-label">Amount (৳) &amp; Cost Center</label><div style="display:grid;grid-template-columns:110px 1fr;gap:6px"><input type="number" id="exp-vch-amt" class="form-control text-right" value="8500" required><input type="text" id="exp-vch-narration" class="form-control" value="Suite #204 Advance"></div></div>'+
        '</div>'+
-       '<div style="display:flex;wrap:wrap;justify-content:space-between;align-items:center;gap:8px">'+
-        '<a href="/preview/acc-receives" class="mm-button mm-button-secondary"><i class="fa fa-book"></i> Open Voucher Register →</a>'+
-        '<button type="submit" class="mm-button"><i class="fa fa-check"></i> Post Instant GL Voucher</button>'+
+       '<div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px">'+
+        '<div style="display:flex;gap:6px"><a href="/preview/acc-receives" class="mm-button mm-button-secondary"><i class="fa fa-book"></i> Receive Vouchers →</a><a href="/preview/acc-journals" class="mm-button mm-button-secondary"><i class="fa fa-balance-scale"></i> Journal Register →</a></div>'+
+        '<button type="submit" id="exp-vch-submit" class="mm-button"><i class="fa fa-check"></i> Post Instant Balanced GL Voucher</button>'+
+       '</div>'+
+      '</form>'+
+     '</div>'+
+     '<div class="mm-drawer-card tw-p-4" data-express-pane="banquet" style="display:none">'+
+      '<div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px">'+
+       '<strong><i class="fa fa-glass"></i> 4. Express Banquet &amp; Conference Hall Tentative Hold</strong>'+
+       '<span class="mm-badge mm-badge-paid">Instant BEO Queue</span>'+
+      '</div>'+
+      '<form id="mm-express-bq-form" onsubmit="return false;" class="tw-space-y-3">'+
+       '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:10px">'+
+        '<div><label class="mm-label">Venue Hall</label><select id="exp-bq-hall" class="form-control"><option value="Grand Ballroom (#BH-101 · 400 Pax)">Grand Ballroom (#BH-101 · 400 Pax)</option><option value="Heritage Banquet Hall (#BH-102 · 220 Pax)">Heritage Banquet Hall (#BH-102 · 220 Pax)</option><option value="Executive Boardroom (#BH-201 · 60 Pax)">Executive Boardroom (#BH-201 · 60 Pax)</option></select></div>'+
+        '<div><label class="mm-label">Organizer / Corporate Sponsor</label><input type="text" id="exp-bq-host" class="form-control" value="UNICEF Annual Summit · Tanvir Ahmed"></div>'+
+        '<div><label class="mm-label">Event Date &amp; Expected Pax</label><div style="display:grid;grid-template-columns:1fr 85px;gap:6px"><input type="text" id="exp-bq-date" class="form-control" value="2026-10-18 · Evening"><input type="number" id="exp-bq-pax" class="form-control text-center" value="180"></div></div>'+
+       '</div>'+
+       '<div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px">'+
+        '<a href="/preview/bq-booking-create" class="mm-button mm-button-secondary"><i class="fa fa-glass"></i> Open Full Banquet Event Configurator →</a>'+
+        '<button type="submit" id="exp-bq-submit" class="mm-button"><i class="fa fa-check"></i> Hold Banquet Hall &amp; Draft BEO</button>'+
        '</div>'+
       '</form>'+
      '</div>'+
      '<div class="mm-drawer-card tw-p-4">'+
-      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px"><strong><i class="fa fa-history"></i> Recent Express Transactions (<span id="mm-express-log-count">3</span>)</strong><span class="mm-badge mm-badge-paid">Session Synced</span></div>'+
+      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px"><strong><i class="fa fa-history"></i> Recent Express Transactions (Session Synced)</strong><span class="mm-badge mm-badge-paid">Live Audit Trail</span></div>'+
       '<div id="mm-express-log-list" style="display:flex;flex-direction:column;gap:6px"></div>'+
      '</div>'+
     '</div></section></div>'+
-    '<div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button></div>'+
+    '<div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button><a href="/preview/booking-next" class="mm-button mm-button-secondary"><i class="fa fa-bed"></i> 3-Step Room Wizard</a><a href="/preview/bq-booking-create" class="mm-button"><i class="fa fa-glass"></i> Banquet Event Configurator</a></div>'+
    '</div></div>'+
   '</div>'+
   '<div class="modal fade mm-app-drawer" id="mm-flash-drawer" tabindex="-1" role="dialog" aria-labelledby="mm-flash-drawer-title">'+
@@ -2210,10 +2267,36 @@ function menuLinks(page,currentPath){
     'expLogs.unshift([kind,summary,link]);try{localStorage.setItem("mm-express-log",JSON.stringify(expLogs));}catch(e){}renderExpLogs();'+
     'if(expBanner){expBanner.style.display="block";expBanner.innerHTML="<i class=\\"fa fa-check-circle\\"></i> <strong>"+kind+" Created:</strong> "+summary+" — <a href=\\""+link+"\\"><strong>Inspect Now →</strong></a>";}'+
    '}'+
-   'var wf=document.getElementById("mm-express-walkin-form"),pf=document.getElementById("mm-express-pos-form"),vf=document.getElementById("mm-express-vch-form");'+
+   'var wf=document.getElementById("mm-express-walkin-form"),pf=document.getElementById("mm-express-pos-form"),vf=document.getElementById("mm-express-vch-form"),bf=document.getElementById("mm-express-bq-form");'+
+   'function syncExpWalkinEst(){'+
+    'var rmSel=document.getElementById("exp-walkin-room"),nEl=document.getElementById("exp-walkin-nights"),advEl=document.getElementById("exp-walkin-adv"),estEl=document.getElementById("exp-walkin-est-text");'+
+    'if(!rmSel||!estEl)return;'+
+    'var opt=rmSel.options[rmSel.selectedIndex];var rate=Number((opt&&opt.getAttribute("data-rate"))||4200);var n=Number((nEl&&nEl.value)||2);var adv=Number((advEl&&advEl.value)||0);'+
+    'var gross=Math.round(rate*n*1.10);var due=Math.max(0,gross-adv);'+
+    'estEl.innerHTML=n+" Nights × ৳ "+rate.toLocaleString("en-US")+" + 10% VAT = <strong>৳ "+gross.toLocaleString("en-US")+"</strong> · Advance: <strong>৳ "+adv.toLocaleString("en-US")+"</strong> · Net Due: <strong>৳ "+due.toLocaleString("en-US")+"</strong>";'+
+   '}'+
+   'var sPills=document.querySelectorAll(".exp-suite-pill"),rmSelEl=document.getElementById("exp-walkin-room"),nElW=document.getElementById("exp-walkin-nights"),advElW=document.getElementById("exp-walkin-adv");'+
+   'for(var sp=0;sp<sPills.length;sp++){sPills[sp].addEventListener("click",function(){'+
+    'for(var x=0;x<sPills.length;x++)sPills[x].classList.toggle("is-active",sPills[x]===this);'+
+    'if(rmSelEl){rmSelEl.value=this.getAttribute("data-suite-val")||rmSelEl.value;syncExpWalkinEst();}'+
+   '});}'+
+   'if(rmSelEl)rmSelEl.addEventListener("change",syncExpWalkinEst);if(nElW)nElW.addEventListener("input",syncExpWalkinEst);if(advElW)advElW.addEventListener("input",syncExpWalkinEst);'+
+   'function syncExpKotPreview(){'+
+    'var out=(document.getElementById("exp-pos-outlet")||{}).value||"Heritage Dining",tg=(document.getElementById("exp-pos-target")||{}).value||"Suite #204",it=(document.getElementById("exp-pos-item")||{}).value||"Royal Mezze",qt=(document.getElementById("exp-pos-qty")||{}).value||"1",pr=document.getElementById("exp-kot-preview-text");'+
+    'if(pr)pr.textContent="KOT #1055 · "+out+" → "+tg+" · "+qt+"× "+it;'+
+   '}'+
+   'var kChips=document.querySelectorAll(".exp-kot-chip"),itSelEl=document.getElementById("exp-pos-item"),outSelEl=document.getElementById("exp-pos-outlet"),tgSelEl=document.getElementById("exp-pos-target"),qtElP=document.getElementById("exp-pos-qty");'+
+   'for(var kc=0;kc<kChips.length;kc++){kChips[kc].addEventListener("click",function(){'+
+    'for(var x=0;x<kChips.length;x++)kChips[x].classList.toggle("is-active",kChips[x]===this);'+
+    'if(itSelEl){itSelEl.value=this.getAttribute("data-kot-item")||itSelEl.value;syncExpKotPreview();}'+
+   '});}'+
+   'if(itSelEl)itSelEl.addEventListener("change",syncExpKotPreview);if(outSelEl)outSelEl.addEventListener("change",syncExpKotPreview);if(tgSelEl)tgSelEl.addEventListener("change",syncExpKotPreview);if(qtElP)qtElP.addEventListener("input",syncExpKotPreview);'+
+   'var vAmtEl=document.getElementById("exp-vch-amt"),vBadgeEl=document.getElementById("exp-vch-balance-badge");'+
+   'if(vAmtEl&&vBadgeEl)vAmtEl.addEventListener("input",function(){var v=Number(this.value||0).toLocaleString("en-US");vBadgeEl.textContent="Double-Entry Balanced: Dr ৳ "+v+" = Cr ৳ "+v+" ✓";});'+
    'if(wf)wf.addEventListener("submit",function(){var rm=document.getElementById("exp-walkin-room").value,g=document.getElementById("exp-walkin-guest").value,n=document.getElementById("exp-walkin-nights").value,ad=document.getElementById("exp-walkin-adv").value;pushExp("Walk-In Hold","#BK-2026-121 · "+rm+" · "+g+" ("+n+" Nights · ৳ "+ad+" Adv)","/preview/booking-next");});'+
-   'if(pf)pf.addEventListener("submit",function(){var out=document.getElementById("exp-pos-outlet").value,tg=document.getElementById("exp-pos-target").value,it=document.getElementById("exp-pos-item").value;pushExp("80mm KOT","#KOT-1054 · "+out+" → "+tg+" · "+it,"/preview/pos-kot-print");});'+
+   'if(pf)pf.addEventListener("submit",function(){var out=document.getElementById("exp-pos-outlet").value,tg=document.getElementById("exp-pos-target").value,it=document.getElementById("exp-pos-item").value,qt=(document.getElementById("exp-pos-qty")||{}).value||"1";pushExp("80mm KOT","#KOT-1054 · "+out+" → "+tg+" · "+qt+"× "+it,"/preview/pos-kot-print");});'+
    'if(vf)vf.addEventListener("submit",function(){var vt=document.getElementById("exp-vch-type").value,vh=document.getElementById("exp-vch-head").value,va=document.getElementById("exp-vch-amt").value;pushExp("GL Voucher","#VCH-2026-892 · "+vt+" · "+vh+" (৳ "+va+")","/preview/acc-receives");});'+
+   'if(bf)bf.addEventListener("submit",function(){var bh=document.getElementById("exp-bq-hall").value,bhost=document.getElementById("exp-bq-host").value,bpax=document.getElementById("exp-bq-pax").value;pushExp("Banquet Hold","#BEO-2026-409 · "+bh+" · "+bhost+" ("+bpax+" Pax)","/preview/bq-booking-create");});'+
    'var glkSearch=document.getElementById("mm-guest-lookup-search"),glkPills=document.querySelectorAll("[data-glookup-filter]"),glkRows=document.querySelectorAll("#mm-glookup-tbody tr"),glkTag="all";'+
    'function filterGlk(){'+
     'var sq=(glkSearch&&glkSearch.value||"").toLowerCase().trim();'+
