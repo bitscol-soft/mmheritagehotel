@@ -237,6 +237,7 @@
                 btn.type = 'button';
                 btn.className = 'mm-role-pill' + (pair[0] === savedRole ? ' is-active' : '');
                 btn.setAttribute('data-role-view', pair[0]);
+                btn.setAttribute('data-role-filter', pair[0]);
                 btn.setAttribute('aria-pressed', String(pair[0] === savedRole));
                 btn.textContent = pair[1];
                 btn.addEventListener('click', function () { applyRoleFilter(pair[0]); });

@@ -299,10 +299,10 @@ test('14-module sidebar role switcher, top sub-menu bar & global command drawers
     // Verify Sidebar Role Switcher (#mm-role-switcher), Top Sub-Menu Bar (#mm-top-subnav) & Global Command Drawers
     await page.goto(`http://127.0.0.1:${PORT}/preview/dashboard`);
     await expect(page.locator('#mm-role-switcher')).toBeVisible();
-    await page.locator('#mm-role-switcher [data-role-view="pos"]').click();
-    await expect(page.locator('#mm-primary-menu > li[data-module]:visible')).toHaveCount(5);
-    await page.locator('#mm-role-switcher [data-role-view="all"]').click();
-    await expect(page.locator('#mm-primary-menu > li[data-module]:visible')).toHaveCount(14);
+    await page.locator('#mm-role-switcher [data-role-filter="pos"]').click();
+    await expect(page.locator('#mm-primary-menu > li:not(.mm-nav-section):visible')).toHaveCount(5);
+    await page.locator('#mm-role-switcher [data-role-filter="all"]').click();
+    await expect(page.locator('#mm-primary-menu > li:not(.mm-nav-section):visible')).toHaveCount(14);
 
     await page.locator('#mm-top-more-btn').click();
     await expect(page.locator('#mm-top-more-panel')).toBeVisible();
