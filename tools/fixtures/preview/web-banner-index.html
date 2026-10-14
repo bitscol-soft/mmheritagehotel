@@ -1,116 +1,213 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Homepage Banners</title>
 <link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
-<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css"><link rel="stylesheet" href="/assets/css/chosen.min.css" />
-<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY--><section class="mm-ui mm-web mm-room-inventory">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css"><!--/MM-HEAD-->
+<link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+<section class="mm-ui mm-web mm-room-inventory">
     <div class="tw-space-y-4 tw-py-2">
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
-                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Homepage banners</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Slides shown at the top of the website home page.</p>            </div>
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink"><i class="fa fa-picture-o"></i> Homepage banners — Hero Carousel &amp; Direct-Booking Promo Slides</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Manage high-resolution hero slides, CTA buttons, and seasonal promo overlays on the public storefront homepage.</p>
+            </div>
             <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
                 <a class="mm-button mm-button-secondary" href="/preview/public-home"><i class="fa fa-globe" aria-hidden="true"></i> Live Public Site</a>
-                <a class="mm-button mm-button-secondary" href="/preview/web-gallery-index"><i class="fa fa-picture-o" aria-hidden="true"></i> Gallery</a>
+                <a class="mm-button mm-button-secondary" href="/preview/web-gallery-index"><i class="fa fa-camera" aria-hidden="true"></i> Suite Gallery</a>
                 <a class="mm-button mm-button-secondary" href="/preview/web-settings"><i class="fa fa-cogs" aria-hidden="true"></i> Site Settings</a>
-                <a class="mm-button" href="http://localhost/hw/website-core/banner/create">
-                    <i class="fa fa-plus" aria-hidden="true"></i> Add Banner
-                </a>
-            </div>        </header>
+                <a class="mm-button" href="/preview/web-banner-create"><i class="fa fa-plus" aria-hidden="true"></i> Add Banner</a>
+            </div>
+        </header>
 
         <div class="mm-table-kpi-grid" aria-label="Website CMS summary">
             <div class="mm-table-kpi-card">
                 <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-picture-o"></i></span>
                 <div class="mm-table-kpi-meta">
-                    <span class="mm-table-kpi-label">Hero Banners</span>
-                    <div class="mm-table-kpi-value">1 Active <span class="mm-table-kpi-sub">Homepage Slider</span></div>
+                    <span class="mm-table-kpi-label">Active Hero Slides</span>
+                    <div class="mm-table-kpi-value"><span id="wban-kpi-active">4 Slides</span> <span class="mm-table-kpi-sub">6s Auto-Play Carousel</span></div>
                 </div>
             </div>
             <div class="mm-table-kpi-card">
                 <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-bed"></i></span>
                 <div class="mm-table-kpi-meta">
-                    <span class="mm-table-kpi-label">Public Room Types</span>
-                    <div class="mm-table-kpi-value">6 Suites <span class="mm-table-kpi-sub">Online Booking</span></div>
+                    <span class="mm-table-kpi-label">Direct Booking CTA</span>
+                    <div class="mm-table-kpi-value">HERITAGE15 <span class="mm-table-kpi-sub">15% Direct-Booking Off</span></div>
                 </div>
             </div>
             <div class="mm-table-kpi-card">
-                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-cutlery"></i></span>
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-bolt"></i></span>
                 <div class="mm-table-kpi-meta">
-                    <span class="mm-table-kpi-label">Digital Menus</span>
-                    <div class="mm-table-kpi-value">Food &amp; Bar <span class="mm-table-kpi-sub">Published</span></div>
+                    <span class="mm-table-kpi-label">Hero LCP Speed</span>
+                    <div class="mm-table-kpi-value">0.9s WebP <span class="mm-table-kpi-sub">Preloaded 1920×900px</span></div>
                 </div>
             </div>
             <div class="mm-table-kpi-card">
-                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-globe"></i></span>
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-line-chart"></i></span>
                 <div class="mm-table-kpi-meta">
-                    <span class="mm-table-kpi-label">Storefront Theme</span>
-                    <div class="mm-table-kpi-value">mm-web <span class="mm-table-kpi-sub">W7 Luxury Tokens</span></div>
+                    <span class="mm-table-kpi-label">Booking Bar CTR</span>
+                    <div class="mm-table-kpi-value">6.8% CTR <span class="mm-table-kpi-sub">+22% Direct Conversions</span></div>
                 </div>
             </div>
         </div>
 
-        <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><div class="mm-table-scroll" role="region" aria-label="Homepage banners" tabindex="0"><table id="data-table" class="table table-striped table-bordered table-hover">
-            <thead>
-                <tr>
-                    <th>SL</th>
-                    <th class="text-center">Banner Head Title</th>
-                    <th class="text-center">Banner Subtitle</th>
-                    <th class="text-center">Banner Description</th>
-                    <th class="text-center">Banner Image</th>
-                    <th class="text-center">Status</th>
-                    <th class="text-center">Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                            <tr>
-                    <td>1</td>
-                    <td class="text-center">Welcome &lt;b&gt;home&lt;/b&gt;</td>
-                    <td class="text-center">Sub &lt;i&gt;title&lt;/i&gt;</td>
-                    <td class="text-center">Short &lt;u&gt;text&lt;/u&gt;</td>
-                    <td class="text-center"><img height="50" src="http://localhost/uploads/banner.png" alt=""></td>
-                    <td class="text-center">
-                                                    <span class="label label-success">Active</span>
-                                                </td>
-                    <td class="text-center">
-                        <div class="btn-group btn-corner">
-                            <a href="http://localhost/hw/website-core/banner/edit/3" class="btn btn-xs btn-sm btn-success" title="Edit">
-                                <i class="fa fa-pencil-square-o"></i>
-                            </a>
-                            <button type="button" onclick="delete_item(`http://localhost/hw/website-core/banner/destroy/3`)" class="btn btn-xs btn-sm btn-danger" title="Delete">
-                                <i class="fa fa-trash-o"></i>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-                        </tbody>
-        </table></div></div>
+        <div id="wban-confirm-banner" class="alert alert-success" style="display:none;margin:0;border-radius:12px;font-size:13px"></div>
+
+        <!-- Live Storefront Hero Slide Simulator -->
+        <div class="mm-panel tw-p-4 sm:tw-p-6">
+            <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px">
+                <div>
+                    <h2 class="tw-m-0 tw-text-base tw-font-semibold"><i class="fa fa-desktop"></i> Live Storefront Hero Carousel Preview</h2>
+                    <p class="tw-m-0 tw-text-xs tw-text-muted">Click any slide pill below to preview how the hero headline, subtitle, and CTA render on the W7 public homepage.</p>
+                </div>
+                <div style="display:flex;flex-wrap:wrap;gap:6px" id="wban-slide-pills">
+                    <button type="button" class="mm-role-pill is-active wban-slide-pill" data-title="M&amp;M Heritage Hotel &amp; Suites Dhaka" data-sub="5-Star Diplomatic Luxury in Gulshan-2" data-desc="Complimentary HSIA Airport VIP Pickup, Executive Lounge &amp; Best Direct-Rate Guarantee (Promo: HERITAGE15).">Slide #1 · Diplomatic Suites</button>
+                    <button type="button" class="mm-role-pill wban-slide-pill" data-title="Grand Ballroom &amp; Royal Banquet Halls" data-sub="Up to 400 Guests · Acoustic LED Stage" data-desc="Host diplomatic summits, corporate galas, and royal weddings with bespoke 5-course heritage catering.">Slide #2 · Grand Ballroom</button>
+                    <button type="button" class="mm-role-pill wban-slide-pill" data-title="Heritage Fine Dining &amp; Skyline Rooftop Bar" data-sub="Authentic Mughlai, Continental &amp; Artisanal Mocktails" data-desc="24/7 in-suite dining and live open-kitchen chef tasting menus overlooking Gulshan Lake.">Slide #3 · Fine Dining</button>
+                    <button type="button" class="mm-role-pill wban-slide-pill" data-title="Express Airport VIP Meet &amp; Chauffeur Fleet" data-sub="18 Minutes from Hazrat Shahjalal Int'l Airport" data-desc="Dedicated flight-tracked sedan and SUV transfers synchronized directly with your suite reservation.">Slide #4 · Airport VIP</button>
+                </div>
+            </div>
+            <div id="wban-hero-preview" style="padding:22px 24px;border-radius:14px;background:linear-gradient(135deg,#0f172a 0%,#1e3a8a 60%,#1d4ed8 100%);color:#f8fafc;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px">
+                <div style="max-width:640px">
+                    <div id="wban-prev-sub" style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#fcd34d;margin-bottom:4px">5-Star Diplomatic Luxury in Gulshan-2</div>
+                    <div id="wban-prev-title" style="font-size:22px;font-weight:800;line-height:1.25;margin-bottom:6px">M&amp;M Heritage Hotel &amp; Suites Dhaka</div>
+                    <div id="wban-prev-desc" style="font-size:13px;opacity:.9">Complimentary HSIA Airport VIP Pickup, Executive Lounge &amp; Best Direct-Rate Guarantee (Promo: HERITAGE15).</div>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end">
+                    <span class="mm-badge mm-badge-paid" style="background:rgba(252,211,77,0.2);color:#fde68a;border:1px solid rgba(252,211,77,0.4)">Slide Active · 1920×900 WebP</span>
+                    <a href="/preview/public-home" class="mm-button" style="background:#f59e0b;border-color:#d97706;color:#0f172a"><i class="fa fa-calendar-check-o"></i> Book Direct &amp; Save 15%</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Add Hero Banner Strip -->
+        <div class="mm-panel tw-p-4 sm:tw-p-6">
+            <h2 class="tw-m-0 tw-mb-3 tw-text-base tw-font-semibold"><i class="fa fa-plus-circle"></i> Quick-Publish Promotional Hero Slide</h2>
+            <form id="wban-quick-add-form" onsubmit="return false;" class="row" style="margin:0 -6px">
+                <div class="col-md-3" style="padding:4px 6px">
+                    <label class="mm-label">Banner Head Title</label>
+                    <input type="text" id="wban-new-title" class="form-control" value="Winter Diplomatic Retreat — 20% Off Suites" required>
+                </div>
+                <div class="col-md-3" style="padding:4px 6px">
+                    <label class="mm-label">Banner Subtitle</label>
+                    <input type="text" id="wban-new-sub" class="form-control" value="Complimentary Airport Transfer &amp; Buffet Breakfast">
+                </div>
+                <div class="col-md-4" style="padding:4px 6px">
+                    <label class="mm-label">Banner Description &amp; CTA</label>
+                    <input type="text" id="wban-new-desc" class="form-control" value="Valid for Penthouse &amp; Diplomatic Suites booked direct online.">
+                </div>
+                <div class="col-md-2" style="padding:22px 6px 4px">
+                    <button type="submit" id="wban-add-btn" class="mm-button" style="width:100%"><i class="fa fa-bolt"></i> Publish Slide</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="mm-panel tw-p-4 sm:tw-p-6">
+            <div class="mm-table-scroll" role="region" aria-label="Homepage banners" tabindex="0">
+                <table id="data-table" class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>SL</th>
+                            <th>Banner Head Title</th>
+                            <th>Banner Subtitle</th>
+                            <th>Banner Description</th>
+                            <th class="text-center">Preview Media</th>
+                            <th class="text-center">Status</th>
+                            <th class="text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="wban-tbody">
+                        <tr>
+                            <td>1</td>
+                            <td><strong>M&amp;M Heritage Hotel &amp; Suites Dhaka</strong></td>
+                            <td>5-Star Diplomatic Luxury in Gulshan-2</td>
+                            <td>Complimentary HSIA Airport VIP Pickup, Executive Lounge &amp; Best Direct-Rate Guarantee.</td>
+                            <td class="text-center"><span class="mm-badge mm-badge-paid"><i class="fa fa-picture-o"></i> hero-diplomatic-suite.webp</span></td>
+                            <td class="text-center"><span class="label label-success">Active</span></td>
+                            <td class="text-center">
+                                <div class="btn-group btn-corner">
+                                    <a href="/preview/web-banner-edit" class="btn btn-xs btn-sm btn-success" title="Edit"><i class="fa fa-pencil-square-o"></i></a>
+                                    <button type="button" class="btn btn-xs btn-sm btn-danger" title="Delete"><i class="fa fa-trash-o"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td><strong>Grand Ballroom &amp; Royal Banquet Halls</strong></td>
+                            <td>Up to 400 Guests · Acoustic LED Stage</td>
+                            <td>Host diplomatic summits, corporate galas, and royal weddings with bespoke heritage catering.</td>
+                            <td class="text-center"><span class="mm-badge mm-badge-paid"><i class="fa fa-picture-o"></i> hero-grand-ballroom.webp</span></td>
+                            <td class="text-center"><span class="label label-success">Active</span></td>
+                            <td class="text-center">
+                                <div class="btn-group btn-corner">
+                                    <a href="/preview/web-banner-edit" class="btn btn-xs btn-sm btn-success" title="Edit"><i class="fa fa-pencil-square-o"></i></a>
+                                    <button type="button" class="btn btn-xs btn-sm btn-danger" title="Delete"><i class="fa fa-trash-o"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td><strong>Heritage Fine Dining &amp; Skyline Rooftop Bar</strong></td>
+                            <td>Authentic Mughlai, Continental &amp; Artisanal Mocktails</td>
+                            <td>24/7 in-suite dining and live open-kitchen chef tasting menus overlooking Gulshan Lake.</td>
+                            <td class="text-center"><span class="mm-badge mm-badge-paid"><i class="fa fa-picture-o"></i> hero-fine-dining.webp</span></td>
+                            <td class="text-center"><span class="label label-success">Active</span></td>
+                            <td class="text-center">
+                                <div class="btn-group btn-corner">
+                                    <a href="/preview/web-banner-edit" class="btn btn-xs btn-sm btn-success" title="Edit"><i class="fa fa-pencil-square-o"></i></a>
+                                    <button type="button" class="btn btn-xs btn-sm btn-danger" title="Delete"><i class="fa fa-trash-o"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td><strong>Express Airport VIP Meet &amp; Chauffeur Fleet</strong></td>
+                            <td>18 Minutes from Hazrat Shahjalal Int'l Airport</td>
+                            <td>Dedicated flight-tracked sedan and SUV transfers synchronized directly with your reservation.</td>
+                            <td class="text-center"><span class="mm-badge mm-badge-paid"><i class="fa fa-picture-o"></i> hero-airport-vip.webp</span></td>
+                            <td class="text-center"><span class="label label-success">Active</span></td>
+                            <td class="text-center">
+                                <div class="btn-group btn-corner">
+                                    <a href="/preview/web-banner-edit" class="btn btn-xs btn-sm btn-success" title="Edit"><i class="fa fa-pencil-square-o"></i></a>
+                                    <button type="button" class="btn btn-xs btn-sm btn-danger" title="Delete"><i class="fa fa-trash-o"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </section>
+<script>
+(function(){
+    var pills=document.querySelectorAll('.wban-slide-pill');
+    for(var i=0;i<pills.length;i++){
+        pills[i].addEventListener('click',function(){
+            for(var j=0;j<pills.length;j++) pills[j].classList.toggle('is-active',pills[j]===this);
+            var t=document.getElementById('wban-prev-title'), s=document.getElementById('wban-prev-sub'), d=document.getElementById('wban-prev-desc');
+            if(t) t.textContent=this.getAttribute('data-title');
+            if(s) s.textContent=this.getAttribute('data-sub');
+            if(d) d.textContent=this.getAttribute('data-desc');
+        });
+    }
+    var form=document.getElementById('wban-quick-add-form'), tbody=document.getElementById('wban-tbody'), kpi=document.getElementById('wban-kpi-active'), banner=document.getElementById('wban-confirm-banner');
+    if(form&&tbody){
+        form.addEventListener('submit',function(e){
+            e.preventDefault();
+            var nt=document.getElementById('wban-new-title').value, ns=document.getElementById('wban-new-sub').value, nd=document.getElementById('wban-new-desc').value;
+            var sl=tbody.querySelectorAll('tr').length+1;
+            var tr=document.createElement('tr');
+            tr.innerHTML='<td>'+sl+'</td><td><strong>'+nt+'</strong></td><td>'+ns+'</td><td>'+nd+'</td><td class="text-center"><span class="mm-badge mm-badge-paid"><i class="fa fa-picture-o"></i> hero-slide-'+sl+'.webp</span></td><td class="text-center"><span class="label label-success">Active</span></td><td class="text-center"><div class="btn-group btn-corner"><a href="/preview/web-banner-edit" class="btn btn-xs btn-sm btn-success"><i class="fa fa-pencil-square-o"></i></a></div></td>';
+            tbody.appendChild(tr);
+            if(kpi) kpi.textContent=sl+' Slides';
+            if(banner){
+                banner.style.display='block';
+                banner.innerHTML='<i class="fa fa-check-circle"></i> <strong>Hero Slide #'+sl+' Published:</strong> '+nt+' is now active on the <a href="/preview/public-home"><strong>Public Storefront Carousel →</strong></a>';
+            }
+        });
+    }
+})();
+</script>
 <!--/MM-BODY--></div>
 <script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
 <!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
 <script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
-
-<script src="/assets/js/jquery.dataTables.min.js"></script>
-<script src="/assets/js/jquery.dataTables.bootstrap.min.js"></script>
-
-
-<!-- inline scripts related to this page -->
-<script type="text/javascript">
-    function delete_check(id) {
-        Swal.fire({
-            title: 'Are you sure ?',
-            html: "<b>You want to delete permanently !</b>",
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!',
-            width: 400,
-        }).then((result) => {
-            if (result.value) {
-                $('#deleteCheck_' + id).submit();
-            }
-        })
-
-    }
-</script>
 <!--/MM-JS--></body></html>

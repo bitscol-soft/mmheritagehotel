@@ -8,6 +8,7 @@ const fix=n=>fs.readFileSync(path.join(root,'tools/fixtures',n),'utf8');
 const pages={
  '/preview/booking-next':{file:'preview/booking-next.html',title:'New room booking (3-step wizard)',crumbs:['Hotel','Booking','Create']},
  '/preview/checkout':{file:'preview/checkout.html',title:'Checkout and payment',crumbs:['Hotel','Booking','Checkout']},
+ '/preview/booking-checkout':{file:'preview/checkout.html',title:'Checkout and payment',crumbs:['Hotel','Booking','Checkout']},
  '/preview/setup-amenities':{file:'preview/setup-aminities-index.html',title:'Amenities',crumbs:['Hotel', 'Setup', 'Amenities']},
  '/preview/setup-amenity-create':{file:'preview/setup-aminities-create.html',title:'Add amenity',crumbs:['Hotel', 'Setup', 'Amenities', 'Add']},
  '/preview/setup-account-types':{file:'preview/setup-account_type-index.html',title:'Account types',crumbs:['Hotel', 'Setup', 'Account types']},
@@ -207,6 +208,7 @@ const pages={
  '/preview/acc-account-payables':{file:'preview/acc-account-payables.html',title:'Account Payable',crumbs:['Account','Account Payable']},
  '/preview/acc-account-receivables':{file:'preview/acc-account-receivables.html',title:'Account Receivable',crumbs:['Account','Account Receivable']},
  '/preview/acc-balance-sheet':{file:'preview/acc-balance-sheet.html',title:'Balance Sheet',crumbs:['Account','Balance Sheet']},
+ '/preview/acc-report-balance-sheet':{file:'preview/acc-balance-sheet.html',title:'Balance Sheet',crumbs:['Account','Balance Sheet']},
  '/preview/acc-cash-flow':{file:'preview/acc-cash-flow.html',title:'Cash Flow Report',crumbs:['Account','Cash Flow Report']},
  '/preview/acc-chart-of-account':{file:'preview/acc-chart-of-account.html',title:'Chart Of Account',crumbs:['Account','Chart Of Account']},
  '/preview/acc-customer-ledger':{file:'preview/acc-customer-ledger.html',title:'Customer Ledger',crumbs:['Account','Customer Ledger']},
@@ -221,6 +223,7 @@ const pages={
  '/preview/acc-supplier-ledger':{file:'preview/acc-supplier-ledger.html',title:'Supplier Ledger',crumbs:['Account','Supplier Ledger']},
  '/preview/acc-supplier-report':{file:'preview/acc-supplier-report.html',title:'Supplier Report',crumbs:['Account','Supplier Report']},
  '/preview/acc-trial-balance':{file:'preview/acc-trial-balance.html',title:'Trial Balance',crumbs:['Account','Trial Balance']},
+ '/preview/acc-report-trial-balance':{file:'preview/acc-trial-balance.html',title:'Trial Balance',crumbs:['Account','Trial Balance']},
  '/preview/acc-voucher-reports':{file:'preview/acc-voucher-reports.html',title:'Voucer Reports',crumbs:['Account','Voucer Reports']},
  '/preview/acc-nominal-account-ledger':{file:'preview/acc-nominal-account-ledger.html',title:'Nominal Account Ledger',crumbs:['Account','Nominal Account Ledger']},
  '/preview/acc-transaction-ledger':{file:'preview/acc-transaction-ledger.html',title:'Transaction Ledger',crumbs:['Account','Transaction Ledger']},
@@ -308,7 +311,7 @@ function shellWith(content,head,js,title,crumbs){
  return page;
 }
 function screen(name){
- const html=fix(pages[name].file);
+ const html=fix(pages[name].file).replace(/&lt;\/?[biu]&gt;/gi,'').replace(/&lt;script&gt;[\s\S]*?&lt;\/script&gt;/gi,'');
  return shellWith(between(html,'<!--MM-BODY-->','<!--/MM-BODY-->'),between(html,'<!--MM-HEAD-->','<!--/MM-HEAD-->'),between(html,'<!--MM-JS-->','<!--/MM-JS-->').replace(/window\.addEventListener\('load'[\s\S]*?\}\);\s*(?=<\/script>)/,'/* auto-print disabled in the preview */'),pages[name].title,pages[name].crumbs);
 }
 function uiKitPage(){

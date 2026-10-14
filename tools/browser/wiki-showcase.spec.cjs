@@ -369,4 +369,52 @@ test('redesigned Express Quick-Create Drawer (Alt+Q) & Website Settings (/previe
     await expect(page.locator('#mm-express-confirm-banner')).toBeVisible();
 });
 
+test('redesigned Website CMS, Payment Collection, KDS Kitchen Board & Trial Balance work interactively', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 800 });
+
+    // 1. Homepage Hero Banners (/preview/web-banner-index)
+    await page.goto(`http://127.0.0.1:${PORT}/preview/web-banner-index`);
+    await expect(page.locator('.mm-page-title').first()).toContainText('Homepage banners');
+    await page.locator('#wban-slide-pills .wban-slide-pill').nth(1).click();
+    await expect(page.locator('#wban-prev-title')).toContainText('Grand Ballroom & Royal Banquet Halls');
+    await page.locator('#wban-add-btn').click();
+    await expect(page.locator('#wban-kpi-active')).toContainText('5 Slides');
+    await expect(page.locator('#wban-confirm-banner')).toBeVisible();
+
+    // 2. Suite & Property Gallery (/preview/web-gallery-index)
+    await page.goto(`http://127.0.0.1:${PORT}/preview/web-gallery-index`);
+    await expect(page.locator('#wgal-tbody tr')).toHaveCount(4);
+    await page.locator('#wgal-filter-pills [data-gal-cat="suites"]').click();
+    await expect(page.locator('#wgal-tbody tr:visible')).toHaveCount(1);
+
+    // 3. Website About Section (/preview/web-about)
+    await page.goto(`http://127.0.0.1:${PORT}/preview/web-about`);
+    await page.locator('#heading_title').fill('M&M Heritage Diplomatic Suites Dhaka');
+    await expect(page.locator('#wabout-prev-title')).toContainText('M&M Heritage Diplomatic Suites Dhaka');
+    await page.locator('#wabout-save-btn').click();
+    await expect(page.locator('#wabout-save-banner')).toBeVisible();
+
+    // 4. Multi-Tender Folio Payment Collection (/preview/payment-collection)
+    await page.goto(`http://127.0.0.1:${PORT}/preview/payment-collection`);
+    await page.locator('#pc-guest-pills .pc-guest-pill').nth(1).click();
+    await expect(page.locator('#pc-kpi-guest')).toContainText('Amb. Sarah Jenkins');
+    await page.locator('#check-full-payment').click();
+    await expect(page.locator('#pc-kpi-due')).toContainText('0.00');
+    await page.locator('#pc-submit-btn').click();
+    await expect(page.locator('#pc-confirm-banner')).toBeVisible();
+
+    // 5. Live Kitchen Display System (KDS) Board (/preview/rst-kitchen-board)
+    await page.goto(`http://127.0.0.1:${PORT}/preview/rst-kitchen-board`);
+    await page.locator('.mm-board-card[data-order-id="R-0101"] .kds-advance-btn').click();
+    await expect(page.locator('#mm-kds-kpi-cooking')).toContainText('2');
+    await page.locator('#kds-bump-ready-btn').click();
+    await expect(page.locator('#mm-kds-kpi-ready')).toContainText('0');
+    await expect(page.locator('#kds-confirm-banner')).toBeVisible();
+
+    // 6. Double-Entry Trial Balance (/preview/acc-trial-balance)
+    await page.goto(`http://127.0.0.1:${PORT}/preview/acc-trial-balance`);
+    await page.locator('#tb-class-pills [data-tb-group="Asset"]').click();
+    await expect(page.locator('#tb-kpi-accounts')).toContainText('3 Accounts');
+});
+
 

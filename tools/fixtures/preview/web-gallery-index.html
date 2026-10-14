@@ -1,112 +1,155 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Gallery</title>
 <link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
-<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css"><link rel="stylesheet" href="/assets/css/chosen.min.css" />
-<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY--><section class="mm-ui mm-web mm-room-inventory">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css"><!--/MM-HEAD-->
+<link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+<section class="mm-ui mm-web mm-room-inventory">
     <div class="tw-space-y-4 tw-py-2">
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
-                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Gallery</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Curated property photography and room showcase images shown in the website gallery.</p>            </div>
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink"><i class="fa fa-camera"></i> Gallery — Curated Suite, Dining &amp; Ballroom Photography</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Manage lazy-loaded WebP photography albums displayed across the public storefront gallery and suite showcase modals.</p>
+            </div>
             <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
                 <a class="mm-button mm-button-secondary" href="/preview/public-home"><i class="fa fa-globe" aria-hidden="true"></i> Live Storefront</a>
-                <a class="mm-button" href="http://localhost/hw/website-core/gallery/create">
-                    <i class="fa fa-plus" aria-hidden="true"></i> Add Gallery
-                </a>
-            </div>        </header>
+                <a class="mm-button mm-button-secondary" href="/preview/web-banner-index"><i class="fa fa-picture-o" aria-hidden="true"></i> Hero Banners</a>
+                <a class="mm-button mm-button-secondary" href="/preview/web-settings"><i class="fa fa-cogs" aria-hidden="true"></i> Site Settings</a>
+                <a class="mm-button" href="/preview/web-gallery-create"><i class="fa fa-plus" aria-hidden="true"></i> Add Gallery</a>
+            </div>
+        </header>
 
         <div class="mm-table-kpi-grid" aria-label="Website gallery CMS summary">
             <div class="mm-table-kpi-card">
                 <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-picture-o"></i></span>
                 <div class="mm-table-kpi-meta">
-                    <span class="mm-table-kpi-label">Gallery Albums</span>
-                    <div class="mm-table-kpi-value">Lobby View <span class="mm-table-kpi-sub">High-Res Media</span></div>
+                    <span class="mm-table-kpi-label">Curated Albums</span>
+                    <div class="mm-table-kpi-value"><span id="wgal-kpi-count">4 Albums</span> <span class="mm-table-kpi-sub">24 High-Res WebP Photos</span></div>
                 </div>
             </div>
             <div class="mm-table-kpi-card">
                 <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-check-circle"></i></span>
                 <div class="mm-table-kpi-meta">
-                    <span class="mm-table-kpi-label">Visibility</span>
-                    <div class="mm-table-kpi-value">Published ✓ <span class="mm-table-kpi-sub">Active Lightbox</span></div>
+                    <span class="mm-table-kpi-label">Lightbox Visibility</span>
+                    <div class="mm-table-kpi-value">Published ✓ <span class="mm-table-kpi-sub">4 Categories Active</span></div>
                 </div>
             </div>
             <div class="mm-table-kpi-card">
                 <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-bolt"></i></span>
                 <div class="mm-table-kpi-meta">
-                    <span class="mm-table-kpi-label">Image Loading</span>
-                    <div class="mm-table-kpi-value">Lazy-Loaded <span class="mm-table-kpi-sub">Optimized WebP/PNG</span></div>
+                    <span class="mm-table-kpi-label">Image Optimization</span>
+                    <div class="mm-table-kpi-value">Lazy-Loaded <span class="mm-table-kpi-sub">Responsive WebP/PNG</span></div>
                 </div>
             </div>
             <div class="mm-table-kpi-card">
                 <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-globe"></i></span>
                 <div class="mm-table-kpi-meta">
                     <span class="mm-table-kpi-label">Storefront Sync</span>
-                    <div class="mm-table-kpi-value">Live ✓ <span class="mm-table-kpi-sub">Public Gallery</span></div>
+                    <div class="mm-table-kpi-value">Live ✓ <span class="mm-table-kpi-sub">Public Gallery Grid</span></div>
                 </div>
             </div>
         </div>
-        <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><div class="mm-table-scroll" role="region" aria-label="Gallery images" tabindex="0"><table id="data-table" class="table table-striped table-bordered table-hover">
-            <thead>
-                <tr>
-                    <th>SL</th>
-                    <th class="text-center">Gallery Title</th>
-                    <th class="text-center">Gallery Images</th>
-                    <th class="text-center">Status</th>
-                    <th class="text-center">Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                            <tr>
-                    <td>1</td>
-                    <td class="text-center">Lobby &lt;b&gt;view&lt;/b&gt;</td>
-                    <td class="text-center">
-                        <img height="50" src="http://localhost/uploads/g.png" alt="">
-                    </td>
-                    <td class="text-center">
-                                                    <span class="label label-success">Active</span>
-                                                </td>
-                    <td class="text-center">
-                        <div class="btn-group btn-corner">
-                            <a href="http://localhost/hw/website-core/gallery/edit/2" class="btn btn-xs btn-sm btn-success" title="Edit">
-                                <i class="fa fa-pencil-square-o"></i>
-                            </a>
-                            <button type="button" onclick="delete_item(`http://localhost/hw/website-core/gallery/destroy/2`)" class="btn btn-xs btn-sm btn-danger" title="Delete">
-                                <i class="fa fa-trash-o"></i>
-                            </button>
-                        </div>
 
-                    </td>
-                </tr>
-                        </tbody>
-        </table></div></div>
+        <div id="wgal-confirm-banner" class="alert alert-success" style="display:none;margin:0;border-radius:12px;font-size:13px"></div>
+
+        <div class="mm-panel tw-p-4 sm:tw-p-6">
+            <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px">
+                <strong><i class="fa fa-filter"></i> Filter Gallery Albums by Storefront Category</strong>
+                <div style="display:flex;flex-wrap:wrap;gap:6px" id="wgal-filter-pills">
+                    <button type="button" class="mm-role-pill is-active wgal-filter-pill" data-gal-cat="all">All Albums (4)</button>
+                    <button type="button" class="mm-role-pill wgal-filter-pill" data-gal-cat="suites">Suites &amp; Penthouse</button>
+                    <button type="button" class="mm-role-pill wgal-filter-pill" data-gal-cat="dining">Fine Dining &amp; Bar</button>
+                    <button type="button" class="mm-role-pill wgal-filter-pill" data-gal-cat="banquet">Grand Ballroom</button>
+                    <button type="button" class="mm-role-pill wgal-filter-pill" data-gal-cat="lobby">Lobby &amp; Exterior</button>
+                </div>
+            </div>
+
+            <div class="mm-table-scroll" role="region" aria-label="Gallery images" tabindex="0">
+                <table id="data-table" class="table table-striped table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th>SL</th>
+                            <th>Gallery Album Title</th>
+                            <th>Category &amp; Resolution</th>
+                            <th class="text-center">Photos Count</th>
+                            <th class="text-center">Status</th>
+                            <th class="text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="wgal-tbody">
+                        <tr data-gal-row="lobby">
+                            <td>1</td>
+                            <td><strong>Grand Diplomatic Lobby &amp; Chandelier Atrium</strong></td>
+                            <td><span class="mm-badge mm-badge-paid">Lobby &amp; Exterior</span> · 2400×1600 WebP</td>
+                            <td class="text-center"><strong>6 Photos</strong></td>
+                            <td class="text-center"><span class="label label-success">Active</span></td>
+                            <td class="text-center">
+                                <div class="btn-group btn-corner">
+                                    <a href="/preview/web-gallery-edit" class="btn btn-xs btn-sm btn-success" title="Edit"><i class="fa fa-pencil-square-o"></i></a>
+                                    <button type="button" class="btn btn-xs btn-sm btn-danger" title="Delete"><i class="fa fa-trash-o"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr data-gal-row="suites">
+                            <td>2</td>
+                            <td><strong>Royal Penthouse (#601) &amp; Diplomatic Suites</strong></td>
+                            <td><span class="mm-badge mm-badge-paid">Suites &amp; Penthouse</span> · 2400×1600 WebP</td>
+                            <td class="text-center"><strong>8 Photos</strong></td>
+                            <td class="text-center"><span class="label label-success">Active</span></td>
+                            <td class="text-center">
+                                <div class="btn-group btn-corner">
+                                    <a href="/preview/web-gallery-edit" class="btn btn-xs btn-sm btn-success" title="Edit"><i class="fa fa-pencil-square-o"></i></a>
+                                    <button type="button" class="btn btn-xs btn-sm btn-danger" title="Delete"><i class="fa fa-trash-o"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr data-gal-row="dining">
+                            <td>3</td>
+                            <td><strong>Heritage Fine Dining &amp; Skyline Rooftop Bar</strong></td>
+                            <td><span class="mm-badge mm-badge-paid">Fine Dining &amp; Bar</span> · 2400×1600 WebP</td>
+                            <td class="text-center"><strong>5 Photos</strong></td>
+                            <td class="text-center"><span class="label label-success">Active</span></td>
+                            <td class="text-center">
+                                <div class="btn-group btn-corner">
+                                    <a href="/preview/web-gallery-edit" class="btn btn-xs btn-sm btn-success" title="Edit"><i class="fa fa-pencil-square-o"></i></a>
+                                    <button type="button" class="btn btn-xs btn-sm btn-danger" title="Delete"><i class="fa fa-trash-o"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr data-gal-row="banquet">
+                            <td>4</td>
+                            <td><strong>Grand Ballroom (#BH-101) &amp; Executive Boardroom</strong></td>
+                            <td><span class="mm-badge mm-badge-paid">Grand Ballroom</span> · 2400×1600 WebP</td>
+                            <td class="text-center"><strong>5 Photos</strong></td>
+                            <td class="text-center"><span class="label label-success">Active</span></td>
+                            <td class="text-center">
+                                <div class="btn-group btn-corner">
+                                    <a href="/preview/web-gallery-edit" class="btn btn-xs btn-sm btn-success" title="Edit"><i class="fa fa-pencil-square-o"></i></a>
+                                    <button type="button" class="btn btn-xs btn-sm btn-danger" title="Delete"><i class="fa fa-trash-o"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </section>
+<script>
+(function(){
+    var pills=document.querySelectorAll('.wgal-filter-pill'), rows=document.querySelectorAll('#wgal-tbody tr');
+    for(var i=0;i<pills.length;i++){
+        pills[i].addEventListener('click',function(){
+            var cat=this.getAttribute('data-gal-cat')||'all';
+            for(var j=0;j<pills.length;j++) pills[j].classList.toggle('is-active',pills[j]===this);
+            for(var k=0;k<rows.length;k++){
+                var rCat=rows[k].getAttribute('data-gal-row');
+                rows[k].style.display=(cat==='all'||rCat===cat)?'':'none';
+            }
+        });
+    }
+})();
+</script>
 <!--/MM-BODY--></div>
 <script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
 <!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
 <script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
-
-<script src="/assets/js/jquery.dataTables.min.js"></script>
-<script src="/assets/js/jquery.dataTables.bootstrap.min.js"></script>
-
-
-<!-- inline scripts related to this page -->
-<script type="text/javascript">
-    function delete_check(id) {
-        Swal.fire({
-            title: 'Are you sure ?',
-            html: "<b>You want to delete permanently !</b>",
-            type: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!',
-            width: 400,
-        }).then((result) => {
-            if (result.value) {
-                $('#deleteCheck_' + id).submit();
-            }
-        })
-
-    }
-</script>
 <!--/MM-JS--></body></html>
