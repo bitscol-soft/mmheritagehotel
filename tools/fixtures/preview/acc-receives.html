@@ -1,199 +1,159 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Receive Vouchers</title>
 <link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
-<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">    <link rel="stylesheet" href="/assets/css/chosen.min.css" />
-    <link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css" />
-
-
-    <style>
-        .table {
-            margin-bottom: 0 !important;
-        }
-    </style>
-<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css"><!--/MM-HEAD-->
+<link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
 <section class="mm-ui mm-report mm-acc mm-rst mm-rst-inv">
     <div class="tw-space-y-4 tw-py-2">
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
-                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Receive Vouchers</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Receive vouchers with approval status.</p>            </div>
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink"><i class="fa fa-arrow-circle-down"></i> Receive Vouchers — Double-Entry Cash, Bank &amp; Folio Receipt Register</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Review, filter, approve, and post double-entry receive vouchers across Front Desk, Banquet, and Corporate City Ledger accounts.</p>
+            </div>
             <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
-                <a class="mm-button mm-button-secondary" href="/preview/acc-payments"><i class="fa fa-arrow-up"></i> Payments</a>
-                <a class="mm-button mm-button-secondary" href="/preview/acc-journals"><i class="fa fa-book"></i> Journals</a>
-                <a class="mm-button mm-button-secondary" href="http://localhost/acc/voucher-receives"><i class="fa fa-refresh"></i> Refresh</a>
-                <a class="mm-button" href="http://localhost/acc/voucher-receives/create"><i class="fa fa-plus"></i> Create</a>
-            </div>        </header>
+                <button type="button" id="rcv-approve-all-btn" class="mm-button"><i class="fa fa-check-circle"></i> Approve All Pending Vouchers</button>
+                <a class="mm-button mm-button-secondary" href="/preview/acc-payments"><i class="fa fa-arrow-up"></i> Payment Vouchers</a>
+                <a class="mm-button mm-button-secondary" href="/preview/acc-journals"><i class="fa fa-book"></i> Journal Vouchers</a>
+                <a class="mm-button mm-button-secondary" href="/preview/acc-form-receives-create"><i class="fa fa-plus"></i> New Receive Voucher</a>
+            </div>
+        </header>
 
         <div class="mm-table-kpi-grid" aria-label="Receive vouchers summary">
             <div class="mm-table-kpi-card">
                 <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-file-text-o"></i></span>
                 <div class="mm-table-kpi-meta">
                     <span class="mm-table-kpi-label">Receive Vouchers</span>
-                    <div class="mm-table-kpi-value">2 Vouchers <span class="mm-table-kpi-sub">Current Period</span></div>
+                    <div class="mm-table-kpi-value"><span id="rcv-kpi-total">4 Vouchers</span> <span class="mm-table-kpi-sub">Current Business Period</span></div>
                 </div>
             </div>
             <div class="mm-table-kpi-card">
                 <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-check-circle"></i></span>
                 <div class="mm-table-kpi-meta">
-                    <span class="mm-table-kpi-label">Approved Receipts</span>
-                    <div class="mm-table-kpi-value">1 Voucher <span class="mm-table-kpi-sub">GL Synced</span></div>
+                    <span class="mm-table-kpi-label">Approved &amp; GL Posted</span>
+                    <div class="mm-table-kpi-value"><span id="rcv-kpi-approved">3 Approved</span> <span class="mm-table-kpi-sub">Synced to Trial Balance</span></div>
                 </div>
             </div>
             <div class="mm-table-kpi-card">
                 <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-clock-o"></i></span>
                 <div class="mm-table-kpi-meta">
-                    <span class="mm-table-kpi-label">Unapproved Queue</span>
-                    <div class="mm-table-kpi-value">1 Voucher <span class="mm-table-kpi-sub">Pending Review</span></div>
+                    <span class="mm-table-kpi-label">Pending Approval</span>
+                    <div class="mm-table-kpi-value"><span id="rcv-kpi-pending">1 Pending</span> <span class="mm-table-kpi-sub">Awaiting FC Sign-Off</span></div>
                 </div>
             </div>
             <div class="mm-table-kpi-card">
                 <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-money"></i></span>
                 <div class="mm-table-kpi-meta">
-                    <span class="mm-table-kpi-label">Total Received</span>
-                    <div class="mm-table-kpi-value">৳ 3,000 <span class="mm-table-kpi-sub">Cash &amp; Bank</span></div>
+                    <span class="mm-table-kpi-label">Total Cash / Bank Inflow</span>
+                    <div class="mm-table-kpi-value">৳ 184,500 <span class="mm-table-kpi-sub">Dr = Cr Balanced ✓</span></div>
                 </div>
             </div>
         </div>
 
-        <div class="mm-panel tw-p-4 sm:tw-p-6 mm-report-filter"><form class="mm-setup-filter mm-report-form" action="" method="get">
-            <div class="input-group">
-                <label class="input-group-addon" for="">
-                    Invoice No
-                </label>
-                <input type="text" name="invoice_no" value="1" class="form-control" placeholder="Invoice">
+        <div id="rcv-confirm-banner" class="alert alert-success" style="display:none;margin:0;border-radius:12px;font-size:13px"></div>
+
+        <div class="mm-panel tw-p-4 sm:tw-p-6 mm-report-filter">
+            <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px">
+                <strong><i class="fa fa-filter"></i> Filter Receive Vouchers by Status</strong>
+                <div style="display:flex;flex-wrap:wrap;gap:6px" id="rcv-filter-pills">
+                    <button type="button" class="mm-role-pill is-active rcv-filter-pill" data-rcv-status="all">All Vouchers (4)</button>
+                    <button type="button" class="mm-role-pill rcv-filter-pill" data-rcv-status="Approved">Approved (3)</button>
+                    <button type="button" class="mm-role-pill rcv-filter-pill" data-rcv-status="Pending">Pending Approval (1)</button>
+                </div>
             </div>
-
-            <div class="input-group">
-                <label class="input-group-addon" for="">
-                    Reference
-                </label>
-                <input type="text" name="reference" value="" class="form-control" placeholder="Reference">
+            <div class="mm-table-scroll" role="region" aria-label="Receive Vouchers" tabindex="0">
+                <table class="table table-bordered table-striped" id="rcv-table">
+                    <thead>
+                        <tr>
+                            <th>SL</th>
+                            <th>Voucher No</th>
+                            <th>Date</th>
+                            <th>Debit Account (Cash / Bank)</th>
+                            <th>Credit Account / Party</th>
+                            <th class="text-right">Amount (৳)</th>
+                            <th class="text-center">Status</th>
+                            <th class="text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="rcv-tbody">
+                        <tr data-rcv-row="Approved">
+                            <td>1</td>
+                            <td><strong>#RV-2026-801</strong></td>
+                            <td>2026-10-14</td>
+                            <td>1010 · Front Desk Cash in Hand</td>
+                            <td>Room Advance · BK-2026-107 (Dr. Arman Hossain)</td>
+                            <td class="text-right"><strong>28,500.00</strong></td>
+                            <td class="text-center"><span class="mm-badge mm-badge-paid rcv-status-badge">Approved</span></td>
+                            <td class="text-center"><a href="/preview/acc-receives-show" class="btn btn-xs btn-primary"><i class="fa fa-eye"></i></a></td>
+                        </tr>
+                        <tr data-rcv-row="Approved">
+                            <td>2</td>
+                            <td><strong>#RV-2026-802</strong></td>
+                            <td>2026-10-14</td>
+                            <td>1020 · City Bank Corporate A/C</td>
+                            <td>Banquet Advance · Grand Ballroom (#BEO-408)</td>
+                            <td class="text-right"><strong>85,000.00</strong></td>
+                            <td class="text-center"><span class="mm-badge mm-badge-paid rcv-status-badge">Approved</span></td>
+                            <td class="text-center"><a href="/preview/acc-receives-show" class="btn btn-xs btn-primary"><i class="fa fa-eye"></i></a></td>
+                        </tr>
+                        <tr data-rcv-row="Approved">
+                            <td>3</td>
+                            <td><strong>#RV-2026-803</strong></td>
+                            <td>2026-10-14</td>
+                            <td>1022 · bKash / Nagad Merchant Settlement</td>
+                            <td>Heritage Dining Restaurant POS Settlement</td>
+                            <td class="text-right"><strong>32,000.00</strong></td>
+                            <td class="text-center"><span class="mm-badge mm-badge-paid rcv-status-badge">Approved</span></td>
+                            <td class="text-center"><a href="/preview/acc-receives-show" class="btn btn-xs btn-primary"><i class="fa fa-eye"></i></a></td>
+                        </tr>
+                        <tr data-rcv-row="Pending">
+                            <td>4</td>
+                            <td><strong>#RV-2026-804</strong></td>
+                            <td>2026-10-14</td>
+                            <td>1020 · City Bank Corporate A/C</td>
+                            <td>UNICEF Bangladesh City Ledger Settlement (#CL-09)</td>
+                            <td class="text-right"><strong>39,000.00</strong></td>
+                            <td class="text-center"><span class="mm-badge mm-badge-unpaid rcv-status-badge">Pending</span></td>
+                            <td class="text-center"><a href="/preview/acc-receives-show" class="btn btn-xs btn-primary"><i class="fa fa-eye"></i></a></td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-
-            <div class="input-group">
-                <input type="text" class="form-control input-sm date-picker" name="from_date"
-                    value="" autocomplete="off">
-                <span class="input-group-addon">From|To</span>
-                <input type="text" class="form-control input-sm date-picker" name="to_date"
-                    value="" autocomplete="off">
-            </div>
-
-            <div class="btn-group">
-                <button type="submit" class="mm-button"><i class="fa fa-search"></i> Search</button>
-                <a href="http://localhost/acc/voucher-receives" class="mm-button mm-button-secondary"><i class="fa fa-refresh"></i> Refresh</a>
-            </div>
-        </form></div>
-    <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><!-- Filtering -->
-        <!-- LIST -->
-        <div class="row" style="width: 100%; margin: 0 !important;">
-            <div class="col-sm-12">
-                <div class="mm-table-scroll" role="region" aria-label="Receive Vouchers" tabindex="0"><table class="table table-bordered table-striped">
-                        <thead>
-                            <tr class="table-header-bg">
-                                <th class="text-center" style="color: white !important;" width="8%">Sl</th>
-                                <th class="pl-3" style="color: white !important;" width="20%">Invoice No</th>
-                                <th class="pl-3" style="color: white !important;">Date</th>
-                                <th class="pl-3" style="color: white !important;" width="15%">Reference</th>
-                                <th class="pr-3 text-right" style="color: white !important;">Amount</th>
-                                <th class="text-center" style="color: white !important;">Status</th>
-                                <th class="text-center" style="color: white !important;">Actions</th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                                                            <tr>
-                                    <td class="text-center">1</td>
-                                    <td class="pl-3">V-0004</td>
-                                    <td class="pl-3">2026-10-01</td>
-                                    <td class="pl-3">Ref &lt;i&gt;1&lt;/i&gt;</td>
-                                    <td class="pr-3 text-right">1,500.00</td>
-                                    <td class="text-center">
-                                        <span class="label label-warning">Unapproved</span>
-                                    </td>
-                                    <td class="text-center">
-                                        <div class="btn-group btn-corner">
-
-                                            <span class="btn btn-info btn-xs popover-success"
-      data-rel="popover"
-      data-placement="top"
-      data-trigger="hover"
-      data-original-title="<i class='ace-icon fa fa-info-circle green'></i> Log Information"
-      data-content="<p>Created By: .</p> <p> Created At :  </p>
-
-       <hr/>
-       <p>Updated By: .</p> <p> Updated At :  </p>">
-    <i class="fa fa-info-circle" style="color: #000000 !important"></i>
-</span>
-
-                                            <a href="http://localhost/acc/voucher-receives/show/4" target="_blank" class="btn btn-success btn-xs" title="View Details"><i class="fa fa-eye"></i></a>
-
-                                            
-                                                                                                    <a href="http://localhost/acc/voucher-receives/show/4?type=approve" target="_blank" class="btn btn-purple btn-xs" title="Approve Voucher"><i class="fa fa-check"></i></a>
-                                                
-                                                                                                
-                                                                                            
-                                                                                            <button type="button" onclick="delete_item('http://localhost/acc/voucher-receives/destroy/4')" class="btn btn-danger btn-xs" title="Delete"><i class="fa fa-trash-o"></i></button>
-                                                                                    </div>
-                                    </td>
-                                </tr>
-
-                                                            <tr>
-                                    <td class="text-center">2</td>
-                                    <td class="pl-3">V-0005</td>
-                                    <td class="pl-3">2026-10-01</td>
-                                    <td class="pl-3">Ref 2</td>
-                                    <td class="pr-3 text-right">200.00</td>
-                                    <td class="text-center">
-                                        <span class="label label-info">Approved</span>
-                                    </td>
-                                    <td class="text-center">
-                                        <div class="btn-group btn-corner">
-
-                                            <span class="btn btn-info btn-xs popover-success"
-      data-rel="popover"
-      data-placement="top"
-      data-trigger="hover"
-      data-original-title="<i class='ace-icon fa fa-info-circle green'></i> Log Information"
-      data-content="<p>Created By: .</p> <p> Created At :  </p>
-
-       <hr/>
-       <p>Updated By: .</p> <p> Updated At :  </p>">
-    <i class="fa fa-info-circle" style="color: #000000 !important"></i>
-</span>
-
-                                            <a href="http://localhost/acc/voucher-receives/show/5" target="_blank" class="btn btn-success btn-xs" title="View Details"><i class="fa fa-eye"></i></a>
-
-                                            
-                                                                                            <button type="button" onclick="delete_item('http://localhost/acc/voucher-receives/destroy/5')" class="btn btn-danger btn-xs" title="Delete"><i class="fa fa-trash-o"></i></button>
-                                                                                    </div>
-                                    </td>
-                                </tr>
-
-                                                    </tbody>
-                    </table></div>
-
-                
-            </div>
-        </div></div>
+        </div>
     </div>
 </section>
-
+<script>
+(function(){
+    var pills=document.querySelectorAll('.rcv-filter-pill'), rows=document.querySelectorAll('#rcv-tbody tr');
+    for(var i=0;i<pills.length;i++){
+        pills[i].addEventListener('click',function(){
+            var st=this.getAttribute('data-rcv-status')||'all';
+            for(var j=0;j<pills.length;j++) pills[j].classList.toggle('is-active',pills[j]===this);
+            for(var k=0;k<rows.length;k++){
+                var rSt=rows[k].getAttribute('data-rcv-row');
+                rows[k].style.display=(st==='all'||rSt===st)?'':'none';
+            }
+        });
+    }
+    var appBtn=document.getElementById('rcv-approve-all-btn');
+    if(appBtn){
+        appBtn.addEventListener('click',function(){
+            for(var k=0;k<rows.length;k++){
+                rows[k].setAttribute('data-rcv-row','Approved');
+                var b=rows[k].querySelector('.rcv-status-badge');
+                if(b){ b.className='mm-badge mm-badge-paid rcv-status-badge'; b.textContent='Approved'; }
+            }
+            var ka=document.getElementById('rcv-kpi-approved'), kp=document.getElementById('rcv-kpi-pending'), ban=document.getElementById('rcv-confirm-banner');
+            if(ka) ka.textContent='4 Approved';
+            if(kp) kp.textContent='0 Pending';
+            if(ban){
+                ban.style.display='block';
+                ban.innerHTML='<i class="fa fa-check-circle"></i> <strong>All 4 Receive Vouchers Approved &amp; Posted to GL:</strong> ৳ 184,500.00 synced with Trial Balance &amp; Cash Flow Statement.';
+            }
+        });
+    }
+})();
+</script>
 <!--/MM-BODY--></div>
 <script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
 <!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
 <script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
-
-    <script src="/assets/js/bootstrap-datepicker.min.js"></script>
-    <script src="/assets/custom_js/chosen-box.js"></script>
-    <script src="/assets/custom_js/confirm_delete_dialog.js"></script>
-
-    <script type="text/javascript">
-
-        $('.date-picker').datepicker({
-            autoclose: true,
-            todayHighlight: true,
-            format: 'yyyy-mm-dd',
-        });
-
-    </script>
-
 <!--/MM-JS--></body></html>

@@ -417,4 +417,78 @@ test('redesigned Website CMS, Payment Collection, KDS Kitchen Board & Trial Bala
     await expect(page.locator('#tb-kpi-accounts')).toContainText('3 Accounts');
 });
 
+test('Wave 2 High-Traffic Operational Screens (Checkout, Night Audit, POS, Vouchers & Statements) work interactively', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 800 });
+
+    // 1. Express Checkout Folio & Split Bill (/preview/checkout)
+    await page.goto(`http://127.0.0.1:${PORT}/preview/checkout`);
+    await expect(page.locator('#co-kpi-due')).toContainText('6,240');
+    await page.locator('#co-split-pills [data-split-mode="corporate"]').click();
+    await expect(page.locator('#co-kpi-due')).toContainText('5,000');
+    await page.locator('#check-full-payment').click();
+    await page.locator('#co-submit-btn').click();
+    await expect(page.locator('#co-confirm-banner')).toBeVisible();
+
+    // 2. Generate Night Audit (/preview/night-audit-generate)
+    await page.goto(`http://127.0.0.1:${PORT}/preview/night-audit-generate`);
+    await expect(page.locator('#na-kpi-date')).toContainText('2026-10-14');
+    await page.locator('#na-run-btn').click();
+    await expect(page.locator('#na-kpi-date')).toContainText('2026-10-15');
+    await expect(page.locator('#na-confirm-banner')).toBeVisible();
+
+    // 3. Restaurant & Bar POS Terminals (/preview/rst-pos-create & /preview/bar-pos-create)
+    await page.goto(`http://127.0.0.1:${PORT}/preview/rst-pos-create`);
+    await page.locator('.rpos-quick-item').first().click();
+    await expect(page.locator('#rpos-kpi-items')).toContainText('3 Items');
+    await page.locator('#rpos-fire-kot-btn').click();
+    await expect(page.locator('#rpos-confirm-banner')).toBeVisible();
+
+    await page.goto(`http://127.0.0.1:${PORT}/preview/bar-pos-create`);
+    await page.locator('#bpos-happy-hour-btn').click();
+    await expect(page.locator('#bpos-kpi-total')).toContainText('1,530');
+
+    // 4. Receive Vouchers, Balance Sheet & Income Statement
+    await page.goto(`http://127.0.0.1:${PORT}/preview/acc-receives`);
+    await page.locator('#rcv-approve-all-btn').click();
+    await expect(page.locator('#rcv-kpi-approved')).toContainText('4 Approved');
+
+    await page.goto(`http://127.0.0.1:${PORT}/preview/acc-report-balance-sheet`);
+    await expect(page.locator('#bs-kpi-proof')).toContainText('Balanced');
+    await page.locator('#bs-filter-pills [data-bs-sec="Asset"]').click();
+    await expect(page.locator('#bs-tbody tr:visible')).toHaveCount(3);
+
+    await page.goto(`http://127.0.0.1:${PORT}/preview/acc-income-statement`);
+    await expect(page.locator('#is-kpi-net')).toContainText('825,000');
+});
+
+test('General Store & Restaurant Inventory Procurement Screens (POs, GRN, Stock-in-Hand & Kitchen Inventory) work interactively', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 800 });
+
+    // 1. General Store Purchase Orders (/preview/gs-purchases)
+    await page.goto(`http://127.0.0.1:${PORT}/preview/gs-purchases`);
+    await expect(page.locator('#gspo-kpi-pending')).toContainText('1 PO');
+    await page.locator('#gspo-approve-btn').click();
+    await expect(page.locator('#gspo-kpi-approved')).toContainText('4 POs');
+    await expect(page.locator('#gspo-confirm-banner')).toBeVisible();
+
+    // 2. General Store GRN List (/preview/gs-grn-list)
+    await page.goto(`http://127.0.0.1:${PORT}/preview/gs-grn-list`);
+    await expect(page.locator('.mm-page-title').first()).toContainText('GRN list');
+
+    // 3. General Store Stock in Hand (/preview/gs-stock-in-hand)
+    await page.goto(`http://127.0.0.1:${PORT}/preview/gs-stock-in-hand`);
+    await page.locator('#gssih-filter-pills [data-stock-filter="low"]').click();
+    await expect(page.locator('#gssih-kpi-skus')).toContainText('2 SKUs');
+    await page.locator('#gssih-reorder-btn').click();
+    await expect(page.locator('#gssih-confirm-banner')).toBeVisible();
+
+    // 4. Restaurant Kitchen Product Inventory (/preview/rsi-inventory-report)
+    await page.goto(`http://127.0.0.1:${PORT}/preview/rsi-inventory-report`);
+    await page.locator('#rsi-filter-pills [data-rsi-cat="Chilled"]').click();
+    await expect(page.locator('#rsi-kpi-skus')).toContainText('2 SKUs');
+    await page.locator('#rsi-req-btn').click();
+    await expect(page.locator('#rsi-confirm-banner')).toBeVisible();
+});
+
+
 
