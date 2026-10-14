@@ -286,5 +286,36 @@ test('20-room & 20-guest sample dataset renders across Tape Chart, Rooms, Guests
 
     await page.goto(`http://127.0.0.1:${PORT}/preview/plan-a`);
     await expect(page.locator('table.mm-data-table tbody tr')).toHaveCount(9);
+
+    // Verify Daily Manager Flash Report & Shift Roster (/preview/daily-flash-report)
+    await page.goto(`http://127.0.0.1:${PORT}/preview/daily-flash-report`);
+    await expect(page.locator('.mm-page-title').first()).toContainText('Daily Manager Flash Report');
+    await expect(page.locator('.mm-print-sheet-a4')).toBeVisible();
+
+    // Verify Sidebar Role Switcher (#mm-role-switcher), Top Sub-Menu Bar (#mm-top-subnav) & Global Command Drawers
+    await page.goto(`http://127.0.0.1:${PORT}/preview/dashboard`);
+    await expect(page.locator('#mm-role-switcher')).toBeVisible();
+    await page.locator('#mm-role-switcher [data-role-view="pos"]').click();
+    await expect(page.locator('#mm-primary-menu > li[data-module]:visible')).toHaveCount(5);
+    await page.locator('#mm-role-switcher [data-role-view="all"]').click();
+    await expect(page.locator('#mm-primary-menu > li[data-module]:visible')).toHaveCount(14);
+
+    await page.locator('#mm-top-more-btn').click();
+    await expect(page.locator('#mm-top-more-panel')).toBeVisible();
+    await page.locator('#mm-top-more-btn').click();
+
+    await page.locator('#mm-banquet-cmd-btn').click();
+    await expect(page.locator('#mm-banquet-drawer')).toBeVisible();
+    await page.locator('#mm-beo-stage-all').click();
+    await expect(page.locator('#mm-beo-ready-kpi')).toContainText('5 / 5 Staged');
+    await expect(page.locator('#mm-beo-confirm-banner')).toBeVisible();
+    await page.locator('#mm-banquet-drawer [data-dismiss="modal"]').first().click();
+
+    await page.locator('#mm-transport-btn').click();
+    await expect(page.locator('#mm-transport-drawer')).toBeVisible();
+    await page.locator('#mm-trn-dispatch-submit').click();
+    await expect(page.locator('#mm-trn-kpi-total')).toContainText('7 Trips');
+    await expect(page.locator('#mm-trn-confirm-banner')).toBeVisible();
 });
+
 
