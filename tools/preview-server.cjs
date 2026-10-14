@@ -297,7 +297,7 @@ function shellWith(content,head,js,title,crumbs){
  raw=raw.slice(0,i)+'\n<!--MM-PAGE-->'+raw.slice(j);
  let page=compose('dashboard.html',raw);
  const quickDrawer='<div class="modal fade mm-app-drawer" id="mm-quick-drawer" tabindex="-1" role="dialog" aria-labelledby="mm-quick-drawer-title"><div class="modal-dialog modal-lg" role="document"><div class="modal-content"><div class="modal-header"><h4 class="modal-title" id="mm-quick-drawer-title"><i class="fa fa-columns"></i> Quick Action &amp; Inspector Drawer — '+title+'</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button></div><div class="modal-body"><section class="mm-ui"><div class="tw-space-y-4"><div class="mm-panel tw-p-4"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px"><strong><i class="fa fa-bolt"></i> Quick Entry Form (Frosted Glass Fields &amp; Dropdowns)</strong><span class="mm-badge mm-badge-paid">Slide-Over Drawer</span></div><form onsubmit="return false;" class="tw-space-y-3"><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px"><div><label class="mm-label">Guest / Party Name <span class="text-danger">*</span></label><div class="input-group"><span class="input-group-addon"><i class="fa fa-user"></i></span><input type="text" class="form-control" value="Tanvir Ahmed Chowdhury" placeholder="Enter full name"></div></div><div><label class="mm-label">Department / Outlet</label><select class="form-control"><option>Front Desk &amp; Room Reservations</option><option>Heritage Dining Restaurant</option><option>Skyline Lounge Bar</option><option>General Store &amp; Inventory</option><option>Accounts &amp; Finance</option></select></div><div><label class="mm-label">Transaction Category</label><select class="form-control"><option>Room Advance / Folio Settlement</option><option>Supplier Purchase Requisition</option><option>Account Payment / Journal Voucher</option><option>VIP Guest Profile Registration</option></select></div><div><label class="mm-label">Amount (BDT)</label><div class="input-group"><span class="input-group-addon">৳</span><input type="number" class="form-control" value="12500"><span class="input-group-addon">.00</span></div></div></div><div><label class="mm-label">Reference / Front-Desk Notes</label><textarea class="form-control" rows="2" placeholder="Add remarks or instructions...">Verified corporate booking &amp; instant settlement via Slide-Over App Drawer.</textarea></div></form></div><div class="mm-panel tw-p-4"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px"><strong><i class="fa fa-table"></i> Live Breakdown Table (Glass Table Surface)</strong><span class="mm-badge mm-badge-partial">3 Active Lines</span></div><div class="mm-table-scroll"><table class="table table-bordered table-striped"><thead><tr><th>Code</th><th>Description</th><th>Payment / Status</th><th class="text-right">Amount (৳)</th></tr></thead><tbody><tr><td><code>#RM-101</code></td><td>Deluxe Double · 2 Nights</td><td><span class="mm-badge mm-badge-paid">Confirmed</span></td><td class="text-right">8,400.00</td></tr><tr><td><code>#RST-204</code></td><td>Restaurant Room Service KOT</td><td><span class="mm-badge mm-badge-partial">Posted to Folio</span></td><td class="text-right">2,600.00</td></tr><tr><td><code>#SRV-019</code></td><td>Airport Chauffeur Pickup</td><td><span class="mm-badge mm-badge-paid">Settled</span></td><td class="text-right">1,500.00</td></tr></tbody></table></div></div></div></section></div><div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Cancel</button><button type="button" class="mm-button" data-dismiss="modal"><i class="fa fa-check"></i> Save &amp; Apply Changes</button></div></div></div></div>';
- const banner='<div role="note" style="padding:10px 14px;margin:0 0 16px;border:1px solid #c5d7ee;background:#edf4ff;color:#24436a;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;border-radius:10px"><div><strong>Visual preview · sample data only.</strong> '+title+' — nothing here is saved. <a href="/preview">All preview screens</a> · <a href="/">Dashboard</a></div><div style="display:flex;flex-wrap:wrap;gap:8px"><button type="button" data-toggle="modal" data-target="#mm-quick-drawer" class="mm-button" style="min-height:32px;padding:4px 12px"><i class="fa fa-columns"></i> Open App Drawer</button><button type="button" data-mm-theme-toggle aria-pressed="false" aria-label="Dark theme" class="mm-button mm-button-secondary" style="min-height:32px;padding:4px 12px"><i class="fa fa-moon-o"></i> Dark / Light</button><a href="/preview/booking-next" class="mm-button mm-button-secondary" style="min-height:32px;padding:4px 12px"><i class="fa fa-map-o"></i> Wizard + Floor Plan</a><a href="/preview/acc-opening-balances-data" class="mm-button mm-button-secondary" style="min-height:32px;padding:4px 12px"><i class="fa fa-balance-scale"></i> Opening Balances</a><a href="/preview/acc-form-purchases-create" class="mm-button mm-button-secondary" style="min-height:32px;padding:4px 12px"><i class="fa fa-shopping-cart"></i> Commercial PO</a><a href="/preview/acc-payments-show" class="mm-button mm-button-secondary" style="min-height:32px;padding:4px 12px"><i class="fa fa-file-text-o"></i> Voucher Detail</a><a href="/preview/gs-form-purchase-approve" class="mm-button mm-button-secondary" style="min-height:32px;padding:4px 12px"><i class="fa fa-check-circle"></i> Approve Store PO</a><a href="/preview/hservice-sale-create" class="mm-button mm-button-secondary" style="min-height:32px;padding:4px 12px"><i class="fa fa-concierge-bell"></i> Service Sale</a></div></div>';
+ const banner='<!--MM-TOP-SUBNAV-->';
  crumbs=crumbs||['Preview','Screens'];
  page=page.replace(/<li><span>Hotel<\/span><\/li>\s*<li><span>Booking<\/span><\/li>\s*<li><span aria-current="page">Create<\/span><\/li>/,()=>crumbs.slice(0,-1).map(c=>'<li><span>'+c+'</span></li>').join('')+'<li><span aria-current="page">'+crumbs[crumbs.length-1]+'</span></li>');
  page=page.replace('<!--MM-PAGE-->',()=>banner+content+quickDrawer);
@@ -1265,238 +1265,306 @@ function listPage(extra){
 }
 function menuLinks(page,currentPath){
  const cur=(currentPath||'').replace(/\/+$/,'')||'/';
- const hiddenAll='<li style="display:none"><a href="/preview">Preview Explorer</a><ul class="submenu">'+
-  Object.entries(specialPages).map(([p,v])=>'<li><a href="'+p+'">'+v.title+'</a></li>').join('')+
-  Object.entries(pages).map(([p,v])=>'<li><a href="'+p+'">'+v.title+' ('+p.replace('/preview/','')+')</a></li>').join('')+
-  Object.keys(pubPages).map(p=>'<li><a href="'+p+'">Public Storefront: '+p.replace('/preview/public-','')+'</a></li>').join('')+
-  '</ul></li>';
-
- const sections=[
+ const modules=[
   {
-   heading:'Overview & Hubs',
-   items:[
-    {type:'link',href:'/dashboard',icon:'fa-tachometer',label:'Dashboard',aliases:['/','/home','/dashboard','/preview/dashboard']},
-    {type:'group',icon:'fa-compass',label:'Command Hubs',children:[
-     {type:'link',href:'/preview/plan-a',label:'Plan A (9 Core Workflows)'},
-     {type:'link',href:'/preview/plan-b',label:'Plan B (All 34 Features)'},
-     {type:'link',href:'/preview',label:'All 360 Screens Explorer'},
-    ]},
+   section:'Overview & Hubs',
+   id:'mod-dashboard',
+   icon:'fa-tachometer',
+   label:'Dashboard & Board',
+   href:'/dashboard',
+   aliases:['/','/home','/dashboard','/preview/dashboard','/preview/room-board'],
+   tabs:[
+    ['/dashboard','fa-tachometer','Front-Desk Command Board'],
+    ['/preview/payment-gateway','fa-credit-card','Payment Gateway & Deposits (F1)'],
+    ['/preview/late-checkout','fa-clock-o','Late Checkout & Fees (F10)'],
+    ['/preview/enterprise-suite','fa-building-o','Enterprise Suite Overview'],
+    ['/preview/attendance-biometric','fa-id-card-o','Staff Biometric Attendance'],
    ],
   },
   {
-   heading:'Hospitality & Front Desk',
-   items:[
-    {type:'group',icon:'fa-building-o',label:'Front Desk',children:[
-     {type:'subgroup',label:'Bookings & Tape Chart',links:[
-      ['/preview/booking-next','3-Step Booking Wizard'],
-      ['/preview/tape-chart','7-Day Tape Chart'],
-      ['/preview/bookings','Active Bookings (20)'],
-      ['/preview/draft-booking-pdf','Draft Summary A4 PDF'],
-      ['/preview/group-contracts','Group & Event Blocks'],
-     ]},
-     {type:'subgroup',label:'In-House & Checkout',links:[
-      ['/preview/folio-settlement','Split-Folio Settlement'],
-      ['/preview/checkout','Checkout & Folio Payment'],
-      ['/preview/payment-collection','Guest Payment Collection'],
-      ['/preview/room-move','Room Move & Upgrade'],
-      ['/preview/kiosk-checkin','Self-Service Kiosk'],
-      ['/preview/invoice','Booking Tax Invoice'],
-     ]},
-     {type:'subgroup',label:'Night Audit & Day Lock',links:[
-      ['/preview/night-audit-hardening','Night-Audit Day Lock'],
-      ['/preview/night-audit','Night Audit Register'],
-      ['/preview/report-night-closing','Night Closing Report'],
-     ]},
-    ]},
-    {type:'group',icon:'fa-address-book-o',label:'Guests & CRM 360°',children:[
-     {type:'link',href:'/preview/guest-crm',label:'Guest & Corporate CRM 360°'},
-     {type:'link',href:'/preview/guests',label:'Guests Directory (20 VIPs)'},
-     {type:'link',href:'/preview/city-ledger',label:'Corporate City Ledger AR'},
-     {type:'link',href:'/preview/loyalty-coupons',label:'Loyalty & Coupon Engine'},
-     {type:'link',href:'/preview/hotel-sms',label:'Guest SMS Dispatch'},
-    ]},
-    {type:'group',icon:'fa-bed',label:'Rooms & Setup',children:[
-     {type:'subgroup',label:'Rooms & Housekeeping',links:[
-      ['/preview/rooms','Rooms Directory (20 Suites)'],
-      ['/preview/housekeeping-board','Housekeeping SLA Board'],
-      ['/preview/concierge-requests','Concierge & Lost/Found'],
-      ['/preview/minibar-folio','Minibar Auto-Post'],
-      ['/preview/maintenance-tickets','Maintenance Tickets'],
-     ]},
-     {type:'subgroup',label:'Rates & Distribution',links:[
-      ['/preview/room-settings','Room Settings & Pricing'],
-      ['/preview/rate-plans','Seasonal Rate Plans'],
-      ['/preview/dynamic-pricing','Dynamic Yield Pricing'],
-      ['/preview/channel-manager','OTA Channel Manager'],
-      ['/preview/inventory-guards','OOO & Inventory Guards'],
-     ]},
-     {type:'subgroup',label:'Categories & Tax Rules',links:[
-      ['/preview/category-create','Add Room Category'],
-      ['/preview/setup-amenities','Room Amenities Setup'],
-      ['/preview/setup-vat','VAT & Service Charge'],
-      ['/preview/setup-registration-terms','Registration Terms'],
-     ]},
-    ]},
-    {type:'group',icon:'fa-calendar',label:'Banquet & Services',children:[
-     {type:'subgroup',label:'Banquet Hall & Events',links:[
-      ['/preview/bq-booking-index','Banquet Bookings'],
-      ['/preview/bq-booking-create','New Banquet Booking'],
-      ['/preview/bq-rooms-index','Banquet Halls & Venues'],
-      ['/preview/bq-category-index','Hall Categories'],
-      ['/preview/bq-aminities-index','Hall Amenities'],
-     ]},
-     {type:'subgroup',label:'Concierge & Spa Services',links:[
-      ['/preview/hservice-sales','Hotel Service Sales'],
-      ['/preview/hservice-sale-create','New Service Sale'],
-      ['/preview/hservice-services','Services Catalog'],
-      ['/preview/upsell-marketplace','Spa & Upsell Add-Ons'],
-     ]},
-    ]},
+   section:'Overview & Hubs',
+   id:'mod-hubs',
+   icon:'fa-sitemap',
+   label:'Command Hubs',
+   href:'/preview/plan-a',
+   aliases:[],
+   tabs:[
+    ['/preview/plan-a','fa-sitemap','Plan A (9 Core Workflows)'],
+    ['/preview/plan-b','fa-rocket','Plan B (All 34 Features)'],
+    ['/preview','fa-th-large','All 360 Screens Explorer'],
+    ['/preview/ui-kit','fa-cubes','UI Component Kit'],
    ],
   },
   {
-   heading:'F&B POS & Inventory',
-   items:[
-    {type:'group',icon:'fa-cutlery',label:'Restaurant & Bar POS',children:[
-     {type:'subgroup',label:'POS & Thermal KOT',links:[
-      ['/preview/pos-unified','Unified Split-Bill POS'],
-      ['/preview/pos-kot-print','80mm Thermal KOT Studio'],
-      ['/preview/rst-pos','Restaurant POS (sales-v2)'],
-      ['/preview/bar-pos','Skyline Bar POS (sales-v2)'],
-     ]},
-     {type:'subgroup',label:'Tables & Kitchen (KDS)',links:[
-      ['/preview/rst-tables','Restaurant Floor Tables'],
-      ['/preview/bar-tables','Bar & Lounge Tables'],
-      ['/preview/rst-kitchen-board','Kitchen Display Board'],
-      ['/preview/rst-kitchen-list','Kitchen Order Queue'],
-     ]},
-     {type:'subgroup',label:'F&B Sales & Audit',links:[
-      ['/preview/rst-sales-list','Restaurant Sales List'],
-      ['/preview/rst-report-sales','Restaurant Sales Report'],
-      ['/preview/rst-audit-list','Restaurant Night Audit'],
-      ['/preview/rst-purchase-create','Kitchen Purchase Order'],
-     ]},
-    ]},
-    {type:'group',icon:'fa-cubes',label:'Kitchen & Store Stock',children:[
-     {type:'subgroup',label:'Kitchen Inventory',links:[
-      ['/preview/rsi-inventory-report','Kitchen Stock Valuation'],
-      ['/preview/rsi-products','Products & Ingredients'],
-      ['/preview/rsi-categories','Kitchen Categories'],
-      ['/preview/rsi-suppliers','F&B Suppliers'],
-      ['/preview/rsi-adjustments','Stock Adjustments'],
-      ['/preview/rsi-production-requisitions','Kitchen Requisitions'],
-     ]},
-     {type:'subgroup',label:'General Store (PO/GRN)',links:[
-      ['/preview/gs-stock-in-hand','Store Stock in Hand'],
-      ['/preview/gs-items','Store Items Master'],
-      ['/preview/gs-purchases','Purchase Orders (PO)'],
-      ['/preview/gs-gr-list','Department Requisitions'],
-     ]},
-    ]},
+   section:'Hospitality & Front Desk',
+   id:'mod-bookings',
+   icon:'fa-calendar-plus-o',
+   label:'Bookings & Tape Chart',
+   href:'/preview/booking-next',
+   aliases:[],
+   tabs:[
+    ['/preview/booking-next','fa-magic','3-Step Booking Wizard'],
+    ['/preview/tape-chart','fa-calendar','7-Day Tape Chart'],
+    ['/preview/bookings','fa-list-alt','Active Bookings (20)'],
+    ['/preview/draft-booking-pdf','fa-file-pdf-o','Draft Summary A4 PDF'],
+    ['/preview/group-contracts','fa-users','Group & Event Blocks'],
+    ['/preview/hotel-booking-adjust','fa-exchange','Booking Migration'],
    ],
   },
   {
-   heading:'Finance, BI & Admin',
-   items:[
-    {type:'group',icon:'fa-money',label:'Accounts & Finance',children:[
-     {type:'subgroup',label:'Financial Statements',links:[
-      ['/preview/acc-balance-sheet','Balance Sheet & Builder'],
-      ['/preview/acc-income-statement','Income Statement (P&L)'],
-      ['/preview/acc-trial-balance','Trial Balance Report'],
-      ['/preview/acc-cash-flow','Cash Flow Statement'],
-      ['/preview/acc-ratio-analysis','Financial Ratio Analysis'],
-     ]},
-     {type:'subgroup',label:'Vouchers & Ledgers',links:[
-      ['/preview/acc-chart-of-account','Chart of Accounts (GL)'],
-      ['/preview/acc-account-ledger','General Account Ledger'],
-      ['/preview/acc-payments','Payment Vouchers'],
-      ['/preview/acc-receives','Receive Vouchers'],
-      ['/preview/acc-journals','Journal Vouchers'],
-      ['/preview/acc-fund-transfers','Contra & Fund Transfers'],
-     ]},
-     {type:'subgroup',label:'Gateways & Tax',links:[
-      ['/preview/payment-gateway','Payment Gateway (F1)'],
-      ['/preview/gateway-reconciliation','Gateway Reconciliation'],
-      ['/preview/e-invoicing','Mushak-6.3 E-Invoicing'],
-      ['/preview/acc-opening-balances-data','Opening Balances'],
-     ]},
-    ]},
-    {type:'group',icon:'fa-bar-chart',label:'Manager BI & Reports',children:[
-     {type:'link',href:'/preview/manager-bi',label:'Manager BI: ADR & RevPAR'},
-     {type:'link',href:'/preview/report-expected-arrival',label:'Expected Arrivals'},
-     {type:'link',href:'/preview/report-expected-departure',label:'Expected Departures'},
-     {type:'link',href:'/preview/report-in-house-guest',label:'In-House Guests'},
-     {type:'link',href:'/preview/report-today-check-in',label:'Today Check-In Ledger'},
-     {type:'link',href:'/preview/report-vat-report-day',label:'Daily & Monthly VAT'},
-     {type:'link',href:'/preview/report-all-reports',label:'All Hotel Reports'},
-    ]},
-    {type:'group',icon:'fa-globe',label:'Website & Storefront',children:[
-     {type:'link',href:'/preview/public-home',label:'Public Hotel Storefront'},
-     {type:'link',href:'/preview/public-search-all-room',label:'Public Suite Search'},
-     {type:'link',href:'/preview/public-booking-cart',label:'Public Booking Cart'},
-     {type:'link',href:'/preview/public-food-menu',label:'Public Dining Menu'},
-     {type:'link',href:'/preview/web-banner-index',label:'CMS Homepage Banners'},
-     {type:'link',href:'/preview/web-gallery-index',label:'CMS Photo Gallery'},
-     {type:'link',href:'/preview/web-pages-index',label:'CMS Content Pages'},
-     {type:'link',href:'/preview/web-settings',label:'Website Brand Settings'},
-    ]},
-    {type:'group',icon:'fa-cogs',label:'System, RBAC & Docs',children:[
-     {type:'subgroup',label:'System & RBAC Security',links:[
-      ['/preview/system-settings','System Settings'],
-      ['/preview/perm-access-create','Role & Permission Matrix'],
-      ['/preview/perm-users-index','Permitted Staff Users'],
-      ['/preview/audit-compliance','2FA, Audit & Compliance'],
-      ['/preview/admin-i18n','Bilingual i18n Manager'],
-      ['/preview/import-export-hub','Import / Export Hub'],
-      ['/preview/login','Staff Login (W6.5 Auth)'],
-     ]},
-     {type:'subgroup',label:'Docs, SOP & UI Kit',links:[
-      ['/preview/wiki','User Wiki & Help (EN/বাংলা)'],
-      ['/preview/sop-print','Printable A4 SOP Sheet'],
-      ['/preview/onboarding','Staff Onboarding Hub'],
-      ['/preview/ui-kit','UI Component Kit (/ui-kit)'],
-      ['/preview/booking-drawers','Slide-Over App Drawers'],
-     ]},
-    ]},
+   section:'Hospitality & Front Desk',
+   id:'mod-folio',
+   icon:'fa-columns',
+   label:'In-House, Folio & Audit',
+   href:'/preview/folio-settlement',
+   aliases:[],
+   tabs:[
+    ['/preview/folio-settlement','fa-columns','Split-Folio Settlement'],
+    ['/preview/checkout','fa-credit-card','Checkout & Folio'],
+    ['/preview/payment-collection','fa-money','Payment Collection'],
+    ['/preview/room-move','fa-exchange','Room Move & Upgrade'],
+    ['/preview/kiosk-checkin','fa-tablet','Self-Service Kiosk'],
+    ['/preview/invoice','fa-print','Booking Tax Invoice'],
+    ['/preview/night-audit-hardening','fa-moon-o','Night-Audit Day Lock'],
+    ['/preview/night-audit','fa-check-square-o','Night Audit Register'],
+   ],
+  },
+  {
+   section:'Hospitality & Front Desk',
+   id:'mod-crm',
+   icon:'fa-address-book-o',
+   label:'Guests & CRM 360°',
+   href:'/preview/guest-crm',
+   aliases:[],
+   tabs:[
+    ['/preview/guest-crm','fa-id-badge','Guest & Corporate CRM 360°'],
+    ['/preview/guests','fa-users','Guests Directory (20 VIPs)'],
+    ['/preview/city-ledger','fa-building-o','Corporate City Ledger AR'],
+    ['/preview/loyalty-coupons','fa-gift','Loyalty & Coupons'],
+    ['/preview/guest-portal','fa-mobile','Guest Self-Portal'],
+    ['/preview/hotel-sms','fa-commenting-o','Guest SMS Dispatch'],
+   ],
+  },
+  {
+   section:'Hospitality & Front Desk',
+   id:'mod-rooms',
+   icon:'fa-bed',
+   label:'Rooms & Housekeeping',
+   href:'/preview/rooms',
+   aliases:[],
+   tabs:[
+    ['/preview/rooms','fa-bed','Rooms Directory (20 Suites)'],
+    ['/preview/housekeeping-board','fa-check-circle','Housekeeping SLA Board'],
+    ['/preview/concierge-requests','fa-bell-o','Concierge & Lost/Found'],
+    ['/preview/minibar-folio','fa-glass','Minibar Auto-Post'],
+    ['/preview/maintenance-tickets','fa-wrench','Maintenance Tickets'],
+    ['/preview/shift-roster','fa-clock-o','Staff Shift Roster'],
+   ],
+  },
+  {
+   section:'Hospitality & Front Desk',
+   id:'mod-setup',
+   icon:'fa-sliders',
+   label:'Rates, Channels & Setup',
+   href:'/preview/room-settings',
+   aliases:[],
+   prefixMatch:['/preview/setup-','/preview/category-'],
+   tabs:[
+    ['/preview/room-settings','fa-sliders','Room Settings & Pricing'],
+    ['/preview/rate-plans','fa-tags','Seasonal Rate Plans'],
+    ['/preview/dynamic-pricing','fa-line-chart','Dynamic Yield Pricing'],
+    ['/preview/channel-manager','fa-globe','OTA Channel Manager'],
+    ['/preview/inventory-guards','fa-shield','OOO & Inventory Guards'],
+    ['/preview/category-create','fa-plus-circle','Add Room Category'],
+    ['/preview/setup-amenities','fa-wifi','Amenities Setup'],
+    ['/preview/setup-vat','fa-percent','VAT & Service Charge'],
+    ['/preview/setup-registration-terms','fa-file-text-o','Registration Terms'],
+   ],
+  },
+  {
+   section:'Hospitality & Front Desk',
+   id:'mod-banquet',
+   icon:'fa-glass',
+   label:'Banquet & Services',
+   href:'/preview/bq-booking-index',
+   aliases:[],
+   prefixMatch:['/preview/bq-','/preview/bh-','/preview/hservice-'],
+   tabs:[
+    ['/preview/bq-booking-index','fa-calendar','Banquet Bookings'],
+    ['/preview/bq-booking-create','fa-plus-circle','New Banquet Booking'],
+    ['/preview/bq-rooms-index','fa-building','Banquet Halls'],
+    ['/preview/bq-category-index','fa-tags','Hall Categories'],
+    ['/preview/bq-aminities-index','fa-wifi','Hall Amenities'],
+    ['/preview/hservice-sales','fa-concierge-bell','Hotel Service Sales'],
+    ['/preview/hservice-sale-create','fa-plus','New Service Sale'],
+    ['/preview/hservice-services','fa-list','Services Catalog'],
+    ['/preview/upsell-marketplace','fa-star','Spa & Upsell Add-Ons'],
+   ],
+  },
+  {
+   section:'F&B POS & Inventory',
+   id:'mod-pos',
+   icon:'fa-cutlery',
+   label:'Restaurant & Bar POS',
+   href:'/preview/pos-unified',
+   aliases:[],
+   prefixMatch:['/preview/rst-','/preview/bar-'],
+   tabs:[
+    ['/preview/pos-unified','fa-cutlery','Unified Split-Bill POS'],
+    ['/preview/pos-kot-print','fa-print','80mm Thermal KOT Studio'],
+    ['/preview/rst-pos','fa-desktop','Restaurant POS'],
+    ['/preview/bar-pos','fa-glass','Skyline Bar POS'],
+    ['/preview/rst-tables','fa-th-large','Restaurant Tables'],
+    ['/preview/bar-tables','fa-th','Bar & Lounge Tables'],
+    ['/preview/rst-kitchen-board','fa-fire','Kitchen Board (KDS)'],
+    ['/preview/rst-kitchen-list','fa-list','Kitchen Order Queue'],
+    ['/preview/rst-sales-list','fa-file-text-o','Restaurant Sales'],
+    ['/preview/rst-report-sales','fa-bar-chart','F&B Sales Report'],
+    ['/preview/rst-audit-list','fa-moon-o','F&B Night Audit'],
+   ],
+  },
+  {
+   section:'F&B POS & Inventory',
+   id:'mod-inventory',
+   icon:'fa-cubes',
+   label:'Kitchen & Store Stock',
+   href:'/preview/rsi-inventory-report',
+   aliases:[],
+   prefixMatch:['/preview/rsi-','/preview/gs-'],
+   tabs:[
+    ['/preview/rsi-inventory-report','fa-cubes','Kitchen Stock Report'],
+    ['/preview/rsi-products','fa-cutlery','Kitchen Products'],
+    ['/preview/rsi-categories','fa-tags','Kitchen Categories'],
+    ['/preview/rsi-suppliers','fa-truck','F&B Suppliers'],
+    ['/preview/rsi-adjustments','fa-sliders','Stock Adjustments'],
+    ['/preview/gs-stock-in-hand','fa-archive','Store Stock in Hand'],
+    ['/preview/gs-items','fa-list','Store Items Master'],
+    ['/preview/gs-purchases','fa-shopping-cart','Store Purchase POs'],
+    ['/preview/gs-grn-list','fa-check-square-o','Goods Received (GRN)'],
+    ['/preview/gs-gr-list','fa-share-square-o','Department Requisitions'],
+   ],
+  },
+  {
+   section:'Finance, BI & Admin',
+   id:'mod-finance',
+   icon:'fa-money',
+   label:'Accounts & Finance',
+   href:'/preview/acc-balance-sheet',
+   aliases:[],
+   prefixMatch:['/preview/acc-'],
+   tabs:[
+    ['/preview/acc-balance-sheet','fa-building-o','Balance Sheet & Builder'],
+    ['/preview/acc-income-statement','fa-line-chart','Income Statement (P&L)'],
+    ['/preview/acc-trial-balance','fa-balance-scale','Trial Balance'],
+    ['/preview/acc-cash-flow','fa-exchange','Cash Flow Statement'],
+    ['/preview/acc-ratio-analysis','fa-pie-chart','Ratio Analysis'],
+    ['/preview/acc-chart-of-account','fa-sitemap','Chart of Accounts'],
+    ['/preview/acc-account-ledger','fa-book','Account Ledger'],
+    ['/preview/acc-payments','fa-arrow-circle-up','Payment Vouchers'],
+    ['/preview/acc-receives','fa-arrow-circle-down','Receive Vouchers'],
+    ['/preview/acc-journals','fa-file-text-o','Journal Vouchers'],
+    ['/preview/acc-fund-transfers','fa-random','Fund Transfers'],
+    ['/preview/gateway-reconciliation','fa-check-circle','Gateway Reconciliation'],
+   ],
+  },
+  {
+   section:'Finance, BI & Admin',
+   id:'mod-bi',
+   icon:'fa-bar-chart',
+   label:'Manager BI & Reports',
+   href:'/preview/manager-bi',
+   aliases:[],
+   prefixMatch:['/preview/report-','/preview/hotel-monthly'],
+   tabs:[
+    ['/preview/manager-bi','fa-bar-chart','Manager BI: ADR & RevPAR'],
+    ['/preview/report-expected-arrival','fa-plane','Expected Arrivals'],
+    ['/preview/report-expected-departure','fa-sign-out','Expected Departures'],
+    ['/preview/report-in-house-guest','fa-bed','In-House Guests'],
+    ['/preview/report-today-check-in','fa-calendar-check-o','Today Check-In'],
+    ['/preview/report-vat-report-day','fa-percent','Daily & Monthly VAT'],
+    ['/preview/report-night-closing','fa-moon-o','Night Closing Report'],
+    ['/preview/report-all-reports','fa-folder-open-o','All Hotel Reports'],
+   ],
+  },
+  {
+   section:'Finance, BI & Admin',
+   id:'mod-web',
+   icon:'fa-globe',
+   label:'Website & Storefront',
+   href:'/preview/web-banner-index',
+   aliases:[],
+   prefixMatch:['/preview/web-','/preview/public-'],
+   tabs:[
+    ['/preview/web-banner-index','fa-picture-o','CMS Homepage Banners'],
+    ['/preview/web-gallery-index','fa-camera','CMS Suite Gallery'],
+    ['/preview/web-pages-index','fa-file-text-o','CMS Content Pages'],
+    ['/preview/web-settings','fa-cog','Website Brand Settings'],
+    ['/preview/public-home','fa-globe','Public Storefront'],
+    ['/preview/public-search-all-room','fa-search','Public Suite Search'],
+    ['/preview/public-booking-cart','fa-shopping-cart','Public Booking Cart'],
+    ['/preview/public-food-menu','fa-cutlery','Public Dining Menu'],
+   ],
+  },
+  {
+   section:'Finance, BI & Admin',
+   id:'mod-system',
+   icon:'fa-cogs',
+   label:'System, RBAC & Docs',
+   href:'/preview/system-settings',
+   aliases:[],
+   prefixMatch:['/preview/perm-','/preview/news-','/preview/sms-','/preview/global-'],
+   tabs:[
+    ['/preview/system-settings','fa-cogs','System Settings'],
+    ['/preview/perm-access-create','fa-shield','Role & Permission Matrix'],
+    ['/preview/perm-users-index','fa-users','Permitted Staff Users'],
+    ['/preview/audit-compliance','fa-lock','2FA, Audit & Compliance'],
+    ['/preview/admin-i18n','fa-language','Bilingual i18n Manager'],
+    ['/preview/import-export-hub','fa-cloud-upload','Import / Export Hub'],
+    ['/preview/wiki','fa-question-circle','User Wiki & Help (EN/বাংলা)'],
+    ['/preview/sop-print','fa-print','Printable A4 SOP Sheet'],
+    ['/preview/onboarding','fa-graduation-cap','Staff Onboarding Hub'],
+    ['/preview/booking-drawers','fa-columns','Slide-Over App Drawers'],
+    ['/preview/login','fa-sign-in','Staff Login (Auth)'],
    ],
   },
  ];
 
- let subSeq=0,matchedActive=false;
- const htmlParts=[];
- for(const sec of sections){
-  htmlParts.push('<li class="mm-nav-section" role="presentation">'+sec.heading+'</li>');
-  for(const item of sec.items){
-   if(item.type==='link'){
-    const isAct=!matchedActive&&(item.aliases||[item.href]).includes(cur);
-    if(isAct) matchedActive=true;
-    htmlParts.push('<li'+(isAct?' class="active"':'')+'><a href="'+item.href+'"'+(isAct?' aria-current="page"':'')+'><i class="menu-icon fa '+item.icon+'"></i><span class="menu-text">'+item.label+'</span></a><b class="arrow"></b></li>');
-   }else if(item.type==='group'){
-    let groupActive=false,totalLinks=0;
-    const childHtml=item.children.map(ch=>{
-     if(ch.type==='link'){
-      totalLinks++;
-      const isLeafAct=!matchedActive&&ch.href===cur;
-      if(isLeafAct){matchedActive=true;groupActive=true;}
-      return '<li'+(isLeafAct?' class="active"':'')+'><a href="'+ch.href+'"'+(isLeafAct?' aria-current="page"':'')+'><span class="menu-text">'+ch.label+'</span></a><b class="arrow"></b></li>';
-     }
-     totalLinks+=ch.links.length;
-     let subActive=false;
-     const l3Html=ch.links.map(([href,lbl])=>{
-      const isL3Act=!matchedActive&&href===cur;
-      if(isL3Act){matchedActive=true;subActive=true;groupActive=true;}
-      return '<li'+(isL3Act?' class="active"':'')+'><a href="'+href+'"'+(isL3Act?' aria-current="page"':'')+'><span class="menu-text">'+lbl+'</span></a><b class="arrow"></b></li>';
-     }).join('');
-     const sId='mm-prev-sub-'+(++subSeq);
-     return '<li class="'+(subActive?'open active':'')+'"><a href="#" class="dropdown-toggle" aria-expanded="'+(subActive?'true':'false')+'"><span class="menu-text">'+ch.label+'</span><span class="mm-nav-count">'+ch.links.length+'</span><b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b><ul class="submenu'+(subActive?' nav-show':'')+'" id="'+sId+'"'+(subActive?' style="display:block"':'')+'>'+l3Html+'</ul></li>';
-    }).join('');
-    const gId='mm-prev-sub-'+(++subSeq);
-    htmlParts.push('<li class="'+(groupActive?'open active':'')+'"><a href="#" class="dropdown-toggle" aria-expanded="'+(groupActive?'true':'false')+'"><i class="menu-icon fa '+item.icon+'"></i><span class="menu-text">'+item.label+'</span><span class="mm-nav-count">'+totalLinks+'</span><b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b><ul class="submenu'+(groupActive?' nav-show':'')+'" id="'+gId+'"'+(groupActive?' style="display:block"':'')+'>'+childHtml+'</ul></li>');
-   }
+ let activeMod=modules.find(m=>m.aliases.includes(cur)||m.tabs.some(([h])=>h===cur));
+ if(!activeMod) activeMod=modules.find(m=>(m.prefixMatch||[]).some(px=>cur.startsWith(px)))||modules[1];
+
+ const sidebarParts=[];
+ let lastSec='';
+ for(const m of modules){
+  if(m.section!==lastSec){
+   lastSec=m.section;
+   sidebarParts.push('<li class="mm-nav-section" role="presentation">'+m.section+'</li>');
   }
+  const isAct=m.id===activeMod.id;
+  sidebarParts.push('<li'+(isAct?' class="active"':'')+'><a href="'+m.href+'"'+(isAct?' aria-current="page"':'')+'><i class="menu-icon fa '+m.icon+'"></i><span class="menu-text">'+m.label+'</span><span class="mm-nav-count">'+m.tabs.length+'</span></a><b class="arrow"></b></li>');
  }
- const navScript='<script>(function(){var m=document.getElementById("mm-primary-menu");if(!m||m.dataset.mmPrevBound)return;m.dataset.mmPrevBound="1";m.addEventListener("click",function(e){var a=e.target&&e.target.closest("a.dropdown-toggle");if(!a||!m.contains(a))return;e.preventDefault();e.stopPropagation();var li=a.parentElement,sub=li&&li.querySelector(":scope > ul.submenu"),parentUl=li&&li.parentElement;if(!li||!sub)return;var isOpen=li.classList.contains("open")||sub.style.display==="block";if(!isOpen&&parentUl){Array.from(parentUl.children).forEach(function(sib){if(sib!==li&&sib.classList.contains("open")){sib.classList.remove("open");var sSub=sib.querySelector(":scope > ul.submenu"),sA=sib.querySelector(":scope > a.dropdown-toggle");if(sSub){sSub.classList.remove("nav-show");sSub.style.display="none";}if(sA)sA.setAttribute("aria-expanded","false");}});}li.classList.toggle("open",!isOpen);sub.classList.toggle("nav-show",!isOpen);sub.style.display=isOpen?"none":"block";a.setAttribute("aria-expanded",String(!isOpen));},true);})();</script>';
- return page.replace(/<ul class="nav nav-list" id="mm-primary-menu"[^>]*>[\s\S]*?<\/ul>(?=<\/div>)/,'<ul class="nav nav-list" id="mm-primary-menu" aria-label="Main navigation">'+htmlParts.join('')+hiddenAll+'</ul>').replace('</body>',navScript+'</body>');
+
+ const tabsList=activeMod.tabs.slice();
+ const hasExactTab=tabsList.some(([h])=>h===cur||(h==='/dashboard'&&activeMod.aliases.includes(cur)));
+ if(!hasExactTab){
+  const extraTitle=(specialPages[cur]&&specialPages[cur].title)||(pages[cur]&&pages[cur].title)||cur.replace('/preview/','');
+  tabsList.push([cur,'fa-file-text-o',extraTitle]);
+ }
+ const tabsHtml=tabsList.map(([href,icon,lbl])=>{
+  const isTabAct=href===cur||(href==='/dashboard'&&activeMod.aliases.includes(cur));
+  return '<a href="'+href+'" class="mm-top-tab'+(isTabAct?' is-active':'')+'"'+(isTabAct?' aria-current="page"':'')+'><i class="fa '+icon+'"></i><span>'+lbl+'</span></a>';
+ }).join('');
+
+ const topSubnav='<nav class="mm-top-subnav mm-no-print" id="mm-top-subnav" aria-label="'+activeMod.label+' sub-menu tabs">'+
+  '<div class="mm-top-subnav-head">'+
+   '<div class="mm-top-subnav-title"><span class="mm-top-subnav-icon"><i class="fa '+activeMod.icon+'"></i></span><span>'+activeMod.label+'</span><span class="mm-badge mm-badge-paid" style="font-size:11px">'+tabsList.length+' Sub-Menu Tabs</span></div>'+
+   '<div style="display:flex;flex-wrap:wrap;gap:6px"><button type="button" data-toggle="modal" data-target="#mm-quick-drawer" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11.5px"><i class="fa fa-columns"></i> App Drawer</button><button type="button" data-mm-theme-toggle aria-pressed="false" aria-label="Dark theme" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11.5px"><i class="fa fa-moon-o"></i> Dark / Light</button><a href="/preview/plan-a" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11.5px"><i class="fa fa-sitemap"></i> Plan A (9/9)</a><a href="/preview" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11.5px"><i class="fa fa-th-large"></i> All 360 Screens</a></div>'+
+  '</div>'+
+  '<div class="mm-top-subnav-tabs" role="navigation" aria-label="Module sub-pages">'+tabsHtml+'</div>'+
+ '</nav>';
+
+ return page
+  .replace(/<ul class="nav nav-list" id="mm-primary-menu"[^>]*>[\s\S]*?<\/ul>(?=<\/div>)/,'<ul class="nav nav-list" id="mm-primary-menu" aria-label="Main navigation">'+sidebarParts.join('')+'</ul>')
+  .replace('<!--MM-TOP-SUBNAV-->',()=>topSubnav);
 }
 const pubPages={'/preview/public-home':'frontend/home.html','/preview/public-rooms':'frontend/room_view.html','/preview/public-room-view':'frontend/room_view.html','/preview/public-booking-cart':'frontend/booking_cart.html','/preview/public-search-all-room':'frontend/search_all_room.html','/preview/public-search-room':'frontend/search_room.html','/preview/public-guest-register':'frontend/guest_register.html','/preview/public-booking-register':'frontend/booking_register.html','/preview/public-food-menu':'frontend/food_menu.html','/preview/public-bar-menu':'frontend/bar_menu.html','/preview/public-terms':'frontend/terms.html','/preview/public-privacy-policy':'frontend/privacy_policy.html','/preview/public-single-page-view':'frontend/single_page_view.html'};
 function pubScreen(route){
@@ -1510,7 +1578,7 @@ function renderDashboardPage(url){
  if(picked&&/^\d\d\/\d\d\/\d{4} - \d\d\/\d\d\/\d{4}$/.test(picked)){
   page=page.replace(/(name="booking_date" id="available_date" value=")[^"]*"/,'$1'+picked+'"').replace(/(name="booking_availabe" value=")[^"]*"/,'$1'+picked+'"');
  }
- const dashBanner='<div role="note" id="dash-ops-strip" style="padding:12px 16px;margin:0 0 16px;border:1px solid #c5d7ee;background:#edf4ff;color:#24436a;border-radius:10px;display:flex;flex-direction:column;gap:10px"><div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px"><div><strong><i class="fa fa-tachometer"></i> Front-Desk Command Center (Core Workflow #1)</strong> · <span class="mm-badge mm-badge-paid">Business Date: 2026-10-14 · Night Audit: Open</span> <span class="mm-badge mm-badge-partial">8 Arrivals · 4 Departures · 1 Credit Alert</span> — <a href="/preview">All 360 Screens</a></div><div style="display:flex;flex-wrap:wrap;gap:6px"><button type="button" data-mm-theme-toggle aria-pressed="false" aria-label="Dark theme" class="mm-button mm-button-secondary" style="min-height:30px;padding:3px 10px"><i class="fa fa-moon-o"></i> Dark / Light</button><a href="/preview/plan-a" class="mm-button" style="min-height:30px;padding:3px 10px"><i class="fa fa-sitemap"></i> Plan A (9/9)</a><a href="/preview/plan-b" class="mm-button" style="min-height:30px;padding:3px 10px"><i class="fa fa-rocket"></i> Plan B (34/34)</a><a href="/preview/room-settings" class="mm-button mm-button-secondary" style="min-height:30px;padding:3px 10px"><i class="fa fa-sliders"></i> Room Settings</a><a href="/preview/folio-settlement" class="mm-button mm-button-secondary" style="min-height:30px;padding:3px 10px"><i class="fa fa-columns"></i> Split-Folio</a><a href="/preview/pos-unified" class="mm-button mm-button-secondary" style="min-height:30px;padding:3px 10px"><i class="fa fa-cutlery"></i> Unified POS</a><a href="/preview/rooms" class="mm-button mm-button-secondary" style="min-height:30px;padding:3px 10px"><i class="fa fa-bed"></i> 20 Rooms</a><a href="/preview/tape-chart" class="mm-button mm-button-secondary" style="min-height:30px;padding:3px 10px"><i class="fa fa-calendar"></i> Tape Chart</a><a href="/preview/booking-next" class="mm-button mm-button-secondary" style="min-height:30px;padding:3px 10px"><i class="fa fa-calendar-plus-o"></i> Wizard</a></div></div></div>';
+ const dashBanner='<!--MM-TOP-SUBNAV--><div role="note" id="dash-ops-strip" style="padding:12px 16px;margin:0 0 16px;border:1px solid #c5d7ee;background:#edf4ff;color:#24436a;border-radius:10px;display:flex;flex-direction:column;gap:10px"><div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px"><div><strong><i class="fa fa-tachometer"></i> Front-Desk Command Center (Core Workflow #1)</strong> · <span class="mm-badge mm-badge-paid">Business Date: 2026-10-14 · Night Audit: Open</span> <span class="mm-badge mm-badge-partial">8 Arrivals · 4 Departures · 1 Credit Alert</span> — <a href="/preview">All 360 Screens</a></div><div style="display:flex;flex-wrap:wrap;gap:6px"><button type="button" data-mm-theme-toggle aria-pressed="false" aria-label="Dark theme" class="mm-button mm-button-secondary" style="min-height:30px;padding:3px 10px"><i class="fa fa-moon-o"></i> Dark / Light</button><a href="/preview/plan-a" class="mm-button" style="min-height:30px;padding:3px 10px"><i class="fa fa-sitemap"></i> Plan A (9/9)</a><a href="/preview/plan-b" class="mm-button" style="min-height:30px;padding:3px 10px"><i class="fa fa-rocket"></i> Plan B (34/34)</a><a href="/preview/room-settings" class="mm-button mm-button-secondary" style="min-height:30px;padding:3px 10px"><i class="fa fa-sliders"></i> Room Settings</a><a href="/preview/folio-settlement" class="mm-button mm-button-secondary" style="min-height:30px;padding:3px 10px"><i class="fa fa-columns"></i> Split-Folio</a><a href="/preview/pos-unified" class="mm-button mm-button-secondary" style="min-height:30px;padding:3px 10px"><i class="fa fa-cutlery"></i> Unified POS</a><a href="/preview/rooms" class="mm-button mm-button-secondary" style="min-height:30px;padding:3px 10px"><i class="fa fa-bed"></i> 20 Rooms</a><a href="/preview/tape-chart" class="mm-button mm-button-secondary" style="min-height:30px;padding:3px 10px"><i class="fa fa-calendar"></i> Tape Chart</a><a href="/preview/booking-next" class="mm-button mm-button-secondary" style="min-height:30px;padding:3px 10px"><i class="fa fa-calendar-plus-o"></i> Wizard</a></div></div></div>';
  return page.replace('<section class="mm-ui mm-dashboard">',dashBanner+'<section class="mm-ui mm-dashboard">');
 }
 http.createServer((req,res)=>{
@@ -1541,7 +1609,7 @@ http.createServer((req,res)=>{
    else if(p==='/password'){resolvedPath='/preview/perm-change-password';page=screen('/preview/perm-change-password');}
    else if(p==='/notifications'){resolvedPath='/preview/news-notices';page=newsNoticesPage();}
    else if(p==='/system-settings'){resolvedPath='/preview/system-settings';page=systemSettingsPage();}
-   else if(p==='/'||p==='/home'||p==='/dashboard'||p==='/preview/dashboard'){resolvedPath='/dashboard';page=renderDashboardPage(url);}
+   else if(p==='/'||p==='/home'||p==='/dashboard'||p==='/preview/dashboard'||p==='/preview/room-board'){resolvedPath='/dashboard';page=renderDashboardPage(url);}
    else if(p==='/hotel/booking/booking-next'||p==='/hotel/booking/create'){resolvedPath='/preview/booking-next';page=screen('/preview/booking-next');}
    else if(p==='/restaurant'||p==='/restaurant/sales-v2/create'||p==='/rst/sales-v2/create'||p==='/pos'){resolvedPath='/preview/rst-pos';page=screen('/preview/rst-pos');}
    else if(p==='/bar'||p==='/bar/sales-v2/create'||p==='/bar-pos'){resolvedPath='/preview/bar-pos';page=screen('/preview/bar-pos');}
