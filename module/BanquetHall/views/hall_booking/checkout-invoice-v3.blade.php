@@ -473,6 +473,7 @@
                                                 src="data:image/png;base64,{{ DNS1D::getBarcodePNG($barcode, 'C128') }}"
                                                 alt="barcode" />
                                             <p style="font-size: 14px;">{{ $booking->booking_number }}</p>
+                                            @include('partials.print-codes', ['code' => $booking->booking_number, 'label' => 'Booking Invoice', 'compact' => true, 'codes' => 'qr'])
                                         </div>
                                     </div>
                                 </div>

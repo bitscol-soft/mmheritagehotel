@@ -522,6 +522,7 @@
                                                 src="data:image/png;base64,{{ DNS1D::getBarcodePNG($barcode, 'C128') }}"
                                                 alt="barcode" />
                                             <p style="font-size: 14px;">{{ $booking->booking_number }}</p>
+                                            @include('partials.print-codes', ['code' => $booking->booking_number, 'label' => 'Booking Invoice', 'compact' => true, 'codes' => 'qr'])
                                         </div>
                                     </div>
                                 </div>
@@ -970,6 +971,7 @@
                             <img class="barcode-img pt-1"
                                 src="data:image/png;base64,{{ DNS1D::getBarcodePNG($barcode, 'C128') }}"
                                 alt="barcode" />
+                            @include('partials.print-codes', ['code' => $booking->booking_number, 'label' => 'Booking Invoice', 'compact' => true, 'codes' => 'qr'])
                         </div>
 
                         <!------- BOOKING INFO ------->

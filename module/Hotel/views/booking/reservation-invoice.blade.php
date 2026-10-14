@@ -36,7 +36,7 @@
             <!-- W3.1: round-6 inv-head. Brand on the left, doctitle on the
                  right. The blue bottom-border (border-bottom: 2px solid #2f63a8)
                  is provided by .invoice-doc .inv-head. -->
-            <header class="inv-head">
+            <header class="inv-head mm-inv-head-modern">
                 <div class="inv-brand">
                     <h3>{{ $company->name != null ? $company->name : '' }}</h3>
                     <p>{{ $company->head_office != null ? $company->head_office : '' }}</p>
@@ -47,6 +47,7 @@
                     <div class="inv-no">No. {{ $booking->booking_number != null ? $booking->booking_number : 'N\A' }}</div>
                     <div class="inv-printed">Printed: {{ date('F j, Y') }}</div>
                 </div>
+                @include('partials.print-codes', ['code' => $booking->booking_number, 'label' => 'Booking Confirmation', 'compact' => true])
             </header>
 
             <!-- W3.1: round-6 inv-panels. Three panels with key/value
@@ -231,8 +232,6 @@
                 <div class="sig">Guest</div>
                 <div class="sig">{{ $company->name }}</div>
             </div>
-
-            @include('partials.print-codes', ['code' => $booking->booking_number, 'label' => 'Booking Confirmation'])
 
             </div>{{-- /.invoice-doc --}}
             </x-mm.print-sheet>

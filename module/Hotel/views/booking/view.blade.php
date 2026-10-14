@@ -46,6 +46,11 @@
             <x-alert-message />
             @include('booking._inc._booking-context', ['booking' => $booking])
 
+            <div class="mm-no-print" style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 12px; padding: 8px 14px; border: 1px solid rgba(37, 99, 235, 0.25); border-radius: 10px; background: linear-gradient(90deg, #f8fafc 0%, #eff6ff 100%);">
+                <strong style="font-size: 12.5px; letter-spacing: 0.04em; text-transform: uppercase; color: #1e3a8a;"><i class="fa fa-file-text-o" aria-hidden="true"></i> Booking Summary · Verification Codes</strong>
+                @include('partials.print-codes', ['code' => $booking->booking_number, 'label' => 'Booking Summary', 'compact' => true])
+            </div>
+
             <div class="mm-co-grid">
                 <section class="mm-panel mm-co-card" aria-labelledby="mm-co-guest">
                     <h2 id="mm-co-guest" class="mm-co-title">Guest</h2>
@@ -311,7 +316,6 @@
                     </button>
                 </div>
             </section>
-            @include('partials.print-codes', ['code' => $booking->booking_number, 'label' => 'Booking Summary'])
         </form>
     </x-mm.page>
 @endsection

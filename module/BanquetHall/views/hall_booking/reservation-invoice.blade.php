@@ -56,7 +56,7 @@
                  (Reservation/Booking Confirmation + No. + Printed:
                  date). The blue bottom-border is provided by
                  .invoice-doc .inv-head. --}}
-            <header class="inv-head">
+            <header class="inv-head mm-inv-head-modern">
                 <div class="inv-brand">
                     <h3>{{ $company->name != null ? $company->name : '' }}</h3>
                     <p>{{ $company->head_office != null ? $company->head_office : '' }}</p>
@@ -67,6 +67,7 @@
                     <div class="inv-no">No. {{ $booking->booking_number != null ? $booking->booking_number : 'N\A' }}</div>
                     <div class="inv-printed">Printed: {{ date('F j, Y') }}</div>
                 </div>
+                @include('partials.print-codes', ['code' => $booking->booking_number, 'label' => 'Booking Confirmation', 'compact' => true])
             </header>
 
             {{-- Round-6 panels. The Booking panel shows Date + Company

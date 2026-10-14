@@ -521,8 +521,10 @@ test('Wave 2 High-Traffic Operational Screens (Checkout, Night Audit, POS, Vouch
 
     // 3c. QR + Barcode on Booking Summary / Invoice / KOT documents
     await page.goto(`http://127.0.0.1:${PORT}/preview/checkout`);
-    await expect(page.locator('.mm-print-codes .mm-print-qr svg')).toHaveCount(1);
-    await expect(page.locator('.mm-print-codes .mm-print-barcode svg')).toHaveCount(1);
+    // Booking Summary: compact codes strip sits at the TOP, above the checkout grid (no bottom block)
+    await expect(page.locator('.mm-print-codes-top .mm-print-qr svg')).toHaveCount(1);
+    await expect(page.locator('.mm-print-codes-top .mm-print-barcode svg')).toHaveCount(1);
+    await expect(page.locator('form > .mm-print-codes')).toHaveCount(0);
     await page.goto(`http://127.0.0.1:${PORT}/preview/invoice`);
     // Booking Tax Invoice: codes live in the modern head band with the title (not the footer)
     await expect(page.locator('.inv-head.mm-inv-head-modern')).toHaveCount(1);
