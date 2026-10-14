@@ -20,15 +20,19 @@
     $mmPrintCode = preg_replace('/\s+/', '', $mmPrintCode);
     $mmPrintLabel = trim((string) ($label ?? 'Document'));
     $mmPrintPayload = "M&M HERITAGE HOTEL & SUITES\n" . $mmPrintLabel . "\nRef: " . $mmPrintCode . "\nPlease quote this reference for verification.";
+    // Rendered via the generator classes directly (not the QrCode / DNS1D
+    // facade aliases) so the block works in every rendering context.
+    $mmPrintQr = $mmPrintCode !== '' ? (new \SimpleSoftwareIO\QrCode\Generator())->format('svg')->size(72)->margin(0)->generate($mmPrintPayload) : '';
+    $mmPrintBarcode = $mmPrintCode !== '' ? \Milon\Barcode\DNS1D::getBarcodePNG($mmPrintCode, 'C128') : '';
 @endphp
 @if ($mmPrintCode !== '')
     <div class="mm-print-codes" style="margin-top: 14px; padding-top: 10px; border-top: 1px dashed #000; text-align: center; page-break-inside: avoid;">
         <div style="display: inline-block; vertical-align: top; margin: 0 10px; text-align: center;">
-            {!! \SimpleSoftwareIO\QrCode\Facades\QrCode::size(72)->margin(0)->generate($mmPrintPayload) !!}
+            {!! $mmPrintQr !!}
             <div style="font-size: 9px; margin-top: 2px;">Scan to verify</div>
         </div>
         <div style="display: inline-block; vertical-align: top; margin: 0 10px; text-align: center;">
-            <img src="data:image/png;base64,{{ DNS1D::getBarcodePNG($mmPrintCode, 'C128') }}" alt="Barcode {{ $mmPrintCode }}" style="max-width: 180px;">
+            <img src="data:image/png;base64,{{ $mmPrintBarcode }}" alt="Barcode {{ $mmPrintCode }}" style="max-width: 180px;">
             <div style="font-size: 10px; letter-spacing: 1px; margin-top: 2px;">{{ $mmPrintCode }}</div>
         </div>
         <div style="font-size: 9px; margin-top: 4px;">{{ $mmPrintLabel }} · Keep this reference for any query.</div>
