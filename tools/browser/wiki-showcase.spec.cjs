@@ -286,6 +286,10 @@ test('20-room & 20-guest sample dataset renders across Tape Chart, Rooms, Guests
 
     await page.goto(`http://127.0.0.1:${PORT}/preview/plan-a`);
     await expect(page.locator('table.mm-data-table tbody tr')).toHaveCount(9);
+});
+
+test('14-module sidebar role switcher, top sub-menu bar & global command drawers work interactively', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 900 });
 
     // Verify Daily Manager Flash Report & Shift Roster (/preview/daily-flash-report)
     await page.goto(`http://127.0.0.1:${PORT}/preview/daily-flash-report`);
