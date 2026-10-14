@@ -1577,12 +1577,44 @@ function menuLinks(page,currentPath){
  let activeMod=modules.find(m=>m.aliases.includes(cur)||m.tabs.some(([h])=>h===cur));
  if(!activeMod) activeMod=modules.find(m=>(m.prefixMatch||[]).some(px=>cur.startsWith(px)))||modules[1];
 
+ const roleMap={
+  'mod-dashboard':'all,frontdesk,pos,finance',
+  'mod-hubs':'all,frontdesk,pos,finance',
+  'mod-bookings':'all,frontdesk',
+  'mod-folio':'all,frontdesk,finance',
+  'mod-crm':'all,frontdesk',
+  'mod-rooms':'all,frontdesk',
+  'mod-setup':'all,frontdesk',
+  'mod-banquet':'all,frontdesk,pos',
+  'mod-pos':'all,pos',
+  'mod-inventory':'all,pos',
+  'mod-finance':'all,finance',
+  'mod-bi':'all,finance',
+  'mod-web':'all,finance',
+  'mod-system':'all,finance',
+ };
+ const secRoleMap={
+  'Overview & Hubs':'all,frontdesk,pos,finance',
+  'Hospitality & Front Desk':'all,frontdesk',
+  'F&B POS & Inventory':'all,pos',
+  'Finance, BI & Admin':'all,finance',
+ };
+ const roleSwitcher='<div class="mm-role-switcher mm-no-print" id="mm-role-switcher" role="group" aria-label="Department role view switcher">'+
+  '<div class="mm-role-switcher-label"><span><i class="fa fa-user-secret"></i> Role View</span><span id="mm-role-active-label">All 14 Modules</span></div>'+
+  '<div class="mm-role-pills">'+
+   '<button type="button" class="mm-role-pill is-active" data-role-filter="all" title="Show all 14 ERP modules">All (14)</button>'+
+   '<button type="button" class="mm-role-pill" data-role-filter="frontdesk" title="Front-Desk &amp; Hospitality modules">Front Desk (8)</button>'+
+   '<button type="button" class="mm-role-pill" data-role-filter="pos" title="Restaurant, Bar, Banquet &amp; Inventory modules">F&amp;B &amp; Store (5)</button>'+
+   '<button type="button" class="mm-role-pill" data-role-filter="finance" title="Accounts, BI, CMS &amp; System Admin modules">Finance &amp; Admin (7)</button>'+
+  '</div>'+
+ '</div>';
+
  const sidebarParts=[];
  let lastSec='';
  for(const m of modules){
   if(m.section!==lastSec){
    lastSec=m.section;
-   sidebarParts.push('<li class="mm-nav-section" role="presentation">'+m.section+'</li>');
+   sidebarParts.push('<li class="mm-nav-section" data-mod-roles="'+(secRoleMap[m.section]||'all')+'" role="presentation">'+m.section+'</li>');
   }
   const isAct=m.id===activeMod.id;
   const modScreensCount=screensForMod(m).length;
@@ -1590,7 +1622,7 @@ function menuLinks(page,currentPath){
    const isSubAct=href===cur||(href==='/dashboard'&&m.aliases.includes(cur));
    return '<li'+(isSubAct?' class="active"':'')+'><a href="'+href+'"'+(isSubAct?' aria-current="page"':'')+'>'+lbl+'</a><b class="arrow"></b></li>';
   }).join('');
-  sidebarParts.push('<li'+(isAct?' class="mm-mod-current open"':'')+'><a href="#" class="dropdown-toggle" aria-expanded="'+(isAct?'true':'false')+'" title="'+m.label+' ('+m.tabs.length+' primary tabs · '+modScreensCount+' module screens)"><i class="menu-icon fa '+m.icon+'"></i><span class="menu-text">'+m.label+'</span><span class="mm-nav-count">'+m.tabs.length+'</span><b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b><ul class="submenu">'+subLis+'</ul></li>');
+  sidebarParts.push('<li data-mod-roles="'+(roleMap[m.id]||'all')+'"'+(isAct?' class="mm-mod-current open"':'')+'><a href="#" class="dropdown-toggle" aria-expanded="'+(isAct?'true':'false')+'" title="'+m.label+' ('+m.tabs.length+' primary tabs · '+modScreensCount+' module screens)"><i class="menu-icon fa '+m.icon+'"></i><span class="menu-text">'+m.label+'</span><span class="mm-nav-count">'+m.tabs.length+'</span><b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b><ul class="submenu">'+subLis+'</ul></li>');
  }
  const sidebarFooter='<div id="mm-sidebar-collapse-bar" class="mm-no-print"><button type="button" id="mm-sidebar-collapse-btn" class="mm-button mm-button-secondary" style="width:100%;min-height:32px;padding:4px 10px;font-size:11.5px;justify-content:center" title="Expand or collapse side menu (Full / 68px Rail)"><i class="fa fa-angle-double-left" id="mm-sidebar-collapse-icon"></i> <span class="mm-collapse-label" id="mm-sidebar-collapse-text">Collapse Side Menu</span></button></div>';
 
@@ -1604,10 +1636,40 @@ function menuLinks(page,currentPath){
  if(activeIdx<0) activeIdx=0;
  const prevTab=tabsList[(activeIdx-1+tabsList.length)%tabsList.length];
  const nextTab=tabsList[(activeIdx+1)%tabsList.length];
+ const curTabTitle=tabsList[activeIdx]?tabsList[activeIdx][2]:activeMod.label;
+ const curCanonicalHref=activeMod.aliases.includes(cur)?'/dashboard':cur;
+
+ const tabBadges={
+  '/dashboard':'20 Suites',
+  '/preview/payment-gateway':'F1 Live',
+  '/preview/late-checkout':'F10',
+  '/preview/plan-a':'9/9 Done',
+  '/preview/plan-b':'34/34 Done',
+  '/preview':'362 Routes',
+  '/preview/booking-next':'3 Steps',
+  '/preview/tape-chart':'7-Day',
+  '/preview/bookings':'20 Active',
+  '/preview/draft-booking-pdf':'2-Page A4',
+  '/preview/folio-settlement':'4 Windows',
+  '/preview/night-audit-hardening':'Open Day',
+  '/preview/guest-crm':'360° VIP',
+  '/preview/rooms':'20 Suites',
+  '/preview/housekeeping-board':'SLA Live',
+  '/preview/room-settings':'5 Steps',
+  '/preview/channel-manager':'OTA Sync',
+  '/preview/pos-unified':'4 Outlets',
+  '/preview/pos-kot-print':'80mm KOT',
+  '/preview/rst-kitchen-board':'3 KOT',
+  '/preview/acc-balance-sheet':'4 Statements',
+  '/preview/report-expected-arrival':'8 Today',
+  '/preview/report-expected-departure':'4 Today',
+  '/preview/system-settings':'RBAC & 2FA',
+ };
 
  const tabsHtml=tabsList.map(([href,icon,lbl])=>{
   const isTabAct=href===cur||(href==='/dashboard'&&activeMod.aliases.includes(cur));
-  return '<a href="'+href+'" data-top-tab-search="'+(lbl+' '+href).toLowerCase().replace(/"/g,'')+'" class="mm-top-tab'+(isTabAct?' is-active':'')+'"'+(isTabAct?' aria-current="page"':'')+'><i class="fa '+icon+'"></i><span>'+lbl+'</span></a>';
+  const bdg=tabBadges[href]?'<span class="mm-top-tab-badge">'+tabBadges[href]+'</span>':'';
+  return '<a href="'+href+'" data-top-tab-search="'+(lbl+' '+href).toLowerCase().replace(/"/g,'')+'" class="mm-top-tab'+(isTabAct?' is-active':'')+'"'+(isTabAct?' aria-current="page"':'')+'><i class="fa '+icon+'"></i><span>'+lbl+'</span>'+bdg+'</a>';
  }).join('');
 
  const modScreens=screensForMod(activeMod);
@@ -1616,7 +1678,7 @@ function menuLinks(page,currentPath){
   return '<a href="'+s.href+'" data-top-more-search="'+(s.title+' '+s.href).toLowerCase().replace(/"/g,'')+'" data-top-more-primary="'+(s.isPrimary?'1':'0')+'" class="mm-top-more-card'+(isCardAct?' is-active':'')+'"><span><i class="fa '+(s.isPrimary?'fa-bookmark':'fa-file-text-o')+'" style="opacity:.75;margin-right:6px"></i>'+s.title+'</span><span class="mm-badge '+(isCardAct?'mm-badge-paid':s.isPrimary?'mm-badge-partial':'')+'" style="font-size:10px">'+(isCardAct?'Current':s.isPrimary?'Tab':s.href.replace('/preview/',''))+'</span></a>';
  }).join('');
 
- const topSubnav='<nav class="mm-top-subnav is-sticky mm-no-print" id="mm-top-subnav" aria-label="'+activeMod.label+' sub-menu tabs">'+
+ const topSubnav='<nav class="mm-top-subnav is-sticky mm-no-print" id="mm-top-subnav" data-cur-href="'+curCanonicalHref+'" data-cur-title="'+curTabTitle.replace(/"/g,'')+'" aria-label="'+activeMod.label+' sub-menu tabs">'+
   '<div class="mm-top-subnav-head">'+
    '<div class="mm-top-subnav-title">'+
     '<button type="button" id="mm-top-sidebar-btn" class="mm-button mm-button-secondary" style="min-height:26px;padding:2px 8px;font-size:11.5px" title="Expand or collapse side menu"><i class="fa fa-bars"></i> Side Menu</button>'+
@@ -1628,6 +1690,8 @@ function menuLinks(page,currentPath){
    '</div>'+
    '<div style="display:flex;flex-wrap:wrap;align-items:center;gap:6px">'+
     '<input type="search" id="mm-top-tab-filter" class="mm-top-tab-filter" placeholder="Filter '+modScreens.length+' module screens..." aria-label="Filter sub-menu tabs and module screens">'+
+    '<button type="button" id="mm-top-fav-btn" aria-pressed="false" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 9px;font-size:11.5px" title="Star or unstar this screen to Pinned Favorites"><i class="fa fa-star-o"></i> Star</button>'+
+    '<button type="button" id="mm-top-favs-toggle" aria-expanded="false" aria-controls="mm-top-favs-bar" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 9px;font-size:11.5px" title="Show or hide cross-module Pinned Favorites bar"><i class="fa fa-bookmark"></i> Favorites (<span id="mm-top-favs-count">6</span>)</button>'+
     '<button type="button" id="mm-top-more-btn" aria-expanded="false" aria-controls="mm-top-more-panel" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11.5px"><i class="fa fa-th-list"></i> All '+modScreens.length+' Module Screens <i class="fa fa-caret-down"></i></button>'+
     '<button type="button" id="mm-top-pin-btn" aria-pressed="true" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11.5px" title="Pin or unpin top sub-menu bar while scrolling"><i class="fa fa-thumb-tack"></i> Pinned</button>'+
     '<button type="button" data-toggle="modal" data-target="#mm-quick-drawer" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11.5px"><i class="fa fa-columns"></i> App Drawer</button>'+
@@ -1635,6 +1699,7 @@ function menuLinks(page,currentPath){
    '</div>'+
   '</div>'+
   '<div class="mm-top-subnav-tabs" role="navigation" aria-label="Module sub-pages">'+tabsHtml+'</div>'+
+  '<div class="mm-top-favs-bar" id="mm-top-favs-bar" hidden></div>'+
   '<div class="mm-top-more-panel" id="mm-top-more-panel" hidden>'+
    '<div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;padding-bottom:8px;border-bottom:1px solid rgba(148,163,184,0.2)">'+
     '<div style="font-size:12px;font-weight:700"><i class="fa '+activeMod.icon+'"></i> '+activeMod.label+' — Complete Screen Directory (<span id="mm-top-more-count">'+modScreens.length+'</span> screens)</div>'+
@@ -1652,7 +1717,43 @@ function menuLinks(page,currentPath){
    'syncSbFooter();'+
    'if(topSbBtn)topSbBtn.addEventListener("click",function(){var t=document.getElementById("menu-toggler");if(t)t.click();syncSbFooter();});'+
    'if(botSbBtn)botSbBtn.addEventListener("click",function(){var isRail=document.body.classList.contains("mm-nav-rail");var target=document.querySelector("[data-mm-nav-mode=\\""+(isRail?"mm-nav-full":"mm-nav-rail")+"\\"]");if(target)target.click();syncSbFooter();});'+
+   'var roleSw=document.getElementById("mm-role-switcher"),roleLbl=document.getElementById("mm-role-active-label"),menuEl=document.getElementById("mm-primary-menu");'+
+   'if(roleSw&&menuEl){'+
+    'var roleNames={all:"All 14 Modules",frontdesk:"Front Desk (8)",pos:"F&B & Store (5)",finance:"Finance & Admin (7)"};'+
+    'var curRole="all";try{curRole=localStorage.getItem("mm-sidebar-role")||"all";}catch(e){}'+
+    'function applyRole(r){'+
+     'curRole=r;try{localStorage.setItem("mm-sidebar-role",r);}catch(e){}'+
+     'if(roleLbl)roleLbl.textContent=roleNames[r]||"All 14 Modules";'+
+     'var rBtns=roleSw.querySelectorAll("[data-role-filter]");'+
+     'for(var i=0;i<rBtns.length;i++)rBtns[i].classList.toggle("is-active",rBtns[i].getAttribute("data-role-filter")===r);'+
+     'var lis=menuEl.children;'+
+     'for(var j=0;j<lis.length;j++){var li=lis[j],roles=(li.getAttribute("data-mod-roles")||"all").split(",");li.style.display=(r==="all"||roles.indexOf(r)>=0)?"":"none";}'+
+    '}'+
+    'applyRole(curRole);'+
+    'var rBtns=roleSw.querySelectorAll("[data-role-filter]");'+
+    'for(var rIdx=0;rIdx<rBtns.length;rIdx++){rBtns[rIdx].addEventListener("click",function(){applyRole(this.getAttribute("data-role-filter")||"all");});}'+
+   '}'+
    'if(!nav)return;'+
+   'var favBtn=document.getElementById("mm-top-fav-btn"),favsToggle=document.getElementById("mm-top-favs-toggle"),favsBar=document.getElementById("mm-top-favs-bar"),favsCnt=document.getElementById("mm-top-favs-count");'+
+   'var defFavs=[["/dashboard","Front-Desk Board"],["/preview/booking-next","3-Step Booking Wizard"],["/preview/folio-settlement","Split-Folio Settlement"],["/preview/pos-unified","Unified Split-Bill POS"],["/preview/acc-balance-sheet","Balance Sheet Builder"],["/preview/room-settings","Room Settings & Pricing"]];'+
+   'var favs=defFavs;try{var rawF=localStorage.getItem("mm-top-favs");if(rawF){var parsed=JSON.parse(rawF);if(Array.isArray(parsed)&&parsed.length)favs=parsed;}}catch(e){}'+
+   'var curH=nav.getAttribute("data-cur-href")||"/dashboard",curT=nav.getAttribute("data-cur-title")||"Screen";'+
+   'function renderFavs(){'+
+    'var isFav=favs.some(function(f){return f[0]===curH;});'+
+    'if(favBtn){favBtn.setAttribute("aria-pressed",String(isFav));favBtn.innerHTML="<i class=\\"fa "+(isFav?"fa-star":"fa-star-o")+"\\" style=\\"color:"+(isFav?"#d97706":"inherit")+"\\"></i> "+(isFav?"Starred":"Star");}'+
+    'if(favsCnt)favsCnt.textContent=String(favs.length);'+
+    'if(favsBar){'+
+     'favsBar.innerHTML="<span style=\\"font-size:11px;font-weight:700;color:#b45309;margin-right:4px\\"><i class=\\"fa fa-star\\"></i> Pinned Favorites:</span>"+favs.map(function(f){return "<a href=\\""+f[0]+"\\" class=\\"mm-top-fav-chip"+(f[0]===curH?" is-active":"")+"\\"><i class=\\"fa fa-bookmark\\"></i><span>"+f[1]+"</span></a>";}).join("");'+
+    '}'+
+   '}'+
+   'renderFavs();'+
+   'if(favBtn)favBtn.addEventListener("click",function(){'+
+    'var idx=favs.findIndex(function(f){return f[0]===curH;});'+
+    'if(idx>=0)favs.splice(idx,1);else favs.push([curH,curT]);'+
+    'try{localStorage.setItem("mm-top-favs",JSON.stringify(favs));}catch(e){}'+
+    'renderFavs();if(favsBar&&favsBar.hidden){favsBar.hidden=false;if(favsToggle)favsToggle.setAttribute("aria-expanded","true");}'+
+   '});'+
+   'if(favsToggle)favsToggle.addEventListener("click",function(){if(!favsBar)return;favsBar.hidden=!favsBar.hidden;favsToggle.setAttribute("aria-expanded",String(!favsBar.hidden));});'+
    'var pinned=true;try{pinned=localStorage.getItem("mm-top-subnav-pinned")!=="0";}catch(e){}'+
    'function syncPin(){nav.classList.toggle("is-sticky",pinned);if(pinBtn){pinBtn.setAttribute("aria-pressed",String(pinned));pinBtn.innerHTML="<i class=\\"fa fa-thumb-tack\\"></i> "+(pinned?"Pinned":"Pin Bar");}}'+
    'syncPin();'+
@@ -1675,7 +1776,7 @@ function menuLinks(page,currentPath){
  '</nav>';
 
  return page
-  .replace(/<ul class="nav nav-list" id="mm-primary-menu"[^>]*>[\s\S]*?<\/ul>(?=<\/div>)/,'<ul class="nav nav-list" id="mm-primary-menu" aria-label="Main navigation">'+sidebarParts.join('')+'</ul>'+sidebarFooter)
+  .replace(/<ul class="nav nav-list" id="mm-primary-menu"[^>]*>[\s\S]*?<\/ul>(?=<\/div>)/,roleSwitcher+'<ul class="nav nav-list" id="mm-primary-menu" aria-label="Main navigation">'+sidebarParts.join('')+'</ul>'+sidebarFooter)
   .replace('<!--MM-TOP-SUBNAV-->',()=>topSubnav);
 }
 const pubPages={'/preview/public-home':'frontend/home.html','/preview/public-rooms':'frontend/room_view.html','/preview/public-room-view':'frontend/room_view.html','/preview/public-booking-cart':'frontend/booking_cart.html','/preview/public-search-all-room':'frontend/search_all_room.html','/preview/public-search-room':'frontend/search_room.html','/preview/public-guest-register':'frontend/guest_register.html','/preview/public-booking-register':'frontend/booking_register.html','/preview/public-food-menu':'frontend/food_menu.html','/preview/public-bar-menu':'frontend/bar_menu.html','/preview/public-terms':'frontend/terms.html','/preview/public-privacy-policy':'frontend/privacy_policy.html','/preview/public-single-page-view':'frontend/single_page_view.html'};
