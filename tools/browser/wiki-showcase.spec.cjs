@@ -215,6 +215,13 @@ test('20-room & 20-guest sample dataset renders across Tape Chart, Rooms, Guests
     await expect(page.locator('#wiz-draft-page-1')).toBeVisible();
     await expect(page.locator('#wiz-draft-page-2')).toBeVisible();
     await expect(page.locator('.mm-wiz-pdf-hero')).toBeVisible();
+    // QR & Barcode sit at the TOP of the Draft Reservation Summary (with the title),
+    // and exactly 2 pages are rendered (no 3rd-page spill from a footer codes block).
+    await expect(page.locator('.mm-wiz-pdf-page')).toHaveCount(2);
+    await expect(page.locator('#wiz-draft-page-1 .mm-print-codes-top .mm-print-qr-top svg')).toHaveCount(1);
+    await expect(page.locator('#wiz-draft-page-1 .mm-print-codes-top .mm-print-barcode-top svg')).toHaveCount(1);
+    await expect(page.locator('#wiz-draft-page-2 .mm-print-codes')).toHaveCount(0);
+    await expect(page.locator('#wiz-draft-page-2 .mm-print-codes-top')).toHaveCount(0);
 
     // Verify Complete Plan B Command Center (F1-F34) & all 22 new Plan B workspaces
     await page.goto(`http://127.0.0.1:${PORT}/preview/plan-b`);
@@ -517,14 +524,20 @@ test('Wave 2 High-Traffic Operational Screens (Checkout, Night Audit, POS, Vouch
     await expect(page.locator('.mm-print-codes .mm-print-qr svg')).toHaveCount(1);
     await expect(page.locator('.mm-print-codes .mm-print-barcode svg')).toHaveCount(1);
     await page.goto(`http://127.0.0.1:${PORT}/preview/invoice`);
-    await expect(page.locator('.mm-print-codes .mm-print-qr svg')).toHaveCount(1);
-    await expect(page.locator('.mm-print-codes .mm-print-barcode svg')).toHaveCount(1);
+    // Booking Tax Invoice: codes live in the modern head band with the title (not the footer)
+    await expect(page.locator('.inv-head.mm-inv-head-modern')).toHaveCount(1);
+    await expect(page.locator('.inv-head .mm-print-qr-top svg')).toHaveCount(1);
+    await expect(page.locator('.inv-head .mm-print-barcode-top svg')).toHaveCount(1);
+    await expect(page.locator('.invoice-doc > .mm-print-codes')).toHaveCount(0);
     await page.goto(`http://127.0.0.1:${PORT}/preview/draft-booking-pdf`);
-    await expect(page.locator('.mm-print-codes .mm-print-qr svg')).toHaveCount(1);
-    await expect(page.locator('.mm-print-codes .mm-print-barcode svg')).toHaveCount(1);
+    await expect(page.locator('#wiz-draft-page-1 .mm-print-qr-top svg')).toHaveCount(1);
+    await expect(page.locator('#wiz-draft-page-1 .mm-print-barcode-top svg')).toHaveCount(1);
     await page.goto(`http://127.0.0.1:${PORT}/preview/pos-kot-print`);
-    await expect(page.locator('.mm-thermal-slip .mm-print-qr svg')).toHaveCount(1);
-    await expect(page.locator('.mm-thermal-slip .mm-print-barcode svg')).toHaveCount(1);
+    // BOTH thermal slips carry QR + Barcode: Slip 1 Kitchen KOT and Slip 2 Guest Tax Check
+    await expect(page.locator('.mm-thermal-slip')).toHaveCount(2);
+    await expect(page.locator('.mm-thermal-slip .mm-print-qr svg')).toHaveCount(2);
+    await expect(page.locator('.mm-thermal-slip .mm-print-barcode svg')).toHaveCount(2);
+    await expect(page.locator('.mm-thermal-slip').nth(1)).toContainText('INV-2026-892');
 
     // 4. Receive Vouchers, Balance Sheet & Income Statement
     await page.goto(`http://127.0.0.1:${PORT}/preview/acc-receives`);

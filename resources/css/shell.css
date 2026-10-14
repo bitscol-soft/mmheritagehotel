@@ -3049,6 +3049,66 @@
     letter-spacing: 0.08em;
     margin-top: 2px;
 }
+/* Compact top-of-document codes (Draft Summary hero, modern Tax Invoice head) */
+.mm-shell .mm-print-codes-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-align: center;
+    flex-shrink: 0;
+}
+.mm-shell .mm-print-codes-top .mm-print-qr-top svg {
+    width: 52px;
+    height: 52px;
+    display: block;
+}
+.mm-shell .mm-print-codes-top .mm-print-barcode-top svg {
+    width: 132px;
+    height: 30px;
+    display: block;
+}
+.mm-shell .mm-print-codes-top .mm-print-codes-top-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+}
+.mm-shell .mm-print-codes-top .mm-print-codes-top-caption {
+    font-size: 8.5px;
+    letter-spacing: 0.06em;
+    color: #475569;
+    white-space: nowrap;
+}
+/* Modern Booking Tax Invoice head band */
+.mm-shell .invoice-doc .inv-head.mm-inv-head-modern {
+    background: linear-gradient(120deg, #0f2748 0%, #1d4ed8 68%, #0ea5e9 100%);
+    color: #ffffff;
+    border-radius: 10px;
+    padding: 16px 20px;
+    border-bottom: none;
+    box-shadow: 0 10px 24px rgba(29, 78, 216, 0.22);
+}
+.mm-shell .invoice-doc .inv-head.mm-inv-head-modern .inv-brand h3,
+.mm-shell .invoice-doc .inv-head.mm-inv-head-modern .inv-kind {
+    color: #ffffff;
+}
+.mm-shell .invoice-doc .inv-head.mm-inv-head-modern p,
+.mm-shell .invoice-doc .inv-head.mm-inv-head-modern .inv-no,
+.mm-shell .invoice-doc .inv-head.mm-inv-head-modern .inv-printed {
+    color: rgba(255, 255, 255, 0.88);
+}
+.mm-shell .invoice-doc .inv-head.mm-inv-head-modern .mm-print-codes-top {
+    background: #ffffff;
+    border-radius: 8px;
+    padding: 6px 10px;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.25);
+}
+@media print {
+    .mm-shell .invoice-doc .inv-head.mm-inv-head-modern {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+}
 @media print {
     .mm-shell.mm-printing-pos-receipt .mm-pos-print-hide,
     .mm-shell.mm-printing-booking-doc .mm-pos-print-hide {

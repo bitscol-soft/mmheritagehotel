@@ -40,7 +40,7 @@
             @if (hasPermission('service.view', $slugs))
             <x-mm.print-sheet>
                 <div id="print_body" class="invoice-doc">
-                    <div class="inv-head">
+                    <div class="inv-head mm-inv-head-modern">
                         <div class="inv-brand">
                             <h3>{{ $company->name }}</h3>
                             <p>{{ $company->head_office }}</p>
@@ -50,6 +50,7 @@
                             <div class="inv-kind">Invoice</div>
                             <div class="inv-no">BK-{{ $booking->booking_number }}</div>
                             <div class="inv-printed">Printed {{ date('d M Y, h:i A') }}</div>
+                            @include('partials.print-codes', ['code' => $booking->booking_number, 'label' => 'Booking Invoice', 'compact' => true])
                         </div>
                     </div>
 
@@ -366,7 +367,6 @@
                         <span>Thank you for staying with us.</span>
                         <span>{{ $company->name }}</span>
                     </div>
-                    @include('partials.print-codes', ['code' => $booking->booking_number, 'label' => 'Booking Receipt'])
                 </div>
             </x-mm.print-sheet>
             @endif

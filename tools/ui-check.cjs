@@ -400,6 +400,11 @@ console.log('PASS: note list/edit expressions, forms and status scripts; legacy 
   assert(after.includes("partials.print-codes"),`${name}: QR/barcode verification block expected (include-only, no new expressions)`);
  }
  assert(fs.readFileSync('module/Hotel/views/booking/view.blade.php','utf8').includes("partials.print-codes"),'booking summary (view) must include the QR/barcode verification block');
+ // Booking Tax Invoice: modern head band with compact QR/barcode at the TOP (with the title), not the footer.
+ const taxInv=fs.readFileSync('module/Hotel/views/booking/checkout_invoice.blade.php','utf8');
+ assert(taxInv.includes('mm-inv-head-modern') && taxInv.includes("'compact' => true") && taxInv.indexOf('partials.print-codes') < taxInv.indexOf('inv-panels'), 'checkout_invoice: compact QR/barcode must sit in the modern head band above the panels');
+ const codesPartialSrc=fs.readFileSync('resources/views/partials/print-codes.blade.php','utf8');
+ assert(codesPartialSrc.includes('$mmPrintCompact') && codesPartialSrc.includes('mm-print-codes-top'), 'partials/print-codes.blade.php must support the compact top-of-document variant');
  const v3Path='module/Hotel/views/booking/checkout-invoice-v3.blade.php', v3=fs.readFileSync(v3Path,'utf8'), v3Base=base(v3Path);
  assert.equal(v3,v3Base,'invoice v3: changed beyond the screen-only action bar');
  assert(/@media print \{\s*\.inv-screen-bar \{\s*display: none !important;/.test(v3)&&v3.includes('window.print();'),'invoice v3: action bar must be hidden in print and auto-print kept');

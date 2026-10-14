@@ -19,13 +19,22 @@
     $mmPrintCode = trim((string) ($code ?? ''));
     $mmPrintCode = preg_replace('/\s+/', '', $mmPrintCode);
     $mmPrintLabel = trim((string) ($label ?? 'Document'));
+    $mmPrintCompact = !empty($compact);
     $mmPrintPayload = "M&M HERITAGE HOTEL & SUITES\n" . $mmPrintLabel . "\nRef: " . $mmPrintCode . "\nPlease quote this reference for verification.";
     // Rendered via the generator classes directly (not the QrCode / DNS1D
     // facade aliases) so the block works in every rendering context.
-    $mmPrintQr = $mmPrintCode !== '' ? (new \SimpleSoftwareIO\QrCode\Generator())->format('svg')->size(72)->margin(0)->generate($mmPrintPayload) : '';
+    $mmPrintQr = $mmPrintCode !== '' ? (new \SimpleSoftwareIO\QrCode\Generator())->format('svg')->size($mmPrintCompact ? 54 : 72)->margin(0)->generate($mmPrintPayload) : '';
     $mmPrintBarcode = $mmPrintCode !== '' ? \Milon\Barcode\DNS1D::getBarcodePNG($mmPrintCode, 'C128') : '';
 @endphp
-@if ($mmPrintCode !== '')
+@if ($mmPrintCode !== '' && $mmPrintCompact)
+    <div class="mm-print-codes-top" style="display: inline-flex; align-items: center; gap: 10px; text-align: center; page-break-inside: avoid; vertical-align: middle;">
+        <span style="display: inline-block;">{!! $mmPrintQr !!}</span>
+        <span style="display: inline-block; text-align: center;">
+            <img src="data:image/png;base64,{{ $mmPrintBarcode }}" alt="Barcode {{ $mmPrintCode }}" style="width: 132px; max-width: 132px; display: block;">
+            <span style="font-size: 8.5px; letter-spacing: 0.06em; display: block; margin-top: 2px;">{{ $mmPrintCode }} · Scan to verify</span>
+        </span>
+    </div>
+@elseif ($mmPrintCode !== '')
     <div class="mm-print-codes" style="margin-top: 14px; padding-top: 10px; border-top: 1px dashed #000; text-align: center; page-break-inside: avoid;">
         <div style="display: inline-block; vertical-align: top; margin: 0 10px; text-align: center;">
             {!! $mmPrintQr !!}
