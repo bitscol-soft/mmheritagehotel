@@ -1981,13 +1981,35 @@ function menuLinks(page,currentPath){
    'if(flt)flt.addEventListener("input",runFilter);'+
    'for(var k=0;k<scopeBtns.length;k++){scopeBtns[k].addEventListener("click",function(){scope=this.getAttribute("data-top-scope")||"all";runFilter();});}'+
    'var altJump={"1":"/dashboard","2":"/preview/plan-a","3":"/preview/booking-next","4":"/preview/folio-settlement","5":"/preview/guest-crm","6":"/preview/rooms","7":"/preview/room-settings","8":"/preview/bq-booking-index","9":"/preview/pos-unified","0":"/preview/acc-balance-sheet"};'+
+   'if(!window.__mmFullscreenBound){'+
+    'window.__mmFullscreenBound=true;'+
+    'function setFocusedFs(force){'+
+     'var next=typeof force==="boolean"?force:!document.body.classList.contains("mm-focused-fullscreen");'+
+     'document.body.classList.toggle("mm-focused-fullscreen",next);'+
+     'var btns=document.querySelectorAll("[data-mm-fullscreen-toggle], #mm-focused-fullscreen-btn");'+
+     'for(var bi=0;bi<btns.length;bi++){'+
+      'btns[bi].classList.toggle("is-active",next);'+
+      'btns[bi].setAttribute("aria-pressed",String(next));'+
+      'btns[bi].innerHTML=next?\'<i class="fa fa-compress" aria-hidden="true"></i> Exit Fullscreen\':\'<i class="fa fa-arrows-alt" aria-hidden="true"></i> Focused Fullscreen\';'+
+     '}'+
+    '}'+
+    'window.__mmSetFocusedFullscreen=setFocusedFs;'+
+    'document.addEventListener("click",function(ev){'+
+     'var tBtn=ev.target&&ev.target.closest&&ev.target.closest("[data-mm-fullscreen-toggle], #mm-focused-fullscreen-btn");'+
+     'if(tBtn){ev.preventDefault();setFocusedFs();return;}'+
+     'var xBtn=ev.target&&ev.target.closest&&ev.target.closest("[data-mm-fullscreen-exit], #mm-fullscreen-exit-btn");'+
+     'if(xBtn){ev.preventDefault();setFocusedFs(false);}'+
+    '});'+
+   '}'+
    'document.addEventListener("keydown",function(e){'+
+    'if(e.key==="Escape"&&document.body.classList.contains("mm-focused-fullscreen")&&window.__mmSetFocusedFullscreen){window.__mmSetFocusedFullscreen(false);return;}'+
     'var tag=(e.target&&e.target.tagName||"").toLowerCase();'+
     'var typing=tag==="input"||tag==="textarea"||tag==="select"||(e.target&&e.target.isContentEditable);'+
     'if(typing)return;'+
     'if(e.altKey&&!e.ctrlKey&&!e.metaKey){'+
      'if(altJump[e.key]){e.preventDefault();window.location.href=altJump[e.key];return;}'+
      'var kLower=(e.key||"").toLowerCase();'+
+     'if(kLower==="z"&&window.__mmSetFocusedFullscreen){e.preventDefault();window.__mmSetFocusedFullscreen();return;}'+
      'if(kLower==="r"){e.preventDefault();var nextR=roleOrder[(roleOrder.indexOf(curRole)+1)%roleOrder.length];applyRole(nextR);return;}'+
      'if(kLower==="c"){e.preventDefault();toggleCurtain();return;}'+
      'if(kLower==="q"){e.preventDefault();var qb=document.getElementById("mm-express-create-btn");if(qb)qb.click();return;}'+

@@ -4,12 +4,25 @@
 <!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
 <section class="mm-ui mm-booking mm-booking-next">
     <div class="tw-space-y-4 tw-py-2">
+        <div id="mm-fullscreen-hud" class="mm-no-print" role="region" aria-label="Focused fullscreen controls">
+            <div class="mm-fullscreen-hud-left">
+                <span class="mm-fullscreen-hud-badge"><i class="fa fa-arrows-alt" aria-hidden="true"></i> Focused Fullscreen Mode</span>
+                <span><strong>3-Step Hotel Booking Wizard</strong> · Distraction-Free Front-Desk Terminal (Press <code>Esc</code> or <code>Alt+Z</code> to exit)</span>
+            </div>
+            <button type="button" id="mm-fullscreen-exit-btn" data-mm-fullscreen-exit class="mm-fullscreen-exit-btn">
+                <i class="fa fa-compress" aria-hidden="true"></i> Exit Fullscreen
+            </button>
+        </div>
+
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">New room booking — 3-Step Wizard</h1>
                 <p class="tw-m-0 tw-text-sm tw-text-muted">Configure selected rooms, capture guest identification, and collect advance deposit to confirm the reservation.</p>
             </div>
             <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <button type="button" id="mm-focused-fullscreen-btn" data-mm-fullscreen-toggle aria-pressed="false" class="mm-button mm-button-secondary mm-focused-fs-btn" title="Toggle distraction-free Focused Fullscreen Mode (Alt+Z)">
+                    <i class="fa fa-arrows-alt" aria-hidden="true"></i> Focused Fullscreen
+                </button>
                 <a class="mm-button mm-button-secondary" href="/preview/room-settings"><i class="fa fa-sliders"></i> Room Settings &amp; Pricing</a>
                 <a class="mm-button mm-button-secondary" href="/preview/plan-b"><i class="fa fa-rocket"></i> Plan B Hub (34/34)</a>
                 <a class="mm-button mm-button-secondary" href="/"><i class="fa fa-th-large"></i> Room Board</a>

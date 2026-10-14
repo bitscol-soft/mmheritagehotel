@@ -442,16 +442,36 @@ test('Wave 2 High-Traffic Operational Screens (Checkout, Night Audit, POS, Vouch
     await expect(page.locator('#na-kpi-date')).toContainText('2026-10-15');
     await expect(page.locator('#na-confirm-banner')).toBeVisible();
 
-    // 3. Restaurant & Bar POS Terminals (/preview/rst-pos-create & /preview/bar-pos-create)
+    // 3. Restaurant & Bar POS Terminals (/preview/rst-pos-create & /preview/bar-pos-create) + Focused Fullscreen Mode
     await page.goto(`http://127.0.0.1:${PORT}/preview/rst-pos-create`);
+    await expect(page.locator('#mm-pos-table-grid [data-pos-table-card]')).toHaveCount(6);
+    await expect(page.locator('#invoice-list tr')).toHaveCount(8);
     await page.locator('.rpos-quick-item').first().click();
     await expect(page.locator('#rpos-kpi-items')).toContainText('3 Items');
+    await page.locator('[data-pos-modifier]').first().click();
+    await expect(page.locator('#pos-active-modifiers')).toContainText('No Nuts');
     await page.locator('#rpos-fire-kot-btn').click();
     await expect(page.locator('#rpos-confirm-banner')).toBeVisible();
+    await page.locator('#mm-focused-fullscreen-btn').click();
+    await expect(page.locator('body')).toHaveClass(/mm-focused-fullscreen/);
+    await expect(page.locator('#mm-fullscreen-hud')).toBeVisible();
+    await page.locator('#mm-fullscreen-exit-btn').click();
+    await expect(page.locator('body')).not.toHaveClass(/mm-focused-fullscreen/);
 
     await page.goto(`http://127.0.0.1:${PORT}/preview/bar-pos-create`);
+    await expect(page.locator('#mm-pos-table-grid [data-pos-table-card]')).toHaveCount(6);
     await page.locator('#bpos-happy-hour-btn').click();
     await expect(page.locator('#bpos-kpi-total')).toContainText('1,530');
+    await page.locator('#mm-focused-fullscreen-btn').click();
+    await expect(page.locator('body')).toHaveClass(/mm-focused-fullscreen/);
+    await page.locator('#mm-fullscreen-exit-btn').click();
+
+    await page.goto(`http://127.0.0.1:${PORT}/preview/booking-next`);
+    await page.locator('#mm-focused-fullscreen-btn').click();
+    await expect(page.locator('body')).toHaveClass(/mm-focused-fullscreen/);
+    await expect(page.locator('#mm-fullscreen-hud')).toBeVisible();
+    await page.locator('#mm-fullscreen-exit-btn').click();
+    await expect(page.locator('body')).not.toHaveClass(/mm-focused-fullscreen/);
 
     // 4. Receive Vouchers, Balance Sheet & Income Statement
     await page.goto(`http://127.0.0.1:${PORT}/preview/acc-receives`);

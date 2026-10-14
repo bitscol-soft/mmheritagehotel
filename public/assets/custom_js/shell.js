@@ -373,6 +373,47 @@
             }
         }
     }
+    if (!window.__mmFullscreenBound) {
+        window.__mmFullscreenBound = true;
+        function setFocusedFullscreen(force) {
+            var next = typeof force === 'boolean' ? force : !body.classList.contains('mm-focused-fullscreen');
+            body.classList.toggle('mm-focused-fullscreen', next);
+            var btns = document.querySelectorAll('[data-mm-fullscreen-toggle], #mm-focused-fullscreen-btn');
+            for (var i = 0; i < btns.length; i++) {
+                btns[i].classList.toggle('is-active', next);
+                btns[i].setAttribute('aria-pressed', String(next));
+                btns[i].innerHTML = next
+                    ? '<i class="fa fa-compress" aria-hidden="true"></i> Exit Fullscreen'
+                    : '<i class="fa fa-arrows-alt" aria-hidden="true"></i> Focused Fullscreen';
+            }
+        }
+        window.__mmSetFocusedFullscreen = setFocusedFullscreen;
+        document.addEventListener('click', function (ev) {
+            var tBtn = ev.target && ev.target.closest && ev.target.closest('[data-mm-fullscreen-toggle], #mm-focused-fullscreen-btn');
+            if (tBtn) {
+                ev.preventDefault();
+                setFocusedFullscreen();
+                return;
+            }
+            var xBtn = ev.target && ev.target.closest && ev.target.closest('[data-mm-fullscreen-exit], #mm-fullscreen-exit-btn');
+            if (xBtn) {
+                ev.preventDefault();
+                setFocusedFullscreen(false);
+            }
+        });
+        document.addEventListener('keydown', function (ev) {
+            if (ev.key === 'Escape' && body.classList.contains('mm-focused-fullscreen')) {
+                setFocusedFullscreen(false);
+                return;
+            }
+            var tag = (ev.target && ev.target.tagName || '').toLowerCase();
+            if (tag === 'input' || tag === 'textarea' || tag === 'select' || (ev.target && ev.target.isContentEditable)) return;
+            if (ev.altKey && !ev.ctrlKey && !ev.metaKey && (ev.key || '').toLowerCase() === 'z') {
+                ev.preventDefault();
+                setFocusedFullscreen();
+            }
+        });
+    }
     syncDisclosures();
     render();
 }());

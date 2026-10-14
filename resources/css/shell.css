@@ -2906,9 +2906,185 @@
     color: #cbd5e1 !important;
 }
 @media print {
-    .mm-shell .mm-top-subnav {
+    .mm-shell .mm-top-subnav,
+    .mm-shell #mm-fullscreen-hud {
         display: none !important;
     }
 }
+
+/* ---------- Focused Fullscreen Mode (POS & Hotel Booking Wizard) ---------- */
+.mm-shell #mm-fullscreen-hud {
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 8px 16px;
+    margin: 0 0 12px;
+    border-radius: 12px;
+    border: 1px solid rgba(37, 99, 235, 0.36);
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.96) 0%, rgba(30, 58, 138, 0.94) 100%);
+    color: #f8fafc;
+    box-shadow: 0 10px 26px rgba(15, 23, 42, 0.22);
+    position: sticky;
+    top: 8px;
+    z-index: 1030;
+}
+.mm-shell.mm-focused-fullscreen #mm-fullscreen-hud {
+    display: flex !important;
+}
+.mm-shell.mm-focused-fullscreen #navbar,
+.mm-shell.mm-focused-fullscreen #sidebar,
+.mm-shell.mm-focused-fullscreen .mm-top-subnav,
+.mm-shell.mm-focused-fullscreen #mm-top-subnav,
+.mm-shell.mm-focused-fullscreen .breadcrumbs,
+.mm-shell.mm-focused-fullscreen #breadcrumbs,
+.mm-shell.mm-focused-fullscreen .footer {
+    display: none !important;
+}
+.mm-shell.mm-focused-fullscreen .main-container,
+.mm-shell.mm-focused-fullscreen .main-content,
+.mm-shell.mm-focused-fullscreen .main-content-inner,
+.mm-shell.mm-focused-fullscreen .page-content,
+.mm-shell.mm-focused-fullscreen .mm-shell-main {
+    margin-left: 0 !important;
+    padding-top: 8px !important;
+    max-width: 100% !important;
+    width: 100% !important;
+}
+.mm-shell .mm-fullscreen-hud-left {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 12.5px;
+}
+.mm-shell .mm-fullscreen-hud-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: rgba(59, 130, 246, 0.28);
+    border: 1px solid rgba(147, 197, 253, 0.45);
+    color: #bfdbfe;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+.mm-shell .mm-fullscreen-exit-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(248, 113, 113, 0.55);
+    background: rgba(220, 38, 38, 0.85);
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s ease, transform 0.15s ease;
+}
+.mm-shell .mm-fullscreen-exit-btn:hover {
+    background: #dc2626;
+    transform: translateY(-1px);
+}
+.mm-shell .mm-focused-fs-btn.is-active {
+    background: linear-gradient(135deg, #1d4ed8 0%, #1e40af 100%) !important;
+    color: #ffffff !important;
+    border-color: #1d4ed8 !important;
+}
+
+/* ---------- Advanced POS Command Bar (.mm-pos-advanced-bar) ---------- */
+.mm-shell .mm-pos-advanced-bar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 10px;
+    padding: 12px 14px;
+    margin: 0 0 12px;
+    border-radius: 12px;
+    border: 1px solid rgba(37, 99, 235, 0.24);
+    background: linear-gradient(135deg, rgba(239, 246, 255, 0.88) 0%, rgba(248, 250, 252, 0.95) 100%);
+    box-shadow: 0 4px 14px rgba(15, 23, 42, 0.05);
+}
+.mm-shell.mm-dark .mm-pos-advanced-bar {
+    background: linear-gradient(135deg, rgba(15, 23, 42, 0.92) 0%, rgba(30, 41, 59, 0.88) 100%);
+    border-color: rgba(96, 165, 250, 0.32);
+}
+.mm-shell .mm-pos-adv-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.mm-shell .mm-pos-adv-label {
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #334155;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px;
+}
+.mm-shell.mm-dark .mm-pos-adv-label {
+    color: #93c5fd;
+}
+.mm-shell .mm-pos-mod-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+.mm-shell .mm-pos-mod-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 9px;
+    border-radius: 999px;
+    border: 1px solid rgba(148, 163, 184, 0.42);
+    background: #ffffff;
+    color: #1e293b;
+    font-size: 11.5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+.mm-shell .mm-pos-mod-chip:hover {
+    border-color: #2563eb;
+    color: #1d4ed8;
+}
+.mm-shell .mm-pos-mod-chip.is-active {
+    background: #1d4ed8;
+    border-color: #1d4ed8;
+    color: #ffffff;
+}
+.mm-shell.mm-dark .mm-pos-mod-chip {
+    background: rgba(15, 23, 42, 0.85);
+    border-color: rgba(148, 163, 184, 0.32);
+    color: #e2e8f0;
+}
+.mm-shell.mm-dark .mm-pos-mod-chip.is-active {
+    background: #2563eb;
+    border-color: #60a5fa;
+    color: #ffffff;
+}
+.mm-shell .mm-pos-split-readout {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: rgba(16, 185, 129, 0.14);
+    color: #065f46;
+    font-size: 11px;
+    font-weight: 800;
+}
+.mm-shell.mm-dark .mm-pos-split-readout {
+    background: rgba(16, 185, 129, 0.24);
+    color: #6ee7b7;
+}
+
 
 
