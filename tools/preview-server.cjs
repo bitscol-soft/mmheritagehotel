@@ -1191,7 +1191,6 @@ const specialPages={
  '/preview/draft-booking-pdf':{fn:draftBookingPdfPage,title:'Whole Booking Preview — Draft Reservation Summary PDF',crumbs:['Hotel','Bookings','Draft Summary PDF']},
  '/preview/kiosk-checkin':{fn:kioskCheckinPage,title:'Self-Service Kiosk Check-In & Digital Reg. Card (Plan B · F10)',crumbs:['Hotel','Front Desk','Kiosk Check-In']},
  '/preview/room-move':{fn:roomMovePage,title:'In-Stay Room Move & Folio Transfer (Plan B · F9)',crumbs:['Hotel','Bookings','Room Move']},
- '/preview/guest-crm':{fn:guestCrmPage,title:'Guest & Corporate CRM 360° Directory (Plan B · F11)',crumbs:['Hotel','Guests','CRM 360']},
  '/preview/minibar-folio':{fn:minibarFolioPage,title:'In-Room Minibar Consumption Auto-Post (Plan B · F15)',crumbs:['Hotel','Housekeeping','Minibar Auto-Post']},
  '/preview/city-ledger':{fn:cityLedgerPage,title:'Corporate AR / City Ledger & Aging Report (Plan B · F20)',crumbs:['Account','City Ledger','AR Aging']},
  '/preview/manager-bi':{fn:managerBiPage,title:'Manager BI: Occupancy, ADR, RevPAR & Channel Mix (Plan B · F29)',crumbs:['Hotel','Reports','Manager BI']},

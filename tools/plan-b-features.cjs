@@ -2612,6 +2612,517 @@ function buildPlanBPages(shellWith) {
         return shellWith(body, '', '', 'Plan A Modernization & Core Workflows Hub', ['System', 'Modernization', 'Plan A Hub']);
     }
 
+    function accountingReportBuilderPage() {
+        const body = `<section class="mm-ui mm-report mm-acc"><div class="tw-space-y-4 tw-py-2">
+            <header class="mm-page-head mm-no-print tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+                <div class="mm-page-title">
+                    <h1 class="tw-m-0 tw-font-semibold tw-text-ink"><i class="fa fa-building-o"></i> Balance Sheet &amp; Financial Statement Report Builder (Plan A · Phase 3 #7)</h1>
+                    <p class="tw-m-0 tw-text-sm tw-text-muted">Unified Hospitality Financial Report Builder: switch between Balance Sheet, Income Statement (P&amp;L), Cash Flow, and Ratio Analysis with saved presets, queued Excel/PDF export, and GL voucher drill-down.</p>
+                </div>
+                <div class="tw-flex tw-flex-wrap tw-gap-2">
+                    <a href="/preview/guest-crm" class="mm-button mm-button-secondary"><i class="fa fa-address-book-o"></i> Next: Workflow #8 Guest CRM</a>
+                    <a href="/preview/acc-income-statement" class="mm-button mm-button-secondary"><i class="fa fa-line-chart"></i> Income Statement</a>
+                    <a href="/preview/acc-trial-balance" class="mm-button mm-button-secondary"><i class="fa fa-balance-scale"></i> Trial Balance</a>
+                    <a href="/preview/acc-cash-flow" class="mm-button mm-button-secondary"><i class="fa fa-exchange"></i> Cash Flow</a>
+                    <button type="button" class="mm-button mm-button-secondary" id="acc-btn-export-xlsx"><i class="fa fa-file-excel-o"></i> Queue Excel Export</button>
+                    <button type="button" class="mm-button" onclick="window.print()"><i class="fa fa-print"></i> Print A4 Landscape</button>
+                </div>
+            </header>
+
+            <!-- 3-Stage Financial Consolidation & Report Builder Stepper -->
+            <nav class="mm-stepper mm-no-print" aria-label="Accounting report builder workflow">
+                <ol class="mm-stepper-list">
+                    <li class="mm-step is-done">
+                        <span class="mm-step-index">&#10003;</span>
+                        <span class="mm-step-copy">
+                            <span class="mm-step-label">1. Multi-Outlet Sub-Ledger Posting</span>
+                            <span class="mm-step-sub">Room Folios · Restaurant/Bar POS · Banquet · Store GRNs</span>
+                        </span>
+                        <span class="mm-step-pill">Synced</span>
+                    </li>
+                    <li class="mm-step is-current" aria-current="step">
+                        <span class="mm-step-index">2</span>
+                        <span class="mm-step-copy">
+                            <span class="mm-step-label">2. Interactive Report Builder &amp; Saved Presets</span>
+                            <span class="mm-step-sub" id="acc-step-sub-2">Balance Sheet (A = L + E) · Consolidated All Divisions</span>
+                        </span>
+                        <span class="mm-step-pill">Active View</span>
+                    </li>
+                    <li class="mm-step">
+                        <span class="mm-step-index">3</span>
+                        <span class="mm-step-copy">
+                            <span class="mm-step-label">3. Queued Excel / PDF Export &amp; GL Drill-Down</span>
+                            <span class="mm-step-sub">Redis Queue Export · Mushak-6.3 &amp; Statutory Audit Ready</span>
+                        </span>
+                        <span class="mm-step-pill">Ready</span>
+                    </li>
+                </ol>
+            </nav>
+
+            <div class="mm-table-kpi-grid" aria-label="Financial statement summary">
+                <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-building-o"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Total Assets (A)</span><div class="mm-table-kpi-value" id="acc-kpi-assets">৳ 48,500,000 <span class="mm-table-kpi-sub">Current ৳ 14.2M · Fixed ৳ 34.3M</span></div></div></div>
+                <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-credit-card"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Liabilities + Equity (L+E)</span><div class="mm-table-kpi-value" id="acc-kpi-liab">৳ 48,500,000 <span class="mm-table-kpi-sub">Liab ৳ 14.2M · Equity ৳ 34.3M</span></div></div></div>
+                <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-line-chart"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">MTD Net Operating Profit</span><div class="mm-table-kpi-value" id="acc-kpi-profit">৳ 3,840,000 <span class="mm-table-kpi-sub">GOP Margin: 41.8% (Oct)</span></div></div></div>
+                <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-check-circle"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Equation &amp; Audit Status</span><div class="mm-table-kpi-value" id="acc-kpi-eq">Balanced ✓ <span class="mm-table-kpi-sub">A = L + E · ৳ 0 Variance</span></div></div></div>
+            </div>
+
+            <div id="acc-builder-banner" class="alert alert-success mm-no-print" style="display:none;margin:0;border-radius:10px;">
+                <i class="fa fa-check-circle"></i> <strong id="acc-builder-msg">Queued Excel &amp; A4 PDF report job dispatched via Redis Horizon!</strong>
+            </div>
+
+            <!-- Interactive Report Builder & Saved Query Preset Console -->
+            <div class="mm-panel tw-p-5 mm-no-print" id="acc-builder-panel">
+                <div class="tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-2" style="margin-bottom:12px">
+                    <div>
+                        <h2 class="tw-m-0 tw-text-base tw-font-semibold"><i class="fa fa-sliders"></i> Financial Report Builder — Saved Queries, Period Comparison &amp; Division Filter</h2>
+                        <p class="tw-m-0 tw-text-xs tw-text-muted">Switch statement type or division below to dynamically recompute account groups, % share bars, and YoY variance.</p>
+                    </div>
+                    <div class="mm-preview-filter-pills" style="margin:0">
+                        <button type="button" class="mm-preview-pill is-active" data-acc-stmt="bs">1. Balance Sheet</button>
+                        <button type="button" class="mm-preview-pill" data-acc-stmt="pl">2. Income Statement (P&amp;L)</button>
+                        <button type="button" class="mm-preview-pill" data-acc-stmt="cf">3. Cash Flow Statement</button>
+                        <button type="button" class="mm-preview-pill" data-acc-stmt="ratio">4. Hospitality Ratios</button>
+                    </div>
+                </div>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;align-items:end">
+                    <div>
+                        <label class="mm-label" for="acc-company-select">1. Company / Profit Center</label>
+                        <select id="acc-company-select" class="form-control input-sm" name="company_id">
+                            <option value="1" data-mult="1" selected>M&amp;M Heritage Hotel (Consolidated)</option>
+                            <option value="2" data-mult="0.62">Rooms &amp; Suites Division (62%)</option>
+                            <option value="3" data-mult="0.38">F&amp;B POS &amp; Banquet Division (38%)</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="mm-label" for="acc-period-select">2. Reporting Period</label>
+                        <select id="acc-period-select" class="form-control input-sm" name="from">
+                            <option value="2026-10-14" data-pmult="1" selected>October 2026 (MTD — As of 14 Oct)</option>
+                            <option value="2026-09-30" data-pmult="2.85">Q3 2026 (Jul – Sep 2026 Audited)</option>
+                            <option value="2026-06-30" data-pmult="11.4">FY 2025–2026 Full Fiscal Year</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="mm-label" for="acc-preset-select">3. Saved Query &amp; Column Preset</label>
+                        <select id="acc-preset-select" class="form-control input-sm">
+                            <option value="full" selected>Executive Full + % Share + YoY Delta</option>
+                            <option value="audit">Statutory Audit &amp; Mushak-6.3 Tax View</option>
+                            <option value="board">Board of Directors Condensed Summary</option>
+                        </select>
+                    </div>
+                    <div style="display:flex;gap:6px">
+                        <button type="button" id="acc-btn-save-preset" class="mm-button mm-button-secondary" style="width:100%;min-height:36px"><i class="fa fa-bookmark"></i> Save Preset</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Statement Table with Visual Share Bars & GL Drill-Down -->
+            <div class="mm-panel tw-p-5">
+                <div class="tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-2" style="margin-bottom:12px">
+                    <div>
+                        <h2 class="tw-m-0 tw-text-base tw-font-semibold" id="acc-stmt-heading"><i class="fa fa-table"></i> Consolidated Statement of Financial Position (Balance Sheet)</h2>
+                        <p class="tw-m-0 tw-text-xs tw-text-muted" id="acc-stmt-sub">All figures in BDT (৳) · Click any GL Account Group to inspect underlying journal &amp; payment vouchers.</p>
+                    </div>
+                    <span class="mm-badge mm-badge-paid" id="acc-stmt-badge">A = L + E Verified · ৳ 48,500,000</span>
+                </div>
+                <div class="mm-table-scroll">
+                    <table class="mm-data-table table table-bordered table-striped" id="acc-statement-table">
+                        <thead>
+                            <tr>
+                                <th>GL Code</th>
+                                <th>Account Group &amp; Sub-Ledger Head</th>
+                                <th>Category</th>
+                                <th class="text-right">Current Period (৳)</th>
+                                <th>Composition &amp; Share</th>
+                                <th>YoY Variance</th>
+                                <th class="text-center mm-no-print">GL Drill-Down</th>
+                            </tr>
+                        </thead>
+                        <tbody id="acc-statement-tbody">
+                            <tr class="acc-stmt-row" data-stmt="bs" data-base="8450000">
+                                <td><span class="mm-badge">1010-CASH</span></td>
+                                <td><strong>Cash at Bank, POS Settlements &amp; Front-Desk Drawers</strong><div class="tw-text-xs tw-text-muted">City Bank Corporate A/C · SSLCommerz · bKash · 3 Cash Drawers</div></td>
+                                <td><span class="mm-badge mm-badge-paid">Current Asset</span></td>
+                                <td class="text-right"><strong class="acc-amt-cell">8,450,000</strong></td>
+                                <td><div class="mm-share-cell"><span>17.4% of Assets</span><span class="mm-share-bar"><span class="mm-share-fill is-emerald" style="width:35%"></span></span></div></td>
+                                <td><span class="mm-badge mm-badge-paid">+14.2% YoY</span></td>
+                                <td class="text-center mm-no-print"><button type="button" class="mm-button mm-button-secondary acc-drill-btn" data-gl-name="1010-CASH · Cash &amp; Bank Balances" data-gl-amt="৳ 8,450,000" style="min-height:26px;padding:2px 10px;font-size:11px">Inspect GL →</button></td>
+                            </tr>
+                            <tr class="acc-stmt-row" data-stmt="bs" data-base="3650000">
+                                <td><span class="mm-badge">1020-AR</span></td>
+                                <td><strong>Corporate City Ledger AR &amp; In-House Guest Folios</strong><div class="tw-text-xs tw-text-muted">Orion Pharma, UNICEF, World Bank &amp; 18 Active Guest Folios</div></td>
+                                <td><span class="mm-badge mm-badge-paid">Current Asset</span></td>
+                                <td class="text-right"><strong class="acc-amt-cell">3,650,000</strong></td>
+                                <td><div class="mm-share-cell"><span>7.5% of Assets</span><span class="mm-share-bar"><span class="mm-share-fill is-emerald" style="width:18%"></span></span></div></td>
+                                <td><span class="mm-badge mm-badge-paid">+8.6% YoY</span></td>
+                                <td class="text-center mm-no-print"><button type="button" class="mm-button mm-button-secondary acc-drill-btn" data-gl-name="1020-AR · Corporate City Ledger AR" data-gl-amt="৳ 3,650,000" style="min-height:26px;padding:2px 10px;font-size:11px">Inspect GL →</button></td>
+                            </tr>
+                            <tr class="acc-stmt-row" data-stmt="bs" data-base="2100000">
+                                <td><span class="mm-badge">1030-INV</span></td>
+                                <td><strong>Restaurant, Bar &amp; General Store Housekeeping Stock</strong><div class="tw-text-xs tw-text-muted">Kitchen Dry/Cold Store · Beverage Cellar · Linen &amp; Amenities</div></td>
+                                <td><span class="mm-badge mm-badge-paid">Current Asset</span></td>
+                                <td class="text-right"><strong class="acc-amt-cell">2,100,000</strong></td>
+                                <td><div class="mm-share-cell"><span>4.3% of Assets</span><span class="mm-share-bar"><span class="mm-share-fill is-emerald" style="width:12%"></span></span></div></td>
+                                <td><span class="mm-badge mm-badge-paid">+5.1% YoY</span></td>
+                                <td class="text-center mm-no-print"><button type="button" class="mm-button mm-button-secondary acc-drill-btn" data-gl-name="1030-INV · F&amp;B &amp; General Store Inventory" data-gl-amt="৳ 2,100,000" style="min-height:26px;padding:2px 10px;font-size:11px">Inspect GL →</button></td>
+                            </tr>
+                            <tr class="acc-stmt-row" data-stmt="bs" data-base="34300000">
+                                <td><span class="mm-badge">1500-PPE</span></td>
+                                <td><strong>Hotel Building, 20 Luxury Suites, Kitchen &amp; HVAC Plant</strong><div class="tw-text-xs tw-text-muted">Property, Plant &amp; Equipment net of accumulated depreciation</div></td>
+                                <td><span class="mm-badge mm-badge-paid">Fixed Asset</span></td>
+                                <td class="text-right"><strong class="acc-amt-cell">34,300,000</strong></td>
+                                <td><div class="mm-share-cell"><span>70.7% of Assets</span><span class="mm-share-bar"><span class="mm-share-fill is-emerald" style="width:71%"></span></span></div></td>
+                                <td><span class="mm-badge mm-badge-paid">+2.4% YoY</span></td>
+                                <td class="text-center mm-no-print"><button type="button" class="mm-button mm-button-secondary acc-drill-btn" data-gl-name="1500-PPE · Hotel Property &amp; Suite Furnishings" data-gl-amt="৳ 34,300,000" style="min-height:26px;padding:2px 10px;font-size:11px">Inspect GL →</button></td>
+                            </tr>
+                            <tr class="acc-stmt-row" data-stmt="bs" data-base="5200000">
+                                <td><span class="mm-badge">2010-AP</span></td>
+                                <td><strong>Trade Payables, Guest Advance Deposits &amp; Mushak-6.3 VAT Payable</strong><div class="tw-text-xs tw-text-muted">Supplier GRNs · Unearned Booking Deposits · NBR VAT Control</div></td>
+                                <td><span class="mm-badge mm-badge-partial">Current Liability</span></td>
+                                <td class="text-right"><strong class="acc-amt-cell">5,200,000</strong></td>
+                                <td><div class="mm-share-cell"><span>10.7% of L+E</span><span class="mm-share-bar"><span class="mm-share-fill is-amber" style="width:22%"></span></span></div></td>
+                                <td><span class="mm-badge mm-badge-partial">-3.1% YoY</span></td>
+                                <td class="text-center mm-no-print"><button type="button" class="mm-button mm-button-secondary acc-drill-btn" data-gl-name="2010-AP · Payables &amp; NBR VAT Control" data-gl-amt="৳ 5,200,000" style="min-height:26px;padding:2px 10px;font-size:11px">Inspect GL →</button></td>
+                            </tr>
+                            <tr class="acc-stmt-row" data-stmt="bs" data-base="9000000">
+                                <td><span class="mm-badge">2500-TERM</span></td>
+                                <td><strong>Long-Term Hospitality Expansion Facility</strong><div class="tw-text-xs tw-text-muted">Project finance facility for Floor 4 Penthouse &amp; Banquet Wing</div></td>
+                                <td><span class="mm-badge mm-badge-partial">Long-Term Liability</span></td>
+                                <td class="text-right"><strong class="acc-amt-cell">9,000,000</strong></td>
+                                <td><div class="mm-share-cell"><span>18.6% of L+E</span><span class="mm-share-bar"><span class="mm-share-fill is-amber" style="width:36%"></span></span></div></td>
+                                <td><span class="mm-badge mm-badge-paid">-11.0% YoY</span></td>
+                                <td class="text-center mm-no-print"><button type="button" class="mm-button mm-button-secondary acc-drill-btn" data-gl-name="2500-TERM · Long-Term Facility" data-gl-amt="৳ 9,000,000" style="min-height:26px;padding:2px 10px;font-size:11px">Inspect GL →</button></td>
+                            </tr>
+                            <tr class="acc-stmt-row" data-stmt="bs" data-base="34300000">
+                                <td><span class="mm-badge">3010-EQ</span></td>
+                                <td><strong>Paid-Up Capital, Retained Earnings &amp; Current Period Surplus</strong><div class="tw-text-xs tw-text-muted">Shareholders Equity (৳ 30.46M) + Current MTD Net Profit (৳ 3.84M)</div></td>
+                                <td><span class="mm-badge mm-badge-paid">Owners Equity</span></td>
+                                <td class="text-right"><strong class="acc-amt-cell">34,300,000</strong></td>
+                                <td><div class="mm-share-cell"><span>70.7% of L+E</span><span class="mm-share-bar"><span class="mm-share-fill is-violet" style="width:71%"></span></span></div></td>
+                                <td><span class="mm-badge mm-badge-paid">+16.8% YoY</span></td>
+                                <td class="text-center mm-no-print"><button type="button" class="mm-button mm-button-secondary acc-drill-btn" data-gl-name="3010-EQ · Capital &amp; Retained Surplus" data-gl-amt="৳ 34,300,000" style="min-height:26px;padding:2px 10px;font-size:11px">Inspect GL →</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- GL Voucher Drill-Down Slide-Over Drawer (#acc-gl-drawer-modal) -->
+            <div id="acc-gl-drawer-modal" class="modal fade mm-drawer" data-mm-drawer="true" tabindex="-1" role="dialog">
+                <div class="modal-dialog" style="width:94vw;max-width:760px;"><div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title" id="acc-gl-modal-title"><i class="fa fa-book"></i> General Ledger Sub-Ledger Voucher Drill-Down</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-radius:8px;background:rgba(37,99,235,0.08);border:1px solid rgba(37,99,235,0.25);margin-bottom:12px">
+                            <div><strong>Selected GL Account Head:</strong> <span id="acc-gl-modal-head">1010-CASH · Cash &amp; Bank Balances</span></div>
+                            <span class="mm-badge mm-badge-paid" id="acc-gl-modal-bal">৳ 8,450,000</span>
+                        </div>
+                        <table class="table table-bordered table-striped" style="font-size:12.5px;margin:0">
+                            <thead><tr><th>Voucher No</th><th>Date</th><th>Source Module &amp; Narration</th><th class="text-right">Debit (৳)</th><th class="text-right">Credit (৳)</th></tr></thead>
+                            <tbody>
+                                <tr><td><span class="mm-badge">#JV-2026-412</span></td><td>14 Oct 2026</td><td>Night Audit Room Tariff &amp; VAT Batch (#NA-1014 · 18 Suites)</td><td class="text-right"><strong>239,244</strong></td><td class="text-right">0</td></tr>
+                                <tr><td><span class="mm-badge">#RV-2026-889</span></td><td>14 Oct 2026</td><td>Front-Desk Split-Folio Settlement (#BK-2026-1094 · Orion Pharma)</td><td class="text-right"><strong>48,450</strong></td><td class="text-right">0</td></tr>
+                                <tr><td><span class="mm-badge">#RV-2026-892</span></td><td>14 Oct 2026</td><td>Unified POS Z-Close (Heritage Dining + Skyline Bar)</td><td class="text-right"><strong>99,600</strong></td><td class="text-right">0</td></tr>
+                                <tr><td><span class="mm-badge">#PV-2026-304</span></td><td>13 Oct 2026</td><td>General Store Supplier GRN Settlement (Fresh Catch Seafood Ltd.)</td><td class="text-right">0</td><td class="text-right"><strong>42,800</strong></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="mm-button mm-button-secondary" data-dismiss="modal">Close</button>
+                        <a href="/preview/acc-account-ledger" class="mm-button"><i class="fa fa-book"></i> Open Full Account Ledger</a>
+                    </div>
+                </div></div>
+            </div>
+        </div></section>
+        <script>(function(){
+            function fmt(n){return Math.round(n).toLocaleString("en-US");}
+            var compSel=document.getElementById("acc-company-select"),perSel=document.getElementById("acc-period-select"),stmtBtns=document.querySelectorAll("[data-acc-stmt]"),ban=document.getElementById("acc-builder-banner"),msg=document.getElementById("acc-builder-msg");
+            var stmtTitles={
+                bs:"Consolidated Statement of Financial Position (Balance Sheet)",
+                pl:"Departmental Income Statement (Profit & Loss · USALI Format)",
+                cf:"Statement of Cash Flows (Operating, Investing & Financing)",
+                ratio:"Hospitality Financial Ratios (GOPPAR, RevPAR, Current & Debt Ratios)"
+            };
+            function recalc(){
+                var cOpt=compSel&&compSel.options[compSel.selectedIndex];
+                var pOpt=perSel&&perSel.options[perSel.selectedIndex];
+                var mult=Number(cOpt&&cOpt.getAttribute("data-mult")||1)*Number(pOpt&&pOpt.getAttribute("data-pmult")||1);
+                var rows=document.querySelectorAll(".acc-stmt-row");
+                for(var i=0;i<rows.length;i++){
+                    var b=Number(rows[i].getAttribute("data-base")||0);
+                    var cell=rows[i].querySelector(".acc-amt-cell");
+                    if(cell)cell.textContent=fmt(b*mult);
+                }
+                var totA=Math.round(48500000*mult),totP=Math.round(3840000*mult);
+                var kA=document.getElementById("acc-kpi-assets"),kL=document.getElementById("acc-kpi-liab"),kP=document.getElementById("acc-kpi-profit"),bdg=document.getElementById("acc-stmt-badge");
+                if(kA)kA.innerHTML="৳ "+fmt(totA)+' <span class="mm-table-kpi-sub">Current &amp; Fixed Assets</span>';
+                if(kL)kL.innerHTML="৳ "+fmt(totA)+' <span class="mm-table-kpi-sub">Liabilities + Equity</span>';
+                if(kP)kP.innerHTML="৳ "+fmt(totP)+' <span class="mm-table-kpi-sub">GOP Margin: 41.8%</span>';
+                if(bdg)bdg.textContent="A = L + E Verified · ৳ "+fmt(totA);
+            }
+            if(compSel)compSel.addEventListener("change",recalc);
+            if(perSel)perSel.addEventListener("change",recalc);
+            for(var i=0;i<stmtBtns.length;i++){
+                stmtBtns[i].addEventListener("click",function(){
+                    for(var k=0;k<stmtBtns.length;k++)stmtBtns[k].classList.remove("is-active");
+                    this.classList.add("is-active");
+                    var st=this.getAttribute("data-acc-stmt");
+                    var h=document.getElementById("acc-stmt-heading"),s2=document.getElementById("acc-step-sub-2");
+                    if(h&&stmtTitles[st])h.innerHTML='<i class="fa fa-table"></i> '+stmtTitles[st];
+                    if(s2&&stmtTitles[st])s2.textContent=stmtTitles[st];
+                });
+            }
+            var expBtn=document.getElementById("acc-btn-export-xlsx"),saveBtn=document.getElementById("acc-btn-save-preset");
+            if(expBtn&&ban&&msg){
+                expBtn.addEventListener("click",function(){
+                    msg.textContent="Excel (.xlsx) & A4 Landscape PDF export queued via Redis Horizon — download ready!";
+                    ban.style.display="block";
+                });
+            }
+            if(saveBtn&&ban&&msg){
+                saveBtn.addEventListener("click",function(){
+                    msg.textContent="Custom Report Builder query preset saved for 1-click executive access!";
+                    ban.style.display="block";
+                });
+            }
+            var drillBtns=document.querySelectorAll(".acc-drill-btn"),mHead=document.getElementById("acc-gl-modal-head"),mBal=document.getElementById("acc-gl-modal-bal");
+            for(var d=0;d<drillBtns.length;d++){
+                drillBtns[d].addEventListener("click",function(){
+                    if(mHead)mHead.textContent=this.getAttribute("data-gl-name")||"GL Account";
+                    if(mBal)mBal.textContent=this.getAttribute("data-gl-amt")||"৳ 0";
+                    if(window.jQuery)window.jQuery("#acc-gl-drawer-modal").modal("show");
+                });
+            }
+        })();</script>`;
+        return shellWith(body, '', '', 'Balance Sheet & Financial Report Builder (Phase 3 #7)', ['Account', 'Reports', 'Balance Sheet & Report Builder']);
+    }
+
+    function guestCrmRevivalPage() {
+        const crmRows = [
+            ['Tanvir Ahmed Chowdhury', 'VIP Corporate', 'Orion Pharma / Mohammadi Group', '8 Stays · 22 Nights', '284500', 'High Floor · King Bed · Extra Espresso', 'vip', 'Active In-House (#101)', '৳ 500,000 Credit · 15% Corp BAR'],
+            ['Brig. Gen. Mahmudul Hasan', 'VIP Protocol', 'Defence Services Command', '11 Stays · 31 Nights', '465000', 'Corner Suite · Early Check-In · No MSG', 'vip', 'Active In-House (#204)', 'Protocol Direct Bill · VIP Gold'],
+            ['Amb. Kenji Takahashi', 'Diplomatic', 'Embassy of Japan (Dhaka)', '6 Stays · 19 Nights', '390000', 'Japanese Green Tea · Diplomatic Floor 3', 'vip', 'Active In-House (#301)', '0% VAT Diplomatic Cert #JP-09'],
+            ['Nusrat Jahan', 'Corporate Contract', 'UNICEF Bangladesh', '9 Stays · 24 Nights', '312000', 'Quiet Workspace · Airport Chauffeur', 'corp', 'Active In-House (#201)', 'UN Humanitarian Tariff · Net 30'],
+            ['Elena Rostova', 'Corporate Contract', 'World Bank Group', '7 Stays · 21 Nights', '348000', 'Dedicated VPN Router · Hypoallergenic Pillow', 'corp', 'Active In-House (#402)', 'IFI Corporate Master · Net 30'],
+            ['Rubana Huq', 'VIP Loyalty', 'BGMEA / Mohammadi Group', '14 Stays · 38 Nights', '620000', 'Presidential Suite #403 · Boardroom Setup', 'loyalty', 'Active In-House (#403)', 'Platinum Circle · 20% Suite Off'],
+            ['Capt. Jonathan Vance', 'Airline Crew Contract', 'Horizon Air International', '19 Stays · 42 Nights', '410000', 'Blackout Curtains · 04:45 AM Wake-Up Box', 'corp', 'Active In-House (#302)', '24h Crew Layover Allotment'],
+            ['Dr. Farhana Rahman', 'Repeat Loyalty', 'Square Hospitals Ltd.', '5 Stays · 12 Nights', '148000', 'Feather Pillows · Late 4 PM Check-Out', 'loyalty', 'Active In-House (#103)', 'Gold Loyalty · Free Breakfast'],
+        ];
+        const trs = crmRows.map(([name, tier, org, stays, ltv, pref, tag, st, contract]) => `
+            <tr class="crm-row" data-crm-tag="${tag}" data-crm-ltv="${ltv}" data-crm-search="${(name + ' ' + tier + ' ' + org + ' ' + pref + ' ' + contract).toLowerCase()}">
+                <td><strong>${name}</strong><div class="tw-text-xs tw-text-muted">${org}</div></td>
+                <td><span class="mm-badge mm-badge-${tag === 'vip' ? 'paid' : 'partial'}">${tier}</span><div style="font-size:11px;color:var(--mm-muted);margin-top:3px">${contract}</div></td>
+                <td>${stays}</td>
+                <td class="text-right"><strong>৳ ${Number(ltv).toLocaleString('en-US')}</strong></td>
+                <td>${pref}</td>
+                <td><span class="mm-badge mm-badge-paid">${st}</span></td>
+                <td class="text-center"><button type="button" class="mm-button mm-button-secondary crm-btn-360" style="min-height:28px;padding:2px 10px;font-size:11.5px" data-guest-name="${name}" data-guest-org="${org}" data-guest-tier="${tier}" data-guest-stays="${stays}" data-guest-ltv="৳ ${Number(ltv).toLocaleString('en-US')}" data-guest-pref="${pref}" data-guest-contract="${contract}"><i class="fa fa-id-badge"></i> 360° Dossier</button></td>
+            </tr>`).join('');
+        const body = `<section class="mm-ui"><div class="tw-space-y-4 tw-py-2">
+            <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+                <div class="mm-page-title">
+                    <h1 class="tw-m-0 tw-font-semibold tw-text-ink"><i class="fa fa-address-book-o"></i> Guest &amp; Corporate CRM 360° Directory (Plan A · Phase 3 #8 &amp; Plan B · F11)</h1>
+                    <p class="tw-m-0 tw-text-sm tw-text-muted">Revived CRM workspace (<code>c_r_m_customers</code>): guest preferences, stay history, lifetime folio value (LTV), corporate rate contracts, B2B leads, and auto-linking to the 3-Step Booking Wizard.</p>
+                </div>
+                <div class="tw-flex tw-flex-wrap tw-gap-2">
+                    <a href="/preview/room-settings" class="mm-button mm-button-secondary"><i class="fa fa-sliders"></i> Next: Workflow #9 Settings</a>
+                    <a href="/preview/guests" class="mm-button mm-button-secondary"><i class="fa fa-users"></i> All 20 Guests</a>
+                    <a href="/preview/city-ledger" class="mm-button mm-button-secondary"><i class="fa fa-building-o"></i> Corporate City Ledger (F20)</a>
+                    <a href="/preview/booking-next" class="mm-button"><i class="fa fa-calendar-plus-o"></i> Book w/ CRM Auto-Fill</a>
+                </div>
+            </header>
+
+            <!-- 3-Stage CRM 360° Revival Stepper -->
+            <nav class="mm-stepper mm-no-print" aria-label="Guest and corporate CRM workflow">
+                <ol class="mm-stepper-list">
+                    <li class="mm-step is-done">
+                        <span class="mm-step-index">&#10003;</span>
+                        <span class="mm-step-copy">
+                            <span class="mm-step-label">1. Revived c_r_m_customers &amp; KYC Profiles</span>
+                            <span class="mm-step-sub">20 Verified VIP &amp; Corporate Profiles · Passport/NID Linked</span>
+                        </span>
+                        <span class="mm-step-pill">Restored</span>
+                    </li>
+                    <li class="mm-step is-current" aria-current="step">
+                        <span class="mm-step-index">2</span>
+                        <span class="mm-step-copy">
+                            <span class="mm-step-label">2. 360° Stay History, Preferences &amp; LTV Analytics</span>
+                            <span class="mm-step-sub">Auto-Populates Pillow, Floor, Dietary &amp; VIP Alerts in Booking Wizard</span>
+                        </span>
+                        <span class="mm-step-pill">Active Step</span>
+                    </li>
+                    <li class="mm-step">
+                        <span class="mm-step-index">3</span>
+                        <span class="mm-step-copy">
+                            <span class="mm-step-label">3. Corporate Contracts, B2B Leads &amp; Direct-Bill AR</span>
+                            <span class="mm-step-sub">8 Active Organizations · Negotiated BAR Discounts &amp; Credit Caps</span>
+                        </span>
+                        <span class="mm-step-pill">Linked</span>
+                    </li>
+                </ol>
+            </nav>
+
+            <div class="mm-table-kpi-grid" aria-label="Guest CRM summary">
+                <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-users"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">CRM Guest Profiles</span><div class="mm-table-kpi-value" id="crm-kpi-profiles">20 Verified <span class="mm-table-kpi-sub">100% KYC Linked</span></div></div></div>
+                <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-building-o"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Corporate Contracts</span><div class="mm-table-kpi-value" id="crm-kpi-corps">8 Organizations <span class="mm-table-kpi-sub">Direct-Bill Active</span></div></div></div>
+                <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-repeat"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Repeat Stay Ratio</span><div class="mm-table-kpi-value">68.4% Returning <span class="mm-table-kpi-sub">Avg 8.4 Stays</span></div></div></div>
+                <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-line-chart"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Combined Lifetime Value</span><div class="mm-table-kpi-value" id="crm-kpi-ltv">৳ 4,820,000 <span class="mm-table-kpi-sub">Room + F&amp;B + Banquet</span></div></div></div>
+            </div>
+
+            <div id="crm-banner" class="alert alert-success" style="display:none;margin:0;border-radius:10px;">
+                <i class="fa fa-check-circle"></i> <strong id="crm-banner-msg">New VIP Guest &amp; Corporate Contract added to CRM 360° Directory and synced with the 3-Step Booking Wizard!</strong>
+            </div>
+
+            <!-- Interactive New VIP Guest / Corporate Contract & Lead Quick-Creator -->
+            <div class="mm-panel tw-p-4" id="crm-create-panel">
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:10px;align-items:end">
+                    <div>
+                        <label class="mm-label" for="crm-new-name">1. Guest / Contact Name</label>
+                        <input type="text" id="crm-new-name" class="form-control input-sm" value="Syed Nasim Manzur">
+                    </div>
+                    <div>
+                        <label class="mm-label" for="crm-new-org">2. Company / Embassy</label>
+                        <input type="text" id="crm-new-org" class="form-control input-sm" value="Apex Footwear Ltd.">
+                    </div>
+                    <div>
+                        <label class="mm-label" for="crm-new-tier">3. CRM Tier &amp; Contract</label>
+                        <select id="crm-new-tier" class="form-control input-sm">
+                            <option value="vip|VIP Corporate|৳ 600,000 Credit · 18% Corp BAR" selected>VIP Corporate (18% Off BAR)</option>
+                            <option value="corp|Corporate Contract|Net 30 Direct Bill · 15% Off">Corporate Contract (Net 30)</option>
+                            <option value="loyalty|Repeat Loyalty|Platinum Circle · Free Upgrade">Platinum Loyalty Circle</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="mm-label" for="crm-new-pref">4. Room &amp; Dietary Preferences</label>
+                        <div style="display:flex;gap:6px">
+                            <input type="text" id="crm-new-pref" class="form-control input-sm" value="Executive Floor · Sparkling Water · No Peanut">
+                            <button type="button" id="crm-btn-add-profile" class="mm-button" style="min-height:30px;padding:2px 12px;font-size:11.5px;white-space:nowrap"><i class="fa fa-plus"></i> Add CRM 360°</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Filterable CRM 360° Directory -->
+            <div class="mm-panel tw-p-5">
+                <div class="tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-2" style="margin-bottom:12px">
+                    <div class="tw-flex tw-flex-wrap tw-gap-2">
+                        <button type="button" class="mm-preview-pill is-active" data-crm-filter="all">All CRM Profiles</button>
+                        <button type="button" class="mm-preview-pill" data-crm-filter="vip">VIP &amp; Diplomatic</button>
+                        <button type="button" class="mm-preview-pill" data-crm-filter="corp">Corporate Contracts</button>
+                        <button type="button" class="mm-preview-pill" data-crm-filter="loyalty">Repeat Loyalty Circle</button>
+                    </div>
+                    <input type="search" id="crm-search-input" class="form-control" style="max-width:280px" placeholder="Search guest, organization, preference...">
+                </div>
+                <div class="mm-table-scroll">
+                    <table class="mm-data-table table table-bordered table-striped" id="crm-table">
+                        <thead><tr><th>Guest &amp; Organization</th><th>CRM Tier &amp; Contract Terms</th><th>Stay History</th><th class="text-right">Lifetime Value (LTV)</th><th>Recorded Room &amp; Dietary Preferences</th><th>Current Status</th><th class="text-center">Action</th></tr></thead>
+                        <tbody id="crm-tbody">${trs}</tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Guest 360° Dossier, Stay History & Corporate Contract Slide-Over Drawer (#crm-profile-modal) -->
+            <div id="crm-profile-modal" class="modal fade mm-drawer" data-mm-drawer="true" tabindex="-1" role="dialog">
+                <div class="modal-dialog" style="width:94vw;max-width:760px;"><div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title"><i class="fa fa-id-badge"></i> Guest 360° Dossier, Stay History &amp; Corporate Contract</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-bottom:14px">
+                            <div style="padding:10px 12px;border-radius:8px;border:1px solid rgba(148,163,184,0.35);background:rgba(15,23,42,0.03)">
+                                <div class="tw-text-xs tw-text-muted">Guest &amp; Organization</div>
+                                <strong id="crm-mod-name" style="font-size:14px">Tanvir Ahmed Chowdhury</strong>
+                                <div id="crm-mod-org" class="tw-text-xs tw-text-muted">Orion Pharma / Mohammadi Group</div>
+                            </div>
+                            <div style="padding:10px 12px;border-radius:8px;border:1px solid rgba(148,163,184,0.35);background:rgba(15,23,42,0.03)">
+                                <div class="tw-text-xs tw-text-muted">Stay History &amp; Lifetime Value</div>
+                                <strong id="crm-mod-ltv" style="font-size:14px;color:#047857">৳ 284,500</strong>
+                                <div id="crm-mod-stays" class="tw-text-xs tw-text-muted">8 Stays · 22 Nights</div>
+                            </div>
+                            <div style="padding:10px 12px;border-radius:8px;border:1px solid rgba(148,163,184,0.35);background:rgba(15,23,42,0.03)">
+                                <div class="tw-text-xs tw-text-muted">Contract &amp; Preferences</div>
+                                <strong id="crm-mod-contract" style="font-size:12.5px">৳ 500,000 Credit · 15% Corp BAR</strong>
+                                <div id="crm-mod-pref" class="tw-text-xs tw-text-muted">High Floor · King Bed · Extra Espresso</div>
+                            </div>
+                        </div>
+                        <h5 style="margin:0 0 8px;font-weight:700"><i class="fa fa-history"></i> Linked Reservations, POS Folios &amp; Invoices</h5>
+                        <table class="table table-bordered table-striped" style="font-size:12.5px;margin:0">
+                            <thead><tr><th>Booking Ref</th><th>Check-In → Out</th><th>Suite</th><th>Room + POS Folio</th><th>Settlement Mode</th><th>Status</th></tr></thead>
+                            <tbody>
+                                <tr><td><span class="mm-badge">#BK-2026-1094</span></td><td>14 Oct → 16 Oct 2026</td><td>#101 &amp; #201</td><td><strong>৳ 48,450</strong></td><td>Split Folio (City Ledger + VISA)</td><td><span class="mm-badge mm-badge-paid">In-House Active</span></td></tr>
+                                <tr><td><span class="mm-badge">#BK-2026-0912</span></td><td>02 Sep → 05 Sep 2026</td><td>#204 Royal</td><td><strong>৳ 68,200</strong></td><td>Direct Bill City Ledger AR</td><td><span class="mm-badge mm-badge-paid">Audited &amp; Closed</span></td></tr>
+                                <tr><td><span class="mm-badge">#BK-2026-0744</span></td><td>11 Jul → 14 Jul 2026</td><td>#101 Deluxe</td><td><strong>৳ 34,900</strong></td><td>VISA Corporate Card</td><td><span class="mm-badge mm-badge-paid">Audited &amp; Closed</span></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="mm-button mm-button-secondary" data-dismiss="modal">Close</button>
+                        <a href="/preview/booking-next" class="mm-button"><i class="fa fa-calendar-plus-o"></i> Create New Booking for Guest</a>
+                    </div>
+                </div></div>
+            </div>
+        </div></section>
+        <script>(function(){
+            var pills=document.querySelectorAll("[data-crm-filter]"),tbody=document.getElementById("crm-tbody"),q=document.getElementById("crm-search-input"),tag="all";
+            function filter(){
+                var s=(q&&q.value||"").toLowerCase().trim();
+                var rows=tbody.querySelectorAll(".crm-row");
+                for(var i=0;i<rows.length;i++){
+                    var r=rows[i];
+                    var ok=(tag==="all"||r.getAttribute("data-crm-tag")===tag)&&(!s||(r.getAttribute("data-crm-search")||"").indexOf(s)>=0);
+                    r.style.display=ok?"":"none";
+                }
+            }
+            for(var p=0;p<pills.length;p++){
+                pills[p].addEventListener("click",function(){
+                    for(var k=0;k<pills.length;k++)pills[k].classList.remove("is-active");
+                    this.classList.add("is-active");
+                    tag=this.getAttribute("data-crm-filter");
+                    filter();
+                });
+            }
+            if(q)q.addEventListener("input",filter);
+            var addBtn=document.getElementById("crm-btn-add-profile"),ban=document.getElementById("crm-banner"),banMsg=document.getElementById("crm-banner-msg");
+            if(addBtn&&tbody){
+                addBtn.addEventListener("click",function(){
+                    var nm=(document.getElementById("crm-new-name")||{}).value||"New VIP Guest";
+                    var org=(document.getElementById("crm-new-org")||{}).value||"Corporate Partner";
+                    var tParts=((document.getElementById("crm-new-tier")||{}).value||"vip|VIP Corporate|15% Off BAR").split("|");
+                    var pref=(document.getElementById("crm-new-pref")||{}).value||"High Floor · King Bed";
+                    var tr=document.createElement("tr");
+                    tr.className="crm-row";
+                    tr.setAttribute("data-crm-tag",tParts[0]);
+                    tr.setAttribute("data-crm-ltv","195000");
+                    tr.setAttribute("data-crm-search",(nm+" "+tParts[1]+" "+org+" "+pref+" "+tParts[2]).toLowerCase());
+                    tr.innerHTML='<td><strong>'+nm+'</strong><div class="tw-text-xs tw-text-muted">'+org+'</div></td><td><span class="mm-badge mm-badge-paid">'+tParts[1]+'</span><div style="font-size:11px;color:var(--mm-muted);margin-top:3px">'+tParts[2]+'</div></td><td>3 Stays · 9 Nights</td><td class="text-right"><strong>৳ 195,000</strong></td><td>'+pref+'</td><td><span class="mm-badge mm-badge-paid">Verified CRM</span></td><td class="text-center"><button type="button" class="mm-button mm-button-secondary crm-btn-360" style="min-height:28px;padding:2px 10px;font-size:11.5px" data-guest-name="'+nm+'" data-guest-org="'+org+'" data-guest-tier="'+tParts[1]+'" data-guest-stays="3 Stays · 9 Nights" data-guest-ltv="৳ 195,000" data-guest-pref="'+pref+'" data-guest-contract="'+tParts[2]+'"><i class="fa fa-id-badge"></i> 360° Dossier</button></td>';
+                    tbody.insertBefore(tr,tbody.firstChild);
+                    var kProf=document.getElementById("crm-kpi-profiles"),kCorp=document.getElementById("crm-kpi-corps");
+                    if(kProf)kProf.innerHTML='21 Verified <span class="mm-table-kpi-sub">100% KYC Linked</span>';
+                    if(kCorp)kCorp.innerHTML='9 Organizations <span class="mm-table-kpi-sub">Direct-Bill Active</span>';
+                    if(ban&&banMsg){
+                        banMsg.textContent="Added "+nm+" ("+org+") to CRM 360° Directory with contract '"+tParts[2]+"'!";
+                        ban.style.display="block";
+                    }
+                });
+            }
+            tbody.addEventListener("click",function(e){
+                var btn=e.target&&e.target.closest(".crm-btn-360");
+                if(!btn)return;
+                var nEl=document.getElementById("crm-mod-name"),oEl=document.getElementById("crm-mod-org"),lEl=document.getElementById("crm-mod-ltv"),sEl=document.getElementById("crm-mod-stays"),cEl=document.getElementById("crm-mod-contract"),pEl=document.getElementById("crm-mod-pref");
+                if(nEl)nEl.textContent=btn.getAttribute("data-guest-name")||"Guest";
+                if(oEl)oEl.textContent=btn.getAttribute("data-guest-org")||"Organization";
+                if(lEl)lEl.textContent=btn.getAttribute("data-guest-ltv")||"৳ 0";
+                if(sEl)sEl.textContent=btn.getAttribute("data-guest-stays")||"Stays";
+                if(cEl)cEl.textContent=btn.getAttribute("data-guest-contract")||"Contract";
+                if(pEl)pEl.textContent=btn.getAttribute("data-guest-pref")||"Preferences";
+                if(window.jQuery)window.jQuery("#crm-profile-modal").modal("show");
+            });
+        })();</script>`;
+        return shellWith(body, '', '', 'Guest & Corporate CRM 360° Directory (Phase 3 #8 & F11)', ['Hotel', 'CRM', 'Guest & Corporate CRM 360']);
+    }
+
     const result = {
         '/preview/plan-a': {
             fn: planACommandCenterPage,
@@ -2643,6 +3154,11 @@ function buildPlanBPages(shellWith) {
             title: 'Unified Restaurant, Bar & In-Room Dining POS Engine (Phase 3 #6)',
             crumbs: ['Restaurant & Bar', 'POS', 'Unified Split-Bill Engine'],
         },
+        '/preview/acc-balance-sheet': {
+            fn: accountingReportBuilderPage,
+            title: 'Balance Sheet & Financial Statement Report Builder (Phase 3 #7)',
+            crumbs: ['Account', 'Reports', 'Balance Sheet & Report Builder'],
+        },
     };
     for (const [route, spec] of Object.entries(specs)) {
         result[route] = {
@@ -2655,6 +3171,11 @@ function buildPlanBPages(shellWith) {
         fn: nightAuditHardeningPage,
         title: 'Night-Audit Hardening, Auto-Posting & Guided Day-Close Lock (Phase 3 #5 & Plan B · F19)',
         crumbs: ['Hotel', 'Night Audit', 'Audit Hardening (Phase 3 #5)'],
+    };
+    result['/preview/guest-crm'] = {
+        fn: guestCrmRevivalPage,
+        title: 'Guest & Corporate CRM 360° Directory (Phase 3 #8 & Plan B · F11)',
+        crumbs: ['Hotel', 'Guests', 'CRM 360'],
     };
     return result;
 }
