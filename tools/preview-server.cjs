@@ -1775,7 +1775,7 @@ function menuLinks(page,currentPath){
     '</div>'+
    '</div>'+
    '<div class="mm-top-more-grid" id="mm-top-more-grid">'+moreCardsHtml+'</div>'+
-  '</div>'+
+  '</div></nav>'+
   '<div class="modal fade mm-app-drawer" id="mm-banquet-drawer" tabindex="-1" role="dialog" aria-labelledby="mm-banquet-drawer-title">'+
    '<div class="modal-dialog modal-lg" role="document"><div class="modal-content">'+
     '<div class="modal-header"><h4 class="modal-title" id="mm-banquet-drawer-title"><i class="fa fa-glass"></i> Banquet &amp; Conference BEO Event Command Drawer (Alt+E)</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button></div>'+
@@ -2383,8 +2383,7 @@ function menuLinks(page,currentPath){
      'else if(e.key==="?"){var sb=document.getElementById("mm-shortcuts-btn");if(sb){e.preventDefault();sb.click();}}'+
     '}'+
    '});'+
-  '})();</script>'+
- '</nav>';
+  '})();</script>';
 
  return page
   .replace(/<ul class="nav nav-list" id="mm-primary-menu"[^>]*>[\s\S]*?<\/ul>(?=<\/div>)/,roleSwitcher+'<ul class="nav nav-list" id="mm-primary-menu" aria-label="Main navigation">'+sidebarParts.join('')+'</ul>'+sidebarFooter)
