@@ -1691,7 +1691,9 @@ function menuLinks(page,currentPath){
    '<div style="display:flex;flex-wrap:wrap;align-items:center;gap:6px">'+
     '<input type="search" id="mm-top-tab-filter" class="mm-top-tab-filter" placeholder="Filter '+modScreens.length+' module screens..." aria-label="Filter sub-menu tabs and module screens">'+
     '<button type="button" id="mm-top-fav-btn" aria-pressed="false" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 9px;font-size:11.5px" title="Star or unstar this screen to Pinned Favorites"><i class="fa fa-star-o"></i> Star</button>'+
-    '<button type="button" id="mm-top-favs-toggle" aria-expanded="false" aria-controls="mm-top-favs-bar" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 9px;font-size:11.5px" title="Show or hide cross-module Pinned Favorites bar"><i class="fa fa-bookmark"></i> Favorites (<span id="mm-top-favs-count">6</span>)</button>'+
+    '<button type="button" id="mm-top-favs-toggle" aria-expanded="false" aria-controls="mm-top-favs-bar" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 9px;font-size:11.5px" title="Show or hide cross-module Pinned Favorites bar (Alt+B)"><i class="fa fa-bookmark"></i> Favorites (<span id="mm-top-favs-count">6</span>)</button>'+
+    '<button type="button" id="mm-notif-center-btn" data-toggle="modal" data-target="#mm-notif-drawer" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 9px;font-size:11.5px" title="Open Live Operational Alerts &amp; Shift Handover Center (Alt+N)"><i class="fa fa-bell"></i> Alerts <span class="mm-top-tab-badge" id="mm-notif-unread-badge" style="background:rgba(220,38,38,0.14);color:#dc2626">8 Live</span></button>'+
+    '<button type="button" id="mm-shortcuts-btn" data-toggle="modal" data-target="#mm-shortcuts-drawer" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 9px;font-size:11.5px" title="Global Keyboard Quick-Switcher &amp; Shortcut Cheat-Sheet (Press ? or Alt+1..9)"><i class="fa fa-keyboard-o"></i> Shortcuts <span class="mm-kbd-badge" style="padding:0 5px;font-size:10px">?</span></button>'+
     '<button type="button" id="mm-top-more-btn" aria-expanded="false" aria-controls="mm-top-more-panel" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11.5px"><i class="fa fa-th-list"></i> All '+modScreens.length+' Module Screens <i class="fa fa-caret-down"></i></button>'+
     '<button type="button" id="mm-top-pin-btn" aria-pressed="true" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11.5px" title="Pin or unpin top sub-menu bar while scrolling"><i class="fa fa-thumb-tack"></i> Pinned</button>'+
     '<button type="button" data-toggle="modal" data-target="#mm-quick-drawer" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11.5px"><i class="fa fa-columns"></i> App Drawer</button>'+
@@ -1711,6 +1713,89 @@ function menuLinks(page,currentPath){
    '</div>'+
    '<div class="mm-top-more-grid" id="mm-top-more-grid">'+moreCardsHtml+'</div>'+
   '</div>'+
+  '<div class="modal fade mm-app-drawer" id="mm-notif-drawer" tabindex="-1" role="dialog" aria-labelledby="mm-notif-drawer-title">'+
+   '<div class="modal-dialog modal-lg" role="document"><div class="modal-content">'+
+    '<div class="modal-header"><h4 class="modal-title" id="mm-notif-drawer-title"><i class="fa fa-bell"></i> Live Operational Notification &amp; Shift Handover Center — 14 Oct 2026</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button></div>'+
+    '<div class="modal-body"><section class="mm-ui"><div class="tw-space-y-4">'+
+     '<div class="mm-table-kpi-grid" aria-label="Operational alert metrics">'+
+      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-suitcase"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Arrivals &amp; VIPs</span><div class="mm-table-kpi-value">3 VIP Arrivals <span class="mm-table-kpi-sub">Suites #204, #301, #401</span></div></div></div>'+
+      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-columns"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Unsettled Folios</span><div class="mm-table-kpi-value">৳ 48,450 Due <span class="mm-table-kpi-sub">2 Departure Folios</span></div></div></div>'+
+      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-cutlery"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Kitchen &amp; POS SLA</span><div class="mm-table-kpi-value">3 KOT &gt; 12m <span class="mm-table-kpi-sub">6 Open POS Tables</span></div></div></div>'+
+      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-exchange"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Shift Handover Log</span><div class="mm-table-kpi-value"><span id="mm-shift-notes-count">3</span> Active <span class="mm-table-kpi-sub">14 Oct 2026</span></div></div></div>'+
+     '</div>'+
+     '<div class="mm-panel tw-p-4">'+
+      '<div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px">'+
+       '<div style="display:flex;flex-wrap:wrap;gap:6px" id="mm-notif-filter-group">'+
+        '<button type="button" class="mm-role-pill is-active" data-notif-filter="all">All Alerts (8)</button>'+
+        '<button type="button" class="mm-role-pill" data-notif-filter="frontdesk">Front Desk &amp; Rooms (3)</button>'+
+        '<button type="button" class="mm-role-pill" data-notif-filter="pos">F&amp;B, Kitchen &amp; Banquet (3)</button>'+
+        '<button type="button" class="mm-role-pill" data-notif-filter="finance">Finance, Audit &amp; Stock (2)</button>'+
+       '</div>'+
+       '<button type="button" id="mm-notif-mark-read" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11.5px"><i class="fa fa-check-square-o"></i> Mark All Read</button>'+
+      '</div>'+
+      '<div style="display:flex;flex-direction:column;gap:8px" id="mm-notif-list">'+
+       '<div class="mm-notif-item" data-notif-cat="frontdesk"><div><div style="font-weight:700;font-size:12.5px"><span class="mm-badge mm-badge-paid" style="margin-right:6px">Front Desk</span>3 VIP Arrivals Pending Express Keycard Check-In</div><div style="font-size:11.5px;opacity:.8;margin-top:2px">Brig. Gen. Mahmudul Hasan (#301), Tanvir Ahmed (#204), Diplomatic Delegation (#401) · ETA 14:00</div></div><a href="/preview/booking-next" class="mm-button" style="min-height:28px;padding:2px 10px;font-size:11px;white-space:nowrap">Booking Wizard →</a></div>'+
+       '<div class="mm-notif-item" data-notif-cat="frontdesk"><div><div style="font-weight:700;font-size:12.5px"><span class="mm-badge mm-badge-unpaid" style="margin-right:6px">Folio Due</span>Room 305 Corporate Delegation — ৳ 48,450 Split-Folio Balance</div><div style="font-size:11.5px;opacity:.8;margin-top:2px">Window A (Guest Personal) settled · Window B (City Ledger AR) awaiting checkout sign-off</div></div><a href="/preview/folio-settlement" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11px;white-space:nowrap">Settle Folio →</a></div>'+
+       '<div class="mm-notif-item" data-notif-cat="frontdesk"><div><div style="font-weight:700;font-size:12.5px"><span class="mm-badge mm-badge-partial" style="margin-right:6px">Housekeeping</span>2 Deluxe Suites Awaiting Supervisor Turnaround Inspection</div><div style="font-size:11.5px;opacity:.8;margin-top:2px">Suites #104 &amp; #202 deep-cleaned · 14m remaining on 30-min arrival SLA timer</div></div><a href="/preview/housekeeping-board" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11px;white-space:nowrap">SLA Board →</a></div>'+
+       '<div class="mm-notif-item" data-notif-cat="pos"><div><div style="font-weight:700;font-size:12.5px"><span class="mm-badge mm-badge-unpaid" style="margin-right:6px">Kitchen SLA</span>3 Kitchen KOT Tickets Over 12-Minute Prep Threshold</div><div style="font-size:11.5px;opacity:.8;margin-top:2px">KOT #1048 (Room 204 In-Room Dining), #1049 (Table T-04), #1051 (Skyline VIP Lounge)</div></div><a href="/preview/kds-board" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11px;white-space:nowrap">Open KDS →</a></div>'+
+       '<div class="mm-notif-item" data-notif-cat="pos"><div><div style="font-weight:700;font-size:12.5px"><span class="mm-badge mm-badge-paid" style="margin-right:6px">POS Live</span>6 Active Dining &amp; Bar Tables Open (৳ 34,800 Running Tab)</div><div style="font-size:11.5px;opacity:.8;margin-top:2px">2 tables requested multi-tender split bill · 1 room-charge transfer to Suite #204</div></div><a href="/preview/pos-unified" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11px;white-space:nowrap">Unified POS →</a></div>'+
+       '<div class="mm-notif-item" data-notif-cat="pos"><div><div style="font-weight:700;font-size:12.5px"><span class="mm-badge mm-badge-partial" style="margin-right:6px">Banquet</span>Grand Ballroom Evening Corporate Gala (180 Pax at 19:00)</div><div style="font-size:11.5px;opacity:.8;margin-top:2px">AV soundcheck complete · Welcome mocktail station &amp; buffet chafers staging at 17:30</div></div><a href="/preview/bq-booking-index" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11px;white-space:nowrap">Banquet Desk →</a></div>'+
+       '<div class="mm-notif-item" data-notif-cat="finance"><div><div style="font-weight:700;font-size:12.5px"><span class="mm-badge mm-badge-unpaid" style="margin-right:6px">Low Stock</span>4 F&amp;B &amp; Store Ingredients Below Reorder Par Level</div><div style="font-size:11.5px;opacity:.8;margin-top:2px">Norwegian Salmon Fillet, Arabica Espresso Beans, Extra Virgin Olive Oil, Sparkling Water</div></div><a href="/preview/rsi-inventory-report" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11px;white-space:nowrap">Stock Report →</a></div>'+
+       '<div class="mm-notif-item" data-notif-cat="finance"><div><div style="font-weight:700;font-size:12.5px"><span class="mm-badge mm-badge-paid" style="margin-right:6px">Night Audit</span>Business Date 14 Oct 2026 — 6 of 8 Day-Close Pre-Checks Ready</div><div style="font-size:11.5px;opacity:.8;margin-top:2px">Verify 2 open Restaurant POS tabs and Room 305 City Ledger transfer prior to 23:59 day lock</div></div><a href="/preview/night-audit-hardening" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11px;white-space:nowrap">Night Audit →</a></div>'+
+      '</div>'+
+     '</div>'+
+     '<div class="mm-panel tw-p-4">'+
+      '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px">'+
+       '<strong><i class="fa fa-comments-o"></i> Staff Shift Handover Log (Persisted Across Workspace)</strong>'+
+       '<span class="mm-badge mm-badge-paid">Morning → Afternoon Shift</span>'+
+      '</div>'+
+      '<div id="mm-shift-log-list" style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px"></div>'+
+      '<form id="mm-shift-note-form" onsubmit="return false;" style="display:grid;grid-template-columns:180px 1fr auto;gap:8px;align-items:center">'+
+       '<select id="mm-shift-note-role" class="form-control"><option value="Front Desk">Front Desk</option><option value="Night Auditor">Night Auditor</option><option value="F&amp;B Manager">F&amp;B Manager</option><option value="Housekeeping">Housekeeping</option></select>'+
+       '<input type="text" id="mm-shift-note-input" class="form-control" placeholder="Add a shift handover note for incoming staff (e.g. Suite #301 late airport pickup confirmed)...">'+
+       '<button type="submit" id="mm-shift-note-submit" class="mm-button"><i class="fa fa-plus"></i> Post Note</button>'+
+      '</form>'+
+     '</div>'+
+    '</div></section></div>'+
+    '<div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button></div>'+
+   '</div></div>'+
+  '</div>'+
+  '<div class="modal fade mm-app-drawer" id="mm-shortcuts-drawer" tabindex="-1" role="dialog" aria-labelledby="mm-shortcuts-drawer-title">'+
+   '<div class="modal-dialog modal-lg" role="document"><div class="modal-content">'+
+    '<div class="modal-header"><h4 class="modal-title" id="mm-shortcuts-drawer-title"><i class="fa fa-keyboard-o"></i> Global Keyboard Quick-Switcher &amp; Shortcut Cheat-Sheet</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button></div>'+
+    '<div class="modal-body"><section class="mm-ui"><div class="tw-space-y-4">'+
+     '<div class="mm-panel tw-p-4">'+
+      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px"><strong><i class="fa fa-bolt"></i> 1. Global Shell &amp; Top Sub-Menu Shortcuts</strong><span class="mm-badge mm-badge-paid">Active Everywhere</span></div>'+
+      '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:8px">'+
+       '<div class="mm-shortcut-row"><span>Global Command Palette (362 Screens)</span><span class="mm-kbd-badge">Ctrl + K</span></div>'+
+       '<div class="mm-shortcut-row"><span>Previous / Next Top Sub-Menu Tab</span><span class="mm-kbd-badge">[ / ]</span></div>'+
+       '<div class="mm-shortcut-row"><span>Cycle Sidebar Department Role View</span><span class="mm-kbd-badge">Alt + R</span></div>'+
+       '<div class="mm-shortcut-row"><span>Expand / Collapse Left Side Menu</span><span class="mm-kbd-badge">Alt + S</span></div>'+
+       '<div class="mm-shortcut-row"><span>Toggle Cross-Module Pinned Favorites</span><span class="mm-kbd-badge">Alt + B</span></div>'+
+       '<div class="mm-shortcut-row"><span>Open Live Alerts &amp; Shift Handover Drawer</span><span class="mm-kbd-badge">Alt + N</span></div>'+
+       '<div class="mm-shortcut-row"><span>Focus Top Sub-Menu Screen Filter</span><span class="mm-kbd-badge">Alt + F</span></div>'+
+       '<div class="mm-shortcut-row"><span>Open Keyboard Shortcut Cheat-Sheet</span><span class="mm-kbd-badge">?</span></div>'+
+      '</div>'+
+     '</div>'+
+     '<div class="mm-panel tw-p-4">'+
+      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px"><strong><i class="fa fa-compass"></i> 2. Direct Module Quick-Jump (Press Alt + 1..0 or Click)</strong><span class="mm-badge mm-badge-partial">10 Core Modules</span></div>'+
+      '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:8px">'+
+       '<a href="/dashboard" class="mm-shortcut-row"><span><i class="fa fa-tachometer"></i> Dashboard &amp; Room Status Board</span><span class="mm-kbd-badge">Alt + 1</span></a>'+
+       '<a href="/preview/plan-a" class="mm-shortcut-row"><span><i class="fa fa-sitemap"></i> Command Hubs (Plan A &amp; Plan B)</span><span class="mm-kbd-badge">Alt + 2</span></a>'+
+       '<a href="/preview/booking-next" class="mm-shortcut-row"><span><i class="fa fa-calendar-plus-o"></i> 3-Step Booking Wizard &amp; Tape Chart</span><span class="mm-kbd-badge">Alt + 3</span></a>'+
+       '<a href="/preview/folio-settlement" class="mm-shortcut-row"><span><i class="fa fa-columns"></i> In-House, Split-Folio &amp; Night Audit</span><span class="mm-kbd-badge">Alt + 4</span></a>'+
+       '<a href="/preview/guest-crm" class="mm-shortcut-row"><span><i class="fa fa-address-book-o"></i> Guests &amp; Corporate CRM 360°</span><span class="mm-kbd-badge">Alt + 5</span></a>'+
+       '<a href="/preview/rooms" class="mm-shortcut-row"><span><i class="fa fa-bed"></i> Rooms, Housekeeping &amp; SLA Board</span><span class="mm-kbd-badge">Alt + 6</span></a>'+
+       '<a href="/preview/room-settings" class="mm-shortcut-row"><span><i class="fa fa-sliders"></i> Rates, Channels &amp; Room Settings</span><span class="mm-kbd-badge">Alt + 7</span></a>'+
+       '<a href="/preview/bq-booking-index" class="mm-shortcut-row"><span><i class="fa fa-glass"></i> Banquet Hall &amp; Hotel Services</span><span class="mm-kbd-badge">Alt + 8</span></a>'+
+       '<a href="/preview/pos-unified" class="mm-shortcut-row"><span><i class="fa fa-cutlery"></i> Unified Restaurant &amp; Bar POS</span><span class="mm-kbd-badge">Alt + 9</span></a>'+
+       '<a href="/preview/acc-balance-sheet" class="mm-shortcut-row"><span><i class="fa fa-calculator"></i> Accounts, Balance Sheet &amp; Finance</span><span class="mm-kbd-badge">Alt + 0</span></a>'+
+      '</div>'+
+     '</div>'+
+    '</div></section></div>'+
+    '<div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button></div>'+
+   '</div></div>'+
+  '</div>'+
   '<script>(function(){'+
    'var nav=document.getElementById("mm-top-subnav"),pinBtn=document.getElementById("mm-top-pin-btn"),moreBtn=document.getElementById("mm-top-more-btn"),morePanel=document.getElementById("mm-top-more-panel"),flt=document.getElementById("mm-top-tab-filter"),cnt=document.getElementById("mm-top-more-count"),topSbBtn=document.getElementById("mm-top-sidebar-btn"),botSbBtn=document.getElementById("mm-sidebar-collapse-btn"),botSbIcon=document.getElementById("mm-sidebar-collapse-icon");'+
    'function syncSbFooter(){var isRail=document.body.classList.contains("mm-nav-rail");if(botSbIcon)botSbIcon.className="fa "+(isRail?"fa-angle-double-right":"fa-angle-double-left");}'+
@@ -1718,17 +1803,19 @@ function menuLinks(page,currentPath){
    'if(topSbBtn)topSbBtn.addEventListener("click",function(){var t=document.getElementById("menu-toggler");if(t)t.click();syncSbFooter();});'+
    'if(botSbBtn)botSbBtn.addEventListener("click",function(){var isRail=document.body.classList.contains("mm-nav-rail");var target=document.querySelector("[data-mm-nav-mode=\\""+(isRail?"mm-nav-full":"mm-nav-rail")+"\\"]");if(target)target.click();syncSbFooter();});'+
    'var roleSw=document.getElementById("mm-role-switcher"),roleLbl=document.getElementById("mm-role-active-label"),menuEl=document.getElementById("mm-primary-menu");'+
-   'if(roleSw&&menuEl){'+
+   'var roleOrder=["all","frontdesk","pos","finance"];'+
+   'var curRole="all";try{curRole=localStorage.getItem("mm-sidebar-role")||"all";}catch(e){}'+
+   'function applyRole(r){'+
+    'if(!roleSw||!menuEl)return;'+
     'var roleNames={all:"All 14 Modules",frontdesk:"Front Desk (8)",pos:"F&B & Store (5)",finance:"Finance & Admin (7)"};'+
-    'var curRole="all";try{curRole=localStorage.getItem("mm-sidebar-role")||"all";}catch(e){}'+
-    'function applyRole(r){'+
-     'curRole=r;try{localStorage.setItem("mm-sidebar-role",r);}catch(e){}'+
-     'if(roleLbl)roleLbl.textContent=roleNames[r]||"All 14 Modules";'+
-     'var rBtns=roleSw.querySelectorAll("[data-role-filter]");'+
-     'for(var i=0;i<rBtns.length;i++)rBtns[i].classList.toggle("is-active",rBtns[i].getAttribute("data-role-filter")===r);'+
-     'var lis=menuEl.children;'+
-     'for(var j=0;j<lis.length;j++){var li=lis[j],roles=(li.getAttribute("data-mod-roles")||"all").split(",");li.style.display=(r==="all"||roles.indexOf(r)>=0)?"":"none";}'+
-    '}'+
+    'curRole=r;try{localStorage.setItem("mm-sidebar-role",r);}catch(e){}'+
+    'if(roleLbl)roleLbl.textContent=roleNames[r]||"All 14 Modules";'+
+    'var rBtns=roleSw.querySelectorAll("[data-role-filter]");'+
+    'for(var i=0;i<rBtns.length;i++)rBtns[i].classList.toggle("is-active",rBtns[i].getAttribute("data-role-filter")===r);'+
+    'var lis=menuEl.children;'+
+    'for(var j=0;j<lis.length;j++){var li=lis[j],roles=(li.getAttribute("data-mod-roles")||"all").split(",");li.style.display=(r==="all"||roles.indexOf(r)>=0)?"":"none";}'+
+   '}'+
+   'if(roleSw&&menuEl){'+
     'applyRole(curRole);'+
     'var rBtns=roleSw.querySelectorAll("[data-role-filter]");'+
     'for(var rIdx=0;rIdx<rBtns.length;rIdx++){rBtns[rIdx].addEventListener("click",function(){applyRole(this.getAttribute("data-role-filter")||"all");});}'+
@@ -1754,6 +1841,34 @@ function menuLinks(page,currentPath){
     'renderFavs();if(favsBar&&favsBar.hidden){favsBar.hidden=false;if(favsToggle)favsToggle.setAttribute("aria-expanded","true");}'+
    '});'+
    'if(favsToggle)favsToggle.addEventListener("click",function(){if(!favsBar)return;favsBar.hidden=!favsBar.hidden;favsToggle.setAttribute("aria-expanded",String(!favsBar.hidden));});'+
+   'var notifBadge=document.getElementById("mm-notif-unread-badge"),notifMarkBtn=document.getElementById("mm-notif-mark-read"),notifItems=document.querySelectorAll("#mm-notif-list .mm-notif-item"),notifFilterBtns=document.querySelectorAll("[data-notif-filter]");'+
+   'var allRead=false;try{allRead=localStorage.getItem("mm-notif-read")==="1";}catch(e){}'+
+   'function syncNotifRead(){'+
+    'for(var nIdx=0;nIdx<notifItems.length;nIdx++)notifItems[nIdx].classList.toggle("is-read",allRead);'+
+    'if(notifBadge){notifBadge.textContent=allRead?"0 Unread":"8 Live";notifBadge.style.background=allRead?"rgba(22,163,74,0.14)":"rgba(220,38,38,0.14)";notifBadge.style.color=allRead?"#15803d":"#dc2626";}'+
+    'if(notifMarkBtn)notifMarkBtn.innerHTML=allRead?"<i class=\\"fa fa-refresh\\"></i> Reset Unread":"<i class=\\"fa fa-check-square-o\\"></i> Mark All Read";'+
+   '}'+
+   'syncNotifRead();'+
+   'if(notifMarkBtn)notifMarkBtn.addEventListener("click",function(){allRead=!allRead;try{localStorage.setItem("mm-notif-read",allRead?"1":"0");}catch(e){}syncNotifRead();});'+
+   'for(var nf=0;nf<notifFilterBtns.length;nf++){notifFilterBtns[nf].addEventListener("click",function(){'+
+    'var cat=this.getAttribute("data-notif-filter")||"all";'+
+    'for(var x=0;x<notifFilterBtns.length;x++)notifFilterBtns[x].classList.toggle("is-active",notifFilterBtns[x]===this);'+
+    'for(var y=0;y<notifItems.length;y++){var it=notifItems[y];it.style.display=(cat==="all"||it.getAttribute("data-notif-cat")===cat)?"":"none";}'+
+   '});}'+
+   'var shiftList=document.getElementById("mm-shift-log-list"),shiftForm=document.getElementById("mm-shift-note-form"),shiftRole=document.getElementById("mm-shift-note-role"),shiftInput=document.getElementById("mm-shift-note-input"),shiftCnt=document.getElementById("mm-shift-notes-count");'+
+   'var defNotes=[["Front Desk","13:45","Suite #301 (Brig. Gen. Mahmudul Hasan) airport chauffeur dispatched; welcome fruit basket staged."],["F&B Manager","13:20","Grand Ballroom 180-pax evening gala menu prep at 85%; 2 extra service captains assigned."],["Night Auditor","12:10","City Ledger SOA statements sent to 5 corporate accounts; Room 305 Window B ready for sign-off."]];'+
+   'var notes=defNotes;try{var rawN=localStorage.getItem("mm-shift-notes");if(rawN){var pN=JSON.parse(rawN);if(Array.isArray(pN)&&pN.length)notes=pN;}}catch(e){}'+
+   'function renderNotes(){'+
+    'if(shiftCnt)shiftCnt.textContent=String(notes.length);'+
+    'if(shiftList)shiftList.innerHTML=notes.map(function(n){return "<div class=\\"mm-shift-note-card\\"><div style=\\"display:flex;justify-content:space-between;margin-bottom:3px\\"><span class=\\"mm-badge mm-badge-paid\\">"+n[0]+"</span><span style=\\"font-size:11px;opacity:.7\\"><i class=\\"fa fa-clock-o\\"></i> "+n[1]+" · 14 Oct 2026</span></div><div>"+n[2]+"</div></div>";}).join("");'+
+   '}'+
+   'renderNotes();'+
+   'if(shiftForm)shiftForm.addEventListener("submit",function(ev){'+
+    'ev.preventDefault();if(!shiftInput||!shiftInput.value.trim())return;'+
+    'var now=new Date(),hh=String(now.getHours()).padStart(2,"0")+":"+String(now.getMinutes()).padStart(2,"0");'+
+    'notes.unshift([shiftRole?shiftRole.value:"Front Desk",hh,shiftInput.value.trim().replace(/[<>&"]/g,"")]);'+
+    'shiftInput.value="";try{localStorage.setItem("mm-shift-notes",JSON.stringify(notes));}catch(e){}renderNotes();'+
+   '});'+
    'var pinned=true;try{pinned=localStorage.getItem("mm-top-subnav-pinned")!=="0";}catch(e){}'+
    'function syncPin(){nav.classList.toggle("is-sticky",pinned);if(pinBtn){pinBtn.setAttribute("aria-pressed",String(pinned));pinBtn.innerHTML="<i class=\\"fa fa-thumb-tack\\"></i> "+(pinned?"Pinned":"Pin Bar");}}'+
    'syncPin();'+
@@ -1772,6 +1887,26 @@ function menuLinks(page,currentPath){
    '}'+
    'if(flt)flt.addEventListener("input",runFilter);'+
    'for(var k=0;k<scopeBtns.length;k++){scopeBtns[k].addEventListener("click",function(){scope=this.getAttribute("data-top-scope")||"all";runFilter();});}'+
+   'var altJump={"1":"/dashboard","2":"/preview/plan-a","3":"/preview/booking-next","4":"/preview/folio-settlement","5":"/preview/guest-crm","6":"/preview/rooms","7":"/preview/room-settings","8":"/preview/bq-booking-index","9":"/preview/pos-unified","0":"/preview/acc-balance-sheet"};'+
+   'document.addEventListener("keydown",function(e){'+
+    'var tag=(e.target&&e.target.tagName||"").toLowerCase();'+
+    'var typing=tag==="input"||tag==="textarea"||tag==="select"||(e.target&&e.target.isContentEditable);'+
+    'if(typing)return;'+
+    'if(e.altKey&&!e.ctrlKey&&!e.metaKey){'+
+     'if(altJump[e.key]){e.preventDefault();window.location.href=altJump[e.key];return;}'+
+     'var kLower=(e.key||"").toLowerCase();'+
+     'if(kLower==="r"){e.preventDefault();var nextR=roleOrder[(roleOrder.indexOf(curRole)+1)%roleOrder.length];applyRole(nextR);return;}'+
+     'if(kLower==="s"&&topSbBtn){e.preventDefault();topSbBtn.click();return;}'+
+     'if(kLower==="b"&&favsToggle){e.preventDefault();favsToggle.click();return;}'+
+     'if(kLower==="n"){e.preventDefault();var nb=document.getElementById("mm-notif-center-btn");if(nb)nb.click();return;}'+
+     'if(kLower==="f"&&flt){e.preventDefault();flt.focus();return;}'+
+    '}'+
+    'if(!e.altKey&&!e.ctrlKey&&!e.metaKey){'+
+     'if(e.key==="["){var pv=document.getElementById("mm-top-prev-tab");if(pv&&pv.href){e.preventDefault();window.location.href=pv.href;}}'+
+     'else if(e.key==="]"){var nx=document.getElementById("mm-top-next-tab");if(nx&&nx.href){e.preventDefault();window.location.href=nx.href;}}'+
+     'else if(e.key==="?"){var sb=document.getElementById("mm-shortcuts-btn");if(sb){e.preventDefault();sb.click();}}'+
+    '}'+
+   '});'+
   '})();</script>'+
  '</nav>';
 
