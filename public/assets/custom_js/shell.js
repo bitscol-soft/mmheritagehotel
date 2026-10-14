@@ -267,52 +267,17 @@
                 head.className = 'mm-top-subnav-head';
                 var titleWrap = document.createElement('div');
                 titleWrap.className = 'mm-top-subnav-title';
-                var sbBtn = document.createElement('button');
-                sbBtn.type = 'button';
-                sbBtn.className = 'mm-button mm-button-secondary';
-                sbBtn.style.cssText = 'min-height:26px;padding:2px 8px;font-size:11.5px';
-                sbBtn.textContent = '☰ Side Menu';
-                sbBtn.addEventListener('click', function () { toggle.click(); });
                 var titleSpan = document.createElement('span');
                 titleSpan.textContent = modLabel;
-                titleWrap.appendChild(sbBtn);
                 titleWrap.appendChild(titleSpan);
                 var actIndex = subLinks.findIndex(function (a) { return a.getAttribute('aria-current') === 'page' || (a.parentElement && a.parentElement.classList.contains('active')); });
                 if (actIndex < 0) actIndex = 0;
-                var prevLink = subLinks[(actIndex - 1 + subLinks.length) % subLinks.length];
-                var nextLink = subLinks[(actIndex + 1) % subLinks.length];
-                var prevBtn = document.createElement('a');
-                prevBtn.href = prevLink.href;
-                prevBtn.id = 'mm-top-prev-tab';
-                prevBtn.className = 'mm-button mm-button-secondary';
-                prevBtn.style.cssText = 'min-height:26px;padding:2px 8px;font-size:11px';
-                prevBtn.textContent = '‹ Prev';
-                var nextBtn = document.createElement('a');
-                nextBtn.href = nextLink.href;
-                nextBtn.id = 'mm-top-next-tab';
-                nextBtn.className = 'mm-button mm-button-secondary';
-                nextBtn.style.cssText = 'min-height:26px;padding:2px 8px;font-size:11px';
-                nextBtn.textContent = 'Next ›';
-                titleWrap.appendChild(prevBtn);
-                titleWrap.appendChild(nextBtn);
+                var countBadge = document.createElement('span');
+                countBadge.className = 'mm-badge mm-badge-paid';
+                countBadge.style.fontSize = '11px';
+                countBadge.textContent = (actIndex + 1) + ' / ' + subLinks.length + ' Tabs';
+                titleWrap.appendChild(countBadge);
                 head.appendChild(titleWrap);
-                var rightWrap = document.createElement('div');
-                rightWrap.style.cssText = 'display:flex;flex-wrap:wrap;align-items:center;gap:6px';
-                var favBtn = document.createElement('button');
-                favBtn.type = 'button';
-                favBtn.id = 'mm-top-fav-btn';
-                favBtn.className = 'mm-button mm-button-secondary';
-                favBtn.style.cssText = 'min-height:26px;padding:2px 8px;font-size:11px';
-                favBtn.textContent = '☆ Star';
-                var favsToggle = document.createElement('button');
-                favsToggle.type = 'button';
-                favsToggle.id = 'mm-top-favs-toggle';
-                favsToggle.className = 'mm-button mm-button-secondary';
-                favsToggle.style.cssText = 'min-height:26px;padding:2px 8px;font-size:11px';
-                favsToggle.textContent = '★ Favorites';
-                rightWrap.appendChild(favBtn);
-                rightWrap.appendChild(favsToggle);
-                head.appendChild(rightWrap);
                 var tabsWrap = document.createElement('div');
                 tabsWrap.className = 'mm-top-subnav-tabs';
                 tabsWrap.setAttribute('role', 'navigation');
@@ -328,75 +293,15 @@
                     tab.appendChild(lbl);
                     tabsWrap.appendChild(tab);
                 });
-                var favsBar = document.createElement('div');
-                favsBar.className = 'mm-top-favs-bar';
-                favsBar.id = 'mm-top-favs-bar';
-                favsBar.hidden = true;
                 nav.appendChild(head);
                 nav.appendChild(tabsWrap);
-                nav.appendChild(favsBar);
                 pageContent.insertBefore(nav, pageContent.firstChild);
-                var curHref = location.pathname + location.search;
-                var curTitle = (subLinks[actIndex] ? subLinks[actIndex].textContent : document.title).replace(/\s+/g, ' ').trim();
-                function loadPinned() {
-                    try {
-                        var p = JSON.parse(read('mm-pinned-tabs') || 'null');
-                        if (Array.isArray(p) && p.length) return p;
-                    } catch (e) {}
-                    return [{ href: curHref, title: curTitle }];
-                }
-                function renderPinned() {
-                    var list = loadPinned();
-                    var isStarred = list.some(function (x) { return x.href === curHref; });
-                    favBtn.setAttribute('aria-pressed', String(isStarred));
-                    favBtn.textContent = isStarred ? '★ Starred' : '☆ Star';
-                    favsToggle.textContent = '★ Favorites (' + list.length + ')';
-                    while (favsBar.firstChild) favsBar.removeChild(favsBar.firstChild);
-                    list.forEach(function (item) {
-                        var chip = document.createElement('a');
-                        chip.href = item.href;
-                        chip.className = 'mm-fav-chip';
-                        chip.textContent = item.title;
-                        favsBar.appendChild(chip);
-                    });
-                }
-                favBtn.addEventListener('click', function () {
-                    var list = loadPinned();
-                    var idx = list.findIndex(function (x) { return x.href === curHref; });
-                    if (idx >= 0) list.splice(idx, 1);
-                    else list.push({ href: curHref, title: curTitle });
-                    save('mm-pinned-tabs', JSON.stringify(list));
-                    renderPinned();
-                    favsBar.hidden = false;
-                });
-                favsToggle.addEventListener('click', function () {
-                    favsBar.hidden = !favsBar.hidden;
-                    favsToggle.setAttribute('aria-expanded', String(!favsBar.hidden));
-                });
-                renderPinned();
                 document.addEventListener('keydown', function (ev) {
                     var tag = (ev.target && ev.target.tagName || '').toLowerCase();
                     if (tag === 'input' || tag === 'textarea' || tag === 'select' || (ev.target && ev.target.isContentEditable)) return;
                     if (ev.key === '/' && !ev.altKey && !ev.ctrlKey && !ev.metaKey && filter) {
                         ev.preventDefault();
                         filter.focus();
-                        return;
-                    }
-                    if (ev.altKey && !ev.ctrlKey && !ev.metaKey) {
-                        if (ev.key >= '1' && ev.key <= '9') {
-                            var tIdx = parseInt(ev.key, 10) - 1;
-                            var allTabs = tabsWrap.querySelectorAll('.mm-top-tab');
-                            if (allTabs[tIdx]) { ev.preventDefault(); allTabs[tIdx].click(); }
-                        } else if (ev.key === '[') {
-                            ev.preventDefault();
-                            prevBtn.click();
-                        } else if (ev.key === ']') {
-                            ev.preventDefault();
-                            nextBtn.click();
-                        } else if (ev.key.toLowerCase() === 'f') {
-                            ev.preventDefault();
-                            favBtn.click();
-                        }
                     }
                 });
             }

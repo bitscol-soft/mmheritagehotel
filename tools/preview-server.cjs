@@ -2,7 +2,6 @@ const http=require('http'),fs=require('fs'),path=require('path');
 const root=path.resolve(__dirname,'..');
 const {compose}=require(path.join(root,'tools/browser/compose-fixture.cjs'));
 const types={'.html':'text/html; charset=utf-8','.css':'text/css','.js':'text/javascript','.woff2':'font/woff2','.woff':'font/woff','.ttf':'font/ttf','.png':'image/png','.svg':'image/svg+xml','.pdf':'application/pdf'};
-const note='<div role="note" style="padding:12px;margin:0 0 16px;border:1px solid #c5d7ee;background:#edf4ff;color:#24436a"><strong>Visual preview \u00b7 sample data only</strong><br>Admin shell, header, footer and room board design. Not connected to Laravel, bookings or the hotel database. Menu destinations are demonstration links.</div>';
 
 const fix=n=>fs.readFileSync(path.join(root,'tools/fixtures',n),'utf8');
 const pages={
@@ -1683,7 +1682,6 @@ function menuLinks(page,currentPath){
   }).join('');
   sidebarParts.push('<li data-mod-roles="'+(roleMap[m.id]||'all')+'"'+(isAct?' class="mm-mod-current open"':'')+'><a href="#" class="dropdown-toggle" aria-expanded="'+(isAct?'true':'false')+'" title="'+m.label+' ('+m.tabs.length+' primary tabs · '+modScreensCount+' module screens)"><i class="menu-icon fa '+m.icon+'"></i><span class="menu-text">'+m.label+'</span><span class="mm-nav-count">'+m.tabs.length+'</span><b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b><ul class="submenu">'+subLis+'</ul></li>');
  }
- const sidebarFooter='<div id="mm-sidebar-collapse-bar" class="mm-no-print"><button type="button" id="mm-sidebar-collapse-btn" class="mm-button mm-button-secondary" style="width:100%;min-height:32px;padding:4px 10px;font-size:11.5px;justify-content:center" title="Expand or collapse side menu (Full / 68px Rail)"><i class="fa fa-angle-double-left" id="mm-sidebar-collapse-icon"></i> <span class="mm-collapse-label" id="mm-sidebar-collapse-text">Collapse Side Menu</span></button></div>';
 
  const tabsList=activeMod.tabs.slice();
  const hasExactTab=tabsList.some(([h])=>h===cur||(h==='/dashboard'&&activeMod.aliases.includes(cur)));
@@ -1693,8 +1691,6 @@ function menuLinks(page,currentPath){
  }
  let activeIdx=tabsList.findIndex(([href])=>href===cur||(href==='/dashboard'&&activeMod.aliases.includes(cur)));
  if(activeIdx<0) activeIdx=0;
- const prevTab=tabsList[(activeIdx-1+tabsList.length)%tabsList.length];
- const nextTab=tabsList[(activeIdx+1)%tabsList.length];
  const curTabTitle=tabsList[activeIdx]?tabsList[activeIdx][2]:activeMod.label;
  const curCanonicalHref=activeMod.aliases.includes(cur)?'/dashboard':cur;
 
@@ -1741,35 +1737,17 @@ function menuLinks(page,currentPath){
  const topSubnav='<nav class="mm-top-subnav is-sticky mm-no-print" id="mm-top-subnav" data-cur-href="'+curCanonicalHref+'" data-cur-title="'+curTabTitle.replace(/"/g,'')+'" aria-label="'+activeMod.label+' sub-menu tabs">'+
   '<div class="mm-top-subnav-head">'+
    '<div class="mm-top-subnav-title">'+
-    '<button type="button" id="mm-top-sidebar-btn" class="mm-button mm-button-secondary" style="min-height:26px;padding:2px 8px;font-size:11.5px" title="Expand or collapse side menu"><i class="fa fa-bars"></i> Side Menu</button>'+
     '<span class="mm-top-subnav-icon"><i class="fa '+activeMod.icon+'"></i></span>'+
     '<span>'+activeMod.label+'</span>'+
     '<span class="mm-badge mm-badge-paid" style="font-size:11px">'+(activeIdx+1)+' / '+tabsList.length+' Tabs</span>'+
-    '<a href="'+prevTab[0]+'" id="mm-top-prev-tab" class="mm-button mm-button-secondary" style="min-height:26px;padding:2px 8px;font-size:11px" title="Previous Sub-Tab: '+prevTab[2]+'"><i class="fa fa-chevron-left"></i> Prev</a>'+
-    '<a href="'+nextTab[0]+'" id="mm-top-next-tab" class="mm-button mm-button-secondary" style="min-height:26px;padding:2px 8px;font-size:11px" title="Next Sub-Tab: '+nextTab[2]+'">Next <i class="fa fa-chevron-right"></i></a>'+
    '</div>'+
    '<div style="display:flex;flex-wrap:wrap;align-items:center;gap:6px">'+
     '<input type="search" id="mm-top-tab-filter" class="mm-top-tab-filter" placeholder="Filter '+modScreens.length+' module screens..." aria-label="Filter sub-menu tabs and module screens">'+
     '<button type="button" id="mm-express-create-btn" data-toggle="modal" data-target="#mm-express-drawer" class="mm-button" style="min-height:28px;padding:2px 10px;font-size:11.5px" title="Express Walk-In Room Hold, 80mm KOT Order &amp; GL Voucher Quick-Create (Alt+Q)"><i class="fa fa-plus-circle"></i> + Quick Create</button>'+
-    '<button type="button" id="mm-guest-lookup-btn" data-toggle="modal" data-target="#mm-guest-lookup-drawer" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 9px;font-size:11.5px" title="Global In-House Guest, Suite &amp; Folio Instant Lookup Drawer (Alt+G)"><i class="fa fa-id-card-o"></i> Guest / Folio</button>'+
-    '<button type="button" id="mm-hk-toggle-btn" data-toggle="modal" data-target="#mm-hk-drawer" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 9px;font-size:11.5px" title="20-Suite Housekeeping &amp; Room Status Quick-Toggle Drawer (Alt+H)"><i class="fa fa-bed"></i> Housekeeping</button>'+
-    '<button type="button" id="mm-banquet-cmd-btn" data-toggle="modal" data-target="#mm-banquet-drawer" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 9px;font-size:11.5px" title="Banquet &amp; Conference BEO Command Drawer (Alt+E)"><i class="fa fa-glass"></i> Banquet BEO</button>'+
-    '<button type="button" id="mm-stock-reorder-btn" data-toggle="modal" data-target="#mm-stock-drawer" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 9px;font-size:11.5px" title="Kitchen &amp; Store Par-Stock Reorder &amp; Requisition Drawer (Alt+I)"><i class="fa fa-cubes"></i> Stock Reorder</button>'+
-    '<button type="button" id="mm-transport-btn" data-toggle="modal" data-target="#mm-transport-drawer" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 9px;font-size:11.5px" title="VIP Airport Pickup, Flight Tracker &amp; Chauffeur Dispatch Drawer (Alt+T)"><i class="fa fa-car"></i> VIP Transport</button>'+
-    '<button type="button" id="mm-audit-inspector-btn" data-toggle="modal" data-target="#mm-audit-drawer" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 9px;font-size:11.5px" title="Night Audit Pre-Close Checklist &amp; Auto-GL Trial Balance Inspector (Alt+A)"><i class="fa fa-moon-o"></i> Night Audit</button>'+
-    '<button type="button" id="mm-flash-report-btn" data-toggle="modal" data-target="#mm-flash-drawer" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 9px;font-size:11.5px" title="Daily Manager Flash Report &amp; Active Shift Roster Inspector (Alt+M)"><i class="fa fa-bolt"></i> Flash Report</button>'+
-    '<button type="button" id="mm-top-fav-btn" aria-pressed="false" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 9px;font-size:11.5px" title="Star or unstar this screen to Pinned Favorites"><i class="fa fa-star-o"></i> Star</button>'+
-    '<button type="button" id="mm-top-favs-toggle" aria-expanded="false" aria-controls="mm-top-favs-bar" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 9px;font-size:11.5px" title="Show or hide cross-module Pinned Favorites bar (Alt+B)"><i class="fa fa-bookmark"></i> Favorites (<span id="mm-top-favs-count">6</span>)</button>'+
-    '<button type="button" id="mm-notif-center-btn" data-toggle="modal" data-target="#mm-notif-drawer" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 9px;font-size:11.5px" title="Open Live Operational Alerts &amp; Shift Handover Center (Alt+N)"><i class="fa fa-bell"></i> Alerts <span class="mm-top-tab-badge" id="mm-notif-unread-badge" style="background:rgba(220,38,38,0.14);color:#dc2626">8 Live</span></button>'+
-    '<button type="button" id="mm-shortcuts-btn" data-toggle="modal" data-target="#mm-shortcuts-drawer" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 9px;font-size:11.5px" title="Global Keyboard Quick-Switcher &amp; Shortcut Cheat-Sheet (Press ? or Alt+1..9)"><i class="fa fa-keyboard-o"></i> Shortcuts <span class="mm-kbd-badge" style="padding:0 5px;font-size:10px">?</span></button>'+
     '<button type="button" id="mm-top-more-btn" aria-expanded="false" aria-controls="mm-top-more-panel" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11.5px"><i class="fa fa-th-list"></i> All '+modScreens.length+' Module Screens <i class="fa fa-caret-down"></i></button>'+
-    '<button type="button" id="mm-top-pin-btn" aria-pressed="true" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11.5px" title="Pin or unpin top sub-menu bar while scrolling"><i class="fa fa-thumb-tack"></i> Pinned</button>'+
-    '<button type="button" data-toggle="modal" data-target="#mm-quick-drawer" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11.5px"><i class="fa fa-columns"></i> App Drawer</button>'+
-    '<button type="button" data-mm-theme-toggle aria-pressed="false" aria-label="Dark theme" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11.5px"><i class="fa fa-moon-o"></i> Dark / Light</button>'+
    '</div>'+
   '</div>'+
   '<div class="mm-top-subnav-tabs" role="navigation" aria-label="Module sub-pages">'+tabsHtml+'</div>'+
-  '<div class="mm-top-favs-bar" id="mm-top-favs-bar" hidden></div>'+
   '<div class="mm-top-more-panel" id="mm-top-more-panel" hidden>'+
    '<div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;padding-bottom:8px;border-bottom:1px solid rgba(148,163,184,0.2)">'+
     '<div style="font-size:12px;font-weight:700"><i class="fa '+activeMod.icon+'"></i> '+activeMod.label+' — Complete Screen Directory (<span id="mm-top-more-count">'+modScreens.length+'</span> screens)</div>'+
@@ -1781,225 +1759,6 @@ function menuLinks(page,currentPath){
    '</div>'+
    '<div class="mm-top-more-grid" id="mm-top-more-grid">'+moreCardsHtml+'</div>'+
   '</div></nav>'+
-  '<div class="modal fade mm-app-drawer" id="mm-banquet-drawer" tabindex="-1" role="dialog" aria-labelledby="mm-banquet-drawer-title">'+
-   '<div class="modal-dialog modal-lg" role="document"><div class="modal-content">'+
-    '<div class="modal-header"><h4 class="modal-title" id="mm-banquet-drawer-title"><i class="fa fa-glass"></i> Banquet &amp; Conference BEO Event Command Drawer (Alt+E)</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button></div>'+
-    '<div class="modal-body"><section class="mm-ui"><div class="tw-space-y-4">'+
-     '<div class="mm-drawer-kpi-grid" aria-label="Banquet drawer KPIs">'+
-      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-building-o"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Active Event Halls</span><div class="mm-table-kpi-value">4 Venues <span class="mm-table-kpi-sub">Ballroom · Heritage · Board · Lawn</span></div></div></div>'+
-      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-users"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Today Events (14 Oct)</span><div class="mm-table-kpi-value">2 Events · 225 Pax <span class="mm-table-kpi-sub">180 Gala + 45 Summit</span></div></div></div>'+
-      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-cutlery"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Banquet Revenue Today</span><div class="mm-table-kpi-value">৳ 186,000 <span class="mm-table-kpi-sub">Catering + Hall + AV</span></div></div></div>'+
-      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-check-circle"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">BEO Staging Readiness</span><div class="mm-table-kpi-value"><span id="mm-beo-ready-kpi">4 / 5 Staged</span> <span class="mm-table-kpi-sub">19:00 Gala Curtain</span></div></div></div>'+
-     '</div>'+
-     '<div id="mm-beo-confirm-banner" class="alert alert-success" style="display:none;margin:0;border-radius:10px;font-size:12.5px"><i class="fa fa-check-circle"></i> <strong>All 5 BEO Staging Checkpoints Green!</strong> Grand Ballroom 180-Pax Corporate Gala (`#BQ-2026-401`) cleared for 19:00 doors open.</div>'+
-     '<div class="mm-drawer-card tw-p-4">'+
-      '<div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px">'+
-       '<strong><i class="fa fa-list-alt"></i> 1. Live BEO Staging Checklist — Grand Ballroom 180-Pax Corporate Gala (#BQ-2026-401)</strong>'+
-       '<button type="button" id="mm-beo-stage-all" class="mm-button" style="min-height:28px;padding:2px 10px;font-size:11.5px"><i class="fa fa-check-circle"></i> Mark All BEO Stages Ready</button>'+
-      '</div>'+
-      '<div id="mm-beo-checklist" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:8px">'+
-       '<label class="mm-shift-note-card" style="display:flex;align-items:center;gap:8px;margin:0;cursor:pointer"><input type="checkbox" class="mm-beo-chk" checked> <span>1. LED Wall, Wireless Mics &amp; Podium AV Soundcheck</span></label>'+
-       '<label class="mm-shift-note-card" style="display:flex;align-items:center;gap:8px;margin:0;cursor:pointer"><input type="checkbox" class="mm-beo-chk" checked> <span>2. 18 Banquet Round Tables (10x18) &amp; VIP Head Table</span></label>'+
-       '<label class="mm-shift-note-card" style="display:flex;align-items:center;gap:8px;margin:0;cursor:pointer"><input type="checkbox" class="mm-beo-chk" checked> <span>3. Welcome Mocktail &amp; Canapé Station Staged</span></label>'+
-       '<label class="mm-shift-note-card" style="display:flex;align-items:center;gap:8px;margin:0;cursor:pointer"><input type="checkbox" class="mm-beo-chk" checked> <span>4. Royal Heritage Buffet Chafers &amp; Carving Pass</span></label>'+
-       '<label class="mm-shift-note-card" style="display:flex;align-items:center;gap:8px;margin:0;cursor:pointer"><input type="checkbox" class="mm-beo-chk"> <span>5. Final Captain &amp; Valet Parking Briefing (18:30)</span></label>'+
-      '</div>'+
-     '</div>'+
-     '<div class="mm-drawer-card tw-p-4">'+
-      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px"><strong><i class="fa fa-calendar"></i> 2. Active &amp; Upcoming Banquet Hall Bookings</strong><a href="/preview/bq-booking-create" class="mm-button mm-button-secondary" style="min-height:26px;padding:1px 9px;font-size:11px"><i class="fa fa-plus"></i> New Banquet Booking →</a></div>'+
-      '<div class="mm-table-scroll"><table class="table table-bordered table-striped"><thead><tr><th>BEO Code</th><th>Venue &amp; Event Title</th><th>Date &amp; Window</th><th>Pax &amp; Menu</th><th class="text-right">Contract (৳)</th></tr></thead><tbody>'+
-       '<tr><td><code>#BQ-2026-401</code></td><td><strong>Grand Ballroom · Apex Annual Gala</strong></td><td>14 Oct · 19:00–23:00</td><td>180 Pax · Royal Buffet</td><td class="text-right"><strong>142,000</strong></td></tr>'+
-       '<tr><td><code>#BQ-2026-402</code></td><td><strong>Executive Boardroom · UNICEF Summit</strong></td><td>14 Oct · 10:00–17:00</td><td>45 Pax · High Tea + Lunch</td><td class="text-right"><strong>44,000</strong></td></tr>'+
-       '<tr><td><code>#BQ-2026-403</code></td><td><strong>Heritage Hall · Diplomatic Reception</strong></td><td>15 Oct · 18:30–22:30</td><td>120 Pax · Continental Plated</td><td class="text-right"><strong>118,000</strong></td></tr>'+
-      '</tbody></table></div>'+
-     '</div>'+
-    '</div></section></div>'+
-    '<div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button><a href="/preview/bq-booking-index" class="mm-button"><i class="fa fa-glass"></i> Open Banquet Bookings Workspace</a></div>'+
-   '</div></div>'+
-  '</div>'+
-  '<div class="modal fade mm-app-drawer" id="mm-stock-drawer" tabindex="-1" role="dialog" aria-labelledby="mm-stock-drawer-title">'+
-   '<div class="modal-dialog modal-lg" role="document"><div class="modal-content">'+
-    '<div class="modal-header"><h4 class="modal-title" id="mm-stock-drawer-title"><i class="fa fa-cubes"></i> Kitchen &amp; Store Par-Stock Reorder &amp; Requisition Drawer (Alt+I)</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button></div>'+
-    '<div class="modal-body"><section class="mm-ui"><div class="tw-space-y-4">'+
-     '<div class="mm-drawer-kpi-grid" aria-label="Stock reorder drawer KPIs">'+
-      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-exclamation-triangle"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Below Par Alert</span><div class="mm-table-kpi-value"><span id="mm-stock-low-kpi">4 SKUs</span> <span class="mm-table-kpi-sub">2 Kitchen · 1 Bar · 1 Store</span></div></div></div>'+
-      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-file-text-o"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Issued Requisitions</span><div class="mm-table-kpi-value"><span id="mm-stock-pr-kpi">3 PRs</span> <span class="mm-table-kpi-sub">Session Synced</span></div></div></div>'+
-      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-truck"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Est. Reorder Value</span><div class="mm-table-kpi-value">৳ 42,800 <span class="mm-table-kpi-sub">Approved Vendors</span></div></div></div>'+
-      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-check-circle"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Overall Stock Health</span><div class="mm-table-kpi-value">98.4% <span class="mm-table-kpi-sub">245 Active SKUs</span></div></div></div>'+
-     '</div>'+
-     '<div id="mm-stock-pr-banner" class="alert alert-success" style="display:none;margin:0;border-radius:10px;font-size:12.5px"></div>'+
-     '<div class="mm-drawer-card tw-p-4">'+
-      '<div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px">'+
-       '<strong><i class="fa fa-bell-o"></i> Low-Par Ingredients &amp; Housekeeping Supplies Requiring Reorder</strong>'+
-       '<button type="button" id="mm-stock-issue-pr-btn" class="mm-button" style="min-height:28px;padding:2px 10px;font-size:11.5px"><i class="fa fa-paper-plane"></i> Generate Consolidated Purchase Requisition (#PR-2026-318)</button>'+
-      '</div>'+
-      '<div class="mm-table-scroll"><table class="table table-bordered table-striped"><thead><tr><th>SKU</th><th>Item &amp; Store</th><th>On Hand vs Par</th><th>Reorder Qty</th><th class="text-right">Est. Cost (৳)</th><th class="text-center">Action</th></tr></thead><tbody>'+
-       '<tr><td><code>#ING-014</code></td><td><strong>Norwegian Salmon Fillet (Chilled)</strong> · Main Kitchen</td><td>3.5 kg / 12.0 kg</td><td>10.0 kg</td><td class="text-right"><strong>18,500</strong></td><td class="text-center"><button type="button" class="mm-button mm-button-secondary mm-stock-one-pr" data-pr-item="Norwegian Salmon Fillet (10 kg · ৳ 18,500)" style="min-height:25px;padding:1px 8px;font-size:11px">Issue PR</button></td></tr>'+
-       '<tr><td><code>#ING-029</code></td><td><strong>Arabica Espresso Beans (1kg Roast)</strong> · Skyline Bar</td><td>4.0 kg / 15.0 kg</td><td>12.0 kg</td><td class="text-right"><strong>11,400</strong></td><td class="text-center"><button type="button" class="mm-button mm-button-secondary mm-stock-one-pr" data-pr-item="Arabica Espresso Beans (12 kg · ৳ 11,400)" style="min-height:25px;padding:1px 8px;font-size:11px">Issue PR</button></td></tr>'+
-       '<tr><td><code>#ING-042</code></td><td><strong>Extra Virgin Olive Oil (5L Tin)</strong> · Main Kitchen</td><td>6.0 L / 20.0 L</td><td>15.0 L</td><td class="text-right"><strong>7,500</strong></td><td class="text-center"><button type="button" class="mm-button mm-button-secondary mm-stock-one-pr" data-pr-item="Extra Virgin Olive Oil (15 L · ৳ 7,500)" style="min-height:25px;padding:1px 8px;font-size:11px">Issue PR</button></td></tr>'+
-       '<tr><td><code>#GS-108</code></td><td><strong>Luxury Guest Bath Amenity Kits</strong> · General Store</td><td>28 sets / 100 sets</td><td>100 sets</td><td class="text-right"><strong>5,400</strong></td><td class="text-center"><button type="button" class="mm-button mm-button-secondary mm-stock-one-pr" data-pr-item="Luxury Guest Bath Amenity Kits (100 sets · ৳ 5,400)" style="min-height:25px;padding:1px 8px;font-size:11px">Issue PR</button></td></tr>'+
-      '</tbody></table></div>'+
-     '</div>'+
-    '</div></section></div>'+
-    '<div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button><a href="/preview/rst-purchase-create" class="mm-button mm-button-secondary"><i class="fa fa-plus"></i> Kitchen Purchase</a><a href="/preview/rsi-inventory-report" class="mm-button"><i class="fa fa-cubes"></i> Full Stock Alert Report</a></div>'+
-   '</div></div>'+
-  '</div>'+
-  '<div class="modal fade mm-app-drawer" id="mm-transport-drawer" tabindex="-1" role="dialog" aria-labelledby="mm-transport-drawer-title">'+
-   '<div class="modal-dialog modal-lg" role="document"><div class="modal-content">'+
-    '<div class="modal-header"><h4 class="modal-title" id="mm-transport-drawer-title"><i class="fa fa-car"></i> VIP Airport Pickup, Flight Tracker &amp; Chauffeur Dispatch Drawer (Alt+T)</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button></div>'+
-    '<div class="modal-body"><section class="mm-ui"><div class="tw-space-y-4">'+
-     '<div class="mm-drawer-kpi-grid" aria-label="VIP transport drawer KPIs">'+
-      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-plane"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Today VIP Transfers</span><div class="mm-table-kpi-value"><span id="mm-trn-kpi-total">6 Trips</span> <span class="mm-table-kpi-sub">4 HSIA Pickups · 2 Drop-offs</span></div></div></div>'+
-      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-car"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Executive Fleet</span><div class="mm-table-kpi-value">4 / 4 Active <span class="mm-table-kpi-sub">2 V-Class · 1 BMW 7 · 1 Alphard</span></div></div></div>'+
-      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-clock-o"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">DAC Flight Telemetry</span><div class="mm-table-kpi-value">3 Landed / On-Time <span class="mm-table-kpi-sub">EK-582 · BG-085 · QR-640</span></div></div></div>'+
-      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-check-circle"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Dispatched Chauffeurs</span><div class="mm-table-kpi-value"><span id="mm-trn-kpi-dispatched">4 / 6 Dispatched</span> <span class="mm-table-kpi-sub">GPS Live Tracking</span></div></div></div>'+
-     '</div>'+
-     '<div id="mm-trn-confirm-banner" class="alert alert-success" style="display:none;margin:0;border-radius:10px;font-size:12.5px"></div>'+
-     '<div class="mm-drawer-card tw-p-4">'+
-      '<strong style="display:block;margin-bottom:8px"><i class="fa fa-paper-plane-o"></i> 1. Dispatch Chauffeur &amp; Assign VIP Airport Transfer</strong>'+
-      '<form id="mm-trn-dispatch-form" onsubmit="return false;" class="tw-space-y-3">'+
-       '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(195px,1fr));gap:10px">'+
-        '<div><label class="mm-label">VIP Guest &amp; Suite</label><select id="trn-guest-suite" class="form-control"><option value="Suite #301 · Brig. Gen. Mahmudul Hasan">Suite #301 — Brig. Gen. Mahmudul Hasan</option><option value="Suite #401 · Ambassador Kenji Sato">Suite #401 — Ambassador Kenji Sato</option><option value="Suite #204 · Tanvir Ahmed Chowdhury (UNICEF)">Suite #204 — Tanvir Ahmed (UNICEF)</option><option value="Suite #305 · Dr. Farhana Rahman (World Bank)">Suite #305 — Dr. Farhana Rahman (World Bank)</option></select></div>'+
-        '<div><label class="mm-label">Flight &amp; Route</label><select id="trn-flight-route" class="form-control"><option value="SQ-446 · HSIA VIP Terminal → Hotel">SQ-446 · HSIA VIP Terminal → Hotel</option><option value="TK-712 · Hotel Porte-Cochère → HSIA">TK-712 · Hotel Porte-Cochère → HSIA</option><option value="Diplomatic Enclave Protocol Charter">Diplomatic Enclave Protocol Charter</option></select></div>'+
-        '<div><label class="mm-label">Fleet Vehicle &amp; Chauffeur</label><select id="trn-vehicle" class="form-control"><option value="Mercedes V-Class (#DHK-9021 · Kamal)">Mercedes V-Class (#DHK-9021 · Kamal)</option><option value="BMW 740Li Executive (#DHK-4402 · Tariq)">BMW 740Li Executive (#DHK-4402 · Tariq)</option><option value="Toyota Alphard Royal (#DHK-7710 · Sohel)">Toyota Alphard Royal (#DHK-7710 · Sohel)</option></select></div>'+
-        '<div><label class="mm-label">Folio Billing Mode</label><select id="trn-billing" class="form-control"><option value="Complimentary VIP Protocol (৳ 0)">Complimentary VIP Protocol (৳ 0)</option><option value="Window A Guest Folio (৳ 3,500)">Window A Guest Folio (৳ 3,500)</option><option value="Window B Corporate AR (৳ 3,500)">Window B Corporate AR (৳ 3,500)</option></select></div>'+
-       '</div>'+
-       '<div style="display:flex;justify-content:flex-end"><button type="submit" id="mm-trn-dispatch-submit" class="mm-button"><i class="fa fa-car"></i> Dispatch Chauffeur &amp; Sync Folio</button></div>'+
-      '</form>'+
-     '</div>'+
-     '<div class="mm-drawer-card tw-p-4">'+
-      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px"><strong><i class="fa fa-plane"></i> 2. Live Flight-Synced VIP Transfer Schedule (14 Oct 2026)</strong><a href="/preview/concierge-requests" class="mm-button mm-button-secondary" style="min-height:26px;padding:1px 9px;font-size:11px">Open Concierge Desk →</a></div>'+
-      '<div class="mm-table-scroll"><table class="table table-bordered table-striped"><thead><tr><th>Trip ID</th><th>Suite &amp; VIP Guest</th><th>Flight &amp; Route</th><th>Vehicle &amp; Chauffeur</th><th>Status</th><th class="text-center">Action</th></tr></thead><tbody id="mm-trn-tbody">'+
-       '<tr><td><code>#TRN-801</code></td><td><strong>Suite #401 · Ambassador Kenji Sato</strong></td><td>EK-582 · HSIA VIP → Hotel</td><td>BMW 740Li · Tariq</td><td><span class="mm-badge mm-badge-paid trn-status-badge">Arrived at Hotel</span></td><td class="text-center"><button type="button" class="mm-button mm-button-secondary mm-trn-status-btn" style="min-height:25px;padding:1px 8px;font-size:11px">Cycle Status</button></td></tr>'+
-       '<tr><td><code>#TRN-802</code></td><td><strong>Suite #301 · Brig. Gen. Mahmudul Hasan</strong></td><td>BG-085 · HSIA VIP → Hotel</td><td>Mercedes V-Class · Kamal</td><td><span class="mm-badge mm-badge-partial trn-status-badge">En-Route (GPS 4km)</span></td><td class="text-center"><button type="button" class="mm-button mm-button-secondary mm-trn-status-btn" style="min-height:25px;padding:1px 8px;font-size:11px">Cycle Status</button></td></tr>'+
-       '<tr><td><code>#TRN-803</code></td><td><strong>Suite #204 · Tanvir Ahmed (UNICEF)</strong></td><td>QR-640 · HSIA T1 → Hotel</td><td>Toyota Alphard · Sohel</td><td><span class="mm-badge mm-badge-paid trn-status-badge">Arrived at Hotel</span></td><td class="text-center"><button type="button" class="mm-button mm-button-secondary mm-trn-status-btn" style="min-height:25px;padding:1px 8px;font-size:11px">Cycle Status</button></td></tr>'+
-       '<tr><td><code>#TRN-804</code></td><td><strong>Suite #402 · Capt. Rezaul Karim</strong></td><td>HZ-104 · Hotel → HSIA Crew Gate</td><td>Mercedes V-Class · Nayeem</td><td><span class="mm-badge mm-badge-partial trn-status-badge">Chauffeur Staged</span></td><td class="text-center"><button type="button" class="mm-button mm-button-secondary mm-trn-status-btn" style="min-height:25px;padding:1px 8px;font-size:11px">Cycle Status</button></td></tr>'+
-      '</tbody></table></div>'+
-     '</div>'+
-    '</div></section></div>'+
-    '<div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button><a href="/preview/concierge-requests" class="mm-button"><i class="fa fa-bell"></i> Open Full Concierge &amp; Transport Board</a></div>'+
-   '</div></div>'+
-  '</div>'+
-  '<div class="modal fade mm-app-drawer" id="mm-hk-drawer" tabindex="-1" role="dialog" aria-labelledby="mm-hk-drawer-title">'+
-   '<div class="modal-dialog modal-lg" role="document"><div class="modal-content">'+
-    '<div class="modal-header"><h4 class="modal-title" id="mm-hk-drawer-title"><i class="fa fa-bed"></i> 20-Suite Housekeeping &amp; Room Status Quick-Toggle Drawer (Alt+H)</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button></div>'+
-    '<div class="modal-body"><section class="mm-ui"><div class="tw-space-y-4">'+
-     '<div class="mm-drawer-kpi-grid" aria-label="Housekeeping drawer KPIs">'+
-      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-check-circle"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Clean &amp; Inspected</span><div class="mm-table-kpi-value"><span id="mm-hk-cnt-clean">13</span> Suites <span class="mm-table-kpi-sub">Ready for Check-In</span></div></div></div>'+
-      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-refresh"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Dirty / Turnaround</span><div class="mm-table-kpi-value"><span id="mm-hk-cnt-dirty">4</span> Suites <span class="mm-table-kpi-sub">30-Min SLA Active</span></div></div></div>'+
-      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-eye"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Supervisor Inspecting</span><div class="mm-table-kpi-value"><span id="mm-hk-cnt-insp">2</span> Suites <span class="mm-table-kpi-sub">Final Checklist</span></div></div></div>'+
-      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-wrench"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Engineering / OOO</span><div class="mm-table-kpi-value"><span id="mm-hk-cnt-ooo">1</span> Suite <span class="mm-table-kpi-sub">HVAC Preventive</span></div></div></div>'+
-     '</div>'+
-     '<div class="mm-drawer-card tw-p-4">'+
-      '<div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px">'+
-       '<div style="display:flex;flex-wrap:wrap;gap:6px" id="mm-hk-floor-pills">'+
-        '<button type="button" class="mm-role-pill is-active" data-hk-floor="all">All 20 Suites</button>'+
-        '<button type="button" class="mm-role-pill" data-hk-floor="1">Floor 1 (#101–#106)</button>'+
-        '<button type="button" class="mm-role-pill" data-hk-floor="2">Floor 2 (#201–#206)</button>'+
-        '<button type="button" class="mm-role-pill" data-hk-floor="3">Floor 3 (#301–#305)</button>'+
-        '<button type="button" class="mm-role-pill" data-hk-floor="4">Floor 4 (#401–#403)</button>'+
-       '</div>'+
-       '<button type="button" id="mm-hk-clean-all" class="mm-button" style="min-height:28px;padding:2px 10px;font-size:11.5px"><i class="fa fa-check-circle"></i> Mark All Dirty Suites Clean</button>'+
-      '</div>'+
-      '<div id="mm-hk-suite-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:8px"></div>'+
-     '</div>'+
-    '</div></section></div>'+
-    '<div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button><a href="/preview/housekeeping-board" class="mm-button"><i class="fa fa-external-link"></i> Open Full Housekeeping SLA Board</a></div>'+
-   '</div></div>'+
-  '</div>'+
-  '<div class="modal fade mm-app-drawer" id="mm-audit-drawer" tabindex="-1" role="dialog" aria-labelledby="mm-audit-drawer-title">'+
-   '<div class="modal-dialog modal-lg" role="document"><div class="modal-content">'+
-    '<div class="modal-header"><h4 class="modal-title" id="mm-audit-drawer-title"><i class="fa fa-moon-o"></i> Night Audit Pre-Close Checklist &amp; Auto-GL Journal Inspector (Alt+A)</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button></div>'+
-    '<div class="modal-body"><section class="mm-ui"><div class="tw-space-y-4">'+
-     '<div class="mm-drawer-kpi-grid" aria-label="Night audit drawer KPIs">'+
-      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-check-square-o"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Pre-Close Readiness</span><div class="mm-table-kpi-value"><span id="mm-audit-ready-kpi">6 / 8 Ready</span> <span class="mm-table-kpi-sub">Business Date 14 Oct 2026</span></div></div></div>'+
-      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-bed"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Room Tariff Auto-Post</span><div class="mm-table-kpi-value">৳ 134,100 <span class="mm-table-kpi-sub">18 Occupied Suites</span></div></div></div>'+
-      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-cutlery"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">F&amp;B &amp; Banquet Postings</span><div class="mm-table-kpi-value">৳ 114,550 <span class="mm-table-kpi-sub">Restaurant + Bar + Gala</span></div></div></div>'+
-      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-balance-scale"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Auto-GL Trial Balance</span><div class="mm-table-kpi-value">৳ 248,650 <span class="mm-table-kpi-sub">Dr = Cr (100% Balanced)</span></div></div></div>'+
-     '</div>'+
-     '<div id="mm-audit-roll-banner" class="alert alert-success" style="display:none;margin:0;border-radius:10px;font-size:12.5px"><i class="fa fa-check-circle"></i> <strong>All 8 Pre-Close Checks Verified!</strong> Auto-GL Voucher <code>#JV-2026-1014</code> (Dr ৳ 248,650 = Cr ৳ 248,650) staged and Business Date ready to roll to <strong>15 Oct 2026</strong>.</div>'+
-     '<div class="mm-drawer-card tw-p-4">'+
-      '<div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px">'+
-       '<strong><i class="fa fa-list-ul"></i> 1. Interactive 8-Point End-of-Day Pre-Close Checklist (14 Oct 2026)</strong>'+
-       '<div style="display:flex;gap:6px"><button type="button" id="mm-audit-verify-all" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11.5px"><i class="fa fa-check-square-o"></i> Verify All 8 Pre-Checks</button><button type="button" id="mm-audit-roll-btn" class="mm-button" style="min-height:28px;padding:2px 10px;font-size:11.5px"><i class="fa fa-lock"></i> Simulate Day-Close &amp; GL Post</button></div>'+
-      '</div>'+
-      '<div id="mm-audit-checklist" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:8px">'+
-       '<label class="mm-shift-note-card" style="display:flex;align-items:center;gap:8px;margin:0;cursor:pointer"><input type="checkbox" class="mm-audit-chk" checked> <span>1. All 8 Expected Arrivals Checked-In or No-Show</span></label>'+
-       '<label class="mm-shift-note-card" style="display:flex;align-items:center;gap:8px;margin:0;cursor:pointer"><input type="checkbox" class="mm-audit-chk" checked> <span>2. 18 Occupied Suite Tariffs &amp; 15% VAT Verified (৳ 134,100)</span></label>'+
-       '<label class="mm-shift-note-card" style="display:flex;align-items:center;gap:8px;margin:0;cursor:pointer"><input type="checkbox" class="mm-audit-chk" checked> <span>3. Heritage Dining &amp; Bar KOTs Reconciled (৳ 68,550)</span></label>'+
-       '<label class="mm-shift-note-card" style="display:flex;align-items:center;gap:8px;margin:0;cursor:pointer"><input type="checkbox" class="mm-audit-chk" checked> <span>4. Grand Ballroom 180-Pax Gala Folio Posted (৳ 46,000)</span></label>'+
-       '<label class="mm-shift-note-card" style="display:flex;align-items:center;gap:8px;margin:0;cursor:pointer"><input type="checkbox" class="mm-audit-chk" checked> <span>5. Cash, Visa/Mastercard POS &amp; bKash Batch Settled (৳ 214,200)</span></label>'+
-       '<label class="mm-shift-note-card" style="display:flex;align-items:center;gap:8px;margin:0;cursor:pointer"><input type="checkbox" class="mm-audit-chk" checked> <span>6. Mushak-6.3 VAT &amp; 5% Service Charge Sub-Ledger Balanced</span></label>'+
-       '<label class="mm-shift-note-card" style="display:flex;align-items:center;gap:8px;margin:0;cursor:pointer"><input type="checkbox" class="mm-audit-chk"> <span>7. 2 Open POS Tables Closed or Transferred to Room Folio</span></label>'+
-       '<label class="mm-shift-note-card" style="display:flex;align-items:center;gap:8px;margin:0;cursor:pointer"><input type="checkbox" class="mm-audit-chk"> <span>8. Suite #305 Window B City Ledger Sign-Off (৳ 48,450)</span></label>'+
-      '</div>'+
-     '</div>'+
-     '<div class="mm-drawer-card tw-p-4">'+
-      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px"><strong><i class="fa fa-calculator"></i> 2. Auto-Generated General Ledger Journal Preview (Voucher #JV-2026-1014)</strong><a href="/preview/acc-journals" class="mm-button mm-button-secondary" style="min-height:26px;padding:1px 9px;font-size:11px">Open Journal Register →</a></div>'+
-      '<div class="mm-table-scroll"><table class="table table-bordered table-striped"><thead><tr><th>GL Code</th><th>Account Head</th><th>Cost Center</th><th class="text-right">Debit (৳)</th><th class="text-right">Credit (৳)</th></tr></thead><tbody>'+
-       '<tr><td><code>1010-01</code></td><td><strong>Cash, POS Terminal &amp; bKash Clearing</strong></td><td>Treasury &amp; Front Desk</td><td class="text-right"><strong>214,200.00</strong></td><td class="text-right">0.00</td></tr>'+
-       '<tr><td><code>1040-02</code></td><td><strong>Corporate City Ledger AR Control</strong></td><td>Accounts Receivable</td><td class="text-right"><strong>34,450.00</strong></td><td class="text-right">0.00</td></tr>'+
-       '<tr><td><code>4010-01</code></td><td><strong>Room Division Suite Tariff Revenue</strong></td><td>Front Desk (18 Suites)</td><td class="text-right">0.00</td><td class="text-right"><strong>111,750.00</strong></td></tr>'+
-       '<tr><td><code>4020-01</code></td><td><strong>Restaurant, Bar &amp; Banquet F&amp;B Revenue</strong></td><td>F&amp;B &amp; Grand Ballroom</td><td class="text-right">0.00</td><td class="text-right"><strong>95,458.00</strong></td></tr>'+
-       '<tr><td><code>2030-01</code></td><td><strong>Output VAT Payable (15% Mushak-6.3)</strong></td><td>Tax &amp; Statutory</td><td class="text-right">0.00</td><td class="text-right"><strong>31,081.00</strong></td></tr>'+
-       '<tr><td><code>2030-02</code></td><td><strong>Hospitality Service Charge Payable (5%)</strong></td><td>Staff Pool &amp; Svc</td><td class="text-right">0.00</td><td class="text-right"><strong>10,361.00</strong></td></tr>'+
-      '</tbody><tfoot><tr><th colspan="3" class="text-right">Total Auto-Posted Night Audit Journal (Balanced):</th><th class="text-right">৳ 248,650.00</th><th class="text-right">৳ 248,650.00</th></tr></tfoot></table></div>'+
-     '</div>'+
-    '</div></section></div>'+
-    '<div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button><a href="/preview/night-audit-hardening" class="mm-button"><i class="fa fa-moon-o"></i> Open Night-Audit Day-Lock Workspace</a></div>'+
-   '</div></div>'+
-  '</div>'+
-  '<div class="modal fade mm-app-drawer" id="mm-guest-lookup-drawer" tabindex="-1" role="dialog" aria-labelledby="mm-guest-lookup-drawer-title">'+
-   '<div class="modal-dialog modal-lg" role="document"><div class="modal-content">'+
-    '<div class="modal-header"><h4 class="modal-title" id="mm-guest-lookup-drawer-title"><i class="fa fa-id-card-o"></i> Global In-House Guest, Suite &amp; Split-Folio Instant Lookup (Alt+G)</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button></div>'+
-    '<div class="modal-body"><section class="mm-ui"><div class="tw-space-y-4">'+
-     '<div class="mm-drawer-kpi-grid" aria-label="In-house guest lookup summary">'+
-      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-bed"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Occupied Suites</span><div class="mm-table-kpi-value">18 / 20 <span class="mm-table-kpi-sub">90.0% Occupancy</span></div></div></div>'+
-      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-star"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">VIP &amp; Diplomatic</span><div class="mm-table-kpi-value">6 VIP Suites <span class="mm-table-kpi-sub">Floors 3 &amp; 4</span></div></div></div>'+
-      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-columns"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Open Folio Balance</span><div class="mm-table-kpi-value">৳ 184,900 <span class="mm-table-kpi-sub">Window A + City Ledger</span></div></div></div>'+
-      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-key"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Encoded Keycards</span><div class="mm-table-kpi-value">34 Active <span class="mm-table-kpi-sub">Mifare RFID</span></div></div></div>'+
-     '</div>'+
-     '<div class="mm-drawer-card tw-p-4" id="mm-guest-lookup-detail">'+
-      '<div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px">'+
-       '<div><span class="mm-badge mm-badge-paid" id="glk-det-suite">Suite #204 · Deluxe Double</span> <strong id="glk-det-name" style="font-size:14px;margin-left:6px">Tanvir Ahmed Chowdhury</strong> <span class="mm-badge mm-badge-partial" id="glk-det-tier" style="margin-left:4px">Platinum VIP · UNICEF BD</span></div>'+
-       '<span style="font-size:11.5px;font-weight:700" id="glk-det-bk">#BK-2026-104 · 12 Oct → 15 Oct (3 Nights · 2 RFID Keys)</span>'+
-      '</div>'+
-      '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:8px;margin-bottom:10px">'+
-       '<div class="mm-shift-note-card"><strong>Window A (Guest Personal)</strong><div id="glk-det-wina" style="font-size:13px;font-weight:700;color:#15803d;margin-top:2px">৳ 4,100 · Settled (POS/Minibar)</div></div>'+
-       '<div class="mm-shift-note-card"><strong>Window B (Corporate AR)</strong><div id="glk-det-winb" style="font-size:13px;font-weight:700;color:#1d4ed8;margin-top:2px">৳ 12,600 · UNICEF City Ledger</div></div>'+
-       '<div class="mm-shift-note-card"><strong>Net Folio Balance Due</strong><div id="glk-det-due" style="font-size:13px;font-weight:700;color:#b45309;margin-top:2px">৳ 2,600 Due on Checkout</div></div>'+
-      '</div>'+
-      '<div style="display:flex;flex-wrap:wrap;gap:6px">'+
-       '<a href="/preview/folio-settlement" class="mm-button" style="min-height:28px;padding:2px 10px;font-size:11.5px"><i class="fa fa-columns"></i> Settle Split Folio →</a>'+
-       '<a href="/preview/pos-unified" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11.5px"><i class="fa fa-cutlery"></i> Post Room KOT →</a>'+
-       '<a href="/preview/room-move" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11.5px"><i class="fa fa-exchange"></i> Room Move / Upgrade →</a>'+
-       '<a href="/preview/guest-crm" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11.5px"><i class="fa fa-id-badge"></i> Guest CRM 360° →</a>'+
-       '<a href="/preview/invoice" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11.5px"><i class="fa fa-print"></i> Print Tax Invoice →</a>'+
-      '</div>'+
-     '</div>'+
-     '<div class="mm-drawer-card tw-p-4">'+
-      '<div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px">'+
-       '<div class="input-group" style="max-width:340px;flex:1 1 240px"><span class="input-group-addon"><i class="fa fa-search"></i></span><input type="search" id="mm-guest-lookup-search" class="form-control" placeholder="Search Suite #, Guest, Corporate, Phone or #BK..."></div>'+
-       '<div style="display:flex;flex-wrap:wrap;gap:5px" id="mm-glookup-pills">'+
-        '<button type="button" class="mm-role-pill is-active" data-glookup-filter="all">All (8)</button>'+
-        '<button type="button" class="mm-role-pill" data-glookup-filter="vip">VIP &amp; Diplomatic (5)</button>'+
-        '<button type="button" class="mm-role-pill" data-glookup-filter="due">Balance Due (4)</button>'+
-        '<button type="button" class="mm-role-pill" data-glookup-filter="arrival">Today Arrival (2)</button>'+
-       '</div>'+
-      '</div>'+
-      '<div class="mm-table-scroll"><table class="table table-bordered table-striped"><thead><tr><th>Suite</th><th>Guest &amp; Corporate Entity</th><th>Booking &amp; Stay</th><th class="text-right">Folio Balance</th><th class="text-center">Inspect</th></tr></thead><tbody id="mm-glookup-tbody">'+
-       '<tr data-glk-tags="all vip due" data-glk-search="204 tanvir ahmed chowdhury unicef bk-2026-104 01711" data-glk-suite="Suite #204 · Deluxe Double" data-glk-name="Tanvir Ahmed Chowdhury" data-glk-tier="Platinum VIP · UNICEF BD" data-glk-bk="#BK-2026-104 · 12 Oct → 15 Oct (3 Nights · 2 RFID Keys)" data-glk-wina="৳ 4,100 · Settled (POS/Minibar)" data-glk-winb="৳ 12,600 · UNICEF City Ledger" data-glk-due="৳ 2,600 Due on Checkout"><td><code>#204</code></td><td><strong>Tanvir Ahmed Chowdhury</strong><div class="tw-text-xs tw-text-muted">UNICEF Bangladesh · +880 1711-204204</div></td><td><code>#BK-2026-104</code> · 3N</td><td class="text-right"><strong>৳ 2,600 Due</strong></td><td class="text-center"><button type="button" class="mm-button mm-button-secondary glk-inspect-btn" style="min-height:26px;padding:1px 8px;font-size:11px">Inspect Folio</button></td></tr>'+
-       '<tr data-glk-tags="all vip arrival" data-glk-search="301 mahmudul hasan brig gen diplomatic bk-2026-101 01713" data-glk-suite="Suite #301 · Diplomatic Suite" data-glk-name="Brig. Gen. Mahmudul Hasan" data-glk-tier="State VIP · Cantonment HQ" data-glk-bk="#BK-2026-101 · 14 Oct → 17 Oct (3 Nights · 2 RFID Keys)" data-glk-wina="৳ 3,200 · Airport Limo &amp; Dining" data-glk-winb="৳ 26,700 · Direct Bill Approved" data-glk-due="৳ 0 (Pre-Authorized)"><td><code>#301</code></td><td><strong>Brig. Gen. Mahmudul Hasan</strong><div class="tw-text-xs tw-text-muted">Diplomatic Protocol · +880 1713-301301</div></td><td><code>#BK-2026-101</code> · 3N</td><td class="text-right"><span class="mm-badge mm-badge-paid">Pre-Auth</span></td><td class="text-center"><button type="button" class="mm-button mm-button-secondary glk-inspect-btn" style="min-height:26px;padding:1px 8px;font-size:11px">Inspect Folio</button></td></tr>'+
-       '<tr data-glk-tags="all vip due" data-glk-search="305 world bank delegation farhana rahman bk-2026-105 01715" data-glk-suite="Suite #305 · Presidential Suite" data-glk-name="Dr. Farhana Rahman (World Bank)" data-glk-tier="Diplomatic VIP · World Bank" data-glk-bk="#BK-2026-105 · 11 Oct → 14 Oct (3 Nights · Late Checkout)" data-glk-wina="৳ 6,450 · Settled via Visa POS" data-glk-winb="৳ 48,450 · World Bank City Ledger" data-glk-due="৳ 48,450 Window B Sign-Off"><td><code>#305</code></td><td><strong>Dr. Farhana Rahman</strong><div class="tw-text-xs tw-text-muted">World Bank Dhaka Mission · +880 1715-305305</div></td><td><code>#BK-2026-105</code> · 3N</td><td class="text-right"><strong>৳ 48,450 Due</strong></td><td class="text-center"><button type="button" class="mm-button mm-button-secondary glk-inspect-btn" style="min-height:26px;padding:1px 8px;font-size:11px">Inspect Folio</button></td></tr>'+
-       '<tr data-glk-tags="all vip arrival" data-glk-search="401 ambassador kenji sato embassy japan bk-2026-108 01718" data-glk-suite="Suite #401 · Royal Penthouse" data-glk-name="Ambassador Kenji Sato" data-glk-tier="Embassy VIP · Diplomatic" data-glk-bk="#BK-2026-108 · 14 Oct → 18 Oct (4 Nights · 4 RFID Keys)" data-glk-wina="৳ 0 · All-Inclusive VIP Package" data-glk-winb="৳ 52,800 · Embassy Direct Ledger" data-glk-due="৳ 0 (Embassy Guaranteed)"><td><code>#401</code></td><td><strong>Ambassador Kenji Sato</strong><div class="tw-text-xs tw-text-muted">Diplomatic Mission · +880 1718-401401</div></td><td><code>#BK-2026-108</code> · 4N</td><td class="text-right"><span class="mm-badge mm-badge-paid">Guaranteed</span></td><td class="text-center"><button type="button" class="mm-button mm-button-secondary glk-inspect-btn" style="min-height:26px;padding:1px 8px;font-size:11px">Inspect Folio</button></td></tr>'+
-       '<tr data-glk-tags="all due" data-glk-search="102 nadia islam mohammadi group bk-2026-102 01819" data-glk-suite="Suite #102 · Deluxe Twin" data-glk-name="Nadia Islam" data-glk-tier="Corporate Gold · Mohammadi Group" data-glk-bk="#BK-2026-102 · 13 Oct → 15 Oct (2 Nights · 2 RFID Keys)" data-glk-wina="৳ 3,850 · Restaurant &amp; Laundry" data-glk-winb="৳ 8,400 · Corporate Tariff" data-glk-due="৳ 3,850 Window A Due"><td><code>#102</code></td><td><strong>Nadia Islam</strong><div class="tw-text-xs tw-text-muted">Mohammadi Group · +880 1819-102102</div></td><td><code>#BK-2026-102</code> · 2N</td><td class="text-right"><strong>৳ 3,850 Due</strong></td><td class="text-center"><button type="button" class="mm-button mm-button-secondary glk-inspect-btn" style="min-height:26px;padding:1px 8px;font-size:11px">Inspect Folio</button></td></tr>'+
-       '<tr data-glk-tags="all vip due" data-glk-search="402 capt rezaul karim horizon air crew bk-2026-109 01911" data-glk-suite="Suite #402 · Grand Presidential" data-glk-name="Capt. Rezaul Karim (Horizon Air)" data-glk-tier="Airline Crew VIP · Horizon Air" data-glk-bk="#BK-2026-109 · 13 Oct → 15 Oct (2 Nights · 2 RFID Keys)" data-glk-wina="৳ 1,950 · Skyline Bar &amp; Minibar" data-glk-winb="৳ 24,000 · Horizon Air Contract" data-glk-due="৳ 1,950 Personal Tab Due"><td><code>#402</code></td><td><strong>Capt. Rezaul Karim</strong><div class="tw-text-xs tw-text-muted">Horizon Air International · +880 1911-402402</div></td><td><code>#BK-2026-109</code> · 2N</td><td class="text-right"><strong>৳ 1,950 Due</strong></td><td class="text-center"><button type="button" class="mm-button mm-button-secondary glk-inspect-btn" style="min-height:26px;padding:1px 8px;font-size:11px">Inspect Folio</button></td></tr>'+
-      '</tbody></table></div>'+
-     '</div>'+
-    '</div></section></div>'+
-    '<div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button><a href="/preview/guests" class="mm-button mm-button-secondary"><i class="fa fa-users"></i> All 20 VIP Guests</a><a href="/preview/folio-settlement" class="mm-button"><i class="fa fa-columns"></i> Open Split-Folio Workspace</a></div>'+
-   '</div></div>'+
-  '</div>'+
   '<div class="modal fade mm-app-drawer" id="mm-express-drawer" tabindex="-1" role="dialog" aria-labelledby="mm-express-drawer-title">'+
    '<div class="modal-dialog modal-lg" role="document"><div class="modal-content">'+
     '<div class="modal-header"><h4 class="modal-title" id="mm-express-drawer-title"><i class="fa fa-plus-circle"></i> Express Walk-In Hold, 80mm KOT &amp; GL Voucher Quick-Create (Alt+Q)</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button></div>'+
@@ -2114,126 +1873,8 @@ function menuLinks(page,currentPath){
     '<div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button><a href="/preview/booking-next" class="mm-button mm-button-secondary"><i class="fa fa-bed"></i> 3-Step Room Wizard</a><a href="/preview/bq-booking-create" class="mm-button"><i class="fa fa-glass"></i> Banquet Event Configurator</a></div>'+
    '</div></div>'+
   '</div>'+
-  '<div class="modal fade mm-app-drawer" id="mm-flash-drawer" tabindex="-1" role="dialog" aria-labelledby="mm-flash-drawer-title">'+
-   '<div class="modal-dialog modal-lg" role="document"><div class="modal-content">'+
-    '<div class="modal-header"><h4 class="modal-title" id="mm-flash-drawer-title"><i class="fa fa-bolt"></i> Daily Manager Flash Report &amp; Shift Roster Inspector — 14 Oct 2026 (Alt+M)</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button></div>'+
-    '<div class="modal-body"><section class="mm-ui"><div class="tw-space-y-4">'+
-     '<div class="mm-drawer-kpi-grid" aria-label="Flash drawer KPIs">'+
-      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-bed"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Occupancy &amp; RevPAR</span><div class="mm-table-kpi-value">90.0% · ৳ 6,705 <span class="mm-table-kpi-sub">18/20 Suites · ADR ৳ 7,450</span></div></div></div>'+
-      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-line-chart"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Gross Revenue Today</span><div class="mm-table-kpi-value">৳ 248,650 <span class="mm-table-kpi-sub">+11.2% vs Target</span></div></div></div>'+
-      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-credit-card"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Realized Collections</span><div class="mm-table-kpi-value">৳ 214,200 <span class="mm-table-kpi-sub">Cash/POS/bKash/AR</span></div></div></div>'+
-      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-users"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Active Shift Roster</span><div class="mm-table-kpi-value">14 On Duty <span class="mm-table-kpi-sub">14:00–22:00 Shift</span></div></div></div>'+
-     '</div>'+
-     '<div class="mm-drawer-card tw-p-4">'+
-      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px"><strong><i class="fa fa-pie-chart"></i> Outlet Revenue vs Target &amp; On-Duty Department Leads</strong><a href="/preview/daily-flash-report" class="mm-button" style="min-height:28px;padding:2px 10px;font-size:11.5px"><i class="fa fa-print"></i> Open Full Printable A4 Flash Report →</a></div>'+
-      '<div class="mm-table-scroll"><table class="table table-bordered table-striped"><thead><tr><th>Department / Outlet</th><th>Lead On Duty</th><th>Target</th><th class="text-right">Actual Today</th><th>Achievement</th></tr></thead><tbody>'+
-       '<tr><td><strong>Room Division (18/20 Suites)</strong></td><td>Nusrat Jahan (Front Desk)</td><td>৳ 125,000</td><td class="text-right"><strong>৳ 134,100</strong></td><td><span class="mm-badge mm-badge-paid">107.3%</span></td></tr>'+
-       '<tr><td><strong>Heritage Dining Restaurant</strong></td><td>Chef Kamrul Hasan (Kitchen)</td><td>৳ 45,000</td><td class="text-right"><strong>৳ 46,850</strong></td><td><span class="mm-badge mm-badge-paid">104.1%</span></td></tr>'+
-       '<tr><td><strong>Skyline Lounge Bar &amp; Minibar</strong></td><td>Rafiqul Alam (F&amp;B Captain)</td><td>৳ 22,000</td><td class="text-right"><strong>৳ 21,700</strong></td><td><span class="mm-badge mm-badge-paid">98.6%</span></td></tr>'+
-       '<tr><td><strong>Grand Ballroom Banquet</strong></td><td>Tariqul Islam (Folio/Audit)</td><td>৳ 40,000</td><td class="text-right"><strong>৳ 46,000</strong></td><td><span class="mm-badge mm-badge-paid">115.0%</span></td></tr>'+
-      '</tbody></table></div>'+
-     '</div>'+
-    '</div></section></div>'+
-    '<div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button><a href="/preview/daily-flash-report" class="mm-button"><i class="fa fa-external-link"></i> Full Printable Flash Report</a></div>'+
-   '</div></div>'+
-  '</div>'+
-  '<div class="modal fade mm-app-drawer" id="mm-notif-drawer" tabindex="-1" role="dialog" aria-labelledby="mm-notif-drawer-title">'+
-   '<div class="modal-dialog modal-lg" role="document"><div class="modal-content">'+
-    '<div class="modal-header"><h4 class="modal-title" id="mm-notif-drawer-title"><i class="fa fa-bell"></i> Live Operational Notification &amp; Shift Handover Center — 14 Oct 2026</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button></div>'+
-    '<div class="modal-body"><section class="mm-ui"><div class="tw-space-y-4">'+
-     '<div class="mm-drawer-kpi-grid" aria-label="Operational alert metrics">'+
-      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-suitcase"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Arrivals &amp; VIPs</span><div class="mm-table-kpi-value">3 VIP Arrivals <span class="mm-table-kpi-sub">Suites #204, #301, #401</span></div></div></div>'+
-      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-columns"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Unsettled Folios</span><div class="mm-table-kpi-value">৳ 48,450 Due <span class="mm-table-kpi-sub">2 Departure Folios</span></div></div></div>'+
-      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-cutlery"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Kitchen &amp; POS SLA</span><div class="mm-table-kpi-value">3 KOT &gt; 12m <span class="mm-table-kpi-sub">6 Open POS Tables</span></div></div></div>'+
-      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-exchange"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Shift Handover Log</span><div class="mm-table-kpi-value"><span id="mm-shift-notes-count">3</span> Active <span class="mm-table-kpi-sub">14 Oct 2026</span></div></div></div>'+
-     '</div>'+
-     '<div class="mm-drawer-card tw-p-4">'+
-      '<div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px">'+
-       '<div style="display:flex;flex-wrap:wrap;gap:6px" id="mm-notif-filter-group">'+
-        '<button type="button" class="mm-role-pill is-active" data-notif-filter="all">All Alerts (8)</button>'+
-        '<button type="button" class="mm-role-pill" data-notif-filter="frontdesk">Front Desk &amp; Rooms (3)</button>'+
-        '<button type="button" class="mm-role-pill" data-notif-filter="pos">F&amp;B, Kitchen &amp; Banquet (3)</button>'+
-        '<button type="button" class="mm-role-pill" data-notif-filter="finance">Finance, Audit &amp; Stock (2)</button>'+
-       '</div>'+
-       '<button type="button" id="mm-notif-mark-read" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11.5px"><i class="fa fa-check-square-o"></i> Mark All Read</button>'+
-      '</div>'+
-      '<div style="display:flex;flex-direction:column;gap:8px" id="mm-notif-list">'+
-       '<div class="mm-notif-item" data-notif-cat="frontdesk"><div><div style="font-weight:700;font-size:12.5px"><span class="mm-badge mm-badge-paid" style="margin-right:6px">Front Desk</span>3 VIP Arrivals Pending Express Keycard Check-In</div><div style="font-size:11.5px;opacity:.8;margin-top:2px">Brig. Gen. Mahmudul Hasan (#301), Tanvir Ahmed (#204), Diplomatic Delegation (#401) · ETA 14:00</div></div><a href="/preview/booking-next" class="mm-button" style="min-height:28px;padding:2px 10px;font-size:11px;white-space:nowrap">Booking Wizard →</a></div>'+
-       '<div class="mm-notif-item" data-notif-cat="frontdesk"><div><div style="font-weight:700;font-size:12.5px"><span class="mm-badge mm-badge-unpaid" style="margin-right:6px">Folio Due</span>Room 305 Corporate Delegation — ৳ 48,450 Split-Folio Balance</div><div style="font-size:11.5px;opacity:.8;margin-top:2px">Window A (Guest Personal) settled · Window B (City Ledger AR) awaiting checkout sign-off</div></div><a href="/preview/folio-settlement" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11px;white-space:nowrap">Settle Folio →</a></div>'+
-       '<div class="mm-notif-item" data-notif-cat="frontdesk"><div><div style="font-weight:700;font-size:12.5px"><span class="mm-badge mm-badge-partial" style="margin-right:6px">Housekeeping</span>2 Deluxe Suites Awaiting Supervisor Turnaround Inspection</div><div style="font-size:11.5px;opacity:.8;margin-top:2px">Suites #104 &amp; #202 deep-cleaned · 14m remaining on 30-min arrival SLA timer</div></div><a href="/preview/housekeeping-board" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11px;white-space:nowrap">SLA Board →</a></div>'+
-       '<div class="mm-notif-item" data-notif-cat="pos"><div><div style="font-weight:700;font-size:12.5px"><span class="mm-badge mm-badge-unpaid" style="margin-right:6px">Kitchen SLA</span>3 Kitchen KOT Tickets Over 12-Minute Prep Threshold</div><div style="font-size:11.5px;opacity:.8;margin-top:2px">KOT #1048 (Room 204 In-Room Dining), #1049 (Table T-04), #1051 (Skyline VIP Lounge)</div></div><a href="/preview/kds-board" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11px;white-space:nowrap">Open KDS →</a></div>'+
-       '<div class="mm-notif-item" data-notif-cat="pos"><div><div style="font-weight:700;font-size:12.5px"><span class="mm-badge mm-badge-paid" style="margin-right:6px">POS Live</span>6 Active Dining &amp; Bar Tables Open (৳ 34,800 Running Tab)</div><div style="font-size:11.5px;opacity:.8;margin-top:2px">2 tables requested multi-tender split bill · 1 room-charge transfer to Suite #204</div></div><a href="/preview/pos-unified" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11px;white-space:nowrap">Unified POS →</a></div>'+
-       '<div class="mm-notif-item" data-notif-cat="pos"><div><div style="font-weight:700;font-size:12.5px"><span class="mm-badge mm-badge-partial" style="margin-right:6px">Banquet</span>Grand Ballroom Evening Corporate Gala (180 Pax at 19:00)</div><div style="font-size:11.5px;opacity:.8;margin-top:2px">AV soundcheck complete · Welcome mocktail station &amp; buffet chafers staging at 17:30</div></div><a href="/preview/bq-booking-index" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11px;white-space:nowrap">Banquet Desk →</a></div>'+
-       '<div class="mm-notif-item" data-notif-cat="finance"><div><div style="font-weight:700;font-size:12.5px"><span class="mm-badge mm-badge-unpaid" style="margin-right:6px">Low Stock</span>4 F&amp;B &amp; Store Ingredients Below Reorder Par Level</div><div style="font-size:11.5px;opacity:.8;margin-top:2px">Norwegian Salmon Fillet, Arabica Espresso Beans, Extra Virgin Olive Oil, Sparkling Water</div></div><a href="/preview/rsi-inventory-report" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11px;white-space:nowrap">Stock Report →</a></div>'+
-       '<div class="mm-notif-item" data-notif-cat="finance"><div><div style="font-weight:700;font-size:12.5px"><span class="mm-badge mm-badge-paid" style="margin-right:6px">Night Audit</span>Business Date 14 Oct 2026 — 6 of 8 Day-Close Pre-Checks Ready</div><div style="font-size:11.5px;opacity:.8;margin-top:2px">Verify 2 open Restaurant POS tabs and Room 305 City Ledger transfer prior to 23:59 day lock</div></div><a href="/preview/night-audit-hardening" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11px;white-space:nowrap">Night Audit →</a></div>'+
-      '</div>'+
-     '</div>'+
-     '<div class="mm-drawer-card tw-p-4">'+
-      '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px">'+
-       '<strong><i class="fa fa-comments-o"></i> Staff Shift Handover Log (Persisted Across Workspace)</strong>'+
-       '<span class="mm-badge mm-badge-paid">Morning → Afternoon Shift</span>'+
-      '</div>'+
-      '<div id="mm-shift-log-list" style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px"></div>'+
-      '<form id="mm-shift-note-form" onsubmit="return false;" style="display:grid;grid-template-columns:180px 1fr auto;gap:8px;align-items:center">'+
-       '<select id="mm-shift-note-role" class="form-control"><option value="Front Desk">Front Desk</option><option value="Night Auditor">Night Auditor</option><option value="F&amp;B Manager">F&amp;B Manager</option><option value="Housekeeping">Housekeeping</option></select>'+
-       '<input type="text" id="mm-shift-note-input" class="form-control" placeholder="Add a shift handover note for incoming staff (e.g. Suite #301 late airport pickup confirmed)...">'+
-       '<button type="submit" id="mm-shift-note-submit" class="mm-button"><i class="fa fa-plus"></i> Post Note</button>'+
-      '</form>'+
-     '</div>'+
-    '</div></section></div>'+
-    '<div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button></div>'+
-   '</div></div>'+
-  '</div>'+
-  '<div class="modal fade mm-app-drawer" id="mm-shortcuts-drawer" tabindex="-1" role="dialog" aria-labelledby="mm-shortcuts-drawer-title">'+
-   '<div class="modal-dialog modal-lg" role="document"><div class="modal-content">'+
-    '<div class="modal-header"><h4 class="modal-title" id="mm-shortcuts-drawer-title"><i class="fa fa-keyboard-o"></i> Global Keyboard Quick-Switcher &amp; Shortcut Cheat-Sheet</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button></div>'+
-    '<div class="modal-body"><section class="mm-ui"><div class="tw-space-y-4">'+
-     '<div class="mm-drawer-card tw-p-4">'+
-      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px"><strong><i class="fa fa-bolt"></i> 1. Global Shell &amp; Top Sub-Menu Shortcuts</strong><span class="mm-badge mm-badge-paid">Active Everywhere</span></div>'+
-      '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:8px">'+
-       '<div class="mm-shortcut-row"><span>Global Command Palette (362 Screens)</span><span class="mm-kbd-badge">Ctrl + K</span></div>'+
-       '<div class="mm-shortcut-row"><span>Previous / Next Top Sub-Menu Tab</span><span class="mm-kbd-badge">[ / ]</span></div>'+
-       '<div class="mm-shortcut-row"><span>Cycle Sidebar Department Role View</span><span class="mm-kbd-badge">Alt + R</span></div>'+
-       '<div class="mm-shortcut-row"><span>Expand / Collapse Left Side Menu</span><span class="mm-kbd-badge">Alt + S</span></div>'+
-       '<div class="mm-shortcut-row"><span>Toggle Cross-Module Pinned Favorites</span><span class="mm-kbd-badge">Alt + B</span></div>'+
-       '<div class="mm-shortcut-row"><span>Open Express Walk-In / KOT / Voucher Drawer</span><span class="mm-kbd-badge">Alt + Q</span></div>'+
-       '<div class="mm-shortcut-row"><span>Open Global In-House Guest &amp; Folio Lookup</span><span class="mm-kbd-badge">Alt + G</span></div>'+
-       '<div class="mm-shortcut-row"><span>Open 20-Suite Housekeeping Quick-Toggle</span><span class="mm-kbd-badge">Alt + H</span></div>'+
-       '<div class="mm-shortcut-row"><span>Open Banquet &amp; Conference BEO Command Drawer</span><span class="mm-kbd-badge">Alt + E</span></div>'+
-       '<div class="mm-shortcut-row"><span>Open Kitchen &amp; Store Par-Stock Reorder Drawer</span><span class="mm-kbd-badge">Alt + I</span></div>'+
-       '<div class="mm-shortcut-row"><span>Open VIP Airport Pickup &amp; Transport Dispatch Drawer</span><span class="mm-kbd-badge">Alt + T</span></div>'+
-       '<div class="mm-shortcut-row"><span>Open Night Audit Pre-Close &amp; Auto-GL Drawer</span><span class="mm-kbd-badge">Alt + A</span></div>'+
-       '<div class="mm-shortcut-row"><span>Open Daily Manager Flash Report &amp; Roster</span><span class="mm-kbd-badge">Alt + M</span></div>'+
-       '<div class="mm-shortcut-row"><span>Open Live Alerts &amp; Shift Handover Drawer</span><span class="mm-kbd-badge">Alt + N</span></div>'+
-       '<div class="mm-shortcut-row"><span>Focus Top Sub-Menu Screen Filter</span><span class="mm-kbd-badge">Alt + F</span></div>'+
-       '<div class="mm-shortcut-row"><span>Open Keyboard Shortcut Cheat-Sheet</span><span class="mm-kbd-badge">?</span></div>'+
-      '</div>'+
-     '</div>'+
-     '<div class="mm-drawer-card tw-p-4">'+
-      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px"><strong><i class="fa fa-compass"></i> 2. Direct Module Quick-Jump (Press Alt + 1..0 or Click)</strong><span class="mm-badge mm-badge-partial">10 Core Modules</span></div>'+
-      '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:8px">'+
-       '<a href="/dashboard" class="mm-shortcut-row"><span><i class="fa fa-tachometer"></i> Dashboard &amp; Room Status Board</span><span class="mm-kbd-badge">Alt + 1</span></a>'+
-       '<a href="/preview/plan-a" class="mm-shortcut-row"><span><i class="fa fa-sitemap"></i> Command Hubs (Plan A &amp; Plan B)</span><span class="mm-kbd-badge">Alt + 2</span></a>'+
-       '<a href="/preview/booking-next" class="mm-shortcut-row"><span><i class="fa fa-calendar-plus-o"></i> 3-Step Booking Wizard &amp; Tape Chart</span><span class="mm-kbd-badge">Alt + 3</span></a>'+
-       '<a href="/preview/folio-settlement" class="mm-shortcut-row"><span><i class="fa fa-columns"></i> In-House, Split-Folio &amp; Night Audit</span><span class="mm-kbd-badge">Alt + 4</span></a>'+
-       '<a href="/preview/guest-crm" class="mm-shortcut-row"><span><i class="fa fa-address-book-o"></i> Guests &amp; Corporate CRM 360°</span><span class="mm-kbd-badge">Alt + 5</span></a>'+
-       '<a href="/preview/rooms" class="mm-shortcut-row"><span><i class="fa fa-bed"></i> Rooms, Housekeeping &amp; SLA Board</span><span class="mm-kbd-badge">Alt + 6</span></a>'+
-       '<a href="/preview/room-settings" class="mm-shortcut-row"><span><i class="fa fa-sliders"></i> Rates, Channels &amp; Room Settings</span><span class="mm-kbd-badge">Alt + 7</span></a>'+
-       '<a href="/preview/bq-booking-index" class="mm-shortcut-row"><span><i class="fa fa-glass"></i> Banquet Hall &amp; Hotel Services</span><span class="mm-kbd-badge">Alt + 8</span></a>'+
-       '<a href="/preview/pos-unified" class="mm-shortcut-row"><span><i class="fa fa-cutlery"></i> Unified Restaurant &amp; Bar POS</span><span class="mm-kbd-badge">Alt + 9</span></a>'+
-       '<a href="/preview/acc-balance-sheet" class="mm-shortcut-row"><span><i class="fa fa-calculator"></i> Accounts, Balance Sheet &amp; Finance</span><span class="mm-kbd-badge">Alt + 0</span></a>'+
-      '</div>'+
-     '</div>'+
-    '</div></section></div>'+
-    '<div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button></div>'+
-   '</div></div>'+
-  '</div>'+
   '<script>(function(){'+
-   'var nav=document.getElementById("mm-top-subnav"),pinBtn=document.getElementById("mm-top-pin-btn"),moreBtn=document.getElementById("mm-top-more-btn"),morePanel=document.getElementById("mm-top-more-panel"),flt=document.getElementById("mm-top-tab-filter"),cnt=document.getElementById("mm-top-more-count"),topSbBtn=document.getElementById("mm-top-sidebar-btn"),botSbBtn=document.getElementById("mm-sidebar-collapse-btn"),botSbIcon=document.getElementById("mm-sidebar-collapse-icon");'+
-   'function syncSbFooter(){var isRail=document.body.classList.contains("mm-nav-rail");if(botSbIcon)botSbIcon.className="fa "+(isRail?"fa-angle-double-right":"fa-angle-double-left");}'+
-   'syncSbFooter();'+
-   'if(topSbBtn)topSbBtn.addEventListener("click",function(){var t=document.getElementById("menu-toggler");if(t)t.click();syncSbFooter();});'+
-   'if(botSbBtn)botSbBtn.addEventListener("click",function(){var isRail=document.body.classList.contains("mm-nav-rail");var target=document.querySelector("[data-mm-nav-mode=\\""+(isRail?"mm-nav-full":"mm-nav-rail")+"\\"]");if(target)target.click();syncSbFooter();});'+
+   'var nav=document.getElementById("mm-top-subnav"),moreBtn=document.getElementById("mm-top-more-btn"),morePanel=document.getElementById("mm-top-more-panel"),flt=document.getElementById("mm-top-tab-filter"),cnt=document.getElementById("mm-top-more-count");'+
    'var roleSw=document.getElementById("mm-role-switcher"),roleLbl=document.getElementById("mm-role-active-label"),menuEl=document.getElementById("mm-primary-menu");'+
    'var roleOrder=["all","frontdesk","pos","finance"];'+
    'var curRole="all";try{curRole=localStorage.getItem("mm-sidebar-role")||"all";}catch(e){}'+
@@ -2300,135 +1941,6 @@ function menuLinks(page,currentPath){
    'if(pf)pf.addEventListener("submit",function(){var out=document.getElementById("exp-pos-outlet").value,tg=document.getElementById("exp-pos-target").value,it=document.getElementById("exp-pos-item").value,qt=(document.getElementById("exp-pos-qty")||{}).value||"1";pushExp("80mm KOT","#KOT-1054 · "+out+" → "+tg+" · "+qt+"× "+it,"/preview/pos-kot-print");});'+
    'if(vf)vf.addEventListener("submit",function(){var vt=document.getElementById("exp-vch-type").value,vh=document.getElementById("exp-vch-head").value,va=document.getElementById("exp-vch-amt").value;pushExp("GL Voucher","#VCH-2026-892 · "+vt+" · "+vh+" (৳ "+va+")","/preview/acc-receives");});'+
    'if(bf)bf.addEventListener("submit",function(){var bh=document.getElementById("exp-bq-hall").value,bhost=document.getElementById("exp-bq-host").value,bpax=document.getElementById("exp-bq-pax").value;pushExp("Banquet Hold","#BEO-2026-409 · "+bh+" · "+bhost+" ("+bpax+" Pax)","/preview/bq-booking-create");});'+
-   'var glkSearch=document.getElementById("mm-guest-lookup-search"),glkPills=document.querySelectorAll("[data-glookup-filter]"),glkRows=document.querySelectorAll("#mm-glookup-tbody tr"),glkTag="all";'+
-   'function filterGlk(){'+
-    'var sq=(glkSearch&&glkSearch.value||"").toLowerCase().trim();'+
-    'for(var gi=0;gi<glkRows.length;gi++){var r=glkRows[gi],tOk=(glkTag==="all"||(r.getAttribute("data-glk-tags")||"").indexOf(glkTag)>=0),qOk=(!sq||(r.getAttribute("data-glk-search")||"").indexOf(sq)>=0);r.style.display=(tOk&&qOk)?"":"none";}'+
-   '}'+
-   'if(glkSearch)glkSearch.addEventListener("input",filterGlk);'+
-   'for(var gp=0;gp<glkPills.length;gp++){glkPills[gp].addEventListener("click",function(){'+
-    'glkTag=this.getAttribute("data-glookup-filter")||"all";'+
-    'for(var gx=0;gx<glkPills.length;gx++)glkPills[gx].classList.toggle("is-active",glkPills[gx]===this);'+
-    'filterGlk();'+
-   '});}'+
-   'for(var gr=0;gr<glkRows.length;gr++){glkRows[gr].addEventListener("click",function(){'+
-    'var sEl=document.getElementById("glk-det-suite"),nEl=document.getElementById("glk-det-name"),tEl=document.getElementById("glk-det-tier"),bEl=document.getElementById("glk-det-bk"),waEl=document.getElementById("glk-det-wina"),wbEl=document.getElementById("glk-det-winb"),duEl=document.getElementById("glk-det-due");'+
-    'if(sEl)sEl.textContent=this.getAttribute("data-glk-suite")||"";'+
-    'if(nEl)nEl.textContent=this.getAttribute("data-glk-name")||"";'+
-    'if(tEl)tEl.textContent=this.getAttribute("data-glk-tier")||"";'+
-    'if(bEl)bEl.textContent=this.getAttribute("data-glk-bk")||"";'+
-    'if(waEl)waEl.textContent=this.getAttribute("data-glk-wina")||"";'+
-    'if(wbEl)wbEl.textContent=this.getAttribute("data-glk-winb")||"";'+
-    'if(duEl)duEl.textContent=this.getAttribute("data-glk-due")||"";'+
-   '});}'+
-   'var hkGrid=document.getElementById("mm-hk-suite-grid"),hkFloorBtns=document.querySelectorAll("[data-hk-floor]"),hkCleanAll=document.getElementById("mm-hk-clean-all"),hkFloor="all";'+
-   'var defHk=[["101","1","Deluxe Double","Occupied","clean"],["102","1","Deluxe Twin","Occupied","clean"],["103","1","Superior Queen","Occupied","dirty"],["104","1","Deluxe Double","Vacant","insp"],["105","1","Superior Twin","Occupied","clean"],["106","1","Deluxe Double","Occupied","clean"],["201","2","Heritage Suite","Occupied","clean"],["202","2","Heritage Suite","Vacant","insp"],["203","2","Royal Family","Occupied","dirty"],["204","2","Deluxe Double","Occupied","clean"],["205","2","Heritage Suite","Occupied","clean"],["206","2","Royal Family","Occupied","dirty"],["301","3","Diplomatic Suite","Occupied","clean"],["302","3","Diplomatic Suite","Occupied","clean"],["303","3","Presidential","Occupied","ooo"],["304","3","Diplomatic Suite","Occupied","clean"],["305","3","Presidential","Occupied","dirty"],["401","4","Royal Penthouse","Occupied","clean"],["402","4","Grand Pres.","Occupied","clean"],["403","4","Royal Penthouse","Occupied","clean"]];'+
-   'var hkData=defHk;try{var rawHk=localStorage.getItem("mm-hk-statuses");if(rawHk){var pHk=JSON.parse(rawHk);if(Array.isArray(pHk)&&pHk.length===20)hkData=pHk;}}catch(e){}'+
-   'var hkOrder=["clean","dirty","insp","ooo"],hkMeta={clean:["Clean & Ready","mm-badge-paid"],dirty:["Dirty / Turnaround","mm-badge-unpaid"],insp:["Inspecting","mm-badge-partial"],ooo:["Out of Order","mm-badge-unpaid"]};'+
-   'function renderHk(){'+
-    'var cClean=0,cDirty=0,cInsp=0,cOoo=0;'+
-    'for(var hi=0;hi<hkData.length;hi++){var st=hkData[hi][4];if(st==="clean")cClean++;else if(st==="dirty")cDirty++;else if(st==="insp")cInsp++;else cOoo++;}'+
-    'var elC=document.getElementById("mm-hk-cnt-clean"),elD=document.getElementById("mm-hk-cnt-dirty"),elI=document.getElementById("mm-hk-cnt-insp"),elO=document.getElementById("mm-hk-cnt-ooo");'+
-    'if(elC)elC.textContent=String(cClean);if(elD)elD.textContent=String(cDirty);if(elI)elI.textContent=String(cInsp);if(elO)elO.textContent=String(cOoo);'+
-    'if(!hkGrid)return;'+
-    'hkGrid.innerHTML=hkData.filter(function(r){return hkFloor==="all"||r[1]===hkFloor;}).map(function(r){'+
-     'var m=hkMeta[r[4]]||hkMeta.clean;'+
-     'return "<div class=\\"mm-shift-note-card\\" style=\\"display:flex;flex-direction:column;gap:6px\\"><div style=\\"display:flex;justify-content:space-between;align-items:center\\"><strong>Suite #"+r[0]+"</strong><span class=\\"mm-badge "+m[1]+"\\">"+m[0]+"</span></div><div style=\\"font-size:11px;opacity:.8\\">"+r[2]+" · "+r[3]+"</div><button type=\\"button\\" data-hk-room=\\""+r[0]+"\\" class=\\"mm-button mm-button-secondary\\" style=\\"min-height:25px;padding:2px 8px;font-size:11px;width:100%;justify-content:center\\"><i class=\\"fa fa-refresh\\"></i> Cycle Status</button></div>";'+
-    '}).join("");'+
-    'var cBtns=hkGrid.querySelectorAll("[data-hk-room]");'+
-    'for(var cb=0;cb<cBtns.length;cb++){cBtns[cb].addEventListener("click",function(){'+
-     'var rm=this.getAttribute("data-hk-room");'+
-     'for(var z=0;z<hkData.length;z++){if(hkData[z][0]===rm){hkData[z][4]=hkOrder[(hkOrder.indexOf(hkData[z][4])+1)%hkOrder.length];break;}}'+
-     'try{localStorage.setItem("mm-hk-statuses",JSON.stringify(hkData));}catch(e){}renderHk();'+
-    '});}'+
-   '}'+
-   'renderHk();'+
-   'for(var hf=0;hf<hkFloorBtns.length;hf++){hkFloorBtns[hf].addEventListener("click",function(){'+
-    'hkFloor=this.getAttribute("data-hk-floor")||"all";'+
-    'for(var hx=0;hx<hkFloorBtns.length;hx++)hkFloorBtns[hx].classList.toggle("is-active",hkFloorBtns[hx]===this);'+
-    'renderHk();'+
-   '});}'+
-   'if(hkCleanAll)hkCleanAll.addEventListener("click",function(){'+
-    'for(var hc=0;hc<hkData.length;hc++){if(hkData[hc][4]==="dirty"||hkData[hc][4]==="insp")hkData[hc][4]="clean";}'+
-    'try{localStorage.setItem("mm-hk-statuses",JSON.stringify(hkData));}catch(e){}renderHk();'+
-   '});'+
-   'var audChks=document.querySelectorAll(".mm-audit-chk"),audKpi=document.getElementById("mm-audit-ready-kpi"),audVerifyAll=document.getElementById("mm-audit-verify-all"),audRollBtn=document.getElementById("mm-audit-roll-btn"),audBanner=document.getElementById("mm-audit-roll-banner");'+
-   'function syncAudit(){'+
-    'var done=0;for(var ai=0;ai<audChks.length;ai++)if(audChks[ai].checked)done++;'+
-    'if(audKpi)audKpi.textContent=done+" / "+audChks.length+" Ready";'+
-    'if(audBanner&&done===audChks.length)audBanner.style.display="block";'+
-   '}'+
-   'for(var ac=0;ac<audChks.length;ac++)audChks[ac].addEventListener("change",syncAudit);'+
-   'if(audVerifyAll)audVerifyAll.addEventListener("click",function(){for(var av=0;av<audChks.length;av++)audChks[av].checked=true;syncAudit();});'+
-   'if(audRollBtn)audRollBtn.addEventListener("click",function(){for(var ar=0;ar<audChks.length;ar++)audChks[ar].checked=true;syncAudit();if(audBanner)audBanner.style.display="block";});'+
-   'var beoChks=document.querySelectorAll(".mm-beo-chk"),beoKpi=document.getElementById("mm-beo-ready-kpi"),beoStageAll=document.getElementById("mm-beo-stage-all"),beoBanner=document.getElementById("mm-beo-confirm-banner");'+
-   'function syncBeo(){'+
-    'var bDone=0;for(var bi=0;bi<beoChks.length;bi++)if(beoChks[bi].checked)bDone++;'+
-    'if(beoKpi)beoKpi.textContent=bDone+" / "+beoChks.length+" Staged";'+
-    'if(beoBanner&&bDone===beoChks.length)beoBanner.style.display="block";'+
-   '}'+
-   'for(var bc=0;bc<beoChks.length;bc++)beoChks[bc].addEventListener("change",syncBeo);'+
-   'if(beoStageAll)beoStageAll.addEventListener("click",function(){for(var bs=0;bs<beoChks.length;bs++)beoChks[bs].checked=true;syncBeo();if(beoBanner)beoBanner.style.display="block";});'+
-   'var prBanner=document.getElementById("mm-stock-pr-banner"),prBtn=document.getElementById("mm-stock-issue-pr-btn"),prKpi=document.getElementById("mm-stock-pr-kpi"),onePrBtns=document.querySelectorAll(".mm-stock-one-pr"),prCount=3;'+
-   'function issuePr(msg){prCount++;if(prKpi)prKpi.textContent=prCount+" PRs";if(prBanner){prBanner.style.display="block";prBanner.innerHTML="<i class=\\"fa fa-check-circle\\"></i> <strong>Purchase Requisition Dispatched:</strong> "+msg+" — <a href=\\"/preview/rst-purchase-list\\"><strong>Open Requisition List →</strong></a>";}}'+
-   'if(prBtn)prBtn.addEventListener("click",function(){issuePr("Consolidated Requisition #PR-2026-318 (4 Low-Par SKUs · ৳ 42,800)");});'+
-   'for(var op=0;op<onePrBtns.length;op++){onePrBtns[op].addEventListener("click",function(){issuePr(this.getAttribute("data-pr-item")||"Low-Par SKU Requisition");});}'+
-   'var trnForm=document.getElementById("mm-trn-dispatch-form"),trnTbody=document.getElementById("mm-trn-tbody"),trnBanner=document.getElementById("mm-trn-confirm-banner"),trnTotKpi=document.getElementById("mm-trn-kpi-total"),trnDispKpi=document.getElementById("mm-trn-kpi-dispatched"),trnTrips=6,trnDisp=4;'+
-   'function bindTrnCycle(btn){btn.addEventListener("click",function(){var tr=this.closest("tr"),b=tr&&tr.querySelector(".trn-status-badge");if(!b)return;var cur=b.textContent;var next=cur==="Chauffeur Staged"?"En-Route (GPS Live)":(cur.indexOf("En-Route")>=0?"Arrived at Hotel":"Chauffeur Staged");b.textContent=next;b.className="mm-badge "+(next==="Arrived at Hotel"?"mm-badge-paid":"mm-badge-partial")+" trn-status-badge";});}'+
-   'var trnCycleBtns=document.querySelectorAll(".mm-trn-status-btn");for(var tc=0;tc<trnCycleBtns.length;tc++)bindTrnCycle(trnCycleBtns[tc]);'+
-   'if(trnForm)trnForm.addEventListener("submit",function(e){e.preventDefault();trnTrips++;trnDisp++;if(trnTotKpi)trnTotKpi.textContent=trnTrips+" Trips";if(trnDispKpi)trnDispKpi.textContent=trnDisp+" / "+trnTrips+" Dispatched";var g=(document.getElementById("trn-guest-suite")||{}).value||"Suite #301";var f=(document.getElementById("trn-flight-route")||{}).value||"HSIA VIP";var v=(document.getElementById("trn-vehicle")||{}).value||"Mercedes V-Class";var bl=(document.getElementById("trn-billing")||{}).value||"Complimentary";if(trnTbody){var tr=document.createElement("tr");tr.innerHTML="<td><code>#TRN-80"+(trnTrips-1)+"</code></td><td><strong>"+g+"</strong></td><td>"+f+"</td><td>"+v+"</td><td><span class=\\"mm-badge mm-badge-partial trn-status-badge\\">En-Route (GPS Live)</span></td><td class=\\"text-center\\"><button type=\\"button\\" class=\\"mm-button mm-button-secondary mm-trn-status-btn\\" style=\\"min-height:25px;padding:1px 8px;font-size:11px\\">Cycle Status</button></td>";trnTbody.insertBefore(tr,trnTbody.firstChild);var nb=tr.querySelector(".mm-trn-status-btn");if(nb)bindTrnCycle(nb);}if(trnBanner){trnBanner.style.display="block";trnBanner.innerHTML="<i class=\\"fa fa-check-circle\\"></i> <strong>VIP Chauffeur Dispatched:</strong> "+v+" assigned to <strong>"+g+"</strong> ("+f+" · "+bl+").";}});'+
-   'var favBtn=document.getElementById("mm-top-fav-btn"),favsToggle=document.getElementById("mm-top-favs-toggle"),favsBar=document.getElementById("mm-top-favs-bar"),favsCnt=document.getElementById("mm-top-favs-count");'+
-   'var defFavs=[["/dashboard","Front-Desk Board"],["/preview/booking-next","3-Step Booking Wizard"],["/preview/folio-settlement","Split-Folio Settlement"],["/preview/pos-unified","Unified Split-Bill POS"],["/preview/acc-balance-sheet","Balance Sheet Builder"],["/preview/room-settings","Room Settings & Pricing"]];'+
-   'var favs=defFavs;try{var rawF=localStorage.getItem("mm-top-favs");if(rawF){var parsed=JSON.parse(rawF);if(Array.isArray(parsed)&&parsed.length)favs=parsed;}}catch(e){}'+
-   'var curH=nav.getAttribute("data-cur-href")||"/dashboard",curT=nav.getAttribute("data-cur-title")||"Screen";'+
-   'function renderFavs(){'+
-    'var isFav=favs.some(function(f){return f[0]===curH;});'+
-    'if(favBtn){favBtn.setAttribute("aria-pressed",String(isFav));favBtn.innerHTML="<i class=\\"fa "+(isFav?"fa-star":"fa-star-o")+"\\" style=\\"color:"+(isFav?"#d97706":"inherit")+"\\"></i> "+(isFav?"Starred":"Star");}'+
-    'if(favsCnt)favsCnt.textContent=String(favs.length);'+
-    'if(favsBar){'+
-     'favsBar.innerHTML="<span style=\\"font-size:11px;font-weight:700;color:#b45309;margin-right:4px\\"><i class=\\"fa fa-star\\"></i> Pinned Favorites:</span>"+favs.map(function(f){return "<a href=\\""+f[0]+"\\" class=\\"mm-top-fav-chip"+(f[0]===curH?" is-active":"")+"\\"><i class=\\"fa fa-bookmark\\"></i><span>"+f[1]+"</span></a>";}).join("");'+
-    '}'+
-   '}'+
-   'renderFavs();'+
-   'if(favBtn)favBtn.addEventListener("click",function(){'+
-    'var idx=favs.findIndex(function(f){return f[0]===curH;});'+
-    'if(idx>=0)favs.splice(idx,1);else favs.push([curH,curT]);'+
-    'try{localStorage.setItem("mm-top-favs",JSON.stringify(favs));}catch(e){}'+
-    'renderFavs();if(favsBar&&favsBar.hidden){favsBar.hidden=false;if(favsToggle)favsToggle.setAttribute("aria-expanded","true");}'+
-   '});'+
-   'if(favsToggle)favsToggle.addEventListener("click",function(){if(!favsBar)return;favsBar.hidden=!favsBar.hidden;favsToggle.setAttribute("aria-expanded",String(!favsBar.hidden));});'+
-   'var notifBadge=document.getElementById("mm-notif-unread-badge"),notifMarkBtn=document.getElementById("mm-notif-mark-read"),notifItems=document.querySelectorAll("#mm-notif-list .mm-notif-item"),notifFilterBtns=document.querySelectorAll("[data-notif-filter]");'+
-   'var allRead=false;try{allRead=localStorage.getItem("mm-notif-read")==="1";}catch(e){}'+
-   'function syncNotifRead(){'+
-    'for(var nIdx=0;nIdx<notifItems.length;nIdx++)notifItems[nIdx].classList.toggle("is-read",allRead);'+
-    'if(notifBadge){notifBadge.textContent=allRead?"0 Unread":"8 Live";notifBadge.style.background=allRead?"rgba(22,163,74,0.14)":"rgba(220,38,38,0.14)";notifBadge.style.color=allRead?"#15803d":"#dc2626";}'+
-    'if(notifMarkBtn)notifMarkBtn.innerHTML=allRead?"<i class=\\"fa fa-refresh\\"></i> Reset Unread":"<i class=\\"fa fa-check-square-o\\"></i> Mark All Read";'+
-   '}'+
-   'syncNotifRead();'+
-   'if(notifMarkBtn)notifMarkBtn.addEventListener("click",function(){allRead=!allRead;try{localStorage.setItem("mm-notif-read",allRead?"1":"0");}catch(e){}syncNotifRead();});'+
-   'for(var nf=0;nf<notifFilterBtns.length;nf++){notifFilterBtns[nf].addEventListener("click",function(){'+
-    'var cat=this.getAttribute("data-notif-filter")||"all";'+
-    'for(var x=0;x<notifFilterBtns.length;x++)notifFilterBtns[x].classList.toggle("is-active",notifFilterBtns[x]===this);'+
-    'for(var y=0;y<notifItems.length;y++){var it=notifItems[y];it.style.display=(cat==="all"||it.getAttribute("data-notif-cat")===cat)?"":"none";}'+
-   '});}'+
-   'var shiftList=document.getElementById("mm-shift-log-list"),shiftForm=document.getElementById("mm-shift-note-form"),shiftRole=document.getElementById("mm-shift-note-role"),shiftInput=document.getElementById("mm-shift-note-input"),shiftCnt=document.getElementById("mm-shift-notes-count");'+
-   'var defNotes=[["Front Desk","13:45","Suite #301 (Brig. Gen. Mahmudul Hasan) airport chauffeur dispatched; welcome fruit basket staged."],["F&B Manager","13:20","Grand Ballroom 180-pax evening gala menu prep at 85%; 2 extra service captains assigned."],["Night Auditor","12:10","City Ledger SOA statements sent to 5 corporate accounts; Room 305 Window B ready for sign-off."]];'+
-   'var notes=defNotes;try{var rawN=localStorage.getItem("mm-shift-notes");if(rawN){var pN=JSON.parse(rawN);if(Array.isArray(pN)&&pN.length)notes=pN;}}catch(e){}'+
-   'function renderNotes(){'+
-    'if(shiftCnt)shiftCnt.textContent=String(notes.length);'+
-    'if(shiftList)shiftList.innerHTML=notes.map(function(n){return "<div class=\\"mm-shift-note-card\\"><div style=\\"display:flex;justify-content:space-between;margin-bottom:3px\\"><span class=\\"mm-badge mm-badge-paid\\">"+n[0]+"</span><span style=\\"font-size:11px;opacity:.7\\"><i class=\\"fa fa-clock-o\\"></i> "+n[1]+" · 14 Oct 2026</span></div><div>"+n[2]+"</div></div>";}).join("");'+
-   '}'+
-   'renderNotes();'+
-   'if(shiftForm)shiftForm.addEventListener("submit",function(ev){'+
-    'ev.preventDefault();if(!shiftInput||!shiftInput.value.trim())return;'+
-    'var now=new Date(),hh=String(now.getHours()).padStart(2,"0")+":"+String(now.getMinutes()).padStart(2,"0");'+
-    'notes.unshift([shiftRole?shiftRole.value:"Front Desk",hh,shiftInput.value.trim().replace(/[<>&"]/g,"")]);'+
-    'shiftInput.value="";try{localStorage.setItem("mm-shift-notes",JSON.stringify(notes));}catch(e){}renderNotes();'+
-   '});'+
-   'var pinned=true;try{pinned=localStorage.getItem("mm-top-subnav-pinned")!=="0";}catch(e){}'+
-   'function syncPin(){nav.classList.toggle("is-sticky",pinned);if(pinBtn){pinBtn.setAttribute("aria-pressed",String(pinned));pinBtn.innerHTML="<i class=\\"fa fa-thumb-tack\\"></i> "+(pinned?"Pinned":"Pin Bar");}}'+
-   'syncPin();'+
-   'if(pinBtn)pinBtn.addEventListener("click",function(){pinned=!pinned;try{localStorage.setItem("mm-top-subnav-pinned",pinned?"1":"0");}catch(e){}syncPin();});'+
    'function setMore(open){if(!morePanel||!moreBtn)return;morePanel.hidden=!open;moreBtn.setAttribute("aria-expanded",String(open));}'+
    'if(moreBtn)moreBtn.addEventListener("click",function(){setMore(morePanel.hidden);});'+
    'var scope="all",scopeBtns=nav.querySelectorAll("[data-top-scope]");'+
@@ -2452,29 +1964,14 @@ function menuLinks(page,currentPath){
      'if(altJump[e.key]){e.preventDefault();window.location.href=altJump[e.key];return;}'+
      'var kLower=(e.key||"").toLowerCase();'+
      'if(kLower==="r"){e.preventDefault();var nextR=roleOrder[(roleOrder.indexOf(curRole)+1)%roleOrder.length];applyRole(nextR);return;}'+
-     'if(kLower==="s"&&topSbBtn){e.preventDefault();topSbBtn.click();return;}'+
-     'if(kLower==="b"&&favsToggle){e.preventDefault();favsToggle.click();return;}'+
      'if(kLower==="q"){e.preventDefault();var qb=document.getElementById("mm-express-create-btn");if(qb)qb.click();return;}'+
-     'if(kLower==="g"){e.preventDefault();var gb=document.getElementById("mm-guest-lookup-btn");if(gb)gb.click();setTimeout(function(){var gs=document.getElementById("mm-guest-lookup-search");if(gs)gs.focus();},150);return;}'+
-     'if(kLower==="h"){e.preventDefault();var hb=document.getElementById("mm-hk-toggle-btn");if(hb)hb.click();return;}'+
-     'if(kLower==="e"){e.preventDefault();var eb=document.getElementById("mm-banquet-cmd-btn");if(eb)eb.click();return;}'+
-     'if(kLower==="i"){e.preventDefault();var ib=document.getElementById("mm-stock-reorder-btn");if(ib)ib.click();return;}'+
-     'if(kLower==="t"){e.preventDefault();var tb=document.getElementById("mm-transport-btn");if(tb)tb.click();return;}'+
-     'if(kLower==="a"){e.preventDefault();var ab=document.getElementById("mm-audit-inspector-btn");if(ab)ab.click();return;}'+
-     'if(kLower==="m"){e.preventDefault();var mb=document.getElementById("mm-flash-report-btn");if(mb)mb.click();return;}'+
-     'if(kLower==="n"){e.preventDefault();var nb=document.getElementById("mm-notif-center-btn");if(nb)nb.click();return;}'+
      'if(kLower==="f"&&flt){e.preventDefault();flt.focus();return;}'+
-    '}'+
-    'if(!e.altKey&&!e.ctrlKey&&!e.metaKey){'+
-     'if(e.key==="["){var pv=document.getElementById("mm-top-prev-tab");if(pv&&pv.href){e.preventDefault();window.location.href=pv.href;}}'+
-     'else if(e.key==="]"){var nx=document.getElementById("mm-top-next-tab");if(nx&&nx.href){e.preventDefault();window.location.href=nx.href;}}'+
-     'else if(e.key==="?"){var sb=document.getElementById("mm-shortcuts-btn");if(sb){e.preventDefault();sb.click();}}'+
     '}'+
    '});'+
   '})();</script>';
 
  return page
-  .replace(/<ul class="nav nav-list" id="mm-primary-menu"[^>]*>[\s\S]*?<\/ul>(?=<\/div>)/,roleSwitcher+'<ul class="nav nav-list" id="mm-primary-menu" aria-label="Main navigation">'+sidebarParts.join('')+'</ul>'+sidebarFooter)
+  .replace(/<ul class="nav nav-list" id="mm-primary-menu"[^>]*>[\s\S]*?<\/ul>(?=<\/div>)/,roleSwitcher+'<ul class="nav nav-list" id="mm-primary-menu" aria-label="Main navigation">'+sidebarParts.join('')+'</ul>')
   .replace('<!--MM-TOP-SUBNAV-->',()=>topSubnav);
 }
 const pubPages={'/preview/public-home':'frontend/home.html','/preview/public-rooms':'frontend/room_view.html','/preview/public-room-view':'frontend/room_view.html','/preview/public-booking-cart':'frontend/booking_cart.html','/preview/public-search-all-room':'frontend/search_all_room.html','/preview/public-search-room':'frontend/search_room.html','/preview/public-guest-register':'frontend/guest_register.html','/preview/public-booking-register':'frontend/booking_register.html','/preview/public-food-menu':'frontend/food_menu.html','/preview/public-bar-menu':'frontend/bar_menu.html','/preview/public-terms':'frontend/terms.html','/preview/public-privacy-policy':'frontend/privacy_policy.html','/preview/public-single-page-view':'frontend/single_page_view.html'};
@@ -2489,8 +1986,7 @@ function renderDashboardPage(url){
  if(picked&&/^\d\d\/\d\d\/\d{4} - \d\d\/\d\d\/\d{4}$/.test(picked)){
   page=page.replace(/(name="booking_date" id="available_date" value=")[^"]*"/,'$1'+picked+'"').replace(/(name="booking_availabe" value=")[^"]*"/,'$1'+picked+'"');
  }
- const dashBanner='<!--MM-TOP-SUBNAV--><div role="note" id="dash-ops-strip" style="padding:12px 16px;margin:0 0 16px;border:1px solid #c5d7ee;background:#edf4ff;color:#24436a;border-radius:10px;display:flex;flex-direction:column;gap:10px"><div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px"><div><strong><i class="fa fa-tachometer"></i> Front-Desk Command Center (Core Workflow #1)</strong> · <span class="mm-badge mm-badge-paid">Business Date: 2026-10-14 · Night Audit: Open</span> <span class="mm-badge mm-badge-partial">8 Arrivals · 4 Departures · 1 Credit Alert</span> — <a href="/preview">All 360 Screens</a></div><div style="display:flex;flex-wrap:wrap;gap:6px"><button type="button" data-mm-theme-toggle aria-pressed="false" aria-label="Dark theme" class="mm-button mm-button-secondary" style="min-height:30px;padding:3px 10px"><i class="fa fa-moon-o"></i> Dark / Light</button><a href="/preview/plan-a" class="mm-button" style="min-height:30px;padding:3px 10px"><i class="fa fa-sitemap"></i> Plan A (9/9)</a><a href="/preview/plan-b" class="mm-button" style="min-height:30px;padding:3px 10px"><i class="fa fa-rocket"></i> Plan B (34/34)</a><a href="/preview/room-settings" class="mm-button mm-button-secondary" style="min-height:30px;padding:3px 10px"><i class="fa fa-sliders"></i> Room Settings</a><a href="/preview/folio-settlement" class="mm-button mm-button-secondary" style="min-height:30px;padding:3px 10px"><i class="fa fa-columns"></i> Split-Folio</a><a href="/preview/pos-unified" class="mm-button mm-button-secondary" style="min-height:30px;padding:3px 10px"><i class="fa fa-cutlery"></i> Unified POS</a><a href="/preview/rooms" class="mm-button mm-button-secondary" style="min-height:30px;padding:3px 10px"><i class="fa fa-bed"></i> 20 Rooms</a><a href="/preview/tape-chart" class="mm-button mm-button-secondary" style="min-height:30px;padding:3px 10px"><i class="fa fa-calendar"></i> Tape Chart</a><a href="/preview/booking-next" class="mm-button mm-button-secondary" style="min-height:30px;padding:3px 10px"><i class="fa fa-calendar-plus-o"></i> Wizard</a></div></div></div>';
- return page.replace('<section class="mm-ui mm-dashboard">',dashBanner+'<section class="mm-ui mm-dashboard">');
+ return page.replace('<section class="mm-ui mm-dashboard">','<!--MM-TOP-SUBNAV--><section class="mm-ui mm-dashboard">');
 }
 http.createServer((req,res)=>{
  const url=new URL(req.url,'http://preview');

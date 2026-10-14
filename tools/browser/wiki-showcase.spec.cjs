@@ -296,8 +296,11 @@ test('14-module sidebar role switcher, top sub-menu bar & global command drawers
     await expect(page.locator('.mm-page-title').first()).toContainText('Daily Manager Flash Report');
     await expect(page.locator('.mm-panel').first()).toBeVisible();
 
-    // Verify Sidebar Role Switcher (#mm-role-switcher), Top Sub-Menu Bar (#mm-top-subnav) & Global Command Drawers
+    // Verify Sidebar Role Switcher (#mm-role-switcher) & Clean Top Sub-Menu Bar (#mm-top-subnav) with no duplicate strips/bars
     await page.goto(`http://127.0.0.1:${PORT}/preview/dashboard`);
+    await expect(page.locator('#dash-ops-strip')).toHaveCount(0);
+    await expect(page.locator('#mm-top-favs-bar')).toHaveCount(0);
+    await expect(page.locator('#mm-sidebar-collapse-bar')).toHaveCount(0);
     await expect(page.locator('#mm-role-switcher')).toBeVisible();
     await page.locator('#mm-role-switcher [data-role-filter="pos"]').click();
     await expect(page.locator('#mm-primary-menu > li:not(.mm-nav-section):visible')).toHaveCount(5);
@@ -307,19 +310,6 @@ test('14-module sidebar role switcher, top sub-menu bar & global command drawers
     await page.locator('#mm-top-more-btn').click();
     await expect(page.locator('#mm-top-more-panel')).toBeVisible();
     await page.locator('#mm-top-more-btn').click();
-
-    await page.locator('#mm-banquet-cmd-btn').click();
-    await expect(page.locator('#mm-banquet-drawer')).toBeVisible();
-    await page.locator('#mm-beo-stage-all').click();
-    await expect(page.locator('#mm-beo-ready-kpi')).toContainText('5 / 5 Staged');
-    await expect(page.locator('#mm-beo-confirm-banner')).toBeVisible();
-    await page.locator('#mm-banquet-drawer [data-dismiss="modal"]').first().click();
-
-    await page.locator('#mm-transport-btn').click();
-    await expect(page.locator('#mm-transport-drawer')).toBeVisible();
-    await page.locator('#mm-trn-dispatch-submit').click();
-    await expect(page.locator('#mm-trn-kpi-total')).toContainText('7 Trips');
-    await expect(page.locator('#mm-trn-confirm-banner')).toBeVisible();
 
     // Verify Redesigned New Banquet Booking (/preview/bq-booking-create)
     await page.goto(`http://127.0.0.1:${PORT}/preview/bq-booking-create`);
