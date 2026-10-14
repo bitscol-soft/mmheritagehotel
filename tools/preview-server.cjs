@@ -1746,6 +1746,7 @@ function menuLinks(page,currentPath){
    '<div style="display:flex;flex-wrap:wrap;align-items:center;gap:6px">'+
     '<input type="search" id="mm-top-tab-filter" class="mm-top-tab-filter" placeholder="Filter '+modScreens.length+' module screens..." aria-label="Filter sub-menu tabs and module screens">'+
     '<button type="button" id="mm-express-create-btn" data-toggle="modal" data-target="#mm-express-drawer" class="mm-button" style="min-height:28px;padding:2px 10px;font-size:11.5px" title="Express Walk-In Room Hold, 80mm KOT Order &amp; GL Voucher Quick-Create (Alt+Q)"><i class="fa fa-plus-circle"></i> + Quick Create</button>'+
+    '<button type="button" id="mm-guest-lookup-btn" data-toggle="modal" data-target="#mm-guest-lookup-drawer" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 9px;font-size:11.5px" title="Global In-House Guest, Suite &amp; Folio Instant Lookup Drawer (Alt+G)"><i class="fa fa-id-card-o"></i> Guest / Folio</button>'+
     '<button type="button" id="mm-flash-report-btn" data-toggle="modal" data-target="#mm-flash-drawer" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 9px;font-size:11.5px" title="Daily Manager Flash Report &amp; Active Shift Roster Inspector (Alt+M)"><i class="fa fa-bolt"></i> Flash Report</button>'+
     '<button type="button" id="mm-top-fav-btn" aria-pressed="false" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 9px;font-size:11.5px" title="Star or unstar this screen to Pinned Favorites"><i class="fa fa-star-o"></i> Star</button>'+
     '<button type="button" id="mm-top-favs-toggle" aria-expanded="false" aria-controls="mm-top-favs-bar" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 9px;font-size:11.5px" title="Show or hide cross-module Pinned Favorites bar (Alt+B)"><i class="fa fa-bookmark"></i> Favorites (<span id="mm-top-favs-count">6</span>)</button>'+
@@ -1769,6 +1770,57 @@ function menuLinks(page,currentPath){
     '</div>'+
    '</div>'+
    '<div class="mm-top-more-grid" id="mm-top-more-grid">'+moreCardsHtml+'</div>'+
+  '</div>'+
+  '<div class="modal fade mm-app-drawer" id="mm-guest-lookup-drawer" tabindex="-1" role="dialog" aria-labelledby="mm-guest-lookup-drawer-title">'+
+   '<div class="modal-dialog modal-lg" role="document"><div class="modal-content">'+
+    '<div class="modal-header"><h4 class="modal-title" id="mm-guest-lookup-drawer-title"><i class="fa fa-id-card-o"></i> Global In-House Guest, Suite &amp; Split-Folio Instant Lookup (Alt+G)</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button></div>'+
+    '<div class="modal-body"><section class="mm-ui"><div class="tw-space-y-4">'+
+     '<div class="mm-table-kpi-grid" aria-label="In-house guest lookup summary">'+
+      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-bed"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Occupied Suites</span><div class="mm-table-kpi-value">18 / 20 <span class="mm-table-kpi-sub">90.0% Occupancy</span></div></div></div>'+
+      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-star"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">VIP &amp; Diplomatic</span><div class="mm-table-kpi-value">6 VIP Suites <span class="mm-table-kpi-sub">Floors 3 &amp; 4</span></div></div></div>'+
+      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-columns"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Open Folio Balance</span><div class="mm-table-kpi-value">৳ 184,900 <span class="mm-table-kpi-sub">Window A + City Ledger</span></div></div></div>'+
+      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-key"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Encoded Keycards</span><div class="mm-table-kpi-value">34 Active <span class="mm-table-kpi-sub">Mifare RFID</span></div></div></div>'+
+     '</div>'+
+     '<div class="mm-panel tw-p-4" id="mm-guest-lookup-detail">'+
+      '<div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px">'+
+       '<div><span class="mm-badge mm-badge-paid" id="glk-det-suite">Suite #204 · Deluxe Double</span> <strong id="glk-det-name" style="font-size:14px;margin-left:6px">Tanvir Ahmed Chowdhury</strong> <span class="mm-badge mm-badge-partial" id="glk-det-tier" style="margin-left:4px">Platinum VIP · UNICEF BD</span></div>'+
+       '<span style="font-size:11.5px;font-weight:700" id="glk-det-bk">#BK-2026-104 · 12 Oct → 15 Oct (3 Nights · 2 RFID Keys)</span>'+
+      '</div>'+
+      '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(175px,1fr));gap:8px;margin-bottom:10px">'+
+       '<div class="mm-shift-note-card"><strong>Window A (Guest Personal)</strong><div id="glk-det-wina" style="font-size:13px;font-weight:700;color:#15803d;margin-top:2px">৳ 4,100 · Settled (POS/Minibar)</div></div>'+
+       '<div class="mm-shift-note-card"><strong>Window B (Corporate AR)</strong><div id="glk-det-winb" style="font-size:13px;font-weight:700;color:#1d4ed8;margin-top:2px">৳ 12,600 · UNICEF City Ledger</div></div>'+
+       '<div class="mm-shift-note-card"><strong>Net Folio Balance Due</strong><div id="glk-det-due" style="font-size:13px;font-weight:700;color:#b45309;margin-top:2px">৳ 2,600 Due on Checkout</div></div>'+
+      '</div>'+
+      '<div style="display:flex;flex-wrap:wrap;gap:6px">'+
+       '<a href="/preview/folio-settlement" class="mm-button" style="min-height:28px;padding:2px 10px;font-size:11.5px"><i class="fa fa-columns"></i> Settle Split Folio →</a>'+
+       '<a href="/preview/pos-unified" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11.5px"><i class="fa fa-cutlery"></i> Post Room KOT →</a>'+
+       '<a href="/preview/room-move" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11.5px"><i class="fa fa-exchange"></i> Room Move / Upgrade →</a>'+
+       '<a href="/preview/guest-crm" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11.5px"><i class="fa fa-id-badge"></i> Guest CRM 360° →</a>'+
+       '<a href="/preview/invoice" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11.5px"><i class="fa fa-print"></i> Print Tax Invoice →</a>'+
+      '</div>'+
+     '</div>'+
+     '<div class="mm-panel tw-p-4">'+
+      '<div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px">'+
+       '<div class="input-group" style="max-width:340px;flex:1 1 240px"><span class="input-group-addon"><i class="fa fa-search"></i></span><input type="search" id="mm-guest-lookup-search" class="form-control" placeholder="Search Suite #, Guest, Corporate, Phone or #BK..."></div>'+
+       '<div style="display:flex;flex-wrap:wrap;gap:5px" id="mm-glookup-pills">'+
+        '<button type="button" class="mm-role-pill is-active" data-glookup-filter="all">All (8)</button>'+
+        '<button type="button" class="mm-role-pill" data-glookup-filter="vip">VIP &amp; Diplomatic (5)</button>'+
+        '<button type="button" class="mm-role-pill" data-glookup-filter="due">Balance Due (4)</button>'+
+        '<button type="button" class="mm-role-pill" data-glookup-filter="arrival">Today Arrival (2)</button>'+
+       '</div>'+
+      '</div>'+
+      '<div class="mm-table-scroll"><table class="mm-data-table table table-bordered table-striped"><thead><tr><th>Suite</th><th>Guest &amp; Corporate Entity</th><th>Booking &amp; Stay</th><th class="text-right">Folio Balance</th><th class="text-center">Inspect</th></tr></thead><tbody id="mm-glookup-tbody">'+
+       '<tr data-glk-tags="all vip due" data-glk-search="204 tanvir ahmed chowdhury unicef bk-2026-104 01711" data-glk-suite="Suite #204 · Deluxe Double" data-glk-name="Tanvir Ahmed Chowdhury" data-glk-tier="Platinum VIP · UNICEF BD" data-glk-bk="#BK-2026-104 · 12 Oct → 15 Oct (3 Nights · 2 RFID Keys)" data-glk-wina="৳ 4,100 · Settled (POS/Minibar)" data-glk-winb="৳ 12,600 · UNICEF City Ledger" data-glk-due="৳ 2,600 Due on Checkout"><td><code>#204</code></td><td><strong>Tanvir Ahmed Chowdhury</strong><div class="tw-text-xs tw-text-muted">UNICEF Bangladesh · +880 1711-204204</div></td><td><code>#BK-2026-104</code> · 3N</td><td class="text-right"><strong>৳ 2,600 Due</strong></td><td class="text-center"><button type="button" class="mm-button mm-button-secondary glk-inspect-btn" style="min-height:26px;padding:1px 8px;font-size:11px">Inspect Folio</button></td></tr>'+
+       '<tr data-glk-tags="all vip arrival" data-glk-search="301 mahmudul hasan brig gen diplomatic bk-2026-101 01713" data-glk-suite="Suite #301 · Diplomatic Suite" data-glk-name="Brig. Gen. Mahmudul Hasan" data-glk-tier="State VIP · Cantonment HQ" data-glk-bk="#BK-2026-101 · 14 Oct → 17 Oct (3 Nights · 2 RFID Keys)" data-glk-wina="৳ 3,200 · Airport Limo &amp; Dining" data-glk-winb="৳ 26,700 · Direct Bill Approved" data-glk-due="৳ 0 (Pre-Authorized)"><td><code>#301</code></td><td><strong>Brig. Gen. Mahmudul Hasan</strong><div class="tw-text-xs tw-text-muted">Diplomatic Protocol · +880 1713-301301</div></td><td><code>#BK-2026-101</code> · 3N</td><td class="text-right"><span class="mm-badge mm-badge-paid">Pre-Auth</span></td><td class="text-center"><button type="button" class="mm-button mm-button-secondary glk-inspect-btn" style="min-height:26px;padding:1px 8px;font-size:11px">Inspect Folio</button></td></tr>'+
+       '<tr data-glk-tags="all vip due" data-glk-search="305 world bank delegation farhana rahman bk-2026-105 01715" data-glk-suite="Suite #305 · Presidential Suite" data-glk-name="Dr. Farhana Rahman (World Bank)" data-glk-tier="Diplomatic VIP · World Bank" data-glk-bk="#BK-2026-105 · 11 Oct → 14 Oct (3 Nights · Late Checkout)" data-glk-wina="৳ 6,450 · Settled via Visa POS" data-glk-winb="৳ 48,450 · World Bank City Ledger" data-glk-due="৳ 48,450 Window B Sign-Off"><td><code>#305</code></td><td><strong>Dr. Farhana Rahman</strong><div class="tw-text-xs tw-text-muted">World Bank Dhaka Mission · +880 1715-305305</div></td><td><code>#BK-2026-105</code> · 3N</td><td class="text-right"><strong>৳ 48,450 Due</strong></td><td class="text-center"><button type="button" class="mm-button mm-button-secondary glk-inspect-btn" style="min-height:26px;padding:1px 8px;font-size:11px">Inspect Folio</button></td></tr>'+
+       '<tr data-glk-tags="all vip arrival" data-glk-search="401 ambassador kenji sato embassy japan bk-2026-108 01718" data-glk-suite="Suite #401 · Royal Penthouse" data-glk-name="Ambassador Kenji Sato" data-glk-tier="Embassy VIP · Diplomatic" data-glk-bk="#BK-2026-108 · 14 Oct → 18 Oct (4 Nights · 4 RFID Keys)" data-glk-wina="৳ 0 · All-Inclusive VIP Package" data-glk-winb="৳ 52,800 · Embassy Direct Ledger" data-glk-due="৳ 0 (Embassy Guaranteed)"><td><code>#401</code></td><td><strong>Ambassador Kenji Sato</strong><div class="tw-text-xs tw-text-muted">Diplomatic Mission · +880 1718-401401</div></td><td><code>#BK-2026-108</code> · 4N</td><td class="text-right"><span class="mm-badge mm-badge-paid">Guaranteed</span></td><td class="text-center"><button type="button" class="mm-button mm-button-secondary glk-inspect-btn" style="min-height:26px;padding:1px 8px;font-size:11px">Inspect Folio</button></td></tr>'+
+       '<tr data-glk-tags="all due" data-glk-search="102 nadia islam mohammadi group bk-2026-102 01819" data-glk-suite="Suite #102 · Deluxe Twin" data-glk-name="Nadia Islam" data-glk-tier="Corporate Gold · Mohammadi Group" data-glk-bk="#BK-2026-102 · 13 Oct → 15 Oct (2 Nights · 2 RFID Keys)" data-glk-wina="৳ 3,850 · Restaurant &amp; Laundry" data-glk-winb="৳ 8,400 · Corporate Tariff" data-glk-due="৳ 3,850 Window A Due"><td><code>#102</code></td><td><strong>Nadia Islam</strong><div class="tw-text-xs tw-text-muted">Mohammadi Group · +880 1819-102102</div></td><td><code>#BK-2026-102</code> · 2N</td><td class="text-right"><strong>৳ 3,850 Due</strong></td><td class="text-center"><button type="button" class="mm-button mm-button-secondary glk-inspect-btn" style="min-height:26px;padding:1px 8px;font-size:11px">Inspect Folio</button></td></tr>'+
+       '<tr data-glk-tags="all vip due" data-glk-search="402 capt rezaul karim horizon air crew bk-2026-109 01911" data-glk-suite="Suite #402 · Grand Presidential" data-glk-name="Capt. Rezaul Karim (Horizon Air)" data-glk-tier="Airline Crew VIP · Horizon Air" data-glk-bk="#BK-2026-109 · 13 Oct → 15 Oct (2 Nights · 2 RFID Keys)" data-glk-wina="৳ 1,950 · Skyline Bar &amp; Minibar" data-glk-winb="৳ 24,000 · Horizon Air Contract" data-glk-due="৳ 1,950 Personal Tab Due"><td><code>#402</code></td><td><strong>Capt. Rezaul Karim</strong><div class="tw-text-xs tw-text-muted">Horizon Air International · +880 1911-402402</div></td><td><code>#BK-2026-109</code> · 2N</td><td class="text-right"><strong>৳ 1,950 Due</strong></td><td class="text-center"><button type="button" class="mm-button mm-button-secondary glk-inspect-btn" style="min-height:26px;padding:1px 8px;font-size:11px">Inspect Folio</button></td></tr>'+
+      '</tbody></table></div>'+
+     '</div>'+
+    '</div></section></div>'+
+    '<div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button><a href="/preview/guests" class="mm-button mm-button-secondary"><i class="fa fa-users"></i> All 20 VIP Guests</a><a href="/preview/folio-settlement" class="mm-button"><i class="fa fa-columns"></i> Open Split-Folio Workspace</a></div>'+
+   '</div></div>'+
   '</div>'+
   '<div class="modal fade mm-app-drawer" id="mm-express-drawer" tabindex="-1" role="dialog" aria-labelledby="mm-express-drawer-title">'+
    '<div class="modal-dialog modal-lg" role="document"><div class="modal-content">'+
@@ -1910,6 +1962,7 @@ function menuLinks(page,currentPath){
        '<div class="mm-shortcut-row"><span>Expand / Collapse Left Side Menu</span><span class="mm-kbd-badge">Alt + S</span></div>'+
        '<div class="mm-shortcut-row"><span>Toggle Cross-Module Pinned Favorites</span><span class="mm-kbd-badge">Alt + B</span></div>'+
        '<div class="mm-shortcut-row"><span>Open Express Walk-In / KOT / Voucher Drawer</span><span class="mm-kbd-badge">Alt + Q</span></div>'+
+       '<div class="mm-shortcut-row"><span>Open Global In-House Guest &amp; Folio Lookup</span><span class="mm-kbd-badge">Alt + G</span></div>'+
        '<div class="mm-shortcut-row"><span>Open Daily Manager Flash Report &amp; Roster</span><span class="mm-kbd-badge">Alt + M</span></div>'+
        '<div class="mm-shortcut-row"><span>Open Live Alerts &amp; Shift Handover Drawer</span><span class="mm-kbd-badge">Alt + N</span></div>'+
        '<div class="mm-shortcut-row"><span>Focus Top Sub-Menu Screen Filter</span><span class="mm-kbd-badge">Alt + F</span></div>'+
@@ -1981,6 +2034,27 @@ function menuLinks(page,currentPath){
    'if(wf)wf.addEventListener("submit",function(){var rm=document.getElementById("exp-walkin-room").value,g=document.getElementById("exp-walkin-guest").value,n=document.getElementById("exp-walkin-nights").value,ad=document.getElementById("exp-walkin-adv").value;pushExp("Walk-In Hold","#BK-2026-121 · "+rm+" · "+g+" ("+n+" Nights · ৳ "+ad+" Adv)","/preview/booking-next");});'+
    'if(pf)pf.addEventListener("submit",function(){var out=document.getElementById("exp-pos-outlet").value,tg=document.getElementById("exp-pos-target").value,it=document.getElementById("exp-pos-item").value;pushExp("80mm KOT","#KOT-1054 · "+out+" → "+tg+" · "+it,"/preview/pos-kot-print");});'+
    'if(vf)vf.addEventListener("submit",function(){var vt=document.getElementById("exp-vch-type").value,vh=document.getElementById("exp-vch-head").value,va=document.getElementById("exp-vch-amt").value;pushExp("GL Voucher","#VCH-2026-892 · "+vt+" · "+vh+" (৳ "+va+")","/preview/acc-receives");});'+
+   'var glkSearch=document.getElementById("mm-guest-lookup-search"),glkPills=document.querySelectorAll("[data-glookup-filter]"),glkRows=document.querySelectorAll("#mm-glookup-tbody tr"),glkTag="all";'+
+   'function filterGlk(){'+
+    'var sq=(glkSearch&&glkSearch.value||"").toLowerCase().trim();'+
+    'for(var gi=0;gi<glkRows.length;gi++){var r=glkRows[gi],tOk=(glkTag==="all"||(r.getAttribute("data-glk-tags")||"").indexOf(glkTag)>=0),qOk=(!sq||(r.getAttribute("data-glk-search")||"").indexOf(sq)>=0);r.style.display=(tOk&&qOk)?"":"none";}'+
+   '}'+
+   'if(glkSearch)glkSearch.addEventListener("input",filterGlk);'+
+   'for(var gp=0;gp<glkPills.length;gp++){glkPills[gp].addEventListener("click",function(){'+
+    'glkTag=this.getAttribute("data-glookup-filter")||"all";'+
+    'for(var gx=0;gx<glkPills.length;gx++)glkPills[gx].classList.toggle("is-active",glkPills[gx]===this);'+
+    'filterGlk();'+
+   '});}'+
+   'for(var gr=0;gr<glkRows.length;gr++){glkRows[gr].addEventListener("click",function(){'+
+    'var sEl=document.getElementById("glk-det-suite"),nEl=document.getElementById("glk-det-name"),tEl=document.getElementById("glk-det-tier"),bEl=document.getElementById("glk-det-bk"),waEl=document.getElementById("glk-det-wina"),wbEl=document.getElementById("glk-det-winb"),duEl=document.getElementById("glk-det-due");'+
+    'if(sEl)sEl.textContent=this.getAttribute("data-glk-suite")||"";'+
+    'if(nEl)nEl.textContent=this.getAttribute("data-glk-name")||"";'+
+    'if(tEl)tEl.textContent=this.getAttribute("data-glk-tier")||"";'+
+    'if(bEl)bEl.textContent=this.getAttribute("data-glk-bk")||"";'+
+    'if(waEl)waEl.textContent=this.getAttribute("data-glk-wina")||"";'+
+    'if(wbEl)wbEl.textContent=this.getAttribute("data-glk-winb")||"";'+
+    'if(duEl)duEl.textContent=this.getAttribute("data-glk-due")||"";'+
+   '});}'+
    'var favBtn=document.getElementById("mm-top-fav-btn"),favsToggle=document.getElementById("mm-top-favs-toggle"),favsBar=document.getElementById("mm-top-favs-bar"),favsCnt=document.getElementById("mm-top-favs-count");'+
    'var defFavs=[["/dashboard","Front-Desk Board"],["/preview/booking-next","3-Step Booking Wizard"],["/preview/folio-settlement","Split-Folio Settlement"],["/preview/pos-unified","Unified Split-Bill POS"],["/preview/acc-balance-sheet","Balance Sheet Builder"],["/preview/room-settings","Room Settings & Pricing"]];'+
    'var favs=defFavs;try{var rawF=localStorage.getItem("mm-top-favs");if(rawF){var parsed=JSON.parse(rawF);if(Array.isArray(parsed)&&parsed.length)favs=parsed;}}catch(e){}'+
@@ -2059,6 +2133,7 @@ function menuLinks(page,currentPath){
      'if(kLower==="s"&&topSbBtn){e.preventDefault();topSbBtn.click();return;}'+
      'if(kLower==="b"&&favsToggle){e.preventDefault();favsToggle.click();return;}'+
      'if(kLower==="q"){e.preventDefault();var qb=document.getElementById("mm-express-create-btn");if(qb)qb.click();return;}'+
+     'if(kLower==="g"){e.preventDefault();var gb=document.getElementById("mm-guest-lookup-btn");if(gb)gb.click();setTimeout(function(){var gs=document.getElementById("mm-guest-lookup-search");if(gs)gs.focus();},150);return;}'+
      'if(kLower==="m"){e.preventDefault();var mb=document.getElementById("mm-flash-report-btn");if(mb)mb.click();return;}'+
      'if(kLower==="n"){e.preventDefault();var nb=document.getElementById("mm-notif-center-btn");if(nb)nb.click();return;}'+
      'if(kLower==="f"&&flt){e.preventDefault();flt.focus();return;}'+
