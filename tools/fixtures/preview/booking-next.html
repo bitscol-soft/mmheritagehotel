@@ -98,6 +98,46 @@
             </div>
         </div>
 
+        <!-- Plan A Workflow #3 · Rate Plan, Promo Code, Stay Add-Ons & Draft Autosave Bar -->
+        <div class="mm-panel tw-p-4 mm-no-print" id="wiz-rateplan-addons-panel" role="region" aria-label="Rate plan, promo code, stay add-ons and draft autosave">
+            <div class="tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-2" style="margin-bottom:10px;">
+                <div>
+                    <strong><i class="fa fa-tags"></i> Workflow #3 · Rate Plan, Promo Engine &amp; Stay Add-Ons (Services · Banquet · F&amp;B)</strong>
+                    <span class="mm-badge mm-badge-paid" id="wiz-autosave-badge" style="margin-left:6px;"><i class="fa fa-cloud-upload"></i> Draft #DRF-2026-1094 Autosaved · Just now</span>
+                </div>
+                <div class="tw-flex tw-gap-2">
+                    <button type="button" class="mm-button mm-button-secondary mm-button-sm" id="wiz-btn-save-draft" style="min-height:28px;padding:2px 10px;font-size:11.5px;"><i class="fa fa-save"></i> Autosave Draft Now</button>
+                    <a href="/preview/rate-plans" class="mm-button mm-button-secondary mm-button-sm" style="min-height:28px;padding:2px 10px;font-size:11.5px;"><i class="fa fa-external-link"></i> Rate Plans (F3)</a>
+                </div>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;align-items:end">
+                <div>
+                    <label class="mm-label" for="wiz-rate-plan-select">Rate Plan (F3)</label>
+                    <select id="wiz-rate-plan-select" class="form-control input-sm">
+                        <option value="0" selected>BAR-2026 · Best Available Flexible (100%)</option>
+                        <option value="1500">CORP-VIP · Corporate / Diplomatic (-৳ 1,500)</option>
+                        <option value="2000">WKND-3N · Autumn 3-Night Escape (-৳ 2,000)</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="mm-label" for="wiz-promo-input">Promo / Coupon Code</label>
+                    <div style="display:flex;gap:6px">
+                        <input type="text" id="wiz-promo-input" class="form-control input-sm" value="HERITAGE20" placeholder="e.g. HERITAGE20">
+                        <button type="button" id="wiz-btn-apply-promo" class="mm-button mm-button-secondary" style="min-height:30px;padding:2px 10px;font-size:11.5px;white-space:nowrap">Apply</button>
+                    </div>
+                </div>
+                <div style="grid-column:span 2">
+                    <label class="mm-label">Pre-Arrival &amp; In-Stay Add-Ons (Auto-Posted to Folio)</label>
+                    <div class="tw-flex tw-flex-wrap tw-gap-3" style="padding-top:4px;font-size:12px;">
+                        <label style="display:inline-flex;align-items:center;gap:5px;margin:0;cursor:pointer;"><input type="checkbox" class="wiz-addon-chk" data-amt="1600" checked> Airport Pickup (+৳ 1,600)</label>
+                        <label style="display:inline-flex;align-items:center;gap:5px;margin:0;cursor:pointer;"><input type="checkbox" class="wiz-addon-chk" data-amt="2000" checked> Half-Board Dinner (+৳ 2,000)</label>
+                        <label style="display:inline-flex;align-items:center;gap:5px;margin:0;cursor:pointer;"><input type="checkbox" class="wiz-addon-chk" data-amt="3500"> Banquet / Boardroom 2h (+৳ 3,500)</label>
+                        <label style="display:inline-flex;align-items:center;gap:5px;margin:0;cursor:pointer;"><input type="checkbox" class="wiz-addon-chk" data-amt="1200"> Late Check-Out 4 PM (+৳ 1,200)</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="mm-wiz-grid">
             <div class="tw-space-y-4">
                 <section class="mm-panel tw-p-4 sm:tw-p-6" id="wiz-step-panel-1">
@@ -2426,6 +2466,55 @@
     recalcWizard();
     applyRoomFilters();
     buildDraftBookingSummary();
+
+    // Workflow #3 interactive Rate Plan, Promo Code, Add-Ons & Draft Autosave bindings
+    var rpSel = document.getElementById('wiz-rate-plan-select');
+    if (rpSel) {
+        rpSel.addEventListener('change', function () {
+            var discEl = document.getElementById('wiz-discount');
+            if (discEl && Number(rpSel.value) > 0) {
+                discEl.value = rpSel.value;
+                recalcWizard();
+            }
+            var asBdg = document.getElementById('wiz-autosave-badge');
+            if (asBdg) asBdg.innerHTML = '<i class="fa fa-check-circle"></i> Rate Plan Synced &amp; Draft Autosaved';
+        });
+    }
+    var promoBtn = document.getElementById('wiz-btn-apply-promo');
+    if (promoBtn) {
+        promoBtn.addEventListener('click', function () {
+            var code = (document.getElementById('wiz-promo-input') && document.getElementById('wiz-promo-input').value || 'HERITAGE20').trim().toUpperCase();
+            var discEl = document.getElementById('wiz-discount');
+            if (discEl) {
+                discEl.value = code === 'HERITAGE20' ? '2000' : '1500';
+                recalcWizard();
+            }
+            var asBdg = document.getElementById('wiz-autosave-badge');
+            if (asBdg) asBdg.innerHTML = '<i class="fa fa-tag"></i> Promo ' + code + ' Applied (-৳ ' + (discEl ? discEl.value : '2000') + ') · Draft Saved';
+        });
+    }
+    document.querySelectorAll('.wiz-addon-chk').forEach(function (chk) {
+        chk.addEventListener('change', function () {
+            var sum = 0;
+            document.querySelectorAll('.wiz-addon-chk:checked').forEach(function (c) {
+                sum += Number(c.getAttribute('data-amt') || 0);
+            });
+            var svcEl = document.getElementById('wiz-service');
+            if (svcEl) {
+                svcEl.value = String(sum);
+                recalcWizard();
+            }
+            var asBdg = document.getElementById('wiz-autosave-badge');
+            if (asBdg) asBdg.innerHTML = '<i class="fa fa-check-circle"></i> Add-Ons (৳ ' + sum.toLocaleString('en-US') + ') Synced to Folio';
+        });
+    });
+    var saveDraftBtn = document.getElementById('wiz-btn-save-draft');
+    if (saveDraftBtn) {
+        saveDraftBtn.addEventListener('click', function () {
+            var asBdg = document.getElementById('wiz-autosave-badge');
+            if (asBdg) asBdg.innerHTML = '<i class="fa fa-check-circle"></i> Draft #DRF-2026-1094 Saved to Server Cart!';
+        });
+    }
 })();
 </script>
 <!--/MM-JS--></body></html>
