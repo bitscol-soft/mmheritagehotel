@@ -1748,6 +1748,8 @@ function menuLinks(page,currentPath){
     '<button type="button" id="mm-express-create-btn" data-toggle="modal" data-target="#mm-express-drawer" class="mm-button" style="min-height:28px;padding:2px 10px;font-size:11.5px" title="Express Walk-In Room Hold, 80mm KOT Order &amp; GL Voucher Quick-Create (Alt+Q)"><i class="fa fa-plus-circle"></i> + Quick Create</button>'+
     '<button type="button" id="mm-guest-lookup-btn" data-toggle="modal" data-target="#mm-guest-lookup-drawer" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 9px;font-size:11.5px" title="Global In-House Guest, Suite &amp; Folio Instant Lookup Drawer (Alt+G)"><i class="fa fa-id-card-o"></i> Guest / Folio</button>'+
     '<button type="button" id="mm-hk-toggle-btn" data-toggle="modal" data-target="#mm-hk-drawer" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 9px;font-size:11.5px" title="20-Suite Housekeeping &amp; Room Status Quick-Toggle Drawer (Alt+H)"><i class="fa fa-bed"></i> Housekeeping</button>'+
+    '<button type="button" id="mm-banquet-cmd-btn" data-toggle="modal" data-target="#mm-banquet-drawer" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 9px;font-size:11.5px" title="Banquet &amp; Conference BEO Command Drawer (Alt+E)"><i class="fa fa-glass"></i> Banquet BEO</button>'+
+    '<button type="button" id="mm-stock-reorder-btn" data-toggle="modal" data-target="#mm-stock-drawer" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 9px;font-size:11.5px" title="Kitchen &amp; Store Par-Stock Reorder &amp; Requisition Drawer (Alt+I)"><i class="fa fa-cubes"></i> Stock Reorder</button>'+
     '<button type="button" id="mm-audit-inspector-btn" data-toggle="modal" data-target="#mm-audit-drawer" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 9px;font-size:11.5px" title="Night Audit Pre-Close Checklist &amp; Auto-GL Trial Balance Inspector (Alt+A)"><i class="fa fa-moon-o"></i> Night Audit</button>'+
     '<button type="button" id="mm-flash-report-btn" data-toggle="modal" data-target="#mm-flash-drawer" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 9px;font-size:11.5px" title="Daily Manager Flash Report &amp; Active Shift Roster Inspector (Alt+M)"><i class="fa fa-bolt"></i> Flash Report</button>'+
     '<button type="button" id="mm-top-fav-btn" aria-pressed="false" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 9px;font-size:11.5px" title="Star or unstar this screen to Pinned Favorites"><i class="fa fa-star-o"></i> Star</button>'+
@@ -1772,6 +1774,69 @@ function menuLinks(page,currentPath){
     '</div>'+
    '</div>'+
    '<div class="mm-top-more-grid" id="mm-top-more-grid">'+moreCardsHtml+'</div>'+
+  '</div>'+
+  '<div class="modal fade mm-app-drawer" id="mm-banquet-drawer" tabindex="-1" role="dialog" aria-labelledby="mm-banquet-drawer-title">'+
+   '<div class="modal-dialog modal-lg" role="document"><div class="modal-content">'+
+    '<div class="modal-header"><h4 class="modal-title" id="mm-banquet-drawer-title"><i class="fa fa-glass"></i> Banquet &amp; Conference BEO Event Command Drawer (Alt+E)</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button></div>'+
+    '<div class="modal-body"><section class="mm-ui"><div class="tw-space-y-4">'+
+     '<div class="mm-table-kpi-grid" aria-label="Banquet drawer KPIs">'+
+      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-building-o"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Active Event Halls</span><div class="mm-table-kpi-value">4 Venues <span class="mm-table-kpi-sub">Ballroom · Heritage · Board · Lawn</span></div></div></div>'+
+      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-users"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Today Events (14 Oct)</span><div class="mm-table-kpi-value">2 Events · 225 Pax <span class="mm-table-kpi-sub">180 Gala + 45 Summit</span></div></div></div>'+
+      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-cutlery"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Banquet Revenue Today</span><div class="mm-table-kpi-value">৳ 186,000 <span class="mm-table-kpi-sub">Catering + Hall + AV</span></div></div></div>'+
+      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-check-circle"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">BEO Staging Readiness</span><div class="mm-table-kpi-value"><span id="mm-beo-ready-kpi">4 / 5 Staged</span> <span class="mm-table-kpi-sub">19:00 Gala Curtain</span></div></div></div>'+
+     '</div>'+
+     '<div id="mm-beo-confirm-banner" class="alert alert-success" style="display:none;margin:0;border-radius:10px;font-size:12.5px"><i class="fa fa-check-circle"></i> <strong>All 5 BEO Staging Checkpoints Green!</strong> Grand Ballroom 180-Pax Corporate Gala (`#BQ-2026-401`) cleared for 19:00 doors open.</div>'+
+     '<div class="mm-drawer-card tw-p-4">'+
+      '<div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px">'+
+       '<strong><i class="fa fa-list-alt"></i> 1. Live BEO Staging Checklist — Grand Ballroom 180-Pax Corporate Gala (#BQ-2026-401)</strong>'+
+       '<button type="button" id="mm-beo-stage-all" class="mm-button" style="min-height:28px;padding:2px 10px;font-size:11.5px"><i class="fa fa-check-circle"></i> Mark All BEO Stages Ready</button>'+
+      '</div>'+
+      '<div id="mm-beo-checklist" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:8px">'+
+       '<label class="mm-shift-note-card" style="display:flex;align-items:center;gap:8px;margin:0;cursor:pointer"><input type="checkbox" class="mm-beo-chk" checked> <span>1. LED Wall, Wireless Mics &amp; Podium AV Soundcheck</span></label>'+
+       '<label class="mm-shift-note-card" style="display:flex;align-items:center;gap:8px;margin:0;cursor:pointer"><input type="checkbox" class="mm-beo-chk" checked> <span>2. 18 Banquet Round Tables (10x18) &amp; VIP Head Table</span></label>'+
+       '<label class="mm-shift-note-card" style="display:flex;align-items:center;gap:8px;margin:0;cursor:pointer"><input type="checkbox" class="mm-beo-chk" checked> <span>3. Welcome Mocktail &amp; Canapé Station Staged</span></label>'+
+       '<label class="mm-shift-note-card" style="display:flex;align-items:center;gap:8px;margin:0;cursor:pointer"><input type="checkbox" class="mm-beo-chk" checked> <span>4. Royal Heritage Buffet Chafers &amp; Carving Pass</span></label>'+
+       '<label class="mm-shift-note-card" style="display:flex;align-items:center;gap:8px;margin:0;cursor:pointer"><input type="checkbox" class="mm-beo-chk"> <span>5. Final Captain &amp; Valet Parking Briefing (18:30)</span></label>'+
+      '</div>'+
+     '</div>'+
+     '<div class="mm-drawer-card tw-p-4">'+
+      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px"><strong><i class="fa fa-calendar"></i> 2. Active &amp; Upcoming Banquet Hall Bookings</strong><a href="/preview/bq-booking-create" class="mm-button mm-button-secondary" style="min-height:26px;padding:1px 9px;font-size:11px"><i class="fa fa-plus"></i> New Banquet Booking →</a></div>'+
+      '<div class="mm-table-scroll"><table class="table table-bordered table-striped"><thead><tr><th>BEO Code</th><th>Venue &amp; Event Title</th><th>Date &amp; Window</th><th>Pax &amp; Menu</th><th class="text-right">Contract (৳)</th></tr></thead><tbody>'+
+       '<tr><td><code>#BQ-2026-401</code></td><td><strong>Grand Ballroom · Apex Annual Gala</strong></td><td>14 Oct · 19:00–23:00</td><td>180 Pax · Royal Buffet</td><td class="text-right"><strong>142,000</strong></td></tr>'+
+       '<tr><td><code>#BQ-2026-402</code></td><td><strong>Executive Boardroom · UNICEF Summit</strong></td><td>14 Oct · 10:00–17:00</td><td>45 Pax · High Tea + Lunch</td><td class="text-right"><strong>44,000</strong></td></tr>'+
+       '<tr><td><code>#BQ-2026-403</code></td><td><strong>Heritage Hall · Diplomatic Reception</strong></td><td>15 Oct · 18:30–22:30</td><td>120 Pax · Continental Plated</td><td class="text-right"><strong>118,000</strong></td></tr>'+
+      '</tbody></table></div>'+
+     '</div>'+
+    '</div></section></div>'+
+    '<div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button><a href="/preview/bq-booking-index" class="mm-button"><i class="fa fa-glass"></i> Open Banquet Bookings Workspace</a></div>'+
+   '</div></div>'+
+  '</div>'+
+  '<div class="modal fade mm-app-drawer" id="mm-stock-drawer" tabindex="-1" role="dialog" aria-labelledby="mm-stock-drawer-title">'+
+   '<div class="modal-dialog modal-lg" role="document"><div class="modal-content">'+
+    '<div class="modal-header"><h4 class="modal-title" id="mm-stock-drawer-title"><i class="fa fa-cubes"></i> Kitchen &amp; Store Par-Stock Reorder &amp; Requisition Drawer (Alt+I)</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button></div>'+
+    '<div class="modal-body"><section class="mm-ui"><div class="tw-space-y-4">'+
+     '<div class="mm-table-kpi-grid" aria-label="Stock reorder drawer KPIs">'+
+      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-exclamation-triangle"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Below Par Alert</span><div class="mm-table-kpi-value"><span id="mm-stock-low-kpi">4 SKUs</span> <span class="mm-table-kpi-sub">2 Kitchen · 1 Bar · 1 Store</span></div></div></div>'+
+      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-file-text-o"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Issued Requisitions</span><div class="mm-table-kpi-value"><span id="mm-stock-pr-kpi">3 PRs</span> <span class="mm-table-kpi-sub">Session Synced</span></div></div></div>'+
+      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-truck"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Est. Reorder Value</span><div class="mm-table-kpi-value">৳ 42,800 <span class="mm-table-kpi-sub">Approved Vendors</span></div></div></div>'+
+      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-check-circle"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Overall Stock Health</span><div class="mm-table-kpi-value">98.4% <span class="mm-table-kpi-sub">245 Active SKUs</span></div></div></div>'+
+     '</div>'+
+     '<div id="mm-stock-pr-banner" class="alert alert-success" style="display:none;margin:0;border-radius:10px;font-size:12.5px"></div>'+
+     '<div class="mm-drawer-card tw-p-4">'+
+      '<div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px">'+
+       '<strong><i class="fa fa-bell-o"></i> Low-Par Ingredients &amp; Housekeeping Supplies Requiring Reorder</strong>'+
+       '<button type="button" id="mm-stock-issue-pr-btn" class="mm-button" style="min-height:28px;padding:2px 10px;font-size:11.5px"><i class="fa fa-paper-plane"></i> Generate Consolidated Purchase Requisition (#PR-2026-318)</button>'+
+      '</div>'+
+      '<div class="mm-table-scroll"><table class="table table-bordered table-striped"><thead><tr><th>SKU</th><th>Item &amp; Store</th><th>On Hand vs Par</th><th>Reorder Qty</th><th class="text-right">Est. Cost (৳)</th><th class="text-center">Action</th></tr></thead><tbody>'+
+       '<tr><td><code>#ING-014</code></td><td><strong>Norwegian Salmon Fillet (Chilled)</strong> · Main Kitchen</td><td>3.5 kg / 12.0 kg</td><td>10.0 kg</td><td class="text-right"><strong>18,500</strong></td><td class="text-center"><button type="button" class="mm-button mm-button-secondary mm-stock-one-pr" data-pr-item="Norwegian Salmon Fillet (10 kg · ৳ 18,500)" style="min-height:25px;padding:1px 8px;font-size:11px">Issue PR</button></td></tr>'+
+       '<tr><td><code>#ING-029</code></td><td><strong>Arabica Espresso Beans (1kg Roast)</strong> · Skyline Bar</td><td>4.0 kg / 15.0 kg</td><td>12.0 kg</td><td class="text-right"><strong>11,400</strong></td><td class="text-center"><button type="button" class="mm-button mm-button-secondary mm-stock-one-pr" data-pr-item="Arabica Espresso Beans (12 kg · ৳ 11,400)" style="min-height:25px;padding:1px 8px;font-size:11px">Issue PR</button></td></tr>'+
+       '<tr><td><code>#ING-042</code></td><td><strong>Extra Virgin Olive Oil (5L Tin)</strong> · Main Kitchen</td><td>6.0 L / 20.0 L</td><td>15.0 L</td><td class="text-right"><strong>7,500</strong></td><td class="text-center"><button type="button" class="mm-button mm-button-secondary mm-stock-one-pr" data-pr-item="Extra Virgin Olive Oil (15 L · ৳ 7,500)" style="min-height:25px;padding:1px 8px;font-size:11px">Issue PR</button></td></tr>'+
+       '<tr><td><code>#GS-108</code></td><td><strong>Luxury Guest Bath Amenity Kits</strong> · General Store</td><td>28 sets / 100 sets</td><td>100 sets</td><td class="text-right"><strong>5,400</strong></td><td class="text-center"><button type="button" class="mm-button mm-button-secondary mm-stock-one-pr" data-pr-item="Luxury Guest Bath Amenity Kits (100 sets · ৳ 5,400)" style="min-height:25px;padding:1px 8px;font-size:11px">Issue PR</button></td></tr>'+
+      '</tbody></table></div>'+
+     '</div>'+
+    '</div></section></div>'+
+    '<div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button><a href="/preview/rst-purchase-create" class="mm-button mm-button-secondary"><i class="fa fa-plus"></i> Kitchen Purchase</a><a href="/preview/rsi-inventory-report" class="mm-button"><i class="fa fa-cubes"></i> Full Stock Alert Report</a></div>'+
+   '</div></div>'+
   '</div>'+
   '<div class="modal fade mm-app-drawer" id="mm-hk-drawer" tabindex="-1" role="dialog" aria-labelledby="mm-hk-drawer-title">'+
    '<div class="modal-dialog modal-lg" role="document"><div class="modal-content">'+
@@ -2035,6 +2100,8 @@ function menuLinks(page,currentPath){
        '<div class="mm-shortcut-row"><span>Open Express Walk-In / KOT / Voucher Drawer</span><span class="mm-kbd-badge">Alt + Q</span></div>'+
        '<div class="mm-shortcut-row"><span>Open Global In-House Guest &amp; Folio Lookup</span><span class="mm-kbd-badge">Alt + G</span></div>'+
        '<div class="mm-shortcut-row"><span>Open 20-Suite Housekeeping Quick-Toggle</span><span class="mm-kbd-badge">Alt + H</span></div>'+
+       '<div class="mm-shortcut-row"><span>Open Banquet &amp; Conference BEO Command Drawer</span><span class="mm-kbd-badge">Alt + E</span></div>'+
+       '<div class="mm-shortcut-row"><span>Open Kitchen &amp; Store Par-Stock Reorder Drawer</span><span class="mm-kbd-badge">Alt + I</span></div>'+
        '<div class="mm-shortcut-row"><span>Open Night Audit Pre-Close &amp; Auto-GL Drawer</span><span class="mm-kbd-badge">Alt + A</span></div>'+
        '<div class="mm-shortcut-row"><span>Open Daily Manager Flash Report &amp; Roster</span><span class="mm-kbd-badge">Alt + M</span></div>'+
        '<div class="mm-shortcut-row"><span>Open Live Alerts &amp; Shift Handover Drawer</span><span class="mm-kbd-badge">Alt + N</span></div>'+
@@ -2168,6 +2235,18 @@ function menuLinks(page,currentPath){
    'for(var ac=0;ac<audChks.length;ac++)audChks[ac].addEventListener("change",syncAudit);'+
    'if(audVerifyAll)audVerifyAll.addEventListener("click",function(){for(var av=0;av<audChks.length;av++)audChks[av].checked=true;syncAudit();});'+
    'if(audRollBtn)audRollBtn.addEventListener("click",function(){for(var ar=0;ar<audChks.length;ar++)audChks[ar].checked=true;syncAudit();if(audBanner)audBanner.style.display="block";});'+
+   'var beoChks=document.querySelectorAll(".mm-beo-chk"),beoKpi=document.getElementById("mm-beo-ready-kpi"),beoStageAll=document.getElementById("mm-beo-stage-all"),beoBanner=document.getElementById("mm-beo-confirm-banner");'+
+   'function syncBeo(){'+
+    'var bDone=0;for(var bi=0;bi<beoChks.length;bi++)if(beoChks[bi].checked)bDone++;'+
+    'if(beoKpi)beoKpi.textContent=bDone+" / "+beoChks.length+" Staged";'+
+    'if(beoBanner&&bDone===beoChks.length)beoBanner.style.display="block";'+
+   '}'+
+   'for(var bc=0;bc<beoChks.length;bc++)beoChks[bc].addEventListener("change",syncBeo);'+
+   'if(beoStageAll)beoStageAll.addEventListener("click",function(){for(var bs=0;bs<beoChks.length;bs++)beoChks[bs].checked=true;syncBeo();if(beoBanner)beoBanner.style.display="block";});'+
+   'var prBanner=document.getElementById("mm-stock-pr-banner"),prBtn=document.getElementById("mm-stock-issue-pr-btn"),prKpi=document.getElementById("mm-stock-pr-kpi"),onePrBtns=document.querySelectorAll(".mm-stock-one-pr"),prCount=3;'+
+   'function issuePr(msg){prCount++;if(prKpi)prKpi.textContent=prCount+" PRs";if(prBanner){prBanner.style.display="block";prBanner.innerHTML="<i class=\\"fa fa-check-circle\\"></i> <strong>Purchase Requisition Dispatched:</strong> "+msg+" — <a href=\\"/preview/rst-purchase-list\\"><strong>Open Requisition List →</strong></a>";}}'+
+   'if(prBtn)prBtn.addEventListener("click",function(){issuePr("Consolidated Requisition #PR-2026-318 (4 Low-Par SKUs · ৳ 42,800)");});'+
+   'for(var op=0;op<onePrBtns.length;op++){onePrBtns[op].addEventListener("click",function(){issuePr(this.getAttribute("data-pr-item")||"Low-Par SKU Requisition");});}'+
    'var favBtn=document.getElementById("mm-top-fav-btn"),favsToggle=document.getElementById("mm-top-favs-toggle"),favsBar=document.getElementById("mm-top-favs-bar"),favsCnt=document.getElementById("mm-top-favs-count");'+
    'var defFavs=[["/dashboard","Front-Desk Board"],["/preview/booking-next","3-Step Booking Wizard"],["/preview/folio-settlement","Split-Folio Settlement"],["/preview/pos-unified","Unified Split-Bill POS"],["/preview/acc-balance-sheet","Balance Sheet Builder"],["/preview/room-settings","Room Settings & Pricing"]];'+
    'var favs=defFavs;try{var rawF=localStorage.getItem("mm-top-favs");if(rawF){var parsed=JSON.parse(rawF);if(Array.isArray(parsed)&&parsed.length)favs=parsed;}}catch(e){}'+
@@ -2248,6 +2327,8 @@ function menuLinks(page,currentPath){
      'if(kLower==="q"){e.preventDefault();var qb=document.getElementById("mm-express-create-btn");if(qb)qb.click();return;}'+
      'if(kLower==="g"){e.preventDefault();var gb=document.getElementById("mm-guest-lookup-btn");if(gb)gb.click();setTimeout(function(){var gs=document.getElementById("mm-guest-lookup-search");if(gs)gs.focus();},150);return;}'+
      'if(kLower==="h"){e.preventDefault();var hb=document.getElementById("mm-hk-toggle-btn");if(hb)hb.click();return;}'+
+     'if(kLower==="e"){e.preventDefault();var eb=document.getElementById("mm-banquet-cmd-btn");if(eb)eb.click();return;}'+
+     'if(kLower==="i"){e.preventDefault();var ib=document.getElementById("mm-stock-reorder-btn");if(ib)ib.click();return;}'+
      'if(kLower==="a"){e.preventDefault();var ab=document.getElementById("mm-audit-inspector-btn");if(ab)ab.click();return;}'+
      'if(kLower==="m"){e.preventDefault();var mb=document.getElementById("mm-flash-report-btn");if(mb)mb.click();return;}'+
      'if(kLower==="n"){e.preventDefault();var nb=document.getElementById("mm-notif-center-btn");if(nb)nb.click();return;}'+
