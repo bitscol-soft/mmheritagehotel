@@ -1779,7 +1779,7 @@ function menuLinks(page,currentPath){
    '<div class="modal-dialog modal-lg" role="document"><div class="modal-content">'+
     '<div class="modal-header"><h4 class="modal-title" id="mm-banquet-drawer-title"><i class="fa fa-glass"></i> Banquet &amp; Conference BEO Event Command Drawer (Alt+E)</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button></div>'+
     '<div class="modal-body"><section class="mm-ui"><div class="tw-space-y-4">'+
-     '<div class="mm-table-kpi-grid" aria-label="Banquet drawer KPIs">'+
+     '<div class="mm-drawer-kpi-grid" aria-label="Banquet drawer KPIs">'+
       '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-building-o"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Active Event Halls</span><div class="mm-table-kpi-value">4 Venues <span class="mm-table-kpi-sub">Ballroom · Heritage · Board · Lawn</span></div></div></div>'+
       '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-users"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Today Events (14 Oct)</span><div class="mm-table-kpi-value">2 Events · 225 Pax <span class="mm-table-kpi-sub">180 Gala + 45 Summit</span></div></div></div>'+
       '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-cutlery"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Banquet Revenue Today</span><div class="mm-table-kpi-value">৳ 186,000 <span class="mm-table-kpi-sub">Catering + Hall + AV</span></div></div></div>'+
@@ -1815,7 +1815,7 @@ function menuLinks(page,currentPath){
    '<div class="modal-dialog modal-lg" role="document"><div class="modal-content">'+
     '<div class="modal-header"><h4 class="modal-title" id="mm-stock-drawer-title"><i class="fa fa-cubes"></i> Kitchen &amp; Store Par-Stock Reorder &amp; Requisition Drawer (Alt+I)</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button></div>'+
     '<div class="modal-body"><section class="mm-ui"><div class="tw-space-y-4">'+
-     '<div class="mm-table-kpi-grid" aria-label="Stock reorder drawer KPIs">'+
+     '<div class="mm-drawer-kpi-grid" aria-label="Stock reorder drawer KPIs">'+
       '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-exclamation-triangle"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Below Par Alert</span><div class="mm-table-kpi-value"><span id="mm-stock-low-kpi">4 SKUs</span> <span class="mm-table-kpi-sub">2 Kitchen · 1 Bar · 1 Store</span></div></div></div>'+
       '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-file-text-o"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Issued Requisitions</span><div class="mm-table-kpi-value"><span id="mm-stock-pr-kpi">3 PRs</span> <span class="mm-table-kpi-sub">Session Synced</span></div></div></div>'+
       '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-truck"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Est. Reorder Value</span><div class="mm-table-kpi-value">৳ 42,800 <span class="mm-table-kpi-sub">Approved Vendors</span></div></div></div>'+
@@ -1842,7 +1842,7 @@ function menuLinks(page,currentPath){
    '<div class="modal-dialog modal-lg" role="document"><div class="modal-content">'+
     '<div class="modal-header"><h4 class="modal-title" id="mm-hk-drawer-title"><i class="fa fa-bed"></i> 20-Suite Housekeeping &amp; Room Status Quick-Toggle Drawer (Alt+H)</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button></div>'+
     '<div class="modal-body"><section class="mm-ui"><div class="tw-space-y-4">'+
-     '<div class="mm-table-kpi-grid" aria-label="Housekeeping drawer KPIs">'+
+     '<div class="mm-drawer-kpi-grid" aria-label="Housekeeping drawer KPIs">'+
       '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-check-circle"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Clean &amp; Inspected</span><div class="mm-table-kpi-value"><span id="mm-hk-cnt-clean">13</span> Suites <span class="mm-table-kpi-sub">Ready for Check-In</span></div></div></div>'+
       '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-refresh"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Dirty / Turnaround</span><div class="mm-table-kpi-value"><span id="mm-hk-cnt-dirty">4</span> Suites <span class="mm-table-kpi-sub">30-Min SLA Active</span></div></div></div>'+
       '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-eye"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Supervisor Inspecting</span><div class="mm-table-kpi-value"><span id="mm-hk-cnt-insp">2</span> Suites <span class="mm-table-kpi-sub">Final Checklist</span></div></div></div>'+
@@ -1869,7 +1869,7 @@ function menuLinks(page,currentPath){
    '<div class="modal-dialog modal-lg" role="document"><div class="modal-content">'+
     '<div class="modal-header"><h4 class="modal-title" id="mm-audit-drawer-title"><i class="fa fa-moon-o"></i> Night Audit Pre-Close Checklist &amp; Auto-GL Journal Inspector (Alt+A)</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button></div>'+
     '<div class="modal-body"><section class="mm-ui"><div class="tw-space-y-4">'+
-     '<div class="mm-table-kpi-grid" aria-label="Night audit drawer KPIs">'+
+     '<div class="mm-drawer-kpi-grid" aria-label="Night audit drawer KPIs">'+
       '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-check-square-o"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Pre-Close Readiness</span><div class="mm-table-kpi-value"><span id="mm-audit-ready-kpi">6 / 8 Ready</span> <span class="mm-table-kpi-sub">Business Date 14 Oct 2026</span></div></div></div>'+
       '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-bed"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Room Tariff Auto-Post</span><div class="mm-table-kpi-value">৳ 134,100 <span class="mm-table-kpi-sub">18 Occupied Suites</span></div></div></div>'+
       '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-cutlery"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">F&amp;B &amp; Banquet Postings</span><div class="mm-table-kpi-value">৳ 114,550 <span class="mm-table-kpi-sub">Restaurant + Bar + Gala</span></div></div></div>'+
@@ -1911,7 +1911,7 @@ function menuLinks(page,currentPath){
    '<div class="modal-dialog modal-lg" role="document"><div class="modal-content">'+
     '<div class="modal-header"><h4 class="modal-title" id="mm-guest-lookup-drawer-title"><i class="fa fa-id-card-o"></i> Global In-House Guest, Suite &amp; Split-Folio Instant Lookup (Alt+G)</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button></div>'+
     '<div class="modal-body"><section class="mm-ui"><div class="tw-space-y-4">'+
-     '<div class="mm-table-kpi-grid" aria-label="In-house guest lookup summary">'+
+     '<div class="mm-drawer-kpi-grid" aria-label="In-house guest lookup summary">'+
       '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-bed"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Occupied Suites</span><div class="mm-table-kpi-value">18 / 20 <span class="mm-table-kpi-sub">90.0% Occupancy</span></div></div></div>'+
       '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-star"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">VIP &amp; Diplomatic</span><div class="mm-table-kpi-value">6 VIP Suites <span class="mm-table-kpi-sub">Floors 3 &amp; 4</span></div></div></div>'+
       '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-columns"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Open Folio Balance</span><div class="mm-table-kpi-value">৳ 184,900 <span class="mm-table-kpi-sub">Window A + City Ledger</span></div></div></div>'+
@@ -2019,7 +2019,7 @@ function menuLinks(page,currentPath){
    '<div class="modal-dialog modal-lg" role="document"><div class="modal-content">'+
     '<div class="modal-header"><h4 class="modal-title" id="mm-flash-drawer-title"><i class="fa fa-bolt"></i> Daily Manager Flash Report &amp; Shift Roster Inspector — 14 Oct 2026 (Alt+M)</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button></div>'+
     '<div class="modal-body"><section class="mm-ui"><div class="tw-space-y-4">'+
-     '<div class="mm-table-kpi-grid" aria-label="Flash drawer KPIs">'+
+     '<div class="mm-drawer-kpi-grid" aria-label="Flash drawer KPIs">'+
       '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-bed"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Occupancy &amp; RevPAR</span><div class="mm-table-kpi-value">90.0% · ৳ 6,705 <span class="mm-table-kpi-sub">18/20 Suites · ADR ৳ 7,450</span></div></div></div>'+
       '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-line-chart"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Gross Revenue Today</span><div class="mm-table-kpi-value">৳ 248,650 <span class="mm-table-kpi-sub">+11.2% vs Target</span></div></div></div>'+
       '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-credit-card"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Realized Collections</span><div class="mm-table-kpi-value">৳ 214,200 <span class="mm-table-kpi-sub">Cash/POS/bKash/AR</span></div></div></div>'+
@@ -2042,7 +2042,7 @@ function menuLinks(page,currentPath){
    '<div class="modal-dialog modal-lg" role="document"><div class="modal-content">'+
     '<div class="modal-header"><h4 class="modal-title" id="mm-notif-drawer-title"><i class="fa fa-bell"></i> Live Operational Notification &amp; Shift Handover Center — 14 Oct 2026</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button></div>'+
     '<div class="modal-body"><section class="mm-ui"><div class="tw-space-y-4">'+
-     '<div class="mm-table-kpi-grid" aria-label="Operational alert metrics">'+
+     '<div class="mm-drawer-kpi-grid" aria-label="Operational alert metrics">'+
       '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-suitcase"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Arrivals &amp; VIPs</span><div class="mm-table-kpi-value">3 VIP Arrivals <span class="mm-table-kpi-sub">Suites #204, #301, #401</span></div></div></div>'+
       '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-columns"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Unsettled Folios</span><div class="mm-table-kpi-value">৳ 48,450 Due <span class="mm-table-kpi-sub">2 Departure Folios</span></div></div></div>'+
       '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-cutlery"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Kitchen &amp; POS SLA</span><div class="mm-table-kpi-value">3 KOT &gt; 12m <span class="mm-table-kpi-sub">6 Open POS Tables</span></div></div></div>'+

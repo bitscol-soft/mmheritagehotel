@@ -2852,6 +2852,11 @@
     border-color: rgba(148, 163, 184, 0.35);
     color: #93c5fd;
 }
+.mm-shell .mm-drawer-kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(195px, 1fr));
+    gap: 10px;
+}
 @media print {
     .mm-shell .mm-top-subnav {
         display: none !important;
