@@ -9,6 +9,7 @@ use Module\GeneralStore\Models\Supplier;
 use App\Models\SupplierType;
 use App\Traits\CheckPermission;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class SupplierController extends Controller
 {
@@ -51,7 +52,7 @@ class SupplierController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name'              => 'unique_with:suppliers, name, supplier_type_id',
+            'name'              => [Rule::unique('suppliers', 'name')->where('supplier_type_id', $request->supplier_type_id)],
             'country_id'        => 'required',
             'supplier_type_id'  => 'nullable'
         ]);
@@ -89,7 +90,7 @@ class SupplierController extends Controller
     public function update(Request $request, Supplier $Supplier)
     {
         $suppliers = $this->validate($request, [
-            'name'              => 'unique_with:suppliers, name, supplier_type_id,' . $Supplier->id,
+            'name'              => [Rule::unique('suppliers', 'name')->where('supplier_type_id', $request->supplier_type_id)->ignore($Supplier->id)],
             'country_id'        => 'required',
             'supplier_type_id'  => 'required'
         ]);

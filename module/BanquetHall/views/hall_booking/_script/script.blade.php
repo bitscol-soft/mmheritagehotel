@@ -105,11 +105,7 @@
                             </div>
                         </td>
                         <td>
-                            {!! Form::number('discount[]', 0, [
-                                'class' => 'form-control text-right discount',
-                                'type' => 'number',
-                                'min' => 0,
-                            ]) !!}
+                            <input type="number" name="discount[]" value="0" class="form-control text-right discount" min="0">
 
                         </td>
                         <td>
@@ -144,11 +140,7 @@
 
 
                         <td>
-                            {!! Form::number('rest_item_discount[]', 0, [
-                                'class' => 'form-control text-right discount',
-                                'type' => 'number',
-                                'min' => 0,
-                            ]) !!}
+                            <input type="number" name="rest_item_discount[]" value="0" class="form-control text-right discount" min="0">
 
                         </td>
                         <td>
@@ -179,11 +171,7 @@
 
 
                         <td>
-                            {!! Form::number('input_item_discount[]', 0, [
-                                'class' => 'form-control text-right discount',
-                                'type' => 'number',
-                                'min' => 0,
-                            ]) !!}
+                            <input type="number" name="input_item_discount[]" value="0" class="form-control text-right discount" min="0">
 
                         </td>
                         <td>

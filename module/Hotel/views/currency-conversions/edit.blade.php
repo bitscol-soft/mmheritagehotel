@@ -18,7 +18,12 @@
 
                     <div class="col-xs-12 col-sm-8 @error('currency_id') has-error @enderror">
 
-                        {!! Form::select('currency_id', $currencies, $currencyConversion->currency_id, ['class' => 'form-control chosen-select', 'id' => 'currencyId', 'placeholder' => 'Select Currency', 'required']) !!}
+                        <select name="currency_id" id="currencyId" class="form-control chosen-select" required>
+    <option value="">Select Currency</option>
+    @foreach ($currencies as $optionValue => $optionLabel)
+        <option value="{{ $optionValue }}" @if(old('currency_id', $currencyConversion->currency_id) == $optionValue) selected @endif>{{ $optionLabel }}</option>
+    @endforeach
+</select>
 
                         @error('currency_id')
                             <span class="text-danger"> {{ $message }}</span>
