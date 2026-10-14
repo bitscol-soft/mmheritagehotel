@@ -91,7 +91,7 @@
 
 /* Full admin navigation: shared styling at every module/submenu depth. */
 .mm-shell { --mm-nav-width: 272px; }
-.mm-shell #sidebar .nav-list { padding: 8px 14px 28px; }
+.mm-shell #sidebar .nav-list { padding: 8px 14px calc(var(--mm-footer-h, 44px) + 28px); }
 .mm-shell #sidebar .nav-list li { position: relative; border: 0; }
 .mm-shell #sidebar .nav-list li > a { display: flex; align-items: center; gap: 10px; height: auto; min-height: 42px; line-height: 20px; white-space: normal; overflow-wrap: anywhere; padding: 10px 12px !important; border: 0; border-radius: 8px; color: #37536a; background: transparent; }
 .mm-shell #sidebar .nav-list > li > a { font-weight: 600; }
@@ -113,7 +113,7 @@
 .mm-shell .mm-shell-search-row { display: flex; align-items: center; gap: 6px; }
 .mm-shell .mm-shell-search-row .mm-input { min-width: 0; flex: 1; }
 .mm-shell .mm-shell-search-row .mm-shell-icon { flex-shrink: 0; }
-.mm-shell .mm-shell-nav-tools { border-bottom: 1px solid #edf2f7; margin-bottom: 8px; }
+.mm-shell .mm-shell-nav-tools { padding: 12px 14px 10px; border-bottom: 1px solid #edf2f7; margin-bottom: 6px; }
 .mm-shell.mm-nav-collapsed { --mm-nav-width: 0px; }
 @media (max-width: 991px) { .mm-shell { --mm-nav-width: 0px; } }
 
