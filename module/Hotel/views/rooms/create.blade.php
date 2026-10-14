@@ -32,13 +32,12 @@
                         style="color: deeppink">*</span> </label>
 
                 <div class="col-xs-12 col-sm-8 @error('name') has-error @enderror">
-                    {!! Form::select('name', $room_category, null, [
-                        'class' => 'form-control chosen-select',
-                        'id' => 'category',
-                        'placeholder' => 'Select Room Name',
-                        'onchange' => 'checkRoomNumberByCategory(this)',
-                        'required',
-                    ]) !!}
+                    <select name="name" id="category" class="form-control chosen-select" onchange="checkRoomNumberByCategory(this)" required>
+    <option value="">Select Room Name</option>
+    @foreach ($room_category as $optionValue => $optionLabel)
+        <option value="{{ $optionValue }}" @if(old('name') == $optionValue) selected @endif>{{ $optionLabel }}</option>
+    @endforeach
+</select>
 
                     @error('name')
                         <span class="text-danger"> {{ $message }}</span>

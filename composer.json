@@ -7,8 +7,6 @@
     "require": {
         "php": "^7.3|^8.0",
         "carlos-meneses/laravel-mpdf": "^2.1",
-        "doctrine/dbal": "^3.4",
-        "felixkiss/uniquewith-validator": "^3.4",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
         "intervention/image": "^2.7",
@@ -17,8 +15,6 @@
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.4",
-        "laravelcollective/html": "^6.3",
-        "livewire/livewire": "^2.10",
         "maatwebsite/excel": "^3.1",
         "milon/barcode": "^9.0",
         "nao-pon/flysystem-google-drive": "^1.1",

@@ -49,14 +49,12 @@
                                     style="color: deeppink">*</span> </label>
 
                             <div class="col-xs-12 col-sm-8 @error('hall_category') has-error @enderror">
-                                {{-- {!! Form::select('name', $room_category, $room->room_category, ['class' => 'form-control chosen-select', 'id' => 'category', 'placeholder' => 'Select Room Name', 'required']) !!} --}}
-                                {!! Form::select('hall_category', $room_category, $room->hall_category, [
-                                    'class' => 'form-control chosen-select',
-                                    'id' => 'category',
-                                    'placeholder' => 'Select Category',
-                                    'onchange' => 'checkRoomNumberByCategory(this)',
-                                    'required',
-                                ]) !!}
+                                <select name="hall_category" id="category" class="form-control chosen-select" onchange="checkRoomNumberByCategory(this)" required>
+    <option value="">Select Category</option>
+    @foreach ($room_category as $optionValue => $optionLabel)
+        <option value="{{ $optionValue }}" @if(old('hall_category', $room->hall_category) == $optionValue) selected @endif>{{ $optionLabel }}</option>
+    @endforeach
+</select>
 
                                 @error('hall_category')
                                     <span class="text-danger"> {{ $message }}</span>

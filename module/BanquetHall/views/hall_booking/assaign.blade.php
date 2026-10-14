@@ -195,23 +195,13 @@
                                                             class="form-control amount only-number text-right">
                                                     </td>
                                                     <td>
-                                                        {!! Form::number('infant[]', $data->infant_count, [
-                                                            'class' => 'form-control text-right input-infant',
-                                                            'min' => 0,
-                                                        ]) !!}
+                                                        <input type="number" name="infant[]" value="{{ $data->infant_count }}" class="form-control text-right input-infant" min="0">
                                                     </td>
                                                     <td>
-                                                        {!! Form::number('night[]', $data->night_count ?? 1, [
-                                                            'class' => 'form-control text-right night_count',
-                                                            'readonly',
-                                                        ]) !!}
+                                                        <input type="number" name="night[]" value="{{ $data->night_count ?? 1 }}" class="form-control text-right night_count" readonly>
                                                     </td>
                                                     <td>
-                                                        {!! Form::number('discount[]', calculateCurrencyAmount($data->discount_amount, 1), [
-                                                            'class' => 'form-control text-right discount',
-                                                            'type' => 'number',
-                                                            'min' => 0,
-                                                        ]) !!}
+                                                        <input type="number" name="discount[]" value="{{ calculateCurrencyAmount($data->discount_amount, 1) }}" class="form-control text-right discount" min="0">
 
                                                     </td>
                                                     <td>

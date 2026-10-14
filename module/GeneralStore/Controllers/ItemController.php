@@ -18,6 +18,7 @@ use Excel;
 use Module\GeneralStore\Services\Export\ExportItemCSV;
 use Module\GeneralStore\Models\Item;
 use Module\GeneralStore\Models\Stock;
+use Illuminate\Validation\Rule;
 
 class ItemController extends Controller
 {
@@ -101,7 +102,7 @@ class ItemController extends Controller
         $this->validate($request, [
             'company_id'   => 'required|not_in:0',
             'item_unit_id' => 'required',
-            'name'         => 'unique_with:items, name, company_id',
+            'name'         => [Rule::unique('items', 'name')->where('company_id', $request->company_id)],
         ]);
 
         //  store data

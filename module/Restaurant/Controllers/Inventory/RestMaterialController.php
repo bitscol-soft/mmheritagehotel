@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use Module\Restaurant\Models\RestMaterial;
 use App\Traits\AutoCreatedUpdatedWithCompany;
 use Module\Restaurant\Models\RestMaterialUnit;
+use Illuminate\Validation\Rule;
 
 class RestMaterialController extends Controller
 {
@@ -93,7 +94,7 @@ class RestMaterialController extends Controller
         $this->validate($request, [
             'company_id'   => 'required|not_in:0',
             'item_unit_id' => 'required',
-            'name'         => 'unique_with:rest_materials, name, company_id',
+            'name'         => [Rule::unique('rest_materials', 'name')->where('company_id', $request->company_id)],
         ]);
 
         //  store data

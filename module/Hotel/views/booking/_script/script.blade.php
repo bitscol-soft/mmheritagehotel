@@ -89,10 +89,9 @@
                             </select>
                         </td>
                         <td>
-                            {!! Form::select('room_number[]', [], null, [
-                                'class' => 'form-cotnrol room_number',
-                                'placeholder' => 'Select Room Number',
-                            ]) !!}
+                            <select name="room_number[]" class="form-cotnrol room_number">
+                                <option value="">Select Room Number</option>
+                            </select>
                         </td>
 
                         <td>
@@ -104,20 +103,16 @@
                             <input type="text" value="" class="form-control amount only-number text-right" name="room_price[]">
                         </td>
                         <td>
-                            {!! Form::number('infant[]', 0, ['class' => 'form-control text-right input-infant', 'min' => 0]) !!}
+                            <input type="number" name="infant[]" value="0" class="form-control text-right input-infant" min="0">
                         </td>
                         <td>
-                            {!! Form::number('child[]', 0, ['class' => 'form-control text-right input-child', 'min' => 0]) !!}
+                            <input type="number" name="child[]" value="0" class="form-control text-right input-child" min="0">
                         </td>
                         <td>
-                            {!! Form::number('night[]', 1, ['class' => 'form-control text-right night_count', 'readonly']) !!}
+                            <input type="number" name="night[]" value="1" class="form-control text-right night_count" readonly>
                         </td>
                         <td>
-                            {!! Form::number('discount[]', 0, [
-                                'class' => 'form-control text-right discount',
-                                'type' => 'number',
-                                'min' => 0,
-                            ]) !!}
+                            <input type="number" name="discount[]" value="0" class="form-control text-right discount" min="0">
 
                         </td>
                         <td>
