@@ -190,6 +190,63 @@
         try { url = new URL(link.href, window.location.href); } catch (e) { return; }
         if (url.origin === location.origin && url.pathname === location.pathname && !url.hash && queryKey(url) === queryKey(currentUrl)) link.setAttribute('aria-current', 'page');
     });
+    // Progressive Blade top sub-menu tab bar & sidebar collapse footer when not server-rendered.
+    if (location.hostname !== 'mm-shell.test' && !document.getElementById('mm-top-subnav')) {
+        var pageContent = document.querySelector('.page-content');
+        var topItems = Array.from(menu.children).filter(function (el) { return el.tagName === 'LI' && !el.classList.contains('mm-nav-section'); });
+        var activeModLi = topItems.find(function (li) { return li.classList.contains('active') || li.classList.contains('mm-mod-current') || li.querySelector('[aria-current="page"], li.active'); }) || topItems[0];
+        if (pageContent && activeModLi) {
+            var modAnchor = directLink(activeModLi);
+            var modLabelEl = modAnchor && modAnchor.querySelector('.menu-text');
+            var modLabel = (modLabelEl ? modLabelEl.textContent : (modAnchor ? modAnchor.textContent : 'Module')).trim();
+            var subLinks = Array.from(activeModLi.querySelectorAll('.submenu a[href]')).filter(function (a) {
+                var h = a.getAttribute('href');
+                return h && h !== '#' && !/^javascript:/i.test(h);
+            });
+            if (!subLinks.length && modAnchor && modAnchor.getAttribute('href') && modAnchor.getAttribute('href') !== '#') {
+                subLinks = [modAnchor];
+            }
+            if (subLinks.length) {
+                var nav = document.createElement('nav');
+                nav.className = 'mm-top-subnav is-sticky mm-no-print';
+                nav.id = 'mm-top-subnav';
+                nav.setAttribute('aria-label', modLabel + ' sub-menu tabs');
+                var head = document.createElement('div');
+                head.className = 'mm-top-subnav-head';
+                var titleWrap = document.createElement('div');
+                titleWrap.className = 'mm-top-subnav-title';
+                var sbBtn = document.createElement('button');
+                sbBtn.type = 'button';
+                sbBtn.className = 'mm-button mm-button-secondary';
+                sbBtn.style.cssText = 'min-height:26px;padding:2px 8px;font-size:11.5px';
+                sbBtn.textContent = '☰ Side Menu';
+                sbBtn.addEventListener('click', function () { toggle.click(); });
+                var titleSpan = document.createElement('span');
+                titleSpan.textContent = modLabel;
+                titleWrap.appendChild(sbBtn);
+                titleWrap.appendChild(titleSpan);
+                head.appendChild(titleWrap);
+                var tabsWrap = document.createElement('div');
+                tabsWrap.className = 'mm-top-subnav-tabs';
+                tabsWrap.setAttribute('role', 'navigation');
+                tabsWrap.setAttribute('aria-label', 'Module sub-pages');
+                subLinks.forEach(function (a) {
+                    var tab = document.createElement('a');
+                    tab.href = a.href;
+                    var isAct = a.getAttribute('aria-current') === 'page' || (a.parentElement && a.parentElement.classList.contains('active'));
+                    tab.className = 'mm-top-tab' + (isAct ? ' is-active' : '');
+                    if (isAct) tab.setAttribute('aria-current', 'page');
+                    var lbl = document.createElement('span');
+                    lbl.textContent = a.textContent.replace(/\s+/g, ' ').trim();
+                    tab.appendChild(lbl);
+                    tabsWrap.appendChild(tab);
+                });
+                nav.appendChild(head);
+                nav.appendChild(tabsWrap);
+                pageContent.insertBefore(nav, pageContent.firstChild);
+            }
+        }
+    }
     syncDisclosures();
     render();
 }());
