@@ -1747,6 +1747,8 @@ function menuLinks(page,currentPath){
     '<input type="search" id="mm-top-tab-filter" class="mm-top-tab-filter" placeholder="Filter '+modScreens.length+' module screens..." aria-label="Filter sub-menu tabs and module screens">'+
     '<button type="button" id="mm-express-create-btn" data-toggle="modal" data-target="#mm-express-drawer" class="mm-button" style="min-height:28px;padding:2px 10px;font-size:11.5px" title="Express Walk-In Room Hold, 80mm KOT Order &amp; GL Voucher Quick-Create (Alt+Q)"><i class="fa fa-plus-circle"></i> + Quick Create</button>'+
     '<button type="button" id="mm-guest-lookup-btn" data-toggle="modal" data-target="#mm-guest-lookup-drawer" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 9px;font-size:11.5px" title="Global In-House Guest, Suite &amp; Folio Instant Lookup Drawer (Alt+G)"><i class="fa fa-id-card-o"></i> Guest / Folio</button>'+
+    '<button type="button" id="mm-hk-toggle-btn" data-toggle="modal" data-target="#mm-hk-drawer" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 9px;font-size:11.5px" title="20-Suite Housekeeping &amp; Room Status Quick-Toggle Drawer (Alt+H)"><i class="fa fa-bed"></i> Housekeeping</button>'+
+    '<button type="button" id="mm-audit-inspector-btn" data-toggle="modal" data-target="#mm-audit-drawer" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 9px;font-size:11.5px" title="Night Audit Pre-Close Checklist &amp; Auto-GL Trial Balance Inspector (Alt+A)"><i class="fa fa-moon-o"></i> Night Audit</button>'+
     '<button type="button" id="mm-flash-report-btn" data-toggle="modal" data-target="#mm-flash-drawer" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 9px;font-size:11.5px" title="Daily Manager Flash Report &amp; Active Shift Roster Inspector (Alt+M)"><i class="fa fa-bolt"></i> Flash Report</button>'+
     '<button type="button" id="mm-top-fav-btn" aria-pressed="false" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 9px;font-size:11.5px" title="Star or unstar this screen to Pinned Favorites"><i class="fa fa-star-o"></i> Star</button>'+
     '<button type="button" id="mm-top-favs-toggle" aria-expanded="false" aria-controls="mm-top-favs-bar" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 9px;font-size:11.5px" title="Show or hide cross-module Pinned Favorites bar (Alt+B)"><i class="fa fa-bookmark"></i> Favorites (<span id="mm-top-favs-count">6</span>)</button>'+
@@ -1770,6 +1772,75 @@ function menuLinks(page,currentPath){
     '</div>'+
    '</div>'+
    '<div class="mm-top-more-grid" id="mm-top-more-grid">'+moreCardsHtml+'</div>'+
+  '</div>'+
+  '<div class="modal fade mm-app-drawer" id="mm-hk-drawer" tabindex="-1" role="dialog" aria-labelledby="mm-hk-drawer-title">'+
+   '<div class="modal-dialog modal-lg" role="document"><div class="modal-content">'+
+    '<div class="modal-header"><h4 class="modal-title" id="mm-hk-drawer-title"><i class="fa fa-bed"></i> 20-Suite Housekeeping &amp; Room Status Quick-Toggle Drawer (Alt+H)</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button></div>'+
+    '<div class="modal-body"><section class="mm-ui"><div class="tw-space-y-4">'+
+     '<div class="mm-table-kpi-grid" aria-label="Housekeeping drawer KPIs">'+
+      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-check-circle"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Clean &amp; Inspected</span><div class="mm-table-kpi-value"><span id="mm-hk-cnt-clean">13</span> Suites <span class="mm-table-kpi-sub">Ready for Check-In</span></div></div></div>'+
+      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-refresh"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Dirty / Turnaround</span><div class="mm-table-kpi-value"><span id="mm-hk-cnt-dirty">4</span> Suites <span class="mm-table-kpi-sub">30-Min SLA Active</span></div></div></div>'+
+      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-eye"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Supervisor Inspecting</span><div class="mm-table-kpi-value"><span id="mm-hk-cnt-insp">2</span> Suites <span class="mm-table-kpi-sub">Final Checklist</span></div></div></div>'+
+      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-wrench"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Engineering / OOO</span><div class="mm-table-kpi-value"><span id="mm-hk-cnt-ooo">1</span> Suite <span class="mm-table-kpi-sub">HVAC Preventive</span></div></div></div>'+
+     '</div>'+
+     '<div class="mm-panel tw-p-4">'+
+      '<div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px">'+
+       '<div style="display:flex;flex-wrap:wrap;gap:6px" id="mm-hk-floor-pills">'+
+        '<button type="button" class="mm-role-pill is-active" data-hk-floor="all">All 20 Suites</button>'+
+        '<button type="button" class="mm-role-pill" data-hk-floor="1">Floor 1 (#101–#106)</button>'+
+        '<button type="button" class="mm-role-pill" data-hk-floor="2">Floor 2 (#201–#206)</button>'+
+        '<button type="button" class="mm-role-pill" data-hk-floor="3">Floor 3 (#301–#305)</button>'+
+        '<button type="button" class="mm-role-pill" data-hk-floor="4">Floor 4 (#401–#403)</button>'+
+       '</div>'+
+       '<button type="button" id="mm-hk-clean-all" class="mm-button" style="min-height:28px;padding:2px 10px;font-size:11.5px"><i class="fa fa-check-circle"></i> Mark All Dirty Suites Clean</button>'+
+      '</div>'+
+      '<div id="mm-hk-suite-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:8px"></div>'+
+     '</div>'+
+    '</div></section></div>'+
+    '<div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button><a href="/preview/housekeeping-board" class="mm-button"><i class="fa fa-external-link"></i> Open Full Housekeeping SLA Board</a></div>'+
+   '</div></div>'+
+  '</div>'+
+  '<div class="modal fade mm-app-drawer" id="mm-audit-drawer" tabindex="-1" role="dialog" aria-labelledby="mm-audit-drawer-title">'+
+   '<div class="modal-dialog modal-lg" role="document"><div class="modal-content">'+
+    '<div class="modal-header"><h4 class="modal-title" id="mm-audit-drawer-title"><i class="fa fa-moon-o"></i> Night Audit Pre-Close Checklist &amp; Auto-GL Journal Inspector (Alt+A)</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button></div>'+
+    '<div class="modal-body"><section class="mm-ui"><div class="tw-space-y-4">'+
+     '<div class="mm-table-kpi-grid" aria-label="Night audit drawer KPIs">'+
+      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-check-square-o"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Pre-Close Readiness</span><div class="mm-table-kpi-value"><span id="mm-audit-ready-kpi">6 / 8 Ready</span> <span class="mm-table-kpi-sub">Business Date 14 Oct 2026</span></div></div></div>'+
+      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-bed"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Room Tariff Auto-Post</span><div class="mm-table-kpi-value">৳ 134,100 <span class="mm-table-kpi-sub">18 Occupied Suites</span></div></div></div>'+
+      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-cutlery"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">F&amp;B &amp; Banquet Postings</span><div class="mm-table-kpi-value">৳ 114,550 <span class="mm-table-kpi-sub">Restaurant + Bar + Gala</span></div></div></div>'+
+      '<div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-balance-scale"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Auto-GL Trial Balance</span><div class="mm-table-kpi-value">৳ 248,650 <span class="mm-table-kpi-sub">Dr = Cr (100% Balanced)</span></div></div></div>'+
+     '</div>'+
+     '<div id="mm-audit-roll-banner" class="alert alert-success" style="display:none;margin:0;border-radius:10px;font-size:12.5px"><i class="fa fa-check-circle"></i> <strong>All 8 Pre-Close Checks Verified!</strong> Auto-GL Voucher <code>#JV-2026-1014</code> (Dr ৳ 248,650 = Cr ৳ 248,650) staged and Business Date ready to roll to <strong>15 Oct 2026</strong>.</div>'+
+     '<div class="mm-panel tw-p-4">'+
+      '<div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px">'+
+       '<strong><i class="fa fa-list-ul"></i> 1. Interactive 8-Point End-of-Day Pre-Close Checklist (14 Oct 2026)</strong>'+
+       '<div style="display:flex;gap:6px"><button type="button" id="mm-audit-verify-all" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11.5px"><i class="fa fa-check-square-o"></i> Verify All 8 Pre-Checks</button><button type="button" id="mm-audit-roll-btn" class="mm-button" style="min-height:28px;padding:2px 10px;font-size:11.5px"><i class="fa fa-lock"></i> Simulate Day-Close &amp; GL Post</button></div>'+
+      '</div>'+
+      '<div id="mm-audit-checklist" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:8px">'+
+       '<label class="mm-shift-note-card" style="display:flex;align-items:center;gap:8px;margin:0;cursor:pointer"><input type="checkbox" class="mm-audit-chk" checked> <span>1. All 8 Expected Arrivals Checked-In or No-Show</span></label>'+
+       '<label class="mm-shift-note-card" style="display:flex;align-items:center;gap:8px;margin:0;cursor:pointer"><input type="checkbox" class="mm-audit-chk" checked> <span>2. 18 Occupied Suite Tariffs &amp; 15% VAT Verified (৳ 134,100)</span></label>'+
+       '<label class="mm-shift-note-card" style="display:flex;align-items:center;gap:8px;margin:0;cursor:pointer"><input type="checkbox" class="mm-audit-chk" checked> <span>3. Heritage Dining &amp; Bar KOTs Reconciled (৳ 68,550)</span></label>'+
+       '<label class="mm-shift-note-card" style="display:flex;align-items:center;gap:8px;margin:0;cursor:pointer"><input type="checkbox" class="mm-audit-chk" checked> <span>4. Grand Ballroom 180-Pax Gala Folio Posted (৳ 46,000)</span></label>'+
+       '<label class="mm-shift-note-card" style="display:flex;align-items:center;gap:8px;margin:0;cursor:pointer"><input type="checkbox" class="mm-audit-chk" checked> <span>5. Cash, Visa/Mastercard POS &amp; bKash Batch Settled (৳ 214,200)</span></label>'+
+       '<label class="mm-shift-note-card" style="display:flex;align-items:center;gap:8px;margin:0;cursor:pointer"><input type="checkbox" class="mm-audit-chk" checked> <span>6. Mushak-6.3 VAT &amp; 5% Service Charge Sub-Ledger Balanced</span></label>'+
+       '<label class="mm-shift-note-card" style="display:flex;align-items:center;gap:8px;margin:0;cursor:pointer"><input type="checkbox" class="mm-audit-chk"> <span>7. 2 Open POS Tables Closed or Transferred to Room Folio</span></label>'+
+       '<label class="mm-shift-note-card" style="display:flex;align-items:center;gap:8px;margin:0;cursor:pointer"><input type="checkbox" class="mm-audit-chk"> <span>8. Suite #305 Window B City Ledger Sign-Off (৳ 48,450)</span></label>'+
+      '</div>'+
+     '</div>'+
+     '<div class="mm-panel tw-p-4">'+
+      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px"><strong><i class="fa fa-calculator"></i> 2. Auto-Generated General Ledger Journal Preview (Voucher #JV-2026-1014)</strong><a href="/preview/acc-journals" class="mm-button mm-button-secondary" style="min-height:26px;padding:1px 9px;font-size:11px">Open Journal Register →</a></div>'+
+      '<div class="mm-table-scroll"><table class="mm-data-table table table-bordered table-striped"><thead><tr><th>GL Code</th><th>Account Head</th><th>Cost Center</th><th class="text-right">Debit (৳)</th><th class="text-right">Credit (৳)</th></tr></thead><tbody>'+
+       '<tr><td><code>1010-01</code></td><td><strong>Cash, POS Terminal &amp; bKash Clearing</strong></td><td>Treasury &amp; Front Desk</td><td class="text-right"><strong>214,200.00</strong></td><td class="text-right">0.00</td></tr>'+
+       '<tr><td><code>1040-02</code></td><td><strong>Corporate City Ledger AR Control</strong></td><td>Accounts Receivable</td><td class="text-right"><strong>34,450.00</strong></td><td class="text-right">0.00</td></tr>'+
+       '<tr><td><code>4010-01</code></td><td><strong>Room Division Suite Tariff Revenue</strong></td><td>Front Desk (18 Suites)</td><td class="text-right">0.00</td><td class="text-right"><strong>111,750.00</strong></td></tr>'+
+       '<tr><td><code>4020-01</code></td><td><strong>Restaurant, Bar &amp; Banquet F&amp;B Revenue</strong></td><td>F&amp;B &amp; Grand Ballroom</td><td class="text-right">0.00</td><td class="text-right"><strong>95,458.00</strong></td></tr>'+
+       '<tr><td><code>2030-01</code></td><td><strong>Output VAT Payable (15% Mushak-6.3)</strong></td><td>Tax &amp; Statutory</td><td class="text-right">0.00</td><td class="text-right"><strong>31,081.00</strong></td></tr>'+
+       '<tr><td><code>2030-02</code></td><td><strong>Hospitality Service Charge Payable (5%)</strong></td><td>Staff Pool &amp; Svc</td><td class="text-right">0.00</td><td class="text-right"><strong>10,361.00</strong></td></tr>'+
+      '</tbody><tfoot><tr><th colspan="3" class="text-right">Total Auto-Posted Night Audit Journal (Balanced):</th><th class="text-right">৳ 248,650.00</th><th class="text-right">৳ 248,650.00</th></tr></tfoot></table></div>'+
+     '</div>'+
+    '</div></section></div>'+
+    '<div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button><a href="/preview/night-audit-hardening" class="mm-button"><i class="fa fa-moon-o"></i> Open Night-Audit Day-Lock Workspace</a></div>'+
+   '</div></div>'+
   '</div>'+
   '<div class="modal fade mm-app-drawer" id="mm-guest-lookup-drawer" tabindex="-1" role="dialog" aria-labelledby="mm-guest-lookup-drawer-title">'+
    '<div class="modal-dialog modal-lg" role="document"><div class="modal-content">'+
@@ -1963,6 +2034,8 @@ function menuLinks(page,currentPath){
        '<div class="mm-shortcut-row"><span>Toggle Cross-Module Pinned Favorites</span><span class="mm-kbd-badge">Alt + B</span></div>'+
        '<div class="mm-shortcut-row"><span>Open Express Walk-In / KOT / Voucher Drawer</span><span class="mm-kbd-badge">Alt + Q</span></div>'+
        '<div class="mm-shortcut-row"><span>Open Global In-House Guest &amp; Folio Lookup</span><span class="mm-kbd-badge">Alt + G</span></div>'+
+       '<div class="mm-shortcut-row"><span>Open 20-Suite Housekeeping Quick-Toggle</span><span class="mm-kbd-badge">Alt + H</span></div>'+
+       '<div class="mm-shortcut-row"><span>Open Night Audit Pre-Close &amp; Auto-GL Drawer</span><span class="mm-kbd-badge">Alt + A</span></div>'+
        '<div class="mm-shortcut-row"><span>Open Daily Manager Flash Report &amp; Roster</span><span class="mm-kbd-badge">Alt + M</span></div>'+
        '<div class="mm-shortcut-row"><span>Open Live Alerts &amp; Shift Handover Drawer</span><span class="mm-kbd-badge">Alt + N</span></div>'+
        '<div class="mm-shortcut-row"><span>Focus Top Sub-Menu Screen Filter</span><span class="mm-kbd-badge">Alt + F</span></div>'+
@@ -2055,6 +2128,46 @@ function menuLinks(page,currentPath){
     'if(wbEl)wbEl.textContent=this.getAttribute("data-glk-winb")||"";'+
     'if(duEl)duEl.textContent=this.getAttribute("data-glk-due")||"";'+
    '});}'+
+   'var hkGrid=document.getElementById("mm-hk-suite-grid"),hkFloorBtns=document.querySelectorAll("[data-hk-floor]"),hkCleanAll=document.getElementById("mm-hk-clean-all"),hkFloor="all";'+
+   'var defHk=[["101","1","Deluxe Double","Occupied","clean"],["102","1","Deluxe Twin","Occupied","clean"],["103","1","Superior Queen","Occupied","dirty"],["104","1","Deluxe Double","Vacant","insp"],["105","1","Superior Twin","Occupied","clean"],["106","1","Deluxe Double","Occupied","clean"],["201","2","Heritage Suite","Occupied","clean"],["202","2","Heritage Suite","Vacant","insp"],["203","2","Royal Family","Occupied","dirty"],["204","2","Deluxe Double","Occupied","clean"],["205","2","Heritage Suite","Occupied","clean"],["206","2","Royal Family","Occupied","dirty"],["301","3","Diplomatic Suite","Occupied","clean"],["302","3","Diplomatic Suite","Occupied","clean"],["303","3","Presidential","Occupied","ooo"],["304","3","Diplomatic Suite","Occupied","clean"],["305","3","Presidential","Occupied","dirty"],["401","4","Royal Penthouse","Occupied","clean"],["402","4","Grand Pres.","Occupied","clean"],["403","4","Royal Penthouse","Occupied","clean"]];'+
+   'var hkData=defHk;try{var rawHk=localStorage.getItem("mm-hk-statuses");if(rawHk){var pHk=JSON.parse(rawHk);if(Array.isArray(pHk)&&pHk.length===20)hkData=pHk;}}catch(e){}'+
+   'var hkOrder=["clean","dirty","insp","ooo"],hkMeta={clean:["Clean & Ready","mm-badge-paid"],dirty:["Dirty / Turnaround","mm-badge-unpaid"],insp:["Inspecting","mm-badge-partial"],ooo:["Out of Order","mm-badge-unpaid"]};'+
+   'function renderHk(){'+
+    'var cClean=0,cDirty=0,cInsp=0,cOoo=0;'+
+    'for(var hi=0;hi<hkData.length;hi++){var st=hkData[hi][4];if(st==="clean")cClean++;else if(st==="dirty")cDirty++;else if(st==="insp")cInsp++;else cOoo++;}'+
+    'var elC=document.getElementById("mm-hk-cnt-clean"),elD=document.getElementById("mm-hk-cnt-dirty"),elI=document.getElementById("mm-hk-cnt-insp"),elO=document.getElementById("mm-hk-cnt-ooo");'+
+    'if(elC)elC.textContent=String(cClean);if(elD)elD.textContent=String(cDirty);if(elI)elI.textContent=String(cInsp);if(elO)elO.textContent=String(cOoo);'+
+    'if(!hkGrid)return;'+
+    'hkGrid.innerHTML=hkData.filter(function(r){return hkFloor==="all"||r[1]===hkFloor;}).map(function(r){'+
+     'var m=hkMeta[r[4]]||hkMeta.clean;'+
+     'return "<div class=\\"mm-shift-note-card\\" style=\\"display:flex;flex-direction:column;gap:6px\\"><div style=\\"display:flex;justify-content:space-between;align-items:center\\"><strong>Suite #"+r[0]+"</strong><span class=\\"mm-badge "+m[1]+"\\">"+m[0]+"</span></div><div style=\\"font-size:11px;opacity:.8\\">"+r[2]+" · "+r[3]+"</div><button type=\\"button\\" data-hk-room=\\""+r[0]+"\\" class=\\"mm-button mm-button-secondary\\" style=\\"min-height:25px;padding:2px 8px;font-size:11px;width:100%;justify-content:center\\"><i class=\\"fa fa-refresh\\"></i> Cycle Status</button></div>";'+
+    '}).join("");'+
+    'var cBtns=hkGrid.querySelectorAll("[data-hk-room]");'+
+    'for(var cb=0;cb<cBtns.length;cb++){cBtns[cb].addEventListener("click",function(){'+
+     'var rm=this.getAttribute("data-hk-room");'+
+     'for(var z=0;z<hkData.length;z++){if(hkData[z][0]===rm){hkData[z][4]=hkOrder[(hkOrder.indexOf(hkData[z][4])+1)%hkOrder.length];break;}}'+
+     'try{localStorage.setItem("mm-hk-statuses",JSON.stringify(hkData));}catch(e){}renderHk();'+
+    '});}'+
+   '}'+
+   'renderHk();'+
+   'for(var hf=0;hf<hkFloorBtns.length;hf++){hkFloorBtns[hf].addEventListener("click",function(){'+
+    'hkFloor=this.getAttribute("data-hk-floor")||"all";'+
+    'for(var hx=0;hx<hkFloorBtns.length;hx++)hkFloorBtns[hx].classList.toggle("is-active",hkFloorBtns[hx]===this);'+
+    'renderHk();'+
+   '});}'+
+   'if(hkCleanAll)hkCleanAll.addEventListener("click",function(){'+
+    'for(var hc=0;hc<hkData.length;hc++){if(hkData[hc][4]==="dirty"||hkData[hc][4]==="insp")hkData[hc][4]="clean";}'+
+    'try{localStorage.setItem("mm-hk-statuses",JSON.stringify(hkData));}catch(e){}renderHk();'+
+   '});'+
+   'var audChks=document.querySelectorAll(".mm-audit-chk"),audKpi=document.getElementById("mm-audit-ready-kpi"),audVerifyAll=document.getElementById("mm-audit-verify-all"),audRollBtn=document.getElementById("mm-audit-roll-btn"),audBanner=document.getElementById("mm-audit-roll-banner");'+
+   'function syncAudit(){'+
+    'var done=0;for(var ai=0;ai<audChks.length;ai++)if(audChks[ai].checked)done++;'+
+    'if(audKpi)audKpi.textContent=done+" / "+audChks.length+" Ready";'+
+    'if(audBanner&&done===audChks.length)audBanner.style.display="block";'+
+   '}'+
+   'for(var ac=0;ac<audChks.length;ac++)audChks[ac].addEventListener("change",syncAudit);'+
+   'if(audVerifyAll)audVerifyAll.addEventListener("click",function(){for(var av=0;av<audChks.length;av++)audChks[av].checked=true;syncAudit();});'+
+   'if(audRollBtn)audRollBtn.addEventListener("click",function(){for(var ar=0;ar<audChks.length;ar++)audChks[ar].checked=true;syncAudit();if(audBanner)audBanner.style.display="block";});'+
    'var favBtn=document.getElementById("mm-top-fav-btn"),favsToggle=document.getElementById("mm-top-favs-toggle"),favsBar=document.getElementById("mm-top-favs-bar"),favsCnt=document.getElementById("mm-top-favs-count");'+
    'var defFavs=[["/dashboard","Front-Desk Board"],["/preview/booking-next","3-Step Booking Wizard"],["/preview/folio-settlement","Split-Folio Settlement"],["/preview/pos-unified","Unified Split-Bill POS"],["/preview/acc-balance-sheet","Balance Sheet Builder"],["/preview/room-settings","Room Settings & Pricing"]];'+
    'var favs=defFavs;try{var rawF=localStorage.getItem("mm-top-favs");if(rawF){var parsed=JSON.parse(rawF);if(Array.isArray(parsed)&&parsed.length)favs=parsed;}}catch(e){}'+
@@ -2134,6 +2247,8 @@ function menuLinks(page,currentPath){
      'if(kLower==="b"&&favsToggle){e.preventDefault();favsToggle.click();return;}'+
      'if(kLower==="q"){e.preventDefault();var qb=document.getElementById("mm-express-create-btn");if(qb)qb.click();return;}'+
      'if(kLower==="g"){e.preventDefault();var gb=document.getElementById("mm-guest-lookup-btn");if(gb)gb.click();setTimeout(function(){var gs=document.getElementById("mm-guest-lookup-search");if(gs)gs.focus();},150);return;}'+
+     'if(kLower==="h"){e.preventDefault();var hb=document.getElementById("mm-hk-toggle-btn");if(hb)hb.click();return;}'+
+     'if(kLower==="a"){e.preventDefault();var ab=document.getElementById("mm-audit-inspector-btn");if(ab)ab.click();return;}'+
      'if(kLower==="m"){e.preventDefault();var mb=document.getElementById("mm-flash-report-btn");if(mb)mb.click();return;}'+
      'if(kLower==="n"){e.preventDefault();var nb=document.getElementById("mm-notif-center-btn");if(nb)nb.click();return;}'+
      'if(kLower==="f"&&flt){e.preventDefault();flt.focus();return;}'+
