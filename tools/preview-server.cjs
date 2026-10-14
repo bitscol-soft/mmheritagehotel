@@ -1529,6 +1529,51 @@ function menuLinks(page,currentPath){
   },
  ];
 
+ const allCatalog=[
+  ['/dashboard','Front-Desk Command Board'],
+  ...Object.entries(specialPages).map(([p,v])=>[p,v.title]),
+  ...Object.entries(pages).map(([p,v])=>[p,v.title]),
+  ...Object.keys(pubPages).map(p=>[p,'Public Storefront · '+p.replace('/preview/public-','').replace(/-/g,' ').replace(/\b\w/g,c=>c.toUpperCase())]),
+ ];
+ function screensForMod(m){
+  const seen=new Set();
+  const out=[];
+  const add=(href,title,isPrimary)=>{
+   if(!href||seen.has(href)) return;
+   seen.add(href);
+   out.push({href,title,isPrimary:!!isPrimary});
+  };
+  m.tabs.forEach(([h,,lbl])=>add(h,lbl,true));
+  if(m.id==='mod-hubs'){
+   allCatalog.forEach(([p,t])=>add(p,t,false));
+   return out;
+  }
+  const pxs=m.prefixMatch||[];
+  if(pxs.length){
+   allCatalog.forEach(([p,t])=>{
+    if(pxs.some(px=>p.startsWith(px))) add(p,t,false);
+   });
+  }
+  if(m.id==='mod-bookings'){
+   allCatalog.forEach(([p,t])=>{
+    if(p.startsWith('/preview/booking')||p.includes('booking')||p.includes('migration')) add(p,t,false);
+   });
+  }else if(m.id==='mod-folio'){
+   allCatalog.forEach(([p,t])=>{
+    if(p.includes('checkout')||p.includes('folio')||p.includes('payment')||p.includes('invoice')||p.includes('night-audit')) add(p,t,false);
+   });
+  }else if(m.id==='mod-crm'){
+   allCatalog.forEach(([p,t])=>{
+    if(p.includes('guest')||p.includes('crm')||p.includes('loyalty')||p.includes('corporate')) add(p,t,false);
+   });
+  }else if(m.id==='mod-rooms'){
+   allCatalog.forEach(([p,t])=>{
+    if(p.includes('room')||p.includes('housekeep')||p.includes('minibar')||p.includes('concierge')||p.includes('maintenance')) add(p,t,false);
+   });
+  }
+  return out;
+ }
+
  let activeMod=modules.find(m=>m.aliases.includes(cur)||m.tabs.some(([h])=>h===cur));
  if(!activeMod) activeMod=modules.find(m=>(m.prefixMatch||[]).some(px=>cur.startsWith(px)))||modules[1];
 
@@ -1540,7 +1585,8 @@ function menuLinks(page,currentPath){
    sidebarParts.push('<li class="mm-nav-section" role="presentation">'+m.section+'</li>');
   }
   const isAct=m.id===activeMod.id;
-  sidebarParts.push('<li'+(isAct?' class="active"':'')+'><a href="'+m.href+'"'+(isAct?' aria-current="page"':'')+'><i class="menu-icon fa '+m.icon+'"></i><span class="menu-text">'+m.label+'</span><span class="mm-nav-count">'+m.tabs.length+'</span></a><b class="arrow"></b></li>');
+  const modScreensCount=screensForMod(m).length;
+  sidebarParts.push('<li'+(isAct?' class="active"':'')+'><a href="'+m.href+'"'+(isAct?' aria-current="page"':'')+' title="'+m.label+' ('+m.tabs.length+' primary tabs · '+modScreensCount+' module screens)"><i class="menu-icon fa '+m.icon+'"></i><span class="menu-text">'+m.label+'</span><span class="mm-nav-count">'+m.tabs.length+'</span></a><b class="arrow"></b></li>');
  }
 
  const tabsList=activeMod.tabs.slice();
@@ -1549,17 +1595,73 @@ function menuLinks(page,currentPath){
   const extraTitle=(specialPages[cur]&&specialPages[cur].title)||(pages[cur]&&pages[cur].title)||cur.replace('/preview/','');
   tabsList.push([cur,'fa-file-text-o',extraTitle]);
  }
+ let activeIdx=tabsList.findIndex(([href])=>href===cur||(href==='/dashboard'&&activeMod.aliases.includes(cur)));
+ if(activeIdx<0) activeIdx=0;
+ const prevTab=tabsList[(activeIdx-1+tabsList.length)%tabsList.length];
+ const nextTab=tabsList[(activeIdx+1)%tabsList.length];
+
  const tabsHtml=tabsList.map(([href,icon,lbl])=>{
   const isTabAct=href===cur||(href==='/dashboard'&&activeMod.aliases.includes(cur));
-  return '<a href="'+href+'" class="mm-top-tab'+(isTabAct?' is-active':'')+'"'+(isTabAct?' aria-current="page"':'')+'><i class="fa '+icon+'"></i><span>'+lbl+'</span></a>';
+  return '<a href="'+href+'" data-top-tab-search="'+(lbl+' '+href).toLowerCase().replace(/"/g,'')+'" class="mm-top-tab'+(isTabAct?' is-active':'')+'"'+(isTabAct?' aria-current="page"':'')+'><i class="fa '+icon+'"></i><span>'+lbl+'</span></a>';
  }).join('');
 
- const topSubnav='<nav class="mm-top-subnav mm-no-print" id="mm-top-subnav" aria-label="'+activeMod.label+' sub-menu tabs">'+
+ const modScreens=screensForMod(activeMod);
+ const moreCardsHtml=modScreens.map(s=>{
+  const isCardAct=s.href===cur||(s.href==='/dashboard'&&activeMod.aliases.includes(cur));
+  return '<a href="'+s.href+'" data-top-more-search="'+(s.title+' '+s.href).toLowerCase().replace(/"/g,'')+'" data-top-more-primary="'+(s.isPrimary?'1':'0')+'" class="mm-top-more-card'+(isCardAct?' is-active':'')+'"><span><i class="fa '+(s.isPrimary?'fa-bookmark':'fa-file-text-o')+'" style="opacity:.75;margin-right:6px"></i>'+s.title+'</span><span class="mm-badge '+(isCardAct?'mm-badge-paid':s.isPrimary?'mm-badge-partial':'')+'" style="font-size:10px">'+(isCardAct?'Current':s.isPrimary?'Tab':s.href.replace('/preview/',''))+'</span></a>';
+ }).join('');
+
+ const topSubnav='<nav class="mm-top-subnav is-sticky mm-no-print" id="mm-top-subnav" aria-label="'+activeMod.label+' sub-menu tabs">'+
   '<div class="mm-top-subnav-head">'+
-   '<div class="mm-top-subnav-title"><span class="mm-top-subnav-icon"><i class="fa '+activeMod.icon+'"></i></span><span>'+activeMod.label+'</span><span class="mm-badge mm-badge-paid" style="font-size:11px">'+tabsList.length+' Sub-Menu Tabs</span></div>'+
-   '<div style="display:flex;flex-wrap:wrap;gap:6px"><button type="button" data-toggle="modal" data-target="#mm-quick-drawer" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11.5px"><i class="fa fa-columns"></i> App Drawer</button><button type="button" data-mm-theme-toggle aria-pressed="false" aria-label="Dark theme" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11.5px"><i class="fa fa-moon-o"></i> Dark / Light</button><a href="/preview/plan-a" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11.5px"><i class="fa fa-sitemap"></i> Plan A (9/9)</a><a href="/preview" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11.5px"><i class="fa fa-th-large"></i> All 360 Screens</a></div>'+
+   '<div class="mm-top-subnav-title">'+
+    '<span class="mm-top-subnav-icon"><i class="fa '+activeMod.icon+'"></i></span>'+
+    '<span>'+activeMod.label+'</span>'+
+    '<span class="mm-badge mm-badge-paid" style="font-size:11px">'+(activeIdx+1)+' / '+tabsList.length+' Tabs</span>'+
+    '<a href="'+prevTab[0]+'" id="mm-top-prev-tab" class="mm-button mm-button-secondary" style="min-height:26px;padding:2px 8px;font-size:11px" title="Previous Sub-Tab: '+prevTab[2]+'"><i class="fa fa-chevron-left"></i> Prev</a>'+
+    '<a href="'+nextTab[0]+'" id="mm-top-next-tab" class="mm-button mm-button-secondary" style="min-height:26px;padding:2px 8px;font-size:11px" title="Next Sub-Tab: '+nextTab[2]+'">Next <i class="fa fa-chevron-right"></i></a>'+
+   '</div>'+
+   '<div style="display:flex;flex-wrap:wrap;align-items:center;gap:6px">'+
+    '<input type="search" id="mm-top-tab-filter" class="mm-top-tab-filter" placeholder="Filter '+modScreens.length+' module screens..." aria-label="Filter sub-menu tabs and module screens">'+
+    '<button type="button" id="mm-top-more-btn" aria-expanded="false" aria-controls="mm-top-more-panel" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11.5px"><i class="fa fa-th-list"></i> All '+modScreens.length+' Module Screens <i class="fa fa-caret-down"></i></button>'+
+    '<button type="button" id="mm-top-pin-btn" aria-pressed="true" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11.5px" title="Pin or unpin top sub-menu bar while scrolling"><i class="fa fa-thumb-tack"></i> Pinned</button>'+
+    '<button type="button" data-toggle="modal" data-target="#mm-quick-drawer" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11.5px"><i class="fa fa-columns"></i> App Drawer</button>'+
+    '<button type="button" data-mm-theme-toggle aria-pressed="false" aria-label="Dark theme" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11.5px"><i class="fa fa-moon-o"></i> Dark / Light</button>'+
+   '</div>'+
   '</div>'+
   '<div class="mm-top-subnav-tabs" role="navigation" aria-label="Module sub-pages">'+tabsHtml+'</div>'+
+  '<div class="mm-top-more-panel" id="mm-top-more-panel" hidden>'+
+   '<div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;padding-bottom:8px;border-bottom:1px solid rgba(148,163,184,0.2)">'+
+    '<div style="font-size:12px;font-weight:700"><i class="fa '+activeMod.icon+'"></i> '+activeMod.label+' — Complete Screen Directory (<span id="mm-top-more-count">'+modScreens.length+'</span> screens)</div>'+
+    '<div style="display:flex;flex-wrap:wrap;gap:6px">'+
+     '<button type="button" class="mm-button mm-button-secondary mm-top-scope-btn is-active" data-top-scope="all" style="min-height:25px;padding:1px 9px;font-size:11px">All ('+modScreens.length+')</button>'+
+     '<button type="button" class="mm-button mm-button-secondary mm-top-scope-btn" data-top-scope="primary" style="min-height:25px;padding:1px 9px;font-size:11px">Primary Tabs ('+tabsList.length+')</button>'+
+     '<a href="/preview" class="mm-button mm-button-secondary" style="min-height:25px;padding:1px 9px;font-size:11px"><i class="fa fa-th-large"></i> All 362 ERP Screens →</a>'+
+    '</div>'+
+   '</div>'+
+   '<div class="mm-top-more-grid" id="mm-top-more-grid">'+moreCardsHtml+'</div>'+
+  '</div>'+
+  '<script>(function(){'+
+   'var nav=document.getElementById("mm-top-subnav"),pinBtn=document.getElementById("mm-top-pin-btn"),moreBtn=document.getElementById("mm-top-more-btn"),morePanel=document.getElementById("mm-top-more-panel"),flt=document.getElementById("mm-top-tab-filter"),cnt=document.getElementById("mm-top-more-count");'+
+   'if(!nav)return;'+
+   'var pinned=true;try{pinned=localStorage.getItem("mm-top-subnav-pinned")!=="0";}catch(e){}'+
+   'function syncPin(){nav.classList.toggle("is-sticky",pinned);if(pinBtn){pinBtn.setAttribute("aria-pressed",String(pinned));pinBtn.innerHTML="<i class=\\"fa fa-thumb-tack\\"></i> "+(pinned?"Pinned":"Pin Bar");}}'+
+   'syncPin();'+
+   'if(pinBtn)pinBtn.addEventListener("click",function(){pinned=!pinned;try{localStorage.setItem("mm-top-subnav-pinned",pinned?"1":"0");}catch(e){}syncPin();});'+
+   'function setMore(open){if(!morePanel||!moreBtn)return;morePanel.hidden=!open;moreBtn.setAttribute("aria-expanded",String(open));}'+
+   'if(moreBtn)moreBtn.addEventListener("click",function(){setMore(morePanel.hidden);});'+
+   'var scope="all",scopeBtns=nav.querySelectorAll("[data-top-scope]");'+
+   'function runFilter(){'+
+    'var q=(flt&&flt.value||"").toLowerCase().trim();'+
+    'var tabs=nav.querySelectorAll(".mm-top-tab");'+
+    'for(var i=0;i<tabs.length;i++){var t=tabs[i],m=!q||(t.getAttribute("data-top-tab-search")||"").indexOf(q)>=0;t.style.display=m?"":"none";}'+
+    'var cards=nav.querySelectorAll(".mm-top-more-card"),n=0;'+
+    'for(var j=0;j<cards.length;j++){var c=cards[j],okScope=scope==="all"||c.getAttribute("data-top-more-primary")==="1",okQ=!q||(c.getAttribute("data-top-more-search")||"").indexOf(q)>=0;var show=okScope&&okQ;c.style.display=show?"":"none";if(show)n++;}'+
+    'if(cnt)cnt.textContent=String(n);'+
+    'if(q&&morePanel&&morePanel.hidden)setMore(true);'+
+   '}'+
+   'if(flt)flt.addEventListener("input",runFilter);'+
+   'for(var k=0;k<scopeBtns.length;k++){scopeBtns[k].addEventListener("click",function(){scope=this.getAttribute("data-top-scope")||"all";runFilter();});}'+
+  '})();</script>'+
  '</nav>';
 
  return page
