@@ -1047,39 +1047,107 @@ function buildPlanBPages(shellWith) {
 
     function folioSettlementPage() {
         const body = `<section class="mm-ui"><div class="tw-space-y-4 tw-py-2">
-            <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <header class="mm-page-head mm-no-print tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
                 <div class="mm-page-title">
                     <h1 class="tw-m-0 tw-font-semibold tw-text-ink"><i class="fa fa-columns"></i> Multi-Window Split-Folio &amp; Express Checkout Settlement (Plan A · Phase 3 #4)</h1>
-                    <p class="tw-m-0 tw-text-sm tw-text-muted">Split charges between Window A (Corporate Master Bill / City Ledger AR) and Window B (Guest Incidentals), apply late check-out rules, and collect multi-tender payment.</p>
+                    <p class="tw-m-0 tw-text-sm tw-text-muted">Split charges between Window A (Corporate Master Bill / City Ledger AR) and Window B (Guest Personal Incidentals), post last-minute charges, apply late check-out rules, and issue split Mushak-6.3 tax invoices.</p>
                 </div>
                 <div class="tw-flex tw-flex-wrap tw-gap-2">
-                    <a href="/preview/checkout" class="mm-button mm-button-secondary"><i class="fa fa-credit-card"></i> Classic Checkout</a>
-                    <a href="/preview/city-ledger" class="mm-button mm-button-secondary"><i class="fa fa-building-o"></i> City Ledger AR (F20)</a>
-                    <a href="/preview/invoice" class="mm-button mm-button-secondary"><i class="fa fa-print"></i> Printable Tax Invoice</a>
+                    <a href="/preview/night-audit-hardening" class="mm-button mm-button-secondary"><i class="fa fa-moon-o"></i> Next: Workflow #5 Night Audit</a>
+                    <a href="/preview/kiosk-checkin" class="mm-button mm-button-secondary"><i class="fa fa-tablet"></i> Express Kiosk (F5)</a>
+                    <button type="button" class="mm-button mm-button-secondary" data-toggle="modal" data-target="#folio-invoice-modal"><i class="fa fa-print"></i> Split Tax Invoice (Win A/B)</button>
                     <button type="button" class="mm-button" id="folio-btn-settle"><i class="fa fa-check-circle"></i> Settle Both Windows &amp; Check-Out</button>
                 </div>
             </header>
-            <div class="mm-table-kpi-grid" aria-label="Split folio summary">
-                <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-file-text-o"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Active Stay Folio</span><div class="mm-table-kpi-value">#BK-2026-1094 <span class="mm-table-kpi-sub">Suites #101 &amp; #201 · 2N</span></div></div></div>
+
+            <!-- 3-Step Express Checkout & Split-Folio Stepper -->
+            <nav class="mm-stepper mm-no-print" aria-label="Split-folio checkout progress">
+                <ol class="mm-stepper-list">
+                    <li class="mm-step is-done" data-folio-step="1">
+                        <span class="mm-step-index" id="folio-step-idx-1">&#10003;</span>
+                        <span class="mm-step-copy">
+                            <span class="mm-step-label">1. Stay, Keycard &amp; KYC Verification</span>
+                            <span class="mm-step-sub" id="folio-step-sub-1">#BK-2026-1094 · Suites #101 &amp; #201 · 2 RFID Keys Returned</span>
+                        </span>
+                        <span class="mm-step-pill" id="folio-step-pill-1">Verified</span>
+                    </li>
+                    <li class="mm-step is-current" data-folio-step="2" aria-current="step">
+                        <span class="mm-step-index" id="folio-step-idx-2">2</span>
+                        <span class="mm-step-copy">
+                            <span class="mm-step-label">2. Multi-Window Charge Routing (Win A / B)</span>
+                            <span class="mm-step-sub" id="folio-step-sub-2">Window A: ৳ 42,000 Corp · Window B: ৳ 6,450 Guest</span>
+                        </span>
+                        <span class="mm-step-pill" id="folio-step-pill-2">Active Step</span>
+                    </li>
+                    <li class="mm-step" data-folio-step="3">
+                        <span class="mm-step-index" id="folio-step-idx-3">3</span>
+                        <span class="mm-step-copy">
+                            <span class="mm-step-label">3. Multi-Tender Settlement &amp; HK Turnaround</span>
+                            <span class="mm-step-sub" id="folio-step-sub-3">City Ledger AR + VISA/Cash · Mushak-6.3 Split Invoice</span>
+                        </span>
+                        <span class="mm-step-pill" id="folio-step-pill-3">Ready</span>
+                    </li>
+                </ol>
+            </nav>
+
+            <div class="mm-table-kpi-grid mm-no-print" aria-label="Split folio summary">
+                <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-file-text-o"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Active Stay Folio</span><div class="mm-table-kpi-value" id="folio-kpi-stay">#BK-2026-1094 <span class="mm-table-kpi-sub">Suites #101 &amp; #201 · 2N</span></div></div></div>
                 <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-building-o"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Window A · Corporate AR</span><div class="mm-table-kpi-value" id="folio-kpi-win-a">৳ 42,000 <span class="mm-table-kpi-sub">Orion Pharma City Ledger</span></div></div></div>
                 <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-user"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Window B · Guest Personal</span><div class="mm-table-kpi-value" id="folio-kpi-win-b">৳ 6,450 <span class="mm-table-kpi-sub">POS · Minibar · Laundry</span></div></div></div>
                 <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-check-circle"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Unsettled Balance</span><div class="mm-table-kpi-value" id="folio-kpi-due">৳ 0 Due <span class="mm-table-kpi-sub">Multi-Tender Balanced</span></div></div></div>
             </div>
 
-            <div id="folio-settle-banner" class="alert alert-success" style="display:none;margin:0;border-radius:10px;">
+            <div id="folio-settle-banner" class="alert alert-success mm-no-print" style="display:none;margin:0;border-radius:10px;">
                 <i class="fa fa-check-circle"></i> <strong id="folio-settle-msg">Split Folio Settled! Window A posted to Orion Pharma City Ledger AR (#CL-2026-01) and Window B settled via VISA + Cash. Suites #101 &amp; #201 marked Dirty for Housekeeping turnaround!</strong>
             </div>
 
+            <!-- Quick Post-Charge & Bulk Window Routing Bar -->
+            <div class="mm-panel tw-p-4 mm-no-print" id="folio-panel-step1">
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(195px,1fr));gap:10px;align-items:end">
+                    <div>
+                        <label class="mm-label" for="folio-new-desc">1. Post Last-Minute Checkout Charge</label>
+                        <input type="text" id="folio-new-desc" class="form-control input-sm" value="Airport Luxury Limousine Transfer (#TR-402)">
+                    </div>
+                    <div>
+                        <label class="mm-label" for="folio-new-win">2. Target Window</label>
+                        <select id="folio-new-win" class="form-control input-sm">
+                            <option value="B" selected>Window B · Guest Incidentals</option>
+                            <option value="A">Window A · Corporate Master Bill</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="mm-label" for="folio-new-amt">3. Charge Amount (৳)</label>
+                        <div style="display:flex;gap:6px">
+                            <input type="number" id="folio-new-amt" class="form-control input-sm" value="3500" min="100" step="50">
+                            <button type="button" id="folio-btn-add-charge" class="mm-button mm-button-secondary" style="min-height:30px;padding:2px 10px;font-size:11.5px;white-space:nowrap"><i class="fa fa-plus"></i> Post Charge</button>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="mm-label">4. Bulk Window Routing Rules</label>
+                        <div style="display:flex;gap:6px;flex-wrap:wrap">
+                            <button type="button" id="folio-btn-preset-split" class="mm-button mm-button-secondary" style="min-height:30px;padding:2px 8px;font-size:11px">Rooms→A / F&amp;B→B</button>
+                            <button type="button" id="folio-btn-all-a" class="mm-button mm-button-secondary" style="min-height:30px;padding:2px 8px;font-size:11px">All → Win A</button>
+                            <button type="button" id="folio-btn-all-b" class="mm-button mm-button-secondary" style="min-height:30px;padding:2px 8px;font-size:11px">All → Win B</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Interactive Charge Splitter & Late Checkout Bar -->
-            <div class="mm-panel tw-p-5">
+            <div class="mm-panel tw-p-5 mm-no-print" id="folio-panel-step2">
                 <div class="tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-2" style="margin-bottom:12px">
                     <div>
                         <h2 class="tw-m-0 tw-text-base tw-font-semibold"><i class="fa fa-exchange"></i> Folio Line-Items — Click Any Charge to Move Between Window A (Corporate) &amp; Window B (Guest)</h2>
-                        <p class="tw-m-0 tw-text-xs tw-text-muted">Guest: <strong>Tanvir Ahmed Chowdhury</strong> · Corporate Account: <strong>Orion Pharma Ltd. (PO #ORP-9921)</strong></p>
+                        <p class="tw-m-0 tw-text-xs tw-text-muted">Guest: <strong>Tanvir Ahmed Chowdhury</strong> · Corporate Account: <strong>Orion Pharma Ltd. (PO #ORP-9921 · Credit Limit: ৳ 500,000)</strong></p>
                     </div>
-                    <div class="tw-flex tw-items-center tw-gap-2">
-                        <label class="mm-label" style="margin:0;font-size:12px;">Late Check-Out Rule:</label>
-                        <select id="folio-late-select" class="form-control input-sm" style="width:230px;">
+                    <div class="tw-flex tw-flex-wrap tw-items-center tw-gap-2">
+                        <div class="mm-preview-filter-pills" style="margin:0">
+                            <button type="button" class="mm-preview-pill is-active" data-folio-win-filter="all">All Charges</button>
+                            <button type="button" class="mm-preview-pill" data-folio-win-filter="A">Window A · Corporate</button>
+                            <button type="button" class="mm-preview-pill" data-folio-win-filter="B">Window B · Guest</button>
+                        </div>
+                        <label class="mm-label" style="margin:0;font-size:12px;">Late Check-Out:</label>
+                        <select id="folio-late-select" class="form-control input-sm" style="width:225px;">
                             <option value="0" selected>Standard 12:00 PM Check-Out (৳ 0)</option>
                             <option value="4250">Late 04:00 PM · 50% Half-Day (+৳ 4,250)</option>
                             <option value="8500">After 06:00 PM · 100% Full-Day (+৳ 8,500)</option>
@@ -1098,36 +1166,36 @@ function buildPlanBPages(shellWith) {
                             </tr>
                         </thead>
                         <tbody id="folio-lines-tbody">
-                            <tr class="folio-line-row" data-win="A" data-amt="17000">
-                                <td><code>14–16 Oct</code></td>
+                            <tr class="folio-line-row" data-win="A" data-type="room" data-amt="17000">
+                                <td><span class="mm-badge">14–16 Oct</span></td>
                                 <td><strong>Suite #101 · Deluxe King (2 Nights × ৳ 8,500)</strong></td>
                                 <td><span class="mm-badge mm-badge-paid folio-win-badge">Window A · Corporate Master</span></td>
                                 <td class="text-right"><strong>17,000</strong></td>
                                 <td class="text-center"><button type="button" class="mm-button mm-button-secondary folio-toggle-win" style="min-height:26px;padding:2px 10px;font-size:11px;">Move to Window B ↔</button></td>
                             </tr>
-                            <tr class="folio-line-row" data-win="A" data-amt="25000">
-                                <td><code>14–16 Oct</code></td>
+                            <tr class="folio-line-row" data-win="A" data-type="room" data-amt="25000">
+                                <td><span class="mm-badge">14–16 Oct</span></td>
                                 <td><strong>Suite #201 · Heritage Executive (2 Nights × ৳ 12,500)</strong></td>
                                 <td><span class="mm-badge mm-badge-paid folio-win-badge">Window A · Corporate Master</span></td>
                                 <td class="text-right"><strong>25,000</strong></td>
                                 <td class="text-center"><button type="button" class="mm-button mm-button-secondary folio-toggle-win" style="min-height:26px;padding:2px 10px;font-size:11px;">Move to Window B ↔</button></td>
                             </tr>
-                            <tr class="folio-line-row" data-win="B" data-amt="3200">
-                                <td><code>14 Oct · #KOT-884</code></td>
+                            <tr class="folio-line-row" data-win="B" data-type="inc" data-amt="3200">
+                                <td><span class="mm-badge">14 Oct · #KOT-884</span></td>
                                 <td><strong>Heritage Dining Restaurant · Room Service Dinner</strong></td>
                                 <td><span class="mm-badge mm-badge-partial folio-win-badge">Window B · Guest Incidentals</span></td>
                                 <td class="text-right"><strong>3,200</strong></td>
                                 <td class="text-center"><button type="button" class="mm-button mm-button-secondary folio-toggle-win" style="min-height:26px;padding:2px 10px;font-size:11px;">Move to Window A ↔</button></td>
                             </tr>
-                            <tr class="folio-line-row" data-win="B" data-amt="1850">
-                                <td><code>15 Oct · #MB-201</code></td>
+                            <tr class="folio-line-row" data-win="B" data-type="inc" data-amt="1850">
+                                <td><span class="mm-badge">15 Oct · #MB-201</span></td>
                                 <td><strong>In-Room Minibar Consumption (Artisan Nuts, Juice, Evian)</strong></td>
                                 <td><span class="mm-badge mm-badge-partial folio-win-badge">Window B · Guest Incidentals</span></td>
                                 <td class="text-right"><strong>1,850</strong></td>
                                 <td class="text-center"><button type="button" class="mm-button mm-button-secondary folio-toggle-win" style="min-height:26px;padding:2px 10px;font-size:11px;">Move to Window A ↔</button></td>
                             </tr>
-                            <tr class="folio-line-row" data-win="B" data-amt="1400">
-                                <td><code>15 Oct · #SRV-119</code></td>
+                            <tr class="folio-line-row" data-win="B" data-type="inc" data-amt="1400">
+                                <td><span class="mm-badge">15 Oct · #SRV-119</span></td>
                                 <td><strong>Express Valet Laundry &amp; Suit Pressing (3 pcs)</strong></td>
                                 <td><span class="mm-badge mm-badge-partial folio-win-badge">Window B · Guest Incidentals</span></td>
                                 <td class="text-right"><strong>1,400</strong></td>
@@ -1139,16 +1207,20 @@ function buildPlanBPages(shellWith) {
             </div>
 
             <!-- Multi-Tender Settlement Split -->
-            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:16px">
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(360px,1fr));gap:16px" class="mm-no-print" id="folio-panel-step3">
                 <div class="mm-panel tw-p-5">
                     <div class="tw-flex tw-items-center tw-justify-between" style="margin-bottom:10px">
                         <strong><i class="fa fa-building-o"></i> Window A · Corporate Master Bill (Direct Bill AR)</strong>
                         <span class="mm-badge mm-badge-paid" id="folio-win-a-badge">৳ 42,000</span>
                     </div>
-                    <p class="tw-text-xs tw-text-muted" style="margin:0 0 10px">Less Advance Deposit Paid (<code>৳ 10,000</code>) → Remaining transferred to Orion Pharma City Ledger AR:</p>
-                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+                    <p class="tw-text-xs tw-text-muted" style="margin:0 0 10px">Less Advance Deposit Paid (<strong>৳ 10,000</strong>) → Remaining transferred to Orion Pharma City Ledger AR (#CL-2026-01):</p>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
                         <div><label class="mm-label">Advance Deposit Applied (৳)</label><input type="number" id="folio-adv-applied" class="form-control" value="10000" readonly></div>
                         <div><label class="mm-label">Post to City Ledger AR (৳)</label><input type="number" id="folio-ar-amount" class="form-control" value="32000"></div>
+                    </div>
+                    <div style="padding:8px 12px;border-radius:8px;background:rgba(37,99,235,0.08);border:1px solid rgba(37,99,235,0.25);font-size:12px;display:flex;justify-content:space-between">
+                        <span>Corporate PO: <strong>#ORP-9921 (Net 30 Days)</strong></span>
+                        <span id="folio-win-a-status" style="color:#047857;font-weight:700">✓ Authorized for AR Transfer</span>
                     </div>
                 </div>
                 <div class="mm-panel tw-p-5">
@@ -1156,18 +1228,82 @@ function buildPlanBPages(shellWith) {
                         <strong><i class="fa fa-credit-card"></i> Window B · Guest Personal Incidentals (Multi-Tender)</strong>
                         <span class="mm-badge mm-badge-partial" id="folio-win-b-badge">৳ 6,450</span>
                     </div>
-                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+                    <p class="tw-text-xs tw-text-muted" style="margin:0 0 10px">Split Guest Personal balance across VISA/MasterCard POS terminal and Cash / bKash Wallet:</p>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
                         <div><label class="mm-label">VISA / MasterCard POS (৳)</label><input type="number" id="folio-pay-card" class="form-control" value="5000"></div>
                         <div><label class="mm-label">Cash / bKash Wallet (৳)</label><input type="number" id="folio-pay-cash" class="form-control" value="1450"></div>
                     </div>
+                    <div style="padding:8px 12px;border-radius:8px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.28);font-size:12px;display:flex;justify-content:space-between">
+                        <span>Housekeeping Hook: <strong>Auto-Queue Suites #101 &amp; #201</strong></span>
+                        <span id="folio-win-b-status" style="color:#047857;font-weight:700">✓ ৳ 0 Balance Due</span>
+                    </div>
                 </div>
+            </div>
+
+            <!-- Printable Split Tax Invoice Drawer (#folio-invoice-modal) -->
+            <div id="folio-invoice-modal" class="modal fade mm-drawer" data-mm-drawer="true" tabindex="-1" role="dialog">
+                <div class="modal-dialog" style="width:94vw;max-width:860px;"><div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title"><i class="fa fa-print"></i> Mushak-6.3 Split Tax Invoice Preview — Window A (Corporate) &amp; Window B (Guest)</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:16px">
+                            <div style="border:1.5px solid #cbd5e1;border-top:5px solid #1d4ed8;border-radius:8px;padding:16px;background:#fff;color:#0f172a">
+                                <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:8px">
+                                    <div><strong>M&amp;M HERITAGE HOTEL &amp; SUITES</strong><div style="font-size:11px;color:#475569">BIN: 004192837-0101 · Mushak-6.3</div></div>
+                                    <span class="mm-badge mm-badge-paid">WINDOW A · CORP</span>
+                                </div>
+                                <div style="font-size:12px;margin-bottom:8px;padding:6px 8px;background:#f8fafc;border-radius:6px">
+                                    Invoice: <strong>#INV-2026-1094A</strong><br>
+                                    Bill To: <strong>Orion Pharma Ltd. (PO #ORP-9921)</strong><br>
+                                    Guest Ref: Tanvir Ahmed Chowdhury (Suites #101 &amp; #201)
+                                </div>
+                                <div style="display:flex;justify-content:space-between;font-weight:700;border-top:2px solid #0f172a;border-bottom:2px solid #0f172a;padding:6px 0;margin:8px 0">
+                                    <span>WINDOW A TOTAL (BDT)</span>
+                                    <span id="folio-inv-win-a">৳ 42,000</span>
+                                </div>
+                                <div style="font-size:11.5px;color:#334155">Less Advance Paid: ৳ 10,000 · Net City Ledger AR: <strong id="folio-inv-ar">৳ 32,000</strong></div>
+                            </div>
+                            <div style="border:1.5px solid #cbd5e1;border-top:5px solid #059669;border-radius:8px;padding:16px;background:#fff;color:#0f172a">
+                                <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:8px">
+                                    <div><strong>M&amp;M HERITAGE HOTEL &amp; SUITES</strong><div style="font-size:11px;color:#475569">BIN: 004192837-0101 · Mushak-6.3</div></div>
+                                    <span class="mm-badge mm-badge-partial">WINDOW B · GUEST</span>
+                                </div>
+                                <div style="font-size:12px;margin-bottom:8px;padding:6px 8px;background:#f8fafc;border-radius:6px">
+                                    Invoice: <strong>#INV-2026-1094B</strong><br>
+                                    Bill To: <strong>Tanvir Ahmed Chowdhury (Personal Folio)</strong><br>
+                                    Scope: Restaurant POS, In-Room Minibar &amp; Valet Laundry
+                                </div>
+                                <div style="display:flex;justify-content:space-between;font-weight:700;border-top:2px solid #0f172a;border-bottom:2px solid #0f172a;padding:6px 0;margin:8px 0">
+                                    <span>WINDOW B TOTAL (BDT)</span>
+                                    <span id="folio-inv-win-b">৳ 6,450</span>
+                                </div>
+                                <div style="font-size:11.5px;color:#334155">Settled via Multi-Tender (VISA POS + Cash/bKash) · <strong>৳ 0 Due</strong></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="mm-button mm-button-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="mm-button" onclick="window.print()"><i class="fa fa-print"></i> Print Split Tax Invoices (A4)</button>
+                    </div>
+                </div></div>
             </div>
         </div></section>
         <script>(function(){
             function fmt(n){return Math.round(n).toLocaleString("en-US");}
-            var lateSel=document.getElementById("folio-late-select"),arInp=document.getElementById("folio-ar-amount"),cardInp=document.getElementById("folio-pay-card"),cashInp=document.getElementById("folio-pay-cash");
+            var tbody=document.getElementById("folio-lines-tbody"),lateSel=document.getElementById("folio-late-select"),arInp=document.getElementById("folio-ar-amount"),cardInp=document.getElementById("folio-pay-card"),cashInp=document.getElementById("folio-pay-cash");
+            function setRowWin(tr,next){
+                tr.setAttribute("data-win",next);
+                var bdg=tr.querySelector(".folio-win-badge"),btn=tr.querySelector(".folio-toggle-win");
+                if(bdg){
+                    bdg.className="mm-badge "+(next==="A"?"mm-badge-paid":"mm-badge-partial")+" folio-win-badge";
+                    bdg.textContent=next==="A"?"Window A · Corporate Master":"Window B · Guest Incidentals";
+                }
+                if(btn)btn.textContent="Move to Window "+(next==="A"?"B":"A")+" ↔";
+            }
             function recalc(){
-                var rows=document.querySelectorAll("#folio-lines-tbody .folio-line-row");
+                var rows=tbody.querySelectorAll(".folio-line-row");
                 var winA=0,winB=Number(lateSel&&lateSel.value||0);
                 for(var i=0;i<rows.length;i++){
                     var w=rows[i].getAttribute("data-win"),a=Number(rows[i].getAttribute("data-amt")||0);
@@ -1178,30 +1314,317 @@ function buildPlanBPages(shellWith) {
                 if(kB)kB.innerHTML="৳ "+fmt(winB)+' <span class="mm-table-kpi-sub">POS · Minibar · Laundry</span>';
                 if(bA)bA.textContent="৳ "+fmt(winA);
                 if(bB)bB.textContent="৳ "+fmt(winB);
-                if(arInp)arInp.value=Math.max(0,winA-10000);
+                var s2Sub=document.getElementById("folio-step-sub-2");
+                if(s2Sub)s2Sub.textContent="Window A: ৳ "+fmt(winA)+" Corp · Window B: ৳ "+fmt(winB)+" Guest";
+                var netAr=Math.max(0,winA-10000);
+                if(arInp)arInp.value=netAr;
                 if(cardInp&&cashInp)cashInp.value=Math.max(0,winB-Number(cardInp.value||0));
+                var invA=document.getElementById("folio-inv-win-a"),invB=document.getElementById("folio-inv-win-b"),invAr=document.getElementById("folio-inv-ar");
+                if(invA)invA.textContent="৳ "+fmt(winA);
+                if(invB)invB.textContent="৳ "+fmt(winB);
+                if(invAr)invAr.textContent="৳ "+fmt(netAr);
             }
-            var btns=document.querySelectorAll(".folio-toggle-win");
-            for(var j=0;j<btns.length;j++){
-                btns[j].addEventListener("click",function(){
-                    var tr=this.closest(".folio-line-row");
-                    if(!tr)return;
-                    var cur=tr.getAttribute("data-win"),next=cur==="A"?"B":"A";
-                    tr.setAttribute("data-win",next);
-                    var bdg=tr.querySelector(".folio-win-badge");
-                    if(bdg){
-                        bdg.className="mm-badge "+(next==="A"?"mm-badge-paid":"mm-badge-partial")+" folio-win-badge";
-                        bdg.textContent=next==="A"?"Window A · Corporate Master":"Window B · Guest Incidentals";
-                    }
-                    this.textContent="Move to Window "+(next==="A"?"B":"A")+" ↔";
+            tbody.addEventListener("click",function(e){
+                var btn=e.target&&e.target.closest(".folio-toggle-win");
+                if(!btn)return;
+                var tr=btn.closest(".folio-line-row");
+                if(!tr)return;
+                var cur=tr.getAttribute("data-win"),next=cur==="A"?"B":"A";
+                setRowWin(tr,next);
+                recalc();
+            });
+            var addBtn=document.getElementById("folio-btn-add-charge"),dInp=document.getElementById("folio-new-desc"),wSel=document.getElementById("folio-new-win"),aInp=document.getElementById("folio-new-amt");
+            if(addBtn&&tbody){
+                addBtn.addEventListener("click",function(){
+                    var desc=(dInp&&dInp.value||"Checkout Incidental Charge").trim();
+                    var w=(wSel&&wSel.value)||"B";
+                    var amt=Number(aInp&&aInp.value||1000);
+                    var tr=document.createElement("tr");
+                    tr.className="folio-line-row";
+                    tr.setAttribute("data-win",w);
+                    tr.setAttribute("data-type","inc");
+                    tr.setAttribute("data-amt",String(amt));
+                    tr.innerHTML='<td><span class="mm-badge">16 Oct · #ADD</span></td><td><strong>'+desc+'</strong></td><td><span class="mm-badge '+(w==="A"?"mm-badge-paid":"mm-badge-partial")+' folio-win-badge">'+(w==="A"?"Window A · Corporate Master":"Window B · Guest Incidentals")+'</span></td><td class="text-right"><strong>'+fmt(amt)+'</strong></td><td class="text-center"><button type="button" class="mm-button mm-button-secondary folio-toggle-win" style="min-height:26px;padding:2px 10px;font-size:11px;">Move to Window '+(w==="A"?"B":"A")+' ↔</button></td>';
+                    tbody.appendChild(tr);
                     recalc();
                 });
             }
+            var presetBtn=document.getElementById("folio-btn-preset-split"),allABtn=document.getElementById("folio-btn-all-a"),allBBtn=document.getElementById("folio-btn-all-b");
+            if(presetBtn)presetBtn.addEventListener("click",function(){
+                var rows=tbody.querySelectorAll(".folio-line-row");
+                for(var i=0;i<rows.length;i++)setRowWin(rows[i],rows[i].getAttribute("data-type")==="room"?"A":"B");
+                recalc();
+            });
+            if(allABtn)allABtn.addEventListener("click",function(){
+                var rows=tbody.querySelectorAll(".folio-line-row");
+                for(var i=0;i<rows.length;i++)setRowWin(rows[i],"A");
+                recalc();
+            });
+            if(allBBtn)allBBtn.addEventListener("click",function(){
+                var rows=tbody.querySelectorAll(".folio-line-row");
+                for(var i=0;i<rows.length;i++)setRowWin(rows[i],"B");
+                recalc();
+            });
+            var winFilterBtns=document.querySelectorAll("[data-folio-win-filter]");
+            for(var wf=0;wf<winFilterBtns.length;wf++){
+                winFilterBtns[wf].addEventListener("click",function(){
+                    for(var k=0;k<winFilterBtns.length;k++)winFilterBtns[k].classList.remove("is-active");
+                    this.classList.add("is-active");
+                    var v=this.getAttribute("data-folio-win-filter");
+                    var rows=tbody.querySelectorAll(".folio-line-row");
+                    for(var i=0;i<rows.length;i++){
+                        rows[i].style.display=(v==="all"||rows[i].getAttribute("data-win")===v)?"":"none";
+                    }
+                });
+            }
             if(lateSel)lateSel.addEventListener("change",recalc);
+            if(cardInp)cardInp.addEventListener("input",recalc);
+            var stepItems=document.querySelectorAll("[data-folio-step]");
+            function setFolioStep(stepNum){
+                for(var s=0;s<stepItems.length;s++){
+                    var el=stepItems[s],n=Number(el.getAttribute("data-folio-step"));
+                    var idxEl=document.getElementById("folio-step-idx-"+n),pillEl=document.getElementById("folio-step-pill-"+n);
+                    el.classList.remove("is-done","is-current");
+                    el.removeAttribute("aria-current");
+                    if(n<stepNum){
+                        el.classList.add("is-done");
+                        if(idxEl)idxEl.innerHTML="&#10003;";
+                        if(pillEl)pillEl.textContent="Completed";
+                    }else if(n===stepNum){
+                        el.classList.add("is-current");
+                        el.setAttribute("aria-current","step");
+                        if(idxEl)idxEl.textContent=String(n);
+                        if(pillEl)pillEl.textContent="Active Step";
+                    }else{
+                        if(idxEl)idxEl.textContent=String(n);
+                        if(pillEl)pillEl.textContent="Ready";
+                    }
+                }
+            }
+            for(var si=0;si<stepItems.length;si++){
+                stepItems[si].addEventListener("click",function(){
+                    var n=Number(this.getAttribute("data-folio-step")||2);
+                    setFolioStep(n);
+                    var targetId=n===1?"folio-panel-step1":(n===2?"folio-panel-step2":"folio-panel-step3");
+                    var targetEl=document.getElementById(targetId);
+                    if(targetEl&&targetEl.scrollIntoView)targetEl.scrollIntoView({behavior:"smooth",block:"nearest"});
+                });
+            }
             var settleBtn=document.getElementById("folio-btn-settle"),ban=document.getElementById("folio-settle-banner");
-            if(settleBtn&&ban)settleBtn.addEventListener("click",function(){ban.style.display="block";});
+            if(settleBtn&&ban)settleBtn.addEventListener("click",function(){
+                setFolioStep(3);
+                ban.style.display="block";
+            });
         })();</script>`;
         return shellWith(body, '', '', 'Multi-Window Split-Folio & Express Checkout', ['Hotel', 'Bookings', 'Split-Folio Settlement']);
+    }
+
+    function nightAuditHardeningPage() {
+        const body = `<section class="mm-ui"><div class="tw-space-y-4 tw-py-2">
+            <header class="mm-page-head mm-no-print tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+                <div class="mm-page-title">
+                    <h1 class="tw-m-0 tw-font-semibold tw-text-ink"><i class="fa fa-moon-o"></i> Night-Audit Hardening, Auto-Posting &amp; Guided Day-Close Lock (Plan A · Phase 3 #5 &amp; Plan B · F19)</h1>
+                    <p class="tw-m-0 tw-text-sm tw-text-muted">Guided 6-step Night Audit workflow: verify arrivals/departures, close Restaurant &amp; Bar POS outlets, auto-post nightly room tariffs &amp; Mushak-6.3 VAT, and lock the business date.</p>
+                </div>
+                <div class="tw-flex tw-flex-wrap tw-gap-2">
+                    <a href="/preview/folio-settlement" class="mm-button mm-button-secondary"><i class="fa fa-columns"></i> Workflow #4 Split-Folio</a>
+                    <a href="/preview/pos-unified" class="mm-button mm-button-secondary"><i class="fa fa-cutlery"></i> Workflow #6 Unified POS</a>
+                    <button type="button" class="mm-button mm-button-secondary" id="na-btn-autopost"><i class="fa fa-bolt"></i> Auto-Post 18 Room Tariffs</button>
+                    <button type="button" class="mm-button" id="na-btn-lock-day"><i class="fa fa-lock"></i> Execute Day-Close &amp; Roll Date</button>
+                </div>
+            </header>
+
+            <!-- 3-Stage Night Audit Stepper -->
+            <nav class="mm-stepper mm-no-print" aria-label="Night audit workflow progress">
+                <ol class="mm-stepper-list">
+                    <li class="mm-step is-done" data-na-step="1">
+                        <span class="mm-step-index" id="na-step-idx-1">&#10003;</span>
+                        <span class="mm-step-copy">
+                            <span class="mm-step-label">1. Pre-Audit Outlet &amp; Arrival Verification</span>
+                            <span class="mm-step-sub">18 In-House Suites · 0 Open POS KOTs · 1 No-Show Handled</span>
+                        </span>
+                        <span class="mm-step-pill" id="na-step-pill-1">Completed</span>
+                    </li>
+                    <li class="mm-step is-current" data-na-step="2" aria-current="step">
+                        <span class="mm-step-index" id="na-step-idx-2">2</span>
+                        <span class="mm-step-copy">
+                            <span class="mm-step-label">2. Nightly Room Tariff, Package &amp; VAT Auto-Posting</span>
+                            <span class="mm-step-sub" id="na-step-sub-2">18 Occupied Suites · ৳ 189,500 Base + ৳ 49,744 SC/VAT</span>
+                        </span>
+                        <span class="mm-step-pill" id="na-step-pill-2">Active Step</span>
+                    </li>
+                    <li class="mm-step" data-na-step="3">
+                        <span class="mm-step-index" id="na-step-idx-3">3</span>
+                        <span class="mm-step-copy">
+                            <span class="mm-step-label">3. GL Trial Balance Snapshot &amp; Business Date Lock</span>
+                            <span class="mm-step-sub" id="na-step-sub-3">Lock 14 Oct 2026 → Roll PMS Business Date to 15 Oct 2026</span>
+                        </span>
+                        <span class="mm-step-pill" id="na-step-pill-3">Ready</span>
+                    </li>
+                </ol>
+            </nav>
+
+            <div class="mm-table-kpi-grid" aria-label="Night audit hardening summary">
+                <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-calendar-check-o"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Active Business Date</span><div class="mm-table-kpi-value" id="na-kpi-date">14 Oct 2026 <span class="mm-table-kpi-sub">Lock Status: Open</span></div></div></div>
+                <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-bed"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Nightly Room &amp; Tax Postings</span><div class="mm-table-kpi-value" id="na-kpi-postings">18 Suites Queued <span class="mm-table-kpi-sub">৳ 239,244 Gross w/ VAT</span></div></div></div>
+                <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-check-square-o"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Pre-Audit Control Gates</span><div class="mm-table-kpi-value" id="na-kpi-gates">6 / 6 Verified <span class="mm-table-kpi-sub">0 Unposted POS Checks</span></div></div></div>
+                <div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-balance-scale"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Trial Balance Variance</span><div class="mm-table-kpi-value" id="na-kpi-variance">৳ 0.00 <span class="mm-table-kpi-sub">Dual-Auth Guard Armed</span></div></div></div>
+            </div>
+
+            <div id="na-audit-banner" class="alert alert-success" style="display:none;margin:0;border-radius:10px;">
+                <i class="fa fa-check-circle"></i> <strong id="na-audit-msg">Night Audit Completed! 18 suite tariffs (৳ 239,244) posted, GL Trial Balance locked, and PMS Business Date rolled to 15 Oct 2026!</strong>
+            </div>
+
+            <!-- Guided 6-Step Pre-Audit & Posting Checklist -->
+            <div class="mm-panel tw-p-5" id="na-checklist-panel">
+                <div class="tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-2" style="margin-bottom:12px">
+                    <div>
+                        <h2 class="tw-m-0 tw-text-base tw-font-semibold"><i class="fa fa-list-ol"></i> Guided 6-Step Night Audit Pre-Flight &amp; Day-Close Checklist</h2>
+                        <p class="tw-m-0 tw-text-xs tw-text-muted">Every control gate must be verified before the Day-Close Lock rolls the hotel business date from <strong>14 Oct 2026</strong> to <strong>15 Oct 2026</strong>.</p>
+                    </div>
+                    <span class="mm-badge mm-badge-paid" id="na-progress-badge">6 / 6 Control Gates Passed</span>
+                </div>
+                <div class="mm-table-scroll">
+                    <table class="mm-data-table table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th class="text-center" style="width:65px">Verify</th>
+                                <th>Audit Control Gate &amp; Scope</th>
+                                <th>Live Verification Summary &amp; Variance Drill-Down</th>
+                                <th>Readiness</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="na-steps-tbody">
+                            <tr>
+                                <td class="text-center"><input type="checkbox" class="na-step-chk" checked style="width:16px;height:16px;accent-color:#1f7a4d"></td>
+                                <td><strong>Step 1 · Pending Arrivals &amp; No-Show Fee Engine</strong></td>
+                                <td>19 scheduled arrivals: 18 checked in, 1 guaranteed no-show (<strong>#BK-1089</strong>) auto-charged 1st night (৳ 9,500)</td>
+                                <td><div class="mm-share-cell"><span>100% Cleared</span><span class="mm-share-bar"><span class="mm-share-fill is-emerald" style="width:100%"></span></span></div></td>
+                                <td><span class="mm-badge mm-badge-paid na-gate-pill">Passed</span></td>
+                            </tr>
+                            <tr>
+                                <td class="text-center"><input type="checkbox" class="na-step-chk" checked style="width:16px;height:16px;accent-color:#1f7a4d"></td>
+                                <td><strong>Step 2 · Due Departures &amp; Late Checkout Enforcement</strong></td>
+                                <td>6 departures settled &amp; checked out; Suite #204 extended stay authorized with deposit cover</td>
+                                <td><div class="mm-share-cell"><span>100% Cleared</span><span class="mm-share-bar"><span class="mm-share-fill is-emerald" style="width:100%"></span></span></div></td>
+                                <td><span class="mm-badge mm-badge-paid na-gate-pill">Passed</span></td>
+                            </tr>
+                            <tr>
+                                <td class="text-center"><input type="checkbox" class="na-step-chk" checked style="width:16px;height:16px;accent-color:#1f7a4d"></td>
+                                <td><strong>Step 3 · Restaurant, Bar &amp; In-Room Dining POS Z-Close</strong></td>
+                                <td>Heritage Dining (৳ 68,400) + Skyline Bar (৳ 31,200) settled; 0 open tables or unposted KOTs</td>
+                                <td><div class="mm-share-cell"><span>100% Balanced</span><span class="mm-share-bar"><span class="mm-share-fill is-emerald" style="width:100%"></span></span></div></td>
+                                <td><span class="mm-badge mm-badge-paid na-gate-pill">Passed</span></td>
+                            </tr>
+                            <tr>
+                                <td class="text-center"><input type="checkbox" class="na-step-chk" checked style="width:16px;height:16px;accent-color:#1f7a4d"></td>
+                                <td><strong>Step 4 · Auto-Post Nightly Room Tariffs, Packages &amp; VAT</strong></td>
+                                <td>18 occupied suites: Base Tariff ৳ 189,500 + 10% SC (৳ 18,950) + 15% Mushak-6.3 VAT (৳ 30,794) = <strong>৳ 239,244</strong></td>
+                                <td><div class="mm-share-cell"><span>18/18 Suites</span><span class="mm-share-bar"><span class="mm-share-fill is-emerald" style="width:100%"></span></span></div></td>
+                                <td><span class="mm-badge mm-badge-paid na-gate-pill" id="na-step4-pill">Ready to Post</span></td>
+                            </tr>
+                            <tr>
+                                <td class="text-center"><input type="checkbox" class="na-step-chk" checked style="width:16px;height:16px;accent-color:#1f7a4d"></td>
+                                <td><strong>Step 5 · Payment Gateway, FX &amp; Shift Cash Reconciliation</strong></td>
+                                <td>VISA/MC (৳ 142,400) + SSLCommerz/bKash (৳ 86,500) + Cash Drawers (৳ 83,500) = ৳ 312,400 (<strong>৳ 0.00 Variance</strong>)</td>
+                                <td><div class="mm-share-cell"><span>৳ 0 Variance</span><span class="mm-share-bar"><span class="mm-share-fill is-emerald" style="width:100%"></span></span></div></td>
+                                <td><span class="mm-badge mm-badge-paid na-gate-pill">Reconciled</span></td>
+                            </tr>
+                            <tr>
+                                <td class="text-center"><input type="checkbox" class="na-step-chk" checked style="width:16px;height:16px;accent-color:#1f7a4d"></td>
+                                <td><strong>Step 6 · Lock Business Date &amp; Roll PMS to 15 Oct 2026</strong></td>
+                                <td>Generates immutable GL trial balance snapshot &amp; locks 14 Oct 2026 behind GM Dual-Auth guard</td>
+                                <td><div class="mm-share-cell"><span>Armed</span><span class="mm-share-bar"><span class="mm-share-fill is-emerald" style="width:100%"></span></span></div></td>
+                                <td><span class="mm-badge mm-badge-partial na-gate-pill" id="na-step6-pill">Awaiting Lock</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Suite-by-Suite Nightly Room & Tax Auto-Posting Preview -->
+            <div class="mm-panel tw-p-5" id="na-postings-panel">
+                <div class="tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-2" style="margin-bottom:12px">
+                    <div>
+                        <h2 class="tw-m-0 tw-text-base tw-font-semibold"><i class="fa fa-bed"></i> Nightly Room Tariff, Package &amp; Mushak-6.3 VAT Auto-Posting Batch (Sample 6 of 18 Occupied Suites)</h2>
+                        <p class="tw-m-0 tw-text-xs tw-text-muted">Idempotent cron-safe posting batch — re-running Night Audit will never double-charge an already posted suite.</p>
+                    </div>
+                    <span class="mm-badge mm-badge-paid" id="na-batch-status-badge">Batch #NA-2026-1014 · Ready</span>
+                </div>
+                <div class="mm-table-scroll">
+                    <table class="table table-bordered table-striped" style="margin:0;font-size:13px">
+                        <thead>
+                            <tr>
+                                <th>Suite &amp; Category</th>
+                                <th>In-House Guest &amp; Rate Plan</th>
+                                <th class="text-right">Room Tariff (৳)</th>
+                                <th class="text-right">10% Svc Chg (৳)</th>
+                                <th class="text-right">15% Govt. VAT (৳)</th>
+                                <th class="text-right">Nightly Total (৳)</th>
+                                <th>Posting State</th>
+                            </tr>
+                        </thead>
+                        <tbody id="na-room-postings-tbody">
+                            <tr><td><strong>#101 · Deluxe King</strong></td><td>Tanvir Ahmed Chowdhury · Corporate BAR</td><td class="text-right">8,500</td><td class="text-right">850</td><td class="text-right">1,403</td><td class="text-right"><strong>10,753</strong></td><td><span class="mm-badge mm-badge-partial na-post-row-badge">Queued</span></td></tr>
+                            <tr><td><strong>#201 · Heritage Executive</strong></td><td>Orion Pharma Executive · Corp Contract</td><td class="text-right">12,500</td><td class="text-right">1,250</td><td class="text-right">2,063</td><td class="text-right"><strong>15,813</strong></td><td><span class="mm-badge mm-badge-partial na-post-row-badge">Queued</span></td></tr>
+                            <tr><td><strong>#204 · Royal Heritage Suite</strong></td><td>Brig. Gen. Mahmudul Hasan · VIP Gold</td><td class="text-right">18,000</td><td class="text-right">1,800</td><td class="text-right">2,970</td><td class="text-right"><strong>22,770</strong></td><td><span class="mm-badge mm-badge-partial na-post-row-badge">Queued</span></td></tr>
+                            <tr><td><strong>#301 · Diplomatic Suite</strong></td><td>Amb. Kenji Takahashi · Diplomatic Exempt</td><td class="text-right">22,000</td><td class="text-right">2,200</td><td class="text-right">0 (Exempt)</td><td class="text-right"><strong>24,200</strong></td><td><span class="mm-badge mm-badge-partial na-post-row-badge">Queued</span></td></tr>
+                            <tr><td><strong>#304 · Family Interconnect</strong></td><td>Farhana Rahman &amp; Family · Half-Board</td><td class="text-right">15,500</td><td class="text-right">1,550</td><td class="text-right">2,558</td><td class="text-right"><strong>19,608</strong></td><td><span class="mm-badge mm-badge-partial na-post-row-badge">Queued</span></td></tr>
+                            <tr><td><strong>#403 · Presidential Penthouse</strong></td><td>Rubana Huq · Royal Butler Package</td><td class="text-right">28,000</td><td class="text-right">2,800</td><td class="text-right">4,620</td><td class="text-right"><strong>35,420</strong></td><td><span class="mm-badge mm-badge-partial na-post-row-badge">Queued</span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div></section>
+        <script>(function(){
+            var chks=document.querySelectorAll(".na-step-chk"),kGates=document.getElementById("na-kpi-gates"),pBadge=document.getElementById("na-progress-badge");
+            function syncGates(){
+                var on=0;
+                for(var i=0;i<chks.length;i++)if(chks[i].checked)on++;
+                if(kGates)kGates.innerHTML=on+" / "+chks.length+' Verified <span class="mm-table-kpi-sub">0 Unposted POS Checks</span>';
+                if(pBadge)pBadge.textContent=on+" / "+chks.length+" Control Gates Passed";
+            }
+            for(var j=0;j<chks.length;j++)chks[j].addEventListener("change",syncGates);
+            var postBtn=document.getElementById("na-btn-autopost"),lockBtn=document.getElementById("na-btn-lock-day"),ban=document.getElementById("na-audit-banner"),msg=document.getElementById("na-audit-msg");
+            function markRoomPostingsDone(){
+                var bList=document.querySelectorAll(".na-post-row-badge");
+                for(var i=0;i<bList.length;i++){
+                    bList[i].className="mm-badge mm-badge-paid na-post-row-badge";
+                    bList[i].textContent="Posted ✓";
+                }
+                var s4=document.getElementById("na-step4-pill"),bStat=document.getElementById("na-batch-status-badge"),kPost=document.getElementById("na-kpi-postings");
+                if(s4){s4.className="mm-badge mm-badge-paid na-gate-pill";s4.textContent="18/18 Posted ✓";}
+                if(bStat)bStat.textContent="Batch #NA-2026-1014 · 18/18 Suites Posted ✓";
+                if(kPost)kPost.innerHTML='18 / 18 Posted ✓ <span class="mm-table-kpi-sub">৳ 239,244 Posted to Folios</span>';
+            }
+            if(postBtn){
+                postBtn.addEventListener("click",function(){
+                    markRoomPostingsDone();
+                    if(ban&&msg){
+                        msg.textContent="Auto-Posting Complete: 18 occupied suites charged nightly room tariff + 10% SC + 15% Mushak-6.3 VAT (৳ 239,244 total) with zero duplicates!";
+                        ban.style.display="block";
+                    }
+                });
+            }
+            if(lockBtn){
+                lockBtn.addEventListener("click",function(){
+                    markRoomPostingsDone();
+                    var kDate=document.getElementById("na-kpi-date"),s6=document.getElementById("na-step6-pill"),s2Idx=document.getElementById("na-step-idx-2"),s2Pill=document.getElementById("na-step-pill-2"),s3Idx=document.getElementById("na-step-idx-3"),s3Pill=document.getElementById("na-step-pill-3");
+                    if(kDate)kDate.innerHTML='15 Oct 2026 <span class="mm-table-kpi-sub">14 Oct Locked ✓</span>';
+                    if(s6){s6.className="mm-badge mm-badge-paid na-gate-pill";s6.textContent="Locked ✓";}
+                    if(s2Idx)s2Idx.innerHTML="&#10003;";
+                    if(s2Pill)s2Pill.textContent="Completed";
+                    if(s3Idx)s3Idx.innerHTML="&#10003;";
+                    if(s3Pill)s3Pill.textContent="Locked ✓";
+                    if(ban&&msg){
+                        msg.textContent="Day-Close Lock Executed! 14 Oct 2026 Trial Balance locked (৳ 0.00 variance) and PMS Business Date rolled to 15 Oct 2026!";
+                        ban.style.display="block";
+                    }
+                });
+            }
+        })();</script>`;
+        return shellWith(body, '', '', 'Night-Audit Hardening & Guided Day-Close Lock', ['Hotel', 'Night Audit', 'Audit Hardening (Phase 3 #5)']);
     }
 
     function renderThermalStyles() {
@@ -2228,6 +2651,11 @@ function buildPlanBPages(shellWith) {
             crumbs: spec.crumbs,
         };
     }
+    result['/preview/night-audit-hardening'] = {
+        fn: nightAuditHardeningPage,
+        title: 'Night-Audit Hardening, Auto-Posting & Guided Day-Close Lock (Phase 3 #5 & Plan B · F19)',
+        crumbs: ['Hotel', 'Night Audit', 'Audit Hardening (Phase 3 #5)'],
+    };
     return result;
 }
 
