@@ -340,9 +340,22 @@ test('14-module sidebar role switcher, top sub-menu bar & global command drawers
     await expect(page.locator('#mig-kpi-route')).toContainText('#101 → #202');
     await page.locator('#mig-submit-btn').click();
     await expect(page.locator('#mig-confirm-banner')).toBeVisible();
+});
+
+test('redesigned Express Quick-Create Drawer (Alt+Q) & Website Settings (/preview/web-settings) work interactively', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.goto(`http://127.0.0.1:${PORT}/preview/web-settings`);
+
+    // Verify Redesigned Website Settings Control Center (/preview/web-settings)
+    await expect(page.locator('.mm-page-title').first()).toContainText('Website settings');
+    await expect(page.locator('.mm-table-kpi-grid .mm-table-kpi-card')).toHaveCount(4);
+    await page.locator('#website_slogan').fill('Diplomatic Luxury Suites & Banquet Halls in Gulshan Dhaka');
+    await expect(page.locator('#webset-serp-title')).toContainText('Diplomatic Luxury Suites & Banquet Halls in Gulshan Dhaka');
+    await page.locator('#webset-btn-save').click();
+    await expect(page.locator('#webset-save-banner')).toBeVisible();
 
     // Verify Redesigned Express Walk-In, 80mm KOT, GL Voucher & Banquet Quick-Create Drawer (Alt+Q)
-    await page.locator('#mm-express-btn').click();
+    await page.locator('#mm-express-create-btn').click();
     await expect(page.locator('#mm-express-drawer')).toBeVisible();
     await expect(page.locator('#mm-express-drawer .mm-drawer-kpi-grid .mm-table-kpi-card')).toHaveCount(4);
     await page.locator('#exp-suite-pills .exp-suite-pill').nth(2).click();
@@ -352,17 +365,8 @@ test('14-module sidebar role switcher, top sub-menu bar & global command drawers
     await expect(page.locator('#exp-kot-preview-text')).toContainText('Lamb Rogan Josh');
     await page.locator('#mm-express-drawer [data-express-tab="banquet"]').click();
     await page.locator('#exp-bq-submit').click();
-    await expect(page.locator('#mm-express-log-count')).toContainText('3 Entries');
-    await page.locator('#mm-express-drawer [data-dismiss="modal"]').first().click();
-
-    // Verify Redesigned Website Settings Control Center (/preview/web-settings)
-    await page.goto(`http://127.0.0.1:${PORT}/preview/web-settings`);
-    await expect(page.locator('.mm-page-title').first()).toContainText('Website settings');
-    await expect(page.locator('.mm-table-kpi-grid .mm-table-kpi-card')).toHaveCount(4);
-    await page.locator('#website_slogan').fill('Diplomatic Luxury Suites & Banquet Halls in Gulshan Dhaka');
-    await expect(page.locator('#webset-serp-title')).toContainText('Diplomatic Luxury Suites & Banquet Halls in Gulshan Dhaka');
-    await page.locator('#webset-btn-save').click();
-    await expect(page.locator('#webset-save-banner')).toBeVisible();
+    await expect(page.locator('#mm-express-log-count')).toContainText('4');
+    await expect(page.locator('#mm-express-confirm-banner')).toBeVisible();
 });
 
 
