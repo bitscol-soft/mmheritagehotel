@@ -99,11 +99,12 @@
                             </div>
 
                             <!-- Room Booking Configuration -->
-                            <div class="row">
+                            <div class="row mm-room-table-row">
 
                                 <div class="col-sm-12 col-sm-offset-0">
                                     <h3 class="header smaller lighter blue">Room Information</h3>
 
+                                    <x-mm.table-scroll label="Booking room details">
                                     <table id="myTable" class="table table-bordered order-list room-config-table">
                                         <thead>
                                             <tr>
@@ -238,6 +239,7 @@
                                         ])
 
                                     </table>
+                                    </x-mm.table-scroll>
                             @include('booking/_modal/member-detail-modal')
 
                                 </div>

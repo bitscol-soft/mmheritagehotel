@@ -5,7 +5,7 @@
     //                        VIEW MODAL METHOD                //
     //---------------------------------------------------------//
     function showCheckInModal(booking_id){
-        $('#check-in').toggle("modal");
+        $('#check-in').modal('show');
 
         let html  = ``;
         let id    = booking_id;
@@ -19,7 +19,7 @@
                     @csrf
                     <div class="modal-content">
                         <div class="modal-header">
-                            <button onclick="closeCheckInModal()" type="button" class="close" data-dismiss="modal">&times;</button>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
                             <h4 class="blue bigger"><i class="fa fa-check-square"></i> Check IN Information</h4>
                         </div>
 
@@ -75,7 +75,7 @@
                                     <i class="ace-icon fa fa-save icon-on-right bigger-110"></i>
                                     Save
                                 </button>
-                                <button onclick="closeCheckInModal()" class="btn btn-sm" data-dismiss="modal">
+                                <button type="button" class="btn btn-sm" data-dismiss="modal">
                                     <i class="ace-icon fa fa-times"></i>
                                     Cancel
                                 </button>
@@ -92,7 +92,7 @@
     //                        CLOSE MODAL METHOD                //
     //---------------------------------------------------------//
     function closeCheckInModal(){
-        $('#check-in').toggle("modal");
+        $('#check-in').modal('hide');
 
     }
 
@@ -106,4 +106,3 @@
 
 
 </script>
-

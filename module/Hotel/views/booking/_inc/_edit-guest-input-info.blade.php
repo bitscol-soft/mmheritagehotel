@@ -1,4 +1,4 @@
-<div class="col-lg-5" style="margin-left: 80px">
+<div class="col-lg-6 col-md-6 col-sm-12">
 
 
     <!-- BOOKING DATE -->
@@ -140,7 +140,7 @@
 
 
 
-<div class="col-lg-5" style="margin-left: 30px; margin-right: 60px">
+<div class="col-lg-6 col-md-6 col-sm-12">
 
     <!-- PICKUP -->
     <div class="form-group mb-1">

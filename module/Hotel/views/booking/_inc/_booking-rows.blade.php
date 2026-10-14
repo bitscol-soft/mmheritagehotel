@@ -148,7 +148,7 @@
                 <!------- CHECK IN + BOOKING CANCEL ------->
                 @if ($data->status == 0 || $data->status == 1 || $data->status == 2)
                     @if ($data->status == 0 || $data->status == 2)
-                        <a onclick="showCheckInModal({{ $data->id }})" role="button" data-toggle="modal"
+                        <a onclick="showCheckInModal({{ $data->id }})" role="button"
                             class="btn btn-xs btn-pink" title="Check IN">
                             <i class="fa fa-check-square"></i>
                         </a>
@@ -196,13 +196,13 @@
 
 
                 <!------- PROJECT DETAILS ------->
-                <a onclick="showDetailsModal({{ $data->id }})" role="button" data-toggle="modal"
+                <a onclick="showDetailsModal({{ $data->id }})" role="button"
                     class="btn btn-xs btn-purple" title="View Details">
                     <i class="fa fa-eye"></i>
                 </a>
 
                 <!------- GUEST IMAGE CHANGE ------->
-                <a onclick="showImagesModal({{ $data->id }})" role="button" data-toggle="modal"
+                <a onclick="showImagesModal({{ $data->id }})" role="button"
                     class="btn btn-xs btn-blue" title="Change Guest Image">
                     <i class="fa fa-camera"></i>
                 </a>
