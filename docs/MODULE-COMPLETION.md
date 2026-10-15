@@ -81,12 +81,12 @@ guest-info helpers) were removed from `BookingNoteController` and
 `GuestRegistrationTermsController`: routes already exposed only index/edit/update
 and the dead methods mutated Guest records, not the note/terms models. The
 index `queryLike('title')` matches the filter's `title` field (an earlier
-`name`/`title` mismatch is gone). 2026-10-16: real Booking note create/store/
-destroy restored (title form + Add New/Delete controls on the list; delete is
-an inline-confirm DELETE form so the frozen status script section is
-untouched). Authorization review (no permission slug exists for either screen
-yet), then authenticated tests, are required before this group is complete.
-Next UI group: remaining room-category forms.
+`name`/`title` mismatch is gone). 2026-10-16: real create/store/destroy restored
+for both screens (title forms mirroring each edit form; Add New/Delete controls
+on the lists — delete is an inline-confirm DELETE form so the booking-note
+frozen status script section is untouched). Authorization review (no permission
+slug exists for either screen yet), then authenticated tests, are required
+before this group is complete. Next UI group: remaining room-category forms.
 
 ## Permission slug audit (2026-10-16)
 

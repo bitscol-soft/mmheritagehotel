@@ -20,6 +20,40 @@ class GuestRegistrationTermsController extends Controller
 
 
 
+    public function create()
+    {
+        return view('guest-registration-terms.create');
+    }
+
+
+
+
+
+    public function store(Request $request)
+    {
+
+        $request->validate([
+            'title' => 'required',
+        ]);
+
+        try {
+            GuestRegistrationTerm::create([
+                'title'      => $request->title,
+                'status'     => 1,
+                'created_by' => auth()->id(),
+            ]);
+
+        } catch (\Throwable $e) {
+
+
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+
+        return redirect()->route('guest-registration-terms.index')->with('message', 'Registration Terms have been created success !');
+    }
+
+
+
 
 
     public function edit($id)
@@ -56,6 +90,25 @@ class GuestRegistrationTermsController extends Controller
         }
 
         return redirect()->route('guest-registration-terms.index')->with('message', 'Registration Terms have been updated success !');
+    }
+
+
+
+    public function destroy($id)
+    {
+
+        try {
+            $bookingNote = GuestRegistrationTerm::findOrFail($id);
+
+            $bookingNote->delete();
+
+        } catch (\Throwable $e) {
+
+
+            return redirect()->back()->with('error', $e->getMessage());
+        }
+
+        return redirect()->route('guest-registration-terms.index')->with('message', 'Registration Terms have been deleted success !');
     }
 
 

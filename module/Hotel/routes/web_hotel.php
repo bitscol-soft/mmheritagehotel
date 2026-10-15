@@ -81,7 +81,8 @@ Route::group(['prefix' => 'hotel'], function () {
             // 2026-10-16: real BookingNote create/store/destroy restored (docs/MODULE-COMPLETION.md)
             Route::resource('booking-note', BookingNoteController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
             // round 3 (docs/BUGS.md): GuestRegistrationTermsController only has index/edit views; create/store/destroy were GuestController copy-pastes
-            Route::resource('guest-registration-terms', GuestRegistrationTermsController::class)->only(['index', 'edit', 'update']);
+            // 2026-10-16: real create/store/destroy added (parity with booking-note CRUD)
+            Route::resource('guest-registration-terms', GuestRegistrationTermsController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
             // round 3 (docs/BUGS.md): NightAuditSummaryController does not implement edit/update; the routes would 500
             Route::resource('night-audits', NightAuditSummaryController::class)->except(['edit', 'update']);
             // round 3 (docs/BUGS.md): CurrencyConversionController does not implement show; the routes would 500
