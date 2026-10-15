@@ -80,6 +80,13 @@ real method (`0 broken`, verified by `zz-controllers` probe in the sandbox).
 | 55 | 🟡 | `/permission-access/edit/{id}`, `PUT /permission-access/{id}`, `/change-password-by-admin/{id}` | 500 if user ID does not exist; 5 redundant `User::find($id)` queries on `UserPermissionController::edit()`; stray `return $ex->getMessage();` in `UserController::AdminUpdatePassword()` | Unguarded `User::find($id)` calls and leftover debug return | Consolidated to a single `User::findOrFail($id)` in `UserPermissionController::edit()`/`update()` and `UserController`, and removed the stray debug `return` |
 | 56 | 🟡 | `PasswordResetMailable` & voucher approval flashes | `PasswordResetMailable::build()` fatals if `$user->company` is `null` (`$user->company->group->name ?? ...` does not guard intermediate `null`); typo `'This Vocuher Already Approved'` in 4 voucher controllers | Unguarded intermediate property chain in `PasswordResetMailable`; typo in `Receive/Payment/Journal/ContraVoucherController` | Wrapped in `optional(optional(optional($this->data['user'])->company)->group)->name ?? config('app.name', 'MM Heritage Hotel')` and fixed `'This Voucher Already Approved'` |
 
+## A5. Closed by the authorization-audit round (2026-10-16)
+
+| # | Sev | Route / Screen | Symptom | Root cause | Fix |
+|---|-----|----------------|---------|------------|-----|
+| 57 | 🟠 | `.gitmodules` / `module/CRM` gitlink (was B #28) | a fresh `git submodule update --init` could clobber the committed CRM module files | repo history once carried a submodule gitlink for `module/CRM` alongside real files | Verified already resolved on this branch and `main`: no `.gitmodules` exists in either tree or in reachable history, and `module/CRM` is a regular tree (6 tracked files), not a gitlink (mode 160000) — nothing left to remove at merge time |
+| 58 | 🟡 | `/reports/expense-analysis` (was B #29) | users without the `account.expense.analysis.reports` row were denied; super admin unaffected | the gate used a slug that never existed in the shipped permissions table | remapped to the route-name slug `report.expense-analysis` (the 12 working report gates in the same controller all use slug == route name) and the row + grants are seeded in `database/mmheritagehotel_db.sql` (ids 200040+, modeled on `report.ledger-journal` holders) |
+
 ## B. Open — needs deploy / decision / feature work
 
 | # | Sev | Item | Notes & recommendation |
@@ -91,8 +98,6 @@ real method (`0 broken`, verified by `zz-controllers` probe in the sandbox).
 | 25 | 🟠 | Collections/Payments are stubs | `CollectionController::store()` only redirects (no `acc_collections` write). Full receipt flow = planned feature (see PLAN-FEATURES.md §Payments). |
 | 26 | 🟠 | HRM module missing but referenced | menus, `smart-soft-alerts`, `UpdateEmployeeIdFromSmartSoft` artisan command, employee-permission tabs all assume it. Either vendor the module in or hide its surfaces (menus/commands). |
 | 27 | 🟠 | CRM module UI absent | We restored the **models** to stop the 500 cascade; the CRM is active in `modules` table (rank 11) but has no sidebar/routes in this repo. Rebuild minimal CRM UI or deactivate the module (DB flag). |
-| 28 | 🟠 | `.gitmodules` still points `module/CRM` at a submodule | We committed real files; a fresh `git submodule update --init` could clobber them. **Action: remove the gitlink/.gitmodules entry at merge time** (kept here to avoid rewriting gitlinks in this PR). |
-| 29 | 🟡 | `/reports/expense-analysis` relies on permission slug `account.expense.analysis.reports` | Users without that row get a denial; super admin unaffected. Seed the slug for role 2 alongside the new reports if the menus are opened up. |
 | 30 | 🟡 | Booking flow still trusts the `booking_info` cookie cart (1000-min, client-mutable) | Addressed in PLAN-MODERNIZATION (server-side cart) — not fixed here. |
 | 31 | 🟡 | Laravel 8 + PHP 8.1 are EOL, `vendor/` committed | Upgrade path in PLAN-MODERNIZATION §1. |
 
