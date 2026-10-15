@@ -22,7 +22,6 @@ use App\Http\Controllers\Controller;
 use Module\Hotel\Models\AccountType;
 use Module\Hotel\Models\BookingNote;
 use Module\Hotel\Models\RoomCategory;
-use Illuminate\Support\Facades\Cookie;
 use Module\Hotel\Models\BookingPurpose;
 use Module\Hotel\Models\HotelTransection;
 use Module\Hotel\Services\BookingService;
@@ -1206,13 +1205,7 @@ class BookingController extends Controller
         // dd(Cookie::get('booking_info'));
 
         try {
-            $booking_data = [];
-
-        if (Cookie::get('booking_info')) {
-
-            $booking_info = stripslashes(Cookie::get('booking_info'));
-            $booking_data = json_decode($booking_info, true);
-        }
+            $booking_data = (new \Module\Hotel\Services\BookingCartService())->all();
 
         $data['request_date']   = $request->only('booking_availabe');
         $data['booking']        = $booking_data;
@@ -1307,95 +1300,7 @@ class BookingController extends Controller
     */
     public function addBooking(Request $request)
     {
-
-        try {
-
-            if (Cookie::get('booking_info')) {
-
-                $cookie_data = stripslashes(Cookie::get('booking_info'));
-                $booking_data = json_decode($cookie_data, true);
-            } else {
-
-                $booking_data = array();
-            }
-
-            if (collect($booking_data)->where('room_id', $request->room_id)->count() > 0) {
-
-                return response()->json([
-                    'status'    => 1,
-                    'data'      => 'Your request have been stored',
-                    'message'   => 'Success',
-                ]);
-            }
-            // Calculate Days
-            $get_date   = $request->date;
-            $split_date = explode('-', $get_date);
-            $check_in   = date('Y-m-d', strtotime($split_date[0]));
-            $check_out  = date('Y-m-d', strtotime($split_date[1]));
-
-            // After Doing Night Audit Generate, Wouldn't Generate Booking Today From Dashboard.
-
-            // if (NightAuditSummary::query()->where('date', $check_in)->count() > 0) {
-            //     return response()->json([
-            //         'status'        => 0,
-            //         'data'          => 'Unable to booked.',
-            //         'message'       => 'Error',
-            //     ]);
-
-            // }
-
-            // calculate nights
-            $start_date  = strtotime($check_in);
-            $end_date    = strtotime($check_out);
-            $datediff    = $end_date - $start_date;
-            $night_count = round($datediff / (60 * 60 * 24));
-
-            $room     = Rooms::where('id', $request->room_id)->first();
-            $category = RoomCategory::where('id', $request->category_id)->first();
-
-
-            if ($room) {
-
-                $item_array = array(
-                    'category_id'    => $category->id,
-                    'room_id'        => $room->id,
-                    'room_number'    => $room->room_number,
-                    'category_name'  => $category->name,
-                    'category_price' => $category,
-                    'check_in'       => $check_in,
-                    'check_out'      => $check_out,
-                    'nights'         => $night_count
-                );
-
-                $booking_data[]   = $item_array;
-                $added_item       = $item_array;
-                $booking_store    = \json_encode($booking_data);
-                $minutes          = 1000;
-                Cookie::queue(Cookie::make('booking_info', $booking_store, $minutes));
-
-                if (Cookie::get('booking_info')) {
-
-                    $cookie_data       = \stripslashes(Cookie::get('booking_info'));
-                    $booking_data      = \json_decode($cookie_data, true);
-                    $booking_count     = count($booking_data);
-                    $booking_count++;
-                } else {
-
-                    $booking_count = 0;
-                }
-
-
-                return response()->json([
-                    'status'    => 1,
-                    'data'      => 'Successfully added.',
-                    'message'   => 'Success',
-                    'booking_count' => $booking_count
-                ]);
-            }
-        } catch (\Throwable $e) {
-
-            return redirect()->back()->with('error', $e->getMessage());
-        }
+        return (new \Module\Hotel\Services\BookingCartService())->add($request);
     }
 
 
@@ -1408,74 +1313,21 @@ class BookingController extends Controller
     */
     public function removeNextBk(Request $request)
     {
-        $prod_id = $request->input('product_id');
-
-        return $this->removeCookieItem($prod_id);
+        return (new \Module\Hotel\Services\BookingCartService())->remove($request->input('product_id'));
     }
-
-
-
-  /*
-    |------------------------------------------------------------------------------------------------------------
-    | REMOVE ALL COOKIE ITEM
-    |------------------------------------------------------------------------------------------------------------
-    */
-    private function removeAllCookieItems()
-    {
-        if (isset($_COOKIE['booking_info'])) {
-            unset($_COOKIE['booking_info']);
-            setcookie('booking_info', '', time() - 3600, '/'); // empty value and old timestamp
-        }
-    }
-
 
 
 
 
     /*
     |------------------------------------------------------------------------------------------------------------
-    | REMOVE COOKIE ITEM
+    | REMOVE ALL CART ITEMS
     |------------------------------------------------------------------------------------------------------------
     */
-
-    public function removeCookieItem($prod_id, $is_response = true)
+    private function removeAllCookieItems()
     {
-        $cookie_data        = stripslashes(Cookie::get('booking_info'));
-        $booking_data       = json_decode($cookie_data, true);
-        $item_id_list       = array_column($booking_data, 'room_id');
-
-        $prod_id_is_there   = $prod_id;
-
-
-        if (in_array($prod_id_is_there, $item_id_list)) {
-            foreach ($booking_data as $keys => $values) {
-                if ($booking_data[$keys]["room_id"] == $prod_id) {
-                    unset($booking_data[$keys]);
-                    $item_data = json_encode($booking_data);
-                    $minutes = 50;
-
-                    Cookie::queue(Cookie::make('booking_info', $item_data, $minutes));
-
-                    if (Cookie::get('booking_info')) {
-                        $cookie_data = \stripslashes(Cookie::get('booking_info'));
-                        $booking_data   = \json_decode($cookie_data, true);
-                        $cart_count  = count($booking_data);
-                        $cart_count--;
-                    } else {
-                    }
-                    if($is_response){
-                        return response()->json([
-                            'status'        => 1,
-                            'data'          => 'Successfully Removed!',
-                            'message'       => 'Success',
-                            'cart_count'    => $cart_count
-                        ]);
-                    }
-                }
-            }
-        }
+        (new \Module\Hotel\Services\BookingCartService())->clear();
     }
-
 
 
 

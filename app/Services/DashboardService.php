@@ -316,9 +316,6 @@ class DashboardService
 
     private function removeAllCookieItems()
     {
-        if (isset($_COOKIE['booking_info'])) {
-            unset($_COOKIE['booking_info']);
-            setcookie('booking_info', '', time() - 3600, '/'); // empty value and old timestamp
-        }
+        (new \Module\Hotel\Services\BookingCartService())->clear();
     }
 }
