@@ -99,15 +99,17 @@ Follow-up done in the same round: 70 ungated `store`/`update` mutations across
 44 resource controllers now carry the same `hasAccess()` slug their `create`/
 `edit` form sibling uses (direct POST can no longer bypass the form gate).
 
-Still open — these called slugs do not exist in the shipped permissions table,
-so every non-admin is denied (admin user id 1 bypasses). Seed the missing
-families + grants or remap the code; product decision needed per family:
-`acc_collections.*`, `acc_payments.*`, `account.*.reports` (6 report pages),
-`create.requisitions.*`, `fund.transfers.*`, `gs.reports.*`, `items.*`,
-`pharmacy.*` (Bar inventory units), `purchase.receives.*`, `purchases.*`
-(General Store), `restaurant.table-manages.*`, `rst.stock-adjustment.*`,
-`supplier.types.*` (views and sidebars already reference this family),
-`vouchers.journal.*`.
+Still open — see `docs/PERMISSION-SEED-PROPOSAL.md` for the reviewed split:
+four families were spelling/action drift and are now remapped in code
+(`voucher-journals.*`, `rst.stock-adjustment.*` actions, `resturant.table-manages.*`,
+and the `report.*` route-name slugs for the 6 analysis reports); eight families
+(`supplier.types.*`, `items.*`, `purchases.*`, `purchase.receives.*`,
+`create.requisitions.*`, `gs.reports.*`, `fund.transfers.*`, `report.*` analysis
+pages) get a draft seed + modeled grants in that document — **not applied,
+owner decision**. The `acc_collections.*`/`acc_payments.*` and `pharmacy.*`
+families still need a product call (likely remaps). View-side drift (e.g.
+`rst.table-manages.index`) stays frozen with the `hasPermission()` byte-identical
+rule.
 
 ## Full menu design
 

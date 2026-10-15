@@ -658,7 +658,7 @@ class AccountReportController extends Controller
     */
     public function transactionLedgerReport(Request $request)
     {
-        $this->hasAccess("account.transaction.ledger.reports");
+        $this->hasAccess("report.transaction-ledger");
 
         $accountGroups = $this->transactionLedger->getTrialBalanceReportData($request);
 
@@ -702,7 +702,7 @@ class AccountReportController extends Controller
 
     public function expenseAnalysisReport(Request $request)
     {
-        $this->hasAccess("account.expense.analysis.reports");
+        $this->hasAccess("report.expense-analysis");
 
         $data = $this->dataService->getAccountData(['accountControls', 'accountSubsidiaries']);
 
@@ -936,7 +936,7 @@ class AccountReportController extends Controller
     */
     public function revenueAnalysisReport(Request $request)
     {
-        $this->hasAccess("account.revenue.analysis.reports");
+        $this->hasAccess("report.revenue-analysis");
 
         $from = $request->from ?? date('Y-01-01');
         $to   = $request->to ?? date('Y-m-d');
@@ -969,7 +969,7 @@ class AccountReportController extends Controller
     */
     public function nominalAccountLedgerReport(Request $request)
     {
-        $this->hasAccess("account.nominal.account.ledger.reports");
+        $this->hasAccess("report.nominal-account-ledger");
 
         $from = $request->from ?? date('Y-01-01');
         $to   = $request->to ?? date('Y-m-d');
@@ -1002,7 +1002,7 @@ class AccountReportController extends Controller
     */
     public function ratioAnalysisReport(Request $request)
     {
-        $this->hasAccess("account.ratio.analysis.reports");
+        $this->hasAccess("report.ratio-analysis");
 
         $from = $request->from ?? date('Y-01-01');
         $to   = $request->to ?? date('Y-m-d');
@@ -1054,7 +1054,7 @@ class AccountReportController extends Controller
     */
     public function receivedPaymentStatementReport(Request $request)
     {
-        $this->hasAccess("account.received.payment.statement.reports");
+        $this->hasAccess("report.received-payment-statement");
 
         $from = $request->from ?? date('Y-01-01');
         $to   = $request->to ?? date('Y-m-d');

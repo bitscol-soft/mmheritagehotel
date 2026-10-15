@@ -88,7 +88,7 @@ class StockAdjustmentController extends Controller
     */
     public function store(StockAdjustRequest $request)
     {
-        $this->hasAccess("rst.stock-adjustment.store");
+        $this->hasAccess("rst.stock-adjustment.create");
         try {
             $stock_adjust = $request->store();
         } catch (\Exception $ex) {
@@ -149,7 +149,7 @@ class StockAdjustmentController extends Controller
     */
     public function update($id, AdjustRequest $request)
     {
-        $this->hasAccess("rst.stock-adjustment.update");
+        $this->hasAccess("rst.stock-adjustment.edit");
         try {
             $stock_adjust = $request->datastore();
         } catch (\Exception $ex) {

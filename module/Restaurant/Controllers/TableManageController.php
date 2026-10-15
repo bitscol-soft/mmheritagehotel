@@ -18,7 +18,7 @@ class TableManageController extends Controller
     */
     public function index()
     {
-        $this->hasAccess("restaurant.table-manages.index");
+        $this->hasAccess("resturant.table-manages.view");
 
         $data['table_manages'] = RstTableManage::query()->paginate(25);
 
@@ -37,7 +37,7 @@ class TableManageController extends Controller
     */
     public function store(Request $request)
     {
-        $this->hasAccess("restaurant.table-manages.create");
+        $this->hasAccess("resturant.table-manages.create");
 
         try {
 
@@ -63,7 +63,7 @@ class TableManageController extends Controller
     */
     public function update($id, Request $request)
     {
-        $this->hasAccess("restaurant.table-manages.edit");
+        $this->hasAccess("resturant.table-manages.edit");
 
         try {
 
@@ -89,7 +89,7 @@ class TableManageController extends Controller
     */
     public function destroy($id)
     {
-        $this->hasAccess("restaurant.table-manages.delete");
+        $this->hasAccess("resturant.table-manages.delete");
 
         try {
 
