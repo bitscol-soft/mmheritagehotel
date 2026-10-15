@@ -30,6 +30,7 @@ Route::group(['prefix' => 'hotel'], function () {
         ]);
                 // round 3 (docs/BUGS.md): RoomCategoryController does not implement show; the routes would 500
                 Route::resource('hotel-categories', RoomCategoryController::class)->except(['show']);
+                Route::delete('hotel-categories/photo/{photo}', [RoomCategoryController::class, 'removePhoto'])->name('hotel-categories.photo.destroy');
                 // round 3 (docs/BUGS.md): AminitiesController does not implement show; the routes would 500
                 Route::resource('aminities', AminitiesController::class)->except(['show']);
                 // round 3 (docs/BUGS.md): RoomsController does not implement show; the routes would 500

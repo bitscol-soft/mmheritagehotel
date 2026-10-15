@@ -155,7 +155,9 @@
                                                                         <img class="img-responsive"
                                                                             src="{{ asset('/') }}{{ $item->relative_path ?? '' }}{{ $item->name ?? 'no-image.jpg' }}"
                                                                             alt="">
-                                                                        <div class="cat-img-delete"><i
+                                                                        <div class="cat-img-delete" title="Remove photo"
+                                                                            style="cursor: pointer"
+                                                                            onclick="delete_item('{{ route('hotel-categories.photo.destroy', $item->id) }}')"><i
                                                                                 class="ace-icon glyphicon glyphicon-remove"></i>
                                                                         </div>
                                                                     </div>
