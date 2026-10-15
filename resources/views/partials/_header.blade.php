@@ -186,14 +186,14 @@
                         <i class="fa fa-2x fa-plus-circle dark" style="margin-top: 10px;"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                        @if (hasPermission('bookings.add'))
+                        @if (hasPermission('bookings.create'))
                             <li role="presentation">
                                 <a role="menuitem" tabindex="-1" href="{{ route('booking.create') }}">
                                     <i class="fa fa-bed" aria-hidden="true"></i> New Booking
                                 </a>
                             </li>
                         @endif
-                        @if (hasPermission('guests.add'))
+                        @if (hasPermission('guests.create'))
                             <li role="presentation">
                                 <a role="menuitem" tabindex="-1" href="{{ route('guests.create') }}">
                                     <i class="fa fa-user-plus" aria-hidden="true"></i> New Guest
@@ -204,7 +204,7 @@
                              show a single disabled entry so the menu
                              still opens and the user can see the
                              affordance. --}}
-                        @if (!hasPermission('bookings.add') && !hasPermission('guests.add'))
+                        @if (!hasPermission('bookings.create') && !hasPermission('guests.create'))
                             <li role="presentation" class="disabled">
                                 <a role="menuitem" tabindex="-1" href="#" aria-disabled="true">
                                     <i class="fa fa-lock" aria-hidden="true"></i> No quick-add actions available

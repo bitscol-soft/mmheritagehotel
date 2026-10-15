@@ -27,7 +27,7 @@
                         <th>Company</th>
                         <th>Department</th>
                         <th>Designation</th>
-                        @if(hasPermission("permission.accesses.edit", $slugs) || hasPermission("permission.accesses.delete", $slugs) || hasPermission("change.employees.password", $slugs))
+                        @if(hasPermission("permission.accesses.edit", $slugs) || hasPermission("permission.accesses.delete", $slugs) || hasPermission("permission.accesses.edit", $slugs))
                             <th style="width: 12%">Action</th>
                         @endif
                     </tr>
@@ -44,12 +44,12 @@
                             <td>{{ optional($user->employee)->getDepartmentName() }}</td>
                             <td>{{ optional($user->employee)->getDesignationName() }}</td>
 
-                            @if(hasPermission("permission.accesses.edit", $slugs) || hasPermission("permission.accesses.delete", $slugs) || hasPermission("change.employees.password", $slugs))
+                            @if(hasPermission("permission.accesses.edit", $slugs) || hasPermission("permission.accesses.delete", $slugs) || hasPermission("permission.accesses.edit", $slugs))
                                 <td class="text-center" style="width: 120px">
                                     <div class="btn-group btn-corner">
 
 
-                                        @if(hasPermission("change.employees.password", $slugs) && $user->credential)
+                                        @if(hasPermission("permission.accesses.edit", $slugs) && $user->credential)
                                             <span class="btn btn-inverse btn-xs popover-inverse"
                                                 data-rel="popover"
                                                 data-placement="top"
@@ -60,7 +60,7 @@
                                             </span>
                                         @endif
 
-                                        @if(hasPermission("change.employees.password", $slugs))
+                                        @if(hasPermission("permission.accesses.edit", $slugs))
                                             <a href="{{ route('admin.edit.password',$user->id) }}" class="btn btn-xs btn-info pull-center" title="Change Password">
                                                 <i class="fa fa-lock"></i>
                                             </a>

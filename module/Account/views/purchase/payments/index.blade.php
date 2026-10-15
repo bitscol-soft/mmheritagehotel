@@ -88,11 +88,11 @@
                                         <a href="{{route('acc_purchases.show', $value->id)}}" target="_blank"
                                             class="btn btn-success btn-xs" title="View Details"><i
                                                 class="fa fa-eye"></i></a>
-                                        @if(hasPermission("acc_purchases.edit", $slugs))
+                                        @if(hasPermission("account-purchases.edit", $slugs))
                                         <a href="{{route('acc_purchases.edit', $value->id)}}" class="btn btn-primary btn-xs"
                                             title="Edit"><i class="fa fa-pencil"></i></a>
                                         @endif
-                                        @if(hasPermission("acc_purchases.delete", $slugs))
+                                        @if(hasPermission("account-purchases.delete", $slugs))
                                         <a href="#"
                                             onclick="delete_item('{{ route('acc_purchases.destroy', $value->id) }}')"
                                             class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i></a>

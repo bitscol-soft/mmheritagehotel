@@ -17,7 +17,7 @@
 <x-mm.styles />
 <x-mm.page class="mm-report mm-bar mm-rst mm-rst-inventory mm-rst-inv" title="Products" description="Bar products with stock type, price and status.">
     <x-slot name="actions">
-        @if (hasPermission('bar.products.create', $slugs))
+        @if (hasPermission('bar.inventories.create', $slugs))
                 <a class="mm-button" href="{{ route('bar.products.create', ['type' => 'upload']) }}">
                     <i class="fa fa-upload"></i> Upload Product
                 </a>
@@ -99,14 +99,14 @@
                                     <td class="text-center">
 
                                         <div class="btn-group btn-corner">
-                                            @if (hasPermission('bar.products.edit', $slugs))
+                                            @if (hasPermission('bar.inventories.edit', $slugs))
                                                 <a href="{{ route('bar.products.edit', $product->id) }}"
                                                     class="btn btn-xs btn-success">
                                                     <i class="fa fa-pencil-square-o"></i>
                                                 </a>
                                             @endif
                                             {{-- @if (hasPermission('bar.inventories.delete', $slugs)) --}}
-                                            @if (hasPermission('bar.products.delete', $slugs))
+                                            @if (hasPermission('bar.inventories.delete', $slugs))
                                                 <a class="btn btn-danger btn-xs" href="#"
                                                     onclick="delete_item(`{{ route('bar.products.destroy', $product->id) }}`)">
                                                     <i class="fa fa-trash-o"></i>

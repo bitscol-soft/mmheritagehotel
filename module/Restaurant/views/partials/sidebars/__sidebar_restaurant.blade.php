@@ -221,7 +221,7 @@
 
 
 
-            @if (hasPermission('rst.table-manages.index', $slugs))
+            @if (hasPermission('resturant.table-manages.index', $slugs))
                 <li>
                     <a href="{{ route('rst.table-manages.index') }}">
                         <i class="menu-icon fa fa-caret-right"></i>
@@ -355,7 +355,7 @@
                     <!-- Report Sub menu -->
                     <ul class="submenu">
 
-                        @if (hasPermission('rst.production.index', $slugs))
+                        @if (hasPermission('rst.purchase.view', $slugs))
                             <li>
                                 <a href="{{ route('rst.production.create') }}">
                                     <i class="menu-icon fa fa-caret-right"></i>
@@ -379,7 +379,7 @@
 
 
 
-            @if (hasPermission('rst.productiont.index', $slugs) && setting('mother_inventory'))
+            @if (hasPermission('rst.purchase.view', $slugs) && setting('mother_inventory'))
                     <li>
                         <a href="#" class="dropdown-toggle">
                             <i class="menu-icon fa fa-caret-right"></i>
@@ -391,7 +391,7 @@
                         <!-- Adjustment -->
                         <ul class="submenu">
 
-                            {{-- @if (hasPermission('rst.material-unit.index', $slugs))
+                            {{-- @if (hasPermission('items.view', $slugs))
                                 <li>
                                     <a href="{{ route('rst.material-unit.index') }}">
                                         <i class="menu-icon fa fa-caret-right"></i>
@@ -400,7 +400,7 @@
                                     <b class="arrow"></b>
                                 </li>
                             @endif
-                            @if (hasPermission('rst.material.index', $slugs))
+                            @if (hasPermission('items.view', $slugs))
                                 <li>
                                     <a href="{{ route('rst.material.index') }}">
                                         <i class="menu-icon fa fa-caret-right"></i>
@@ -409,7 +409,7 @@
                                     <b class="arrow"></b>
                                 </li>
                             @endif --}}
-                            @if (hasPermission('rst.material.index', $slugs))
+                            @if (hasPermission('resturant.inventories.create', $slugs))
                                 <li>
                                     <a href="{{ route('rst.mat-products.create') }}">
                                         <i class="menu-icon fa fa-caret-right"></i>

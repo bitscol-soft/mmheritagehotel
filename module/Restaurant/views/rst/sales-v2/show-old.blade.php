@@ -73,7 +73,7 @@
     <x-mm.styles />
     <x-mm.page class="mm-invoice-page mm-rst" title="Hotel Sale Invoice">
         <x-slot name="actions">
-            @if (hasPermission('service.view', $slugs))
+            @if (hasPermission('resturant.sales.view', $slugs))
                 <a href="#" onclick="printPage('print_body')" class="btn btn-sm btn-default hidden-print">
                     <i class="fa fa-print"></i> Print
                 </a>

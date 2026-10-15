@@ -170,7 +170,7 @@
 
                 {{-- purchases --}}
                 @if (hasPermission('bar.purchases.index', $slugs) ||
-                        (hasPermission('rst.purchases.index', $slugs) && setting('mother_inventory')))
+                        (hasPermission('resturant.purchases.index', $slugs) && setting('mother_inventory')))
                     <li>
                         <a href="#" class="dropdown-toggle">
                             <i class="menu-icon fa fa-caret-right"></i>
@@ -207,8 +207,8 @@
                     </li>
                 @endif
 
-                @if (hasPermission('rst.purchases.index', $slugs) ||
-                        (hasPermission('rst.purchases.index', $slugs) && setting('mother_inventory')))
+                @if (hasPermission('resturant.purchases.index', $slugs) ||
+                        (hasPermission('resturant.purchases.index', $slugs) && setting('mother_inventory')))
                     <li>
                         <a href="#" class="dropdown-toggle">
                             <i class="menu-icon fa fa-caret-right"></i>
@@ -220,7 +220,7 @@
                         <!-- Purchase Sub menu -->
                         <ul class="submenu">
 
-                            @if (hasPermission('rst.purchases.create', $slugs))
+                            @if (hasPermission('resturant.purchases.create', $slugs))
                                 <li>
                                     <a href="{{ route('rst.purchases.create') }}">
                                         <i class="menu-icon fa fa-caret-right"></i>

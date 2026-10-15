@@ -68,9 +68,22 @@ grants today, so the proposal does not widen their access.
   `TableManageController::storeOrUpdate` `pharmacy.edit` ->
   `resturant.table-manages.edit` (the upsert covers create+update; the family
   has no combined slug and `.edit` is the update-side semantic).
-- View-side drift remains out of scope while `hasPermission()` gates are
-  byte-frozen: e.g. the table-manage views gate buttons on
-  `rst.table-manages.index`, which is not in the table.
+- View-side drift was resolved the same day in the authorization-2 round
+  (owner approved bending the `hasPermission()` byte-identical rule by
+  picking the drift-fix item): 53 dead `hasPermission()` gate strings /
+  104 call sites were remapped to the slug the destination controller
+  actually checks (e.g. `rst.table-manages.index` -> `resturant.table-manages.index`,
+  `rst.purchases.*` -> `resturant.purchases.*`, `bar.products.*` ->
+  `bar.inventories.*`, `service.*` -> `hotel.services.*`/`sales.*`,
+  `inv.stock-adjustments.*` -> `rst.stock-adjustment.*`, `accounts.create`
+  -> `account.create`, voucher `*.approve` -> family `.edit`).
+  Every view gate outside module-scoped families now resolves against the
+  shipped table. Left as-is (their rows ship with the absent modules):
+  `e.*`/`l.*`/`out.works.*`/`short.leave.*`/`training.*`/`profiles.*`
+  (HRM/EM), `compliance.*`, `bb.lcs.*`/`mids.*`/`mid.transfers.*`/
+  `commercial.invoices.*`/`remarks.*` (Commercial), `notices.*`/`sms-apis.*`/
+  `processes.*` (news), and `database.backup` (no permission family exists;
+  needs an owner decision on who may back up).
 
 **Audit status: every `hasAccess()` slug in the codebase now resolves against
 the shipped permissions table.**

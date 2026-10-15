@@ -352,7 +352,7 @@ echo "PASS preview page render: room category create\n";
 // Render the real booking invoice (checkout_invoice) with sample data. Layout, permission, VAT and auth helpers are substituted.
 @mkdir($coViews . '/booking', 0777, true);
 $invSource = file_get_contents($root . '/module/Hotel/views/booking/checkout_invoice.blade.php');
-$invSource = str_replace(["@extends('layouts.master')", "hasPermission('service.view', \$slugs)", 'vatSetting()->vat_number', 'vatSetting()->hotel_vat', 'optional(auth()->user())->name'], ["@extends('mm-checkout-layout')", 'true', "'VAT-0042'", "'10'", "'Front Desk'"], $invSource);
+$invSource = str_replace(["@extends('layouts.master')", "hasPermission('bookings.view', \$slugs)", 'vatSetting()->vat_number', 'vatSetting()->hotel_vat', 'optional(auth()->user())->name'], ["@extends('mm-checkout-layout')", 'true', "'VAT-0042'", "'10'", "'Front Desk'"], $invSource);
 if (preg_match('/vatSetting\(|auth\(\)|hasPermission\(/', $invSource)) throw new RuntimeException('Unsubstituted helper in invoice view');
 file_put_contents($coViews . '/booking/checkout_invoice.blade.php', $invSource);
 $invRoutes = new Illuminate\Routing\RouteCollection();

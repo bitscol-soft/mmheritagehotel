@@ -18,7 +18,7 @@
     <x-mm.styles />
     <x-mm.page class="mm-crud-index" title="Hotel Service List">
         <x-slot name="actions">
-            @if (hasPermission('service.view', $slugs))
+            @if (hasPermission('hotel.services.create', $slugs))
                 <a href="#modal-dialog" data-toggle="modal" class="btn btn-sm btn-primary">
                     <i class="fa fa-plus-circle"></i> Add New Service
                 </a>
@@ -60,13 +60,13 @@
                                             <td class="text-center">
 
                                                 <div class="btn-group btn-corner">
-                                                    @if (hasPermission('service.edit', $slugs))
+                                                    @if (hasPermission('hotel.services.edit', $slugs))
                                                         <a href="#modal-dialog{{ $item->id }}" data-toggle="modal"
                                                             class="btn btn-sm btn-success" title="Edit">
                                                             <i class="fa fa-pencil-square-o"></i>
                                                         </a>
                                                     @endif
-                                                    @if (hasPermission('service.delete', $slugs))
+                                                    @if (hasPermission('hotel.services.delete', $slugs))
 
                                                         <button type="button"
                                                             onclick="delete_item(`{{ route('hotelservice.services.destroy', $item->id) }}`)"

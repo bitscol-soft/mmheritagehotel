@@ -19,7 +19,7 @@
 <x-mm.styles />
 <x-mm.page class="mm-report mm-rst mm-rst-inv" title="Goods requisition" description="Production goods requisitions.">
     <x-slot name="actions">
-        @if(hasPermission("rst.production.create", $slugs))
+        @if(hasPermission("rst.purchase.create", $slugs))
             <a class="mm-button" href="{{ route('rst.production.create') }}"> <i class="fa fa-plus"></i> Create Requisition </a>
         @endif
 
@@ -119,26 +119,26 @@
                                                 <i class="fa fa-eye"></i>
                                             </a>
                                             {{-- @if($value->is_approved == 0)
-                                                @if(hasPermission("rst.production.edit", $slugs))
+                                                @if(hasPermission("rst.purchase.edit", $slugs))
                                                     <a href="{{ route('goods-requisitions.edit', $value->id) }}"  class="btn btn-xs btn-success" title="Edit Goods Requisition">
                                                         <i class="fa fa-edit"></i>
                                                     </a>
                                                 @endif
 
-                                                @if(hasPermission("rst.production.approve", $slugs))
+                                                @if(hasPermission("rst.purchase.approve", $slugs))
                                                     <a href="{{ route('approve.goods.requisition.show', $value->id) }}" class="btn btn-xs btn-success" title="Approve">
                                                         <i class="fa fa-check"></i>
                                                     </a>
                                                 @endif
                                             @else
-                                                @if(hasPermission("rst.production.approve", $slugs))
+                                                @if(hasPermission("rst.purchase.approve", $slugs))
                                                     <a href="{{ route('unapprove.goods.requisition', $value->id) }}" class="btn btn-xs btn-success" title="Unapprove">
                                                         <i class="fa fa-thumbs-down"></i>
                                                     </a>
                                                 @endif
                                             @endif --}}
 
-                                            @if(hasPermission("rst.production.delete", $slugs))
+                                            @if(hasPermission("rst.purchase.delete", $slugs))
                                                 <button type="button" onclick="delete_check({{ $value->id }})" class="btn btn-xs btn-danger" title="Delete">
                                                     <i class="fa fa-trash-o"></i>
                                                 </button>

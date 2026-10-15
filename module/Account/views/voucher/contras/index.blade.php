@@ -89,7 +89,7 @@
                                             class="fa fa-eye"></i></a>
 
                                     @if (!$item->is_approved)
-                                        @if (hasPermission('vouchers.approve', $slugs))
+                                        @if (hasPermission('voucher-contras.edit', $slugs))
                                             <a href="{{ route('voucher-contras.show', $item->id) }}?type=approve"
                                                 target="_blank" class="btn btn-purple btn-xs"
                                                 title="Approve Voucher"><i class="fa fa-check"></i></a>
