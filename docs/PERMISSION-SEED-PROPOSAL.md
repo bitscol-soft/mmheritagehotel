@@ -1,8 +1,10 @@
 # Permission seed proposal — authorization review (2026-10-16)
 
-**Status: proposal only.** Nothing here is applied to `database/mmheritagehotel_db.sql`
-or any live database. Applying it is the owner's call (it grants access to real
-accounts). Companion to the audit in `docs/MODULE-COMPLETION.md`.
+**Status: APPLIED to `database/mmheritagehotel_db.sql` (2026-10-16, owner-approved).**
+42 permission rows (ids 200001+) + 79 `permission_user` grants (explicit ids 775+;
+the table has no AUTO_INCREMENT) now sit next to the tables' existing INSERTs in
+the dump. Take effect on the next database import; nothing was changed on any
+live database. Companion to the audit in `docs/MODULE-COMPLETION.md`.
 
 ## Background
 
@@ -70,7 +72,7 @@ grants today, so the proposal does not widen their access.
 
 ```sql
 -- === Permission seed draft (2026-10-16) — NOT APPLIED ===
--- 41 permission rows + 80 permission_user grants.
+-- 42 permission rows + 79 permission_user grants.
 -- Verify the modeled-holder mapping per family above before running.
 
 INSERT INTO `permissions` (`id`,`name`,`slug`,`description`,`created_by`,`updated_by`,`parent_permission_id`,`created_at`,`updated_at`,`status`) VALUES (200001,'Supplier Types','supplier.types.index',NULL,1,1,110060,'2026-10-16 00:00:00','2026-10-16 00:00:00',1);

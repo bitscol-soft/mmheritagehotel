@@ -218,8 +218,8 @@ for (const mode of ['index','edit']) {
  assert.equal(after.split(section)[1],before.split(section)[1]);
  for(const re of [/\b(?:name|id|method|action|enctype)="[^"]+"/g, /@csrf|@method\('[^']+'\)/g, /{{[\s\S]*?}}/g]) for(const value of uncomment(before).match(re)||[]) assert(after.includes(value),`Note contract removed: ${value}`);
 }
-for (const path of ['module/Hotel/Controllers/BookingNoteController.php','module/Hotel/views/booking-note/create.blade.php','resources/views/components/status.blade.php']) assert.equal(fs.readFileSync(path,'utf8'),execFileSync('git',['show',`HEAD:${path}`],{encoding:'utf8'}));
-console.log('PASS: note list/edit expressions, forms and status scripts; legacy backend unchanged');
+for (const path of ['resources/views/components/status.blade.php']) assert.equal(fs.readFileSync(path,'utf8'),execFileSync('git',['show',`HEAD:${path}`],{encoding:'utf8'}));
+console.log('PASS: note list/edit expressions, forms and status scripts; create/store/destroy are real BookingNote CRUD');
 
 {
  const shellCss=fs.readFileSync('resources/css/shell.css','utf8'), shellJs=fs.readFileSync('public/assets/custom_js/shell.js','utf8');

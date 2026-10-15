@@ -81,9 +81,12 @@ guest-info helpers) were removed from `BookingNoteController` and
 `GuestRegistrationTermsController`: routes already exposed only index/edit/update
 and the dead methods mutated Guest records, not the note/terms models. The
 index `queryLike('title')` matches the filter's `title` field (an earlier
-`name`/`title` mismatch is gone). Authorization review (no permission slug
-exists for either screen yet), then authenticated tests, are required before
-this group is complete. Next UI group: remaining room-category forms.
+`name`/`title` mismatch is gone). 2026-10-16: real Booking note create/store/
+destroy restored (title form + Add New/Delete controls on the list; delete is
+an inline-confirm DELETE form so the frozen status script section is
+untouched). Authorization review (no permission slug exists for either screen
+yet), then authenticated tests, are required before this group is complete.
+Next UI group: remaining room-category forms.
 
 ## Permission slug audit (2026-10-16)
 
@@ -105,8 +108,8 @@ four families were spelling/action drift and are now remapped in code
 and the `report.*` route-name slugs for the 6 analysis reports); eight families
 (`supplier.types.*`, `items.*`, `purchases.*`, `purchase.receives.*`,
 `create.requisitions.*`, `gs.reports.*`, `fund.transfers.*`, `report.*` analysis
-pages) get a draft seed + modeled grants in that document — **not applied,
-owner decision**. The `acc_collections.*`/`acc_payments.*` and `pharmacy.*`
+pages) — **seed applied to `database/mmheritagehotel_db.sql` (2026-10-16,
+owner-approved): 42 rows + 79 modeled grants**, effective on next DB import. The `acc_collections.*`/`acc_payments.*` and `pharmacy.*`
 families still need a product call (likely remaps). View-side drift (e.g.
 `rst.table-manages.index`) stays frozen with the `hasPermission()` byte-identical
 rule.

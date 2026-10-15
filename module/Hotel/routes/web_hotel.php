@@ -77,8 +77,9 @@ Route::group(['prefix' => 'hotel'], function () {
             Route::resource('guests', GuestController::class)->except(['show']);
             // round 3 (docs/BUGS.md): BookingPurposeController does not implement show; the routes would 500
             Route::resource('booking-purpose', BookingPurposeController::class)->except(['show']);
-            // round 3 (docs/BUGS.md): BookingNoteController only has index/edit views; create/store/destroy were GuestController copy-pastes
-            Route::resource('booking-note', BookingNoteController::class)->only(['index', 'edit', 'update']);
+            // round 3 (docs/BUGS.md) removed the GuestController copy-paste create/store/destroy;
+            // 2026-10-16: real BookingNote create/store/destroy restored (docs/MODULE-COMPLETION.md)
+            Route::resource('booking-note', BookingNoteController::class)->only(['index', 'create', 'store', 'edit', 'update', 'destroy']);
             // round 3 (docs/BUGS.md): GuestRegistrationTermsController only has index/edit views; create/store/destroy were GuestController copy-pastes
             Route::resource('guest-registration-terms', GuestRegistrationTermsController::class)->only(['index', 'edit', 'update']);
             // round 3 (docs/BUGS.md): NightAuditSummaryController does not implement edit/update; the routes would 500
