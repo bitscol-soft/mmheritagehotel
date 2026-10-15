@@ -148,6 +148,7 @@ class BanquetBookingController extends Controller{
     */
     public function store(Request $request)
     {
+        $this->hasAccess("bookings.create");
         $request->validate([
                 'booking_date'          => 'required',
                 'customer_id'           => 'required',
@@ -279,6 +280,7 @@ class BanquetBookingController extends Controller{
     */
     public function update(Request $request, $id)
     {
+        $this->hasAccess("bookings.edit");
         $request->validate([
             'customer_id'       => 'required',
             // 'purpose'           => 'required',

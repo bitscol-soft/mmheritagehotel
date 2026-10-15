@@ -85,6 +85,7 @@ class BanquetAmenitieController extends Controller
     */
     public function store(Request $request)
     {
+        $this->hasAccess("banquet.aminities.create");
         // dd('ddd');
 
         $request->validate([
@@ -127,6 +128,7 @@ class BanquetAmenitieController extends Controller
     */
     public function update(Request $request,$id)
     {
+        $this->hasAccess("banquet.aminities.edit");
         $request->validate([
             'name' => 'required',
         ]);

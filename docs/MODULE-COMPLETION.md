@@ -95,6 +95,9 @@ slug exists and matches the view-side `hasPermission()`/sidebar usage):
 `account-setups.index`; `account-sales.show`/`account-purchases.show` →
 `.view` (the shipped family has no `.show`); tab-prefixed `supplier.types.*`
 and `\treport.ledger-journal` typos (both duplicate and module controllers).
+Follow-up done in the same round: 70 ungated `store`/`update` mutations across
+44 resource controllers now carry the same `hasAccess()` slug their `create`/
+`edit` form sibling uses (direct POST can no longer bypass the form gate).
 
 Still open — these called slugs do not exist in the shipped permissions table,
 so every non-admin is denied (admin user id 1 bypasses). Seed the missing
@@ -104,8 +107,7 @@ families + grants or remap the code; product decision needed per family:
 `pharmacy.*` (Bar inventory units), `purchase.receives.*`, `purchases.*`
 (General Store), `restaurant.table-manages.*`, `rst.stock-adjustment.*`,
 `supplier.types.*` (views and sidebars already reference this family),
-`vouchers.journal.*`. Follow-up pass: several resource controllers gate only
-create/edit/destroy and leave `store`/`update` ungated.
+`vouchers.journal.*`.
 
 ## Full menu design
 

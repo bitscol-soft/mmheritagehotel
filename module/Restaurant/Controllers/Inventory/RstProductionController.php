@@ -152,6 +152,7 @@ class RstProductionController extends Controller
     */
     public function update(Request $request, Purchase $purchase)
     {
+        $this->hasAccess("rst.purchase.edit");
         // check validation
         $this->validate($request, [
             'company_id'    => 'required',

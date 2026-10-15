@@ -78,6 +78,7 @@ class RoomCategoryController extends Controller
 
     public function store(Request $request)
     {
+        $this->hasAccess("categories.create");
         $request->validate([
             'cat_name'          => 'required',
             'aminities.*'       => 'required',
@@ -162,6 +163,7 @@ class RoomCategoryController extends Controller
 
     public function update(Request $request, $id)
     {
+        $this->hasAccess("categories.edit");
 
         try {
             $aminities  = $request->aminities;

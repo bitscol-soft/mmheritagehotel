@@ -49,6 +49,7 @@ class SupplierController extends Controller
      */
     public function store(Request $request)
     {
+        $this->hasAccess("suppliers.create");
         $this->validate($request, [
             'name'              => [Rule::unique('suppliers', 'name')->where('supplier_type_id', $request->supplier_type_id)],
             'country_id'        => 'required',
@@ -90,6 +91,7 @@ class SupplierController extends Controller
      */
     public function update(Request $request, Supplier $Supplier)
     {
+        $this->hasAccess("suppliers.edit");
         $suppliers = $this->validate($request, [
             'name'              => [Rule::unique('suppliers', 'name')->where('supplier_type_id', $request->supplier_type_id)->ignore($Supplier->id)],
             'country_id'        => 'required',

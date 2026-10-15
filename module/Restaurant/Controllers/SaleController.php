@@ -112,6 +112,7 @@ class SaleController extends Controller
     */
     public function store(SaleRequest $request)
     {
+        $this->hasAccess("resturant.sales.create");
         try {
             $sale =  $request->store();
 

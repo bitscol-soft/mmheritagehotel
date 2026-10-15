@@ -121,6 +121,7 @@ class PaymentVoucherController extends Controller
     */
     public function store(Request $request)
     {
+        $this->hasAccess("voucher-payments.create");
 
         try {
 

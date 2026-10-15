@@ -61,6 +61,7 @@ class AboutController extends Controller
 
     public function store(Request $request)
     {
+        $this->hasAccess("aboutsections.index");
         $request->validate([
             'heading_title'        => 'required',
             'heading_description'  => 'required',

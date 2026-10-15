@@ -180,6 +180,7 @@ class GuestUploadController extends Controller
     */
     public function update($id, Request $request)
     {
+        $this->hasAccess("pharmacy.edit");
         try {
             ProductUpload::find($id)->update($request->all());
         } catch (\Throwable $th) {

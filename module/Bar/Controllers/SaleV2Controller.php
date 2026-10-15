@@ -129,6 +129,7 @@ class SaleV2Controller extends Controller
     */
     public function store(SaleRequest $request)
     {
+        $this->hasAccess("bar.sales.create");
         try {
 
             $sale =  $request->store();

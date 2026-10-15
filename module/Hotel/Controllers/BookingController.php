@@ -173,6 +173,7 @@ class BookingController extends Controller
     */
     public function store(Request $request)
     {
+        $this->hasAccess("bookings.create");
 
         $request->validate([
             'check_in_date'     => 'required',
@@ -334,6 +335,7 @@ class BookingController extends Controller
      |--------------------------------------------------------------------------
     */
     public function update(Request $request, $id){
+        $this->hasAccess("bookings.edit");
 
 
         $request->validate([

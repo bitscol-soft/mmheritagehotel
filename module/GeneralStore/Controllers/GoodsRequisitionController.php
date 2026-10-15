@@ -103,6 +103,7 @@ class GoodsRequisitionController extends Controller
      */
     public function store(Request $request)
     {
+        $this->hasAccess("create.requisitions.create");
         $goodsRequisition = $this->validate($request, [
             'company_id'                  => 'required|not_in:0',
             'department_id'               => 'nullable|not_in:0',
@@ -216,6 +217,7 @@ class GoodsRequisitionController extends Controller
      */
     public function update(Request $request, GoodsRequisition $goodsRequisition)
     {
+        $this->hasAccess("create.requisitions.edit");
         $this->validate($request, [
             'company_id'                  => 'required|not_in:0',
             'department_id'               => 'required|not_in:0',

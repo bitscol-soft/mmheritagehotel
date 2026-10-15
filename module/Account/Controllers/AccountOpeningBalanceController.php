@@ -47,6 +47,7 @@ class AccountOpeningBalanceController extends Controller
 
     public function store(Request $request)
     {
+        $this->hasAccess("account.index");
         foreach ($request->account_ids ?? [] as $key => $account_id) {
 
             if($request->amounts[$key] <> 0) {

@@ -86,6 +86,7 @@ class AminitiesController extends Controller
     */
     public function store(Request $request)
     {
+        $this->hasAccess("aminities.create");
 
         $request->validate([
             'name' => 'required',
@@ -127,6 +128,7 @@ class AminitiesController extends Controller
     */
     public function update(Request $request,$id)
     {
+        $this->hasAccess("aminities.edit");
         $request->validate([
             'name' => 'required',
         ]);

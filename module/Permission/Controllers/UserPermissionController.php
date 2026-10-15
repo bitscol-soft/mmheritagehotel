@@ -316,6 +316,7 @@ class UserPermissionController extends Controller
     */
     public function store(Request $request)
     {
+        $this->hasAccess("permission.accesses.create");
 
         // validation
         $request->validate([
@@ -500,6 +501,7 @@ class UserPermissionController extends Controller
     */
     public function update(Request $request, $id)
     {
+        $this->hasAccess("permission.accesses.edit");
 
         try {
 

@@ -49,6 +49,7 @@ class ItemUnitController extends Controller
      */
     public function store(Request $request)
     {
+        $this->hasAccess("items.create");
         $item_units = $this->validate($request, [
             'name'       => 'required|unique:item_units,name',
             'conversion' => 'required',
@@ -87,6 +88,7 @@ class ItemUnitController extends Controller
      */
     public function update(Request $request, ItemUnit $itemUnit)
     {
+        $this->hasAccess("items.edit");
         $item_units = $this->validate($request, [
             'name'       => 'required|required:item_units,name,' . $itemUnit->id,
             'conversion' => 'required',
