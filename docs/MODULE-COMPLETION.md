@@ -76,12 +76,14 @@ not a deployed Laravel application. See TAILWIND-DEVELOPMENT.md for prior work.
 
 ## Booking Notes blockers
 
-The legacy controller's create/store/destroy paths operate on Guest records,
-not BookingNote. Do not use these routes as note CRUD. No new controls added.
-The index query uses `name` but the filter submits `title`; search functionality
-is not fixed by the presentation migration. Backend correction and authorization
-review, then authenticated tests, are required before this group is complete.
-Next UI group: remaining room-category forms.
+The legacy controllers' Guest copy-paste paths (create/store/destroy plus the
+guest-info helpers) were removed from `BookingNoteController` and
+`GuestRegistrationTermsController`: routes already exposed only index/edit/update
+and the dead methods mutated Guest records, not the note/terms models. The
+index `queryLike('title')` matches the filter's `title` field (an earlier
+`name`/`title` mismatch is gone). Authorization review (no permission slug
+exists for either screen yet), then authenticated tests, are required before
+this group is complete. Next UI group: remaining room-category forms.
 
 ## Full menu design
 
