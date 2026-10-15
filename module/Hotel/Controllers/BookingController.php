@@ -288,7 +288,6 @@ class BookingController extends Controller
 
 
         return view('booking/edit', $data);
-        // return view('booking/assaign', $data);
     }
 
 
@@ -425,72 +424,6 @@ class BookingController extends Controller
 
     }
 
-
-
-
-    /*
-     |--------------------------------------------------------------------------
-     | ASSIGN ROOM METHOD FOR Booking Information
-     |--------------------------------------------------------------------------
-    */
-    public function assign(Request $request, $id)
-    {
-        $request->validate([
-            'customer_id'       => 'required',
-            'room_category.*'   => 'required',
-            'room_number.*'     => 'required',
-        ],[
-            'customer_id.required'   => 'The Customer field  is required!',
-            'room_category.*.required' => 'The Room Category field is required!',
-            'room_number.*.required'   => 'The Room Number field is required!',
-        ]);
-
-        try {
-
-            DB::transaction(function () use ($request, $id) {
-
-                $booking = Booking::find($id);
-
-                // UPDATING BOOKING, TRANSACTION
-                $this->service->assign($request, $booking);
-
-
-                // UPDATE BOOKING DETAILS
-                $this->service->assignBookingDetails($request, $this->service->booking->id);
-
-
-                // UPDATE GUEST
-                $guest = Guest::find($booking->customer_id);
-                if ($guest) {
-                    $guest->update([
-                        'company_id'    => $request->company_id
-                    ]);
-                }
-
-
-                //--------- SEND SMS TO GUEST ---------//
-                if (isset($request->sms) && $guest) {
-                    $messages = 'Your booking have been successfully Reserved. Booking No. '.$this->service->booking->booking_number;
-                    $this->sendSmsNotification($messages , $guest->phone_no);
-                }
-
-
-                //-------- SEND EMAIL TO GUEST --------//
-                if (isset($request->email) && $guest) {
-                    $this->sendEmailNotification($booking->id, $guest->email);
-                }
-
-                // Add Member
-                $this->service->saveMemberDetails($request);
-            });
-
-            return redirect()->route('booking.index')->with('message', 'Booking have been updated success!');
-
-        } catch (\Throwable $e) {
-            return redirect()->back()->with('error', $e->getMessage());
-        }
-
-    }
 
 
 

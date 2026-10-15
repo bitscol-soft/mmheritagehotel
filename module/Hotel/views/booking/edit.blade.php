@@ -78,7 +78,6 @@
 
                         @include('booking._inc._booking-context', ['booking' => $booking])
 
-                        {{-- action="{{ route('booking.assign', $booking->id) }}" --}}
                         <!-- FORM -->
                         <form class="form-horizontal" id="submitBookingUpdateForm"
                             action="{{ route('booking.update', $booking->id) }}" method="post"

@@ -45,13 +45,17 @@ preservation guards in `tools/ui-check.cjs` before any markup moves. Financial s
 - `previous_paid` is posted as one non-indexed hidden input per row, so only the last value reaches the server.
 - Unreferenced views (`index-details`, `create`, `create-v3/v4`, `show`) were not migrated.
 
-## Findings on room assignment (not migrated)
+## Findings on room assignment — resolved (removed)
 
-- `booking/assaign.blade.php` is dead: `BookingController::edit()` and `BanquetBookingController` return `booking/edit`, and the
-  `return view('booking/assaign', ...)` line is commented out. The assign form action is commented out in `booking/edit`.
-- The `booking.assign` route and `BookingController::assign()` still exist, but no live Hotel view posts to them. The Banquet
-  module has its own `hall_booking/assaign` and `hall_booking/edit` forms that do.
-- Decision pending: remove the dead view and the route/controller method, or restore the assign step. No UI work was done for it.
+- `booking/assaign.blade.php`, `hall_booking/assaign.blade.php` and `hall_booking/edit.blade.php` were all unreachable:
+  `BookingController::edit()` and `BanquetBookingController::edit()` return `booking/edit`, and the assign returns are
+  commented out. (The Banquet `hall_booking/*` assign/edit forms did post to `booking.assign`, but nothing rendered them.)
+- The `booking.assign` route and `BookingController::assign()`/`BookingService::assign()` were therefore dormant — a
+  registered mutating endpoint (it re-runs `makePayment`) with no live UI, and `assign()` read `check_in`/`check_out`
+  field names the forms never posted.
+- **Decision (2026-10-16, owner-approved): remove the dead code.** Deleted the three views, the route, and the
+  assign/assignBookingDetails methods in both `BookingService`s, plus the commented leftovers in the controllers and
+  `booking/edit`. Restoring the assign step later is a git revert away if the workflow is wanted.
 
 ## Findings on edit (backend, not changed)
 

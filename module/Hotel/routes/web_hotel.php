@@ -50,8 +50,6 @@ Route::group(['prefix' => 'hotel'], function () {
 
     Route::get('house-keeping',                     [BookingController::class, 'HouseKeeping'])->name('Booking.HouseKeeping');
 
-    // Booking Room Assign
-    Route::put('booking-assign/{id}',               [BookingController::class, 'assign'])->name('booking.assign');
 
 
 
