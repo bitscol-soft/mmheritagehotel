@@ -1025,3 +1025,21 @@ function dayNumber($dayName){
 
 }
 
+
+
+/*
+ |--------------------------------------------------------------
+ | FRONT BOOKING CART (server-side session store)
+ |--------------------------------------------------------------
+ | Replaces the client-mutable `booking_cart` cookie (BUGS #30).
+ | Each item keeps the legacy array shape the frontend views and
+ | the /add-to-cart, /remove-to-cart JSON contract use:
+ | item_id, item_name, item_price, item_img, item_img_path,
+ | check_in, check_out, nights, guest_capacity.
+ |--------------------------------------------------------------
+ */
+
+function front_cart_items()
+{
+    return session()->get('booking_cart', []);
+}
