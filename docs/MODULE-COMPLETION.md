@@ -109,10 +109,14 @@ and the `report.*` route-name slugs for the 6 analysis reports); eight families
 (`supplier.types.*`, `items.*`, `purchases.*`, `purchase.receives.*`,
 `create.requisitions.*`, `gs.reports.*`, `fund.transfers.*`, `report.*` analysis
 pages) — **seed applied to `database/mmheritagehotel_db.sql` (2026-10-16,
-owner-approved): 42 rows + 79 modeled grants**, effective on next DB import. The `acc_collections.*`/`acc_payments.*` and `pharmacy.*`
-families still need a product call (likely remaps). View-side drift (e.g.
-`rst.table-manages.index`) stays frozen with the `hasPermission()` byte-identical
-rule.
+owner-approved): 42 rows + 79 modeled grants**, effective on next DB import.
+Group 3 closed the same day: `pharmacy.*`, `acc_payments.*`, `acc_collections.*`
+seeded too (13 rows + 26 grants) plus three controller copy-paste remaps
+(`GuestUploadController` -> `guests.edit`, Restaurant `ProductUploadController`
+-> `resturant.inventories.edit`, `TableManageController::storeOrUpdate` ->
+`resturant.table-manages.edit`). **Every `hasAccess()` slug now resolves
+against the shipped table.** View-side drift (e.g. `rst.table-manages.index`)
+stays frozen with the `hasPermission()` byte-identical rule.
 
 ## Full menu design
 

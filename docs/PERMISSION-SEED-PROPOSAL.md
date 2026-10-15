@@ -53,20 +53,27 @@ Shipped users: 1 Mr. Admin, 2 Super admin, 3 admin, 4 frontdesk1, 5 frontdesk2,
 6 booking. None of the front-desk or booking accounts hold the modeled sibling
 grants today, so the proposal does not widen their access.
 
-## Group 3 — needs a product decision before any change
+## Group 3 — resolved (2026-10-16, owner-approved)
 
-- `acc_collections.*` / `acc_payments.*` (Account `CollectionController`/
-  `PaymentController`): likely rename-drift of `voucher-receives.*` /
-  `voucher-payments.*` (those screens exist and are gated) — verify the route
-  mapping, then either remap code or seed the two families.
-- `pharmacy.*` (Bar/Restaurant `ProductUnit`/`ProductUpload` + the
-  `GuestUploadController`/`TableManageController::storeOrUpdate` copy-paste
-  gates): candidate remap to `bar.inventories.*`. `storeOrUpdate()` in
-  `TableManageController` still gates on `pharmacy.edit` (an upsert — decide
-  whether it needs `.create`, `.edit`, or both).
-- View-side drift (out of scope while `hasPermission()` gates are
-  byte-frozen): e.g. the table-manage views gate buttons on
-  `rst.table-manages.index`, which is not in the table either.
+- `acc_collections.*` / `acc_payments.*` and `pharmacy.*` were **seeded**
+  (13 rows ids 200050+, 26 grants ids 854+, modeled action-for-action on
+  `voucher-receives.*` / `voucher-payments.*` / `bar.inventories.*` holders):
+  each family is self-consistent across its controllers and (for `pharmacy.*`)
+  the Bar inventory views, so seeding beats remapping. The views' `pharmacy.*`
+  button gates stay byte-frozen and now resolve for the same users.
+- Three controller copy-paste gates were remapped to real module families:
+  `GuestUploadController` `pharmacy.edit` -> `guests.edit` (guest uploads),
+  `Restaurant/Inventory/ProductUploadController` `pharmacy.edit` ->
+  `resturant.inventories.edit` (mirrors its ProductUnit sibling), and
+  `TableManageController::storeOrUpdate` `pharmacy.edit` ->
+  `resturant.table-manages.edit` (the upsert covers create+update; the family
+  has no combined slug and `.edit` is the update-side semantic).
+- View-side drift remains out of scope while `hasPermission()` gates are
+  byte-frozen: e.g. the table-manage views gate buttons on
+  `rst.table-manages.index`, which is not in the table.
+
+**Audit status: every `hasAccess()` slug in the codebase now resolves against
+the shipped permissions table.**
 
 ## SQL appendix (draft — review before applying)
 

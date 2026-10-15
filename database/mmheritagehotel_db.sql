@@ -3828,6 +3828,20 @@ INSERT INTO `permissions` (`id`, `name`, `slug`, `description`, `created_by`, `u
 INSERT INTO `permissions` (`id`, `name`, `slug`, `description`, `created_by`, `updated_by`, `parent_permission_id`, `created_at`, `updated_at`, `status`) VALUES (200043, 'Received Payment Statement', 'report.received-payment-statement', NULL, 1, 1, 110067, '2026-10-16 00:00:00', '2026-10-16 00:00:00', 1);
 INSERT INTO `permissions` (`id`, `name`, `slug`, `description`, `created_by`, `updated_by`, `parent_permission_id`, `created_at`, `updated_at`, `status`) VALUES (200044, 'Revenue Analysis', 'report.revenue-analysis', NULL, 1, 1, 110067, '2026-10-16 00:00:00', '2026-10-16 00:00:00', 1);
 INSERT INTO `permissions` (`id`, `name`, `slug`, `description`, `created_by`, `updated_by`, `parent_permission_id`, `created_at`, `updated_at`, `status`) VALUES (200045, 'Transaction Ledger', 'report.transaction-ledger', NULL, 1, 1, 110067, '2026-10-16 00:00:00', '2026-10-16 00:00:00', 1);
+-- Group-3 seed (2026-10-16, owner-approved): pharmacy.*, acc_payments.*, acc_collections.* (13 rows).
+INSERT INTO `permissions` (`id`, `name`, `slug`, `description`, `created_by`, `updated_by`, `parent_permission_id`, `created_at`, `updated_at`, `status`) VALUES (200050, 'Pharmacy', 'pharmacy.index', NULL, 1, 1, 110068, '2026-10-16 00:00:00', '2026-10-16 00:00:00', 1);
+INSERT INTO `permissions` (`id`, `name`, `slug`, `description`, `created_by`, `updated_by`, `parent_permission_id`, `created_at`, `updated_at`, `status`) VALUES (200051, 'View', 'pharmacy.view', NULL, 1, 1, 110068, '2026-10-16 00:00:00', '2026-10-16 00:00:00', 1);
+INSERT INTO `permissions` (`id`, `name`, `slug`, `description`, `created_by`, `updated_by`, `parent_permission_id`, `created_at`, `updated_at`, `status`) VALUES (200052, 'Create', 'pharmacy.create', NULL, 1, 1, 110068, '2026-10-16 00:00:00', '2026-10-16 00:00:00', 1);
+INSERT INTO `permissions` (`id`, `name`, `slug`, `description`, `created_by`, `updated_by`, `parent_permission_id`, `created_at`, `updated_at`, `status`) VALUES (200053, 'Edit', 'pharmacy.edit', NULL, 1, 1, 110068, '2026-10-16 00:00:00', '2026-10-16 00:00:00', 1);
+INSERT INTO `permissions` (`id`, `name`, `slug`, `description`, `created_by`, `updated_by`, `parent_permission_id`, `created_at`, `updated_at`, `status`) VALUES (200054, 'Delete', 'pharmacy.delete', NULL, 1, 1, 110068, '2026-10-16 00:00:00', '2026-10-16 00:00:00', 1);
+INSERT INTO `permissions` (`id`, `name`, `slug`, `description`, `created_by`, `updated_by`, `parent_permission_id`, `created_at`, `updated_at`, `status`) VALUES (200055, 'Payments', 'acc_payments.index', NULL, 1, 1, 110069, '2026-10-16 00:00:00', '2026-10-16 00:00:00', 1);
+INSERT INTO `permissions` (`id`, `name`, `slug`, `description`, `created_by`, `updated_by`, `parent_permission_id`, `created_at`, `updated_at`, `status`) VALUES (200056, 'Create', 'acc_payments.create', NULL, 1, 1, 110069, '2026-10-16 00:00:00', '2026-10-16 00:00:00', 1);
+INSERT INTO `permissions` (`id`, `name`, `slug`, `description`, `created_by`, `updated_by`, `parent_permission_id`, `created_at`, `updated_at`, `status`) VALUES (200057, 'Edit', 'acc_payments.edit', NULL, 1, 1, 110069, '2026-10-16 00:00:00', '2026-10-16 00:00:00', 1);
+INSERT INTO `permissions` (`id`, `name`, `slug`, `description`, `created_by`, `updated_by`, `parent_permission_id`, `created_at`, `updated_at`, `status`) VALUES (200058, 'Delete', 'acc_payments.delete', NULL, 1, 1, 110069, '2026-10-16 00:00:00', '2026-10-16 00:00:00', 1);
+INSERT INTO `permissions` (`id`, `name`, `slug`, `description`, `created_by`, `updated_by`, `parent_permission_id`, `created_at`, `updated_at`, `status`) VALUES (200059, 'Collections', 'acc_collections.index', NULL, 1, 1, 110070, '2026-10-16 00:00:00', '2026-10-16 00:00:00', 1);
+INSERT INTO `permissions` (`id`, `name`, `slug`, `description`, `created_by`, `updated_by`, `parent_permission_id`, `created_at`, `updated_at`, `status`) VALUES (200060, 'Create', 'acc_collections.create', NULL, 1, 1, 110070, '2026-10-16 00:00:00', '2026-10-16 00:00:00', 1);
+INSERT INTO `permissions` (`id`, `name`, `slug`, `description`, `created_by`, `updated_by`, `parent_permission_id`, `created_at`, `updated_at`, `status`) VALUES (200061, 'Edit', 'acc_collections.edit', NULL, 1, 1, 110070, '2026-10-16 00:00:00', '2026-10-16 00:00:00', 1);
+INSERT INTO `permissions` (`id`, `name`, `slug`, `description`, `created_by`, `updated_by`, `parent_permission_id`, `created_at`, `updated_at`, `status`) VALUES (200062, 'Delete', 'acc_collections.delete', NULL, 1, 1, 110070, '2026-10-16 00:00:00', '2026-10-16 00:00:00', 1);
 
 -- --------------------------------------------------------
 
@@ -4728,6 +4742,33 @@ INSERT INTO `permission_user` (`permission_id`, `user_id`, `created_at`, `update
 INSERT INTO `permission_user` (`permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (851, 200044, 3, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
 INSERT INTO `permission_user` (`permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (852, 200045, 2, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
 INSERT INTO `permission_user` (`permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (853, 200045, 3, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
+-- Group-3 grants (2026-10-16): 26 rows modeled action-for-action on bar.inventories.* / voucher-payments.* / voucher-receives.* holders.
+INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (854, 200050, 2, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
+INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (855, 200050, 3, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
+INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (856, 200051, 2, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
+INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (857, 200051, 3, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
+INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (858, 200052, 2, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
+INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (859, 200052, 3, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
+INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (860, 200053, 2, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
+INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (861, 200053, 3, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
+INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (862, 200054, 2, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
+INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (863, 200054, 3, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
+INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (864, 200055, 2, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
+INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (865, 200055, 3, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
+INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (866, 200056, 2, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
+INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (867, 200056, 3, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
+INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (868, 200057, 2, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
+INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (869, 200057, 3, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
+INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (870, 200058, 2, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
+INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (871, 200058, 3, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
+INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (872, 200059, 2, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
+INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (873, 200059, 3, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
+INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (874, 200060, 2, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
+INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (875, 200060, 3, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
+INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (876, 200061, 2, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
+INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (877, 200061, 3, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
+INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (878, 200062, 2, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
+INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (879, 200062, 3, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
 
 -- --------------------------------------------------------
 

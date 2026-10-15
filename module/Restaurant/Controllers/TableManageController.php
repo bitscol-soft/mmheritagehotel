@@ -115,7 +115,7 @@ class TableManageController extends Controller
     */
     public function storeOrUpdate($request, $id = null)
     {
-        $this->hasAccess("pharmacy.edit");
+        $this->hasAccess("resturant.table-manages.edit");
 
         $data = $request->validate([
             'name'      => 'nullable',
