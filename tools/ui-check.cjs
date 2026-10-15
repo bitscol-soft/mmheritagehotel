@@ -417,12 +417,12 @@ assert(bqInv.includes('mm-inv-head-modern') && bqInv.includes("'compact' => true
 const bqV3=fs.readFileSync('module/BanquetHall/views/hall_booking/checkout-invoice-v3.blade.php','utf8');
 assert(bqV3.includes("partials.print-codes") && bqV3.includes("'codes' => 'qr'"), 'banquet checkout-invoice-v3: QR must sit beside the top barcode');
  const v3Path='module/Hotel/views/booking/checkout-invoice-v3.blade.php', v3=fs.readFileSync(v3Path,'utf8'), v3Base=base(v3Path);
- // Invoice v3: QR codes added beside the existing top barcodes (user request 2026-10-14);
- // expressions/barcodes/print scripts must otherwise stay identical to HEAD.
- assert.equal((v3.match(/partials\.print-codes/g)||[]).length,2,'invoice v3: QR-only include expected beside both top barcode blocks');
- assert(v3.includes("'codes' => 'qr'"),'invoice v3: QR-only variant of the codes partial expected');
- assert.equal((v3.match(/DNS1D::getBarcodePNG/g)||[]).length,2,'invoice v3: both original Code128 barcodes must remain');
- assert.deepEqual(exprs(v3),exprs(v3Base),'invoice v3: Blade expressions changed beyond the QR includes');
+ // Invoice v3 (redesigned layout 754ee2e7): QR + Code128 print together via the shared
+ // print-codes partial in both header blocks; expressions/print scripts stay identical to HEAD.
+ assert.equal((v3.match(/partials\.print-codes/g)||[]).length,2,'invoice v3: codes include expected beside both header blocks');
+ assert(v3.includes("'codes' => 'both'"),'invoice v3: shared codes partial must render QR + Code128 (redesigned layout)');
+ assert(codesPartialSrc.includes('DNS1D::getBarcodePNG'),'partials/print-codes.blade.php must keep the Code128 renderer for the redesigned invoice');
+ assert.deepEqual(exprs(v3),exprs(v3Base),'invoice v3: Blade expressions changed beyond the codes includes');
  assert(/@media print \{\s*\.inv-screen-bar \{\s*display: none !important;/.test(v3)&&v3.includes('window.print();'),'invoice v3: action bar must be hidden in print and auto-print kept');
  for(const dead of ['module/Hotel/views/booking/checkout-invoice-v2.blade.php','module/Hotel/views/booking/checkout-invoice-v4.blade.php','module/Hotel/views/booking/get_invoice.blade.php']) assert(!fs.existsSync(dead),`${dead} was removed in W3.8`);
  assert.equal(fs.readFileSync('module/Hotel/views/booking/_css/invoice-sheet.blade.php','utf8'),base('module/Hotel/views/booking/_css/invoice-sheet.blade.php'),'invoice-sheet.blade.php must be unchanged');
