@@ -18,6 +18,42 @@
             <a class="mm-button" href="{{ route('acc-payments.create') }}"><i class="fa fa-plus"></i> Add New</a>
         @endif
     </x-slot>
+    <x-mm.panel class="mm-report-filter">
+        <form class="mm-setup-filter mm-report-form" action="" method="get">
+            <div class="input-group">
+                <label class="input-group-addon" for="">
+                    Invoice No
+                </label>
+
+                <select name="invoice_no" class="chosen-select-100-percent"
+                    data-placeholder="- Select Invoice -" style="display: none;">
+                    <option></option>
+                    @foreach ($payments->pluck('invoice_no')->unique()->filter() as $inv)
+                        <option value="{{ $inv }}" @if (request('invoice_no') == $inv) selected @endif>{{ $inv }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="input-group">
+                <label class="input-group-addon" for="">
+                    Reference
+                </label>
+
+                <select name="reference" class="chosen-select-100-percent"
+                    data-placeholder="- Select Reference -" style="display: none;">
+                    <option></option>
+                    @foreach ($payments->pluck('transaction_no')->unique()->filter() as $ref)
+                        <option value="{{ $ref }}" @if (request('reference') == $ref) selected @endif>{{ $ref }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="input-group">
+                <button type="submit" class="mm-button mm-button-primary">
+                    <i class="fa fa-search"></i>
+                    Search</button>
+            </div>
+        </form>
+    </x-mm.panel>
+
     <x-mm.panel class="tw-p-4">
         @include('partials._alert_message')
         @if ($payments->count())

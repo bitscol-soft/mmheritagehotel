@@ -20,12 +20,14 @@ class PaymentController extends Controller
     }
 
 
-    public function index()
+    public function index(\Illuminate\Http\Request $request)
     {
         $this->hasAccess("acc_payments.index");
 
         $payments = Payment::query()
             ->with('supplier')
+            ->when($request->filled('invoice_no'), fn ($q) => $q->where('invoice_no', $request->invoice_no))
+            ->when($request->filled('reference'), fn ($q) => $q->where('transaction_no', $request->reference))
             ->latest('date')
             ->latest('id')
             ->get();

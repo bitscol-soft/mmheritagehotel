@@ -12,7 +12,35 @@
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Payment Lists</h1>
                 <p class="tw-m-0 tw-text-sm tw-text-muted">Supplier payments.</p>            </div>
             <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button" href="http://localhost/acc/acc-payments/create"><i class="fa fa-plus"></i> Add New</a></div>        </header>
-        <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><div class="table-responsive">
+        <div class="mm-panel tw-p-4 sm:tw-p-6 mm-report-filter"><form class="mm-setup-filter mm-report-form" action="" method="get">
+            <div class="input-group">
+                <label class="input-group-addon" for="">
+                    Invoice No
+                </label>
+
+                <select name="invoice_no" class="chosen-select-100-percent"
+                    data-placeholder="- Select Invoice -" style="display: none;">
+                    <option></option>
+                                    </select>
+            </div>
+            <div class="input-group">
+                <label class="input-group-addon" for="">
+                    Reference
+                </label>
+
+                <select name="reference" class="chosen-select-100-percent"
+                    data-placeholder="- Select Reference -" style="display: none;">
+                    <option></option>
+                                    </select>
+            </div>
+            <div class="input-group">
+                <button type="submit" class="mm-button mm-button-primary">
+                    <i class="fa fa-search"></i>
+                    Search</button>
+            </div>
+        </form></div>
+
+    <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><div class="table-responsive">
                 <table class="table table-bordered table-striped table-condensed">
                     <thead>
                         <tr>
