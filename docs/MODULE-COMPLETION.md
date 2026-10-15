@@ -85,6 +85,28 @@ index `queryLike('title')` matches the filter's `title` field (an earlier
 exists for either screen yet), then authenticated tests, are required before
 this group is complete. Next UI group: remaining room-category forms.
 
+## Permission slug audit (2026-10-16)
+
+`hasAccess()` slugs were cross-checked against the shipped `permissions` table
+(`database/mmheritagehotel_db.sql`). Fixed where the intent was unambiguous (real
+slug exists and matches the view-side `hasPermission()`/sidebar usage):
+`aminities.types.index` → per-action `aminities.*` (Hotel amenitie screens) and
+`banquet.aminities.*` (Banquet amenitie screens); `account.setups.index` →
+`account-setups.index`; `account-sales.show`/`account-purchases.show` →
+`.view` (the shipped family has no `.show`); tab-prefixed `supplier.types.*`
+and `\treport.ledger-journal` typos (both duplicate and module controllers).
+
+Still open — these called slugs do not exist in the shipped permissions table,
+so every non-admin is denied (admin user id 1 bypasses). Seed the missing
+families + grants or remap the code; product decision needed per family:
+`acc_collections.*`, `acc_payments.*`, `account.*.reports` (6 report pages),
+`create.requisitions.*`, `fund.transfers.*`, `gs.reports.*`, `items.*`,
+`pharmacy.*` (Bar inventory units), `purchase.receives.*`, `purchases.*`
+(General Store), `restaurant.table-manages.*`, `rst.stock-adjustment.*`,
+`supplier.types.*` (views and sidebars already reference this family),
+`vouchers.journal.*`. Follow-up pass: several resource controllers gate only
+create/edit/destroy and leave `store`/`update` ungated.
+
 ## Full menu design
 
 Shared navigation design applied to all module sidebars through the shell, not by

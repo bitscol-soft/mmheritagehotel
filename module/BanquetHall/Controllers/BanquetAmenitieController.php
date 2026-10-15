@@ -22,7 +22,7 @@ class BanquetAmenitieController extends Controller
     */
     public function index()
     {
-        $this->hasAccess("aminities.types.index");
+        $this->hasAccess("banquet.aminities.index");
         $data = BanquetAmenitie::get();
         return view('hall.aminities.index', compact('data'));
     }
@@ -44,7 +44,7 @@ class BanquetAmenitieController extends Controller
 
     public function create()
     {
-        $this->hasAccess("aminities.types.index");
+        $this->hasAccess("banquet.aminities.create");
         return view('hall.aminities.create');
     }
 
@@ -64,7 +64,7 @@ class BanquetAmenitieController extends Controller
     */
     public function edit($id)
     {
-        $this->hasAccess("aminities.types.index");
+        $this->hasAccess("banquet.aminities.edit");
         $aminities = BanquetAmenitie::find($id);
         return view('hall.aminities.edit',compact('aminities'));
     }
@@ -173,7 +173,7 @@ class BanquetAmenitieController extends Controller
     */
     public function destroy($id)
     {
-        $this->hasAccess("aminities.types.index");
+        $this->hasAccess("banquet.aminities.delete");
         try{
             $aminities = BanquetAmenitie::find($id);
             $aminities->delete();

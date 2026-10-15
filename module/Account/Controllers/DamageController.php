@@ -161,7 +161,7 @@ class DamageController extends Controller
     */
     public function show($id)
     {
-        $this->hasAccess("account-purchases.show");
+        $this->hasAccess("account-purchases.view");
 
         $damage = Damage::with('details', 'company')->findOrFail($id);
 

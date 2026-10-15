@@ -173,7 +173,7 @@ class SaleReturnController extends Controller
     */
     public function show($id)
     {
-        $this->hasAccess("account-sales.show");
+        $this->hasAccess("account-sales.view");
 
         $saleReturn = SaleReturn::with('return_details', 'exchange_details', 'customer', 'company')->findOrFail($id);
 

@@ -23,7 +23,7 @@ class AminitiesController extends Controller
     */
     public function index()
     {
-        $this->hasAccess("aminities.types.index");
+        $this->hasAccess("aminities.index");
         $data = Aminities::get();
         return view('aminities.index', compact('data'));
     }
@@ -45,7 +45,7 @@ class AminitiesController extends Controller
 
     public function create()
     {
-        $this->hasAccess("aminities.types.index");
+        $this->hasAccess("aminities.create");
         return view('aminities.create');
     }
 
@@ -65,7 +65,7 @@ class AminitiesController extends Controller
     */
     public function edit($id)
     {
-        $this->hasAccess("aminities.types.index");
+        $this->hasAccess("aminities.edit");
         $aminities = Aminities::find($id);
         return view('aminities.edit',compact('aminities'));
     }
@@ -173,7 +173,7 @@ class AminitiesController extends Controller
     */
     public function destroy($id)
     {
-        $this->hasAccess("aminities.types.index");
+        $this->hasAccess("aminities.delete");
         try{
             $aminities = Aminities::find($id);
             $aminities->delete();

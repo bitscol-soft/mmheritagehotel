@@ -171,7 +171,7 @@ class PurchaseReturnController extends Controller
     */
     public function show($id)
     {
-        $this->hasAccess("account-purchases.show");
+        $this->hasAccess("account-purchases.view");
 
         $purchaseReturn = PurchaseReturn::with('return_details', 'exchange_details', 'supplier', 'company')->findOrFail($id);
 

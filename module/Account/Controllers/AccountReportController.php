@@ -669,7 +669,7 @@ class AccountReportController extends Controller
 
     public function ledgerJournalReport(Request $request)
     {
-        $this->hasAccess("	report.ledger-journal");
+        $this->hasAccess("report.ledger-journal");
 
         $data = $this->dataService->getAccountData(['accounts']);
         $data2 = $this->journalLedger->getLedger($request);

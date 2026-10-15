@@ -130,7 +130,7 @@ class PurchaseController extends Controller
     */
     public function show($purchase)
     {
-        $this->hasAccess("account-purchases.show");
+        $this->hasAccess("account-purchases.view");
 
         $purchase = Purchase::with('details', 'company')->findOrFail($purchase);
 
