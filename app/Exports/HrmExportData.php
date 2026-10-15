@@ -2,6 +2,7 @@
 
 namespace App\Exports;
 
+use Illuminate\Support\Str;
 use Module\HRM\Models\Attendance\Attendance;
 use App\Models\Company;
 use Module\HRM\Models\Department;
@@ -1126,7 +1127,7 @@ class HrmExportData
             $mydata['data_6'][] = $leave_application->to;
             $mydata['data_7'][] = $totalDay + 1;
             $mydata['data_8'][] = $leave_application->from;
-            $mydata['data_9'][] = str_limit($leave_application->reason, 20, '...');
+            $mydata['data_9'][] = Str::limit($leave_application->reason, 20, '...');
             $mydata['data_10'][] = $leave_application->recommendation_note;
             $mydata['data_11'][] = optional($leave_application->recommender)->name;
             $mydata['data_12'][] = $leave_application->approval_note;
@@ -1197,7 +1198,7 @@ class HrmExportData
             $mydata['data_7'][] = $application->leave_type->total_days;
             $mydata['data_8'][] = $application->leave_type->total_days - $totalDay;
             $mydata['data_9'][] = $totalDay + 1;
-            $mydata['data_10'][] = str_limit($application->reason, 20, '...');
+            $mydata['data_10'][] = Str::limit($application->reason, 20, '...');
         }
         return $mydata;
     }
@@ -1265,7 +1266,7 @@ class HrmExportData
             $mydata['data_7'][] = $application->leave_type->total_days;
             $mydata['data_8'][] = $application->leave_type->total_days - $totalDay;
             $mydata['data_9'][] = $totalDay + 1;
-            $mydata['data_10'][] = str_limit($application->reason, 20, '...');
+            $mydata['data_10'][] = Str::limit($application->reason, 20, '...');
             $mydata['data_11'][] = $application->recommender->name;
         }
         return $mydata;
@@ -1351,7 +1352,7 @@ class HrmExportData
             $mydata['data_7'][] = $application->leave_type->total_days;
             $mydata['data_8'][] = $application->leave_type->total_days - $totalDay;
             $mydata['data_9'][] = $totalDay + 1;
-            $mydata['data_10'][] = str_limit($application->reason, 20, '...');
+            $mydata['data_10'][] = Str::limit($application->reason, 20, '...');
         }
         return $mydata;
     }

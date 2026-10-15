@@ -21,6 +21,8 @@ jobs:
           restore-keys: composer-${{ runner.os }}-
       - name: Install composer dependencies
         run: composer install --no-interaction --prefer-dist --no-progress --ignore-platform-reqs
+      - name: Laravel 11 readiness guard
+        run: bash tools/laravel11-check.sh
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
