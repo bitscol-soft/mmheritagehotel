@@ -87,6 +87,13 @@ real method (`0 broken`, verified by `zz-controllers` probe in the sandbox).
 | 57 | 🟠 | `.gitmodules` / `module/CRM` gitlink (was B #28) | a fresh `git submodule update --init` could clobber the committed CRM module files | repo history once carried a submodule gitlink for `module/CRM` alongside real files | Verified already resolved on this branch and `main`: no `.gitmodules` exists in either tree or in reachable history, and `module/CRM` is a regular tree (6 tracked files), not a gitlink (mode 160000) — nothing left to remove at merge time |
 | 58 | 🟡 | `/reports/expense-analysis` (was B #29) | users without the `account.expense.analysis.reports` row were denied; super admin unaffected | the gate used a slug that never existed in the shipped permissions table | remapped to the route-name slug `report.expense-analysis` (the 12 working report gates in the same controller all use slug == route name) and the row + grants are seeded in `database/mmheritagehotel_db.sql` (ids 200040+, modeled on `report.ledger-journal` holders) |
 
+## A6. Closed by the pre-merge hygiene round (2026-10-16)
+
+| # | Sev | Route / Screen | Symptom | Root cause | Fix |
+|---|-----|----------------|---------|------------|-----|
+| 59 | 🟠 | HRM surfaces (was B #26) | menus, alert counts, an artisan command and employee-permission tabs assume the missing `module/HRM` | HRM module ships as code references only | Surfaces hidden: the four HRM menu blocks in `_header.blade.php` are now wrapped in `Route::has(...)` (previously hidden only by count-guard side effects, one of them an undefined property); the five HRM-dependent commands (`HRMEvaluationSeed`, `HRMModuleDataSeed`, `HRMModuleDataDrop`, `HrSystemSettingCommand`, `SyncAttendance`) early-return with a warning when `module/HRM` is absent. `UpdateEmployeeIdFromSmartSoft` no longer exists; `AppNotificationService` was already double-guarded by module checks; `App\Models\Employee` is restored so the permission tabs run on empty data (see also #6's `class_exists` guards). |
+| 60 | 🟡 | `night-audits/{create,create-v3,create-v4,index-details}` + `NightAuditSummaryControllerOLD` | dead legacy views/controller shipped in the deploy | kept from the pre-migration era; only `create-v2`/`index`/`invoice`/`show`/`list` are reachable | deleted in the pre-merge dead-code sweep; the unreachable `return view('night-audits/show')` tail in `show()` (after the `invoice` return) removed. `show` itself kept — `tools/ui-blade-check.php` renders it as a contract screen (`hotel-night-audit-show` fixture). |
+
 ## B. Open — needs deploy / decision / feature work
 
 | # | Sev | Item | Notes & recommendation |
@@ -96,7 +103,6 @@ real method (`0 broken`, verified by `zz-controllers` probe in the sandbox).
 | 49 | 🟠 | Voucher edit/update gaps | `receives/payments/contras` edit+update routes pruned; `journal` edit redirects (#45). The screens need the ledger re-entry UX from PLAN-MODERNIZATION before un-pruning. |
 | 24 | 🔵 | **Secrets committed** | `.env` (APP_KEY + DB credentials) and a full production SQL dump (`database/mmheritagehotel_db.sql`, 172 tables incl. user hashes) are tracked in git. Files are now covered by `.gitignore` but history still exposes them. **Action: rotate DB/APP_KEY/Google-drive creds, purge history (`git filter-repo`) or treat repo as internal-only.** |
 | 25 | 🟠 | Collections/Payments are stubs | `CollectionController::store()` only redirects (no `acc_collections` write). Full receipt flow = planned feature (see PLAN-FEATURES.md §Payments). |
-| 26 | 🟠 | HRM module missing but referenced | menus, `smart-soft-alerts`, `UpdateEmployeeIdFromSmartSoft` artisan command, employee-permission tabs all assume it. Either vendor the module in or hide its surfaces (menus/commands). |
 | 27 | 🟠 | CRM module UI absent | We restored the **models** to stop the 500 cascade; the CRM is active in `modules` table (rank 11) but has no sidebar/routes in this repo. Rebuild minimal CRM UI or deactivate the module (DB flag). |
 | 30 | 🟡 | Booking flow still trusts the `booking_info` cookie cart (1000-min, client-mutable) | Addressed in PLAN-MODERNIZATION (server-side cart) — not fixed here. |
 | 31 | 🟡 | Laravel 8 + PHP 8.1 are EOL, `vendor/` committed | Upgrade path in PLAN-MODERNIZATION §1. |

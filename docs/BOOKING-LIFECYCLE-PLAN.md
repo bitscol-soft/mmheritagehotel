@@ -43,7 +43,7 @@ preservation guards in `tools/ui-check.cjs` before any markup moves. Financial s
 - ~~Generate submits after a fixed 10 s `setTimeout`; double click schedules two submits~~ — one-shot
   immediate submit with the overlay kept up during the request.
 - ~~`previous_paid` is one non-indexed hidden input per row~~ — now `previous_paid[{id}]` per row.
-- Unreferenced views (`index-details`, `create`, `create-v3/v4`, `show`) remain un-migrated (out of scope).
+- Unreferenced views (`index-details`, `create`, `create-v3/v4`) were deleted in the 2026-10-16 dead-code sweep; `show` is kept (the tool suite renders it as a contract screen) and `list` is live (included by `index`).
 
 ## Findings on room assignment — resolved (removed)
 

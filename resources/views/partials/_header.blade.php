@@ -237,6 +237,7 @@
                             <ul class="dropdown-menu dropdown-navbar navbar-default">
 
 
+                                @if (Route::has('hrm.pending.recommend'))
                                 <!-- Leave Recommend Count -->
                                 @if (hasPermission("l.applications.recommend", $slugs))
                                     @if (optional($notificationService)->leave_recommend_count > 0)
@@ -254,8 +255,10 @@
                                         </li>
                                     @endif
                                 @endif
+                                @endif
 
 
+                                @if (Route::has('trainings.index'))
                                 <!-- Training Approval Count -->
                                 {{-- @if (hasPermission("training.approve", $slugs)) --}}
                                     @if (optional($notificationService)->training_approval_count > 0)
@@ -272,8 +275,10 @@
                                             </a>
                                         </li>
                                     @endif
+                                @endif
                                 {{-- @endif --}}
 
+                                @if (Route::has('earn-leaves.pending'))
                                 <!-- Leave Approve Count -->
                                 @if (hasPermission("l.applications.approve", $slugs))
                                     @if (optional($notificationService)->earn_leave_approval_count > 0)
@@ -291,7 +296,9 @@
                                         </li>
                                     @endif
                                 @endif
+                                @endif
 
+                                @if (Route::has('hrm.pending.approved'))
                                 <!-- Leave Approve Count -->
                                 @if (hasPermission("l.applications.approve", $slugs))
                                     @if (optional($notificationService)->leave_approve_count > 0)
@@ -308,6 +315,7 @@
                                             </a>
                                         </li>
                                     @endif
+                                @endif
                                 @endif
 
 

@@ -361,12 +361,6 @@ class NightAuditSummaryController extends Controller
 
 
         return view('night-audits/invoice', $data);
-        // return view('night-audits/index-details', $data);
-
-
-        $audit = NightAuditSummary::with('details.transaction.transaction', 'details.transaction.account', 'details.transaction.source.bookingDetails.roomNumber')->find($id);
-
-        return view('night-audits/show', compact('audit'));
     }
 
 
