@@ -23,6 +23,8 @@ jobs:
         run: composer install --no-interaction --prefer-dist --no-progress --ignore-platform-reqs
       - name: Laravel 11 readiness guard
         run: bash tools/laravel11-check.sh
+      - name: PHP test suite (phpunit)
+        run: vendor/bin/phpunit
       - uses: actions/setup-node@v4
         with:
           node-version: '22'

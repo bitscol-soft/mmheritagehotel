@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Module\Hotel\Models\RoomPhotos;
 use App\Http\Controllers\Controller;
 use Module\Hotel\Models\RoomCategory;
-use Module\Hotel\Models\NightAuditRoomDetail;
+use Module\Hotel\Models\NightAuditSummary;
 
 class BookingController extends Controller
 {
@@ -28,7 +28,7 @@ class BookingController extends Controller
 
             $category_id  = $request->category_id;
 
-            if (NightAuditRoomDetail::query()->where('date', $request->check_in_date)->count() > 0) {
+            if (NightAuditSummary::query()->where('date', $request->check_in_date)->count() > 0) {
                 return response()->json([
                     'return'        => 0, 
                     'booking_item'  => [],

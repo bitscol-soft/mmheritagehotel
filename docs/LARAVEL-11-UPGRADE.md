@@ -111,8 +111,8 @@ the tracked vendor tree; the CI `frontend-fixtures` workflow also runs
 
 1. `php artisan route:list` boots and the route-count is stable (route names frozen).
 2. `php artisan config:cache && php artisan route:cache && php artisan view:cache`.
-3. `vendor/bin/phpunit` (once a test suite exists — until then the suites below are
-   the net).
+3. `vendor/bin/phpunit` (the `tests/` suite: ledger posting, invoice numbers,
+   cart semantics, route-name contracts).
 4. `bash tools/laravel11-check.sh` (guard green).
 5. `node tools/ui-check.cjs && bash tools/ui-guard.sh && php tools/ui-blade-check.php`
    (the preservation suites must stay green — no view/JS/route churn may appear in

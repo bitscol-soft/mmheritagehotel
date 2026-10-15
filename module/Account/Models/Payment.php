@@ -10,6 +10,8 @@ use Symfony\Component\CssSelector\Node\FunctionNode;
 
 class Payment extends Model
 {
+    protected $table = 'acc_payments';
+
     use AutoCreatedUpdatedWithCompany;
 
     public function transactions(): MorphMany
