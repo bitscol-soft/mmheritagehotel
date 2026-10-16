@@ -51,6 +51,10 @@ class InventoryController extends Controller
             ->paginate(25);
 
 
+        // the shared inventory filter partial loops $categorys (frozen view);
+        // the Restaurant controller already passes it, the Bar one never did
+        $data['categorys']  = \Module\Bar\Models\ProductCategory::orderBy('name')->get();
+
         return view('bar.inventory.inventory-report', $data);
     }
 

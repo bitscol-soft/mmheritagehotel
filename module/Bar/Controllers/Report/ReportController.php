@@ -102,6 +102,9 @@ class ReportController extends Controller
 
         $data['products']   = $data['products']->paginate(25);
 
+        // docs/BUGS.md #70: the shared inventory filter partial loops $categorys
+        $data['categorys']  = \Module\Bar\Models\ProductCategory::orderBy('name')->get();
+
         return view('bar/reports/inventory/index', $data);
     }
 

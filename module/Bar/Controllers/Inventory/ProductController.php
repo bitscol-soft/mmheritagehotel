@@ -397,6 +397,14 @@ class ProductController extends Controller
      */
     public function getProductBatch(Request $request)
     {
+        // docs/BUGS.md #70: the product-batch feature was never migrated - the
+        // model, this endpoint and the upload hook exist, but the table
+        // (rst_product_batches), the products.batch_id column and the batch
+        // screens do not. Answer with an empty list instead of a 500.
+        if (!\Illuminate\Support\Facades\Schema::hasTable('rst_product_batches')) {
+            return response()->json([]);
+        }
+
         return ProductBatch::query()->where("batch_number", "like", "%{$request->number}%")->get();
     }
 
