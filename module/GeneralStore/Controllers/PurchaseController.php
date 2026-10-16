@@ -30,7 +30,7 @@ class PurchaseController extends Controller
     {
         $this->hasAccess("purchases.view");   // check permission
         $data['companies']    = Company::userCompanies();
-        $data['systemSetting'] = SystemSetting::where('key', 'general_store_reference_no_change')->first();
+        $data['systemSetting'] = SystemSetting::row('general_store_reference_no_change');
 
         $data['purchases']    = Purchase::with(['company', 'created_user', 'updated_user', 'purchase_details.itemReceived'])
             ->when($request->filled('is_approved') && !$request->filled('is_not_approved'), function ($q) {
@@ -75,7 +75,7 @@ class PurchaseController extends Controller
         $this->hasAccess("purchases.create");
         $items     = Item::items()->select('name', 'id', 'company_id')->get();
         $companies = Company::userCompanies();
-        $systemSetting = SystemSetting::where('key', 'general_store_reference_no_change')->first();
+        $systemSetting = SystemSetting::row('general_store_reference_no_change');
 
 
         return view('purchases.create', compact(['items', 'companies', 'systemSetting']));
@@ -134,7 +134,7 @@ class PurchaseController extends Controller
     {
         $this->hasAccess("purchases.view");
         $purchase = Purchase::with('purchase_details.item.item_unit')->where('id', $purchase->id)->first();
-        $systemSetting = SystemSetting::where('key', 'general_store_reference_no_change')->first();
+        $systemSetting = SystemSetting::row('general_store_reference_no_change');
 
         return view('purchases.show', compact('purchase', 'systemSetting'));
     }
@@ -154,7 +154,7 @@ class PurchaseController extends Controller
         $items     = Item::items()->select('name', 'id', 'company_id')->get();
         $companies = Company::userCompanies();
         $purchase  = Purchase::where('id', $purchase->id)->with('purchase_details')->first();
-        $systemSetting = SystemSetting::where('key', 'general_store_reference_no_change')->first();
+        $systemSetting = SystemSetting::row('general_store_reference_no_change');
 
         return view('purchases.edit', compact('purchase', 'companies', 'items', 'systemSetting'));
     }

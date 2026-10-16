@@ -312,5 +312,16 @@ class TransactionLedgerReportService
                                 }]);
                             }])
                             ->first();
+
+        // docs/BUGS.md #73: the statements read ->accountControls off this result.
+        // A fresh deployment has none of the fixed chart-of-account group ids yet
+        // (4/6/5/9/3), so hand back an empty group instead of a null and the
+        // reports render as zero instead of 500ing.
+        if (!$group) {
+            $group = new AccountGroup();
+            $group->setRelation('accountControls', collect());
+        }
+
+        return $group;
     }
 }

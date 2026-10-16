@@ -25,7 +25,7 @@ class vatController extends Controller
 
         $this->hasAccess("vats.index");
         $data['systemSetting'] = SystemSetting::where('key', 'use_vat_included')->first();
-        $data['vat'] = Vat::first();
+        $data['vat'] = Vat::first() ?? new Vat();   // docs/BUGS.md #73
         // dd($data['systemSetting']);
         return view('vat.index', $data);
     }

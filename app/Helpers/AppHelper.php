@@ -217,7 +217,7 @@ function vatSetting()
 {
     return Cache::remember('vatSetting', 86400, function () {
         return Vat::first();
-    });
+    }) ?? new Vat();   // docs/BUGS.md #73: no `vats` row must not 500 every booking/POS/invoice screen
 }
 
 

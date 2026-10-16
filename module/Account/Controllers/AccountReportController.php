@@ -276,7 +276,11 @@ class AccountReportController extends Controller
 
             }
 
-            $view = 'reports.income-expense-statement.' . ($request->print ? 'print' : 'index');
+            // docs/BUGS.md #73: reports.income-expense-statement.* was never created.
+            // The income-statement views already branch on the income-expense route
+            // (headings, the details checkbox, column labels), so they serve both.
+
+            $view = 'reports.income-statement.' . ($request->print ? 'print' : 'index');
 
         }
 

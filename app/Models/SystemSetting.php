@@ -20,6 +20,17 @@ class SystemSetting extends Model
         'visible_weather_dashboard'     => '0',
     ];
 
+    /**
+     * A single settings row by key. A fresh deployment may not have saved the row
+     * the screen reads yet, and the views do `$systemSetting->value != null ? ... :
+     * 'Reference'` - handing them an empty, unsaved model keeps that fallback
+     * working instead of 500ing on a null (docs/BUGS.md #73).
+     */
+    public static function row(string $key): self
+    {
+        return static::where('key', $key)->first() ?? new static(['key' => $key]);
+    }
+
     public static function withDashboardDefaults()
     {
         $settings = static::get();

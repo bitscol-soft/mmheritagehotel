@@ -40,8 +40,8 @@ class ProductBatchController extends Controller
     {
         $this->hasAccess("bar.inventories.index");
 
-        return view('inventory.batches.index', [
-            'batches'   => ProductBatch::latest()->get()
+        return view('bar.inventory.batches.index', [
+            'batches'   => ProductBatch::withCount('products')->latest()->get()
         ]);
     }
 
@@ -105,7 +105,7 @@ class ProductBatchController extends Controller
         $this->hasAccess("bar.inventories.delete");
 
         try {
-            ProductBatch::find($id)->delete();
+            ProductBatch::findOrFail($id)->delete();   // docs/BUGS.md #71: a missing id is a 404, not a fatal
         } catch (\Throwable $th) {
             return redirect()->back()->withError($th->getMessage());
         }

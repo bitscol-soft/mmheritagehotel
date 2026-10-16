@@ -90,7 +90,7 @@ class DamageController extends Controller
 
         $data['products']   = Product::with('unit')->get();
         $data['companies']  = Company::userCompanies();
-        $data['account']    = Account::where('name', 'Cash')->first();
+        $data['account']    = Account::where('name', 'Cash')->first() ?? new Account();   // docs/BUGS.md #73
 
         return view('product.damages.create', $data);
     }

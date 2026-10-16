@@ -198,7 +198,12 @@ class RouteServiceProvider extends ServiceProvider
                 });
             }
             // Banquet Hall Route
-            if ($modules->where('name', 'BanquetHall')->first() && file_exists(base_path() . '/module/BanquetHall/routes/web_banquet_hall.php')) {
+            // The module is inactive (modules.status = 0) and its tables are not part of the
+            // shipped schema, so registering its routes only produced 500s when a URL was typed
+            // or bookmarked (docs/BUGS.md #72). Register them only while the module is active:
+            // the screens cannot be reached until it is switched on, and setting status = 1 in
+            // `modules` (after migrating its tables) revives the module as before.
+            if ($modules->where('name', 'BanquetHall')->where('status', 1)->first() && file_exists(base_path() . '/module/BanquetHall/routes/web_banquet_hall.php')) {
 
                 Route::group(['middleware' => ['web', 'auth']], function () {
 

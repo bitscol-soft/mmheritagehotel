@@ -108,6 +108,18 @@
                     </li>
 
 
+                    <!-- Product Batches menu -->
+                    @if (hasPermission('bar.inventories.index', $slugs) && Route::has('bar.product-batches.index'))
+                        <li>
+                            <a href="{{ route('bar.product-batches.index') }}">
+                                <i class="menu-icon fa fa-caret-right"></i>
+                                Product Batches
+                            </a>
+                            <b class="arrow"></b>
+                        </li>
+                    @endif
+
+
                     <!-- Inventory Unit Management menu -->
                     <li>
                         <a href="{{ route('rst.product-units.index') }}">

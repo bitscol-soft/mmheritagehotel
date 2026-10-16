@@ -5593,7 +5593,28 @@ CREATE TABLE `rst_products` (
   `is_bar` tinyint(4) DEFAULT 0,
   `pack_unit_id` bigint(20) UNSIGNED DEFAULT NULL,
   `package_id` bigint(20) UNSIGNED DEFAULT NULL,
-  `is_matrial` tinyint(4) DEFAULT NULL
+  `is_matrial` tinyint(4) DEFAULT NULL,
+  `batch_id` bigint(20) UNSIGNED DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `rst_product_batches`
+--
+-- docs/BUGS.md #71: ProductBatch model, controller and the bulk-upload writer shipped
+-- without their table; this is that table. `rst_products.batch_id` below references it.
+--
+
+CREATE TABLE `rst_product_batches` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `company_id` bigint(20) UNSIGNED NOT NULL,
+  `created_by` bigint(20) UNSIGNED NOT NULL,
+  `updated_by` bigint(20) UNSIGNED DEFAULT NULL,
+  `batch_number` varchar(191) NOT NULL,
+  `is_bar` tinyint(4) DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
@@ -5721,6 +5742,7 @@ CREATE TABLE `rst_product_stocks` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   `is_bar` tinyint(4) DEFAULT 0,
+  `batch_id` bigint(20) UNSIGNED DEFAULT NULL,
   `available_quantity` decimal(16,6) GENERATED ALWAYS AS (`opening_quantity` + `purchased_quantity` + `return_quantity` - `sold_quantity`) VIRTUAL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -7653,6 +7675,15 @@ ALTER TABLE `rst_products`
   ADD KEY `rst_products_package_id_foreign` (`package_id`);
 
 --
+-- Indexes for table `rst_product_batches`
+--
+ALTER TABLE `rst_product_batches`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `rst_product_batches_company_id_foreign` (`company_id`),
+  ADD KEY `rst_product_batches_created_by_foreign` (`created_by`),
+  ADD KEY `rst_product_batches_batch_number_index` (`batch_number`);
+
+--
 -- Indexes for table `rst_product_brands`
 --
 ALTER TABLE `rst_product_brands`
@@ -7700,7 +7731,8 @@ ALTER TABLE `rst_product_stocks`
   ADD PRIMARY KEY (`id`),
   ADD KEY `rst_product_stocks_created_by_foreign` (`created_by`),
   ADD KEY `rst_product_stocks_updated_by_foreign` (`updated_by`),
-  ADD KEY `rst_product_stocks_company_id_foreign` (`company_id`);
+  ADD KEY `rst_product_stocks_company_id_foreign` (`company_id`),
+  ADD KEY `rst_product_stocks_batch_id_foreign` (`batch_id`);
 
 --
 -- Indexes for table `rst_product_units`
@@ -8768,6 +8800,12 @@ ALTER TABLE `rst_productions`
 -- AUTO_INCREMENT for table `rst_products`
 --
 ALTER TABLE `rst_products`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `rst_product_batches`
+--
+ALTER TABLE `rst_product_batches`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --

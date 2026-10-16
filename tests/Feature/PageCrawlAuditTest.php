@@ -179,6 +179,13 @@ class PageCrawlAuditTest extends TestCase
 
         @file_put_contents(storage_path('logs/' . basename($outFile)), implode("\n", $report) . "\n");
         @file_put_contents($outFile, implode("\n", $report) . "\n");
+
+        // The report files are not uploaded anywhere, so echo the findings into the
+        // job log as well - otherwise a regression shows up only as a silent count
+        // nobody reads. Prefix keeps it greppable: `crawl |`.
+        foreach ($report as $line) {
+            fwrite(STDOUT, 'crawl | ' . $line . "\n");
+        }
     }
 
 

@@ -94,7 +94,7 @@ class SaleController extends Controller
                             ->withCount(['product_stocks as current_stock'=> fn($q)=> $q->select(DB::raw('SUM(stock)'))])->get();
         $data['companies']  = Company::userCompanies();
         $data['customers']  = Customer::pluck('name', 'id');
-        $data['account']    = Account::where('name', 'Cash')->first();
+        $data['account']    = Account::where('name', 'Cash')->first() ?? new Account();   // docs/BUGS.md #73
 
         return view('sale.sales.create', $data);
     }
@@ -202,7 +202,7 @@ class SaleController extends Controller
         $data['products']   = Product::select('id', 'name', 'selling_price')->get();
         $data['companies']  = Company::pluck('name', 'id');
         $data['customers']  = Customer::pluck('name', 'id');
-        $data['account']    = Account::where('name', 'Cash')->first();
+        $data['account']    = Account::where('name', 'Cash')->first() ?? new Account();   // docs/BUGS.md #73
 
         return view('sale.sales.edit', $data);
     }

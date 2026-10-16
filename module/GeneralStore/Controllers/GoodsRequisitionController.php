@@ -49,7 +49,7 @@ class GoodsRequisitionController extends Controller
                 $q->where('is_approved', 0);
             });
 
-        $systemSetting = SystemSetting::where('key', 'general_store_reference_no_change')->first();
+        $systemSetting = SystemSetting::row('general_store_reference_no_change');
 
 
 
@@ -89,7 +89,7 @@ class GoodsRequisitionController extends Controller
         $data['companies']   = Company::userCompanies();
         $data['departments'] = [];
         $data['items']       = Item::items()->select('name', 'id', 'company_id')->get();
-        $data['systemSetting'] = SystemSetting::where('key', 'general_store_reference_no_change')->first();
+        $data['systemSetting'] = SystemSetting::row('general_store_reference_no_change');
 
         return view('goods_requisitions.create', $data);
     }
@@ -203,7 +203,7 @@ class GoodsRequisitionController extends Controller
                 $data['receive_items'][$key] = PurchaseReceive::where('id', -100)->get();
             }
         }
-        $data['systemSetting'] = SystemSetting::where('key', 'general_store_reference_no_change')->first();
+        $data['systemSetting'] = SystemSetting::row('general_store_reference_no_change');
 
         return view('goods_requisitions.edit', $data);
     }
@@ -323,7 +323,7 @@ class GoodsRequisitionController extends Controller
             $goods_requisitions->where('issue_number', $request->gin_number);
         }
         $goods_requisitions = $goods_requisitions->where('is_approved', 1)->orderByDesc('id')->paginate(30);
-        $systemSetting = SystemSetting::where('key', 'general_store_reference_no_change')->first();
+        $systemSetting = SystemSetting::row('general_store_reference_no_change');
 
         return view('goods_requisitions.gin_list', compact('goods_requisitions', 'companies', 'systemSetting'));
     }

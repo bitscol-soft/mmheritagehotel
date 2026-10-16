@@ -97,7 +97,7 @@ class SaleController extends Controller
         $this->hasAccess("bar.sales.create");
 
         $data['invoice_id']     = (new BarTransectionService())->getInvoiceNo('Bar Sale');
-        $data['vat_percent']    = Vat::first()->resturent_vat;
+        $data['vat_percent']    = optional(Vat::first())->resturent_vat ?? 0;   // docs/BUGS.md #73
         $data['account_types']  = AccountType::get();
         // return $data;
         return view('bar/sales/create', $data);

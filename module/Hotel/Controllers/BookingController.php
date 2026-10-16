@@ -151,7 +151,7 @@ class BookingController extends Controller
         $data['rooms']          = Rooms::roomNumber();
         $data['guest']          = Guest::where('status', 1)->orderBy('name', 'asc')->get();
         $data['booking_purpose']= BookingPurpose::active()->get();
-        $data['vat']            = Vat::first();
+        $data['vat']            = Vat::first() ?? new Vat();   // docs/BUGS.md #73
         $data['account_types']  = AccountType::where('status', 1)->pluck('name', 'id');
 
         $data['crmCompanies']   = CRMCustomer::where('org_name','!=', null)
@@ -1214,7 +1214,7 @@ class BookingController extends Controller
         $data['rooms']          = Rooms::roomNumber();
         $data['guest']          = Guest::where('status', 1)->get();
         $data['booking_purpose']= BookingPurpose::active()->get();
-        $data['vat']            = Vat::first();
+        $data['vat']            = Vat::first() ?? new Vat();   // docs/BUGS.md #73
         $data['account_types']  = AccountType::where('status', 1)->pluck('name', 'id');
 
         $data['crmCompanies']   = CRMCustomer::where('org_name','!=', null)
