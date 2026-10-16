@@ -126,6 +126,32 @@ The CRM module row is active (rank 11) and its data exists (`c_r_m_customers`, `
 | 66 | 🔴 | `php artisan bar-data:drop` | the command deleted module **170000**'s permission tree - that id is **CRM** in the shipped schema (Bar is 270000), so running it would have destroyed the live CRM permission rows while leaving Bar untouched | hard-coded module id from the original project's numbering | module resolved by name (`Module::where('name','Bar')`), null-guarded |
 | 67 | 🟠 | `php artisan crm:send-invoice` | crashes (`no such table: c_r_m_bill_generates`) on the billing day check - the table is absent from the shipped schema (the original CRM migrations are lost) | query against a table this deployment never had | `Schema::hasTable()` guard: warns and no-ops instead of crashing |
 
+## A11. Closed by the page audit round (2026-10-16)
+
+The full page audit (`tests/Feature/PageCrawlAuditTest.php`: builds the shipped dump's schema + rows into sqlite, loads every module route file, GETs every parameterless GET route as the system admin, twice - once on an empty database and once on the production-shaped one) found two live 500s that the Blade harness could not see, because it renders each screen in isolation rather than through a request.
+
+| # | Sev | Route / Screen | Symptom | Root cause | Fix |
+|---|-----|----------------|---------|------------|-----|
+| 68 | 🔴 | `/hotel/booking/create` ("New Booking"), `/hotel/booking-ui`, `/hotel/booking/next-step`, `/hotel/check-avaiable`, `/hotel/night-audits/create`, bar + restaurant night audits and today's reports, `dashboard`, `home` | HTTP 500 whenever `system_settings` lacks a row the page reads - on a fresh or partially seeded deployment that is every booking screen | `today_from_system()` did `explode('-', setting('date_start_end'))` then read `$date[1]` (AppHelper.php:229), and the dashboards dereferenced `SystemSetting::...->first()->value` directly; a missing/blank row has no key 1 and no object | `today_from_system()` falls back to the calendar date when the `date_start_end` range is absent or malformed (the business-day roll-over only applies to a real range, and the 02:00-AM-rolls-back case is covered by tests); `HomeController` uses `SystemSetting::withDashboardDefaults()`, which fills the keys the dashboard blades dereference **in memory** so the frozen view expressions stay byte-identical (ui-check); `SystemDayHelperTest` (7 cases) locks the behaviour in |
+| 69 | 🟠 | `/setting/permissions` | HTTP 500 on every page of the permissions list | the Group-3 permission seed (ids 200001+) parented 55 rows to synthetic tags `110060`-`110070` that were never inserted into `parent_permissions`, and the view dereferences `$permission->parent_permission->submodule->module` per row | 30 rows repointed at the existing parents (Item/Purchase/Requisition/GS Report/Payment Voucher/Receive Voucher), the 5 remaining families got real `parent_permissions` rows (Supplier Type, Purchase Receive, Fund Transfer, Account Report, Pharmacy) plus the Pharmacy submodule for its inactive module. `PageCrawlAuditTest::test_shipped_dump_permission_tree_has_no_orphans` now fails the suite if a permission or parent ever loses its target again |
+
+### Still open - found by the same audit (production-shaped data)
+
+Nothing below is newly broken by this branch; they are the pages the audit still flags, kept here so they are tracked rather than rediscovered. Artifacts of the audit environment (sqlite lacks MySQL's `MONTHNAME`, php-wasm cannot spawn `db-backup`'s process, debugbar/ignition and the HRM-guarded `sync-*` routes 404 by design, POST-only routes reached via GET) are excluded.
+
+| Route / Screen | Symptom | Notes |
+|----------------|---------|-------|
+| `bar/inventory/suppliers/create`, `restaurant/inventory/suppliers/create` | `View [bar.inventory.supplier.create] not found` | missing create view (the index and edit screens exist) |
+| `bar/inventory/inventory-report`, `bar/reports/inventory` | `Undefined variable $categorys` (filter.blade.php:27) | the filter partial never receives the variable |
+| `bar/get-saleable-products`, `restaurant/get-saleable-products` | `Attempt to read property "items" on null` (saleable-product-render.blade.php:1) | POS AJAX endpoint |
+| `restaurant/inventory/get-item-details`, `get-matrial-details` | `stocks` on null (RstProductionController) | raw-material detail AJAX |
+| `generalstore/ajax/item/get-item-details` (+ approve/purchase) | `current_stock` on null (ItemController) | item detail AJAX; items without a stock row |
+| `get-available-room` (x2) | `Illegal operator and value combination` | Query Builder: a `where` gets null with a real operator |
+| `bar/inventory/get-product-batches`, `restaurant/inventory/get-product-batches` | `no such table: rst_product_batches` | table referenced by the code is absent from the dump |
+| `banquet.*` (7 routes) | `banquet_rooms`/`banquet_bookings`/`banquet_categories`/`banquet_amenities` missing; `Module\BanquetHall\Controllers\BookingPurpose` missing | BanquetHall module is inactive (status 0) in the shipped data, so unreachable until it is enabled |
+| `add-user` | `Class Module\HRM\Models\Employee\Employee not found` | HRM module inactive (status 0) |
+| 20 routes (booking board, night audits, financial statements, GS reports, `hotel/room-management/vat`, `product/damages/create`, ...) | various `null` dereferences | only on a **business-data-empty** database: they assume rows exist. Fixing them is a separate "empty-state hardening" round |
+
 ## B. Open — needs deploy / decision / feature work
 
 | # | Sev | Item | Notes & recommendation |

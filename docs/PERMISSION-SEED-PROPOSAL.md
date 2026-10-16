@@ -217,3 +217,17 @@ INSERT INTO `permissions` (`id`,`name`,`slug`,`description`,`created_by`,`update
 INSERT INTO `permission_user` (`permission_id`,`user_id`,`created_at`,`updated_at`) VALUES (200045,2,'2026-10-16 00:00:00','2026-10-16 00:00:00');
 INSERT INTO `permission_user` (`permission_id`,`user_id`,`created_at`,`updated_at`) VALUES (200045,3,'2026-10-16 00:00:00','2026-10-16 00:00:00');
 ```
+
+---
+
+## Update 2026-10-16 (BUGS #69)
+
+The "synthetic parent tags 110060+" below were proposed but never inserted into
+`parent_permissions`, so the seeded rows pointed at nothing and the Permissions
+screen (`/setting/permissions`) 500'd on every list page. The shipped dump now
+parents 30 of those rows to the existing tree (Item, Purchase, Create
+Requisition, GS Report, Payment Voucher, Receive Voucher) and adds real parent
+rows for the rest - `Supplier Type`, `Purchase Receive`, `Fund Transfer`,
+`Account Report`, `Pharmacy` (with the Pharmacy submodule) - so every permission
+resolves. `PageCrawlAuditTest` guards it.
+
