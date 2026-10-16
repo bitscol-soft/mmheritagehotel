@@ -1,5 +1,5 @@
 @if (hasModulePermission('CRM', $active_modules)
-&& hasAnyPermission(['crm.customers.index', 'crm.mail_templates.index'], $slugs))
+&& hasAnyPermission(['crm.customers.index', 'crm.templates.index'], $slugs))
     <li class="{{ request()->segment(1) == 'crm' ? 'open' : '' }}">
         <a href="#" class="dropdown-toggle">
             <i class="menu-icon fa fa-handshake-o"></i>
@@ -19,9 +19,9 @@
                 </li>
             @endif
 
-            @if (hasPermission("crm.mail_templates.index", $slugs))
-                <li class="{{ request()->is('crm/mail-templates*') ? 'active' : '' }}">
-                    <a href="{{ route('crm.mail-templates.index') }}">
+            @if (hasPermission("crm.templates.index", $slugs))
+                <li class="{{ request()->is('crm/templates*') ? 'active' : '' }}">
+                    <a href="{{ route('crm.templates.index') }}">
                         <i class="menu-icon fa fa-caret-right"></i>
                         Mail Template
                     </a>

@@ -105,21 +105,21 @@ class CrmScreensTest extends TestCase
 
     public function test_mail_template_crud(): void
     {
-        $this->post('/crm/mail-templates', [
+        $this->post('/crm/templates', [
             'subject' => 'Invoice due',
             'body'    => 'Dear customer, your invoice is due.',
             'status'  => '1',
-        ])->assertRedirect(route('crm.mail-templates.index'));
+        ])->assertRedirect(route('crm.templates.index'));
 
         $template = MailTemplate::query()->first();
         $this->assertNotNull($template);
         $this->assertSame(1, (int) $template->status);
 
-        $this->put('/crm/mail-templates/' . $template->id, [
+        $this->put('/crm/templates/' . $template->id, [
             'subject' => 'Invoice due (friendly)',
             'body'    => 'Friendly reminder.',
             'status'  => '0',
-        ])->assertRedirect(route('crm.mail-templates.index'));
+        ])->assertRedirect(route('crm.templates.index'));
 
         $template->refresh();
         $this->assertSame(0, (int) $template->status);
@@ -127,16 +127,16 @@ class CrmScreensTest extends TestCase
         // the scheduled command selects the active template: only one may be on
         $this->assertNull(MailTemplate::where('status', 1)->first());
 
-        $this->delete('/crm/mail-templates/' . $template->id)
-            ->assertRedirect(route('crm.mail-templates.index'));
+        $this->delete('/crm/templates/' . $template->id)
+            ->assertRedirect(route('crm.templates.index'));
         $this->assertSame(0, MailTemplate::query()->count());
     }
 
     public function test_mail_template_validation(): void
     {
-        $this->post('/crm/mail-templates', ['subject' => ''])
+        $this->post('/crm/templates', ['subject' => ''])
             ->assertSessionHasErrors('subject');
-        $this->post('/crm/mail-templates', ['subject' => 'X', 'body' => 'Y', 'status' => '9'])
+        $this->post('/crm/templates', ['subject' => 'X', 'body' => 'Y', 'status' => '9'])
             ->assertSessionHasErrors('status');
         $this->assertSame(0, MailTemplate::query()->count());
     }

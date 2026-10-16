@@ -13,6 +13,10 @@ use Module\CRM\Models\MailTemplate;
  |--------------------------------------------------------------------------
  | Backs the crm:send-invoice scheduled command (MailTemplate::where('status',
  | 1)->first() is the template it mails out).
+ |
+ | URL, route names and the permission slugs gating this screen all read
+ | `crm.templates.*`, matching the permission rows shipped in the dump
+ | (170032-170036, slugs crm.templates.index/create/edit/delete).
  */
 
 class MailTemplateController extends Controller
@@ -30,23 +34,23 @@ class MailTemplateController extends Controller
 
     public function index()
     {
-        $this->hasAccess("crm.mail_templates.index");
+        $this->hasAccess("crm.templates.index");
 
         $templates = MailTemplate::query()->latest('id')->get();
 
-        return view('mail-templates.index', compact('templates'));
+        return view('templates.index', compact('templates'));
     }
 
     public function create()
     {
-        $this->hasAccess("crm.mail_templates.create");
+        $this->hasAccess("crm.templates.create");
 
-        return view('mail-templates.create');
+        return view('templates.create');
     }
 
     public function store(Request $request): RedirectResponse
     {
-        $this->hasAccess("crm.mail_templates.create");
+        $this->hasAccess("crm.templates.create");
 
         $request->validate($this->rules());
 
@@ -56,21 +60,21 @@ class MailTemplateController extends Controller
             return redirect()->back()->withInput()->with('error', $e->getMessage());
         }
 
-        return redirect()->route('crm.mail-templates.index')->with('message', 'Mail template created successfully!');
+        return redirect()->route('crm.templates.index')->with('message', 'Mail template created successfully!');
     }
 
     public function edit($id)
     {
-        $this->hasAccess("crm.mail_templates.edit");
+        $this->hasAccess("crm.templates.edit");
 
         $template = MailTemplate::findOrFail($id);
 
-        return view('mail-templates.edit', compact('template'));
+        return view('templates.edit', compact('template'));
     }
 
     public function update(Request $request, $id): RedirectResponse
     {
-        $this->hasAccess("crm.mail_templates.edit");
+        $this->hasAccess("crm.templates.edit");
 
         $request->validate($this->rules());
 
@@ -82,15 +86,15 @@ class MailTemplateController extends Controller
             return redirect()->back()->withInput()->with('error', $e->getMessage());
         }
 
-        return redirect()->route('crm.mail-templates.index')->with('message', 'Mail template updated successfully!');
+        return redirect()->route('crm.templates.index')->with('message', 'Mail template updated successfully!');
     }
 
     public function destroy($id): RedirectResponse
     {
-        $this->hasAccess("crm.mail_templates.delete");
+        $this->hasAccess("crm.templates.delete");
 
         MailTemplate::findOrFail($id)->delete();
 
-        return redirect()->route('crm.mail-templates.index')->with('message', 'Mail template deleted successfully!');
+        return redirect()->route('crm.templates.index')->with('message', 'Mail template deleted successfully!');
     }
 }

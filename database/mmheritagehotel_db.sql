@@ -4769,43 +4769,6 @@ INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `
 INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (877, 200061, 3, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
 INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (878, 200062, 2, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
 INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (879, 200062, 3, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
--- CRM permission seed (2026-10-16, BUGS #27): the module's sidebar rows exist
--- (submodules 170000 Customer / 170003 Mail Template) but its permission tree was
--- lost with the original CRM code. Route names are hyphenated (crm.mail-templates.*);
--- these SLUGS are underscored (crm.mail_templates.*) - the acc-payments/acc_payments
--- convention. Granted to Super admin (user 2) and admin (user 3) only.
-INSERT INTO `parent_permissions` (`id`, `name`, `submodule_id`, `created_at`, `updated_at`) VALUES (280001, 'Customer', 170000, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
-INSERT INTO `parent_permissions` (`id`, `name`, `submodule_id`, `created_at`, `updated_at`) VALUES (280002, 'Mail Template', 170003, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
-INSERT INTO `permissions` (`id`, `name`, `slug`, `description`, `created_by`, `updated_by`, `parent_permission_id`, `created_at`, `updated_at`, `status`) VALUES (210001, 'Customer', 'crm.customers.index', NULL, 1, 1, 280001, '2026-10-16 00:00:00', '2026-10-16 00:00:00', 1);
-INSERT INTO `permissions` (`id`, `name`, `slug`, `description`, `created_by`, `updated_by`, `parent_permission_id`, `created_at`, `updated_at`, `status`) VALUES (210002, 'View', 'crm.customers.view', NULL, 1, 1, 280001, '2026-10-16 00:00:00', '2026-10-16 00:00:00', 1);
-INSERT INTO `permissions` (`id`, `name`, `slug`, `description`, `created_by`, `updated_by`, `parent_permission_id`, `created_at`, `updated_at`, `status`) VALUES (210003, 'Create', 'crm.customers.create', NULL, 1, 1, 280001, '2026-10-16 00:00:00', '2026-10-16 00:00:00', 1);
-INSERT INTO `permissions` (`id`, `name`, `slug`, `description`, `created_by`, `updated_by`, `parent_permission_id`, `created_at`, `updated_at`, `status`) VALUES (210004, 'Edit', 'crm.customers.edit', NULL, 1, 1, 280001, '2026-10-16 00:00:00', '2026-10-16 00:00:00', 1);
-INSERT INTO `permissions` (`id`, `name`, `slug`, `description`, `created_by`, `updated_by`, `parent_permission_id`, `created_at`, `updated_at`, `status`) VALUES (210005, 'Delete', 'crm.customers.delete', NULL, 1, 1, 280001, '2026-10-16 00:00:00', '2026-10-16 00:00:00', 1);
-INSERT INTO `permissions` (`id`, `name`, `slug`, `description`, `created_by`, `updated_by`, `parent_permission_id`, `created_at`, `updated_at`, `status`) VALUES (210006, 'Mail Template', 'crm.mail_templates.index', NULL, 1, 1, 280002, '2026-10-16 00:00:00', '2026-10-16 00:00:00', 1);
-INSERT INTO `permissions` (`id`, `name`, `slug`, `description`, `created_by`, `updated_by`, `parent_permission_id`, `created_at`, `updated_at`, `status`) VALUES (210007, 'View', 'crm.mail_templates.view', NULL, 1, 1, 280002, '2026-10-16 00:00:00', '2026-10-16 00:00:00', 1);
-INSERT INTO `permissions` (`id`, `name`, `slug`, `description`, `created_by`, `updated_by`, `parent_permission_id`, `created_at`, `updated_at`, `status`) VALUES (210008, 'Create', 'crm.mail_templates.create', NULL, 1, 1, 280002, '2026-10-16 00:00:00', '2026-10-16 00:00:00', 1);
-INSERT INTO `permissions` (`id`, `name`, `slug`, `description`, `created_by`, `updated_by`, `parent_permission_id`, `created_at`, `updated_at`, `status`) VALUES (210009, 'Edit', 'crm.mail_templates.edit', NULL, 1, 1, 280002, '2026-10-16 00:00:00', '2026-10-16 00:00:00', 1);
-INSERT INTO `permissions` (`id`, `name`, `slug`, `description`, `created_by`, `updated_by`, `parent_permission_id`, `created_at`, `updated_at`, `status`) VALUES (210010, 'Delete', 'crm.mail_templates.delete', NULL, 1, 1, 280002, '2026-10-16 00:00:00', '2026-10-16 00:00:00', 1);
-INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (880, 210001, 2, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
-INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (881, 210001, 3, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
-INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (882, 210002, 2, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
-INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (883, 210002, 3, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
-INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (884, 210003, 2, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
-INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (885, 210003, 3, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
-INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (886, 210004, 2, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
-INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (887, 210004, 3, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
-INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (888, 210005, 2, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
-INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (889, 210005, 3, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
-INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (890, 210006, 2, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
-INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (891, 210006, 3, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
-INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (892, 210007, 2, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
-INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (893, 210007, 3, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
-INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (894, 210008, 2, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
-INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (895, 210008, 3, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
-INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (896, 210009, 2, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
-INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (897, 210009, 3, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
-INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (898, 210010, 2, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
-INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (899, 210010, 3, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
 
 -- --------------------------------------------------------
 

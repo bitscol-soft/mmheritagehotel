@@ -1873,7 +1873,8 @@ foreach ($ffCases as $ffName => [$ffViewName, $ffUrl, $ffData]) {
 echo "PASS public mm-web screens render\n";
 
 // ---- CRM (revival, BUGS #27): customer master + mail templates ----
-$crmMigrated = ['customers/index', 'customers/create', 'customers/edit', 'mail-templates/index', 'mail-templates/create', 'mail-templates/edit'];
+// URL/route/permission family for the template master is crm.templates.* (the slugs shipped in the dump).
+$crmMigrated = ['customers/index', 'customers/create', 'customers/edit', 'templates/index', 'templates/create', 'templates/edit'];
 foreach ($crmMigrated as $crmFile) { token_get_all($compiler->compileString(file_get_contents($root . '/module/CRM/views/' . $crmFile . '.blade.php')), TOKEN_PARSE); }
 echo "PASS compile crm views\n";
 foreach ($crmMigrated as $crmView) {
@@ -1897,9 +1898,9 @@ $crmCases = [
     'customers' => ['crm.customers.index', '/crm/customers', ['customers' => $riList([$crmCustomer])], ['mm-report', 'Customer Lists', 'Acme &lt;i&gt;Traders&lt;/i&gt;', 'Dhaka', 'Karim'], ['Acme <i>Traders</i>']],
     'form-customer-create' => ['crm.customers.create', '/crm/customers/create', $crmBase, ['mm-rst-form', 'name="org_name"', 'name="c_name"', 'name="country_id"', 'name="currency"', 'name="assigned"', 'name="leads"', 'name="contact_date"'], []],
     'form-customer-edit' => ['crm.customers.edit', '/crm/customers/1/edit', $crmBase + ['customer' => $crmCustomer], ['mm-rst-form', 'name="_method"', 'Acme &lt;i&gt;Traders&lt;/i&gt;', 'Dhaka'], ['Acme <i>Traders</i>']],
-    'mail-templates' => ['crm.mail-templates.index', '/crm/mail-templates', ['templates' => $riList([$crmTemplate])], ['mm-report', 'Mail Template Lists', 'Invoice &lt;b&gt;due&lt;/b&gt;', 'Active'], []],
-    'form-mail-template-create' => ['crm.mail-templates.create', '/crm/mail-templates/create', [], ['mm-rst-form', 'name="subject"', 'name="body"', 'name="status"'], []],
-    'form-mail-template-edit' => ['crm.mail-templates.edit', '/crm/mail-templates/1/edit', ['template' => $crmTemplate], ['mm-rst-form', 'name="_method"', 'Invoice &lt;b&gt;due&lt;/b&gt;'], []],
+    'templates' => ['crm.templates.index', '/crm/templates', ['templates' => $riList([$crmTemplate])], ['mm-report', 'Mail Template Lists', 'Invoice &lt;b&gt;due&lt;/b&gt;', 'Active'], []],
+    'form-template-create' => ['crm.templates.create', '/crm/templates/create', [], ['mm-rst-form', 'name="subject"', 'name="body"', 'name="status"'], []],
+    'form-template-edit' => ['crm.templates.edit', '/crm/templates/1/edit', ['template' => $crmTemplate], ['mm-rst-form', 'name="_method"', 'Invoice &lt;b&gt;due&lt;/b&gt;'], []],
 ];
 foreach ($crmCases as $crmName => [$crmViewName, $crmUrl, $crmData, $crmMarkers, $crmAbsent]) {
     $crmRequest = Illuminate\Http\Request::create($crmUrl);

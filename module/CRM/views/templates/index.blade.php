@@ -6,8 +6,8 @@
 <x-mm.styles />
 <x-mm.page class="mm-report mm-rst mm-rst-inv" title="Mail Template Lists" description="Templates mailed by the scheduled CRM invoice command.">
     <x-slot name="actions">
-        @if (hasPermission('crm.mail_templates.create', $slugs))
-            <a class="mm-button" href="{{ route('crm.mail-templates.create') }}"><i class="fa fa-plus"></i> Add New</a>
+        @if (hasPermission('crm.templates.create', $slugs))
+            <a class="mm-button" href="{{ route('crm.templates.create') }}"><i class="fa fa-plus"></i> Add New</a>
         @endif
     </x-slot>
     <x-mm.panel class="tw-p-4">
@@ -37,14 +37,14 @@
                                 </td>
                                 <td class="text-center">
                                     <div class="btn-group btn-corner">
-                                        @if (hasPermission('crm.mail_templates.edit', $slugs))
-                                            <a href="{{ route('crm.mail-templates.edit', $template->id) }}" class="btn btn-sm btn-success" title="Edit">
+                                        @if (hasPermission('crm.templates.edit', $slugs))
+                                            <a href="{{ route('crm.templates.edit', $template->id) }}" class="btn btn-sm btn-success" title="Edit">
                                                 <i class="fa fa-pencil-square-o"></i>
                                             </a>
                                         @endif
-                                        @if (hasPermission('crm.mail_templates.delete', $slugs))
+                                        @if (hasPermission('crm.templates.delete', $slugs))
                                             <button type="button" class="btn btn-sm btn-danger" title="Delete"
-                                                onclick="delete_item('{{ route('crm.mail-templates.destroy', $template->id) }}')">
+                                                onclick="delete_item('{{ route('crm.templates.destroy', $template->id) }}')">
                                                 <i class="fa fa-trash-o"></i>
                                             </button>
                                         @endif
