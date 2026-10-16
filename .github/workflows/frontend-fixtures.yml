@@ -97,6 +97,12 @@ jobs:
 
       - name: Load the MySQL dump
         run: |
+            set -o pipefail
+            # Use the MariaDB client explicitly: the Ubuntu runner's stock `mysql`
+            # is Oracle's MySQL 8 client, which negotiates utf8mb4_0900_ai_ci and
+            # fails against a MariaDB 10.5 server ("Unknown collation").
+            sudo apt-get update -qq
+            sudo apt-get install -y -qq mariadb-client
             # Disable FK checks during the load — the dump adds ALTER TABLE ... ADD CONSTRAINT
             # FOREIGN KEY clauses after the INSERTs, so a naive load against a freshly created
             # database would fail on the first row whose FK target hasn't been populated yet.
@@ -105,8 +111,8 @@ jobs:
             { sed 's/^START TRANSACTION;/START TRANSACTION;\nSET FOREIGN_KEY_CHECKS=0;\nSET UNIQUE_CHECKS=0;/' database/mmheritagehotel_db.sql; \
               echo 'SET FOREIGN_KEY_CHECKS=1;'; \
               echo 'SET UNIQUE_CHECKS=1;'; \
-            } | mysql --protocol=tcp -h 127.0.0.1 -uroot -proot mmheritagehotel
-            echo "Dump loaded: $(mysql --protocol=tcp -h 127.0.0.1 -uroot -proot -e 'SHOW TABLES' mmheritagehotel | wc -l) tables"
+            } | mariadb --protocol=tcp -h 127.0.0.1 -uroot -proot mmheritagehotel
+            echo "Dump loaded: $(mariadb --protocol=tcp -h 127.0.0.1 -uroot -proot -e 'SHOW TABLES' mmheritagehotel | wc -l) tables"
 
       - name: Configure Laravel environment
         run: |
