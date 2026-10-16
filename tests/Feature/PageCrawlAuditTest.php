@@ -33,7 +33,7 @@ class PageCrawlAuditTest extends TestCase
         $this->actingAs(User::find(1));
 
         // pass 1: no business data at all -> what a fresh/partial deployment hits
-        $this->crawlRoutes('/tmp/page-crawl-empty.txt');
+        $this->assertNoUnexpectedCrawlFailures($this->crawlRoutes('/tmp/page-crawl-empty.txt'), 'empty business data');
 
         // pass 2: the shipped dump's rows -> what production actually serves.
         // The audit seeds (users/groups/companies/modules/settings) must go first,
@@ -51,9 +51,7 @@ class PageCrawlAuditTest extends TestCase
                 'password' => bcrypt('x'), 'company_id' => 1, 'status' => 1, 'created_at' => now(), 'updated_at' => now()]);
         }
         $this->actingAs(User::find(1));
-        $this->crawlRoutes('/tmp/page-crawl.txt');
-
-        $this->assertTrue(true);
+        $this->assertNoUnexpectedCrawlFailures($this->crawlRoutes('/tmp/page-crawl.txt'), 'production-shaped data');
     }
 
     /**
@@ -120,7 +118,8 @@ class PageCrawlAuditTest extends TestCase
         return $statements;
     }
 
-    private function crawlRoutes(string $outFile): void
+    /** @return array<int, array{0: int, 1: int, 2: string, 3: string, 4: string}> */
+    private function crawlRoutes(string $outFile): array
     {
         $report = [];
         $router  = app('router');
@@ -186,6 +185,55 @@ class PageCrawlAuditTest extends TestCase
         foreach ($report as $line) {
             fwrite(STDOUT, 'crawl | ' . $line . "\n");
         }
+
+        return $results;
+    }
+
+    /**
+     * Failures that are artifacts of this harness rather than defects: sqlite has no MySQL
+     * `MONTHNAME`, the debugbar/ignition panels only exist in a local dev environment, and
+     * the crawler reaches POST-only endpoints (and routes parked behind inactive modules)
+     * with a plain GET. Everything else is a regression - the audit is a guard now, not a
+     * report nobody reads.
+     */
+    private const CRAWL_ARTIFACTS = [
+        'hotel/reports/monthlyVat',      // MONTHNAME: MySQL/MariaDB function, absent in sqlite
+        'category',                      // legacy redirect route whose view was never shipped
+        'submit/guest/registration',     // POST-only front-desk endpoint, reached with a GET
+    ];
+
+    private const CRAWL_ARTIFACT_PREFIXES = [
+        '_debugbar/',                    // debugbar assets/open handler: dev-only package
+        '_ignition/',                    // ignition health check: dev-only package
+        'add-user',                      // HRM module is inactive in the shipped data
+        'db-backup',                     // needs mysqldump, not installed in CI
+        'sync-',                         // HRM-guarded background endpoints
+    ];
+
+    private function isCrawlArtifact(string $uri): bool
+    {
+        if (in_array($uri, self::CRAWL_ARTIFACTS, true)) {
+            return true;
+        }
+        foreach (self::CRAWL_ARTIFACT_PREFIXES as $prefix) {
+            if (strpos($uri, $prefix) === 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /** @param array<int, array{0: int, 1: int, 2: string, 3: string, 4: string}> $results */
+    private function assertNoUnexpectedCrawlFailures(array $results, string $pass): void
+    {
+        $unexpected = [];
+        foreach ($results as [$bucket, $status, $uri, $name, $message]) {
+            if (!$this->isCrawlArtifact($uri)) {
+                $unexpected[] = sprintf('[%d] %s :: %s', $bucket, $uri, mb_substr($message, 0, 220));
+            }
+        }
+        $this->assertSame([], $unexpected, 'Unexpected crawl failures on ' . $pass
+            . ' (' . count($unexpected) . '): ' . implode(' | ', $unexpected));
     }
 
 
