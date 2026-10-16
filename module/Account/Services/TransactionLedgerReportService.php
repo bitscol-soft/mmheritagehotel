@@ -292,7 +292,7 @@ class TransactionLedgerReportService
     */
     public function accountGroupSummary($id, $query, $search)
     {
-        return AccountGroup::query()
+        $group = AccountGroup::query()
                             ->where('id', $id)
                             ->with(['accountControls' => function ($q) use ($query, $search) {
                                 $q->with(['accounts' => function ($qur) use ($query, $search) {

@@ -100,23 +100,27 @@ function getCurrentCurrencyRate($default = 'bdt')
 {
     $selectedCurrency = CurrencyConversion::where('currency_id', 141)->where('effected_date', '<=' ,date('Y-m-d'))->orderBy('effected_date','DESC')->first();
 
+    // docs/BUGS.md #73: with no conversion row yet (fresh deployment) the rate is unknown.
+    // 1 means "no conversion" and keeps the booking/POS calculators exact instead of 500ing.
+    $rate = optional($selectedCurrency)->rate ?: 1;
+
     if ($default == 'bdt') {
         if (setting('root_currency') == 12) {
             return 1;
         }
-        return $selectedCurrency->rate;
+        return $rate;
     }
     if ($default == 'usd') {
         if (setting('root_currency') == 141) {
             return 1;
         }
-        return 1 / $selectedCurrency->rate;
+        return 1 / $rate;
     }
     if ($default == 'sr') {
         if (setting('root_currency') == 116) {
             return 1;
         }
-        return 1 / $selectedCurrency->rate;
+        return 1 / $rate;
     }
 
 }
@@ -129,7 +133,8 @@ function convertToBDTCurrency($amount, $currency_id = 0)
     $selectedCurrency = CurrencyConversion::where('currency_id', 141)->where('effected_date', '<=' ,date('Y-m-d'))->orderBy('effected_date','DESC')->first();
     if (setting('root_currency') == 141 || $currency_id == 141) {
 
-        return round($selectedCurrency->rate * $amount, 0);
+        // docs/BUGS.md #73: no conversion row yet -> the amount is already in the root currency
+        return round((optional($selectedCurrency)->rate ?: 1) * $amount, 0);
     }
     return $amount;
 
@@ -159,7 +164,8 @@ function calculateCurrencyAmount($amount, $ignore = 0)
     $selectedCurrency = CurrencyConversion::where('currency_id', 141)->where('effected_date', '<=' ,date('Y-m-d'))->orderBy('effected_date','DESC')->first();
 
     if (setting('root_currency') == 141) {
-        $amount = 1 / $selectedCurrency->rate * $amount;
+        // docs/BUGS.md #73: no conversion row yet -> treat the amount as already converted
+        $amount = 1 / (optional($selectedCurrency)->rate ?: 1) * $amount;
     }
     // if (setting('root_currency') == 116) {
     //     $amount = 1 / $selectedCurrency->rate * $amount;
@@ -204,7 +210,7 @@ function getBdtCurrentRateWithoutDevide(){
 
     $selectedCurrency = CurrencyConversion::where('currency_id', 12)->where('effected_date', '<=' ,date('Y-m-d'))->orderBy('effected_date','DESC')->first();
 
-    return $selectedCurrency->rate ;
+    return optional($selectedCurrency)->rate;   // docs/BUGS.md #73: null means "not configured";
 }
 
 

@@ -531,10 +531,49 @@ class PageCrawlAuditTest extends TestCase
         }
     }
 
-    /** Every module route file in the repo: the crawl should see what production registers. */
+    /**
+     * The module directory -> the name of its row in `modules`. RouteServiceProvider only
+     * registers a module's routes while that row exists (and, for the modules that ship
+     * switched off, while it is active) - the crawl mirrors that instead of globbing every
+     * route file, otherwise a dormant module looks like 8 live 500s (docs/BUGS.md #72).
+     */
+    private const MODULE_ROWS = [
+        'GeneralStore'  => 'General Store',
+        'Account'       => 'Account & Finance',
+        'PosErp'        => 'POS',
+        'Production'    => 'Production',
+        'HotelService'  => 'HotelService',
+        'BanquetHall'   => 'BanquetHall',
+        'Hotel'         => 'Hotel',
+        'HotelWebsite'  => 'HotelWebsite',
+        'Restaurant'    => 'Restaurant',
+        'Bar'           => 'Bar',
+        'Hospital'      => 'Hospital',
+        'Pharmacy'      => 'Pharmacy',
+        'CRM'           => 'CRM',
+    ];
+
+    /** Every module route file the application would register: what production actually serves. */
     private function loadAllModuleRoutes(): void
     {
         foreach (glob(base_path('module/*/routes/*.php')) as $file) {
+            $module = basename(dirname(dirname($file)));
+            $row = isset(self::MODULE_ROWS[$module]) ? self::MODULE_ROWS[$module] : null;
+            $registered = $row === null
+                ? null
+                : \Illuminate\Support\Facades\DB::table('modules')->where('name', $row)->first();
+
+            if ($row !== null) {
+                if (!$registered) {
+                    // no module row at all -> RouteServiceProvider skips the file
+                    continue;
+                }
+                if ($module === 'BanquetHall' && (int) $registered->status !== 1) {
+                    // the one module that is gated on being active (docs/BUGS.md #72)
+                    continue;
+                }
+            }
+
             try {
                 \Illuminate\Support\Facades\Route::group(['middleware' => ['web', 'auth']], function () use ($file) {
                     \Illuminate\Support\Facades\Route::namespace('\\')->group($file);

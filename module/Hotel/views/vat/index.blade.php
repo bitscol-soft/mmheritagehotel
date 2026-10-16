@@ -7,7 +7,7 @@
     <x-alert-message />
 
     <x-mm.panel class="mm-setup-narrow">
-        <form class="form-horizontal" id="companyForm" action="{{ route('vat.update',$vat->id) }}" method="post" enctype="multipart/form-data">
+        <form class="form-horizontal" id="companyForm" action="{{ route('vat.update', $vat->id ?? 0) }}" method="post" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
