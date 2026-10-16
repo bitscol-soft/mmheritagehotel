@@ -4766,19 +4766,6 @@ INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `
 INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (874, 200060, 2, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
 INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (875, 200060, 3, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
 INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (876, 200061, 2, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
--- Permission tree repair (2026-10-16, BUGS #69): the Group-3 seed above parented 55
--- permission rows to synthetic tags 110060+ that were never inserted into
--- `parent_permissions`, which made the Permissions screen dereference null
--- (`$permission->parent_permission->submodule->module`). 25 of them now reuse the
--- existing parents above (Item/Purchase/Requisition/GS Report/Payment/Receive
--- Voucher); these five rows are created for the families that had no equivalent,
--- plus the Pharmacy submodule for its (inactive) module.
-INSERT INTO `submodules` (`id`, `name`, `module_id`, `created_at`, `updated_at`) VALUES (110011, 'Pharmacy', 110001, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
-INSERT INTO `parent_permissions` (`id`, `name`, `submodule_id`, `created_at`, `updated_at`) VALUES (110060, 'Supplier Type', 15, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
-INSERT INTO `parent_permissions` (`id`, `name`, `submodule_id`, `created_at`, `updated_at`) VALUES (110063, 'Purchase Receive', 15, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
-INSERT INTO `parent_permissions` (`id`, `name`, `submodule_id`, `created_at`, `updated_at`) VALUES (110066, 'Fund Transfer', 150002, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
-INSERT INTO `parent_permissions` (`id`, `name`, `submodule_id`, `created_at`, `updated_at`) VALUES (110067, 'Account Report', 150007, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
-INSERT INTO `parent_permissions` (`id`, `name`, `submodule_id`, `created_at`, `updated_at`) VALUES (110068, 'Pharmacy', 110011, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
 INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (877, 200061, 3, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
 INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (878, 200062, 2, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
 INSERT INTO `permission_user` (`id`, `permission_id`, `user_id`, `created_at`, `updated_at`) VALUES (879, 200062, 3, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
@@ -6582,6 +6569,20 @@ INSERT INTO `website_settings` (`id`, `site_first_name`, `site_last_name`, `site
 --
 -- Indexes for table `about_sections`
 --
+-- Permission tree repair (2026-10-16, BUGS #69): the Group-3 seed above parented 55
+-- permission rows to synthetic tags 110060+ that were never inserted into
+-- `parent_permissions`, which made the Permissions screen dereference null
+-- (`$permission->parent_permission->submodule->module`). 25 of them now reuse the
+-- existing parents above (Item/Purchase/Requisition/GS Report/Payment/Receive
+-- Voucher); these five rows are created for the families that had no equivalent,
+-- plus the Pharmacy submodule for its (inactive) module.
+INSERT INTO `submodules` (`id`, `name`, `module_id`, `created_at`, `updated_at`) VALUES (110011, 'Pharmacy', 110001, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
+INSERT INTO `parent_permissions` (`id`, `name`, `submodule_id`, `created_at`, `updated_at`) VALUES (110060, 'Supplier Type', 15, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
+INSERT INTO `parent_permissions` (`id`, `name`, `submodule_id`, `created_at`, `updated_at`) VALUES (110063, 'Purchase Receive', 15, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
+INSERT INTO `parent_permissions` (`id`, `name`, `submodule_id`, `created_at`, `updated_at`) VALUES (110066, 'Fund Transfer', 150002, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
+INSERT INTO `parent_permissions` (`id`, `name`, `submodule_id`, `created_at`, `updated_at`) VALUES (110067, 'Account Report', 150007, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
+INSERT INTO `parent_permissions` (`id`, `name`, `submodule_id`, `created_at`, `updated_at`) VALUES (110068, 'Pharmacy', 110011, '2026-10-16 00:00:00', '2026-10-16 00:00:00');
+
 ALTER TABLE `about_sections`
   ADD PRIMARY KEY (`id`);
 
