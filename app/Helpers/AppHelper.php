@@ -71,7 +71,8 @@ function group()
 {
     return Cache::rememberForever('group', function () {
 
-        return Group::first()->name;
+        // docs/BUGS.md #73: a deployment with no `groups` row yet has no group name
+        return optional(Group::first())->name;
     });
 }
 

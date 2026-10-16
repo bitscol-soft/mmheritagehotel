@@ -163,10 +163,33 @@ Three follow-ups the earlier audit had parked as "needs a decision" were decided
 | 72 | 🔵 | **BanquetHall module** | the module is `status = 0` in the shipped data and its four tables are not in the schema, yet `RouteServiceProvider` registered its routes whenever the `modules` row merely *existed* - so all 8 URLs 500'd (one of them, `booking-purpose`, from a model referenced in the controller namespace: `BanquetBookingPurposeController` used `BookingPurpose::` with no import) | routes now register only while the module is **active** (`status = 1`), so the screens are unreachable instead of failing; the missing import is added so the module works the moment it is switched on. Nothing was deleted - flipping the status revives it |
 | 73 | 🔴 | **28 routes assumed at least one row of business data** (booking create/board/next-step/referred/search, both POS `sales/create` + `sales-v2/create`, company setup, the five financial statements, GS requisitions/purchases/GIN/weekly-movement, Account purchase+sale vouchers, `product/damages/create`, `hotel/room-management/vat`, hotel-website `about-us/create`) | a fresh or partially seeded deployment has empty master tables, and the screens read the first row unconditionally: `Vat::first()->...`, `Account::where('name','Cash')->first()`, `AccountGroup::where('id', $fixed)->first()`, `AboutSection::first()`, `SystemSetting::where('key', ...)->first()`, `$company->group->name` | fixed in the **model/service layer** wherever the screen reads a helper or a service, so the Blade expressions stay byte-identical: `vatSetting()` returns a zeroed `Vat` model (it feeds every booking/POS/invoice screen), `BookingController`/`vatController` pass `?? new Vat()`, the five Account create screens pass `?? new Account()`, both POS `create()` methods pass `?? 0` for the VAT percent they inject into the calculator JS, `AccountGroup` summaries return an empty group with an empty `accountControls` relation, `SystemSetting::row($key)` supplies an empty row to the 10 GeneralStore reads (their own `!= null` guards then show "Reference"), `AboutSection::first() ?? new AboutSection()`, and the company list reads `optional($company->group)->name`. `reports/financial-statements/income-expense-statement` additionally pointed at a view directory that was never created - the income-statement views already branch on that route, so they now serve both |
 
+**Follow-up: what the guard found on its first runs.** Writing findings to files nobody reads
+was hiding regressions, so `PageCrawlAuditTest` now *asserts* both passes against a short,
+explicit allowlist of harness artifacts (sqlite has no `MONTHNAME`, the debugbar/ignition panels
+are dev-only, the guest-registration endpoint is POST-only, the HRM/`db-backup` routes need an
+inactive module or a missing binary), the workflow keeps the phpunit log and turns the failing
+assertion into a check annotation, and the crawl registers a module's routes only while its
+`modules` row exists (BanquetHall: only while active) - which is why a dormant module had been
+showing up as 8 phantom 500s in CI only. That turned 18 "empty business data" failures into 2
+fixes and then 0, and pinned down the residual real null reads:
+
+- `TransactionLedgerReportService::accountGroupSummary` kept its `return` in front of the #73
+  fallback, so the fallback was dead code and all five financial statements still died on
+  `->accountControls` of null.
+- `getCurrentCurrencyRate()`/`calculateCurrencyAmount()` read `->rate` off a `currency_conversions`
+  row a fresh deployment does not have, and every booking screen's JS includes those helpers.
+- the VAT screen read `$systemSetting->value` off a row that only exists after the first save, and
+  its form posted to `/vat/0` (the update created nothing and the catch block swallowed it).
+- `report.cashFlow` reads `->accountControls` off the fixed account groups 1/2, `group()` and both
+  supplier-create paths called `Group::first()->…`, the hotel-service sale ledger wrote
+  `AccountType::first()->id`, the three POS sale writes and the printable sale screen read
+  `Vat::first()->vat_number`, and three booking partials read `vatSetting()` fields - all with no
+  first row to read.
+
 Verified in this round: PHP grammar lint on every changed file, the Blade harness (both new
 screens render with rows and with an empty table), `tools/ui-guard.sh`, and CI (`phpunit` incl.
-the crawl, `tools/ui-blade-check.php`, browser specs). The crawl now prints its findings into
-the job log so a regression is visible without downloading anything.
+the crawl on **both** passes - 15 with production-shaped data, 0 unexpected on empty business
+data - `tools/ui-blade-check.php`, the browser specs and the fixture regeneration).
 
 ## B. Open — needs deploy / decision / feature work
 

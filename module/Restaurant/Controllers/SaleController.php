@@ -142,7 +142,7 @@ class SaleController extends Controller
 
         return view('sales.show', [
             'sale'          => Sale::query()->with('items', 'transaction_ledgers')->find($id),
-            'vat_number'    => Vat::first()->vat_number,
+            'vat_number'    => optional(Vat::first())->vat_number,   // docs/BUGS.md #73
         ]);
     }
 

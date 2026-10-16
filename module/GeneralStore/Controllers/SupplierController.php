@@ -58,7 +58,8 @@ class SupplierController extends Controller
             'supplier_type_id'  => 'nullable'
         ]);
 
-        $created = Supplier::create(array_merge($request->except('attention'), ['group_id' => Group::first()->id]));
+        // docs/BUGS.md #73: optional() so a deployment with no `groups` row can still save
+        $created = Supplier::create(array_merge($request->except('attention'), ['group_id' => optional(Group::first())->id]));
 
         if ($created) {
             return redirect()->route('suppliers.index')->with('message', 'Supplier create success!');

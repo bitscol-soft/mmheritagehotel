@@ -56,7 +56,8 @@ class SupplierController extends Controller
             'supplier_type_id'  => 'required'
         ]);
 
-        $data = array_merge($request->all(), ['group_id' => Group::first()->id]);
+        // docs/BUGS.md #73: optional() so a deployment with no `groups` row can still save
+        $data = array_merge($request->all(), ['group_id' => optional(Group::first())->id]);
         unset($data['attention']);
 
         $created = Supplier::create($data);

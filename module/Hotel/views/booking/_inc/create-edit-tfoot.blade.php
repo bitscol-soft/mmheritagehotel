@@ -30,7 +30,7 @@
         <td class="text-right borderless" colspan="{{ $colspan ?? 11 }}">
             <input type="hidden" name="vat" id="vat" value="{{ vatSetting()->hotel_vat ?? 0 }}">
 
-            Vat({{ vatSetting()->hotel_vat }}%) <span class="currency-sign"></span>
+            Vat({{ vatSetting()->hotel_vat ?? 0 }}%) <span class="currency-sign"></span>
         </td>
         <td class="borderless">
             <input type="text" name="vat_amount"

@@ -316,7 +316,7 @@
                                             <tr>
                                                 <td class="text-right borderless" colspan="12">
                                                     <input type="hidden" name="vat" id="vat"
-                                                        value="{{ $vat->hotel_vat }}">
+                                                        value="{{ optional($vat ?? null)->hotel_vat ?? 0 }}">
 
                                                     Vat({{ $vat->hotel_vat }}%) <span class="currency-sign"></span>
                                                 </td>

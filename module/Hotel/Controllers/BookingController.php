@@ -489,7 +489,7 @@ class BookingController extends Controller
     {
         return view('sales.show', [
             'sale'          => Sale::query()->with('items', 'transaction_ledgers')->where('hotel_booking_id',$id)->first(),
-            'vat_number'    => Vat::first()->vat_number,
+            'vat_number'    => optional(Vat::first())->vat_number,   // docs/BUGS.md #73
         ]);
     }
 

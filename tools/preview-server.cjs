@@ -148,6 +148,8 @@ const pages={
  '/preview/gs-item-ledger':{file:'preview/gs-item-ledger.html',title:'Item ledger',crumbs:['General Store','Item ledger']},
  '/preview/bar-audit-generate':{file:'preview/bar-audit-generate.html',title:'Generate bar night audit',crumbs:['Bar','Generate bar night audit']},
  '/preview/bar-audit-list':{file:'preview/bar-audit-list.html',title:'Bar night audit',crumbs:['Bar','Bar night audit']},
+ '/preview/bar-batches':{file:'preview/bar-batches.html',title:'Product batches',crumbs:['Bar','Product batches']},
+ '/preview/bar-batches-empty':{file:'preview/bar-batches-empty.html',title:'Product batches (empty)',crumbs:['Bar','Product batches']},
  '/preview/bar-categories':{file:'preview/bar-categories.html',title:'Product categories',crumbs:['Bar','Product categories']},
  '/preview/bar-inventory-report':{file:'preview/bar-inventory-report.html',title:'Product inventory',crumbs:['Bar','Product inventory']},
  '/preview/bar-manufacturers':{file:'preview/bar-manufacturers.html',title:'Manufacturers',crumbs:['Bar','Manufacturers']},
