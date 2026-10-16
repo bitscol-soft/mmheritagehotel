@@ -18,11 +18,13 @@ on:
     paths:
       - 'resources/views/frontend/**'
       - 'app/Console/Commands/MmRenderPublicFixtures.php'
+      - 'database/mmheritagehotel_db.sql'
       - '.github/workflows/frontend-fixtures.yml'
   pull_request:
     paths:
       - 'resources/views/frontend/**'
       - 'app/Console/Commands/MmRenderPublicFixtures.php'
+      - 'database/mmheritagehotel_db.sql'
       - '.github/workflows/frontend-fixtures.yml'
 
 permissions:
