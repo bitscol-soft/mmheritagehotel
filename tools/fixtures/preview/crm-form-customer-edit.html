@@ -1,0 +1,201 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css"><link rel="stylesheet" href="/assets/css/chosen.min.css" />
+<link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css" />
+<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+<section class="mm-ui mm-report mm-rst mm-rst-inv mm-rst-form">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Customer</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Company / contact master used by bookings, banquet and POS.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button" href="http://localhost/crm/crm/customers/index"><i class="fa fa-list"></i> List</a></div>        </header>
+        <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><!-- INPUTS -->
+        <form action="http://localhost/crm/crm/customers/update/1" method="post">
+            <input type="hidden" name="_token" value="fixture-csrf-token">            <input type="hidden" name="_method" value="PUT">            <div class="row" style="width: 100%; margin: 0 0 20px !important;">
+                <div class="col-sm-12 px-4">
+
+                    <h5 class="tw-font-semibold tw-mb-2">Company</h5>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 control-label" for="org_name"> <b>Organization <sup class="text-danger">*</sup></b> </label>
+
+                        <div class="col-sm-9">
+                            <input required id="org_name" name="org_name" type="text" class="form-control input-sm" placeholder="Company / organization name" value="Acme &lt;i&gt;Traders&lt;/i&gt;">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 control-label" for="org_phone"> <b>Organization Phone</b> </label>
+
+                        <div class="col-sm-9">
+                            <input id="org_phone" name="org_phone" type="text" class="form-control input-sm" placeholder="Phone" value="+880 1700">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 control-label" for="org_email"> <b>Organization Email</b> </label>
+
+                        <div class="col-sm-9">
+                            <input id="org_email" name="org_email" type="email" class="form-control input-sm" placeholder="Email" value="ops@acme.test">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 control-label" for="tax_id"> <b>Tax ID</b> </label>
+
+                        <div class="col-sm-9">
+                            <input id="tax_id" name="tax_id" type="number" class="form-control input-sm" placeholder="Tax / VAT registration" value="1234">
+                        </div>
+                    </div>
+
+                    <h5 class="tw-font-semibold tw-mb-2 tw-mt-3">Contact Person</h5>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 control-label" for="c_name"> <b>Name</b> </label>
+
+                        <div class="col-sm-9">
+                            <input id="c_name" name="c_name" type="text" class="form-control input-sm" placeholder="Contact person" value="Karim">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 control-label" for="c_phone"> <b>Phone</b> </label>
+
+                        <div class="col-sm-9">
+                            <input id="c_phone" name="c_phone" type="text" class="form-control input-sm" placeholder="Contact phone" value="+880 1800">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 control-label" for="c_email"> <b>Email</b> </label>
+
+                        <div class="col-sm-9">
+                            <input id="c_email" name="c_email" type="email" class="form-control input-sm" placeholder="Contact email" value="karim@acme.test">
+                        </div>
+                    </div>
+
+                    <h5 class="tw-font-semibold tw-mb-2 tw-mt-3">Address</h5>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 control-label" for="street"> <b>Street</b> </label>
+
+                        <div class="col-sm-9">
+                            <input id="street" name="street" type="text" class="form-control input-sm" placeholder="Street" value="12 Gulshan">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 control-label" for="city"> <b>City</b> </label>
+
+                        <div class="col-sm-9">
+                            <input id="city" name="city" type="text" class="form-control input-sm" placeholder="City" value="Dhaka">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 control-label" for="zip_code"> <b>Zip Code</b> </label>
+
+                        <div class="col-sm-9">
+                            <input id="zip_code" name="zip_code" type="number" class="form-control input-sm" placeholder="Zip code" value="1212">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 control-label" for="country_id"> <b>Country</b> </label>
+
+                        <div class="col-sm-9">
+                            <select id="country_id" name="country_id" class="chosen-select-100-percent" data-placeholder="- Select Country -">
+                                <option></option>
+                                                                <option value="1" selected>Bangladesh</option>
+                                                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 control-label" for="address"> <b>Address</b> </label>
+
+                        <div class="col-sm-9">
+                            <input id="address" name="address" type="text" class="form-control input-sm" placeholder="Full address" value="Dhaka 1212">
+                        </div>
+                    </div>
+
+                    <h5 class="tw-font-semibold tw-mb-2 tw-mt-3">Business &amp; Lead</h5>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 control-label" for="currency"> <b>Currency</b> </label>
+
+                        <div class="col-sm-9">
+                            <select id="currency" name="currency" class="chosen-select-100-percent" data-placeholder="- Select Currency -">
+                                <option></option>
+                                                                <option value="BDT" selected>BDT</option>
+                                                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 control-label" for="assigned"> <b>Assigned To</b> </label>
+
+                        <div class="col-sm-9">
+                            <select id="assigned" name="assigned" class="chosen-select-100-percent" data-placeholder="- Select User -">
+                                <option></option>
+                                                                <option value="Super admin" selected>Super admin</option>
+                                                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 control-label" for="contact_date"> <b>Contact Date</b> </label>
+
+                        <div class="col-sm-9">
+                            <input id="contact_date" name="contact_date" type="date" class="form-control input-sm" value="2026-10-01">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 control-label" for="leads"> <b>Is Lead</b> </label>
+
+                        <div class="col-sm-9">
+                            <label class="tw-inline-flex tw-items-center tw-gap-2">
+                                <input id="leads" name="leads" type="checkbox" value="1" checked>
+                                <span class="lbl">This company is still a lead</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 control-label" for="lead_status"> <b>Lead Status</b> </label>
+
+                        <div class="col-sm-9">
+                            <input id="lead_status" name="lead_status" type="text" class="form-control input-sm" placeholder="Lead status" value="New">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-sm-3 control-label" for="lead_source"> <b>Lead Source</b> </label>
+
+                        <div class="col-sm-9">
+                            <input id="lead_source" name="lead_source" type="text" class="form-control input-sm" placeholder="Lead source" value="Web">
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-sm-9 offset-sm-3">
+                            <button type="submit" class="btn btn-success btn-sm"><i class="fa fa-save"></i> Save</button>
+                            <a href="http://localhost/crm/crm/customers/index" class="btn btn-gray btn-sm"><i class="fa fa-times"></i> Cancel</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </form></div>
+    </div>
+</section>
+
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
+    <script src="/assets/js/chosen.jquery.min.js"></script>
+    <script src="/assets/custom_js/chosen-box.js"></script>
+<!--/MM-JS--></body></html>

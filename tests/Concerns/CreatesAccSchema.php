@@ -28,6 +28,9 @@ trait CreatesAccSchema
             'module/Account/routes/web_account.php',
             'module/Hotel/routes/web_hotel.php',
             'module/Hotel/routes/web_hotel_ajax.php',
+            'module/CRM/routes/web_crm.php',
+            'module/Restaurant/routes/web_restaurant.php',
+            'module/Bar/routes/web_bar.php',
         ] as $file) {
             Route::group(['middleware' => ['web', 'auth']], function () use ($file) {
                 Route::namespace('\\')->group(base_path($file));
@@ -214,6 +217,134 @@ trait CreatesAccSchema
             $t->string('relative_path')->nullable();
             $t->unsignedBigInteger('created_by')->nullable();
             $t->unsignedBigInteger('updated_by')->nullable();
+            $t->timestamps();
+        });
+
+        Schema::create('c_r_m_customers', function (Blueprint $t) {
+            $t->id();
+            $t->string('org_name')->nullable();
+            $t->string('org_phone')->nullable();
+            $t->string('org_email')->nullable();
+            $t->string('c_name')->nullable();
+            $t->string('c_phone')->nullable();
+            $t->string('c_email')->nullable();
+            $t->integer('tax_id')->nullable();
+            $t->string('street')->nullable();
+            $t->string('city')->nullable();
+            $t->string('address')->nullable();
+            $t->integer('zip_code')->nullable();
+            $t->unsignedBigInteger('country_id')->nullable();
+            $t->boolean('leads')->nullable();
+            $t->string('currency')->nullable();
+            $t->string('lead_status')->nullable();
+            $t->string('lead_source')->nullable();
+            $t->string('assigned')->nullable();
+            $t->string('contact_date')->nullable();
+            $t->unsignedBigInteger('created_by')->nullable();
+            $t->unsignedBigInteger('updated_by')->nullable();
+            $t->timestamps();
+        });
+
+        Schema::create('mail_templates', function (Blueprint $t) {
+            $t->id();
+            $t->string('subject')->nullable();
+            $t->string('body')->nullable();
+            $t->tinyInteger('status')->default(1);
+            $t->unsignedBigInteger('created_by')->nullable();
+            $t->unsignedBigInteger('updated_by')->nullable();
+            $t->timestamps();
+        });
+
+        Schema::create('companies', function (Blueprint $t) {
+            $t->id();
+            $t->unsignedBigInteger('group_id')->nullable();
+            $t->unsignedBigInteger('business_type_id')->nullable();
+            $t->string('name')->nullable();
+            $t->string('code')->nullable();
+            $t->string('short_name')->nullable();
+            $t->string('head_office')->nullable();
+            $t->string('factory')->nullable();
+            $t->string('contact_name')->nullable();
+            $t->string('position')->nullable();
+            $t->string('phone_number')->nullable();
+            $t->string('fax')->nullable();
+            $t->string('email')->nullable();
+            $t->string('day_off')->nullable();
+            $t->string('country')->nullable();
+            $t->text('top_text')->nullable();
+            $t->string('logo')->nullable();
+            $t->timestamps();
+        });
+
+        Schema::create('company_user', function (Blueprint $t) {
+            $t->id();
+            $t->unsignedBigInteger('company_id');
+            $t->unsignedBigInteger('user_id');
+            $t->timestamps();
+        });
+
+        Schema::create('groups', function (Blueprint $t) {
+            $t->id();
+            $t->string('name')->nullable();
+            $t->string('email')->nullable();
+            $t->string('phone')->nullable();
+            $t->string('address')->nullable();
+            $t->string('logo')->nullable();
+            $t->string('fav_icon')->nullable();
+            $t->string('login_background_image')->nullable();
+            $t->timestamps();
+        });
+
+        Schema::create('system_settings', function (Blueprint $t) {
+            $t->id();
+            $t->string('key')->nullable();
+            $t->text('value')->nullable();
+            $t->timestamps();
+        });
+
+        Schema::create('modules', function (Blueprint $t) {
+            $t->id();
+            $t->string('name')->nullable();
+            $t->tinyInteger('status')->default(1);
+            $t->tinyInteger('is_migrate')->default(0);
+            $t->integer('rank')->nullable();
+            $t->timestamps();
+        });
+
+        Schema::create('permissions', function (Blueprint $t) {
+            $t->id();
+            $t->string('name')->nullable();
+            $t->string('slug')->nullable();
+            $t->text('description')->nullable();
+            $t->unsignedBigInteger('created_by')->nullable();
+            $t->unsignedBigInteger('updated_by')->nullable();
+            $t->unsignedBigInteger('parent_permission_id')->nullable();
+            $t->tinyInteger('status')->default(1);
+            $t->timestamps();
+        });
+
+        Schema::create('permission_user', function (Blueprint $t) {
+            $t->id();
+            $t->unsignedBigInteger('permission_id');
+            $t->unsignedBigInteger('user_id');
+            $t->timestamps();
+        });
+
+        Schema::create('countries', function (Blueprint $t) {
+            $t->id();
+            $t->string('name')->nullable();
+            $t->timestamps();
+        });
+
+        Schema::create('currencies', function (Blueprint $t) {
+            $t->id();
+            $t->string('name')->nullable();
+            $t->timestamps();
+        });
+
+        Schema::create('booking', function (Blueprint $t) {
+            $t->id();
+            $t->unsignedBigInteger('company_id')->nullable();
             $t->timestamps();
         });
 

@@ -1872,6 +1872,56 @@ foreach ($ffCases as $ffName => [$ffViewName, $ffUrl, $ffData]) {
 }
 echo "PASS public mm-web screens render\n";
 
+// ---- CRM (revival, BUGS #27): customer master + mail templates ----
+$crmMigrated = ['customers/index', 'customers/create', 'customers/edit', 'mail-templates/index', 'mail-templates/create', 'mail-templates/edit'];
+foreach ($crmMigrated as $crmFile) { token_get_all($compiler->compileString(file_get_contents($root . '/module/CRM/views/' . $crmFile . '.blade.php')), TOKEN_PARSE); }
+echo "PASS compile crm views\n";
+foreach ($crmMigrated as $crmView) {
+    $crmSource = $rsSubst($crmView, 'CRM');
+    @mkdir(dirname($coViews . '/crm/' . $crmView), 0777, true);
+    file_put_contents($coViews . '/crm/' . $crmView . '.blade.php', $crmSource);
+}
+$crmSeen = [];
+foreach ($crmMigrated as $crmView) {
+    preg_match_all("/route\\('([\\w.-]+)'/", file_get_contents($coViews . '/crm/' . $crmView . '.blade.php'), $crmMatch);
+    foreach ($crmMatch[1] as $crmRoute) {
+        if (isset($crmSeen[$crmRoute]) || $rsRoutes->getByName($crmRoute)) continue;
+        $crmSeen[$crmRoute] = true;
+        $rsRoutes->add((new Illuminate\Routing\Route(['GET', 'POST'], 'crm/' . str_replace('.', '/', $crmRoute) . '/{id?}', function () {}))->name($crmRoute));
+    }
+}
+$crmCustomer = $riRow(['id' => 1, 'org_name' => 'Acme <i>Traders</i>', 'org_phone' => '+880 1700', 'org_email' => 'ops@acme.test', 'c_name' => 'Karim', 'c_phone' => '+880 1800', 'c_email' => 'karim@acme.test', 'tax_id' => 1234, 'street' => '12 Gulshan', 'city' => 'Dhaka', 'address' => 'Dhaka 1212', 'zip_code' => 1212, 'country_id' => 1, 'currency' => 'BDT', 'leads' => 1, 'lead_status' => 'New', 'lead_source' => 'Web', 'assigned' => 'Super admin', 'contact_date' => '2026-10-01']);
+$crmBase = ['countries' => [1 => 'Bangladesh'], 'currencies' => [1 => 'BDT'], 'users' => [2 => 'Super admin']];
+$crmTemplate = $riRow(['id' => 1, 'subject' => 'Invoice <b>due</b>', 'body' => 'Dear customer, your invoice is due.', 'status' => 1]);
+$crmCases = [
+    'customers' => ['crm.customers.index', '/crm/customers', ['customers' => $riList([$crmCustomer])], ['mm-report', 'Customer Lists', 'Acme &lt;i&gt;Traders&lt;/i&gt;', 'Dhaka', 'Karim'], ['Acme <i>Traders</i>']],
+    'form-customer-create' => ['crm.customers.create', '/crm/customers/create', $crmBase, ['mm-rst-form', 'name="org_name"', 'name="c_name"', 'name="country_id"', 'name="currency"', 'name="assigned"', 'name="leads"', 'name="contact_date"'], []],
+    'form-customer-edit' => ['crm.customers.edit', '/crm/customers/1/edit', $crmBase + ['customer' => $crmCustomer], ['mm-rst-form', 'name="_method"', 'Acme &lt;i&gt;Traders&lt;/i&gt;', 'Dhaka'], ['Acme <i>Traders</i>']],
+    'mail-templates' => ['crm.mail-templates.index', '/crm/mail-templates', ['templates' => $riList([$crmTemplate])], ['mm-report', 'Mail Template Lists', 'Invoice &lt;b&gt;due&lt;/b&gt;', 'Active'], []],
+    'form-mail-template-create' => ['crm.mail-templates.create', '/crm/mail-templates/create', [], ['mm-rst-form', 'name="subject"', 'name="body"', 'name="status"'], []],
+    'form-mail-template-edit' => ['crm.mail-templates.edit', '/crm/mail-templates/1/edit', ['template' => $crmTemplate], ['mm-rst-form', 'name="_method"', 'Invoice &lt;b&gt;due&lt;/b&gt;'], []],
+];
+foreach ($crmCases as $crmName => [$crmViewName, $crmUrl, $crmData, $crmMarkers, $crmAbsent]) {
+    $crmRequest = Illuminate\Http\Request::create($crmUrl);
+    $crmRequest->setLaravelSession(new Illuminate\Session\Store('mm', new Illuminate\Session\ArraySessionHandler(10)));
+    $app->instance('request', $crmRequest);
+    $app->instance('url', new Illuminate\Routing\UrlGenerator($rsRoutes, $crmRequest));
+    try { $crmHtml = $app->make('view')->make($crmViewName, array_merge(['errors' => new Illuminate\Support\ViewErrorBag(), 'slugs' => []], $crmData))->render(); }
+    catch (Throwable $e) { throw new RuntimeException('CRM screen ' . $crmName . ' failed to render: ' . $e->getMessage(), 0, $e); }
+    $crmHtml = preg_replace('/(name="_token" value=")[A-Za-z0-9]+"/', '$1fixture-csrf-token"', str_replace('http://localhost/assets', '/assets', $crmHtml));
+    $crmMissing = [];
+    foreach (array_merge(['mm-panel', 'mm-page-title'], $crmMarkers) as $crmMarker) { if (strpos($crmHtml, $crmMarker) === false) $crmMissing[] = $crmMarker; }
+    if ($crmMissing) throw new RuntimeException('CRM screen ' . $crmName . ' missing ' . implode(' | ', $crmMissing));
+    if (preg_match('/class="[^"]*\\b(?:widget-box|widget-main|widget-header|page-header)\\b/', $crmHtml)) throw new RuntimeException('CRM screen ' . $crmName . ' still contains the legacy frame');
+    foreach ($crmAbsent as $crmMarker) { if (strpos($crmHtml, $crmMarker) !== false) throw new RuntimeException('CRM screen ' . $crmName . ' still contains ' . $crmMarker); }
+    if (strpos($crmHtml, '<b>Warning</b>') !== false || strpos($crmHtml, '<b>Notice</b>') !== false) throw new RuntimeException('CRM screen ' . $crmName . ' sample data is incomplete (PHP warning in output)');
+    $crmFile = __DIR__ . '/fixtures/crm/' . $crmName . '.html';
+    if (!is_dir(dirname($crmFile))) { mkdir(dirname($crmFile), 0777, true); }
+    if (getenv('MM_WRITE_FIXTURE')) { file_put_contents($crmFile, $crmHtml); file_put_contents($previewDir . '/crm-' . $crmName . '.html', $crmHtml); }
+    if (!is_file($crmFile) || (getenv('MM_STRICT_FIXTURES') && file_get_contents($crmFile) !== $crmHtml)) throw new RuntimeException($crmFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
+}
+echo "PASS crm screens render\n";
+
 // ---- Auth cluster (resources/views/auth/*) ----
 // The auth views reference App\Models\SystemSetting / App\Models\Group, so the views are
 // compile-checked only here (no render — those queries are DB-backed). The new layouts.app

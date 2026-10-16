@@ -54,6 +54,21 @@ class RouteNameContractTest extends TestCase
         $this->assertNull($this->named('acc-payments.show'));
     }
 
+    public function test_crm_route_names_and_urls(): void
+    {
+        $this->assertSame('crm/customers', $this->named('crm.customers.index')->uri());
+        $this->assertSame('crm/customers/create', $this->named('crm.customers.create')->uri());
+        $this->assertSame('crm/customers/{customer}', $this->named('crm.customers.update')->uri());
+
+        $this->assertSame('crm/mail-templates', $this->named('crm.mail-templates.index')->uri());
+        $this->assertSame('crm/mail-templates/create', $this->named('crm.mail-templates.create')->uri());
+        $this->assertSame('crm/mail-templates/{mail_template}', $this->named('crm.mail-templates.update')->uri());
+
+        // neither resource exposes a show screen (round 3 convention)
+        $this->assertNull($this->named('crm.customers.show'));
+        $this->assertNull($this->named('crm.mail-templates.show'));
+    }
+
     public function test_acc_collections_resource_names_are_underscored_and_skip_show(): void
     {
         foreach (['index', 'create', 'store', 'edit', 'update', 'destroy'] as $action) {
