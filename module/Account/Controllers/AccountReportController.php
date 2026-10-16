@@ -313,6 +313,15 @@ class AccountReportController extends Controller
      | EQUITY STATEMENT
      |--------------------------------------------------------------------------
     */
+    /** An account group with no controls, for the fixed ids a fresh deployment lacks. */
+    private function emptyAccountGroup(): AccountGroup
+    {
+        $group = new AccountGroup();
+        $group->setRelation('accountControls', collect());
+
+        return $group;
+    }
+
     public function equityStatement(Request $request)
     {
         $this->hasAccess("report.equity-statement");
@@ -899,8 +908,10 @@ class AccountReportController extends Controller
             }]);
         }])->get();
 
-        $asset = $data['accountGroups']->where('id', 1)->first();
-        $liabilities = $data['accountGroups']->where('id', 2)->first();
+        // docs/BUGS.md #73: a deployment with no fixed chart-of-account groups yet must
+        // render the cash-flow sheet as zero instead of walking accountControls off null
+        $asset = $data['accountGroups']->where('id', 1)->first() ?? $this->emptyAccountGroup();
+        $liabilities = $data['accountGroups']->where('id', 2)->first() ?? $this->emptyAccountGroup();
 
         $data['asset'][0] = 0;
         $data['asset'][1] = 0;

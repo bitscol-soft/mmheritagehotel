@@ -24,7 +24,7 @@ class vatController extends Controller
     {
 
         $this->hasAccess("vats.index");
-        $data['systemSetting'] = SystemSetting::where('key', 'use_vat_included')->first();
+        $data['systemSetting'] = SystemSetting::row('use_vat_included');   // docs/BUGS.md #73: creates the row if the deployment does not have it yet
         $data['vat'] = Vat::first() ?? new Vat();   // docs/BUGS.md #73
         // dd($data['systemSetting']);
         return view('vat.index', $data);

@@ -30,11 +30,11 @@
                     <span class="tw-block tw-mb-2 tw-text-sm tw-font-semibold tw-text-ink">Included VAT calc</span>
                     <div class="tw-rounded-lg tw-bg-soft tw-p-3 tw-flex tw-gap-4">
                         <label class="tw-flex tw-items-center tw-gap-2">
-                            <input type="radio" name="key[use_vat_included]"{{ $systemSetting->value == '1' ? 'checked' : '' }} value="1">
+                            <input type="radio" name="key[use_vat_included]"{{ ($systemSetting->value ?? '') == '1' ? 'checked' : '' }} value="1">
                             Yes
                         </label>
                         <label class="tw-flex tw-items-center tw-gap-2">
-                            <input type="radio" name="key[use_vat_included]"{{ $systemSetting->value == '0' ? 'checked' : '' }} value="0">
+                            <input type="radio" name="key[use_vat_included]"{{ ($systemSetting->value ?? '') == '0' ? 'checked' : '' }} value="0">
                             No
                         </label>
                     </div>
