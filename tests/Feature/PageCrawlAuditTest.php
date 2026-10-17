@@ -33,7 +33,7 @@ class PageCrawlAuditTest extends TestCase
         $this->actingAs(User::find(1));
 
         // pass 1: no business data at all -> what a fresh/partial deployment hits
-        $this->assertNoUnexpectedCrawlFailures($this->crawlRoutes('/tmp/page-crawl-empty.txt'), 'empty business data');
+        $this->assertNoUnexpectedCrawlFailures($this->crawlRoutes('/tmp/page-crawl-empty.txt', 'empty'), 'empty business data');
 
         // pass 2: the shipped dump's rows -> what production actually serves.
         // The audit seeds (users/groups/companies/modules/settings) must go first,
@@ -51,7 +51,7 @@ class PageCrawlAuditTest extends TestCase
                 'password' => bcrypt('x'), 'company_id' => 1, 'status' => 1, 'created_at' => now(), 'updated_at' => now()]);
         }
         $this->actingAs(User::find(1));
-        $this->assertNoUnexpectedCrawlFailures($this->crawlRoutes('/tmp/page-crawl.txt'), 'production-shaped data');
+        $this->assertNoUnexpectedCrawlFailures($this->crawlRoutes('/tmp/page-crawl.txt', 'production'), 'production-shaped data');
     }
 
     /**
@@ -119,7 +119,7 @@ class PageCrawlAuditTest extends TestCase
     }
 
     /** @return array<int, array{0: int, 1: int, 2: string, 3: string, 4: string}> */
-    private function crawlRoutes(string $outFile): array
+    private function crawlRoutes(string $outFile, string $pass = ''): array
     {
         $report = [];
         $router  = app('router');
@@ -185,6 +185,11 @@ class PageCrawlAuditTest extends TestCase
         foreach ($report as $line) {
             fwrite(STDOUT, 'crawl | ' . $line . "\n");
         }
+
+        // And one compact line per pass: CI turns these into the check annotation, and the
+        // detailed report above is far too long for that channel (it gets truncated mid-list).
+        fwrite(STDOUT, sprintf("crawl | pass=%s routes=%d failures=%d buckets=%s\n",
+            $pass, count($routes), count($results), json_encode($counts)));
 
         return $results;
     }
