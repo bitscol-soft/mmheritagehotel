@@ -42,6 +42,15 @@ Until both are true the workflow stays **green**: the build and its link check a
 run, the deploy job is simply skipped (`if:` on `main` / `PAGES_PREVIEW_BRANCH`). A failed
 deploy therefore always means a real problem, never a missing setting.
 
+Two mechanics worth knowing:
+
+- **`Run workflow` only appears for workflows on the default branch.** Before PR #18
+  merges there is no `pages-preview.yml` on `main`, so the button will not list it on this
+  branch — a push is what triggers it. (Once merged, use *Run workflow* freely.)
+- **Re-running a run re-evaluates the gate.** After adding the branch to the environment
+  and setting the variable, re-run the latest *Pages preview* run; its deploy job becomes
+  eligible without needing another commit.
+
 ## Verifying by hand
 
 The same artifact can be produced and served locally, mounted under `/<repo>/` exactly
