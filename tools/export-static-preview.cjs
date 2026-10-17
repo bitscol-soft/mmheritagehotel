@@ -278,6 +278,7 @@ async function main() {
         fs.rmSync(OUT, { recursive: true, force: true });
         fs.mkdirSync(OUT, { recursive: true });
 
+        let explorerBody = null;
         const queue = [...ALIASES];
         const seen = new Set();
         const written = [];
@@ -303,6 +304,8 @@ async function main() {
             // Links must be read from the original response: by the time the
             // rewrite has run they are relative to the page, not to the site.
             const discovered = linksIn(page.body);
+
+            if (route === '/preview') explorerBody = page.body;
 
             const depth = route === '/' ? 0 : route.split('/').filter(Boolean).length;
             const html = rewrite(page.body, depth);
@@ -333,6 +336,11 @@ async function main() {
             console.log('filled ' + filled.length + ' dangling fixture reference(s):');
             filled.forEach((f) => console.log('  ' + f));
         }
+
+        // Unknown paths land on the explorer instead of a bare Pages 404.
+        // At the site root, so it must be rewritten at depth 0 - copying the
+        // depth-2 copy would leave every relative link escaping the export.
+        if (explorerBody) fs.writeFileSync(path.join(OUT, '404.html'), rewrite(explorerBody, 0));
 
         // GitHub Pages runs Jekyll only for branch builds, but the marker costs
         // nothing and keeps the artifact portable to any static host.
