@@ -95,7 +95,7 @@ class PurchaseReturnController extends Controller
         $data['products']   = Product::with('unit')->get();
         $data['companies']  = Company::userCompanies();
         $data['suppliers']  = Supplier::pluck('name', 'id');
-        $data['account']    = Account::where('name', 'Cash')->first();
+        $data['account']    = Account::where('name', 'Cash')->first() ?? new Account();   // docs/BUGS.md #73
 
         return view('purchase.purchase-returns.create', $data);
     }
@@ -171,7 +171,7 @@ class PurchaseReturnController extends Controller
     */
     public function show($id)
     {
-        $this->hasAccess("account-purchases.show");
+        $this->hasAccess("account-purchases.view");
 
         $purchaseReturn = PurchaseReturn::with('return_details', 'exchange_details', 'supplier', 'company')->findOrFail($id);
 

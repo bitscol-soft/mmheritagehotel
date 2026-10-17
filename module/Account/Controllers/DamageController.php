@@ -90,7 +90,7 @@ class DamageController extends Controller
 
         $data['products']   = Product::with('unit')->get();
         $data['companies']  = Company::userCompanies();
-        $data['account']    = Account::where('name', 'Cash')->first();
+        $data['account']    = Account::where('name', 'Cash')->first() ?? new Account();   // docs/BUGS.md #73
 
         return view('product.damages.create', $data);
     }
@@ -161,7 +161,7 @@ class DamageController extends Controller
     */
     public function show($id)
     {
-        $this->hasAccess("account-purchases.show");
+        $this->hasAccess("account-purchases.view");
 
         $damage = Damage::with('details', 'company')->findOrFail($id);
 

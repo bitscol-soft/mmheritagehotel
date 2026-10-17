@@ -21,6 +21,22 @@ jobs:
           restore-keys: composer-${{ runner.os }}-
       - name: Install composer dependencies
         run: composer install --no-interaction --prefer-dist --no-progress --ignore-platform-reqs
+      - name: Laravel 11 readiness guard
+        run: bash tools/laravel11-check.sh
+      - name: PHP test suite (phpunit)
+        run: |
+          if ! vendor/bin/phpunit > /tmp/phpunit.log 2>&1; then
+            cat /tmp/phpunit.log
+            # surface the failing assertion (and the crawl findings it may list) in the
+            # check annotation - the job log itself is not always reachable
+            echo "::error::$(grep -E 'Unexpected crawl failures|^[0-9]+\) |Failed asserting' /tmp/phpunit.log | head -n 20 | tr '\n' ' ')"
+            exit 1
+          fi
+          cat /tmp/phpunit.log
+          grep -E '^crawl \|' /tmp/phpunit.log || true
+          # one compact summary line per crawl pass (both fit in an annotation; the
+          # detailed report does not - the channel truncates it mid-list)
+          echo "::notice::$(grep -E '^crawl \| pass=' /tmp/phpunit.log | cut -c 1-300 | tr '\n' ' ')"
       - uses: actions/setup-node@v4
         with:
           node-version: '22'

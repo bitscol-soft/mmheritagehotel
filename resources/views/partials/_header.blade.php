@@ -186,14 +186,14 @@
                         <i class="fa fa-2x fa-plus-circle dark" style="margin-top: 10px;"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                        @if (hasPermission('bookings.add'))
+                        @if (hasPermission('bookings.create'))
                             <li role="presentation">
                                 <a role="menuitem" tabindex="-1" href="{{ route('booking.create') }}">
                                     <i class="fa fa-bed" aria-hidden="true"></i> New Booking
                                 </a>
                             </li>
                         @endif
-                        @if (hasPermission('guests.add'))
+                        @if (hasPermission('guests.create'))
                             <li role="presentation">
                                 <a role="menuitem" tabindex="-1" href="{{ route('guests.create') }}">
                                     <i class="fa fa-user-plus" aria-hidden="true"></i> New Guest
@@ -204,7 +204,7 @@
                              show a single disabled entry so the menu
                              still opens and the user can see the
                              affordance. --}}
-                        @if (!hasPermission('bookings.add') && !hasPermission('guests.add'))
+                        @if (!hasPermission('bookings.create') && !hasPermission('guests.create'))
                             <li role="presentation" class="disabled">
                                 <a role="menuitem" tabindex="-1" href="#" aria-disabled="true">
                                     <i class="fa fa-lock" aria-hidden="true"></i> No quick-add actions available
@@ -237,6 +237,7 @@
                             <ul class="dropdown-menu dropdown-navbar navbar-default">
 
 
+                                @if (Route::has('hrm.pending.recommend'))
                                 <!-- Leave Recommend Count -->
                                 @if (hasPermission("l.applications.recommend", $slugs))
                                     @if (optional($notificationService)->leave_recommend_count > 0)
@@ -254,8 +255,10 @@
                                         </li>
                                     @endif
                                 @endif
+                                @endif
 
 
+                                @if (Route::has('trainings.index'))
                                 <!-- Training Approval Count -->
                                 {{-- @if (hasPermission("training.approve", $slugs)) --}}
                                     @if (optional($notificationService)->training_approval_count > 0)
@@ -272,8 +275,10 @@
                                             </a>
                                         </li>
                                     @endif
+                                @endif
                                 {{-- @endif --}}
 
+                                @if (Route::has('earn-leaves.pending'))
                                 <!-- Leave Approve Count -->
                                 @if (hasPermission("l.applications.approve", $slugs))
                                     @if (optional($notificationService)->earn_leave_approval_count > 0)
@@ -291,7 +296,9 @@
                                         </li>
                                     @endif
                                 @endif
+                                @endif
 
+                                @if (Route::has('hrm.pending.approved'))
                                 <!-- Leave Approve Count -->
                                 @if (hasPermission("l.applications.approve", $slugs))
                                     @if (optional($notificationService)->leave_approve_count > 0)
@@ -308,6 +315,7 @@
                                             </a>
                                         </li>
                                     @endif
+                                @endif
                                 @endif
 
 

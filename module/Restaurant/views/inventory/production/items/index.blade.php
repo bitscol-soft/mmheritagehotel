@@ -18,7 +18,7 @@
 <x-mm.styles />
 <x-mm.page class="mm-report mm-rst mm-rst-inv" title="Item list" description="Raw material items.">
     <x-slot name="actions">
-        @if(hasPermission("rst.material.create", $slugs))
+        @if(hasPermission("items.create", $slugs))
             <a class="mm-button" href="{{ route('rst.material.create') }}"> <i class="fa fa-plus"></i> Add @yield('title') </a>
         @endif
         {{-- @if(hasPermission("items.upload", $slugs))
@@ -108,12 +108,12 @@
                                         <td class="text-center">
                                             <div class="btn-group btn-corner">
 
-                                                @if(hasPermission("rst.material.edit", $slugs))
+                                                @if(hasPermission("items.edit", $slugs))
                                                     <a href="{{ route('rst.material.edit',$item->id) }}" class="btn btn-sm btn-success" title="Edit">
                                                         <i class="fa fa-pencil-square-o"></i>
                                                     </a>
                                                 @endif
-                                                @if(hasPermission("rst.material.delete", $slugs))
+                                                @if(hasPermission("items.delete", $slugs))
                                                     @if($item->purchase_detail_count == 0 && $item->goods_requisition_count == 0)
 
                                                     <button type="button" onclick="delete_check({{ $item->id }})" class="btn btn-sm btn-danger" title="Delete">

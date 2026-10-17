@@ -14,7 +14,18 @@ class BarDataDrop extends Command
 
     public function handle()
     {
-        $sub_modules = Submodule::where('module_id', 170000)->get();
+        // Resolve the Bar module by NAME: the hard-coded 170000 pointed at the
+        // CRM module's id in the shipped schema, so this command used to delete
+        // CRM's permission tree instead of Bar's (BUGS #27).
+        $module = \Module\Permission\Models\Module::where('name', 'Bar')->first();
+
+        if (!$module) {
+            $this->error('Bar module not found; nothing dropped.');
+
+            return;
+        }
+
+        $sub_modules = Submodule::where('module_id', $module->id)->get();
 
         DB::statement('SET FOREIGN_KEY_CHECKS=0');
 
@@ -27,7 +38,7 @@ class BarDataDrop extends Command
             $submodule->parent_permissions()->delete();
             $submodule->delete();
         }
-        \Module\Permission\Models\Module::find(170000)->delete();
+        $module->delete();
 
         DB::statement('SET FOREIGN_KEY_CHECKS=1');
 

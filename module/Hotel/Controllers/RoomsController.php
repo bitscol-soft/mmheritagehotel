@@ -90,6 +90,7 @@ class RoomsController extends Controller
      */
     public function store(Request $request)
     {
+        $this->hasAccess("rooms.index");
         // return $request->all();
 
         $request->validate([
@@ -143,6 +144,7 @@ class RoomsController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->hasAccess("rooms.edit");
         // return $request->all();
 
         $request->validate([

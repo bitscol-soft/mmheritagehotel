@@ -87,7 +87,7 @@ class SaleController extends Controller
         $this->hasAccess("resturant.sales.create");
 
         $data['invoice_id']     = (new ResturentTransectionService())->getInvoiceNo('Restaurant Sale');
-        $data['vat_percent']    = Vat::first()->resturent_vat;
+        $data['vat_percent']    = optional(Vat::first())->resturent_vat ?? 0;   // docs/BUGS.md #73
         $data['account_types']  = AccountType::get();
 
         return view('sales.create', $data);
@@ -112,6 +112,7 @@ class SaleController extends Controller
     */
     public function store(SaleRequest $request)
     {
+        $this->hasAccess("resturant.sales.create");
         try {
             $sale =  $request->store();
 
@@ -141,7 +142,7 @@ class SaleController extends Controller
 
         return view('sales.show', [
             'sale'          => Sale::query()->with('items', 'transaction_ledgers')->find($id),
-            'vat_number'    => Vat::first()->vat_number,
+            'vat_number'    => optional(Vat::first())->vat_number,   // docs/BUGS.md #73
         ]);
     }
 

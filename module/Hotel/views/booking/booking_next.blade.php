@@ -89,10 +89,11 @@
                             </div>
 
                             <!------- ROOM INFO ------>
-                            <div class="row">
+                            <div class="row mm-room-table-row">
                                 <div class="col-sm-12 col-sm-offset-0">
                                     <h3 class="header smaller lighter blue">Room Information</h3>
 
+                                    <x-mm.table-scroll label="Booking room details">
                                     <table id="myTable" class="table table-bordered order-list">
                                         <thead>
 
@@ -315,7 +316,7 @@
                                             <tr>
                                                 <td class="text-right borderless" colspan="12">
                                                     <input type="hidden" name="vat" id="vat"
-                                                        value="{{ $vat->hotel_vat }}">
+                                                        value="{{ optional($vat ?? null)->hotel_vat ?? 0 }}">
 
                                                     Vat({{ $vat->hotel_vat }}%) <span class="currency-sign"></span>
                                                 </td>
@@ -428,6 +429,7 @@
 
                                         </tfoot>
                                     </table>
+                                    </x-mm.table-scroll>
                                 </div>
                             </div>
 

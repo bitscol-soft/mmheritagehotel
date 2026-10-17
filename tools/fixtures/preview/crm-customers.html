@@ -1,0 +1,83 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css">    <link rel="stylesheet" href="/assets/css/chosen.min.css"/>
+<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+<section class="mm-ui mm-report mm-rst mm-rst-inv">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Customer Lists</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Company / contact master used by bookings, banquet and POS.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button" href="http://localhost/crm/crm/customers/create"><i class="fa fa-plus"></i> Add New</a></div>        </header>
+        <div class="mm-panel tw-p-4 sm:tw-p-6 mm-report-filter"><form class="mm-setup-filter mm-report-form" action="" method="get">
+            <div class="input-group">
+                <label class="input-group-addon" for="">
+                    Organization
+                </label>
+
+                <input type="text" name="org_name" class="form-control" placeholder="Search organization"
+                    value="">
+            </div>
+            <div class="input-group">
+                <label class="input-group-addon" for="">
+                    City
+                </label>
+
+                <input type="text" name="city" class="form-control" placeholder="Search city"
+                    value="">
+            </div>
+            <div class="input-group">
+                <button type="submit" class="mm-button mm-button-primary">
+                    <i class="fa fa-search"></i>
+                    Search</button>
+            </div>
+        </form></div>
+
+    <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><div class="table-responsive">
+                <table class="table table-bordered table-striped table-condensed">
+                    <thead>
+                        <tr>
+                            <th>Organization</th>
+                            <th>Contact Person</th>
+                            <th>Phone</th>
+                            <th>Email</th>
+                            <th>City</th>
+                            <th class="text-center">Lead</th>
+                            <th class="text-center">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                                                    <tr>
+                                <td>Acme &lt;i&gt;Traders&lt;/i&gt;</td>
+                                <td>Karim</td>
+                                <td>+880 1700</td>
+                                <td>ops@acme.test</td>
+                                <td>Dhaka</td>
+                                <td class="text-center">Yes</td>
+                                <td class="text-center">
+                                    <div class="btn-group btn-corner">
+                                                                                    <a href="http://localhost/crm/crm/customers/edit/1" class="btn btn-sm btn-success" title="Edit">
+                                                <i class="fa fa-pencil-square-o"></i>
+                                            </a>
+                                                                                                                            <button type="button" class="btn btn-sm btn-danger" title="Delete"
+                                                onclick="delete_item('http://localhost/crm/crm/customers/destroy/1')">
+                                                <i class="fa fa-trash-o"></i>
+                                            </button>
+                                                                            </div>
+                                </td>
+                            </tr>
+                                            </tbody>
+                </table>
+            </div>
+                <br>
+        <!-- INPUTS --></div>
+    </div>
+</section>
+
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
+    <script src="/assets/js/chosen.jquery.min.js"></script>
+    <script src="/assets/custom_js/chosen-box.js"></script>
+<!--/MM-JS--></body></html>

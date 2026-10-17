@@ -1,0 +1,90 @@
+name: Pages preview
+
+# Publishes the visual preview (tools/preview-server.cjs) as a static site.
+#
+# The preview normally runs from a sandbox on port 3000. This workflow exports
+# the same 450+ screens to plain HTML and deploys them with GitHub Pages, so the
+# screens are reachable without the sandbox:
+#   https://bitscol-soft.github.io/mmheritagehotel/
+#
+# Two repository settings decide whether the deploy can happen, both of which
+# need an admin (the automation token cannot change them):
+#
+#   1. Settings -> Pages -> Build and deployment -> Source = "GitHub Actions"
+#   2. Settings -> Environments -> github-pages -> Deployment branches, must allow
+#      the branch being built. To publish from a feature branch, add it there and
+#      set the repository variable PAGES_PREVIEW_BRANCH to its name.
+#
+# Until both are true the build still runs and its 100k-link check still guards
+# every push; only the deploy job is skipped, so the workflow stays green.
+
+on:
+  push:
+    branches:
+      - main
+      - arena/7ee36555-mmheritagehotel
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages-preview
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Export the static preview
+        run: node tools/export-static-preview.cjs --out dist-preview
+
+      - name: Verify every link and asset resolves
+        run: node tools/check-static-preview.cjs dist-preview
+
+      - name: Report the export size
+        run: |
+          echo "pages: $(find dist-preview -name '*.html' | wc -l)"
+          du -sh dist-preview
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist-preview
+
+  deploy:
+    needs: build
+    # `main` always may deploy. A feature branch may too, once it is listed in
+    # the github-pages environment policy and named in PAGES_PREVIEW_BRANCH -
+    # without this guard GitHub fails the job before it starts, with no steps.
+    if: github.ref_name == 'main' || vars.PAGES_PREVIEW_BRANCH == github.ref_name
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      # deploy-pages only works when the repository publishes from Actions.
+      # Say exactly what to change instead of failing with a stack trace.
+      - name: Check the Pages source
+        id: source
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          build_type=$(gh api "repos/${{ github.repository }}/pages" --jq .build_type 2>/dev/null || echo unknown)
+          echo "build_type=$build_type"
+          if [ "$build_type" != "workflow" ]; then
+            echo "::notice title=Pages source::Settings -> Pages -> Build and deployment -> Source must be 'GitHub Actions' (currently '$build_type'). The export built fine and its artifacts are attached to this run; re-run this job once the source is switched."
+          fi
+          echo "enabled=$([ "$build_type" = "workflow" ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+
+      - name: Deploy to GitHub Pages
+        if: steps.source.outputs.enabled == 'true'
+        id: deployment
+        uses: actions/deploy-pages@v4

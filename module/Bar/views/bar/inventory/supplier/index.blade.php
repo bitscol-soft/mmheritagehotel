@@ -6,7 +6,7 @@
 <x-mm.styles />
 <x-mm.page class="mm-hotel-setup mm-bar mm-rst mm-rst-inv" title="Suppliers" description="Bar suppliers.">
     <x-slot name="actions">
-        @if (hasPermission('bar.suppliers.view', $slugs))
+        @if (hasPermission('bar.inventories.create', $slugs))
                 <a class="mm-button" href="#modal-dialog" data-toggle="modal">
                     <i class="fa fa-plus-circle"></i> Add New Supplier
                 </a>
@@ -40,14 +40,14 @@
 
                                         <div class="btn-group btn-corner">
 
-                                            @if (hasPermission('bar.suppliers.edit', $slugs))
+                                            @if (hasPermission('bar.inventories.edit', $slugs))
                                                 <a href="#modal-dialog{{ $item->id }}" data-toggle="modal"
                                                     class="btn btn-sm btn-success" title="Edit">
                                                     <i class="fa fa-pencil-square-o"></i>
                                                 </a>
                                             @endif
 
-                                            @if (hasPermission('bar.suppliers.destroy', $slugs))
+                                            @if (hasPermission('bar.inventories.delete', $slugs))
                                                 <button type="button"
                                                     onclick="delete_item(`{{ route('bar.suppliers.destroy', $item->id) }}`)"
                                                     class="btn btn-sm btn-danger" title="Delete">

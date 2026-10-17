@@ -106,6 +106,7 @@ class JournalVoucherController extends Controller
     */
     public function store(Request $request)
     {
+        $this->hasAccess("voucher-journals.create");
 
 
         try {

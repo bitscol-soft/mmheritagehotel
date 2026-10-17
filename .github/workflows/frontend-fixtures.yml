@@ -18,11 +18,13 @@ on:
     paths:
       - 'resources/views/frontend/**'
       - 'app/Console/Commands/MmRenderPublicFixtures.php'
+      - 'database/mmheritagehotel_db.sql'
       - '.github/workflows/frontend-fixtures.yml'
   pull_request:
     paths:
       - 'resources/views/frontend/**'
       - 'app/Console/Commands/MmRenderPublicFixtures.php'
+      - 'database/mmheritagehotel_db.sql'
       - '.github/workflows/frontend-fixtures.yml'
 
 permissions:
@@ -97,16 +99,27 @@ jobs:
 
       - name: Load the MySQL dump
         run: |
+            set -o pipefail
+            # Use the MariaDB client explicitly: the Ubuntu runner's stock `mysql`
+            # is Oracle's MySQL 8 client, which negotiates utf8mb4_0900_ai_ci and
+            # fails against a MariaDB 10.5 server ("Unknown collation").
+            sudo apt-get update -qq
+            sudo apt-get install -y -qq mariadb-client
+            mariadb --version
+            mariadb --protocol=tcp -h 127.0.0.1 -uroot -proot -e 'SELECT VERSION() AS server_version' || true
             # Disable FK checks during the load — the dump adds ALTER TABLE ... ADD CONSTRAINT
             # FOREIGN KEY clauses after the INSERTs, so a naive load against a freshly created
             # database would fail on the first row whose FK target hasn't been populated yet.
             # We inject SET FOREIGN_KEY_CHECKS=0 / SET UNIQUE_CHECKS=0 right after the existing
             # START TRANSACTION at the top of the dump and re-enable them at the end.
-            { sed 's/^START TRANSACTION;/START TRANSACTION;\nSET FOREIGN_KEY_CHECKS=0;\nSET UNIQUE_CHECKS=0;/' database/mmheritagehotel_db.sql; \
-              echo 'SET FOREIGN_KEY_CHECKS=1;'; \
-              echo 'SET UNIQUE_CHECKS=1;'; \
-            } | mysql --protocol=tcp -h 127.0.0.1 -uroot -proot mmheritagehotel
-            echo "Dump loaded: $(mysql --protocol=tcp -h 127.0.0.1 -uroot -proot -e 'SHOW TABLES' mmheritagehotel | wc -l) tables"
+            if ! { sed 's/^START TRANSACTION;/START TRANSACTION;\nSET FOREIGN_KEY_CHECKS=0;\nSET UNIQUE_CHECKS=0;/' database/mmheritagehotel_db.sql; \
+                   echo 'SET FOREIGN_KEY_CHECKS=1;'; \
+                   echo 'SET UNIQUE_CHECKS=1;'; \
+            } | mariadb --protocol=tcp -h 127.0.0.1 -uroot -proot mmheritagehotel 2> /tmp/load-errors.txt; then
+              echo "::error::dump load failed: $(tail -c 1200 /tmp/load-errors.txt | tr '\n' ' ')"
+              exit 1
+            fi
+            echo "Dump loaded: $(mariadb --protocol=tcp -h 127.0.0.1 -uroot -proot -e 'SHOW TABLES' mmheritagehotel | wc -l) tables"
 
       - name: Configure Laravel environment
         run: |

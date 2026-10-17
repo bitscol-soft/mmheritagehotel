@@ -9,7 +9,7 @@
 @section('content')
 <x-mm.styles />
 <x-mm.page class="mm-hotel-setup mm-hs-services" title="Hotel services" description="Services that can be added to a guest's bill, with their prices.">
-    @if (hasPermission('service.view', $slugs))
+    @if (hasPermission('hotel.services.create', $slugs))
         <x-slot name="actions">
             <a href="#modal-dialog" data-toggle="modal" class="mm-button">
                 <i class="fa fa-plus-circle" aria-hidden="true"></i> Add New Service
@@ -44,13 +44,13 @@
                     <td class="text-center">
 
                         <div class="btn-group btn-corner">
-                            @if (hasPermission('service.edit', $slugs))
+                            @if (hasPermission('hotel.services.edit', $slugs))
                                 <a href="#modal-dialog{{ $item->id }}" data-toggle="modal"
                                     class="btn btn-sm btn-success" title="Edit">
                                     <i class="fa fa-pencil-square-o"></i>
                                 </a>
                             @endif
-                            @if (hasPermission('service.delete', $slugs))
+                            @if (hasPermission('hotel.services.delete', $slugs))
 
                                 <button type="button"
                                     onclick="delete_item(`{{ route('hotelservice.services.destroy', $item->id) }}`)"

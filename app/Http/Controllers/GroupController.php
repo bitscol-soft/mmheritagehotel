@@ -44,6 +44,7 @@ class GroupController extends Controller
      */
     public function store(Request $request)
     {
+        $this->hasAccess("groups.create");
         $group = new Group();
         $group->validate($request);
 
@@ -94,6 +95,7 @@ class GroupController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->hasAccess("groups.edit");
         $group = Group::find($id);
 
         $group->validateUpdate($request, $id);

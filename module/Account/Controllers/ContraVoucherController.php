@@ -105,6 +105,7 @@ class ContraVoucherController extends Controller
     */
     public function store(Request $request)
     {
+        $this->hasAccess("voucher-contras.create");
 
         try {
 

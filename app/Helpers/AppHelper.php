@@ -71,7 +71,8 @@ function group()
 {
     return Cache::rememberForever('group', function () {
 
-        return Group::first()->name;
+        // docs/BUGS.md #73: a deployment with no `groups` row yet has no group name
+        return optional(Group::first())->name;
     });
 }
 
@@ -217,16 +218,25 @@ function vatSetting()
 {
     return Cache::remember('vatSetting', 86400, function () {
         return Vat::first();
-    });
+    }) ?? new Vat();   // docs/BUGS.md #73: no `vats` row must not 500 every booking/POS/invoice screen
 }
 
 
 
 function today_from_system()
 {
-    $date = explode('-', setting('date_start_end'));
-    $start = $date[0];
-    $end = $date[1];
+    // docs/BUGS.md #68: a missing or blank `date_start_end` row made this
+    // helper read an undefined key and 500 every booking screen (New Booking,
+    // booking board, night audits, today's reports). The setting is a business
+    // day range like "4:00 AM-3:59 AM"; when it is absent there is nothing to
+    // roll over, so the business day is simply today.
+    $date = array_map('trim', explode('-', (string) setting('date_start_end')));
+    $start = $date[0] ?? '';
+    $end = $date[1] ?? '';
+
+    if ($end === '') {
+        return Carbon::now()->timezone('Asia/Dhaka')->format('Y-m-d');
+    }
 
     $current_time = Carbon::now()->timezone('Asia/Dhaka')->format('a');
     $current_hour = strtotime(Carbon::now()->timezone('Asia/Dhaka')->format('h:i A')) < strtotime(fdate($end, 'h:i A'));

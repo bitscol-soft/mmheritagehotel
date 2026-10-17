@@ -23,6 +23,7 @@ class HotelFeatureController extends Controller
 
     public function store(Request $request)
     {
+        $this->hasAccess("features.create");
         $request->validate([
             'feature_title'    => 'required',
             'feature_subtitle' => 'required',

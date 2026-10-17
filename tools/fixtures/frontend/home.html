@@ -1,5 +1,1338 @@
-<!--
-    Placeholder. Regenerate with:
-      MM_WRITE_FIXTURE=1 php tools/ui-blade-check.php
-    (run against the seeded DB; see docs/BUGS.md "round 2" for the local boot recipe).
--->
+<!DOCTYPE html>
+<html lang="en">
+<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+<head>
+
+    <!-- Header Section -->
+<title>&nbsp;MM Heritage Hotel</title>
+    <!-- for-mobile-apps -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="" />
+    <meta name="description" content="" />
+     <!-- fav icon -->
+     <link rel="icon" href="/icon.png" type="image/png">
+    <meta name="csrf-token" id="csrf-token" content="">
+    <input type="hidden" name="base_url" id="base_url" value="http://localhost">
+    <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false);
+            function hideURLbar(){ window.scrollTo(0,1); } </script>
+    <!-- //for-mobile-apps -->
+
+
+
+    <link href="/frontend/assets/css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+
+    <link href="/frontend/assets/css/font-awesome.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="/frontend/assets/css/chocolat.css" type="text/css" media="screen">
+
+    <link href="/frontend/assets/css/easy-responsive-tabs.css" rel='stylesheet' type='text/css'/>
+
+    <link rel="stylesheet" href="/frontend/assets/css/flexslider.css" type="text/css" media="screen" property="" />
+
+    <link rel="stylesheet" href="/frontend/assets/css/jquery-ui.css" />
+
+    <link href="/frontend/assets/css/style.css" rel="stylesheet" type="text/css" media="all" />
+
+    <script type="text/javascript" src="/frontend/assets/js/modernizr-2.6.2.min.js"></script>
+
+    <link rel="stylesheet" href="/frontend/assets/css/custom.css">
+
+     <!-- toster -->
+    <link rel="stylesheet" type="text/css" href="/assets/css/toastr.min.css">
+
+    <!--fonts (W7 perf budget: non-render-blocking HTTPS webfont load with display=swap)-->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css?family=Oswald:300,400,700|Federo|Lato:300,400,700,900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css?family=Oswald:300,400,700|Federo|Lato:300,400,700,900&display=swap" rel="stylesheet"></noscript>
+
+
+
+
+    <!--//fonts-->
+
+        <link rel="stylesheet" href="/frontend/assets/css/venobox.min.css">
+    <style>
+        .aminity-icon {
+            font-size: 5em;
+            color: #803d98;
+        }
+
+        .cbp-ig-grid li>.w3_grid_effect:hover .aminity-icon {
+            color: #ffce14;
+        }
+
+        .price-gd-top img {
+            height: 255px !important;
+        }
+
+        #ui-datepicker-div {
+            z-index: 99999999 !important;
+        }
+
+        .booking-details {
+
+            background-color: #803d98;
+            color: #fff;
+            text-align: center;
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+
+        .booking-details label {
+            margin-bottom: 5px;
+            font-weight: 300;
+        }
+
+        .booking-details input {
+            color: #fff;
+            text-align: center;
+            background-color: transparent;
+            border: 1px solid #fff;
+            padding: 3px;
+        }
+
+        .btn-book {
+            background-color: #ffce14;
+            color: #000;
+            padding: 10px 25px;
+            font-size: 18px;
+        }
+
+        .book-submit {
+            margin-top: 10px
+        }
+    </style>
+
+
+<style>
+    .social-icons3 .youtube {background-color: #FF0000;}
+    .social-icons3 .linkedin {background-color: #0077b5;}
+    .menu__item .submenu_item {
+        list-style: none;
+        background-color: #803d98;
+        min-height: 100px;
+        min-width: 200px;
+        padding: 10px;
+        padding-top: 25px;
+        position: absolute;
+        z-index: 99;
+        top: 20px;
+        left: 10px;
+        color: #fff;
+        display: none;
+    }
+    .submenu_item li {
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+    .submenu_item .menu__link {
+        color: #fff;
+        padding: 8px;
+        font-size: 18px;
+        text-align: center;
+        font-weight: 300;
+    }
+    .submenu_item .menu__link:hover{color: #ffce14}
+</style>
+
+<script type="text/javascript" src='https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js'></script>
+
+<script type="text/javascript" src="https://www.servedby-buysellads.com/monetization.js" ></script>
+
+<script>
+    (function(){
+        if(typeof _bsa !== 'undefined' && _bsa) {
+            // format, zoneKey, segment:value, options
+            _bsa.init('flexbar', 'CKYI627U', 'placement:w3layoutscom');
+        }
+    })();
+</script>
+
+<script>
+    (function(){
+    if(typeof _bsa !== 'undefined' && _bsa) {
+        // format, zoneKey, segment:value, options
+        _bsa.init('fancybar', 'CKYDL2JN', 'placement:demo');
+    }
+    })();
+</script>
+
+<script>
+    (function(){
+        if(typeof _bsa !== 'undefined' && _bsa) {
+            // format, zoneKey, segment:value, options
+            _bsa.init('stickybox', 'CKYI653J', 'placement:w3layoutscom');
+        }
+    })();
+</script>
+
+<script>
+    (function(v,d,o,ai){ai=d.createElement("script");ai.defer=true;ai.async=true;ai.src=v.location.protocol+o;d.head.appendChild(ai);})(window, document, "https://vdo.ai/core/w3layouts/vdo.ai.js");
+</script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-125810435-1"></script>
+
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'UA-125810435-1');
+</script>
+
+<script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+    ga('create', 'UA-30027142-1', 'w3layouts.com');
+    ga('send', 'pageview');
+</script>
+
+<!-- sweatalert2 -->
+<link rel="stylesheet" type="text/css" href="/assets/css/sweetalert2.min.css">
+
+
+    
+    
+    
+            
+        <link rel="stylesheet" href="/assets/custom_css/tokens.css?v=1792145297">
+        <link rel="stylesheet" href="/assets/custom_css/ui.css?v=1792145297">
+    
+        <link rel="stylesheet" href="/frontend/assets/css/venobox.min.css">
+    <style>
+        .aminity-icon {
+            font-size: 5em;
+            color: #803d98;
+        }
+
+        .cbp-ig-grid li>.w3_grid_effect:hover .aminity-icon {
+            color: #ffce14;
+        }
+
+        .price-gd-top img {
+            height: 255px !important;
+        }
+
+        #ui-datepicker-div {
+            z-index: 99999999 !important;
+        }
+
+        .booking-details {
+
+            background-color: #803d98;
+            color: #fff;
+            text-align: center;
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+
+        .booking-details label {
+            margin-bottom: 5px;
+            font-weight: 300;
+        }
+
+        .booking-details input {
+            color: #fff;
+            text-align: center;
+            background-color: transparent;
+            border: 1px solid #fff;
+            padding: 3px;
+        }
+
+        .btn-book {
+            background-color: #ffce14;
+            color: #000;
+            padding: 10px 25px;
+            font-size: 18px;
+        }
+
+        .book-submit {
+            margin-top: 10px
+        }
+    </style>
+
+</head>
+<body class="mm-public">
+
+    <!---------- WEBSITE INFO ---------->
+
+<!------------- HEADER ------------->
+<div class="banner-top">
+    <div class="social-bnr-agileits">
+        <ul class="social-icons3">
+            <li><a href="" class="fa fa-facebook icon-border facebook"> </a></li>
+            <li><a href="" class="fa fa-instagram icon-border instagram"> </a></li>
+            <li><a href="" class="tiktok"><img src="/frontend/assets/images/tiktok.svg" /> </a></li>
+        </ul>
+    </div>
+    <div class="contact-bnr-w3-agile">
+        <ul>
+            <li><i class="fa fa-envelope" aria-hidden="true"></i><a href="mailto:booking@mmheritagehotel.com">booking@mmheritagehotel.com</a></li>
+            <li><i class="fa fa-phone" aria-hidden="true"></i>+60102224276</li>
+
+            
+            <li class="s-bar">
+    <div class="search">
+        <input class="search_box" type="checkbox" id="search_box">
+        <label class="icon-search" for="search_box">
+            <span class="fa fa-cart-arrow-down" aria-hidden="true"></span>
+            <span id="cart_count">0</span>
+        </label>
+        <div class="search_form">
+            
+
+
+
+
+            
+
+            <div class="cart">
+                <div class="booking-cart-body">
+                    <ul class="cart-list">
+
+                        
+                        
+                        <li class="cart-body subtotal-body">
+                            <div class="sub-total">
+                                <div class="row">
+                                    <div class="col-md-6"><p class="cart-footer-title">Subtotal :</p></div>
+                                    <div class="col-md-6"><p class="cart-total-amount text-right">0.00 &#x09F3;</p></div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <div class="checkout text-right">
+                        <a href="http://localhost/booking-cart" class="btn btn-checkout">Checkout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</li>
+
+        </ul>
+    </div>
+    <div class="clearfix"></div>
+</div>
+
+
+<!-------- NAVIGATION MENU -------->
+<div class="w3_navigation">
+    <div class="container">
+        <nav class="navbar navbar-default">
+            <div class="navbar-header navbar-left">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <h1>
+                    <a class="navbar-brand" href="http://localhost">MM Heritage <span>Hotel</span>
+                    <p class="logo_w3l_agile_caption">Where Every Moment Exceeds Expectation</p></a>
+                </h1>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <nav class="menu menu--iris">
+                    <ul class="nav navbar-nav menu__list">
+
+                        <li class="menu__item     menu__item--current
+"><a href="http://localhost" class="menu__link">Home</a></li>
+
+                        <li class="menu__item ">
+                            <a href="#about" class="menu__link scroll dropdown-toggle drop-about">About</a>
+                            <ul class="submenu_item about-item">
+                                <li><a class="menu__link" href="http://localhost/privacy-&amp;-policy">Privacy & Policy</a></li>
+                                <li><a class="menu__link" href="http://localhost/terms-&amp;-condition">Terms & Condition</a></li>
+                            </ul>
+                        </li>
+
+                        <li class="menu__item"><a href="#gallery" class="menu__link scroll">Gallery</a></li>
+                        <li class="menu__item"><a href="#rooms" class="menu__link scroll">Rooms</a></li>
+                        <li class="menu__item"><a href="#contact" class="menu__link scroll">Contact Us</a></li>
+
+                        <li class="menu__item ">
+                            <a href="javascript:void(0)" class="menu__link scroll dropdown-toggle drop-rest">Restaurant</a>
+                                                    </li>
+
+                    </ul>
+                </nav>
+            </div>
+        </nav>
+    </div>
+</div>
+
+
+<!------------- HOTEL SETTING MODAL ------->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog">
+    <!-- Modal1 -->
+    <div class="modal-dialog">
+    <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4>Hotel<span>Setting</span></h4>
+                <img src="/frontend/assets/images/1.jpg" alt=" " class="img-responsive" loading="lazy">
+                <h5>We know what you love</h5>
+                <p>Providing guests unique and enchanting views from their rooms with its exceptional amenities, makes Star Hotel one of bests in its kind.Try our food menu, awesome services and friendly staff while you are here.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    <!------------- BANNER ------------->
+        <div id="home" class="w3ls-banner">
+    <!-- banner-text -->
+    <div class="slider">
+        <div class="callbacks_container">
+            <ul class="rslides callbacks callbacks1" id="slider4">
+                                    <li>
+                        <div class="w3layouts-banner-top" style="background: url(http://localhost/./assets/uploads/hotel/website//2024/1707460551.jpg) no-repeat center;">
+                            <div class="container">
+                                <div class="agileits-banner-info">
+                                    <h4></h4>
+                                    <h3></h3>
+                                        <p></p>
+                                    <div class="agileits_w3layouts_more menu__item">
+                                        <a href="#" class="menu__link" data-toggle="modal" data-target="#myModal">Learn More</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                                    <li>
+                        <div class="w3layouts-banner-top" style="background: url(http://localhost/./assets/uploads/hotel/website//2024/1707534872.jpg) no-repeat center;">
+                            <div class="container">
+                                <div class="agileits-banner-info">
+                                    <h4></h4>
+                                    <h3></h3>
+                                        <p></p>
+                                    <div class="agileits_w3layouts_more menu__item">
+                                        <a href="#" class="menu__link" data-toggle="modal" data-target="#myModal">Learn More</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                                    <li>
+                        <div class="w3layouts-banner-top" style="background: url(http://localhost/./assets/uploads/hotel/website//2024/1707904527.jpg) no-repeat center;">
+                            <div class="container">
+                                <div class="agileits-banner-info">
+                                    <h4></h4>
+                                    <h3></h3>
+                                        <p></p>
+                                    <div class="agileits_w3layouts_more menu__item">
+                                        <a href="#" class="menu__link" data-toggle="modal" data-target="#myModal">Learn More</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                
+
+            </ul>
+        </div>
+        <div class="clearfix"> </div>
+        <!--banner Slider starts Here-->
+    </div>
+    <div class="thim-click-to-bottom">
+        <a href="#about" class="scroll">
+            <i class="fa fa-long-arrow-down" aria-hidden="true"></i>
+        </a>
+    </div>
+</div>
+
+
+    <!---------- SEARCH BAR AREA ---------->
+        <div id="availability-agileits">
+    <div class="col-md-3 book-form-left-w3layouts">
+        <h2>BOOKING DATE</h2>
+    </div>
+<div class="col-md-9 book-form">
+    <form action="http://localhost/category" method="GET">
+        <div class="fields-w3ls form-left-agileits-w3layouts ">
+            <p>Room Type</p>
+            <select class="form-control" name="room_category" id="room_category" required>
+                <option value="all">Select All</option>
+                                    <option value="1"
+                         >
+                         Superior Twin
+                    </option>
+                                    <option value="2"
+                         >
+                         Deluxe Queen
+                    </option>
+                                    <option value="8"
+                         >
+                         Double Quad
+                    </option>
+                                    <option value="9"
+                         >
+                         Honey Moon Room
+                    </option>
+                                    <option value="10"
+                         >
+                         VVIP Room
+                    </option>
+                            </select>
+        </div>
+
+
+        <div class="fields-w3ls form-date-w3-agileits">
+            <p>Arrival Date</p>
+                <input class="check_in"  id="datepicker1" name="check_in" type="text" value="10/16/2026" placeholder="Select A Date" required="" autocomplete="off">
+        </div>
+        <div class="fields-w3ls form-date-w3-agileits">
+            <p>Departure Date</p>
+                <input class="check_out"  id="datepicker2" name="check_out" type="text" value="10/17/2026" placeholder="Select A Date"  required autocomplete="off">
+        </div>
+
+        <div class=" form-left-agileits-submit">
+                <input type="submit" value="Check Availability">
+        </div>
+    </form>
+</div>
+<div class="clearfix"> </div>
+</div>
+
+
+
+
+    <!---- YIELD FRONTEND CONTENT AREA (wrapped in shared mm-web panel) ---->
+    <main class="mm-public-main">
+        <div class="mm-panel tw-p-4 sm:tw-p-6 mm-web mm-public-panel tw-bg-transparent tw-shadow-none"><!-- banner-bottom -->
+    <div class="banner-bottom">
+        <div class="container">
+            <!---728x90--->
+
+            <div class="agileits_banner_bottom">
+                <h3><span>EXPERIENCE A GOOD STAY, ENJOY FANTASTIC OFFERS</span>FIND OUR FRIENDLY WELCOMING RECEPTION</h3>
+            </div>
+            <!---728x90--->
+
+            <div class="w3ls_banner_bottom_grids">
+                <ul class="cbp-ig-grid">
+                                            <li>
+                            <div class="w3_grid_effect">
+                                <span class="cbp-ig-icon">
+                                    <i class="fa fa-bed aminity-icon"></i>
+                                </span>
+                                <h4 class="cbp-ig-title">MASTER BEDROOMS</h4>
+                                <span class="cbp-ig-category">RESORT INN</span>
+                            </div>
+                        </li>
+                                            <li>
+                            <div class="w3_grid_effect">
+                                <span class="cbp-ig-icon">
+                                    <i class="fa fa-building aminity-icon"></i>
+                                </span>
+                                <h4 class="cbp-ig-title">SEA VIEW BALCONY</h4>
+                                <span class="cbp-ig-category">RESORT INN</span>
+                            </div>
+                        </li>
+                                            <li>
+                            <div class="w3_grid_effect">
+                                <span class="cbp-ig-icon">
+                                    <i class="fa fa-coffee aminity-icon"></i>
+                                </span>
+                                <h4 class="cbp-ig-title">Large Cafe</h4>
+                                <span class="cbp-ig-category">RESORT INN</span>
+                            </div>
+                        </li>
+                                            <li>
+                            <div class="w3_grid_effect">
+                                <span class="cbp-ig-icon">
+                                    <i class="fa fa-wifi aminity-icon"></i>
+                                </span>
+                                <h4 class="cbp-ig-title">Wifi Coverage</h4>
+                                <span class="cbp-ig-category">RESORT INN</span>
+                            </div>
+                        </li>
+                                    </ul>
+            </div>
+            <!---728x90--->
+        </div>
+    </div>
+
+
+
+    <!-- /about -->
+    <div class="about-wthree" id="about">
+        <div class="container">
+            <div class="ab-w3l-spa">
+                <h3 class="title-w3-agileits title-black-wthree">MM Heritage Hotel</h3>
+                <p class="about-para-w3ls">Experience unparalleled luxury at MM Heritage Hotel Melaka in the heart of Malaysia’s Heritage capital. Surrounded by vibrant multicultural energy, our Hotel takes centre stage with its unique blend of panache and sophistication, combining extraordinary dining experiences, sleek and spacious accommodations, and legendary MM Heritage Hotel service. Our Hotel exudes success and style in the city, embodying the essence of upscale urban living in Melaka.</p>
+                <img src="http://localhost/./assets/uploads/hotel/website/2024/Feb//1707045414.webp" class="img-responsive about-first-image" alt="Hair Salon" loading="lazy">
+                <div class="w3l-slider-img">
+                    <img src="http://localhost/./assets/uploads/hotel/website/2021/Dec//1640846232.webp" class="img-responsive" alt="Hair Salon" loading="lazy">
+                </div>
+                <div class="w3ls-info-about">
+                    <h4>You&#039;ll Love All The Amenities We Offer!</h4>
+                    <p>Lorem ipsum dolor sit amet, ut magna aliqua.</p>
+                </div>
+            </div>
+            <div class="clearfix"> </div>
+        </div>
+    </div>
+
+
+
+    <!-- rooms & rates -->
+    <div class="plans-section" id="rooms">
+        <div class="container">
+            <h3 class="title-w3-agileits title-black-wthree">Rooms And Rates</h3>
+            <div class="priceing-table-main">
+
+                                                            <div class="col-md-4 price-grid">
+                            <div class="price-block agile">
+                                <div class="price-gd-top">
+                                    <a href="http://localhost/category/superior-twin">
+                                                                                    <img src="/frontend/assets/images/1.jpg" alt=" "
+                                                class="img-responsive" loading="lazy">
+                                                                                <h4>Superior Twin</h4>
+                                    </a>
+                                </div>
+
+
+                                
+                            </div>
+                        </div>
+
+
+                        <div class="modal fade booking_process1" tabindex="-1" role="dialog">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="roomCategory">Superior Twin</h4>
+                                                                                    <img src="/frontend/assets/images/1.jpg" alt=" "
+                                                class="img-responsive" style="width: 538px; height: 250px;" loading="lazy">
+                                        
+                                        <div class="booking-details">
+
+                                            <form action="http://localhost/guest/registration" method="GET"
+                                                class="available-room-form">
+                                                <input type="hidden" name="_token" value="">
+                                                <input type="hidden" name="room_id" class="room-id" value="">
+                                                <input type="hidden" name="room_category" class="room-category"
+                                                    value="">
+                                                <input type="hidden" name="check_in" class="check-in" value="">
+                                                <input type="hidden" name="check_out" class="check-out" value="">
+
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group"
+                                                            style="display: flex; flex-direction: column; padding: 0 20px;">
+                                                            <label for="">Arrival Date</label>
+                                                            <input class="arrivalDate1" type="date"
+                                                                value=""
+                                                                style="padding: 0 5px;" placeholder="Select A Date"
+                                                                autocomplete="off">
+                                                            
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <div class="form-group"
+                                                            style="display: flex; flex-direction: column; padding: 0 20px;">
+                                                            <label for="">Depature Date</label>
+                                                            <input class="depatureDate1" type="date"
+                                                                value=""
+                                                                style="padding: 0 5px;" placeholder="Select A Date"
+                                                                autocomplete="off">
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+
+                                            <div class="book-submit mt-2">
+                                                <button type="button" class="btn-book"
+                                                    onclick="submitAvaialbelRoom(1)">Book Now</button>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                                            <div class="col-md-4 price-grid">
+                            <div class="price-block agile">
+                                <div class="price-gd-top">
+                                    <a href="http://localhost/category/deluxe-queen">
+                                                                                    <img src="/frontend/assets/images/1.jpg" alt=" "
+                                                class="img-responsive" loading="lazy">
+                                                                                <h4>Deluxe Queen</h4>
+                                    </a>
+                                </div>
+
+
+                                
+                            </div>
+                        </div>
+
+
+                        <div class="modal fade booking_process2" tabindex="-1" role="dialog">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="roomCategory">Deluxe Queen</h4>
+                                                                                    <img src="/frontend/assets/images/1.jpg" alt=" "
+                                                class="img-responsive" style="width: 538px; height: 250px;" loading="lazy">
+                                        
+                                        <div class="booking-details">
+
+                                            <form action="http://localhost/guest/registration" method="GET"
+                                                class="available-room-form">
+                                                <input type="hidden" name="_token" value="">
+                                                <input type="hidden" name="room_id" class="room-id" value="">
+                                                <input type="hidden" name="room_category" class="room-category"
+                                                    value="">
+                                                <input type="hidden" name="check_in" class="check-in" value="">
+                                                <input type="hidden" name="check_out" class="check-out" value="">
+
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group"
+                                                            style="display: flex; flex-direction: column; padding: 0 20px;">
+                                                            <label for="">Arrival Date</label>
+                                                            <input class="arrivalDate2" type="date"
+                                                                value=""
+                                                                style="padding: 0 5px;" placeholder="Select A Date"
+                                                                autocomplete="off">
+                                                            
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <div class="form-group"
+                                                            style="display: flex; flex-direction: column; padding: 0 20px;">
+                                                            <label for="">Depature Date</label>
+                                                            <input class="depatureDate2" type="date"
+                                                                value=""
+                                                                style="padding: 0 5px;" placeholder="Select A Date"
+                                                                autocomplete="off">
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+
+                                            <div class="book-submit mt-2">
+                                                <button type="button" class="btn-book"
+                                                    onclick="submitAvaialbelRoom(2)">Book Now</button>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                                            <div class="col-md-4 price-grid">
+                            <div class="price-block agile">
+                                <div class="price-gd-top">
+                                    <a href="http://localhost/category/double-quad">
+                                                                                    <img src="/frontend/assets/images/1.jpg" alt=" "
+                                                class="img-responsive" loading="lazy">
+                                                                                <h4>Double Quad</h4>
+                                    </a>
+                                </div>
+
+
+                                
+                            </div>
+                        </div>
+
+
+                        <div class="modal fade booking_process8" tabindex="-1" role="dialog">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="roomCategory">Double Quad</h4>
+                                                                                    <img src="/frontend/assets/images/1.jpg" alt=" "
+                                                class="img-responsive" style="width: 538px; height: 250px;" loading="lazy">
+                                        
+                                        <div class="booking-details">
+
+                                            <form action="http://localhost/guest/registration" method="GET"
+                                                class="available-room-form">
+                                                <input type="hidden" name="_token" value="">
+                                                <input type="hidden" name="room_id" class="room-id" value="">
+                                                <input type="hidden" name="room_category" class="room-category"
+                                                    value="">
+                                                <input type="hidden" name="check_in" class="check-in" value="">
+                                                <input type="hidden" name="check_out" class="check-out" value="">
+
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group"
+                                                            style="display: flex; flex-direction: column; padding: 0 20px;">
+                                                            <label for="">Arrival Date</label>
+                                                            <input class="arrivalDate8" type="date"
+                                                                value=""
+                                                                style="padding: 0 5px;" placeholder="Select A Date"
+                                                                autocomplete="off">
+                                                            
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <div class="form-group"
+                                                            style="display: flex; flex-direction: column; padding: 0 20px;">
+                                                            <label for="">Depature Date</label>
+                                                            <input class="depatureDate8" type="date"
+                                                                value=""
+                                                                style="padding: 0 5px;" placeholder="Select A Date"
+                                                                autocomplete="off">
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+
+                                            <div class="book-submit mt-2">
+                                                <button type="button" class="btn-book"
+                                                    onclick="submitAvaialbelRoom(8)">Book Now</button>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                                            <div class="col-md-4 price-grid">
+                            <div class="price-block agile">
+                                <div class="price-gd-top">
+                                    <a href="http://localhost/category/honey-moon-room">
+                                                                                    <img src="/frontend/assets/images/1.jpg" alt=" "
+                                                class="img-responsive" loading="lazy">
+                                                                                <h4>Honey Moon Room</h4>
+                                    </a>
+                                </div>
+
+
+                                
+                            </div>
+                        </div>
+
+
+                        <div class="modal fade booking_process9" tabindex="-1" role="dialog">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="roomCategory">Honey Moon Room</h4>
+                                                                                    <img src="/frontend/assets/images/1.jpg" alt=" "
+                                                class="img-responsive" style="width: 538px; height: 250px;" loading="lazy">
+                                        
+                                        <div class="booking-details">
+
+                                            <form action="http://localhost/guest/registration" method="GET"
+                                                class="available-room-form">
+                                                <input type="hidden" name="_token" value="">
+                                                <input type="hidden" name="room_id" class="room-id" value="">
+                                                <input type="hidden" name="room_category" class="room-category"
+                                                    value="">
+                                                <input type="hidden" name="check_in" class="check-in" value="">
+                                                <input type="hidden" name="check_out" class="check-out" value="">
+
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group"
+                                                            style="display: flex; flex-direction: column; padding: 0 20px;">
+                                                            <label for="">Arrival Date</label>
+                                                            <input class="arrivalDate9" type="date"
+                                                                value=""
+                                                                style="padding: 0 5px;" placeholder="Select A Date"
+                                                                autocomplete="off">
+                                                            
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <div class="form-group"
+                                                            style="display: flex; flex-direction: column; padding: 0 20px;">
+                                                            <label for="">Depature Date</label>
+                                                            <input class="depatureDate9" type="date"
+                                                                value=""
+                                                                style="padding: 0 5px;" placeholder="Select A Date"
+                                                                autocomplete="off">
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+
+                                            <div class="book-submit mt-2">
+                                                <button type="button" class="btn-book"
+                                                    onclick="submitAvaialbelRoom(9)">Book Now</button>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                                            <div class="col-md-4 price-grid">
+                            <div class="price-block agile">
+                                <div class="price-gd-top">
+                                    <a href="http://localhost/category/vvip-room">
+                                                                                    <img src="/frontend/assets/images/1.jpg" alt=" "
+                                                class="img-responsive" loading="lazy">
+                                                                                <h4>VVIP Room</h4>
+                                    </a>
+                                </div>
+
+
+                                
+                            </div>
+                        </div>
+
+
+                        <div class="modal fade booking_process10" tabindex="-1" role="dialog">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="roomCategory">VVIP Room</h4>
+                                                                                    <img src="/frontend/assets/images/1.jpg" alt=" "
+                                                class="img-responsive" style="width: 538px; height: 250px;" loading="lazy">
+                                        
+                                        <div class="booking-details">
+
+                                            <form action="http://localhost/guest/registration" method="GET"
+                                                class="available-room-form">
+                                                <input type="hidden" name="_token" value="">
+                                                <input type="hidden" name="room_id" class="room-id" value="">
+                                                <input type="hidden" name="room_category" class="room-category"
+                                                    value="">
+                                                <input type="hidden" name="check_in" class="check-in" value="">
+                                                <input type="hidden" name="check_out" class="check-out" value="">
+
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group"
+                                                            style="display: flex; flex-direction: column; padding: 0 20px;">
+                                                            <label for="">Arrival Date</label>
+                                                            <input class="arrivalDate10" type="date"
+                                                                value=""
+                                                                style="padding: 0 5px;" placeholder="Select A Date"
+                                                                autocomplete="off">
+                                                            
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-6">
+                                                        <div class="form-group"
+                                                            style="display: flex; flex-direction: column; padding: 0 20px;">
+                                                            <label for="">Depature Date</label>
+                                                            <input class="depatureDate10" type="date"
+                                                                value=""
+                                                                style="padding: 0 5px;" placeholder="Select A Date"
+                                                                autocomplete="off">
+                                                            
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+
+                                            <div class="book-submit mt-2">
+                                                <button type="button" class="btn-book"
+                                                    onclick="submitAvaialbelRoom(10)">Book Now</button>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                                    
+                <div class="clearfix"> </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!--sevices-->
+    <div class="advantages" style="background-image: url(http://localhost/./assets/uploads/hotel/website/2021/Dec//1640782709.webp)">
+        <div class="container">
+            <div class="advantages-main">
+                <h3 class="title-w3-agileits">Our Services</h3>
+                <div class="advantage-bottom">
+
+
+                                            <div class="col-md-6 advantage-grid left-w3ls wow bounceInLeft "
+                            data-wow-delay="0.3s">
+
+                            
+                            <div class="advantage-block ">
+                                <i class="fa fa fa-credit-card" aria-hidden="true"></i>
+                                <h4 class="services-title">Stay First, Pay After!</h4>
+                                <p class="services-description">Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates.</p>
+
+                                                                    <p><i class="fa fa-check"></i>Decorated Room</p>
+                                                                    <p><i class="fa fa-check"></i> Proper Air Conditioned</p>
+                                                                    <p><i class="fa fa-check"></i> Private Balcony</p>
+                                
+                                
+
+                            </div>
+
+                        </div>
+                                            <div class="col-md-6 advantage-grid left-w3ls wow bounceInLeft border-right-0"
+                            data-wow-delay="0.3s">
+
+                            
+                            <div class="advantage-block ">
+                                <i class="fa fa fa-clock-o" aria-hidden="true"></i>
+                                <h4 class="services-title">24 Hour Restaurant</h4>
+                                <p class="services-description">Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates.</p>
+
+                                                                    <p><i class="fa fa-check"></i>24 hours room service</p>
+                                                                    <p><i class="fa fa-check"></i> 24-hour Concierge service</p>
+                                                                    <p><i class="fa fa-check"></i> 24 hour Electricity service</p>
+                                
+                                
+
+                            </div>
+
+                        </div>
+                                        <div class="clearfix"> </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <!-- OLD GALLERY -->
+    
+
+
+
+    <!-- NEW GALLERY WITH VENOBOX -->
+    <div class="container">
+        <section class="portfolio-w3ls" id="gallery">
+    
+            <h3 class="title-w3-agileits title-black-wthree">Our Gallery</h3>
+    
+            <div class="row" style="margin: 0">
+                                    <div class="col-md-3 gallery-grid gallery1">
+                        <a class="venobox" data-gall="gallery01" href="http://localhost/./assets/uploads/uploads/hotel/website/gallery/2024/2-1707216059-356880.jpg"
+                            alt="Lobby" width="100%" height="100%">
+                            <img src="http://localhost/./assets/uploads/uploads/hotel/website/gallery/2024/2-1707216059-356880.jpg" class="gallery-image img-responsive" loading="lazy">
+    
+                            <div class="textbox">
+                                <h4>Lobby</h4>
+                                <p><i class="fa fa-picture-o" aria-hidden="true"></i></p>
+                            </div>
+                        </a>
+                    </div>
+                                    <div class="col-md-3 gallery-grid gallery1">
+                        <a class="venobox" data-gall="gallery01" href="http://localhost/./assets/uploads/uploads/hotel/website/gallery/2024/6-1707223648-960860.jpg"
+                            alt="Restaurant" width="100%" height="100%">
+                            <img src="http://localhost/./assets/uploads/uploads/hotel/website/gallery/2024/6-1707223648-960860.jpg" class="gallery-image img-responsive" loading="lazy">
+    
+                            <div class="textbox">
+                                <h4>Restaurant</h4>
+                                <p><i class="fa fa-picture-o" aria-hidden="true"></i></p>
+                            </div>
+                        </a>
+                    </div>
+                                    <div class="col-md-3 gallery-grid gallery1">
+                        <a class="venobox" data-gall="gallery01" href="http://localhost/./assets/uploads/uploads/hotel/website/gallery/2024/7-1707223704-928455.jpg"
+                            alt="Room" width="100%" height="100%">
+                            <img src="http://localhost/./assets/uploads/uploads/hotel/website/gallery/2024/7-1707223704-928455.jpg" class="gallery-image img-responsive" loading="lazy">
+    
+                            <div class="textbox">
+                                <h4>Room</h4>
+                                <p><i class="fa fa-picture-o" aria-hidden="true"></i></p>
+                            </div>
+                        </a>
+                    </div>
+                                    <div class="col-md-3 gallery-grid gallery1">
+                        <a class="venobox" data-gall="gallery01" href="http://localhost/./assets/uploads/uploads/hotel/website/gallery/2024/8-1707223720-827282.jpg"
+                            alt="Room" width="100%" height="100%">
+                            <img src="http://localhost/./assets/uploads/uploads/hotel/website/gallery/2024/8-1707223720-827282.jpg" class="gallery-image img-responsive" loading="lazy">
+    
+                            <div class="textbox">
+                                <h4>Room</h4>
+                                <p><i class="fa fa-picture-o" aria-hidden="true"></i></p>
+                            </div>
+                        </a>
+                    </div>
+                            </div>
+    
+        </section>
+    </div>
+
+
+
+
+    <!-- visitors --></div>
+    </main>
+
+
+
+
+    <!------------- COPYRIGHT ------------->
+        <div class="copy">
+        <p>© 2026 MM Heritage Hotel . All Rights Reserved | Developed by <a href="https://www.banglafire.com" target="_blank">Banglafire Software Ltd.</a> </p>
+    </div>
+
+
+    <!---------- INCLUDE JS AREA ---------->
+<script type="text/javascript" src="/frontend/assets/js/jquery-2.1.4.min.js"></script>
+
+<!-- contact form -->
+<script src="/frontend/assets/js/jqBootstrapValidation.js"></script>
+<script src="/frontend/assets/js/contact_me.js"></script>
+
+<!-- /contact form -->
+<!-- Calendar -->
+<script src="/frontend/assets/js/jquery-ui.js"></script>
+<script>
+        $(function() {
+        $( "#datepicker,#datepicker1,#datepicker2,#datepicker3" ).datepicker();
+        });
+</script>
+
+<!-- //Calendar -->
+
+<!-- gallery popup -->
+<link rel="stylesheet" href="/frontend/assets/css/swipebox.css">
+<script src="/frontend/assets/js/jquery.swipebox.min.js"></script>
+
+<script type="text/javascript">
+    jQuery(function($) {
+        $(".swipebox").swipebox();
+    });
+</script>
+
+<!-- //gallery popup -->
+<!-- start-smoth-scrolling -->
+<script type="text/javascript" src="/frontend/assets/js/move-top.js"></script>
+<script type="text/javascript" src="/frontend/assets/js/easing.js"></script>
+
+<script type="text/javascript">
+	jQuery(document).ready(function($) {
+		$(".scroll").click(function(event){
+			event.preventDefault();
+			$('html,body').animate({scrollTop:$(this.hash).offset().top},1000);
+		});
+	});
+</script>
+<!-- start-smoth-scrolling -->
+<!-- flexSlider -->
+<script defer src="/frontend/assets/js/jquery.flexslider.js"></script>
+<script type="text/javascript">
+    $(window).load(function(){
+    $('.flexslider').flexslider({
+        animation: "slide",
+        start: function(slider){
+        $('body').removeClass('loading');
+        }
+    });
+    });
+</script>
+			<!-- //flexSlider -->
+<script src="/frontend/assets/js/responsiveslides.min.js"></script>
+<script>
+    // You can also use "$(window).load(function() {"
+    $(function () {
+        // Slideshow 4
+        $("#slider4").responsiveSlides({
+        auto: true,
+        pager:true,
+        nav:false,
+        speed: 500,
+        namespace: "callbacks",
+        before: function () {
+            $('.events').append("<li>before event fired.</li>");
+        },
+        after: function () {
+            $('.events').append("<li>after event fired.</li>");
+        }
+        });
+
+    });
+</script>
+<!--search-bar-->
+<script src="/frontend/assets/js/main.js"></script>
+<!--//search-bar-->
+<!--tabs-->
+<script src="/frontend/assets/js/easy-responsive-tabs.js"></script>
+
+<script>
+    $(document).ready(function () {
+    $('#horizontalTab').easyResponsiveTabs({
+    type: 'default', //Types: default, vertical, accordion
+    width: 'auto', //auto or any width like 600px
+    fit: true,   // 100% fit in a container
+    closed: 'accordion', // Start closed if in accordion view
+    activate: function(event) { // Callback function if tab is switched
+    var $tab = $(this);
+    var $info = $('#tabInfo');
+    var $name = $('span', $info);
+    $name.text($tab.text());
+    $info.show();
+    }
+    });
+    $('#verticalTab').easyResponsiveTabs({
+    type: 'vertical',
+    width: 'auto',
+    fit: true
+    });
+    });
+</script>
+<!--//tabs-->
+<!-- smooth scrolling -->
+<script type="text/javascript">
+    $(document).ready(function() {
+
+    $().UItoTop({ easingType: 'easeOutQuart' });
+    });
+</script>
+<div class="arr-w3ls">
+    <a href="#home" id="toTop" style="display: block;"> <span id="toTopHover" style="opacity: 1;"> </span></a>
+</div>
+<!-- //smooth scrolling -->
+<script type="text/javascript" src="/frontend/assets/js/bootstrap-3.1.1.min.js"></script>
+<script type="text/javascript" src="/frontend/assets/js/booking-cart.js"></script>
+
+<!-- sweetalert2 -->
+<script src="/assets/js/sweetalert2.min.js"></script>
+
+<script src="/assets/js/toastr.min.js"></script>
+
+<script>
+    
+        
+        
+        </script>
+
+
+
+
+
+
+<script>
+    $('.submenu_item').hover(
+        function () {
+            $(this).show();
+        },
+        function () {
+            $(this).hide();
+        }
+    );
+
+    $('.drop-rest').hover(
+        function () {
+            $('.rest-item').show();
+        },
+        function () {
+            $('.rest-item').hide();
+        }
+    );
+
+    $('.drop-about').hover(
+        function () {
+            $('.about-item').show();
+        },
+        function () {
+            $('.about-item').hide();
+        }
+    );
+</script>
+        <script>
+
+    
+
+    function submitAvaialbelRoom(category_id){
+
+        let arrivalDate     = $('.arrivalDate'+category_id).val();
+        let depatureDate    = $('.depatureDate'+category_id).val();
+        let route           = `http://localhost/check/available/room`;
+
+        if (arrivalDate == '') {
+            toastr.error('Please choose a check in date!');
+            return;
+        }
+        else if (depatureDate == '') {
+            toastr.error('Please choose a check out date!');
+            return;
+        }
+        else {
+
+            console.log(arrivalDate, depatureDate, route);
+
+            $.ajax({
+                url: route,
+                type: 'GET',
+                data: { category_id: category_id, check_in: arrivalDate, check_out: depatureDate },
+                success: function(response) {
+                    console.log(response);
+                    if (response.totalAvailableRoom > 0) {
+                        $('.room-id').val(response.room_id);
+                        $('.room-category').val(category_id);
+                        $('.check-in').val(arrivalDate);
+                        $('.check-out').val(depatureDate);
+
+                        $('.available-room-form').submit();
+                    } else {
+                        Swal.fire({
+                            type: 'error',
+                            title: '<h4>There is no room avalibale in this category! Please select another Category</h4>',
+                            timer: 1500,
+                            // showConfirmButton: false
+                        })
+                        return;
+                    }
+                }
+            });
+        }
+    }
+
+
+
+</script>
+
+    <script src="/frontend/assets/js/venobox.min.js"></script>
+    <script>
+        new VenoBox({
+            selector: '.venobox',
+            numeration: true,
+            infinigall: true,
+            share: true,
+            spinner: 'wave'
+        });
+    </script>
+
+    
+
+</body>
+</html>

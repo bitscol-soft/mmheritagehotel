@@ -19,7 +19,7 @@ class SupplierTypeController extends Controller
      */
     public function index(Request $request)
     {
-        $this->hasAccess('	supplier.types.index');
+        $this->hasAccess('supplier.types.index');
 
         $supplierTypes = SupplierType::query();
 
@@ -50,7 +50,7 @@ class SupplierTypeController extends Controller
      */
     public function store(Request $request)
     {
-        $this->hasAccess('	supplier.types.create');
+        $this->hasAccess('supplier.types.create');
 
         $request->validate([
             'name.*' => 'required|unique:supplier_types,name'
@@ -96,7 +96,7 @@ class SupplierTypeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->hasAccess('	supplier.types.edit');
+        $this->hasAccess('supplier.types.edit');
 
         $request->validate([
             'name' => 'required|unique:supplier_types,name,'.$id
@@ -118,7 +118,7 @@ class SupplierTypeController extends Controller
      */
     public function destroy($id)
     {
-        $this->hasAccess('	supplier.types.delete');
+        $this->hasAccess('supplier.types.delete');
 
         SupplierType::where('id', $id)->delete();
 

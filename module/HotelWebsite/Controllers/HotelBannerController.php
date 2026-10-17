@@ -92,6 +92,7 @@ class HotelBannerController extends Controller
 
     public function store(Request $request)
     {
+        $this->hasAccess("banners.create");
         // $request->validate([
         //     'banner_head_title' => 'required',
         //     'banner_sub_title'  => 'required',
@@ -127,6 +128,7 @@ class HotelBannerController extends Controller
 
     public function update(Request $request,$id)
     {
+        $this->hasAccess("banners.edit");
         // return $request->all();
 
         // $request->validate([

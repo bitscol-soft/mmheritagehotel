@@ -44,7 +44,7 @@
                         @foreach($companies as $key => $company)
                             <tr>
                                 <td>{{ $key+1 }}</td>
-                                <td>{{ $company->group->name }}</td>
+                                <td>{{ optional($company->group)->name }}</td>
                                 <td>{{ $company->name }}</td>
                                 <td>{{ $company->business_type }}</td>
                                 <td>{{ $company->code }}</td>
@@ -129,7 +129,7 @@
                                         <dl id="dt-list-1" class="dl-horizontal">
 
                                             <dt>Group Name</dt>
-                                            <dd>{{ $company->group->name }}</dd>
+                                            <dd>{{ optional($company->group)->name }}</dd>
 
                                             <dt>Company Name</dt>
                                             <dd>{{ $company->name }}</dd>

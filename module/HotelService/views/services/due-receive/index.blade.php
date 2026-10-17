@@ -58,7 +58,7 @@
                                                     <td>{{ number_format($dueServiceSale->advance_paid, 2) }}</td>
                                                     <td>{{ $dueServiceSale->due_amount }}</td>
                                                     @if ($dueServiceSale->due_amount != 0.0)
-                                                        @if (hasPermission('service.edit', $slugs))
+                                                        @if (hasPermission('sales.edit', $slugs))
                                                             <td><a class="btn btn-xs btn-warning"
                                                                     onclick="payment({{ $dueServiceSale->id . ',' . $dueServiceSale->due }})">
                                                                     Payment</a>

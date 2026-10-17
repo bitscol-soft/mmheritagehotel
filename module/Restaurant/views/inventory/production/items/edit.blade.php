@@ -16,7 +16,7 @@
 <x-mm.styles />
 <x-mm.page class="mm-rst mm-rst-inv mm-rst-form" title="Edit item" description="Update the raw material item.">
     <x-slot name="actions">
-        @if (hasPermission('rst.material.view', $slugs))
+        @if (hasPermission('items.view', $slugs))
                 <a href="{{ route('rst.material.index') }}" class="mm-button"><i class="ace-icon fa fa-list-alt"></i> Item
                     List</a>
         @endif
@@ -111,7 +111,7 @@
                     <button class="btn btn-success btn-sm"> <i class="fa fa-save"></i> Update</button>
                     <button class="btn btn-gray btn-sm" type="Reset"> <i class="fa fa-refresh"></i>
                         Reset</button>
-                    @if (hasPermission('rst.material.view', $slugs))
+                    @if (hasPermission('items.view', $slugs))
                         <a href="{{ route('rst.material.index') }}" class="btn btn-info btn-sm"> <i
                                 class="fa fa-list"></i> List</a>
                     @endif

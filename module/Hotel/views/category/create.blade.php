@@ -12,7 +12,7 @@
 @section('content')
     <x-mm.styles />
     <x-mm.page class="mm-room-form mm-category-form" title="Add a room category" description="Define room type, capacity, rates, amenities, photos and optional guest-based pricing.">
-        @if (hasPermission('hotel-categories.view', $slugs))
+        @if (hasPermission('categories.index', $slugs))
             <x-slot name="actions">
                 <a href="{{ route('hotel-categories.index') }}" class="mm-button mm-button-secondary">
                     <i class="fa fa-arrow-left" aria-hidden="true"></i> Room categories

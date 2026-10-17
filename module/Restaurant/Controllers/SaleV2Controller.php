@@ -77,7 +77,7 @@ class SaleV2Controller extends Controller
 
         $invoice                = (new BarTransectionService())->getInvoiceNo('Restaurant Sale');
         $data['invoice_id']     = $invoice;
-        $data['vat_percent']    = Vat::first()->restaurant_vat;
+        $data['vat_percent']    = optional(Vat::first())->restaurant_vat ?? 0;   // docs/BUGS.md #73
         $data['account_types']  = AccountType::pluck('name', 'id');
         $data['guests']         = Guest::paginate(2);
         $data['tables']         = RstTableManage::query()->get();
@@ -98,6 +98,7 @@ class SaleV2Controller extends Controller
     */
     public function store(SaleRequest $request)
     {
+        $this->hasAccess("resturant.sales.create");
 
         try {
 

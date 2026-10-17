@@ -382,6 +382,12 @@ class ProductController extends Controller
      */
     public function getProductBatch(Request $request)
     {
+        // docs/BUGS.md #70: see the Bar module copy - the batch table does not
+        // exist in this deployment's schema
+        if (!\Illuminate\Support\Facades\Schema::hasTable('rst_product_batches')) {
+            return response()->json([]);
+        }
+
         return ProductBatch::where("batch_number", "like", "%{$request->number}%")->get();
     }
 

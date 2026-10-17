@@ -18,7 +18,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <div class="panel-heading-btn pull-right">
-                        @if (hasPermission('service.view', $slugs))
+                        @if (hasPermission('sales.index', $slugs))
                             <a class="btn btn-success btn-sm" href="{{ route('hospital-services-sales.index') }}">
                                 <i class="fa fa-bars"></i> All Sales</a>
                         @endif

@@ -76,12 +76,47 @@ not a deployed Laravel application. See TAILWIND-DEVELOPMENT.md for prior work.
 
 ## Booking Notes blockers
 
-The legacy controller's create/store/destroy paths operate on Guest records,
-not BookingNote. Do not use these routes as note CRUD. No new controls added.
-The index query uses `name` but the filter submits `title`; search functionality
-is not fixed by the presentation migration. Backend correction and authorization
-review, then authenticated tests, are required before this group is complete.
-Next UI group: remaining room-category forms.
+The legacy controllers' Guest copy-paste paths (create/store/destroy plus the
+guest-info helpers) were removed from `BookingNoteController` and
+`GuestRegistrationTermsController`: routes already exposed only index/edit/update
+and the dead methods mutated Guest records, not the note/terms models. The
+index `queryLike('title')` matches the filter's `title` field (an earlier
+`name`/`title` mismatch is gone). 2026-10-16: real create/store/destroy restored
+for both screens (title forms mirroring each edit form; Add New/Delete controls
+on the lists — delete is an inline-confirm DELETE form so the booking-note
+frozen status script section is untouched). Authorization review (no permission
+slug exists for either screen yet), then authenticated tests, are required
+before this group is complete. Next UI group: remaining room-category forms.
+
+## Permission slug audit (2026-10-16)
+
+`hasAccess()` slugs were cross-checked against the shipped `permissions` table
+(`database/mmheritagehotel_db.sql`). Fixed where the intent was unambiguous (real
+slug exists and matches the view-side `hasPermission()`/sidebar usage):
+`aminities.types.index` → per-action `aminities.*` (Hotel amenitie screens) and
+`banquet.aminities.*` (Banquet amenitie screens); `account.setups.index` →
+`account-setups.index`; `account-sales.show`/`account-purchases.show` →
+`.view` (the shipped family has no `.show`); tab-prefixed `supplier.types.*`
+and `\treport.ledger-journal` typos (both duplicate and module controllers).
+Follow-up done in the same round: 70 ungated `store`/`update` mutations across
+44 resource controllers now carry the same `hasAccess()` slug their `create`/
+`edit` form sibling uses (direct POST can no longer bypass the form gate).
+
+Still open — see `docs/PERMISSION-SEED-PROPOSAL.md` for the reviewed split:
+four families were spelling/action drift and are now remapped in code
+(`voucher-journals.*`, `rst.stock-adjustment.*` actions, `resturant.table-manages.*`,
+and the `report.*` route-name slugs for the 6 analysis reports); eight families
+(`supplier.types.*`, `items.*`, `purchases.*`, `purchase.receives.*`,
+`create.requisitions.*`, `gs.reports.*`, `fund.transfers.*`, `report.*` analysis
+pages) — **seed applied to `database/mmheritagehotel_db.sql` (2026-10-16,
+owner-approved): 42 rows + 79 modeled grants**, effective on next DB import.
+Group 3 closed the same day: `pharmacy.*`, `acc_payments.*`, `acc_collections.*`
+seeded too (13 rows + 26 grants) plus three controller copy-paste remaps
+(`GuestUploadController` -> `guests.edit`, Restaurant `ProductUploadController`
+-> `resturant.inventories.edit`, `TableManageController::storeOrUpdate` ->
+`resturant.table-manages.edit`). **Every `hasAccess()` slug now resolves
+against the shipped table.** View-side drift (e.g. `rst.table-manages.index`)
+stays frozen with the `hasPermission()` byte-identical rule.
 
 ## Full menu design
 
