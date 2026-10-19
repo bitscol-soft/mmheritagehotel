@@ -68,10 +68,14 @@ class PosAjaxGuardTest extends TestCase
             }
         }
 
-        // Compare a single string, not an array: a truncated CI log keeps only the
-        // last line of a failure, and the "actual" line of a string diff is the
-        // one that names every endpoint that broke.
-        $this->assertSame('ok', empty($failed) ? 'ok' : implode('  ', $failed));
+        // CI keeps only the FIRST line of a failure ("1) Class::test_name Failed
+        // asserting ..."), so a diff or a message never survives. The test name is
+        // on that line - put the broken endpoints there.
+        if (!empty($failed)) {
+            $this->setName($this->getName() . ' -> ' . implode(' ', $failed));
+        }
+
+        $this->assertSame([], $failed);
     }
 
     public function test_the_sale_detail_lookup_answers_with_an_empty_body(): void
