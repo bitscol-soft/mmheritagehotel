@@ -190,7 +190,7 @@ class ReceiveVoucherController extends Controller
         }
 
         $data               = $this->dataService->getAccountData(['accounts']);
-        $data['company']    = Company::userCompanies();
+        $data['companies']  = Company::userCompanies();
         $data['voucher']    = $voucher->load('details');
 
         return view('voucher.receives.edit', $data);
