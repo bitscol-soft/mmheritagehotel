@@ -171,25 +171,23 @@ trait BuildsShippedSchema
     {
         $files = glob(base_path('module/*/routes/*.php'));
 
-        // A route file may be `require_once`d by a sibling from INSIDE a prefix
-        // group - module/Hotel/routes/web_hotel.php pulls in web_hotel_ajax.php
-        // inside `prefix => 'hotel'`. Loading that file here as well registers a
-        // second, prefix-less copy; worse, if it happens to be loaded first the
-        // `require_once` in web_hotel.php then does nothing and the prefixed
-        // routes never exist at all (that is exactly how /hotel/get-available-room
-        // 404'd while /get-available-room answered).
-        $nested = [];
-        foreach ($files as $file) {
-            if (preg_match_all('/require(?:_once)?[^;]*?[\/\x27"]([A-Za-z0-9_-]+\.php)/', file_get_contents($file), $m)) {
-                foreach ($m[1] as $basename) {
-                    $nested[$basename] = true;
-                }
-            }
-        }
+        // module/Hotel/routes/web_hotel_ajax.php is never mounted by the provider:
+        // web_hotel.php pulls it in with `require_once` from INSIDE
+        // `prefix => 'hotel'`, so all of its routes carry that prefix.
+        //
+        // require_once is process-wide, so only the FIRST route load in a phpunit
+        // process registers them - every later test silently loses the whole file
+        // (which is what produced 11 unexpected crawl failures: the views call
+        // route('update-room-status'), route('get-booking-member-details'), ...).
+        // Load it explicitly under the same prefix instead of globbing it, so
+        // every test sees the routes, with the prefix, and only once.
+        $nested = [
+            'web_hotel_ajax.php' => 'hotel',
+        ];
 
         foreach ($files as $file) {
             if (isset($nested[basename($file)])) {
-                continue; // registered by its parent, with the parent's prefix
+                continue; // loaded below, inside its parent's prefix
             }
             $module = basename(dirname(dirname($file)));
             $row = isset($this->moduleRows()[$module]) ? $this->moduleRows()[$module] : null;
@@ -216,6 +214,17 @@ trait BuildsShippedSchema
                 @file_put_contents('/tmp/page-crawl-route-load-errors.txt', ($e->getMessage() . ' in ' . $file . "\n"), FILE_APPEND);
             }
         }
+        foreach ($nested as $basename => $prefix) {
+            foreach (glob(base_path('module/*/routes/' . $basename)) as $file) {
+                \Illuminate\Support\Facades\Route::group(
+                    ['middleware' => ['web', 'auth'], 'prefix' => $prefix],
+                    function () use ($file) {
+                        \Illuminate\Support\Facades\Route::namespace('\\')->group($file);
+                    }
+                );
+            }
+        }
+
         app('router')->getRoutes()->refreshNameLookups();
     }
 }
