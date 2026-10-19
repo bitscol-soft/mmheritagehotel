@@ -36,11 +36,16 @@ only `main` and `arena/01a0fe5b-mmheritagehotel`. Pick one:
 | Goal | What to do |
 |---|---|
 | Publish after merge (recommended) | Nothing more. `main` is already allowed; merging PR #18 triggers the workflow on `main` and it deploys. |
-| Publish from this branch before merge | Add `arena/7ee36555-mmheritagehotel` to the policy, then create the repository variable `PAGES_PREVIEW_BRANCH` = `arena/7ee36555-mmheritagehotel` (`Settings → Secrets and variables → Actions → Variables`). The workflow's deploy job waits for exactly that. |
+| Publish from this branch before merge | Add `arena/7ee36555-mmheritagehotel` to the policy (already done). Nothing else — the deploy job runs on any branch this workflow is triggered for. |
 
 Until both are true the workflow stays **green**: the build and its link check always
-run, the deploy job is simply skipped (`if:` on `main` / `PAGES_PREVIEW_BRANCH`). A failed
-deploy therefore always means a real problem, never a missing setting.
+run, and when the Pages source is not Actions the deploy job reports that as a notice and
+skips only its final step.
+
+**Choosing a branch under "Deploy from a branch" does not deploy this preview.** That mode
+runs Jekyll over the whole repository (Laravel code, `vendor/`, these docs) and fails at
+"Build with Jekyll" — verified on `arena/7ee36555-mmheritagehotel`. The preview is a
+workflow artifact, so the dropdown itself must say **GitHub Actions**.
 
 Two mechanics worth knowing:
 

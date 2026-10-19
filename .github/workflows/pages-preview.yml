@@ -11,9 +11,9 @@ name: Pages preview
 # need an admin (the automation token cannot change them):
 #
 #   1. Settings -> Pages -> Build and deployment -> Source = "GitHub Actions"
-#   2. Settings -> Environments -> github-pages -> Deployment branches, must allow
-#      the branch being built. To publish from a feature branch, add it there and
-#      set the repository variable PAGES_PREVIEW_BRANCH to its name.
+#      (the dropdown - not a branch name underneath it)
+#   2. Settings -> Environments -> github-pages -> Deployment branches must list
+#      the branch being built (main and the preview branch are listed today).
 #
 # Until both are true the build still runs and its 100k-link check still guards
 # every push; only the deploy job is skipped, so the workflow stays green.
@@ -61,10 +61,10 @@ jobs:
 
   deploy:
     needs: build
-    # `main` always may deploy. A feature branch may too, once it is listed in
-    # the github-pages environment policy and named in PAGES_PREVIEW_BRANCH -
-    # without this guard GitHub fails the job before it starts, with no steps.
-    if: github.ref_name == 'main' || vars.PAGES_PREVIEW_BRANCH == github.ref_name
+    # Both branches this workflow runs on (main and the preview branch) are listed
+    # in the github-pages environment policy, so the job is always eligible. When
+    # the Pages source is still "Deploy from a branch", the step below reports that
+    # instead of failing, and the deploy step is skipped.
     runs-on: ubuntu-latest
     environment:
       name: github-pages
