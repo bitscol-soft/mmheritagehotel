@@ -145,6 +145,11 @@ function rewrite(html, depth) {
     // guard intercepts submit - and keep the markup otherwise untouched.
     let out = html.replace(/\baction\s*=\s*"[^"]*"/gi, 'action="#"');
 
+    // Laravel's asset()/url() emit http://localhost/... in the fixtures. On a
+    // published site those point at the visitor's own machine, so fold them back
+    // to root-absolute and let the rule below make them depth-relative.
+    out = out.replace(/\bhttps?:\/\/(?:localhost|127\.0\.0\.1)(?::\d+)?(?=[/"'`\s)])/gi, '');
+
     // Root-absolute attributes -> depth-relative. `//host` is protocol-relative
     // and deliberately excluded.
     out = out.replace(/(\b(?:href|src|poster)\s*=\s*["'])\/(?!\/)/gi, (match, attr) => attr + prefix);
@@ -203,6 +208,54 @@ function findStandIn(kind) {
  * the repo; those stay broken in every environment, so filling them here keeps
  * the published preview honest about layout without pretending data exists.
  */
+// Turn `href` targets that resolve to nothing into inert links. Assets are left
+// alone: a missing image or stylesheet is a real export bug and must stay visible.
+function neutraliseMissingLinks() {
+    const sample = [];
+    let count = 0;
+    const exists = (target) => {
+        if (fs.existsSync(target) && fs.statSync(target).isFile()) return true;
+        return fs.existsSync(path.join(target, 'index.html'));
+    };
+
+    const scan = (dir) => {
+        for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+            const full = path.join(dir, entry.name);
+            if (entry.isDirectory()) {
+                if (path.dirname(full) === OUT && ['assets', 'frontend', 'food_menu'].includes(entry.name)) continue;
+                scan(full);
+                continue;
+            }
+            // 404.html and favicon/robots sit at the root and hold no app links.
+            if (!entry.name.endsWith('.html') || entry.name === '404.html') continue;
+
+            const html = fs.readFileSync(full, 'utf8');
+            const out = html.replace(/\bhref\s*=\s*(["'])([^"']*)\1/gi, (match, quote, value) => {
+                if (!value || value.startsWith('#') || value.startsWith('//')) return match;
+                if (/^[a-z][a-z0-9+.-]*:/i.test(value)) return match;
+                const cut = value.search(/[?#]/);
+                const clean = cut >= 0 ? value.slice(0, cut) : value;
+                if (!clean || clean.endsWith('/') || !path.extname(clean)) {
+                    // Directory-style links: only a miss if the index is absent too.
+                    if (!clean) return match;
+                    const resolvedDir = path.resolve(path.dirname(full), clean);
+                    if (exists(resolvedDir)) return match;
+                } else {
+                    const resolved = path.resolve(path.dirname(full), clean);
+                    if (exists(resolved)) return match;
+                }
+                count++;
+                if (sample.length < 5) sample.push(path.relative(OUT, full) + ' -> ' + value);
+                return 'href=' + quote + '#' + quote;
+            });
+            if (out !== html) fs.writeFileSync(full, out);
+        }
+    };
+
+    scan(OUT);
+    return { count, sample };
+}
+
 function fillDanglingReferences() {
     const filled = [];
     const seen = new Set();
@@ -245,7 +298,7 @@ function fillDanglingReferences() {
                     filled.push(rel + ' (sample CSV header)');
                     continue;
                 }
-                if (!['.jpg', '.jpeg', '.png', '.gif', '.svg'].includes(ext)) continue;
+                if (!['.jpg', '.jpeg', '.png', '.gif', '.svg', '.webp'].includes(ext)) continue;
 
                 const standIn = /uploads\/hotel\/room/.test(rel) ? findStandIn('room') : findStandIn('image');
                 if (standIn) {
@@ -335,6 +388,16 @@ async function main() {
         if (filled.length) {
             console.log('filled ' + filled.length + ' dangling fixture reference(s):');
             filled.forEach((f) => console.log('  ' + f));
+        }
+
+        // Links the fixtures carry to screens the preview never had (parameterised
+        // edit pages, the banquet `bq/` router, POS `x/` paths). They 404 on the
+        // live preview server too; on a static host a relative link would leave the
+        // site, so make them inert and report how many.
+        const neutralised = neutraliseMissingLinks();
+        if (neutralised.count) {
+            console.log('neutralised ' + neutralised.count + ' link(s) to routes the preview does not serve:');
+            neutralised.sample.forEach((x) => console.log('  ' + x));
         }
 
         // Unknown paths land on the explorer instead of a bare Pages 404.

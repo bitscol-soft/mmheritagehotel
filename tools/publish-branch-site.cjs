@@ -62,7 +62,10 @@ for (const file of distFiles) {
     let body = fs.readFileSync(file);
     if (TEXT.test(rel)) {
         const original = body.toString('utf8');
-        const rewritten = original.replace(REWRITE, '$1public/$2/');
+        // Fixtures emit paths like ../.././assets/... after url() folding; drop the
+        // redundant segment so the asset rewrite below can see the tree name.
+        const normalised = original.replace(/\/\.(?=\/)/g, '');
+        const rewritten = normalised.replace(REWRITE, '$1public/$2/');
         if (rewritten !== original) body = Buffer.from(rewritten, 'utf8');
     }
 
