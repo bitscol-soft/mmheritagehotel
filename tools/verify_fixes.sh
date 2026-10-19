@@ -28,6 +28,10 @@ JAR="$(mktemp)"; trap 'rm -f "$JAR"' EXIT
 CURL="curl -sk --max-time 25 -b $JAR -c $JAR -o /dev/null -w %{http_code}"
 
 # ---------------------------------------------------------------- login -----
+LOGIN_OK=0
+if [ "${SKIP_LOGIN:-0}" = "1" ]; then
+  echo "== skipping login (SKIP_LOGIN=1): public checks only"
+else
 echo "== login $BASE"
 LOGIN_HTML=$(curl -sk --max-time 25 -c "$JAR" "$BASE/login")
 TOKEN=$(echo "$LOGIN_HTML" | grep -oE 'name="_token"[^>]*value="[^"]+"' | head -1 | grep -oE 'value="[^"]+"' | sed 's/value="//;s/"//')
@@ -35,9 +39,19 @@ TOKEN=$(echo "$LOGIN_HTML" | grep -oE 'name="_token"[^>]*value="[^"]+"' | head -
 CODE=$(curl -sk -c "$JAR" -o /dev/null -w '%{http_code}' -X POST "$BASE/login" \
   --data-urlencode "_token=$TOKEN" --data-urlencode "email=$EMAIL" --data-urlencode "password=$PASS")
 case "$CODE" in
-  302|200) echo "   login POST -> $CODE (ok)";;
-  *) echo "   login POST -> $CODE (credentials wrong? CAPTCHA?)"; echo "   Continuing unauthenticated checks only.";;
+  302|200) echo "   login POST -> $CODE (ok)"; LOGIN_OK=1;;
+  *) echo "   login POST -> $CODE (credentials wrong? CAPTCHA?)";;
 esac
+
+# Every admin check below is meaningless without a session: they would simply
+# all come back as 302 redirects to /login and, worse, could still exit 0.
+if [ "$LOGIN_OK" -ne 1 ]; then
+  echo
+  echo "FAIL: login failed, so the authenticated checks cannot run."
+  echo "      Fix EMAIL/PASS (or set SKIP_LOGIN=1 to run only the public checks)."
+  exit 3
+fi
+fi
 
 pass=0; fail=0
 chk() { # chk <expect> <path> [label]
@@ -50,6 +64,7 @@ chk() { # chk <expect> <path> [label]
 }
 
 echo
+if [ "${SKIP_LOGIN:-0}" != "1" ]; then
 echo "== previously-500 admin screens -> now 200 (or documented 302/404)"
 chk "200"            "/hotel/booking/create"                          "booking create (CRM class fix)"
 chk "200 302"        "/hotel/booking/next-step"                       "booking next-step (302 ok without cart)"
@@ -85,6 +100,8 @@ echo "== deliberate redirects (302) with flash"
 chk "302"            "/setting/permission-access"                     "redirects to permitted users"
 chk "302"            "/sale/acc_collections/create"                   "collection stub -> redirect to index"
 chk "302"            "/purchase/acc-payments/create"                  "payment stub -> redirect to index"
+
+fi
 
 echo
 echo "== security: unauthenticated access must NOT succeed (302 to login)"
