@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Module\Account\Models\Voucher;
 use Module\Account\Services\AccJournalVoucherService;
 use Module\Account\Services\DataService;
+use Module\Account\Services\VoucherLedgerUpdateService;
 
 class JournalVoucherController extends Controller
 {
@@ -168,17 +169,70 @@ class JournalVoucherController extends Controller
      | either), so it could not complete a save even when the files were
      | present. Render the approved voucher instead of the previous 500.
     */
+    /*
+     |--------------------------------------------------------------------------
+     | EDIT METHOD (BUGS #49)
+     |--------------------------------------------------------------------------
+     | Only an unapproved voucher is editable: once approved the entries are a
+     | posting. The services are constructed with no name filter here, so the
+     | controller passes the account list the same way create() does.
+    */
     public function edit($id)
     {
         $this->hasAccess("voucher-journals.edit");
 
-        $voucher = Voucher::find($id);
+        $voucher = Voucher::journal()->find($id);
+
         if (!$voucher) {
-            return redirect()->route('voucher-journals.index')->with('error', 'Journal voucher not found.');
+            return redirect()->route('voucher-journals.index')->with('error', 'Journal Voucher not found.');
+        }
+
+        if ($voucher->is_approved) {
+            return redirect()->route('voucher-journals.show', $voucher->id)
+                ->with('warning', 'This voucher is approved and can no longer be edited. Delete it to reverse the entries, then post a corrected one.');
+        }
+
+        $data               = $this->dataService->getAccountData(['accounts']);
+        $data['company']    = Company::userCompanies();
+        $data['voucher']    = $voucher->load('details');
+
+        return view('voucher.journals.edit', $data);
+    }
+
+
+    /*
+     |--------------------------------------------------------------------------
+     | UPDATE METHOD (BUGS #49)
+     |--------------------------------------------------------------------------
+    */
+    public function update(Request $request, $id)
+    {
+        $this->hasAccess("voucher-journals.edit");
+
+        $voucher = Voucher::journal()->find($id);
+
+        if (!$voucher) {
+            return redirect()->route('voucher-journals.index')->with('error', 'Journal Voucher not found.');
+        }
+
+        if ($voucher->is_approved) {
+            return redirect()->route('voucher-journals.show', $voucher->id)
+                ->with('warning', 'This voucher is approved and can no longer be edited. Delete it to reverse the entries, then post a corrected one.');
+        }
+
+        try {
+            DB::transaction(function () use ($request, $voucher) {
+                (new VoucherLedgerUpdateService($voucher, [
+                    'debit'  => 'Cash',
+                    'credit' => 'Journal',
+                ]))->update($request);
+            });
+        } catch (Exception $ex) {
+            return redirect()->back()->withInput()->with('error', $ex->getMessage());
         }
 
         return redirect()->route('voucher-journals.show', $voucher->id)
-            ->with('warning', 'Direct editing of journal vouchers is not supported in this build. Review the voucher and create a new one to make corrections.');
+            ->with('message', 'Journal Voucher Updated Successfully!');
     }
 
 

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Module\Account\Models\Voucher;
 use Module\Account\Services\AccContraVoucherService;
 use Module\Account\Services\DataService;
+use Module\Account\Services\VoucherLedgerUpdateService;
 
 class ContraVoucherController extends Controller
 {
@@ -156,6 +157,73 @@ class ContraVoucherController extends Controller
      | SHOW/DETAIL METHOD
      |--------------------------------------------------------------------------
     */
+    /*
+     |--------------------------------------------------------------------------
+     | EDIT METHOD (BUGS #49)
+     |--------------------------------------------------------------------------
+     | Only an unapproved voucher is editable: once approved the entries are a
+     | posting. The services are constructed with no name filter here, so the
+     | controller passes the account list the same way create() does.
+    */
+    public function edit($id)
+    {
+        $this->hasAccess("voucher-contras.edit");
+
+        $voucher = Voucher::contra()->find($id);
+
+        if (!$voucher) {
+            return redirect()->route('voucher-contras.index')->with('error', 'Contra Voucher not found.');
+        }
+
+        if ($voucher->is_approved) {
+            return redirect()->route('voucher-contras.show', $voucher->id)
+                ->with('warning', 'This voucher is approved and can no longer be edited. Delete it to reverse the entries, then post a corrected one.');
+        }
+
+        $data               = $this->dataService->getAccountData(['accounts']);
+        $data['company']    = Company::userCompanies();
+        $data['voucher']    = $voucher->load('details');
+
+        return view('voucher.contras.edit', $data);
+    }
+
+
+    /*
+     |--------------------------------------------------------------------------
+     | UPDATE METHOD (BUGS #49)
+     |--------------------------------------------------------------------------
+    */
+    public function update(Request $request, $id)
+    {
+        $this->hasAccess("voucher-contras.edit");
+
+        $voucher = Voucher::contra()->find($id);
+
+        if (!$voucher) {
+            return redirect()->route('voucher-contras.index')->with('error', 'Contra Voucher not found.');
+        }
+
+        if ($voucher->is_approved) {
+            return redirect()->route('voucher-contras.show', $voucher->id)
+                ->with('warning', 'This voucher is approved and can no longer be edited. Delete it to reverse the entries, then post a corrected one.');
+        }
+
+        try {
+            DB::transaction(function () use ($request, $voucher) {
+                (new VoucherLedgerUpdateService($voucher, [
+                    'debit'  => 'Contra In',
+                    'credit' => 'Contra Out',
+                ]))->update($request);
+            });
+        } catch (Exception $ex) {
+            return redirect()->back()->withInput()->with('error', $ex->getMessage());
+        }
+
+        return redirect()->route('voucher-contras.show', $voucher->id)
+            ->with('message', 'Contra Voucher Updated Successfully!');
+    }
+
+
     public function show($id)
     {
         $this->hasAccess("voucher-contras.view");

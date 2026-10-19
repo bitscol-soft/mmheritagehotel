@@ -11,6 +11,7 @@ use Module\Account\Models\Voucher;
 use Module\Account\Models\VoucherDetail;
 use Module\Account\Services\AccPaymentVoucherService;
 use Module\Account\Services\DataService;
+use Module\Account\Services\VoucherLedgerUpdateService;
 
 class PaymentVoucherController extends Controller
 {
@@ -176,6 +177,73 @@ class PaymentVoucherController extends Controller
      | SHOW/DETAIL METHOD
      |--------------------------------------------------------------------------
     */
+    /*
+     |--------------------------------------------------------------------------
+     | EDIT METHOD (BUGS #49)
+     |--------------------------------------------------------------------------
+     | Only an unapproved voucher is editable: once approved the entries are a
+     | posting. The services are constructed with no name filter here, so the
+     | controller passes the account list the same way create() does.
+    */
+    public function edit($id)
+    {
+        $this->hasAccess("voucher-payments.edit");
+
+        $voucher = Voucher::payment()->find($id);
+
+        if (!$voucher) {
+            return redirect()->route('voucher-payments.index')->with('error', 'Payment Voucher not found.');
+        }
+
+        if ($voucher->is_approved) {
+            return redirect()->route('voucher-payments.show', $voucher->id)
+                ->with('warning', 'This voucher is approved and can no longer be edited. Delete it to reverse the entries, then post a corrected one.');
+        }
+
+        $data               = $this->dataService->getAccountData(['accounts']);
+        $data['company']    = Company::userCompanies();
+        $data['voucher']    = $voucher->load('details');
+
+        return view('voucher.payments.edit', $data);
+    }
+
+
+    /*
+     |--------------------------------------------------------------------------
+     | UPDATE METHOD (BUGS #49)
+     |--------------------------------------------------------------------------
+    */
+    public function update(Request $request, $id)
+    {
+        $this->hasAccess("voucher-payments.edit");
+
+        $voucher = Voucher::payment()->find($id);
+
+        if (!$voucher) {
+            return redirect()->route('voucher-payments.index')->with('error', 'Payment Voucher not found.');
+        }
+
+        if ($voucher->is_approved) {
+            return redirect()->route('voucher-payments.show', $voucher->id)
+                ->with('warning', 'This voucher is approved and can no longer be edited. Delete it to reverse the entries, then post a corrected one.');
+        }
+
+        try {
+            DB::transaction(function () use ($request, $voucher) {
+                (new VoucherLedgerUpdateService($voucher, [
+                    'debit'  => 'Cash',
+                    'credit' => 'Payment',
+                ]))->update($request);
+            });
+        } catch (Exception $ex) {
+            return redirect()->back()->withInput()->with('error', $ex->getMessage());
+        }
+
+        return redirect()->route('voucher-payments.show', $voucher->id)
+            ->with('message', 'Payment Voucher Updated Successfully!');
+    }
+
+
     public function show($id)
     {
         $this->hasAccess("voucher-payments.view");

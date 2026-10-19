@@ -94,6 +94,12 @@
                                                 target="_blank" class="btn btn-purple btn-xs"
                                                 title="Approve Voucher"><i class="fa fa-check"></i></a>
                                         @endif
+
+                                        @if (hasPermission('voucher-contras.edit', $slugs))
+                                            <a href="{{ route('voucher-contras.edit', $item->id) }}"
+                                                class="btn btn-primary btn-xs" title="Edit"><i
+                                                    class="fa fa-pencil"></i></a>
+                                        @endif
                                     @endif
 
                                     @if (hasPermission('voucher-contras.delete', $slugs))

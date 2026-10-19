@@ -93,7 +93,7 @@
                                         @endif
 
                                         @if(hasPermission("voucher-payments.edit", $slugs))
-                                        {{-- <a href="{{route('payment.edit', $item->id)}}" class="btn btn-primary btn-xs" title="Edit"><i class="fa fa-pencil"></i></a> --}}
+                                        <a href="{{ route('voucher-payments.edit', $item->id) }}" class="btn btn-primary btn-xs" title="Edit"><i class="fa fa-pencil"></i></a>
                                         @endif
                                     @endif
 
