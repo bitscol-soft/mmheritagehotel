@@ -58,18 +58,19 @@ class PosAjaxGuardTest extends TestCase
             ['/restaurant/inventory/suppliers/create',       [],                                  'the view that was never written'],
         ];
 
-        $failures = [];
+        $failed = [];
 
         foreach ($cases as [$url, $query, $why]) {
-            $response = $this->get($url . ($query ? '?' . http_build_query($query) : ''));
-            $status = $response->getStatusCode();
+            $status = $this->get($url . ($query ? '?' . http_build_query($query) : ''))->getStatusCode();
 
             if ($status !== 200) {
-                $failures[] = sprintf('  %s (%s) -> HTTP %d', $url, $why, $status);
+                $failed[] = $url . '=' . $status;
             }
         }
 
-        $this->assertSame([], $failures, "endpoints that no longer answer:\n" . implode("\n", $failures));
+        // the message is printed before the assertion, so a truncated CI log still
+        // names every endpoint that broke
+        $this->assertTrue(empty($failed), 'FAIL ' . implode('  ', $failed));
     }
 
     public function test_the_sale_detail_lookup_answers_with_an_empty_body(): void
