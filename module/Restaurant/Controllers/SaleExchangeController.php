@@ -37,7 +37,7 @@ class SaleExchangeController extends Controller
                 return $q->where('invoice_no', 'like', '%' . $invoice . '%');
             });
 
-        return view('resturant.sales.exchange.index', [
+        return view('sales.exchange.index', [
             'sales' => $query->latest('date')->latest('id')->paginate(25)->appends(request()->query()),
         ]);
     }
@@ -51,7 +51,7 @@ class SaleExchangeController extends Controller
     {
         $this->hasAccess('resturant.sales.create');
 
-        return view('resturant.sales.exchange.create', [
+        return view('sales.exchange.create', [
             'invoice_id' => SaleExchange::where('is_bar', 0)->latest('id')->value('invoice_no') ?: 1000,
         ]);
     }
@@ -99,7 +99,7 @@ class SaleExchangeController extends Controller
 
         $exchange = SaleExchange::with(['items.product', 'guest', 'user'])->findOrFail($id);
 
-        return view('resturant.sales.exchange.show', [
+        return view('sales.exchange.show', [
             'sale' => $exchange,
         ]);
     }
