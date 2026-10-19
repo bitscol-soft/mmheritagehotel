@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use App\Models\User;
+use Tests\Concerns\BuildsShippedSchema;
 use Tests\Concerns\CreatesAccSchema;
 use Tests\TestCase;
 
@@ -21,6 +22,7 @@ use Tests\TestCase;
 class PageCrawlAuditTest extends TestCase
 {
     use CreatesAccSchema;
+    use BuildsShippedSchema;
 
     public function test_crawl_every_get_route_and_report_failures(): void
     {
@@ -406,187 +408,5 @@ class PageCrawlAuditTest extends TestCase
         $message = $e->getMessage();
         $message = preg_replace('/\s+/', ' ', $message);
         return trim($message);
-    }
-
-    /**
-     * The suite normally runs against a hand-built minimal schema; a page crawl
-     * needs the real one, so translate the shipped MySQL dump's CREATE TABLE
-     * statements into sqlite (columns only: type, nullability, default). MySQL
-     * shows up as: backticked identifiers, ENGINE/CHARSET tails, inline
-     * KEY/CONSTRAINT lines, and AUTO_INCREMENT.
-     */
-    private function buildSchemaFromShippedDump(): void
-    {
-        $dump = file_get_contents(base_path('database/mmheritagehotel_db.sql'));
-        preg_match_all('/CREATE TABLE `([^`]+)` \((.*?)\n\) ENGINE=/s', $dump, $matches, PREG_SET_ORDER);
-
-        // mysqldump splits the auto-increment off into a trailing
-        // "ALTER TABLE `x` MODIFY `id` ... AUTO_INCREMENT" statement; without it
-        // every insert the app makes during a request fails on "id has no default".
-        preg_match_all('/ALTER TABLE `([^`]+)`\s+MODIFY `([^`]+)` [^;]*AUTO_INCREMENT[^;]*;/s', $dump, $autoInc, PREG_SET_ORDER);
-        $autoIncrement = [];
-        foreach ($autoInc as $row) {
-            $autoIncrement[$row[1]] = $row[2];
-        }
-
-        foreach ($matches as $match) {
-            $table = $match[1];
-            if (Schema::hasTable($table)) {
-                continue;
-            }
-            $columns = [];
-            foreach (preg_split('/\n/', $match[2]) as $line) {
-                $line = trim($line);
-                if ($line === '' || !str_starts_with($line, '`')) {
-                    continue; // PRIMARY KEY / KEY / UNIQUE / CONSTRAINT lines
-                }
-                if (!preg_match('/^`([^`]+)`\s+([a-zA-Z]+)(\([^)]*\))?(.*)$/', $line, $col)) {
-                    continue;
-                }
-                [, $name, $type, , $tail] = $col;
-                $type = strtolower($type);
-                $sqliteType = match (true) {
-                    in_array($type, ['int', 'bigint', 'smallint', 'tinyint', 'mediumint'], true) => 'integer',
-                    in_array($type, ['decimal', 'double', 'float', 'numeric'], true) => 'float',
-                    in_array($type, ['text', 'longtext', 'mediumtext', 'tinytext', 'blob', 'longblob'], true) => 'text',
-                    default => 'text',
-                };
-                $column = "`{$name}` {$sqliteType}";
-                if (stripos($tail, 'AUTO_INCREMENT') !== false || ($autoIncrement[$table] ?? null) === $name) {
-                    $column = "`{$name}` integer primary key autoincrement"; // sqlite rowid alias
-                    $columns[] = $column;
-                    continue;
-                }
-                if (stripos($tail, 'NOT NULL') !== false) {
-                    $column .= ' not null';
-                    if (preg_match("/DEFAULT\\s+('(?:[^']*)'|[^\\s,]+)/i", $tail, $def) && strtoupper($def[1]) !== 'NULL') {
-                        $column .= ' default ' . rtrim($def[1], '()');
-                    }
-                }
-                $columns[] = $column;
-            }
-            if ($columns) {
-                $statement = 'CREATE TABLE `' . $table . '` (' . implode(', ', $columns) . ')';
-                try {
-                    DB::statement($statement);
-                } catch (\Throwable $e) {
-                    @file_put_contents('/tmp/schema-errors.txt', $statement . "\n  => " . $e->getMessage() . "\n", FILE_APPEND);
-                }
-            }
-        }
-    }
-
-    /**
-     * Inserts a row while satisfying the table's NOT NULL columns: the pages
-     * under test read far more columns than the seeder cares about.
-     */
-    private function insertRow(string $table, array $values): void
-    {
-        try {
-            $this->insertRowUnsafe($table, $values);
-        } catch (\Throwable $e) {
-            @file_put_contents('/tmp/seed-errors.txt', $table . ': ' . $e->getMessage() . "\n", FILE_APPEND);
-        }
-    }
-
-    private function insertRowUnsafe(string $table, array $values): void
-    {
-        $info = DB::select("PRAGMA table_info(`{$table}`)");
-        $known = array_map(fn ($c) => $c->name, $info);
-        $values = array_intersect_key($values, array_flip($known)); // ignore columns this schema lacks
-        foreach ($info as $column) {
-            if ($column->notnull && $column->dflt_value === null && !array_key_exists($column->name, $values)) {
-                $values[$column->name] = str_contains(strtolower($column->type), 'int') ? 0 : '';
-            }
-        }
-        DB::table($table)->insert($values);
-    }
-
-    /** Rows the app needs before any request: admin user, active modules, config singletons. */
-    private function seedRuntimeConfig(): void
-    {
-        $this->insertRow('users', ['id' => 1, 'name' => 'System Admin', 'email' => 'sys@mm.test',
-            'password' => bcrypt('x'), 'company_id' => 1, 'status' => 1, 'created_at' => now(), 'updated_at' => now()]);
-        $this->insertRow('users', ['id' => 2, 'name' => 'Super admin', 'email' => 'sa@mm.test',
-            'password' => bcrypt('x'), 'company_id' => 1, 'status' => 1, 'created_at' => now(), 'updated_at' => now()]);
-        $this->insertRow('groups', ['id' => 1, 'name' => 'Super Admin', 'status' => 1, 'created_at' => now(), 'updated_at' => now()]);
-        $this->insertRow('companies', [
-            'id' => 1, 'name' => 'M&M Heritage Hotel', 'email' => 'info@mm.test', 'phone' => '0000',
-            'address' => 'Dhaka', 'status' => 1, 'created_at' => now(), 'updated_at' => now(),
-        ]);
-        $this->insertRow('company_user', ['id' => 1, 'company_id' => 1, 'user_id' => 1]);
-        $this->insertRow('system_settings', ['id' => 1, 'created_at' => now(), 'updated_at' => now()]);
-
-        // active module rows (production state; read by view composers on every page)
-        $modules = [
-            ['id' => 1, 'name' => 'Global Setting', 'status' => 1, 'rank' => 1],
-            ['id' => 2, 'name' => 'User Access', 'status' => 1, 'rank' => 2],
-            ['id' => 11, 'name' => 'Employee Permission', 'status' => 1, 'rank' => 999],
-            ['id' => 4, 'name' => 'General Store', 'status' => 1, 'rank' => 999],
-            ['id' => 120001, 'name' => 'HotelService', 'status' => 1, 'rank' => 6],
-            ['id' => 130001, 'name' => 'Restaurant', 'status' => 1, 'rank' => 7],
-            ['id' => 150000, 'name' => 'Account & Finance', 'status' => 1, 'rank' => 10],
-            ['id' => 160000, 'name' => 'Hotel', 'status' => 1, 'rank' => 5],
-            ['id' => 160001, 'name' => 'HotelWebsite', 'status' => 1, 'rank' => 4],
-            ['id' => 170000, 'name' => 'CRM', 'status' => 1, 'rank' => 11],
-            ['id' => 270000, 'name' => 'Bar', 'status' => 1, 'rank' => 8],
-        ];
-        foreach ($modules as $module) {
-            $this->insertRow('modules', $module + ['is_migrate' => 0, 'created_at' => now(), 'updated_at' => now()]);
-        }
-    }
-
-    /**
-     * The module directory -> the name of its row in `modules`. RouteServiceProvider only
-     * registers a module's routes while that row exists (and, for the modules that ship
-     * switched off, while it is active) - the crawl mirrors that instead of globbing every
-     * route file, otherwise a dormant module looks like 8 live 500s (docs/BUGS.md #72).
-     */
-    private const MODULE_ROWS = [
-        'GeneralStore'  => 'General Store',
-        'Account'       => 'Account & Finance',
-        'PosErp'        => 'POS',
-        'Production'    => 'Production',
-        'HotelService'  => 'HotelService',
-        'BanquetHall'   => 'BanquetHall',
-        'Hotel'         => 'Hotel',
-        'HotelWebsite'  => 'HotelWebsite',
-        'Restaurant'    => 'Restaurant',
-        'Bar'           => 'Bar',
-        'Hospital'      => 'Hospital',
-        'Pharmacy'      => 'Pharmacy',
-        'CRM'           => 'CRM',
-    ];
-
-    /** Every module route file the application would register: what production actually serves. */
-    private function loadAllModuleRoutes(): void
-    {
-        foreach (glob(base_path('module/*/routes/*.php')) as $file) {
-            $module = basename(dirname(dirname($file)));
-            $row = isset(self::MODULE_ROWS[$module]) ? self::MODULE_ROWS[$module] : null;
-            $registered = $row === null
-                ? null
-                : \Illuminate\Support\Facades\DB::table('modules')->where('name', $row)->first();
-
-            if ($row !== null) {
-                if (!$registered) {
-                    // no module row at all -> RouteServiceProvider skips the file
-                    continue;
-                }
-                if ($module === 'BanquetHall' && (int) $registered->status !== 1) {
-                    // the one module that is gated on being active (docs/BUGS.md #72)
-                    continue;
-                }
-            }
-
-            try {
-                \Illuminate\Support\Facades\Route::group(['middleware' => ['web', 'auth']], function () use ($file) {
-                    \Illuminate\Support\Facades\Route::namespace('\\')->group($file);
-                });
-            } catch (\Throwable $e) {
-                @file_put_contents('/tmp/page-crawl-route-load-errors.txt', ($e->getMessage() . ' in ' . $file . "\n"), FILE_APPEND);
-            }
-        }
-        app('router')->getRoutes()->refreshNameLookups();
     }
 }
