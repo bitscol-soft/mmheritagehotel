@@ -55,6 +55,19 @@ Two quirks of the export that matter for the published copy:
   `x/` paths, parameterised edit screens). They 404 on the live preview server too, so the
   exporter makes them inert (`href="#"`) and logs the count rather than shipping dead ends.
 
+## The `Publish preview site` workflow
+
+`.github/workflows/pages-autopublish.yml` keeps the branch copy in step with the code.
+On every push it exports, runs the same link check, writes the root, and commits the
+result as `github-actions[bot]` — but **only when something differs**. The export is
+deterministic, so most pushes end with "site already current".
+
+It cannot loop: the job skips its own commits (bot author + `chore(site):` subject), and
+pushes made with `GITHUB_TOKEN` do not start workflow runs. It also refuses to commit if
+the link check fails or `_config.yml` stops excluding `.env`, `database/` or
+`public/index.php`. So editing a fixture or a Blade view is enough to update the public
+site — nobody has to remember to run anything.
+
 ## The `Pages preview` workflow
 
 `.github/workflows/pages-preview.yml` still runs on every push: it exports into a temp
