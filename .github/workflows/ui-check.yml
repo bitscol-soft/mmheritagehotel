@@ -2,7 +2,11 @@ name: Tailwind UI checks
 on: [push, pull_request]
 jobs:
   ui:
-    runs-on: ubuntu-latest
+    # Pinned: `ubuntu-latest` moved to Ubuntu 26 on 2026-10-19 and Playwright
+    # 1.56 cannot install its browser dependencies there yet
+    # (`npx playwright install --with-deps chromium` fails). 24.04 is the newest
+    # image this Playwright release supports.
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
         with:

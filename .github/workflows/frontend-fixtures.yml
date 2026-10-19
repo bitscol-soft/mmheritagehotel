@@ -33,7 +33,9 @@ permissions:
 jobs:
   regenerate:
     name: Regenerate tools/fixtures/frontend/*.html
-    runs-on: ubuntu-latest
+    # Pinned alongside ui-check.yml: the 2026-10-19 `ubuntu-latest` migration to
+    # Ubuntu 26 changed the MariaDB client's TLS default and broke the dump load.
+    runs-on: ubuntu-24.04
     timeout-minutes: 12
     services:
       mariadb:
@@ -103,10 +105,15 @@ jobs:
             # Use the MariaDB client explicitly: the Ubuntu runner's stock `mysql`
             # is Oracle's MySQL 8 client, which negotiates utf8mb4_0900_ai_ci and
             # fails against a MariaDB 10.5 server ("Unknown collation").
+            #
+            # --skip-ssl: recent MariaDB clients default to requiring TLS, while the
+            # mariadb:10.5 service container does not enable it - the runner image
+            # upgrade on 2026-10-19 turned that mismatch into
+            # "ERROR 2026 (HY000): TLS/SSL error: SSL is required".
             sudo apt-get update -qq
             sudo apt-get install -y -qq mariadb-client
             mariadb --version
-            mariadb --protocol=tcp -h 127.0.0.1 -uroot -proot -e 'SELECT VERSION() AS server_version' || true
+            mariadb --skip-ssl --protocol=tcp -h 127.0.0.1 -uroot -proot -e 'SELECT VERSION() AS server_version' || true
             # Disable FK checks during the load — the dump adds ALTER TABLE ... ADD CONSTRAINT
             # FOREIGN KEY clauses after the INSERTs, so a naive load against a freshly created
             # database would fail on the first row whose FK target hasn't been populated yet.
@@ -115,11 +122,11 @@ jobs:
             if ! { sed 's/^START TRANSACTION;/START TRANSACTION;\nSET FOREIGN_KEY_CHECKS=0;\nSET UNIQUE_CHECKS=0;/' database/mmheritagehotel_db.sql; \
                    echo 'SET FOREIGN_KEY_CHECKS=1;'; \
                    echo 'SET UNIQUE_CHECKS=1;'; \
-            } | mariadb --protocol=tcp -h 127.0.0.1 -uroot -proot mmheritagehotel 2> /tmp/load-errors.txt; then
+            } | mariadb --skip-ssl --protocol=tcp -h 127.0.0.1 -uroot -proot mmheritagehotel 2> /tmp/load-errors.txt; then
               echo "::error::dump load failed: $(tail -c 1200 /tmp/load-errors.txt | tr '\n' ' ')"
               exit 1
             fi
-            echo "Dump loaded: $(mariadb --protocol=tcp -h 127.0.0.1 -uroot -proot -e 'SHOW TABLES' mmheritagehotel | wc -l) tables"
+            echo "Dump loaded: $(mariadb --skip-ssl --protocol=tcp -h 127.0.0.1 -uroot -proot -e 'SHOW TABLES' mmheritagehotel | wc -l) tables"
 
       - name: Configure Laravel environment
         run: |
