@@ -44,9 +44,22 @@ Laravel 8 and PHP 8.1 are both EOL. The goal is Laravel 11 on PHP 8.2/8.3.
 - [x] **`TrustProxies` already extends `Illuminate\Http\Middleware\TrustProxies`**
   (no `fideloper/proxy` dependency — one of the classic 8→9 blockers is absent).
 - [x] **`$dates` model properties:** none in the tree (nothing to migrate to `$casts`).
-- [x] **`tools/laravel11-check.sh`** — CI guard that keeps the L9-removed helper
-  classes at zero and reports the remaining step-gated items. Runs as a step of
-  the `Tailwind UI checks` workflow (every push / PR).
+- [x] **`tools/laravel11-check.sh`** — CI guard, now **version-aware**: it reads the
+  framework/phpunit majors out of `composer.json` and hard-fails when the tree is
+  half-upgraded (e.g. `$routeMiddleware` still present on ^9, or renamed to
+  `$middlewareAliases` while still on ^8 — both make every route 404), when
+  fruitcake/ignition survives past ^8, or when `phpunit.xml` keeps the PHPUnit 9
+  schema on ^10. It also lists the Carbon `diffIn*` sites. Runs on every push/PR.
+- [x] **`tools/laravel11-bump.cjs`** — runs one upgrade step mechanically:
+  `node tools/laravel11-bump.cjs --step 1|2|3` prints the exact diff,
+  `--apply` writes it (composer versions, the Kernel rename, the CORS swap, the
+  PHPUnit 10 schema). It refuses a dirty tree, is idempotent, and never runs
+  composer - the lock/vendor refresh stays a deliberate networked step.
+- [x] **Audit of the classic 8→9 blockers** (all absent, so step 1 is small):
+  no `$dates` model properties, no Swift Mailer usage, no `dispatchNow`, no
+  `assertDeleted`, no Faker property access, no `Input` facade, no
+  `Route::controller`, no `@dataProvider`/`@test` annotations, and `setUp()`/
+  `tearDown()` already declare `: void`.
 
 Still fine as-is (checked): `Str::`/`Arr::` usage is already facade-based in the
 touched surfaces; `optional()`, `tap()`, `retry()`, `rescue()` helpers survive to L11.
@@ -77,6 +90,8 @@ touched surfaces; `optional()`, `tap()`, `retry()`, `rescue()` helpers survive t
    - `database/migrations` `Schema::` legacy signatures still fine.
    - Audit `rajibbinalam/laravel-slug-generator` + `skycoder/laravel-filesaver` for
      L10 support; replace if dead (the filesaver vendored copy covers the emergency).
+   - `phpunit.xml`: PHPUnit 10 rejects `<coverage processUncoveredFiles="...">`; it
+     becomes `<source><include>`. `--apply` does this.
 3. `composer update`, step 5.
 
 ## Step 3 — Laravel 10 → 11 (PHP ≥ 8.2)
@@ -94,6 +109,32 @@ touched surfaces; `optional()`, `tap()`, `retry()`, `rescue()` helpers survive t
    - `Model::unguarded()`/mass-assignment defaults unchanged; verify `Auth::routes()`
      (from `laravel/ui`) still registers — keep `laravel/ui` v4 for that.
 3. `composer update`, step 5.
+
+## Carbon 3 `diffIn*()` — 16 call sites to review at step 3
+
+Carbon 2 returns an **absolute integer** from `diffInDays()`; Carbon 3 returns a **signed
+float**. Every `->diffIn*()` call therefore has to be re-read at the L11 step, not just
+compiled. `tools/laravel11-check.sh` lists the current sites (file:line) while the
+framework is below ^11.
+
+The night/day arithmetic that must stay positive:
+
+| Site | Expression |
+|---|---|
+| `module/Hotel/Services/BookingAdjustServiceV2.php:131,168` | `$check_out_date->diffInDays($check_in_date)` — **feeds the price adjustment** |
+| `module/Hotel/Services/{BookingService,BookingServiceNew,BookingServiceOld,FrontendBookingService}.php` | `total_night` for every booking line |
+| `module/Hotel/Controllers/BookingController.php:321`, `module/BanquetHall/Controllers/BanquetBookingController.php:268`, `module/BanquetHall/Services/BookingService.php:926` | `total_night` |
+| `resources/views/booking/_inc/_booking-context.blade.php:8` | `max((int) $bc_in->diffInDays($bc_out), 1)` |
+| `app/Helpers/HelperMethods.php:975` | `$toDate->diffInDays($fromDate) + 1` |
+| `app/Exports/HrmExportData.php:1120,1190,1258,1344`, `app/Models/Employee.php:350` | `$totalDay` |
+
+Rule for the step-3 commit: wrap each of those in `abs(...)` (a no-op under Carbon 2,
+correct under Carbon 3) — **except** `app/Http/Controllers/SmartSoftPaymentScheduleController.php:59`,
+which already passes `false` because it genuinely wants the signed value.
+
+This is deliberately not applied yet: it touches the booking price path, and
+`tools/ui-guard.sh` treats money lines as frozen. It belongs in the step-3 commit, where
+it can be verified against the booking tests.
 
 ## Step 4 — lock + vendor refresh (mandatory commit)
 
