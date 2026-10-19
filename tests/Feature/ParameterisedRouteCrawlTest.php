@@ -92,24 +92,26 @@ class ParameterisedRouteCrawlTest extends TestCase
                     || str_contains(get_class($e), 'AuthorizationException')) {
                     continue;
                 }
-                $failures[] = $uri . '=' . $this->shortException($e);
+                $failures[$uri] = $this->shortException($e);
                 continue;
             }
 
             if ($status >= 500) {
-                $failures[] = $uri . '=HTTP' . $status;
+                $failures[$uri] = 'HTTP' . $status;
             }
         }
 
         $this->assertGreaterThan(0, $tested, 'no parameterised routes were found - the sweep is not wired up');
 
-        // CI keeps only the first line of a failure, and the test name is on it
-        if (!empty($failures)) {
-            $this->setName($this->getName() . ' -> ' . implode('  ', array_slice($failures, 0, 12))
-                . (count($failures) > 12 ? ' (+' . (count($failures) - 12) . ' more)' : ''));
+        // A CI annotation keeps only the FIRST line of a failure, so neither the
+        // test name nor a diff can carry 40 diagnoses. Workflow commands written
+        // to stdout become individual annotations instead - one per route, each
+        // with its exception in full - and the annotations API returns them all.
+        foreach ($failures as $uri => $reason) {
+            fwrite(STDOUT, '::warning title=parameterised-crawl::' . $uri . ' :: ' . $reason . "\n");
         }
 
-        $this->assertSame([], $failures);
+        $this->assertSame([], array_keys($failures));
     }
 
     private function shortException(\Throwable $e): string
@@ -117,6 +119,6 @@ class ParameterisedRouteCrawlTest extends TestCase
         $message = preg_replace('/\s+/', ' ', $e->getMessage());
 
         return class_basename($e) . '@' . basename($e->getFile()) . ':' . $e->getLine()
-            . ' ' . mb_substr($message, 0, 90);
+            . ' ' . mb_substr($message, 0, 200);
     }
 }
