@@ -169,7 +169,28 @@ trait BuildsShippedSchema
     /** Every module route file the application would register: what production actually serves. */
     protected function loadAllModuleRoutes(): void
     {
-        foreach (glob(base_path('module/*/routes/*.php')) as $file) {
+        $files = glob(base_path('module/*/routes/*.php'));
+
+        // A route file may be `require_once`d by a sibling from INSIDE a prefix
+        // group - module/Hotel/routes/web_hotel.php pulls in web_hotel_ajax.php
+        // inside `prefix => 'hotel'`. Loading that file here as well registers a
+        // second, prefix-less copy; worse, if it happens to be loaded first the
+        // `require_once` in web_hotel.php then does nothing and the prefixed
+        // routes never exist at all (that is exactly how /hotel/get-available-room
+        // 404'd while /get-available-room answered).
+        $nested = [];
+        foreach ($files as $file) {
+            if (preg_match_all('/require(?:_once)?[^;]*?[\/\x27"]([A-Za-z0-9_-]+\.php)/', file_get_contents($file), $m)) {
+                foreach ($m[1] as $basename) {
+                    $nested[$basename] = true;
+                }
+            }
+        }
+
+        foreach ($files as $file) {
+            if (isset($nested[basename($file)])) {
+                continue; // registered by its parent, with the parent's prefix
+            }
             $module = basename(dirname(dirname($file)));
             $row = isset($this->moduleRows()[$module]) ? $this->moduleRows()[$module] : null;
             $registered = $row === null
