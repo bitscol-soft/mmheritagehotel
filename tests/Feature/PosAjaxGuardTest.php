@@ -68,9 +68,10 @@ class PosAjaxGuardTest extends TestCase
             }
         }
 
-        // the message is printed before the assertion, so a truncated CI log still
-        // names every endpoint that broke
-        $this->assertTrue(empty($failed), 'FAIL ' . implode('  ', $failed));
+        // Compare a single string, not an array: a truncated CI log keeps only the
+        // last line of a failure, and the "actual" line of a string diff is the
+        // one that names every endpoint that broke.
+        $this->assertSame('ok', empty($failed) ? 'ok' : implode('  ', $failed));
     }
 
     public function test_the_sale_detail_lookup_answers_with_an_empty_body(): void
