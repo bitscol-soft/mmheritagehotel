@@ -227,4 +227,198 @@ trait BuildsShippedSchema
 
         app('router')->getRoutes()->refreshNameLookups();
     }
+
+    /** Parses one dump table into column-keyed rows (dump values are plain literals). */
+    protected function dumpRows(string $dump, string $table): array
+    {
+        $rows = [];
+        foreach ($this->dumpStatements($dump, $table) as [$columns, $tuples]) {
+            foreach ($tuples as $tuple) {
+                $values = $this->splitValues(substr($tuple, 1, -1));
+                if (count($values) === count($columns)) {
+                    $rows[] = array_combine($columns, $values);
+                }
+            }
+        }
+        return $rows;
+    }
+
+
+    protected function dumpIds(string $dump, string $table, int $index = 0): array
+    {
+        return array_map(fn ($row) => (int) array_values($row)[$index], $this->dumpRows($dump, $table));
+    }
+
+    /** @return array<int, array{0: array, 1: array}> [columns, raw tuples] per INSERT statement */
+    protected function dumpStatements(string $dump, string $table): array
+    {
+        $statements = [];
+        preg_match_all('/INSERT INTO `' . $table . '` \(([^)]*)\) VALUES\s*(.*?);\s*(?:\n|$)/s', $dump, $matches, PREG_SET_ORDER);
+        foreach ($matches as $match) {
+            $columns = array_map(fn ($c) => trim($c, ' `'), explode(',', $match[1]));
+            $statements[] = [$columns, $this->splitTuples($match[2])];
+        }
+        return $statements;
+    }
+
+    /**
+     * Loads the shipped dump's rows so the crawl runs against production-shaped
+     * data (empty tables turn every "Undefined array key 1" into a false
+     * positive). The dump writes one tuple per line ending in ")," / ");", so
+     * statements can be accumulated line-wise without a full SQL parser.
+     */
+    protected function loadShippedDumpData(): void
+    {
+        $handle = fopen(base_path('database/mmheritagehotel_db.sql'), 'r');
+        $statement = null;
+        $loaded = 0;
+
+        while (($line = fgets($handle)) !== false) {
+            if ($statement === null) {
+                if (str_starts_with($line, 'INSERT INTO')) {
+                    $statement = $line;
+                } else {
+                    continue;
+                }
+            } else {
+                $statement .= $line;
+            }
+            $trimmed = rtrim($line);
+            if (!str_ends_with($trimmed, ');')) {
+                continue;
+            }
+
+            $loaded += $this->runDumpInsert($statement);
+            $statement = null;
+        }
+        fclose($handle);
+        @file_put_contents('/tmp/dump-load.txt', "rows loaded: {$loaded}\n");
+    }
+
+
+    protected function runDumpInsert(string $statement): int
+    {
+        if (!preg_match('/^INSERT INTO `([^`]+)` \(([^)]*)\) VALUES\s*(.*);$/s', $statement, $m)) {
+            return 0;
+        }
+        [$all, $table, $columns, $values] = $m;
+        $columns = array_map(fn ($c) => trim($c, " `"), explode(',', $columns));
+
+        $rows = [];
+        foreach ($this->splitTuples($values) as $tuple) {
+            $fields = $this->splitValues(substr($tuple, 1, -1));
+            if (count($fields) !== count($columns)) {
+                @file_put_contents('/tmp/dump-load-errors.txt', "{$table}: column/value count mismatch\n", FILE_APPEND);
+                continue;
+            }
+            $rows[] = array_combine($columns, $fields);
+        }
+        if (!$rows) {
+            return 0;
+        }
+
+        $loaded = 0;
+        foreach (array_chunk($rows, 200) as $chunk) {
+            try {
+                DB::table($table)->insert($chunk);
+                $loaded += count($chunk);
+            } catch (\Throwable $e) {
+                @file_put_contents('/tmp/dump-load-errors.txt', "{$table}: " . mb_substr($e->getMessage(), 0, 160) . "\n", FILE_APPEND);
+            }
+        }
+        return $loaded;
+    }
+
+    /** Splits "(...), (...), (...)" on top-level tuple boundaries. */
+    protected function splitTuples(string $values): array
+    {
+        $tuples = [];
+        $depth = 0;
+        $quote = false;
+        $current = '';
+        $length = strlen($values);
+        for ($i = 0; $i < $length; $i++) {
+            $char = $values[$i];
+            $escaped = $i > 0 && $values[$i - 1] === '\\' && !str_ends_with(substr($values, max(0, $i - 2), 2), '\\\\');
+            if ($char === "'" && !$escaped) {
+                $quote = !$quote;
+            }
+            if (!$quote) {
+                if ($char === '(') {
+                    $depth++;
+                } elseif ($char === ')') {
+                    $depth--;
+                    if ($depth === 0) {
+                        $tuples[] = $current . ')';
+                        $current = '';
+                        continue;
+                    }
+                }
+            }
+            if ($depth > 0) {
+                $current .= $char;
+            }
+        }
+        return $tuples;
+    }
+
+    /** Splits one tuple's body on top-level commas, unescaping MySQL literals. */
+    protected function splitValues(string $body): array
+    {
+        $values = [];
+        $current = '';
+        $quote = false;
+        $length = strlen($body);
+        for ($i = 0; $i < $length; $i++) {
+            $char = $body[$i];
+            if ($quote) {
+                if ($char === '\\' && $i + 1 < $length) {
+                    $next = $body[++$i];
+                    $current .= match ($next) {
+                        'n' => "\n", 'r' => "\r", 't' => "\t", '0' => "\0", 'Z' => chr(26), 'b' => chr(8),
+                        default => $next,
+                    };
+                    continue;
+                }
+                if ($char === "'") {
+                    if ($i + 1 < $length && $body[$i + 1] === "'") { // '' escape
+                        $current .= "'";
+                        $i++;
+                        continue;
+                    }
+                    $quote = false;
+                    continue;
+                }
+                $current .= $char;
+                continue;
+            }
+            if ($char === "'") {
+                $quote = true;
+                continue;
+            }
+            if ($char === ',') {
+                $values[] = $this->castValue(trim($current));
+                $current = '';
+                continue;
+            }
+            $current .= $char;
+        }
+        $values[] = $this->castValue(trim($current));
+        return $values;
+    }
+
+
+    protected function castValue(string $raw)
+    {
+        if (strcasecmp($raw, 'NULL') === 0) {
+            return null;
+        }
+        if (preg_match('/^-?\d+$/', $raw)) {
+            return (int) $raw;
+        }
+        if (preg_match('/^-?\d*\.\d+$/', $raw)) {
+            return (float) $raw;
+        }
+        return $raw; // quoted strings arrive here already unescaped
+    }
 }
