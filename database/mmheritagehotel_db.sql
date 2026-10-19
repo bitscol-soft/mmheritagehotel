@@ -5961,6 +5961,57 @@ CREATE TABLE `rst_sale_return_details` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `rst_sale_exchanges`
+-- (BUGS #48: the Sale Exchange feature. Header for returning goods from an
+--  invoice and handing out replacements in one document, settling only the
+--  difference. Bar and Restaurant share it, distinguished by `is_bar`, the same
+--  way rst_sales and rst_sale_returns are shared.)
+--
+
+CREATE TABLE `rst_sale_exchanges` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `company_id` bigint(20) UNSIGNED NOT NULL,
+  `created_by` bigint(20) UNSIGNED NOT NULL,
+  `updated_by` bigint(20) UNSIGNED DEFAULT NULL,
+  `customer_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `invoice_no` varchar(191) DEFAULT NULL,
+  `date` date NOT NULL,
+  `subtotal` double(10,2) DEFAULT NULL,
+  `return_amount` double(10,2) DEFAULT NULL,
+  `exchange_amount` double(10,2) DEFAULT NULL,
+  `payable_amount` double(10,2) DEFAULT NULL,
+  `due_amount` double(10,2) DEFAULT NULL,
+  `change_amount` double(10,2) DEFAULT NULL,
+  `sale_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `is_bar` tinyint(4) DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `rst_sale_exchange_details`
+--
+
+CREATE TABLE `rst_sale_exchange_details` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `sale_exchange_id` bigint(20) UNSIGNED NOT NULL,
+  `product_id` bigint(20) UNSIGNED NOT NULL,
+  `sale_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `direction` varchar(8) NOT NULL DEFAULT 'out',
+  `quantity` double(10,2) NOT NULL,
+  `item_price` double(10,2) NOT NULL,
+  `total_amount` double(10,2) DEFAULT NULL,
+  `item_discount` double(10,2) NOT NULL DEFAULT 0.00,
+  `is_bar` tinyint(4) DEFAULT 0,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `rst_suppliers`
 --
 
@@ -7806,6 +7857,26 @@ ALTER TABLE `rst_sale_return_details`
   ADD KEY `rst_sale_return_details_sale_return_id_foreign` (`sale_return_id`);
 
 --
+-- Indexes for table `rst_sale_exchanges`
+--
+ALTER TABLE `rst_sale_exchanges`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `rst_sale_exchanges_company_id_foreign` (`company_id`),
+  ADD KEY `rst_sale_exchanges_created_by_foreign` (`created_by`),
+  ADD KEY `rst_sale_exchanges_sale_id_foreign` (`sale_id`),
+  ADD KEY `rst_sale_exchanges_invoice_no_index` (`invoice_no`),
+  ADD KEY `rst_sale_exchanges_is_bar_date_index` (`is_bar`, `date`);
+
+--
+-- Indexes for table `rst_sale_exchange_details`
+--
+ALTER TABLE `rst_sale_exchange_details`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `rst_sale_exchange_details_exchange_id_foreign` (`sale_exchange_id`),
+  ADD KEY `rst_sale_exchange_details_product_id_index` (`product_id`),
+  ADD KEY `rst_sale_exchange_details_sale_id_foreign` (`sale_id`);
+
+--
 -- Indexes for table `rst_suppliers`
 --
 ALTER TABLE `rst_suppliers`
@@ -8890,6 +8961,12 @@ ALTER TABLE `rst_sale_returns`
 -- AUTO_INCREMENT for table `rst_sale_return_details`
 --
 ALTER TABLE `rst_sale_return_details`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `rst_sale_exchanges`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+ALTER TABLE `rst_sale_exchange_details`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --

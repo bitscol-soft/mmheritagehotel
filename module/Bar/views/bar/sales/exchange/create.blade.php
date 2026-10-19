@@ -302,7 +302,7 @@
         $(document).on('focus', '#invoice_no', function() {
             $(this).autocomplete({
                 source: function(request, response) {
-                    $.getJSON('/pharmacy/get-product-by-sale-invoice', {
+                    $.getJSON('/bar/get-product-by-sale-invoice', {
                             invoice_no: request.term
                         },
                         function(data) {
@@ -340,7 +340,7 @@
             $(this).autocomplete({
 
                 source: function(request, response) {
-                    $.getJSON('/pharmacy/get-saleable-products', {
+                    $.getJSON('/bar/get-saleable-products', {
                             invoice_no: $('#invoice_no').val(),
                             patient_name: $('#patient_name').val(),
                         },
@@ -371,7 +371,7 @@
             console.log($('#hidden_patient_name').val());
             $(this).autocomplete({
                 source: function(request, response) {
-                    $.getJSON('/pharmacy/inventory/get-products', {
+                    $.getJSON('/bar/inventory/get-products', {
                             name: request.term
                         },
                         function(data) {

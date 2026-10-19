@@ -75,6 +75,16 @@
                             <b class="arrow"></b>
                         </li>
 
+                        @if (hasPermission('resturant.sales.index', $slugs))
+                            <li>
+                                <a href="{{ route('rst.sale-exchanges.index') }}">
+                                    <i class="menu-icon fa fa-caret-right"></i>
+                                    Sale Exchange List
+                                </a>
+                                <b class="arrow"></b>
+                            </li>
+                        @endif
+
 
                     </ul>
 

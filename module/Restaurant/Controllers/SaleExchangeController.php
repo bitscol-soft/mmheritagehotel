@@ -2,59 +2,152 @@
 
 namespace Module\Restaurant\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
+use Module\Restaurant\Models\SaleExchange;
+use Module\Restaurant\Services\SaleExchangeService;
 
 /**
- * Sale Exchange (Restaurant module).
+ * Sale Exchange (Restaurant) - BUGS #48.
  *
- * The module shipped views (sales/exchange/*) and a route registration
- * ("sale-exchanges" => SaleExchangeController::class) but the controller and
- * its table (rst_sale_exchanges) were never committed to this repository.
- * Until the feature is restored from the vendor build, every entry point
- * degrades to a flash redirect on the Restaurant sales grid instead of the
- * previous "Target class ... does not exist" HTTP 500.
+ * Returns goods from an invoice and hands out replacements in one document,
+ * settling only the difference. Previously every action redirected to the sales
+ * grid with "feature is not installed": the views and the route registration
+ * shipped, but the controller, the models and the two tables did not.
+ *
+ * An exchange is a financial document, so it is created and voided - never
+ * edited in place. `edit`/`update` say so instead of rendering a form whose
+ * numbers could no longer match the stock and ledger movement already posted.
  */
 class SaleExchangeController extends Controller
 {
-    private function notInstalled()
-    {
-        return redirect()->route('rst.sales.index')
-            ->with('warning', 'The Sale Exchange feature is not installed in this build (module files/table missing).');
-    }
-
+    /*
+     |--------------------------------------------------------------------------
+     | INDEX
+     |--------------------------------------------------------------------------
+    */
     public function index()
     {
-        return $this->notInstalled();
+        $this->hasAccess('resturant.sales.index');
+
+        $query = SaleExchange::with(['guest', 'user'])
+            ->where('is_bar', 0)
+            ->when(request('invoice_no'), function ($q, $invoice) {
+                return $q->where('invoice_no', 'like', '%' . $invoice . '%');
+            });
+
+        return view('resturant.sales.exchange.index', [
+            'sales' => $query->latest('date')->latest('id')->paginate(25)->appends(request()->query()),
+        ]);
     }
 
+    /*
+     |--------------------------------------------------------------------------
+     | CREATE
+     |--------------------------------------------------------------------------
+    */
     public function create()
     {
-        return $this->notInstalled();
+        $this->hasAccess('resturant.sales.create');
+
+        return view('resturant.sales.exchange.create', [
+            'invoice_id' => SaleExchange::where('is_bar', 0)->latest('id')->value('invoice_no') ?: 1000,
+        ]);
     }
 
+    /*
+     |--------------------------------------------------------------------------
+     | STORE
+     |--------------------------------------------------------------------------
+    */
     public function store(Request $request)
     {
-        return $this->notInstalled();
+        $this->hasAccess('resturant.sales.create');
+
+        $request->validate([
+            'date'           => 'required',
+            'product_ids'    => 'required|array|min:1',
+            'return_quantity' => 'required|array|min:1',
+        ]);
+
+        try {
+            return DB::transaction(function () use ($request) {
+                $service = new SaleExchangeService();
+                $exchange = $service->store();
+
+                $service->storeItem();
+                $service->settle($request->account_type_id);
+
+                return redirect()
+                    ->route('rst.sale-exchanges.show', $exchange->id)
+                    ->with('message', 'Sale Exchange created successfully.');
+            });
+        } catch (\Throwable $th) {
+            return redirect()->back()->withInput()->with('error', $th->getMessage());
+        }
     }
 
+    /*
+     |--------------------------------------------------------------------------
+     | SHOW
+     |--------------------------------------------------------------------------
+    */
     public function show($id)
     {
-        return $this->notInstalled();
+        $this->hasAccess('resturant.sales.view');
+
+        $exchange = SaleExchange::with(['items.product', 'guest', 'user'])->findOrFail($id);
+
+        return view('resturant.sales.exchange.show', [
+            'sale' => $exchange,
+        ]);
     }
 
+    /*
+     |--------------------------------------------------------------------------
+     | EDIT / UPDATE - not allowed on a posted exchange
+     |--------------------------------------------------------------------------
+    */
     public function edit($id)
     {
-        return $this->notInstalled();
+        $this->hasAccess('resturant.sales.view');
+
+        return redirect()
+            ->route('rst.sale-exchanges.show', $id)
+            ->with('warning', 'An exchange cannot be edited: its stock and settlement are already posted. Void it and create a new one.');
     }
 
     public function update(Request $request, $id)
     {
-        return $this->notInstalled();
+        return $this->edit($id);
     }
 
+    /*
+     |--------------------------------------------------------------------------
+     | DESTROY - void
+     |--------------------------------------------------------------------------
+    */
     public function destroy($id)
     {
-        return $this->notInstalled();
+        $this->hasAccess('resturant.sales.delete');
+
+        $exchange = SaleExchange::findOrFail($id);
+
+        try {
+            DB::transaction(function () use ($exchange) {
+                // Items first (the model's deleting hook would do it too, but the
+                // explicit call keeps the table clean even if the hook is skipped).
+                $exchange->items()->delete();
+                $exchange->transactions()->delete();
+                $exchange->delete();
+            });
+
+            return redirect()
+                ->route('rst.sale-exchanges.index')
+                ->with('message', 'Sale Exchange voided.');
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', $th->getMessage());
+        }
     }
 }

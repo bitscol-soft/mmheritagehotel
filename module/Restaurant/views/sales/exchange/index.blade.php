@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title', 'Sale Return List')
+@section('title', 'Sale Exchange List')
 
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/css/chosen.min.css') }}" />
@@ -16,10 +16,10 @@
 
 @section('content')
     <x-mm.styles />
-    <x-mm.page class="mm-crud-index mm-rst" title="Sale Return List">
+    <x-mm.page class="mm-crud-index mm-rst" title="Sale Exchange List">
         <x-slot name="actions">
-            @if (hasPermission('pharmacy.view', $slugs))
-                <a href="{{ route('rst.sale-returns.create') }}" class="btn btn-sm btn-primary">
+            @if (hasPermission('resturant.sales.create', $slugs))
+                <a href="{{ route('rst.sale-exchanges.create') }}" class="btn btn-sm btn-primary">
                     <i class="fa fa-plus"></i> Add New
                 </a>
             @endif
@@ -74,11 +74,11 @@
                                         <tr>
                                             <th width="1%">Sl</th>
                                             <th>Invoice ID</th>
-                                            <th>Patient/Customer</th>
+                                            <th>Guest / Customer</th>
                                             <th>Date</th>
-                                            <th class="text-right">Total Amount</th>
-                                            <th class="text-right">Return Amount</th>
-                                            <th class="text-right">Paid</th>
+                                            <th class="text-right">Goods Out</th>
+                                            <th class="text-right">Taken Back</th>
+                                            <th class="text-right">Difference</th>
                                             <th class="text-right">Due</th>
                                             <th width="8%" class="text-center">Action</th>
                                         </tr>
@@ -94,7 +94,7 @@
                                                     {{ $sale->invoice_no }}
                                                 </td>
                                                 <td>
-                                                    {{ optional($sale->patient)->name }}
+                                                    {{ optional($sale->guest)->name ?? 'Walking customer' }}
                                                 </td>
                                                 <td>
                                                     {{ $sale->date }}
@@ -103,10 +103,10 @@
                                                     {{ number_format($sale->subtotal, 2) }}
                                                 </td>
                                                 <td class="text-right">
-                                                    {{ number_format($sale->discount, 2) }}
+                                                    {{ number_format($sale->return_amount, 2) }}
                                                 </td>
                                                 <td class="text-right">
-                                                    {{ number_format($sale->paid_amount, 2) }}
+                                                    {{ number_format($sale->payable_amount, 2) }}
                                                 </td>
                                                 <td class="text-right">
                                                     {{ number_format($sale->due_amount, 2) }}
@@ -118,12 +118,12 @@
                                                             class="btn btn-xs btn-inverse">
                                                             <i class="fa fa-money"></i>
                                                         </a> --}}
-                                                        <a href="{{ route('rst.sales.show', $sale->id) }}"
+                                                        <a href="{{ route('rst.sale-exchanges.show', $sale->id) }}"
                                                             class="btn btn-xs btn-success">
                                                             <i class="fa fa-eye"></i>
                                                         </a>
                                                         <a href="#"
-                                                            onclick="delete_item(`{{ route('rst.sales.destroy', $sale->id) }}`)"
+                                                            onclick="delete_item(`{{ route('rst.sale-exchanges.destroy', $sale->id) }}`)"
                                                             class="btn btn-xs btn-danger">
                                                             <i class="fa fa-trash-o"></i>
                                                         </a>
@@ -136,8 +136,7 @@
                                             <tr>
                                                 <td colspan="30" class="text-center">
                                                     <strong class="text-danger"
-                                                        style="font-size: 18px; background:rgba(140, 212, 212, 0.467)">No
-                                                        Record Found !
+                                                        style="font-size: 18px; background:rgba(140, 212, 212, 0.467)">No records found!
                                                     </strong>
                                                 </td>
                                             </tr>
