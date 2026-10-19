@@ -74,7 +74,6 @@ class VoucherLedgerUpdateService
             $detail->delete();
         }
 
-        $this->voucher->load('details');
         $this->writeDetails($request);
 
         // A draft stays a draft; an approved voucher keeps its number and is
@@ -100,28 +99,25 @@ class VoucherLedgerUpdateService
                 continue;
             }
 
-            // Keep the old detail row (and its transaction_no) when the form
-            // sends one back for this position; otherwise it is a new line.
-            $existing = isset($request->detail_ids[$key])
-                ? $this->voucher->details->firstWhere('id', $request->detail_ids[$key])
-                : null;
-
-            $attributes = [
+            // Lines are recreated wholesale - the old rows (and their
+            // transaction numbers) went with the delete above. The form still
+            // posts detail_ids, but they can no longer match anything, so the
+            // numbers are regenerated in postTransactions().
+            $this->voucher->details()->create([
                 'account_id'   => $account_id,
                 'amount'       => $debit + $credit,
                 'balance_type' => $debit > $credit ? 'Debit' : 'Credit',
-            ];
-
-            if ($existing && !$existing->transaction_no) {
-                $existing->update($attributes);
-            } else {
-                $this->voucher->details()->create($attributes);
-            }
+            ]);
         }
     }
 
     private function postTransactions()
     {
+        // The lines were just inserted through the query builder, so the model's
+        // cached `details` collection is still the one loaded BEFORE the delete.
+        // Without this reload the loop below is empty and nothing is posted.
+        $this->voucher->load('details');
+
         foreach ($this->voucher->details as $key => $detail) {
             $detail->update([
                 'transaction_no' => $this->invoiceNumberService

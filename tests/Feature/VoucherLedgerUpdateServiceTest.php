@@ -168,7 +168,7 @@ class VoucherLedgerUpdateServiceTest extends TestCase
         $service = new VoucherLedgerUpdateService($voucher, ['debit' => 'Cash', 'credit' => 'Receive']);
         $service->update($this->payload($voucher, [1, 3], [900, ''], ['', 900]));
 
-        $this->assertEquals(2, Transaction::count(), 'a re-post must UPDATE, never duplicate');
+        $this->assertEquals(2, Transaction::count(), 'a re-post must never leave a duplicate ledger row');
 
         $cash = Transaction::where('account_id', 1)->first();
         $this->assertEquals(900, (float) $cash->debit_amount);
