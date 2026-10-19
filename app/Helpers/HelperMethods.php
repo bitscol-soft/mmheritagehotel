@@ -1049,3 +1049,35 @@ function front_cart_items()
 {
     return session()->get('booking_cart', []);
 }
+
+
+/*
+ |--------------------------------------------------------------
+ | ASSET CACHE-BUSTER
+ |--------------------------------------------------------------
+ | A content hash rather than filemtime(): the mtime changes on
+ | every deploy and every clean checkout, which rewrote the
+ | committed render fixtures (and the published preview) on every
+ | CI run even when nothing changed. A hash changes only when the
+ | file really changes, and still invalidates browser caches.
+ |
+ | asset_v('assets/custom_css/ui.css') -> '9f2a1c7b3d'
+ | Returns '' for a missing file so a Blade page never fatals.
+ |--------------------------------------------------------------
+ */
+
+function asset_v($relative_path)
+{
+    static $cache = [];
+
+    if (array_key_exists($relative_path, $cache)) {
+        return $cache[$relative_path];
+    }
+
+    $absolute = public_path($relative_path);
+    $cache[$relative_path] = is_file($absolute)
+        ? substr(md5_file($absolute), 0, 10)
+        : '';
+
+    return $cache[$relative_path];
+}
