@@ -7,13 +7,15 @@ name: Pages preview
 # screens are reachable without the sandbox:
 #   https://bitscol-soft.github.io/mmheritagehotel/
 #
-# Two repository settings decide whether the deploy can happen, both of which
-# need an admin (the automation token cannot change them):
+# The repository currently publishes with Source = "Deploy from a branch": the
+# exported site is committed at the branch root and Pages rebuilds it on push
+# (see docs/PAGES-DEPLOY.md). This workflow is therefore the guard, not the
+# publisher - it exports a fresh copy, checks every internal link, and keeps the
+# artifact. Its deploy job reports that and stops.
 #
-#   1. Settings -> Pages -> Build and deployment -> Source = "GitHub Actions"
-#      (the dropdown - not a branch name underneath it)
-#   2. Settings -> Environments -> github-pages -> Deployment branches must list
-#      the branch being built (main and the preview branch are listed today).
+# To publish from Actions instead, switch Source to "GitHub Actions", delete the
+# committed site + _config.yml, and make sure the github-pages environment lists
+# the branch being built.
 #
 # Until both are true the build still runs and its 100k-link check still guards
 # every push; only the deploy job is skipped, so the workflow stays green.
@@ -46,6 +48,14 @@ jobs:
 
       - name: Export the static preview
         run: node tools/export-static-preview.cjs --out dist-preview
+
+      # The site is published from the branch root, so _config.yml is the only
+      # thing keeping .env and the SQL dump off the public site.
+      - name: Check the Pages safety net
+        run: |
+          for entry in '".env"' '"database"' '"public/index.php"'; do
+            grep -q "$entry" _config.yml || { echo "::error::_config.yml no longer excludes $entry"; exit 1; }
+          done
 
       - name: Verify every link and asset resolves
         run: node tools/check-static-preview.cjs dist-preview

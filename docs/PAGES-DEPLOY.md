@@ -1,80 +1,69 @@
 # Publishing the preview on GitHub Pages
 
-`https://bitscol-soft.github.io/mmheritagehotel/` is served by **GitHub Pages**. Two
-things follow from that, and one of them is a hard limit:
+`https://bitscol-soft.github.io/mmheritagehotel/` serves the **visual preview** of the
+application: every registered screen, rendered from `tools/fixtures` with sample data.
+A "nothing is saved here" guard intercepts every form.
 
-1. **Pages serves static files only.** It cannot run PHP, Laravel, MySQL or a queue
-   worker. The real application — login, CRUD, saving a booking — can only run on a
-   host with PHP 8.1 and MySQL (see BUGS #23: staging deploy). What Pages *can* serve
-   is the visual preview: all 457 screens rendered from `tools/fixtures`, with sample
-   data and a "nothing is saved here" guard on every form.
-2. **The preview is built and verified on every push** (`.github/workflows/pages-preview.yml`:
-   export → 119k-link check → Pages artifact), but the **deploy step is blocked by a
-   repository setting** that the automation token cannot change.
+Pages cannot run PHP, Laravel or MySQL, so this is a click-through of the screens, not the
+live application. Real writes need a PHP host (BUGS #23).
 
-## Why the site currently shows just "mmheritagehotel"
+## How it is published
 
-`Settings → Pages → Build and deployment → Source` is still **Deploy from a branch**,
-pointing at `arena/01a0fe5b-mmheritagehotel` (an old session branch). That branch has no
-`index.html` at its root, so Jekyll renders the only thing it finds — `README.md`, whose
-single heading is `# mmheritagehotel`. That is exactly what the live URL returns.
+`Settings → Pages → Build and deployment → Source` is **Deploy from a branch**, branch
+`arena/7ee36555-mmheritagehotel`, path `/`. Everything at the branch root is therefore
+public, which drives the whole design:
 
-## To publish the preview — two admin settings
+1. **The site is committed at the root.** `index.html` is the dashboard, `preview/` is the
+   explorer, and one directory per route holds its `index.html`. Push to the branch and
+   Pages rebuilds automatically — no workflow and no settings change is involved.
+2. **`_config.yml` keeps the application private.** Jekyll ignores dotfiles, so `.env` is
+   never published; `database/` (the 172-table dump), `app/`, `module/`, `vendor/`, `docs/`,
+   `storage/`, `tests/` and the rest are listed under `exclude`. `public/index.php` and
+   `public/.htaccess` are excluded too, so no PHP source is served as a page.
+3. **Assets are reused, not duplicated.** `public/assets`, `public/frontend` and
+   `public/food_menu` already exist in the repository, so page URLs point at
+   `/public/...` instead of a second 23 MB copy.
+4. **404.html is the explorer**, so any unknown path lands somewhere useful.
 
-### 1. Switch the Pages source
-
-`Settings` → `Pages` → `Build and deployment` → **Source: GitHub Actions**.
-
-That alone stops the stale branch build. The next push (or a manual *Run workflow*)
-publishes the static preview.
-
-### 2. Let the branch deploy
-
-`Settings` → `Environments` → **github-pages** → *Deployment branches* currently allows
-only `main` and `arena/01a0fe5b-mmheritagehotel`. Pick one:
-
-| Goal | What to do |
-|---|---|
-| Publish after merge (recommended) | Nothing more. `main` is already allowed; merging PR #18 triggers the workflow on `main` and it deploys. |
-| Publish from this branch before merge | Add `arena/7ee36555-mmheritagehotel` to the policy (already done). Nothing else — the deploy job runs on any branch this workflow is triggered for. |
-
-Until both are true the workflow stays **green**: the build and its link check always
-run, and when the Pages source is not Actions the deploy job reports that as a notice and
-skips only its final step.
-
-**Choosing a branch under "Deploy from a branch" does not deploy this preview.** That mode
-runs Jekyll over the whole repository (Laravel code, `vendor/`, these docs) and fails at
-"Build with Jekyll" — verified on `arena/7ee36555-mmheritagehotel`. The preview is a
-workflow artifact, so the dropdown itself must say **GitHub Actions**.
-
-Two mechanics worth knowing:
-
-- **`Run workflow` only appears for workflows on the default branch.** Before PR #18
-  merges there is no `pages-preview.yml` on `main`, so the button will not list it on this
-  branch — a push is what triggers it. (Once merged, use *Run workflow* freely.)
-- **Re-running a run re-evaluates the gate.** After adding the branch to the environment
-  and setting the variable, re-run the latest *Pages preview* run; its deploy job becomes
-  eligible without needing another commit.
-
-## Verifying by hand
-
-The same artifact can be produced and served locally, mounted under `/<repo>/` exactly
-as project Pages does:
+Verify the safety net after touching anything here:
 
 ```bash
-node tools/export-static-preview.cjs --out dist-preview   # ~5 s, 457 screens
-node tools/check-static-preview.cjs dist-preview          # 0 broken links or it fails
-node tools/serve-static-preview.cjs --dir dist-preview --base mmheritagehotel --port 8099
-# http://localhost:8099/mmheritagehotel/
+curl -sI https://bitscol-soft.github.io/mmheritagehotel/.env                                  # 404
+curl -sI https://bitscol-soft.github.io/mmheritagehotel/database/mmheritagehotel_db.sql      # 404
 ```
 
-`check-static-preview.cjs` fails on any broken internal link or any root-absolute URL.
-It *reports* but does not fail on the 25 missing images inside the vendored stylesheets
-under `public/assets` — those are pre-existing and 404 on the live preview server too.
+## Regenerating the published site
 
-## What the published site is not
+```bash
+node tools/export-static-preview.cjs --out dist-preview   # 457 screens, ~5 s
+node tools/check-static-preview.cjs dist-preview          # fails on any broken link
+node tools/publish-branch-site.cjs                        # copies to the root, verified
+git add -A && git commit -m "Publish the preview" && git push
+```
 
-- Not the Laravel app: no login, no database, no writes. Forms are intercepted.
-- Not the API: AJAX calls in the fixtures hit nothing; the screens show their seeded state.
-- A new export is produced on every push, so the published screens cannot drift from
-  the repository.
+`publish-branch-site.cjs` rewrites `assets|frontend|food_menu` to `public/...`, folds
+`./` segments, regenerates `_config.yml` from whatever is in the tree, and resolves every
+relative reference on disk before reporting `PUBLISH_OK`. It writes
+`.pages-publish-manifest.json` so a later run can clean up pages that no longer exist.
+
+Two quirks of the export that matter for the published copy:
+
+- **`http://localhost/...` URLs in the fixtures** (Laravel `asset()`/`url()` output) are
+  folded to site-relative paths by the exporter. Without that, 4,078 links sent visitors to
+  their own machine.
+- **566 links point at routes the preview never exported** (the banquet `bq/` router, POS
+  `x/` paths, parameterised edit screens). They 404 on the live preview server too, so the
+  exporter makes them inert (`href="#"`) and logs the count rather than shipping dead ends.
+
+## The `Pages preview` workflow
+
+`.github/workflows/pages-preview.yml` still runs on every push: it exports into a temp
+directory, checks all ~120k internal links, and uploads a Pages artifact. It is the guard,
+not the publisher — its deploy job reports that the repository publishes from a branch.
+Keep it: it catches link and fixture regressions before they reach the site.
+
+## If you would rather publish from Actions
+
+Switch the Source dropdown to **GitHub Actions**, delete the committed site files plus
+`_config.yml` (one commit), and the workflow's deploy job takes over. That path also needs
+the `github-pages` environment to allow the branch, which it already does.
