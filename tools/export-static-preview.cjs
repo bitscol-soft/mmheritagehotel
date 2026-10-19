@@ -72,6 +72,18 @@ const SUBMIT_GUARD =
     'e.preventDefault();e.stopPropagation();' +
     'alert("Static preview: nothing is saved here.");},true);})();</script>';
 
+// The published site looks like a working PMS, so say plainly that it is not one.
+// Inline styles: it must survive pages whose own CSS is missing or scoped.
+const PREVIEW_BADGE =
+    '<a id="mm-static-preview-badge" href="' + '{{ROOT}}' + 'preview/" ' +
+    'style="position:fixed;left:14px;bottom:14px;z-index:2147483647;display:flex;' +
+    'align-items:center;gap:8px;padding:7px 12px;border-radius:999px;' +
+    'background:rgba(17,24,39,.92);color:#fff;font:600 12px/1.2 system-ui,-apple-system,' +
+    'Segoe UI,Roboto,sans-serif;text-decoration:none;box-shadow:0 6px 20px rgba(0,0,0,.25)">' +
+    '<span style="width:7px;height:7px;border-radius:50%;background:#34d399;' +
+    'box-shadow:0 0 0 3px rgba(52,211,153,.25)"></span>' +
+    'Static preview &middot; sample data &middot; nothing is saved</a>';
+
 function get(route) {
     return new Promise((resolve, reject) => {
         const req = http.get(
@@ -174,7 +186,9 @@ function rewrite(html, depth) {
         return 'href="' + pathPart + '/' + rest + '"';
     });
 
-    return out.replace(/<\/body>/i, SUBMIT_GUARD + '</body>');
+    // The badge needs the same depth prefix as any other link on the page.
+    const badge = PREVIEW_BADGE.replace('{{ROOT}}', prefix);
+    return out.replace(/<\/body>/i, badge + SUBMIT_GUARD + '</body>');
 }
 
 function copyDir(from, to) {
