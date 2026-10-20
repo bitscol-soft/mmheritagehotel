@@ -112,14 +112,15 @@ class ParameterisedRouteCrawlTest extends TestCase
             }
         }
 
-        // A CI annotation keeps only the FIRST line of a failure, so neither the
-        // test name nor a diff can carry a pile of diagnoses. Workflow commands
-        // written to stdout become individual annotations instead.
-        foreach ($failures as $uri => $reason) {
-            fwrite(STDOUT, '::warning title=parameterised-crawl::' . $uri . ' :: ' . $reason . "\n");
-        }
-        fwrite(STDOUT, sprintf("crawl | parameterised routes=%d skipped_no_data=%d failures=%d\n",
+        // A CI annotation keeps only the FIRST line of a failure, and this
+        // workflow pipes phpunit into a log file before printing it, so a diff or
+        // a test name cannot carry the diagnosis. Print one greppable line per
+        // failing route instead; ui-check.yml lifts those into the annotation.
+        fwrite(STDOUT, sprintf("PARAMCRAWL routes=%d skipped_no_data=%d failures=%d\n",
             $tested, $skipped, count($failures)));
+        foreach ($failures as $uri => $reason) {
+            fwrite(STDOUT, 'PARAMCRAWL ' . $uri . ' :: ' . $reason . "\n");
+        }
 
         $this->assertGreaterThan(0, $tested, 'no parameterised route resolved to a real row - the sweep is not wired up');
         $this->assertSame([], $failures);

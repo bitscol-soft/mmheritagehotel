@@ -33,7 +33,7 @@ jobs:
             cat /tmp/phpunit.log
             # surface the failing assertion (and the crawl findings it may list) in the
             # check annotation - the job log itself is not always reachable
-            echo "::error::$(grep -E 'Unexpected crawl failures|^[0-9]+\) |Failed asserting' /tmp/phpunit.log | head -n 20 | tr '\n' ' ')"
+            echo "::error::$(grep -E 'Unexpected crawl failures|^[0-9]+\) |Failed asserting|PARAMCRAWL' /tmp/phpunit.log | head -n 20 | tr '\n' ' ')"
             exit 1
           fi
           cat /tmp/phpunit.log
