@@ -201,6 +201,30 @@ data - `tools/ui-blade-check.php`, the browser specs and the fixture regeneratio
 | 24 | 🔵 | **Secrets committed** | `.env` (APP_KEY + DB credentials) and a full production SQL dump (`database/mmheritagehotel_db.sql`, 172 tables incl. user hashes) are tracked in git. Files are now covered by `.gitignore` but history still exposes them. **Action: rotate DB/APP_KEY/Google-drive creds, purge history (`git filter-repo`) or treat repo as internal-only.** |
 | 31 | 🟡 | Laravel 8 + PHP 8.1 are EOL, `vendor/` committed | **Prep landed** (L9-removed helpers migrated to `Str::`, full 8→9→10→11 runbook in `docs/LARAVEL-11-UPGRADE.md`). The steps are now mechanical: `tools/laravel11-bump.cjs --step 1|2|3 [--apply]` rewrites composer.json + the version-coupled code (Kernel alias rename, CORS middleware swap, PHPUnit 10 schema) with a reviewable diff, and `tools/laravel11-check.sh` is version-aware - it fails when the tree is half-upgraded in *either* direction. Audit found the classic 8→9 blockers absent (no `$dates`, Swift, `dispatchNow`, Faker properties, `Input` facade), so step 1 is small. Remaining manual work: the `composer update` + lock/vendor refresh on a Packagist-connected machine, and the 16 Carbon 3 `diffIn*` sites at step 3 (listed in the runbook). |
 
+## C0. The parameterised-route gate
+
+`PageCrawlAuditTest` walks every GET route **without** a placeholder, so until now no `/{id}` screen had
+ever been exercised: not one show page, not one edit page. That gap is how the #49 voucher edit screen
+shipped a controller passing `company` to a view reading `$companies` - it took a hand comparison of
+view variables to catch, because no test could reach the route.
+
+`ParameterisedRouteCrawlTest` closes it. For each single-placeholder GET route it resolves the table the
+route actually binds (the controller method's model type-hint first, then the parameter/URI name, then the
+module-prefixed spelling), takes the smallest id that **exists**, and 500s fail the build. 404/302 are
+accepted: a route that wants another kind of id simply does not resolve.
+
+Two findings while building it, both worth keeping:
+
+- **The shipped dump carries no business rows.** There is no `INSERT` for `sales`, `items`, `products`,
+  `bookings` and most transactional tables - only master data. A fixed `id = 1` therefore measures
+  null-dereferences in views handed a row that never existed (49 of them on the first run, every one a
+  fixture artifact, not a defect). The sweep skips those routes rather than "fixing" them: **24
+  master-data screens are exercised, ~129 are skipped for lack of data.** That ceiling is the dump's, not
+  the test's - restoring real rows to the fixture would raise it.
+- `ui-check.yml` pipes phpunit into `/tmp/phpunit.log` before printing it, so workflow commands written
+  to stdout never reach the runner. The step now lifts the sweep's `PARAMCRAWL` lines into the check
+  annotation, which is how a failure is diagnosed without the (unreachable) job log.
+
 ## C. Verification
 
 1. **Static:** every changed PHP file passes a real PHP-7 grammar parse (`php-parser` AST); only pre-existing
