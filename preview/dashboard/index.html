@@ -1,0 +1,832 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../../public/assets/css/bootstrap.min.css"><link rel="stylesheet" href="../../public/assets/css/ace.min.css"><link rel="stylesheet" href="../../public/assets/font-awesome/4.5.0/css/font-awesome.min.css"><link rel="stylesheet" href="../../public/assets/css/ace-skins.min.css"><link rel="stylesheet" href="../../public/assets/custom_css/color-size.css"><link rel="stylesheet" href="../../public/assets/custom_css/bootstrap4.css"><link rel="stylesheet" href="../../public/assets/custom_css/style.css"><link rel="stylesheet" href="../../public/assets/css/daterangepicker.min.css"><link rel="stylesheet" href="../../public/assets/custom_css/tokens.css"><link rel="stylesheet" href="../../public/assets/custom_css/ui.css"><link rel="stylesheet" href="../../public/assets/custom_css/shell.css"><style>body { font-family: Arial, sans-serif; } .mm-shell #navbar .hotel-title-name { color: #275188; }</style></head>
+<body class="no-skin mm-shell">
+<a href="#mm-main-content" class="mm-shell-skip">Skip to content</a>
+<button class="mm-shell-backdrop" data-mm-close aria-label="Close navigation" hidden></button>
+<div id="navbar" class="navbar navbar-default navbar-fixed-top"><div id="navbar-container" class="navbar-container">
+<button class="navbar-toggle menu-toggler pull-left" id="menu-toggler" data-target="#sidebar" aria-controls="sidebar" aria-expanded="false"><span class="sr-only">Toggle sidebar</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
+<div class="navbar-header pull-left"><a href="../../home/" class="navbar-brand"><span class="hotel-title-name">MM Heritage Hotel</span></a></div>
+<div class="navbar-buttons navbar-header pull-right"><ul class="nav ace-nav"><li class="mm-hdr-item mm-hdr-search-item">
+    <button type="button" class="mm-hdr-search" data-mm-palette-open aria-label="Search screens and actions" aria-haspopup="dialog" aria-keyshortcuts="Control+K Meta+K" hidden>
+        <i class="fa fa-search" aria-hidden="true"></i>
+        <span class="mm-hdr-search-text">Search screens &amp; actions</span>
+        <kbd class="mm-kbd" data-mm-mod-key>Ctrl K</kbd>
+    </button>
+</li>
+    <li class="mm-hdr-item">
+        <a class="mm-hdr-cta" href="../../hotel/booking/create/" data-mm-action="#" aria-label="New booking" title="New booking">
+            <i class="fa fa-plus" aria-hidden="true"></i><span class="mm-hdr-label">New booking</span>
+        </a>
+    </li>
+<li class="mm-hdr-item mm-hdr-tools">
+    <button type="button" class="mm-hdr-btn mm-hdr-optional" data-mm-nav-toggle aria-pressed="false" aria-label="Toggle sidebar layout" title="Toggle sidebar layout">
+        <i class="fa fa-bars" aria-hidden="true"></i>
+    </button>
+    <button type="button" class="mm-hdr-btn" data-mm-theme-toggle aria-pressed="false" aria-label="Dark theme" title="Dark theme" hidden>
+        <i class="fa fa-moon-o" aria-hidden="true"></i>
+    </button>
+    <button type="button" class="mm-hdr-btn mm-hdr-optional" data-mm-fullscreen aria-pressed="false" aria-label="Full screen" title="Full screen" hidden>
+        <i class="fa fa-expand" aria-hidden="true"></i>
+    </button>
+    <button type="button" class="mm-hdr-btn mm-hdr-optional" data-mm-shortcuts-open aria-haspopup="dialog" aria-keyshortcuts="?" aria-label="Keyboard shortcuts" title="Keyboard shortcuts" hidden>
+        <i class="fa fa-keyboard-o" aria-hidden="true"></i>
+    </button>
+</li>
+
+<li><a href="../../restaurant/">RST</a></li><li><a href="../../bar/">BAR</a></li><li><a href="#" aria-label="Clear application cache">↻</a></li>
+<li><a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-label="Notifications">♧</a><ul class="dropdown-menu dropdown-menu-right"><li><a href="../../notifications/">All notifications</a></li></ul></li>
+<li><a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-label="Account menu"><span class="user-info">Hotel administrator</span>⌄</a><ul class="dropdown-menu dropdown-menu-right"><li><a href="../../password/">Change password</a></li><li><a href="../../logout/">Logout</a></li></ul></li>
+</ul></div></div></div>
+<div id="main-container" class="main-container ace-save-state">
+<div id="sidebar" class="sidebar main-sidebar" data-sidebar="true" data-sidebar-scroll="false" data-sidebar-hover="false">
+<div class="mm-ui mm-shell-nav-tools">
+    <div class="tw-flex tw-items-center tw-justify-between tw-mb-4">
+        <span class="tw-text-xs tw-font-semibold tw-uppercase tw-tracking-wide tw-text-muted">Workspace</span>
+        <button type="button" class="mm-shell-icon mm-shell-close" data-mm-close aria-label="Close navigation">
+            <i class="fa fa-times" aria-hidden="true"></i>
+        </button>
+    </div>
+    <div class="mm-shell-nav-mode tw-mb-4" role="group" aria-label="Sidebar layout">
+        <span class="tw-block tw-text-sm tw-font-semibold tw-mb-2">Sidebar layout</span>
+        <div class="tw-flex tw-gap-1" role="group">
+            <button type="button" class="mm-button mm-button-secondary" data-mm-nav-toggle data-mm-nav-mode="mm-nav-full" aria-label="Full sidebar with text labels">
+                <i class="fa fa-list" aria-hidden="true"></i> Full
+            </button>
+            <button type="button" class="mm-button mm-button-secondary" data-mm-nav-toggle data-mm-nav-mode="mm-nav-rail" aria-label="Icon-only rail (68px)">
+                <i class="fa fa-bars" aria-hidden="true"></i> Rail
+            </button>
+            <button type="button" class="mm-button mm-button-secondary" data-mm-nav-toggle data-mm-nav-mode="mm-nav-collapsed" aria-label="Hide the sidebar">
+                <i class="fa fa-times-circle" aria-hidden="true"></i> Hidden
+            </button>
+        </div>
+    </div>
+    <label for="mm-menu-filter" class="tw-block tw-text-sm tw-font-semibold tw-mb-2">Find a menu</label>
+    <div class="mm-shell-search-row">
+    <input id="mm-menu-filter" class="mm-input" type="search" placeholder="Type a screen name…" autocomplete="off" aria-controls="mm-primary-menu" aria-describedby="mm-menu-help">
+    <button type="button" class="mm-shell-icon" id="mm-menu-clear" aria-label="Clear menu search" hidden><i class="fa fa-times" aria-hidden="true"></i></button>
+    </div>
+    <p id="mm-menu-help" class="tw-mt-2 tw-mb-0 tw-text-xs tw-text-muted">Search the menus available to you.</p>
+    <p id="mm-menu-empty" class="tw-mt-3 tw-mb-0 tw-text-sm" role="status" hidden>No matching menus.</p>
+</div>
+<div class="mm-role-switcher mm-no-print" id="mm-role-switcher" role="group" aria-label="Department role view switcher"><div class="mm-role-switcher-label"><span><i class="fa fa-user-secret"></i> Role View</span><span id="mm-role-active-label">All 14 Modules</span></div><div class="mm-role-pills"><button type="button" class="mm-role-pill is-active" data-role-filter="all" title="Show all 14 ERP modules">All (14)</button><button type="button" class="mm-role-pill" data-role-filter="frontdesk" title="Front-Desk &amp; Hospitality modules">Front Desk (8)</button><button type="button" class="mm-role-pill" data-role-filter="pos" title="Restaurant, Bar, Banquet &amp; Inventory modules">F&amp;B &amp; Store (5)</button><button type="button" class="mm-role-pill" data-role-filter="finance" title="Accounts, BI, CMS &amp; System Admin modules">Finance &amp; Admin (7)</button></div></div><ul class="nav nav-list" id="mm-primary-menu" aria-label="Main navigation"><li class="mm-nav-section" data-mod-roles="all,frontdesk,pos,finance" role="presentation">Overview & Hubs</li><li data-mod-roles="all,frontdesk,pos,finance" class="mm-mod-current open"><a href="#" class="dropdown-toggle" aria-expanded="true" title="Dashboard & Board (6 primary tabs · 6 module screens)"><i class="menu-icon fa fa-tachometer"></i><span class="menu-text">Dashboard & Board</span><span class="mm-nav-count">6</span><b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b><ul class="submenu"><li class="active"><a href="../../dashboard/" aria-current="page">Front-Desk Command Board</a><b class="arrow"></b></li><li><a href="../../preview/daily-flash-report/">Daily Manager Flash & Roster</a><b class="arrow"></b></li><li><a href="../../preview/payment-gateway/">Payment Gateway & Deposits (F1)</a><b class="arrow"></b></li><li><a href="../../preview/late-checkout/">Late Checkout & Fees (F10)</a><b class="arrow"></b></li><li><a href="../../preview/enterprise-suite/">Enterprise Suite Overview</a><b class="arrow"></b></li><li><a href="../../preview/attendance-biometric/">Staff Biometric Attendance</a><b class="arrow"></b></li></ul></li><li data-mod-roles="all,frontdesk,pos,finance"><a href="#" class="dropdown-toggle" aria-expanded="false" title="Command Hubs (4 primary tabs · 376 module screens)"><i class="menu-icon fa fa-sitemap"></i><span class="menu-text">Command Hubs</span><span class="mm-nav-count">4</span><b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b><ul class="submenu"><li><a href="../../preview/plan-a/">Plan A (9 Core Workflows)</a><b class="arrow"></b></li><li><a href="../../preview/plan-b/">Plan B (All 34 Features)</a><b class="arrow"></b></li><li><a href="../../preview/">All 360 Screens Explorer</a><b class="arrow"></b></li><li><a href="../../preview/ui-kit/">UI Component Kit</a><b class="arrow"></b></li></ul></li><li class="mm-nav-section" data-mod-roles="all,frontdesk" role="presentation">Hospitality & Front Desk</li><li data-mod-roles="all,frontdesk"><a href="#" class="dropdown-toggle" aria-expanded="false" title="Bookings & Tape Chart (6 primary tabs · 18 module screens)"><i class="menu-icon fa fa-calendar-plus-o"></i><span class="menu-text">Bookings & Tape Chart</span><span class="mm-nav-count">6</span><b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b><ul class="submenu"><li><a href="../../preview/booking-next/">3-Step Booking Wizard</a><b class="arrow"></b></li><li><a href="../../preview/tape-chart/">7-Day Tape Chart</a><b class="arrow"></b></li><li><a href="../../preview/bookings/">Active Bookings (20)</a><b class="arrow"></b></li><li><a href="../../preview/draft-booking-pdf/">Draft Summary A4 PDF</a><b class="arrow"></b></li><li><a href="../../preview/group-contracts/">Group & Event Blocks</a><b class="arrow"></b></li><li><a href="../../preview/hotel-booking-adjust/">Booking Migration</a><b class="arrow"></b></li></ul></li><li data-mod-roles="all,frontdesk,finance"><a href="#" class="dropdown-toggle" aria-expanded="false" title="In-House, Folio & Audit (8 primary tabs · 22 module screens)"><i class="menu-icon fa fa-columns"></i><span class="menu-text">In-House, Folio & Audit</span><span class="mm-nav-count">8</span><b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b><ul class="submenu"><li><a href="../../preview/folio-settlement/">Split-Folio Settlement</a><b class="arrow"></b></li><li><a href="../../preview/checkout/">Checkout & Folio</a><b class="arrow"></b></li><li><a href="../../preview/payment-collection/">Payment Collection</a><b class="arrow"></b></li><li><a href="../../preview/room-move/">Room Move & Upgrade</a><b class="arrow"></b></li><li><a href="../../preview/kiosk-checkin/">Self-Service Kiosk</a><b class="arrow"></b></li><li><a href="../../preview/invoice/">Booking Tax Invoice</a><b class="arrow"></b></li><li><a href="../../preview/night-audit-hardening/">Night-Audit Day Lock</a><b class="arrow"></b></li><li><a href="../../preview/night-audit/">Night Audit Register</a><b class="arrow"></b></li></ul></li><li data-mod-roles="all,frontdesk"><a href="#" class="dropdown-toggle" aria-expanded="false" title="Guests & CRM 360° (6 primary tabs · 16 module screens)"><i class="menu-icon fa fa-address-book-o"></i><span class="menu-text">Guests & CRM 360°</span><span class="mm-nav-count">6</span><b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b><ul class="submenu"><li><a href="../../preview/guest-crm/">Guest & Corporate CRM 360°</a><b class="arrow"></b></li><li><a href="../../preview/guests/">Guests Directory (20 VIPs)</a><b class="arrow"></b></li><li><a href="../../preview/city-ledger/">Corporate City Ledger AR</a><b class="arrow"></b></li><li><a href="../../preview/loyalty-coupons/">Loyalty & Coupons</a><b class="arrow"></b></li><li><a href="../../preview/guest-portal/">Guest Self-Portal</a><b class="arrow"></b></li><li><a href="../../preview/hotel-sms/">Guest SMS Dispatch</a><b class="arrow"></b></li></ul></li><li data-mod-roles="all,frontdesk"><a href="#" class="dropdown-toggle" aria-expanded="false" title="Rooms & Housekeeping (6 primary tabs · 16 module screens)"><i class="menu-icon fa fa-bed"></i><span class="menu-text">Rooms & Housekeeping</span><span class="mm-nav-count">6</span><b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b><ul class="submenu"><li><a href="../../preview/rooms/">Rooms Directory (20 Suites)</a><b class="arrow"></b></li><li><a href="../../preview/housekeeping-board/">Housekeeping SLA Board</a><b class="arrow"></b></li><li><a href="../../preview/concierge-requests/">Concierge & Lost/Found</a><b class="arrow"></b></li><li><a href="../../preview/minibar-folio/">Minibar Auto-Post</a><b class="arrow"></b></li><li><a href="../../preview/maintenance-tickets/">Maintenance Tickets</a><b class="arrow"></b></li><li><a href="../../preview/shift-roster/">Staff Shift Roster</a><b class="arrow"></b></li></ul></li><li data-mod-roles="all,frontdesk"><a href="#" class="dropdown-toggle" aria-expanded="false" title="Rates, Channels & Setup (9 primary tabs · 15 module screens)"><i class="menu-icon fa fa-sliders"></i><span class="menu-text">Rates, Channels & Setup</span><span class="mm-nav-count">9</span><b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b><ul class="submenu"><li><a href="../../preview/room-settings/">Room Settings & Pricing</a><b class="arrow"></b></li><li><a href="../../preview/rate-plans/">Seasonal Rate Plans</a><b class="arrow"></b></li><li><a href="../../preview/dynamic-pricing/">Dynamic Yield Pricing</a><b class="arrow"></b></li><li><a href="../../preview/channel-manager/">OTA Channel Manager</a><b class="arrow"></b></li><li><a href="../../preview/inventory-guards/">OOO & Inventory Guards</a><b class="arrow"></b></li><li><a href="../../preview/category-create/">Add Room Category</a><b class="arrow"></b></li><li><a href="../../preview/setup-amenities/">Amenities Setup</a><b class="arrow"></b></li><li><a href="../../preview/setup-vat/">VAT & Service Charge</a><b class="arrow"></b></li><li><a href="../../preview/setup-registration-terms/">Registration Terms</a><b class="arrow"></b></li></ul></li><li data-mod-roles="all,frontdesk,pos"><a href="#" class="dropdown-toggle" aria-expanded="false" title="Banquet & Services (9 primary tabs · 21 module screens)"><i class="menu-icon fa fa-glass"></i><span class="menu-text">Banquet & Services</span><span class="mm-nav-count">9</span><b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b><ul class="submenu"><li><a href="../../preview/bq-booking-index/">Banquet Bookings</a><b class="arrow"></b></li><li><a href="../../preview/bq-booking-create/">New Banquet Booking</a><b class="arrow"></b></li><li><a href="../../preview/bq-rooms-index/">Banquet Halls</a><b class="arrow"></b></li><li><a href="../../preview/bq-category-index/">Hall Categories</a><b class="arrow"></b></li><li><a href="../../preview/bq-aminities-index/">Hall Amenities</a><b class="arrow"></b></li><li><a href="../../preview/hservice-sales/">Hotel Service Sales</a><b class="arrow"></b></li><li><a href="../../preview/hservice-sale-create/">New Service Sale</a><b class="arrow"></b></li><li><a href="../../preview/hservice-services/">Services Catalog</a><b class="arrow"></b></li><li><a href="../../preview/upsell-marketplace/">Spa & Upsell Add-Ons</a><b class="arrow"></b></li></ul></li><li class="mm-nav-section" data-mod-roles="all,pos" role="presentation">F&B POS & Inventory</li><li data-mod-roles="all,pos"><a href="#" class="dropdown-toggle" aria-expanded="false" title="Restaurant & Bar POS (11 primary tabs · 54 module screens)"><i class="menu-icon fa fa-cutlery"></i><span class="menu-text">Restaurant & Bar POS</span><span class="mm-nav-count">11</span><b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b><ul class="submenu"><li><a href="../../preview/pos-unified/">Unified Split-Bill POS</a><b class="arrow"></b></li><li><a href="../../preview/pos-kot-print/">80mm Thermal KOT Studio</a><b class="arrow"></b></li><li><a href="../../preview/rst-pos/">Restaurant POS</a><b class="arrow"></b></li><li><a href="../../preview/bar-pos/">Skyline Bar POS</a><b class="arrow"></b></li><li><a href="../../preview/rst-tables/">Restaurant Tables</a><b class="arrow"></b></li><li><a href="../../preview/bar-tables/">Bar & Lounge Tables</a><b class="arrow"></b></li><li><a href="../../preview/rst-kitchen-board/">Kitchen Board (KDS)</a><b class="arrow"></b></li><li><a href="../../preview/rst-kitchen-list/">Kitchen Order Queue</a><b class="arrow"></b></li><li><a href="../../preview/rst-sales-list/">Restaurant Sales</a><b class="arrow"></b></li><li><a href="../../preview/rst-report-sales/">F&B Sales Report</a><b class="arrow"></b></li><li><a href="../../preview/rst-audit-list/">F&B Night Audit</a><b class="arrow"></b></li></ul></li><li data-mod-roles="all,pos"><a href="#" class="dropdown-toggle" aria-expanded="false" title="Kitchen & Store Stock (10 primary tabs · 59 module screens)"><i class="menu-icon fa fa-cubes"></i><span class="menu-text">Kitchen & Store Stock</span><span class="mm-nav-count">10</span><b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b><ul class="submenu"><li><a href="../../preview/rsi-inventory-report/">Kitchen Stock Report</a><b class="arrow"></b></li><li><a href="../../preview/rsi-products/">Kitchen Products</a><b class="arrow"></b></li><li><a href="../../preview/rsi-categories/">Kitchen Categories</a><b class="arrow"></b></li><li><a href="../../preview/rsi-suppliers/">F&B Suppliers</a><b class="arrow"></b></li><li><a href="../../preview/rsi-adjustments/">Stock Adjustments</a><b class="arrow"></b></li><li><a href="../../preview/gs-stock-in-hand/">Store Stock in Hand</a><b class="arrow"></b></li><li><a href="../../preview/gs-items/">Store Items Master</a><b class="arrow"></b></li><li><a href="../../preview/gs-purchases/">Store Purchase POs</a><b class="arrow"></b></li><li><a href="../../preview/gs-grn-list/">Goods Received (GRN)</a><b class="arrow"></b></li><li><a href="../../preview/gs-gr-list/">Department Requisitions</a><b class="arrow"></b></li></ul></li><li class="mm-nav-section" data-mod-roles="all,finance" role="presentation">Finance, BI & Admin</li><li data-mod-roles="all,finance"><a href="#" class="dropdown-toggle" aria-expanded="false" title="Accounts & Finance (12 primary tabs · 85 module screens)"><i class="menu-icon fa fa-money"></i><span class="menu-text">Accounts & Finance</span><span class="mm-nav-count">12</span><b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b><ul class="submenu"><li><a href="../../preview/acc-balance-sheet/">Balance Sheet & Builder</a><b class="arrow"></b></li><li><a href="../../preview/acc-income-statement/">Income Statement (P&L)</a><b class="arrow"></b></li><li><a href="../../preview/acc-trial-balance/">Trial Balance</a><b class="arrow"></b></li><li><a href="../../preview/acc-cash-flow/">Cash Flow Statement</a><b class="arrow"></b></li><li><a href="../../preview/acc-ratio-analysis/">Ratio Analysis</a><b class="arrow"></b></li><li><a href="../../preview/acc-chart-of-account/">Chart of Accounts</a><b class="arrow"></b></li><li><a href="../../preview/acc-account-ledger/">Account Ledger</a><b class="arrow"></b></li><li><a href="../../preview/acc-payments/">Payment Vouchers</a><b class="arrow"></b></li><li><a href="../../preview/acc-receives/">Receive Vouchers</a><b class="arrow"></b></li><li><a href="../../preview/acc-journals/">Journal Vouchers</a><b class="arrow"></b></li><li><a href="../../preview/acc-fund-transfers/">Fund Transfers</a><b class="arrow"></b></li><li><a href="../../preview/gateway-reconciliation/">Gateway Reconciliation</a><b class="arrow"></b></li></ul></li><li data-mod-roles="all,finance"><a href="#" class="dropdown-toggle" aria-expanded="false" title="Manager BI & Reports (8 primary tabs · 19 module screens)"><i class="menu-icon fa fa-bar-chart"></i><span class="menu-text">Manager BI & Reports</span><span class="mm-nav-count">8</span><b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b><ul class="submenu"><li><a href="../../preview/manager-bi/">Manager BI: ADR & RevPAR</a><b class="arrow"></b></li><li><a href="../../preview/report-expected-arrival/">Expected Arrivals</a><b class="arrow"></b></li><li><a href="../../preview/report-expected-departure/">Expected Departures</a><b class="arrow"></b></li><li><a href="../../preview/report-in-house-guest/">In-House Guests</a><b class="arrow"></b></li><li><a href="../../preview/report-today-check-in/">Today Check-In</a><b class="arrow"></b></li><li><a href="../../preview/report-vat-report-day/">Daily & Monthly VAT</a><b class="arrow"></b></li><li><a href="../../preview/report-night-closing/">Night Closing Report</a><b class="arrow"></b></li><li><a href="../../preview/report-all-reports/">All Hotel Reports</a><b class="arrow"></b></li></ul></li><li data-mod-roles="all,finance"><a href="#" class="dropdown-toggle" aria-expanded="false" title="Website & Storefront (8 primary tabs · 34 module screens)"><i class="menu-icon fa fa-globe"></i><span class="menu-text">Website & Storefront</span><span class="mm-nav-count">8</span><b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b><ul class="submenu"><li><a href="../../preview/web-banner-index/">CMS Homepage Banners</a><b class="arrow"></b></li><li><a href="../../preview/web-gallery-index/">CMS Suite Gallery</a><b class="arrow"></b></li><li><a href="../../preview/web-pages-index/">CMS Content Pages</a><b class="arrow"></b></li><li><a href="../../preview/web-settings/">Website Brand Settings</a><b class="arrow"></b></li><li><a href="../../preview/public-home/">Public Storefront</a><b class="arrow"></b></li><li><a href="../../preview/public-search-all-room/">Public Suite Search</a><b class="arrow"></b></li><li><a href="../../preview/public-booking-cart/">Public Booking Cart</a><b class="arrow"></b></li><li><a href="../../preview/public-food-menu/">Public Dining Menu</a><b class="arrow"></b></li></ul></li><li data-mod-roles="all,finance"><a href="#" class="dropdown-toggle" aria-expanded="false" title="System, RBAC & Docs (11 primary tabs · 30 module screens)"><i class="menu-icon fa fa-cogs"></i><span class="menu-text">System, RBAC & Docs</span><span class="mm-nav-count">11</span><b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b><ul class="submenu"><li><a href="../../preview/system-settings/">System Settings</a><b class="arrow"></b></li><li><a href="../../preview/perm-access-create/">Role & Permission Matrix</a><b class="arrow"></b></li><li><a href="../../preview/perm-users-index/">Permitted Staff Users</a><b class="arrow"></b></li><li><a href="../../preview/audit-compliance/">2FA, Audit & Compliance</a><b class="arrow"></b></li><li><a href="../../preview/admin-i18n/">Bilingual i18n Manager</a><b class="arrow"></b></li><li><a href="../../preview/import-export-hub/">Import / Export Hub</a><b class="arrow"></b></li><li><a href="../../preview/wiki/">User Wiki & Help (EN/বাংলা)</a><b class="arrow"></b></li><li><a href="../../preview/sop-print/">Printable A4 SOP Sheet</a><b class="arrow"></b></li><li><a href="../../preview/onboarding/">Staff Onboarding Hub</a><b class="arrow"></b></li><li><a href="../../preview/booking-drawers/">Slide-Over App Drawers</a><b class="arrow"></b></li><li><a href="../../preview/login/">Staff Login (Auth)</a><b class="arrow"></b></li></ul></li></ul></div>
+<div id="mm-main-content" class="main-content" tabindex="-1"><div class="main-content-inner"><div class="page-content">
+
+<style>
+    .table {
+        margin-bottom: 0 !important;
+    }
+
+    body {
+        counter-reset: section;
+        /* Set a counter named 'section', and its initial value is 0. */
+    }
+
+    .count:before {
+        counter-increment: section;
+        content: counter(section);
+    }
+
+    select:invalid {
+        height: 0px !important;
+        opacity: 0 !important;
+        position: absolute !important;
+        display: flex !important;
+    }
+
+    select:invalid[multiple] {
+        margin-top: 15px !important;
+    }
+
+
+    .category-header {
+
+        /* padding: 10px; */
+        padding-bottom: 14px;
+        font-size: 20PX;
+        /* background-color: #eaf4fa; */
+    }
+
+    .room-info {
+        border: 1px solid #606d99;
+        text-align: center;
+        height: 70px;
+        margin-bottom: 20px;
+        cursor: pointer;
+    }
+    .booked-room-info {
+        border: 1px solid #606d99;
+        text-align: center;
+        height: 70px;
+        margin-bottom: 20px;
+        cursor: pointer;
+    }
+
+    .room-info.active {
+        background-color: #82af6f;
+        border-color: #82af6f;
+        color: #fff;
+    }
+
+    .booked-room-info span {
+            padding-top: 18px;
+            font-size: 24px;
+            text-transform: uppercase;
+        }
+
+    .booked {
+        background-color: red;
+        color: #fff;
+        pointer-events: none;
+    }
+
+    .orange {
+        background-color: #9585BF;
+        color: #fff;
+        /* pointer-events: none; */
+    }
+
+    .reservation,
+    .label-yellow {
+        background-color: #ffae00 !important;
+        color: #fff;
+        pointer-events: none;
+    }
+
+    .store {
+        background-color: rgb(37, 70, 131);
+        color: #fff;
+        pointer-events: none;
+    }
+
+    .room-info p {
+        padding-top: 18px;
+        font-size: 24px;
+        text-transform: uppercase;
+    }
+
+    .booked-room-info span {
+            padding-top: 18px;
+            font-size: 24px;
+            text-transform: uppercase;
+    }
+
+    .search-available .btn {
+        padding: 2px 15px;
+        border-radius: 3px;
+    }
+    .room-heading-right{
+            float: right;
+            right: 0;
+            top: 0;
+            padding: 0 7px;
+            margin-right: 8px;
+            width: 10%;
+            position: relative;
+            cursor: all-scroll;
+        }
+</style>
+<nav class="mm-top-subnav is-sticky is-slid-up mm-no-print" id="mm-top-subnav" data-cur-href="../../dashboard/" data-cur-title="Front-Desk Command Board" data-mod-label="Dashboard & Board" data-tabs-count="6" aria-label="Dashboard & Board sub-menu tabs"><div class="mm-top-subnav-curtain" id="mm-top-subnav-curtain"><div class="mm-top-subnav-head"><div class="mm-top-subnav-title"><span class="mm-top-subnav-icon"><i class="fa fa-tachometer"></i></span><span>Dashboard & Board</span><span class="mm-badge mm-badge-paid" style="font-size:11px">1 / 6 Tabs</span></div><div style="display:flex;flex-wrap:wrap;align-items:center;gap:6px"><input type="search" id="mm-top-tab-filter" class="mm-top-tab-filter" placeholder="Filter 6 module screens..." aria-label="Filter sub-menu tabs and module screens"><button type="button" id="mm-express-create-btn" data-toggle="modal" data-target="#mm-express-drawer" class="mm-button" style="min-height:28px;padding:2px 10px;font-size:11.5px" title="Express Walk-In Room Hold, 80mm KOT Order &amp; GL Voucher Quick-Create (Alt+Q)"><i class="fa fa-plus-circle"></i> + Quick Create</button><button type="button" id="mm-top-more-btn" aria-expanded="false" aria-controls="mm-top-more-panel" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11.5px"><i class="fa fa-th-list"></i> All 6 Module Screens <i class="fa fa-caret-down"></i></button><button type="button" id="mm-top-pin-btn" aria-pressed="true" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11.5px" title="Pin or unpin top sub-menu bar to sticky top while scrolling"><i class="fa fa-thumb-tack"></i> Pinned</button><button type="button" id="mm-top-slideup-btn" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11.5px" title="Slide sub-menu bar up under top navigation"><i class="fa fa-chevron-up"></i> Slide Up</button></div></div><div class="mm-top-subnav-tabs" role="navigation" aria-label="Module sub-pages"><a href="../../dashboard/" data-top-tab-search="front-desk command board /dashboard" class="mm-top-tab is-active" aria-current="page"><i class="fa fa-tachometer"></i><span>Front-Desk Command Board</span><span class="mm-top-tab-badge">20 Suites</span></a><a href="../../preview/daily-flash-report/" data-top-tab-search="daily manager flash & roster /preview/daily-flash-report" class="mm-top-tab"><i class="fa fa-bolt"></i><span>Daily Manager Flash & Roster</span><span class="mm-top-tab-badge">14 Oct</span></a><a href="../../preview/payment-gateway/" data-top-tab-search="payment gateway & deposits (f1) /preview/payment-gateway" class="mm-top-tab"><i class="fa fa-credit-card"></i><span>Payment Gateway & Deposits (F1)</span><span class="mm-top-tab-badge">F1 Live</span></a><a href="../../preview/late-checkout/" data-top-tab-search="late checkout & fees (f10) /preview/late-checkout" class="mm-top-tab"><i class="fa fa-clock-o"></i><span>Late Checkout & Fees (F10)</span><span class="mm-top-tab-badge">F10</span></a><a href="../../preview/enterprise-suite/" data-top-tab-search="enterprise suite overview /preview/enterprise-suite" class="mm-top-tab"><i class="fa fa-building-o"></i><span>Enterprise Suite Overview</span></a><a href="../../preview/attendance-biometric/" data-top-tab-search="staff biometric attendance /preview/attendance-biometric" class="mm-top-tab"><i class="fa fa-id-card-o"></i><span>Staff Biometric Attendance</span></a></div><div class="mm-top-more-panel" id="mm-top-more-panel" hidden><div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;padding-bottom:8px;border-bottom:1px solid rgba(148,163,184,0.2)"><div style="font-size:12px;font-weight:700"><i class="fa fa-tachometer"></i> Dashboard & Board — Complete Screen Directory (<span id="mm-top-more-count">6</span> screens)</div><div style="display:flex;flex-wrap:wrap;gap:6px"><button type="button" class="mm-button mm-button-secondary mm-top-scope-btn is-active" data-top-scope="all" style="min-height:25px;padding:1px 9px;font-size:11px">All (6)</button><button type="button" class="mm-button mm-button-secondary mm-top-scope-btn" data-top-scope="primary" style="min-height:25px;padding:1px 9px;font-size:11px">Primary Tabs (6)</button><a href="../../preview/" class="mm-button mm-button-secondary" style="min-height:25px;padding:1px 9px;font-size:11px"><i class="fa fa-th-large"></i> All 362 ERP Screens →</a></div></div><div class="mm-top-more-grid" id="mm-top-more-grid"><a href="../../dashboard/" data-top-more-search="front-desk command board /dashboard" data-top-more-primary="1" class="mm-top-more-card is-active"><span><i class="fa fa-bookmark" style="opacity:.75;margin-right:6px"></i>Front-Desk Command Board</span><span class="mm-badge mm-badge-paid" style="font-size:10px">Current</span></a><a href="../../preview/daily-flash-report/" data-top-more-search="daily manager flash & roster /preview/daily-flash-report" data-top-more-primary="1" class="mm-top-more-card"><span><i class="fa fa-bookmark" style="opacity:.75;margin-right:6px"></i>Daily Manager Flash & Roster</span><span class="mm-badge mm-badge-partial" style="font-size:10px">Tab</span></a><a href="../../preview/payment-gateway/" data-top-more-search="payment gateway & deposits (f1) /preview/payment-gateway" data-top-more-primary="1" class="mm-top-more-card"><span><i class="fa fa-bookmark" style="opacity:.75;margin-right:6px"></i>Payment Gateway & Deposits (F1)</span><span class="mm-badge mm-badge-partial" style="font-size:10px">Tab</span></a><a href="../../preview/late-checkout/" data-top-more-search="late checkout & fees (f10) /preview/late-checkout" data-top-more-primary="1" class="mm-top-more-card"><span><i class="fa fa-bookmark" style="opacity:.75;margin-right:6px"></i>Late Checkout & Fees (F10)</span><span class="mm-badge mm-badge-partial" style="font-size:10px">Tab</span></a><a href="../../preview/enterprise-suite/" data-top-more-search="enterprise suite overview /preview/enterprise-suite" data-top-more-primary="1" class="mm-top-more-card"><span><i class="fa fa-bookmark" style="opacity:.75;margin-right:6px"></i>Enterprise Suite Overview</span><span class="mm-badge mm-badge-partial" style="font-size:10px">Tab</span></a><a href="../../preview/attendance-biometric/" data-top-more-search="staff biometric attendance /preview/attendance-biometric" data-top-more-primary="1" class="mm-top-more-card"><span><i class="fa fa-bookmark" style="opacity:.75;margin-right:6px"></i>Staff Biometric Attendance</span><span class="mm-badge mm-badge-partial" style="font-size:10px">Tab</span></a></div></div></div><div class="mm-top-curtain-rail"><button type="button" id="mm-top-curtain-btn" class="mm-top-curtain-btn" aria-expanded="false" aria-controls="mm-top-subnav-curtain" title="Pull down or slide up sub-menu curtain under top navbar"><i class="fa fa-chevron-down mm-top-curtain-arrow" id="mm-top-curtain-icon"></i><span id="mm-top-curtain-label">Dashboard & Board (6 Tabs)</span></button></div></nav><div class="modal fade mm-app-drawer" id="mm-express-drawer" tabindex="-1" role="dialog" aria-labelledby="mm-express-drawer-title"><div class="modal-dialog modal-lg" role="document"><div class="modal-content"><div class="modal-header"><h4 class="modal-title" id="mm-express-drawer-title"><i class="fa fa-plus-circle"></i> Express Walk-In Hold, 80mm KOT &amp; GL Voucher Quick-Create (Alt+Q)</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button></div><div class="modal-body"><section class="mm-ui"><div class="tw-space-y-4"><div class="mm-drawer-kpi-grid" aria-label="Express command drawer KPIs"><div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-bed"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Vacant Ready Suites</span><div class="mm-table-kpi-value"><span id="exp-kpi-suites">6 Ready</span> <span class="mm-table-kpi-sub">#104 · #202 · #304 · #403</span></div></div></div><div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-fire"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">80mm KDS &amp; BOT Pass</span><div class="mm-table-kpi-value">3 Stations <span class="mm-table-kpi-sub">Kitchen · Bar · Room Svc</span></div></div></div><div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-calculator"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Auto-GL &amp; Treasury</span><div class="mm-table-kpi-value">৳ 214,200 <span class="mm-table-kpi-sub">Dr = Cr Real-Time Sync</span></div></div></div><div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-bolt"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Session Express Log</span><div class="mm-table-kpi-value"><span id="mm-express-log-count">3</span> Posted <span class="mm-table-kpi-sub">Instant Folio Linked</span></div></div></div></div><div style="display:flex;flex-wrap:wrap;gap:6px" id="mm-express-tab-group"><button type="button" class="mm-role-pill is-active" data-express-tab="walkin"><i class="fa fa-bed"></i> 1. Express Walk-In Room Hold</button><button type="button" class="mm-role-pill" data-express-tab="pos"><i class="fa fa-cutlery"></i> 2. Express 80mm KOT / BOT Order</button><button type="button" class="mm-role-pill" data-express-tab="voucher"><i class="fa fa-calculator"></i> 3. Instant GL / Petty Cash Voucher</button><button type="button" class="mm-role-pill" data-express-tab="banquet"><i class="fa fa-glass"></i> 4. Express Banquet Hall Hold</button></div><div id="mm-express-confirm-banner" class="alert alert-success" style="display:none;margin:0;border-radius:10px;font-size:12.5px"></div><div class="mm-drawer-card tw-p-4" data-express-pane="walkin"><div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px"><strong><i class="fa fa-key"></i> 1. Instant Walk-In Suite Hold, Tariff Preview &amp; RFID Keycard Issue</strong><div style="display:flex;flex-wrap:wrap;gap:5px" id="exp-suite-pills"><button type="button" class="mm-role-pill is-active exp-suite-pill" data-suite-val="Suite #104 (Deluxe Double · ৳ 4,200)" data-suite-rate="4200">#104 Deluxe (৳ 4,200)</button><button type="button" class="mm-role-pill exp-suite-pill" data-suite-val="Suite #202 (Heritage Suite · ৳ 6,800)" data-suite-rate="6800">#202 Heritage (৳ 6,800)</button><button type="button" class="mm-role-pill exp-suite-pill" data-suite-val="Suite #304 (Diplomatic Suite · ৳ 8,900)" data-suite-rate="8900">#304 Diplomatic (৳ 8,900)</button><button type="button" class="mm-role-pill exp-suite-pill" data-suite-val="Suite #403 (Royal Penthouse · ৳ 13,200)" data-suite-rate="13200">#403 Penthouse (৳ 13,200)</button></div></div><form id="mm-express-walkin-form" onsubmit="return false;" class="tw-space-y-3"><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:10px"><div><label class="mm-label">Available Clean Suite</label><select id="exp-walkin-room" class="form-control"><option value="Suite #104 (Deluxe Double · ৳ 4,200)" data-rate="4200">Suite #104 — Deluxe Double (৳ 4,200/N)</option><option value="Suite #202 (Heritage Suite · ৳ 6,800)" data-rate="6800">Suite #202 — Heritage Suite (৳ 6,800/N)</option><option value="Suite #304 (Diplomatic Suite · ৳ 8,900)" data-rate="8900">Suite #304 — Diplomatic Suite (৳ 8,900/N)</option><option value="Suite #403 (Royal Penthouse · ৳ 13,200)" data-rate="13200">Suite #403 — Royal Penthouse (৳ 13,200/N)</option></select></div><div><label class="mm-label">Guest Full Name</label><input type="text" id="exp-walkin-guest" class="form-control" value="Dr. Arman Hossain" required></div><div><label class="mm-label">Mobile &amp; Passport / NID</label><input type="text" id="exp-walkin-phone" class="form-control" value="+880 1711-445566 · NID Verified"></div><div><label class="mm-label">Stay Nights &amp; Advance (৳)</label><div style="display:grid;grid-template-columns:75px 1fr;gap:6px"><input type="number" id="exp-walkin-nights" class="form-control text-center" value="2" min="1" max="30"><input type="number" id="exp-walkin-adv" class="form-control text-right" value="5000"></div></div></div><div class="mm-shift-note-card" id="exp-walkin-calc-strip" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;font-size:12px"><span><i class="fa fa-calculator"></i> <strong>Live Folio Estimate:</strong> <span id="exp-walkin-est-text">2 Nights × ৳ 4,200 + 10% VAT = <strong>৳ 9,240</strong> · Advance: <strong>৳ 5,000</strong> · Net Due: <strong>৳ 4,240</strong></span></span><span class="mm-badge mm-badge-paid"><i class="fa fa-key"></i> 2 Mifare RFID Keys Staged</span></div><div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px"><a href="../../preview/booking-next/" class="mm-button mm-button-secondary"><i class="fa fa-magic"></i> Open Full 3-Step Booking Wizard →</a><button type="submit" id="exp-walkin-submit" class="mm-button"><i class="fa fa-check"></i> Create Walk-In Room Hold &amp; Encode Key</button></div></form></div><div class="mm-drawer-card tw-p-4" data-express-pane="pos" style="display:none"><div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px"><strong><i class="fa fa-fire"></i> 2. Instant 80mm Thermal KOT / BOT Kitchen &amp; Bar Order Dispatch</strong><div style="display:flex;flex-wrap:wrap;gap:5px" id="exp-kot-chips"><button type="button" class="mm-role-pill is-active exp-kot-chip" data-kot-item="Royal Heritage Mezze Platter (৳ 1,850)">Royal Mezze (৳ 1,850)</button><button type="button" class="mm-role-pill exp-kot-chip" data-kot-item="Grilled Norwegian Salmon (৳ 2,400)">Grilled Salmon (৳ 2,400)</button><button type="button" class="mm-role-pill exp-kot-chip" data-kot-item="Kacchi Biriyani Royal Platter (৳ 1,650)">Royal Kacchi (৳ 1,650)</button><button type="button" class="mm-role-pill exp-kot-chip" data-kot-item="Artisan Espresso &amp; Pastry Duo (৳ 680)">Espresso Duo (৳ 680)</button></div></div><form id="mm-express-pos-form" onsubmit="return false;" class="tw-space-y-3"><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:10px"><div><label class="mm-label">F&amp;B Outlet &amp; KDS Pass</label><select id="exp-pos-outlet" class="form-control"><option value="Heritage Dining Restaurant">Heritage Dining Restaurant (Hot Pass)</option><option value="Skyline Lounge Bar">Skyline Lounge Bar (BOT Pass)</option><option value="In-Room Dining (Room Charge)">In-Room Dining (24/7 Butler Pass)</option></select></div><div><label class="mm-label">Target Suite / Dining Table</label><select id="exp-pos-target" class="form-control"><option value="Suite #204 (Tanvir Ahmed)">Suite #204 — Tanvir Ahmed (Window A)</option><option value="Suite #301 (Brig. Gen. Mahmudul)">Suite #301 — Brig. Gen. Mahmudul</option><option value="Suite #401 (Ambassador Kenji Sato)">Suite #401 — Ambassador Kenji Sato</option><option value="Table T-04 (Main Dining)">Table T-04 — Main Dining (6 Covers)</option></select></div><div><label class="mm-label">Menu Platter / Beverage</label><select id="exp-pos-item" class="form-control"><option value="Royal Heritage Mezze Platter (৳ 1,850)">Royal Heritage Mezze Platter (৳ 1,850)</option><option value="Grilled Norwegian Salmon (৳ 2,400)">Grilled Norwegian Salmon (৳ 2,400)</option><option value="Kacchi Biriyani Royal Platter (৳ 1,650)">Kacchi Biriyani Royal Platter (৳ 1,650)</option><option value="Artisan Espresso &amp; Pastry Duo (৳ 680)">Artisan Espresso &amp; Pastry Duo (৳ 680)</option></select></div><div><label class="mm-label">Qty &amp; Firing Priority</label><div style="display:grid;grid-template-columns:70px 1fr;gap:6px"><input type="number" id="exp-pos-qty" class="form-control text-center" value="1" min="1" max="20"><select id="exp-pos-priority" class="form-control"><option value="Fire Now (Course 1)">Fire Now (Course 1)</option><option value="VIP Priority Rush">VIP Priority Rush</option><option value="Hold for Main">Hold for Main</option></select></div></div></div><div class="mm-shift-note-card" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;font-size:12px"><span><i class="fa fa-print"></i> <strong>80mm Thermal KOT Slip Preview:</strong> <code id="exp-kot-preview-text">KOT #1055 · Heritage Dining → Suite #204 · 1× Royal Heritage Mezze Platter (৳ 1,850)</code></span><span class="mm-badge mm-badge-paid">Auto-Posts to Guest Folio</span></div><div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px"><div style="display:flex;gap:6px"><a href="../../preview/pos-kot-print/" class="mm-button mm-button-secondary"><i class="fa fa-print"></i> 80mm KOT Ticket →</a><a href="../../preview/pos-unified/" class="mm-button mm-button-secondary"><i class="fa fa-cutlery"></i> Unified POS →</a></div><button type="submit" id="exp-pos-submit" class="mm-button"><i class="fa fa-fire"></i> Fire Instant 80mm KOT to Kitchen</button></div></form></div><div class="mm-drawer-card tw-p-4" data-express-pane="voucher" style="display:none"><div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px"><strong><i class="fa fa-book"></i> 3. Instant Double-Entry GL, Guest Advance &amp; Petty Cash Voucher</strong><span class="mm-badge mm-badge-paid" id="exp-vch-balance-badge">Double-Entry Balanced: Dr ৳ 8,500 = Cr ৳ 8,500 ✓</span></div><form id="mm-express-vch-form" onsubmit="return false;" class="tw-space-y-3"><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:10px"><div><label class="mm-label">Voucher Type</label><select id="exp-vch-type" class="form-control"><option value="Receive Voucher (Guest Advance)">Receive Voucher (Guest Advance)</option><option value="Payment Voucher (Petty Cash)">Payment Voucher (Petty Cash)</option><option value="Contra Voucher (Cash to Bank)">Contra Voucher (Cash to Bank)</option><option value="Journal Adjustment (Folio/AR)">Journal Adjustment (Folio/AR)</option></select></div><div><label class="mm-label">Debit (Dr) Ledger Head</label><select id="exp-vch-dr" class="form-control"><option value="1010 · Cash in Hand — Front Desk">1010 · Cash in Hand — Front Desk</option><option value="1020 · City Bank Corporate A/C">1020 · City Bank Corporate A/C</option><option value="5040 · Housekeeping &amp; F&amp;B Supplies">5040 · Housekeeping &amp; F&amp;B Supplies</option></select></div><div><label class="mm-label">Credit (Cr) Ledger Head</label><select id="exp-vch-head" class="form-control"><option value="Cash in Hand — Front Desk">2010 · Guest Advance Liability</option><option value="City Bank Corporate A/C">1040 · Corporate City Ledger AR</option><option value="bKash Merchant Settlement">1015 · bKash Merchant Clearing</option></select></div><div><label class="mm-label">Amount (৳) &amp; Cost Center</label><div style="display:grid;grid-template-columns:110px 1fr;gap:6px"><input type="number" id="exp-vch-amt" class="form-control text-right" value="8500" required><input type="text" id="exp-vch-narration" class="form-control" value="Suite #204 Advance"></div></div></div><div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px"><div style="display:flex;gap:6px"><a href="../../preview/acc-receives/" class="mm-button mm-button-secondary"><i class="fa fa-book"></i> Receive Vouchers →</a><a href="../../preview/acc-journals/" class="mm-button mm-button-secondary"><i class="fa fa-balance-scale"></i> Journal Register →</a></div><button type="submit" id="exp-vch-submit" class="mm-button"><i class="fa fa-check"></i> Post Instant Balanced GL Voucher</button></div></form></div><div class="mm-drawer-card tw-p-4" data-express-pane="banquet" style="display:none"><div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px"><strong><i class="fa fa-glass"></i> 4. Express Banquet &amp; Conference Hall Tentative Hold</strong><span class="mm-badge mm-badge-paid">Instant BEO Queue</span></div><form id="mm-express-bq-form" onsubmit="return false;" class="tw-space-y-3"><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:10px"><div><label class="mm-label">Venue Hall</label><select id="exp-bq-hall" class="form-control"><option value="Grand Ballroom (#BH-101 · 400 Pax)">Grand Ballroom (#BH-101 · 400 Pax)</option><option value="Heritage Banquet Hall (#BH-102 · 220 Pax)">Heritage Banquet Hall (#BH-102 · 220 Pax)</option><option value="Executive Boardroom (#BH-201 · 60 Pax)">Executive Boardroom (#BH-201 · 60 Pax)</option></select></div><div><label class="mm-label">Organizer / Corporate Sponsor</label><input type="text" id="exp-bq-host" class="form-control" value="UNICEF Annual Summit · Tanvir Ahmed"></div><div><label class="mm-label">Event Date &amp; Expected Pax</label><div style="display:grid;grid-template-columns:1fr 85px;gap:6px"><input type="text" id="exp-bq-date" class="form-control" value="2026-10-18 · Evening"><input type="number" id="exp-bq-pax" class="form-control text-center" value="180"></div></div></div><div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px"><a href="../../preview/bq-booking-create/" class="mm-button mm-button-secondary"><i class="fa fa-glass"></i> Open Full Banquet Event Configurator →</a><button type="submit" id="exp-bq-submit" class="mm-button"><i class="fa fa-check"></i> Hold Banquet Hall &amp; Draft BEO</button></div></form></div><div class="mm-drawer-card tw-p-4"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px"><strong><i class="fa fa-history"></i> Recent Express Transactions (Session Synced)</strong><span class="mm-badge mm-badge-paid">Live Audit Trail</span></div><div id="mm-express-log-list" style="display:flex;flex-direction:column;gap:6px"></div></div></div></section></div><div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button><a href="../../preview/booking-next/" class="mm-button mm-button-secondary"><i class="fa fa-bed"></i> 3-Step Room Wizard</a><a href="../../preview/bq-booking-create/" class="mm-button"><i class="fa fa-glass"></i> Banquet Event Configurator</a></div></div></div></div><script>(function(){var nav=document.getElementById("mm-top-subnav"),pinBtn=document.getElementById("mm-top-pin-btn"),slideUpBtn=document.getElementById("mm-top-slideup-btn"),curtainBtn=document.getElementById("mm-top-curtain-btn"),curtainLbl=document.getElementById("mm-top-curtain-label"),moreBtn=document.getElementById("mm-top-more-btn"),morePanel=document.getElementById("mm-top-more-panel"),flt=document.getElementById("mm-top-tab-filter"),cnt=document.getElementById("mm-top-more-count");var roleSw=document.getElementById("mm-role-switcher"),roleLbl=document.getElementById("mm-role-active-label"),menuEl=document.getElementById("mm-primary-menu");var roleOrder=["all","frontdesk","pos","finance"];var curRole="all";try{curRole=localStorage.getItem("mm-sidebar-role")||"all";}catch(e){}function applyRole(r){if(!roleSw||!menuEl)return;var roleNames={all:"All 14 Modules",frontdesk:"Front Desk (8)",pos:"F&B & Store (5)",finance:"Finance & Admin (7)"};curRole=r;try{localStorage.setItem("mm-sidebar-role",r);}catch(e){}if(roleLbl)roleLbl.textContent=roleNames[r]||"All 14 Modules";var rBtns=roleSw.querySelectorAll("[data-role-filter]");for(var i=0;i<rBtns.length;i++)rBtns[i].classList.toggle("is-active",rBtns[i].getAttribute("data-role-filter")===r);var lis=menuEl.children;for(var j=0;j<lis.length;j++){var li=lis[j],roles=(li.getAttribute("data-mod-roles")||"all").split(",");li.style.display=(r==="all"||roles.indexOf(r)>=0)?"":"none";}}if(roleSw&&menuEl){applyRole(curRole);var rBtns=roleSw.querySelectorAll("[data-role-filter]");for(var rIdx=0;rIdx<rBtns.length;rIdx++){rBtns[rIdx].addEventListener("click",function(){applyRole(this.getAttribute("data-role-filter")||"all");});}}if(!nav)return;var modLbl=nav.getAttribute("data-mod-label")||"Module",tabsCnt=nav.getAttribute("data-tabs-count")||"";var pinned=true;try{pinned=localStorage.getItem("mm-top-subnav-pinned")!=="0";}catch(e){}function syncPin(){nav.classList.toggle("is-sticky",pinned);if(pinBtn){pinBtn.setAttribute("aria-pressed",String(pinned));pinBtn.innerHTML="<i class=\"fa fa-thumb-tack\"></i> "+(pinned?"Pinned":"Pin to Top");}}syncPin();if(pinBtn)pinBtn.addEventListener("click",function(){pinned=!pinned;try{localStorage.setItem("mm-top-subnav-pinned",pinned?"1":"0");}catch(e){}syncPin();});var isOpen=false;try{isOpen=localStorage.getItem("mm-top-subnav-open")==="1";}catch(e){}function syncCurtain(){nav.classList.toggle("is-slid-up",!isOpen);if(curtainBtn)curtainBtn.setAttribute("aria-expanded",String(isOpen));if(curtainLbl)curtainLbl.textContent=isOpen?("Slide Up · "+modLbl):(modLbl+(tabsCnt?" ("+tabsCnt+" Tabs)":""));}syncCurtain();function toggleCurtain(force){isOpen=typeof force==="boolean"?force:!isOpen;try{localStorage.setItem("mm-top-subnav-open",isOpen?"1":"0");}catch(e){}syncCurtain();}if(curtainBtn)curtainBtn.addEventListener("click",function(){toggleCurtain();});if(slideUpBtn)slideUpBtn.addEventListener("click",function(){toggleCurtain(false);});var expTabs=document.querySelectorAll("[data-express-tab]"),expPanes=document.querySelectorAll("[data-express-pane]"),expBanner=document.getElementById("mm-express-confirm-banner"),expLogList=document.getElementById("mm-express-log-list"),expLogCnt=document.getElementById("mm-express-log-count");for(var et=0;et<expTabs.length;et++){expTabs[et].addEventListener("click",function(){var tgt=this.getAttribute("data-express-tab");for(var a=0;a<expTabs.length;a++)expTabs[a].classList.toggle("is-active",expTabs[a]===this);for(var b=0;b<expPanes.length;b++)expPanes[b].style.display=expPanes[b].getAttribute("data-express-pane")===tgt?"":"none";});}var defExp=[["Walk-In Hold","#BK-2026-120 · Suite #204 · Tanvir Ahmed (2 Nights · ৳ 5,000 Adv)","../../preview/booking-next"],["80mm KOT","#KOT-1052 · Heritage Dining → Suite #301 · Royal Mezze Platter","../../preview/pos-kot-print"],["GL Voucher","#VCH-2026-890 · Receive Voucher · Cash in Hand (৳ 12,600)","../../preview/acc-receives"]];var expLogs=defExp;try{var rawE=localStorage.getItem("mm-express-log");if(rawE){var pE=JSON.parse(rawE);if(Array.isArray(pE)&&pE.length)expLogs=pE;}}catch(e){}function renderExpLogs(){if(expLogCnt)expLogCnt.textContent=String(expLogs.length);if(expLogList)expLogList.innerHTML=expLogs.map(function(x){return "<div class=\"mm-shift-note-card\" style=\"display:flex;align-items:center;justify-content:space-between;gap:8px\"><div><span class=\"mm-badge mm-badge-paid\" style=\"margin-right:6px\">"+x[0]+"</span><strong>"+x[1]+"</strong></div><a href=\""+x[2]+"\" class=\"mm-button mm-button-secondary\" style=\"min-height:24px;padding:1px 8px;font-size:11px\">Open →</a></div>";}).join("");}renderExpLogs();function pushExp(kind,summary,link){expLogs.unshift([kind,summary,link]);try{localStorage.setItem("mm-express-log",JSON.stringify(expLogs));}catch(e){}renderExpLogs();if(expBanner){expBanner.style.display="block";expBanner.innerHTML="<i class=\"fa fa-check-circle\"></i> <strong>"+kind+" Created:</strong> "+summary+" — <a href=\""+link+"\"><strong>Inspect Now →</strong></a>";}}var wf=document.getElementById("mm-express-walkin-form"),pf=document.getElementById("mm-express-pos-form"),vf=document.getElementById("mm-express-vch-form"),bf=document.getElementById("mm-express-bq-form");function syncExpWalkinEst(){var rmSel=document.getElementById("exp-walkin-room"),nEl=document.getElementById("exp-walkin-nights"),advEl=document.getElementById("exp-walkin-adv"),estEl=document.getElementById("exp-walkin-est-text");if(!rmSel||!estEl)return;var opt=rmSel.options[rmSel.selectedIndex];var rate=Number((opt&&opt.getAttribute("data-rate"))||4200);var n=Number((nEl&&nEl.value)||2);var adv=Number((advEl&&advEl.value)||0);var gross=Math.round(rate*n*1.10);var due=Math.max(0,gross-adv);estEl.innerHTML=n+" Nights × ৳ "+rate.toLocaleString("en-US")+" + 10% VAT = <strong>৳ "+gross.toLocaleString("en-US")+"</strong> · Advance: <strong>৳ "+adv.toLocaleString("en-US")+"</strong> · Net Due: <strong>৳ "+due.toLocaleString("en-US")+"</strong>";}var sPills=document.querySelectorAll(".exp-suite-pill"),rmSelEl=document.getElementById("exp-walkin-room"),nElW=document.getElementById("exp-walkin-nights"),advElW=document.getElementById("exp-walkin-adv");for(var sp=0;sp<sPills.length;sp++){sPills[sp].addEventListener("click",function(){for(var x=0;x<sPills.length;x++)sPills[x].classList.toggle("is-active",sPills[x]===this);if(rmSelEl){rmSelEl.value=this.getAttribute("data-suite-val")||rmSelEl.value;syncExpWalkinEst();}});}if(rmSelEl)rmSelEl.addEventListener("change",syncExpWalkinEst);if(nElW)nElW.addEventListener("input",syncExpWalkinEst);if(advElW)advElW.addEventListener("input",syncExpWalkinEst);function syncExpKotPreview(){var out=(document.getElementById("exp-pos-outlet")||{}).value||"Heritage Dining",tg=(document.getElementById("exp-pos-target")||{}).value||"Suite #204",it=(document.getElementById("exp-pos-item")||{}).value||"Royal Mezze",qt=(document.getElementById("exp-pos-qty")||{}).value||"1",pr=document.getElementById("exp-kot-preview-text");if(pr)pr.textContent="KOT #1055 · "+out+" → "+tg+" · "+qt+"× "+it;}var kChips=document.querySelectorAll(".exp-kot-chip"),itSelEl=document.getElementById("exp-pos-item"),outSelEl=document.getElementById("exp-pos-outlet"),tgSelEl=document.getElementById("exp-pos-target"),qtElP=document.getElementById("exp-pos-qty");for(var kc=0;kc<kChips.length;kc++){kChips[kc].addEventListener("click",function(){for(var x=0;x<kChips.length;x++)kChips[x].classList.toggle("is-active",kChips[x]===this);if(itSelEl){itSelEl.value=this.getAttribute("data-kot-item")||itSelEl.value;syncExpKotPreview();}});}if(itSelEl)itSelEl.addEventListener("change",syncExpKotPreview);if(outSelEl)outSelEl.addEventListener("change",syncExpKotPreview);if(tgSelEl)tgSelEl.addEventListener("change",syncExpKotPreview);if(qtElP)qtElP.addEventListener("input",syncExpKotPreview);var vAmtEl=document.getElementById("exp-vch-amt"),vBadgeEl=document.getElementById("exp-vch-balance-badge");if(vAmtEl&&vBadgeEl)vAmtEl.addEventListener("input",function(){var v=Number(this.value||0).toLocaleString("en-US");vBadgeEl.textContent="Double-Entry Balanced: Dr ৳ "+v+" = Cr ৳ "+v+" ✓";});if(wf)wf.addEventListener("submit",function(){var rm=document.getElementById("exp-walkin-room").value,g=document.getElementById("exp-walkin-guest").value,n=document.getElementById("exp-walkin-nights").value,ad=document.getElementById("exp-walkin-adv").value;pushExp("Walk-In Hold","#BK-2026-121 · "+rm+" · "+g+" ("+n+" Nights · ৳ "+ad+" Adv)","../../preview/booking-next");});if(pf)pf.addEventListener("submit",function(){var out=document.getElementById("exp-pos-outlet").value,tg=document.getElementById("exp-pos-target").value,it=document.getElementById("exp-pos-item").value,qt=(document.getElementById("exp-pos-qty")||{}).value||"1";pushExp("80mm KOT","#KOT-1054 · "+out+" → "+tg+" · "+qt+"× "+it,"../../preview/pos-kot-print");});if(vf)vf.addEventListener("submit",function(){var vt=document.getElementById("exp-vch-type").value,vh=document.getElementById("exp-vch-head").value,va=document.getElementById("exp-vch-amt").value;pushExp("GL Voucher","#VCH-2026-892 · "+vt+" · "+vh+" (৳ "+va+")","../../preview/acc-receives");});if(bf)bf.addEventListener("submit",function(){var bh=document.getElementById("exp-bq-hall").value,bhost=document.getElementById("exp-bq-host").value,bpax=document.getElementById("exp-bq-pax").value;pushExp("Banquet Hold","#BEO-2026-409 · "+bh+" · "+bhost+" ("+bpax+" Pax)","../../preview/bq-booking-create");});function setMore(open){if(!morePanel||!moreBtn)return;morePanel.hidden=!open;moreBtn.setAttribute("aria-expanded",String(open));}if(moreBtn)moreBtn.addEventListener("click",function(){setMore(morePanel.hidden);});var scope="all",scopeBtns=nav.querySelectorAll("[data-top-scope]");function runFilter(){var q=(flt&&flt.value||"").toLowerCase().trim();var tabs=nav.querySelectorAll(".mm-top-tab");for(var i=0;i<tabs.length;i++){var t=tabs[i],m=!q||(t.getAttribute("data-top-tab-search")||"").indexOf(q)>=0;t.style.display=m?"":"none";}var cards=nav.querySelectorAll(".mm-top-more-card"),n=0;for(var j=0;j<cards.length;j++){var c=cards[j],okScope=scope==="all"||c.getAttribute("data-top-more-primary")==="1",okQ=!q||(c.getAttribute("data-top-more-search")||"").indexOf(q)>=0;var show=okScope&&okQ;c.style.display=show?"":"none";if(show)n++;}if(cnt)cnt.textContent=String(n);if(q&&morePanel&&morePanel.hidden)setMore(true);}if(flt)flt.addEventListener("input",runFilter);for(var k=0;k<scopeBtns.length;k++){scopeBtns[k].addEventListener("click",function(){scope=this.getAttribute("data-top-scope")||"all";runFilter();});}var altJump={"1":"/dashboard","2":"../../preview/plan-a","3":"../../preview/booking-next","4":"../../preview/folio-settlement","5":"../../preview/guest-crm","6":"../../preview/rooms","7":"../../preview/room-settings","8":"../../preview/bq-booking-index","9":"../../preview/pos-unified","0":"../../preview/acc-balance-sheet"};if(!window.__mmFullscreenBound){window.__mmFullscreenBound=true;function setFocusedFs(force){var next=typeof force==="boolean"?force:!document.body.classList.contains("mm-focused-fullscreen");document.body.classList.toggle("mm-focused-fullscreen",next);var btns=document.querySelectorAll("[data-mm-fullscreen-toggle], #mm-focused-fullscreen-btn");for(var bi=0;bi<btns.length;bi++){btns[bi].classList.toggle("is-active",next);btns[bi].setAttribute("aria-pressed",String(next));btns[bi].innerHTML=next?'<i class="fa fa-compress" aria-hidden="true"></i> Exit Fullscreen':'<i class="fa fa-arrows-alt" aria-hidden="true"></i> Focused Fullscreen';}}window.__mmSetFocusedFullscreen=setFocusedFs;document.addEventListener("click",function(ev){var tBtn=ev.target&&ev.target.closest&&ev.target.closest("[data-mm-fullscreen-toggle], #mm-focused-fullscreen-btn");if(tBtn){ev.preventDefault();setFocusedFs();return;}var xBtn=ev.target&&ev.target.closest&&ev.target.closest("[data-mm-fullscreen-exit], #mm-fullscreen-exit-btn");if(xBtn){ev.preventDefault();setFocusedFs(false);}});}document.addEventListener("keydown",function(e){if(e.key==="Escape"&&document.body.classList.contains("mm-focused-fullscreen")&&window.__mmSetFocusedFullscreen){window.__mmSetFocusedFullscreen(false);return;}var tag=(e.target&&e.target.tagName||"").toLowerCase();var typing=tag==="input"||tag==="textarea"||tag==="select"||(e.target&&e.target.isContentEditable);if(typing)return;if(e.altKey&&!e.ctrlKey&&!e.metaKey){if(altJump[e.key]){e.preventDefault();window.location.href=altJump[e.key];return;}var kLower=(e.key||"").toLowerCase();if(kLower==="z"&&window.__mmSetFocusedFullscreen){e.preventDefault();window.__mmSetFocusedFullscreen();return;}if(kLower==="r"){e.preventDefault();var nextR=roleOrder[(roleOrder.indexOf(curRole)+1)%roleOrder.length];applyRole(nextR);return;}if(kLower==="c"){e.preventDefault();toggleCurtain();return;}if(kLower==="q"){e.preventDefault();var qb=document.getElementById("mm-express-create-btn");if(qb)qb.click();return;}if(kLower==="f"&&flt){e.preventDefault();toggleCurtain(true);flt.focus();return;}}});})();</script><section class="mm-ui mm-dashboard"><div class="tw-space-y-4 tw-py-2"><header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2"><div class="mm-page-title"><h1 class="tw-m-0 tw-font-semibold tw-text-ink">Hotel dashboard</h1><p class="tw-m-0 tw-text-sm tw-text-muted">Daily activity and room availability at a glance.</p></div><div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><span class="mm-dashboard-date"><i class="fa fa-calendar" aria-hidden="true"></i> 01 Oct 2026</span><a class="mm-button mm-button-secondary" href="../../hotel/booking/">Booking list</a><a class="mm-button mm-button-secondary" href="../../report/expected-arrival/">Expected arrivals</a><a class="mm-button mm-button-secondary" href="../../report/expected-departure/">Expected departures</a><a class="mm-button mm-button-secondary" href="../../report/in-house-guest/">In-house guests</a></div></header><div class="mm-dashboard-grid">
+<article class="mm-dashboard-stat">
+    <h2>Bookings</h2>
+    <p class="mm-dashboard-value">8 <span>today</span></p>
+    <dl><div><dt>Last day</dt><dd>6</dd></div><div><dt>Last 7 days</dt><dd>42</dd></div></dl>
+</article>
+<article class="mm-dashboard-stat">
+    <h2>Check-ins</h2>
+    <p class="mm-dashboard-value">5 <span>today</span></p>
+    <dl><div><dt>Last day</dt><dd>4</dd></div><div><dt>Last 7 days</dt><dd>29</dd></div></dl>
+</article>
+<article class="mm-dashboard-stat">
+    <h2>Check-outs</h2>
+    <p class="mm-dashboard-value">3 <span>today</span></p>
+    <dl><div><dt>Last day</dt><dd>5</dd></div><div><dt>Last 7 days</dt><dd>24</dd></div></dl>
+</article>
+<article class="mm-dashboard-stat mm-dashboard-rooms">
+    <h2>Room overview</h2>
+    <p class="mm-dashboard-value">32 <span>total rooms</span></p>
+    <dl><div><dt>Booked</dt><dd>19</dd></div><div><dt>Ready room*</dt><dd>13</dd></div></dl>
+</article>
+</div>
+<p class="tw-m-0 tw-mt-2 tw-text-xs tw-text-muted">*Ready room is the existing total-minus-booked figure, not a housekeeping readiness check.</p>
+<section class="mm-dashboard-board" aria-labelledby="dashboard-board-title"><header class="tw-mb-4"><h2 id="dashboard-board-title" class="tw-m-0 tw-text-xl tw-font-semibold">Room booking board</h2><p class="tw-m-0 tw-mt-2 tw-text-sm tw-text-muted">Review dates and room status using the existing booking controls.</p></header><div class="row clearfix"><div class="mm-panel tw-p-4 mm-dashboard-board-panel"><div class="mmb" id="mmb" data-add-url="/hotel/add_booking" data-remove-url="/hotel/remove_booking_next">
+    <form class="mmb-search" id="searchForm" method="get">
+        <div class="mmb-toolbar">
+            <div class="mmb-date">
+                <label for="available_date" class="mmb-sr">Stay date range</label>
+                <span class="mmb-date-icon" aria-hidden="true"><i class="fa fa-calendar"></i></span>
+                <input class="form-control" type="text" name="booking_date" id="available_date" value="10/01/2026 - 10/02/2026" data-business-date="2026-10-01" autocomplete="off" placeholder="Check-in - check-out date range">
+            </div>
+            <div class="mmb-quick" role="group" aria-label="Quick date ranges">
+                <button type="button" class="mmb-pill" data-mode="tonight">Tonight</button>
+                <button type="button" class="mmb-pill" data-mode="week">Next 7 days</button>
+                <button type="button" class="mmb-pill" data-mode="weekend">Weekend</button>
+            </div>
+            <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-search"></i> Check Availability</button>
+            <a href="#" target="_blank" class="btn btn-sm btn-info" title="Monthly booking report"><i class="fa fa-search-plus"></i> <span class="hidden-xs">Monthly Report</span></a>
+            <div class="mmb-group-tools">
+                <button type="button" class="mmb-link" data-mmb-expand-all><i class="fa fa-plus-square-o" aria-hidden="true"></i> Expand all</button>
+                <button type="button" class="mmb-link" data-mmb-collapse-all><i class="fa fa-minus-square-o" aria-hidden="true"></i> Collapse all</button>
+            </div>
+        </div>
+    </form>
+
+
+    <div class="mmb-legend" aria-label="Room status legend">
+        <span class="mmb-chip" data-state="available"><span class="mmb-chip-dot"></span>Available</span>
+        <span class="mmb-chip" data-state="reserved"><span class="mmb-chip-dot"></span>Reserved</span>
+        <span class="mmb-chip" data-state="booked"><span class="mmb-chip-dot"></span>Booked</span>
+        <span class="mmb-chip" data-state="inhouse"><span class="mmb-chip-dot"></span>In-house</span>
+        <span class="mmb-chip" data-state="due"><span class="mmb-chip-dot"></span>Due today</span>
+        <span class="mmb-chip" data-state="dirty"><span class="mmb-chip-dot"></span>Dirty</span>
+        <span class="mmb-chip" data-state="maintenance"><span class="mmb-chip-dot"></span>Maintenance</span>
+        <span class="mmb-chip" data-state="selected"><span class="mmb-chip-dot"></span>Selected</span>
+    </div>
+
+    <form action="#" method="get" id="booking-form">
+        <input type="hidden" name="booking_availabe" value="10/01/2026 - 10/02/2026">
+
+        
+                                <section class="mmb-group" data-category="1">
+                <h3 class="mmb-group-heading">
+                    <button type="button" class="mmb-group-toggle" id="mmb-toggle-1" aria-expanded="true" aria-controls="mmb-body-1">
+                        <i class="fa fa-chevron-down mmb-chevron" aria-hidden="true"></i>
+                        <span class="mmb-group-name">Deluxe King</span>
+                                                <span class="mmb-group-counts">
+                            <span class="mmb-count mmb-count-free">4 free</span>
+                            <span class="mmb-count">7 rooms</span>
+                            <span class="mmb-count mmb-count-occ" title="3 of 7 occupied">43% occupied</span>
+                        </span>
+                    </button>
+                </h3>
+                <div class="mmb-group-body" id="mmb-body-1" role="region" aria-labelledby="mmb-toggle-1">
+                    <div class="mmb-grid">
+                                                                                <div class="mmb-tile room-status-ui" data-state="available">
+            
+        <span class="room-heading-right mmb-proxy-trigger" hidden onclick="updateStatus(`1`,`1`, this)"></span>
+        <span class="room-info mmb-proxy " hidden aria-hidden="true"></span>
+        <button type="button" class="mmb-card" data-room="{&quot;room_id&quot;:1,&quot;category_id&quot;:1,&quot;number&quot;:&quot;101&quot;,&quot;category&quot;:&quot;Deluxe King&quot;,&quot;bed_label&quot;:&quot;Double bed&quot;,&quot;bed_detail&quot;:&quot;King Bed&quot;,&quot;beds&quot;:&quot;1&quot;,&quot;max_guests&quot;:&quot;2&quot;,&quot;capacity&quot;:&quot;2&quot;,&quot;can_sleep&quot;:&quot;2&quot;,&quot;size&quot;:&quot;320&quot;,&quot;smoking&quot;:&quot;Non-smoking&quot;,&quot;rate&quot;:&quot;4,500&quot;,&quot;description&quot;:&quot;Quiet room with city view.&quot;,&quot;occupied&quot;:false,&quot;status_val&quot;:1,&quot;state&quot;:&quot;available&quot;,&quot;state_label&quot;:&quot;Available&quot;}" data-rate="4500" data-state="available"
+        aria-label="Room 101, Double bed, Available. Open details.">
+        <span class="mmb-card-top">
+            <span class="mmb-number">101</span>
+            <span class="mmb-tick" aria-hidden="true"><i class="fa fa-check"></i></span>
+        </span>
+        <span class="mmb-bed" title="Double bed"><svg class="mmb-bed-icon" viewBox="0 0 40 20" width="40" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="10" width="33" height="4" rx="1"/><rect x="6" y="6.6" width="13" height="3.4" rx="1.6"/><rect x="22" y="6.6" width="13" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h35v3.5"/></svg>
+</span>
+        <span class="mmb-bed-label">Double bed</span>
+        <span class="mmb-chip" data-state="available"><span class="mmb-chip-dot" aria-hidden="true"></span><span class="mmb-chip-text">Available</span></span>
+                    <span class="mmb-rate">4,500</span>
+            </button>
+</div>
+                                                                                <div class="mmb-tile room-status-ui" data-state="available">
+            
+        <span class="room-heading-right mmb-proxy-trigger" hidden onclick="updateStatus(`2`,`1`, this)"></span>
+        <span class="room-info mmb-proxy " hidden aria-hidden="true"></span>
+        <button type="button" class="mmb-card" data-room="{&quot;room_id&quot;:2,&quot;category_id&quot;:1,&quot;number&quot;:&quot;102&quot;,&quot;category&quot;:&quot;Deluxe King&quot;,&quot;bed_label&quot;:&quot;Double bed&quot;,&quot;bed_detail&quot;:&quot;King Bed&quot;,&quot;beds&quot;:&quot;1&quot;,&quot;max_guests&quot;:&quot;2&quot;,&quot;capacity&quot;:&quot;2&quot;,&quot;can_sleep&quot;:&quot;2&quot;,&quot;size&quot;:&quot;320&quot;,&quot;smoking&quot;:&quot;Non-smoking&quot;,&quot;rate&quot;:&quot;4,500&quot;,&quot;description&quot;:&quot;Quiet room with city view.&quot;,&quot;occupied&quot;:false,&quot;status_val&quot;:1,&quot;state&quot;:&quot;available&quot;,&quot;state_label&quot;:&quot;Available&quot;}" data-rate="4500" data-state="available"
+        aria-label="Room 102, Double bed, Available. Open details.">
+        <span class="mmb-card-top">
+            <span class="mmb-number">102</span>
+            <span class="mmb-tick" aria-hidden="true"><i class="fa fa-check"></i></span>
+        </span>
+        <span class="mmb-bed" title="Double bed"><svg class="mmb-bed-icon" viewBox="0 0 40 20" width="40" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="10" width="33" height="4" rx="1"/><rect x="6" y="6.6" width="13" height="3.4" rx="1.6"/><rect x="22" y="6.6" width="13" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h35v3.5"/></svg>
+</span>
+        <span class="mmb-bed-label">Double bed</span>
+        <span class="mmb-chip" data-state="available"><span class="mmb-chip-dot" aria-hidden="true"></span><span class="mmb-chip-text">Available</span></span>
+                    <span class="mmb-rate">4,500</span>
+            </button>
+</div>
+                                                                                <div class="mmb-tile room-status-ui" data-state="booked">
+        <button type="button" class="mmb-card" data-room="{&quot;room_id&quot;:3,&quot;category_id&quot;:1,&quot;number&quot;:&quot;103&quot;,&quot;category&quot;:&quot;Deluxe King&quot;,&quot;bed_label&quot;:&quot;Double bed&quot;,&quot;bed_detail&quot;:&quot;King Bed&quot;,&quot;beds&quot;:&quot;1&quot;,&quot;max_guests&quot;:&quot;2&quot;,&quot;capacity&quot;:&quot;2&quot;,&quot;can_sleep&quot;:&quot;2&quot;,&quot;size&quot;:&quot;320&quot;,&quot;smoking&quot;:&quot;Non-smoking&quot;,&quot;rate&quot;:&quot;4,500&quot;,&quot;description&quot;:&quot;Quiet room with city view.&quot;,&quot;occupied&quot;:true,&quot;housekeeping&quot;:&quot;&quot;,&quot;guest&quot;:{&quot;name&quot;:&quot;Aisha O&#039;Neil &lt;script&gt;alert(1)&lt;\/script&gt;&quot;,&quot;phone&quot;:&quot;01700000000&quot;,&quot;passport&quot;:&quot;P1234567&quot;,&quot;check_in&quot;:&quot;14:00&quot;,&quot;check_out&quot;:&quot;&quot;,&quot;note&quot;:&quot;Late arrival &lt;b&gt;note&lt;\/b&gt;&quot;,&quot;booking_id&quot;:900,&quot;check_label&quot;:&quot;Check In Now&quot;,&quot;check_url&quot;:&quot;http:\/\/localhost\/hotel\/check-in\/900&quot;,&quot;migrate_url&quot;:&quot;http:\/\/localhost\/hotel\/adjusts\/create?booking_id=900&amp;room_id=3&amp;type=migrate&quot;,&quot;booking_url&quot;:&quot;http:\/\/localhost\/hotel\/booking\/900&quot;},&quot;state&quot;:&quot;booked&quot;,&quot;state_label&quot;:&quot;Booked&quot;}" data-rate="4500" data-state="booked"
+        aria-label="Room 103, Double bed, Booked. Open details.">
+        <span class="mmb-card-top">
+            <span class="mmb-number">103</span>
+            <span class="mmb-tick" aria-hidden="true"><i class="fa fa-check"></i></span>
+        </span>
+        <span class="mmb-bed" title="Double bed"><svg class="mmb-bed-icon" viewBox="0 0 40 20" width="40" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="10" width="33" height="4" rx="1"/><rect x="6" y="6.6" width="13" height="3.4" rx="1.6"/><rect x="22" y="6.6" width="13" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h35v3.5"/></svg>
+</span>
+        <span class="mmb-bed-label">Double bed</span>
+        <span class="mmb-chip" data-state="booked"><span class="mmb-chip-dot" aria-hidden="true"></span><span class="mmb-chip-text">Booked</span></span>
+                    <span class="mmb-rate">4,500</span>
+            </button>
+</div>
+                                                                                <div class="mmb-tile room-status-ui" data-state="reserved">
+        <button type="button" class="mmb-card" data-room="{&quot;room_id&quot;:4,&quot;category_id&quot;:1,&quot;number&quot;:&quot;104&quot;,&quot;category&quot;:&quot;Deluxe King&quot;,&quot;bed_label&quot;:&quot;Double bed&quot;,&quot;bed_detail&quot;:&quot;King Bed&quot;,&quot;beds&quot;:&quot;1&quot;,&quot;max_guests&quot;:&quot;2&quot;,&quot;capacity&quot;:&quot;2&quot;,&quot;can_sleep&quot;:&quot;2&quot;,&quot;size&quot;:&quot;320&quot;,&quot;smoking&quot;:&quot;Non-smoking&quot;,&quot;rate&quot;:&quot;4,500&quot;,&quot;description&quot;:&quot;Quiet room with city view.&quot;,&quot;occupied&quot;:true,&quot;housekeeping&quot;:&quot;&quot;,&quot;guest&quot;:{&quot;name&quot;:&quot;Aisha O&#039;Neil &lt;script&gt;alert(1)&lt;\/script&gt;&quot;,&quot;phone&quot;:&quot;01700000000&quot;,&quot;passport&quot;:&quot;P1234567&quot;,&quot;check_in&quot;:&quot;14:00&quot;,&quot;check_out&quot;:&quot;&quot;,&quot;note&quot;:&quot;Late arrival &lt;b&gt;note&lt;\/b&gt;&quot;,&quot;booking_id&quot;:902,&quot;check_label&quot;:&quot;Check In Now&quot;,&quot;check_url&quot;:&quot;http:\/\/localhost\/hotel\/check-in\/902&quot;,&quot;migrate_url&quot;:&quot;http:\/\/localhost\/hotel\/adjusts\/create?booking_id=902&amp;room_id=4&amp;type=migrate&quot;,&quot;booking_url&quot;:&quot;http:\/\/localhost\/hotel\/booking\/902&quot;},&quot;state&quot;:&quot;reserved&quot;,&quot;state_label&quot;:&quot;Reserved&quot;}" data-rate="4500" data-state="reserved"
+        aria-label="Room 104, Double bed, Reserved. Open details.">
+        <span class="mmb-card-top">
+            <span class="mmb-number">104</span>
+            <span class="mmb-tick" aria-hidden="true"><i class="fa fa-check"></i></span>
+        </span>
+        <span class="mmb-bed" title="Double bed"><svg class="mmb-bed-icon" viewBox="0 0 40 20" width="40" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="10" width="33" height="4" rx="1"/><rect x="6" y="6.6" width="13" height="3.4" rx="1.6"/><rect x="22" y="6.6" width="13" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h35v3.5"/></svg>
+</span>
+        <span class="mmb-bed-label">Double bed</span>
+        <span class="mmb-chip" data-state="reserved"><span class="mmb-chip-dot" aria-hidden="true"></span><span class="mmb-chip-text">Reserved</span></span>
+                    <span class="mmb-rate">4,500</span>
+            </button>
+</div>
+                                                                                <div class="mmb-tile room-status-ui" data-state="dirty">
+            
+        <span class="room-heading-right mmb-proxy-trigger" hidden onclick="updateStatus(`5`,`0`, this)"></span>
+        <span class="room-info mmb-proxy inverse" hidden aria-hidden="true"></span>
+        <button type="button" class="mmb-card" data-room="{&quot;room_id&quot;:5,&quot;category_id&quot;:1,&quot;number&quot;:&quot;105&quot;,&quot;category&quot;:&quot;Deluxe King&quot;,&quot;bed_label&quot;:&quot;Double bed&quot;,&quot;bed_detail&quot;:&quot;King Bed&quot;,&quot;beds&quot;:&quot;1&quot;,&quot;max_guests&quot;:&quot;2&quot;,&quot;capacity&quot;:&quot;2&quot;,&quot;can_sleep&quot;:&quot;2&quot;,&quot;size&quot;:&quot;320&quot;,&quot;smoking&quot;:&quot;Non-smoking&quot;,&quot;rate&quot;:&quot;4,500&quot;,&quot;description&quot;:&quot;Quiet room with city view.&quot;,&quot;occupied&quot;:false,&quot;status_val&quot;:0,&quot;state&quot;:&quot;dirty&quot;,&quot;state_label&quot;:&quot;Dirty&quot;}" data-rate="4500" data-state="dirty"
+        aria-label="Room 105, Double bed, Dirty. Open details.">
+        <span class="mmb-card-top">
+            <span class="mmb-number">105</span>
+            <span class="mmb-tick" aria-hidden="true"><i class="fa fa-check"></i></span>
+        </span>
+        <span class="mmb-bed" title="Double bed"><svg class="mmb-bed-icon" viewBox="0 0 40 20" width="40" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="10" width="33" height="4" rx="1"/><rect x="6" y="6.6" width="13" height="3.4" rx="1.6"/><rect x="22" y="6.6" width="13" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h35v3.5"/></svg>
+</span>
+        <span class="mmb-bed-label">Double bed</span>
+        <span class="mmb-chip" data-state="dirty"><span class="mmb-chip-dot" aria-hidden="true"></span><span class="mmb-chip-text">Dirty</span></span>
+                    <span class="mmb-rate">4,500</span>
+            </button>
+</div>
+                                                                                <div class="mmb-tile room-status-ui" data-state="maintenance">
+            
+        <span class="room-heading-right mmb-proxy-trigger" hidden onclick="updateStatus(`6`,`2`, this)"></span>
+        <span class="room-info mmb-proxy orange" hidden aria-hidden="true"></span>
+        <button type="button" class="mmb-card" data-room="{&quot;room_id&quot;:6,&quot;category_id&quot;:1,&quot;number&quot;:&quot;106&quot;,&quot;category&quot;:&quot;Deluxe King&quot;,&quot;bed_label&quot;:&quot;Double bed&quot;,&quot;bed_detail&quot;:&quot;King Bed&quot;,&quot;beds&quot;:&quot;1&quot;,&quot;max_guests&quot;:&quot;2&quot;,&quot;capacity&quot;:&quot;2&quot;,&quot;can_sleep&quot;:&quot;2&quot;,&quot;size&quot;:&quot;320&quot;,&quot;smoking&quot;:&quot;Non-smoking&quot;,&quot;rate&quot;:&quot;4,500&quot;,&quot;description&quot;:&quot;Quiet room with city view.&quot;,&quot;occupied&quot;:false,&quot;status_val&quot;:2,&quot;state&quot;:&quot;maintenance&quot;,&quot;state_label&quot;:&quot;Maintenance&quot;}" data-rate="4500" data-state="maintenance"
+        aria-label="Room 106, Double bed, Maintenance. Open details.">
+        <span class="mmb-card-top">
+            <span class="mmb-number">106</span>
+            <span class="mmb-tick" aria-hidden="true"><i class="fa fa-check"></i></span>
+        </span>
+        <span class="mmb-bed" title="Double bed"><svg class="mmb-bed-icon" viewBox="0 0 40 20" width="40" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="10" width="33" height="4" rx="1"/><rect x="6" y="6.6" width="13" height="3.4" rx="1.6"/><rect x="22" y="6.6" width="13" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h35v3.5"/></svg>
+</span>
+        <span class="mmb-bed-label">Double bed</span>
+        <span class="mmb-chip" data-state="maintenance"><span class="mmb-chip-dot" aria-hidden="true"></span><span class="mmb-chip-text">Maintenance</span></span>
+                    <span class="mmb-rate">4,500</span>
+            </button>
+</div>
+                                                                                <div class="mmb-tile room-status-ui" data-state="due">
+        <button type="button" class="mmb-card" data-room="{&quot;room_id&quot;:7,&quot;category_id&quot;:1,&quot;number&quot;:&quot;107&quot;,&quot;category&quot;:&quot;Deluxe King&quot;,&quot;bed_label&quot;:&quot;Double bed&quot;,&quot;bed_detail&quot;:&quot;King Bed&quot;,&quot;beds&quot;:&quot;1&quot;,&quot;max_guests&quot;:&quot;2&quot;,&quot;capacity&quot;:&quot;2&quot;,&quot;can_sleep&quot;:&quot;2&quot;,&quot;size&quot;:&quot;320&quot;,&quot;smoking&quot;:&quot;Non-smoking&quot;,&quot;rate&quot;:&quot;4,500&quot;,&quot;description&quot;:&quot;Quiet room with city view.&quot;,&quot;occupied&quot;:true,&quot;housekeeping&quot;:&quot;&quot;,&quot;guest&quot;:{&quot;name&quot;:&quot;Aisha O&#039;Neil &lt;script&gt;alert(1)&lt;\/script&gt;&quot;,&quot;phone&quot;:&quot;01700000000&quot;,&quot;passport&quot;:&quot;P1234567&quot;,&quot;check_in&quot;:&quot;14:00&quot;,&quot;check_out&quot;:&quot;&quot;,&quot;note&quot;:&quot;Late arrival &lt;b&gt;note&lt;\/b&gt;&quot;,&quot;booking_id&quot;:901,&quot;check_label&quot;:&quot;Checkout Now&quot;,&quot;check_url&quot;:&quot;http:\/\/localhost\/hotel\/checkout\/901?room_id=7&quot;,&quot;migrate_url&quot;:&quot;http:\/\/localhost\/hotel\/adjusts\/create?booking_id=901&amp;room_id=7&amp;type=migrate&quot;,&quot;booking_url&quot;:&quot;http:\/\/localhost\/hotel\/booking\/901&quot;},&quot;state&quot;:&quot;due&quot;,&quot;state_label&quot;:&quot;Due today&quot;}" data-rate="4500" data-state="due"
+        aria-label="Room 107, Double bed, Due today. Open details.">
+        <span class="mmb-card-top">
+            <span class="mmb-number">107</span>
+            <span class="mmb-tick" aria-hidden="true"><i class="fa fa-check"></i></span>
+        </span>
+        <span class="mmb-bed" title="Double bed"><svg class="mmb-bed-icon" viewBox="0 0 40 20" width="40" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="10" width="33" height="4" rx="1"/><rect x="6" y="6.6" width="13" height="3.4" rx="1.6"/><rect x="22" y="6.6" width="13" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h35v3.5"/></svg>
+</span>
+        <span class="mmb-bed-label">Double bed</span>
+        <span class="mmb-chip" data-state="due"><span class="mmb-chip-dot" aria-hidden="true"></span><span class="mmb-chip-text">Due today</span></span>
+                    <span class="mmb-rate">4,500</span>
+            </button>
+</div>
+                                            </div>
+                </div>
+            </section>
+                                <section class="mmb-group" data-category="2">
+                <h3 class="mmb-group-heading">
+                    <button type="button" class="mmb-group-toggle" id="mmb-toggle-2" aria-expanded="true" aria-controls="mmb-body-2">
+                        <i class="fa fa-chevron-down mmb-chevron" aria-hidden="true"></i>
+                        <span class="mmb-group-name">Superior Twin</span>
+                                                <span class="mmb-group-counts">
+                            <span class="mmb-count mmb-count-free">8 free</span>
+                            <span class="mmb-count">8 rooms</span>
+                            <span class="mmb-count mmb-count-occ" title="0 of 8 occupied">0% occupied</span>
+                        </span>
+                    </button>
+                </h3>
+                <div class="mmb-group-body" id="mmb-body-2" role="region" aria-labelledby="mmb-toggle-2">
+                    <div class="mmb-grid">
+                                                                                <div class="mmb-tile room-status-ui" data-state="available">
+            
+        <span class="room-heading-right mmb-proxy-trigger" hidden onclick="updateStatus(`21`,`1`, this)"></span>
+        <span class="room-info mmb-proxy " hidden aria-hidden="true"></span>
+        <button type="button" class="mmb-card" data-room="{&quot;room_id&quot;:21,&quot;category_id&quot;:2,&quot;number&quot;:&quot;201&quot;,&quot;category&quot;:&quot;Superior Twin&quot;,&quot;bed_label&quot;:&quot;Twin beds&quot;,&quot;bed_detail&quot;:&quot;Twin Beds&quot;,&quot;beds&quot;:&quot;2&quot;,&quot;max_guests&quot;:&quot;2&quot;,&quot;capacity&quot;:&quot;2&quot;,&quot;can_sleep&quot;:&quot;2&quot;,&quot;size&quot;:&quot;320&quot;,&quot;smoking&quot;:&quot;Non-smoking&quot;,&quot;rate&quot;:&quot;4,500&quot;,&quot;description&quot;:&quot;Quiet room with city view.&quot;,&quot;occupied&quot;:false,&quot;status_val&quot;:1,&quot;state&quot;:&quot;available&quot;,&quot;state_label&quot;:&quot;Available&quot;}" data-rate="4500" data-state="available"
+        aria-label="Room 201, Twin beds, Available. Open details.">
+        <span class="mmb-card-top">
+            <span class="mmb-number">201</span>
+            <span class="mmb-tick" aria-hidden="true"><i class="fa fa-check"></i></span>
+        </span>
+        <span class="mmb-bed" title="Twin beds"><svg class="mmb-bed-icon" viewBox="0 0 59 20" width="59" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><g><rect x="4" y="10" width="21.5" height="4" rx="1"/><rect x="6" y="6.6" width="9" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h23v3.5"/></g><g transform="translate(31 0)"><rect x="4" y="10" width="21.5" height="4" rx="1"/><rect x="6" y="6.6" width="9" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h23v3.5"/></g></svg>
+</span>
+        <span class="mmb-bed-label">Twin beds</span>
+        <span class="mmb-chip" data-state="available"><span class="mmb-chip-dot" aria-hidden="true"></span><span class="mmb-chip-text">Available</span></span>
+                    <span class="mmb-rate">4,500</span>
+            </button>
+</div>
+                                                                                <div class="mmb-tile room-status-ui" data-state="available">
+            
+        <span class="room-heading-right mmb-proxy-trigger" hidden onclick="updateStatus(`22`,`1`, this)"></span>
+        <span class="room-info mmb-proxy " hidden aria-hidden="true"></span>
+        <button type="button" class="mmb-card" data-room="{&quot;room_id&quot;:22,&quot;category_id&quot;:2,&quot;number&quot;:&quot;202&quot;,&quot;category&quot;:&quot;Superior Twin&quot;,&quot;bed_label&quot;:&quot;Twin beds&quot;,&quot;bed_detail&quot;:&quot;Twin Beds&quot;,&quot;beds&quot;:&quot;2&quot;,&quot;max_guests&quot;:&quot;2&quot;,&quot;capacity&quot;:&quot;2&quot;,&quot;can_sleep&quot;:&quot;2&quot;,&quot;size&quot;:&quot;320&quot;,&quot;smoking&quot;:&quot;Non-smoking&quot;,&quot;rate&quot;:&quot;4,500&quot;,&quot;description&quot;:&quot;Quiet room with city view.&quot;,&quot;occupied&quot;:false,&quot;status_val&quot;:1,&quot;state&quot;:&quot;available&quot;,&quot;state_label&quot;:&quot;Available&quot;}" data-rate="4500" data-state="available"
+        aria-label="Room 202, Twin beds, Available. Open details.">
+        <span class="mmb-card-top">
+            <span class="mmb-number">202</span>
+            <span class="mmb-tick" aria-hidden="true"><i class="fa fa-check"></i></span>
+        </span>
+        <span class="mmb-bed" title="Twin beds"><svg class="mmb-bed-icon" viewBox="0 0 59 20" width="59" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><g><rect x="4" y="10" width="21.5" height="4" rx="1"/><rect x="6" y="6.6" width="9" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h23v3.5"/></g><g transform="translate(31 0)"><rect x="4" y="10" width="21.5" height="4" rx="1"/><rect x="6" y="6.6" width="9" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h23v3.5"/></g></svg>
+</span>
+        <span class="mmb-bed-label">Twin beds</span>
+        <span class="mmb-chip" data-state="available"><span class="mmb-chip-dot" aria-hidden="true"></span><span class="mmb-chip-text">Available</span></span>
+                    <span class="mmb-rate">4,500</span>
+            </button>
+</div>
+                                                                                <div class="mmb-tile room-status-ui" data-state="available">
+            
+        <span class="room-heading-right mmb-proxy-trigger" hidden onclick="updateStatus(`23`,`1`, this)"></span>
+        <span class="room-info mmb-proxy " hidden aria-hidden="true"></span>
+        <button type="button" class="mmb-card" data-room="{&quot;room_id&quot;:23,&quot;category_id&quot;:2,&quot;number&quot;:&quot;203&quot;,&quot;category&quot;:&quot;Superior Twin&quot;,&quot;bed_label&quot;:&quot;Twin beds&quot;,&quot;bed_detail&quot;:&quot;Twin Beds&quot;,&quot;beds&quot;:&quot;2&quot;,&quot;max_guests&quot;:&quot;2&quot;,&quot;capacity&quot;:&quot;2&quot;,&quot;can_sleep&quot;:&quot;2&quot;,&quot;size&quot;:&quot;320&quot;,&quot;smoking&quot;:&quot;Non-smoking&quot;,&quot;rate&quot;:&quot;4,500&quot;,&quot;description&quot;:&quot;Quiet room with city view.&quot;,&quot;occupied&quot;:false,&quot;status_val&quot;:1,&quot;state&quot;:&quot;available&quot;,&quot;state_label&quot;:&quot;Available&quot;}" data-rate="4500" data-state="available"
+        aria-label="Room 203, Twin beds, Available. Open details.">
+        <span class="mmb-card-top">
+            <span class="mmb-number">203</span>
+            <span class="mmb-tick" aria-hidden="true"><i class="fa fa-check"></i></span>
+        </span>
+        <span class="mmb-bed" title="Twin beds"><svg class="mmb-bed-icon" viewBox="0 0 59 20" width="59" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><g><rect x="4" y="10" width="21.5" height="4" rx="1"/><rect x="6" y="6.6" width="9" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h23v3.5"/></g><g transform="translate(31 0)"><rect x="4" y="10" width="21.5" height="4" rx="1"/><rect x="6" y="6.6" width="9" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h23v3.5"/></g></svg>
+</span>
+        <span class="mmb-bed-label">Twin beds</span>
+        <span class="mmb-chip" data-state="available"><span class="mmb-chip-dot" aria-hidden="true"></span><span class="mmb-chip-text">Available</span></span>
+                    <span class="mmb-rate">4,500</span>
+            </button>
+</div>
+                                                                                <div class="mmb-tile room-status-ui" data-state="available">
+            
+        <span class="room-heading-right mmb-proxy-trigger" hidden onclick="updateStatus(`24`,`1`, this)"></span>
+        <span class="room-info mmb-proxy " hidden aria-hidden="true"></span>
+        <button type="button" class="mmb-card" data-room="{&quot;room_id&quot;:24,&quot;category_id&quot;:2,&quot;number&quot;:&quot;204&quot;,&quot;category&quot;:&quot;Superior Twin&quot;,&quot;bed_label&quot;:&quot;Twin beds&quot;,&quot;bed_detail&quot;:&quot;Twin Beds&quot;,&quot;beds&quot;:&quot;2&quot;,&quot;max_guests&quot;:&quot;2&quot;,&quot;capacity&quot;:&quot;2&quot;,&quot;can_sleep&quot;:&quot;2&quot;,&quot;size&quot;:&quot;320&quot;,&quot;smoking&quot;:&quot;Non-smoking&quot;,&quot;rate&quot;:&quot;4,500&quot;,&quot;description&quot;:&quot;Quiet room with city view.&quot;,&quot;occupied&quot;:false,&quot;status_val&quot;:1,&quot;state&quot;:&quot;available&quot;,&quot;state_label&quot;:&quot;Available&quot;}" data-rate="4500" data-state="available"
+        aria-label="Room 204, Twin beds, Available. Open details.">
+        <span class="mmb-card-top">
+            <span class="mmb-number">204</span>
+            <span class="mmb-tick" aria-hidden="true"><i class="fa fa-check"></i></span>
+        </span>
+        <span class="mmb-bed" title="Twin beds"><svg class="mmb-bed-icon" viewBox="0 0 59 20" width="59" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><g><rect x="4" y="10" width="21.5" height="4" rx="1"/><rect x="6" y="6.6" width="9" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h23v3.5"/></g><g transform="translate(31 0)"><rect x="4" y="10" width="21.5" height="4" rx="1"/><rect x="6" y="6.6" width="9" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h23v3.5"/></g></svg>
+</span>
+        <span class="mmb-bed-label">Twin beds</span>
+        <span class="mmb-chip" data-state="available"><span class="mmb-chip-dot" aria-hidden="true"></span><span class="mmb-chip-text">Available</span></span>
+                    <span class="mmb-rate">4,500</span>
+            </button>
+</div>
+                                                                                <div class="mmb-tile room-status-ui" data-state="available">
+            
+        <span class="room-heading-right mmb-proxy-trigger" hidden onclick="updateStatus(`25`,`1`, this)"></span>
+        <span class="room-info mmb-proxy " hidden aria-hidden="true"></span>
+        <button type="button" class="mmb-card" data-room="{&quot;room_id&quot;:25,&quot;category_id&quot;:2,&quot;number&quot;:&quot;205&quot;,&quot;category&quot;:&quot;Superior Twin&quot;,&quot;bed_label&quot;:&quot;Twin beds&quot;,&quot;bed_detail&quot;:&quot;Twin Beds&quot;,&quot;beds&quot;:&quot;2&quot;,&quot;max_guests&quot;:&quot;2&quot;,&quot;capacity&quot;:&quot;2&quot;,&quot;can_sleep&quot;:&quot;2&quot;,&quot;size&quot;:&quot;320&quot;,&quot;smoking&quot;:&quot;Non-smoking&quot;,&quot;rate&quot;:&quot;4,500&quot;,&quot;description&quot;:&quot;Quiet room with city view.&quot;,&quot;occupied&quot;:false,&quot;status_val&quot;:1,&quot;state&quot;:&quot;available&quot;,&quot;state_label&quot;:&quot;Available&quot;}" data-rate="4500" data-state="available"
+        aria-label="Room 205, Twin beds, Available. Open details.">
+        <span class="mmb-card-top">
+            <span class="mmb-number">205</span>
+            <span class="mmb-tick" aria-hidden="true"><i class="fa fa-check"></i></span>
+        </span>
+        <span class="mmb-bed" title="Twin beds"><svg class="mmb-bed-icon" viewBox="0 0 59 20" width="59" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><g><rect x="4" y="10" width="21.5" height="4" rx="1"/><rect x="6" y="6.6" width="9" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h23v3.5"/></g><g transform="translate(31 0)"><rect x="4" y="10" width="21.5" height="4" rx="1"/><rect x="6" y="6.6" width="9" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h23v3.5"/></g></svg>
+</span>
+        <span class="mmb-bed-label">Twin beds</span>
+        <span class="mmb-chip" data-state="available"><span class="mmb-chip-dot" aria-hidden="true"></span><span class="mmb-chip-text">Available</span></span>
+                    <span class="mmb-rate">4,500</span>
+            </button>
+</div>
+                                                                                <div class="mmb-tile room-status-ui" data-state="available">
+            
+        <span class="room-heading-right mmb-proxy-trigger" hidden onclick="updateStatus(`26`,`1`, this)"></span>
+        <span class="room-info mmb-proxy " hidden aria-hidden="true"></span>
+        <button type="button" class="mmb-card" data-room="{&quot;room_id&quot;:26,&quot;category_id&quot;:2,&quot;number&quot;:&quot;206&quot;,&quot;category&quot;:&quot;Superior Twin&quot;,&quot;bed_label&quot;:&quot;Twin beds&quot;,&quot;bed_detail&quot;:&quot;Twin Beds&quot;,&quot;beds&quot;:&quot;2&quot;,&quot;max_guests&quot;:&quot;2&quot;,&quot;capacity&quot;:&quot;2&quot;,&quot;can_sleep&quot;:&quot;2&quot;,&quot;size&quot;:&quot;320&quot;,&quot;smoking&quot;:&quot;Non-smoking&quot;,&quot;rate&quot;:&quot;4,500&quot;,&quot;description&quot;:&quot;Quiet room with city view.&quot;,&quot;occupied&quot;:false,&quot;status_val&quot;:1,&quot;state&quot;:&quot;available&quot;,&quot;state_label&quot;:&quot;Available&quot;}" data-rate="4500" data-state="available"
+        aria-label="Room 206, Twin beds, Available. Open details.">
+        <span class="mmb-card-top">
+            <span class="mmb-number">206</span>
+            <span class="mmb-tick" aria-hidden="true"><i class="fa fa-check"></i></span>
+        </span>
+        <span class="mmb-bed" title="Twin beds"><svg class="mmb-bed-icon" viewBox="0 0 59 20" width="59" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><g><rect x="4" y="10" width="21.5" height="4" rx="1"/><rect x="6" y="6.6" width="9" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h23v3.5"/></g><g transform="translate(31 0)"><rect x="4" y="10" width="21.5" height="4" rx="1"/><rect x="6" y="6.6" width="9" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h23v3.5"/></g></svg>
+</span>
+        <span class="mmb-bed-label">Twin beds</span>
+        <span class="mmb-chip" data-state="available"><span class="mmb-chip-dot" aria-hidden="true"></span><span class="mmb-chip-text">Available</span></span>
+                    <span class="mmb-rate">4,500</span>
+            </button>
+</div>
+                                                                                <div class="mmb-tile room-status-ui" data-state="available">
+            
+        <span class="room-heading-right mmb-proxy-trigger" hidden onclick="updateStatus(`27`,`1`, this)"></span>
+        <span class="room-info mmb-proxy " hidden aria-hidden="true"></span>
+        <button type="button" class="mmb-card" data-room="{&quot;room_id&quot;:27,&quot;category_id&quot;:2,&quot;number&quot;:&quot;207&quot;,&quot;category&quot;:&quot;Superior Twin&quot;,&quot;bed_label&quot;:&quot;Twin beds&quot;,&quot;bed_detail&quot;:&quot;Twin Beds&quot;,&quot;beds&quot;:&quot;2&quot;,&quot;max_guests&quot;:&quot;2&quot;,&quot;capacity&quot;:&quot;2&quot;,&quot;can_sleep&quot;:&quot;2&quot;,&quot;size&quot;:&quot;320&quot;,&quot;smoking&quot;:&quot;Non-smoking&quot;,&quot;rate&quot;:&quot;4,500&quot;,&quot;description&quot;:&quot;Quiet room with city view.&quot;,&quot;occupied&quot;:false,&quot;status_val&quot;:1,&quot;state&quot;:&quot;available&quot;,&quot;state_label&quot;:&quot;Available&quot;}" data-rate="4500" data-state="available"
+        aria-label="Room 207, Twin beds, Available. Open details.">
+        <span class="mmb-card-top">
+            <span class="mmb-number">207</span>
+            <span class="mmb-tick" aria-hidden="true"><i class="fa fa-check"></i></span>
+        </span>
+        <span class="mmb-bed" title="Twin beds"><svg class="mmb-bed-icon" viewBox="0 0 59 20" width="59" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><g><rect x="4" y="10" width="21.5" height="4" rx="1"/><rect x="6" y="6.6" width="9" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h23v3.5"/></g><g transform="translate(31 0)"><rect x="4" y="10" width="21.5" height="4" rx="1"/><rect x="6" y="6.6" width="9" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h23v3.5"/></g></svg>
+</span>
+        <span class="mmb-bed-label">Twin beds</span>
+        <span class="mmb-chip" data-state="available"><span class="mmb-chip-dot" aria-hidden="true"></span><span class="mmb-chip-text">Available</span></span>
+                    <span class="mmb-rate">4,500</span>
+            </button>
+</div>
+                                                                                <div class="mmb-tile room-status-ui" data-state="available">
+            
+        <span class="room-heading-right mmb-proxy-trigger" hidden onclick="updateStatus(`28`,`1`, this)"></span>
+        <span class="room-info mmb-proxy " hidden aria-hidden="true"></span>
+        <button type="button" class="mmb-card" data-room="{&quot;room_id&quot;:28,&quot;category_id&quot;:2,&quot;number&quot;:&quot;208&quot;,&quot;category&quot;:&quot;Superior Twin&quot;,&quot;bed_label&quot;:&quot;Twin beds&quot;,&quot;bed_detail&quot;:&quot;Twin Beds&quot;,&quot;beds&quot;:&quot;2&quot;,&quot;max_guests&quot;:&quot;2&quot;,&quot;capacity&quot;:&quot;2&quot;,&quot;can_sleep&quot;:&quot;2&quot;,&quot;size&quot;:&quot;320&quot;,&quot;smoking&quot;:&quot;Non-smoking&quot;,&quot;rate&quot;:&quot;4,500&quot;,&quot;description&quot;:&quot;Quiet room with city view.&quot;,&quot;occupied&quot;:false,&quot;status_val&quot;:1,&quot;state&quot;:&quot;available&quot;,&quot;state_label&quot;:&quot;Available&quot;}" data-rate="4500" data-state="available"
+        aria-label="Room 208, Twin beds, Available. Open details.">
+        <span class="mmb-card-top">
+            <span class="mmb-number">208</span>
+            <span class="mmb-tick" aria-hidden="true"><i class="fa fa-check"></i></span>
+        </span>
+        <span class="mmb-bed" title="Twin beds"><svg class="mmb-bed-icon" viewBox="0 0 59 20" width="59" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><g><rect x="4" y="10" width="21.5" height="4" rx="1"/><rect x="6" y="6.6" width="9" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h23v3.5"/></g><g transform="translate(31 0)"><rect x="4" y="10" width="21.5" height="4" rx="1"/><rect x="6" y="6.6" width="9" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h23v3.5"/></g></svg>
+</span>
+        <span class="mmb-bed-label">Twin beds</span>
+        <span class="mmb-chip" data-state="available"><span class="mmb-chip-dot" aria-hidden="true"></span><span class="mmb-chip-text">Available</span></span>
+                    <span class="mmb-rate">4,500</span>
+            </button>
+</div>
+                                            </div>
+                </div>
+            </section>
+                                <section class="mmb-group" data-category="3">
+                <h3 class="mmb-group-heading">
+                    <button type="button" class="mmb-group-toggle" id="mmb-toggle-3" aria-expanded="true" aria-controls="mmb-body-3">
+                        <i class="fa fa-chevron-down mmb-chevron" aria-hidden="true"></i>
+                        <span class="mmb-group-name">Standard Single</span>
+                                                <span class="mmb-group-counts">
+                            <span class="mmb-count mmb-count-free">4 free</span>
+                            <span class="mmb-count">4 rooms</span>
+                            <span class="mmb-count mmb-count-occ" title="0 of 4 occupied">0% occupied</span>
+                        </span>
+                    </button>
+                </h3>
+                <div class="mmb-group-body" id="mmb-body-3" role="region" aria-labelledby="mmb-toggle-3">
+                    <div class="mmb-grid">
+                                                                                <div class="mmb-tile room-status-ui" data-state="available">
+            
+        <span class="room-heading-right mmb-proxy-trigger" hidden onclick="updateStatus(`31`,`1`, this)"></span>
+        <span class="room-info mmb-proxy " hidden aria-hidden="true"></span>
+        <button type="button" class="mmb-card" data-room="{&quot;room_id&quot;:31,&quot;category_id&quot;:3,&quot;number&quot;:&quot;301&quot;,&quot;category&quot;:&quot;Standard Single&quot;,&quot;bed_label&quot;:&quot;Single bed&quot;,&quot;bed_detail&quot;:&quot;Single bed&quot;,&quot;beds&quot;:&quot;1&quot;,&quot;max_guests&quot;:&quot;2&quot;,&quot;capacity&quot;:&quot;2&quot;,&quot;can_sleep&quot;:&quot;2&quot;,&quot;size&quot;:&quot;320&quot;,&quot;smoking&quot;:&quot;Non-smoking&quot;,&quot;rate&quot;:&quot;2,500&quot;,&quot;description&quot;:&quot;Quiet room with city view.&quot;,&quot;occupied&quot;:false,&quot;status_val&quot;:1,&quot;state&quot;:&quot;available&quot;,&quot;state_label&quot;:&quot;Available&quot;}" data-rate="2500" data-state="available"
+        aria-label="Room 301, Single bed, Available. Open details.">
+        <span class="mmb-card-top">
+            <span class="mmb-number">301</span>
+            <span class="mmb-tick" aria-hidden="true"><i class="fa fa-check"></i></span>
+        </span>
+        <span class="mmb-bed" title="Single bed"><svg class="mmb-bed-icon" viewBox="0 0 28 20" width="28" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="10" width="21.5" height="4" rx="1"/><rect x="6" y="6.6" width="9" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h23v3.5"/></svg>
+</span>
+        <span class="mmb-bed-label">Single bed</span>
+        <span class="mmb-chip" data-state="available"><span class="mmb-chip-dot" aria-hidden="true"></span><span class="mmb-chip-text">Available</span></span>
+                    <span class="mmb-rate">2,500</span>
+            </button>
+</div>
+                                                                                <div class="mmb-tile room-status-ui" data-state="available">
+            
+        <span class="room-heading-right mmb-proxy-trigger" hidden onclick="updateStatus(`32`,`1`, this)"></span>
+        <span class="room-info mmb-proxy " hidden aria-hidden="true"></span>
+        <button type="button" class="mmb-card" data-room="{&quot;room_id&quot;:32,&quot;category_id&quot;:3,&quot;number&quot;:&quot;302&quot;,&quot;category&quot;:&quot;Standard Single&quot;,&quot;bed_label&quot;:&quot;Single bed&quot;,&quot;bed_detail&quot;:&quot;Single bed&quot;,&quot;beds&quot;:&quot;1&quot;,&quot;max_guests&quot;:&quot;2&quot;,&quot;capacity&quot;:&quot;2&quot;,&quot;can_sleep&quot;:&quot;2&quot;,&quot;size&quot;:&quot;320&quot;,&quot;smoking&quot;:&quot;Non-smoking&quot;,&quot;rate&quot;:&quot;2,500&quot;,&quot;description&quot;:&quot;Quiet room with city view.&quot;,&quot;occupied&quot;:false,&quot;status_val&quot;:1,&quot;state&quot;:&quot;available&quot;,&quot;state_label&quot;:&quot;Available&quot;}" data-rate="2500" data-state="available"
+        aria-label="Room 302, Single bed, Available. Open details.">
+        <span class="mmb-card-top">
+            <span class="mmb-number">302</span>
+            <span class="mmb-tick" aria-hidden="true"><i class="fa fa-check"></i></span>
+        </span>
+        <span class="mmb-bed" title="Single bed"><svg class="mmb-bed-icon" viewBox="0 0 28 20" width="28" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="10" width="21.5" height="4" rx="1"/><rect x="6" y="6.6" width="9" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h23v3.5"/></svg>
+</span>
+        <span class="mmb-bed-label">Single bed</span>
+        <span class="mmb-chip" data-state="available"><span class="mmb-chip-dot" aria-hidden="true"></span><span class="mmb-chip-text">Available</span></span>
+                    <span class="mmb-rate">2,500</span>
+            </button>
+</div>
+                                                                                <div class="mmb-tile room-status-ui" data-state="available">
+            
+        <span class="room-heading-right mmb-proxy-trigger" hidden onclick="updateStatus(`33`,`1`, this)"></span>
+        <span class="room-info mmb-proxy " hidden aria-hidden="true"></span>
+        <button type="button" class="mmb-card" data-room="{&quot;room_id&quot;:33,&quot;category_id&quot;:3,&quot;number&quot;:&quot;303&quot;,&quot;category&quot;:&quot;Standard Single&quot;,&quot;bed_label&quot;:&quot;Single bed&quot;,&quot;bed_detail&quot;:&quot;Single bed&quot;,&quot;beds&quot;:&quot;1&quot;,&quot;max_guests&quot;:&quot;2&quot;,&quot;capacity&quot;:&quot;2&quot;,&quot;can_sleep&quot;:&quot;2&quot;,&quot;size&quot;:&quot;320&quot;,&quot;smoking&quot;:&quot;Non-smoking&quot;,&quot;rate&quot;:&quot;2,500&quot;,&quot;description&quot;:&quot;Quiet room with city view.&quot;,&quot;occupied&quot;:false,&quot;status_val&quot;:1,&quot;state&quot;:&quot;available&quot;,&quot;state_label&quot;:&quot;Available&quot;}" data-rate="2500" data-state="available"
+        aria-label="Room 303, Single bed, Available. Open details.">
+        <span class="mmb-card-top">
+            <span class="mmb-number">303</span>
+            <span class="mmb-tick" aria-hidden="true"><i class="fa fa-check"></i></span>
+        </span>
+        <span class="mmb-bed" title="Single bed"><svg class="mmb-bed-icon" viewBox="0 0 28 20" width="28" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="10" width="21.5" height="4" rx="1"/><rect x="6" y="6.6" width="9" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h23v3.5"/></svg>
+</span>
+        <span class="mmb-bed-label">Single bed</span>
+        <span class="mmb-chip" data-state="available"><span class="mmb-chip-dot" aria-hidden="true"></span><span class="mmb-chip-text">Available</span></span>
+                    <span class="mmb-rate">2,500</span>
+            </button>
+</div>
+                                                                                <div class="mmb-tile room-status-ui" data-state="available">
+            
+        <span class="room-heading-right mmb-proxy-trigger" hidden onclick="updateStatus(`34`,`1`, this)"></span>
+        <span class="room-info mmb-proxy " hidden aria-hidden="true"></span>
+        <button type="button" class="mmb-card" data-room="{&quot;room_id&quot;:34,&quot;category_id&quot;:3,&quot;number&quot;:&quot;304&quot;,&quot;category&quot;:&quot;Standard Single&quot;,&quot;bed_label&quot;:&quot;Single bed&quot;,&quot;bed_detail&quot;:&quot;Single bed&quot;,&quot;beds&quot;:&quot;1&quot;,&quot;max_guests&quot;:&quot;2&quot;,&quot;capacity&quot;:&quot;2&quot;,&quot;can_sleep&quot;:&quot;2&quot;,&quot;size&quot;:&quot;320&quot;,&quot;smoking&quot;:&quot;Non-smoking&quot;,&quot;rate&quot;:&quot;2,500&quot;,&quot;description&quot;:&quot;Quiet room with city view.&quot;,&quot;occupied&quot;:false,&quot;status_val&quot;:1,&quot;state&quot;:&quot;available&quot;,&quot;state_label&quot;:&quot;Available&quot;}" data-rate="2500" data-state="available"
+        aria-label="Room 304, Single bed, Available. Open details.">
+        <span class="mmb-card-top">
+            <span class="mmb-number">304</span>
+            <span class="mmb-tick" aria-hidden="true"><i class="fa fa-check"></i></span>
+        </span>
+        <span class="mmb-bed" title="Single bed"><svg class="mmb-bed-icon" viewBox="0 0 28 20" width="28" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="10" width="21.5" height="4" rx="1"/><rect x="6" y="6.6" width="9" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h23v3.5"/></svg>
+</span>
+        <span class="mmb-bed-label">Single bed</span>
+        <span class="mmb-chip" data-state="available"><span class="mmb-chip-dot" aria-hidden="true"></span><span class="mmb-chip-text">Available</span></span>
+                    <span class="mmb-rate">2,500</span>
+            </button>
+</div>
+                                            </div>
+                </div>
+            </section>
+                                <section class="mmb-group" data-category="4">
+                <h3 class="mmb-group-heading">
+                    <button type="button" class="mmb-group-toggle" id="mmb-toggle-4" aria-expanded="true" aria-controls="mmb-body-4">
+                        <i class="fa fa-chevron-down mmb-chevron" aria-hidden="true"></i>
+                        <span class="mmb-group-name">Family Suite</span>
+                                                <span class="mmb-group-counts">
+                            <span class="mmb-count mmb-count-free">2 free</span>
+                            <span class="mmb-count">2 rooms</span>
+                            <span class="mmb-count mmb-count-occ" title="0 of 2 occupied">0% occupied</span>
+                        </span>
+                    </button>
+                </h3>
+                <div class="mmb-group-body" id="mmb-body-4" role="region" aria-labelledby="mmb-toggle-4">
+                    <div class="mmb-grid">
+                                                                                <div class="mmb-tile room-status-ui" data-state="available">
+            
+        <span class="room-heading-right mmb-proxy-trigger" hidden onclick="updateStatus(`41`,`1`, this)"></span>
+        <span class="room-info mmb-proxy " hidden aria-hidden="true"></span>
+        <button type="button" class="mmb-card" data-room="{&quot;room_id&quot;:41,&quot;category_id&quot;:4,&quot;number&quot;:&quot;401&quot;,&quot;category&quot;:&quot;Family Suite&quot;,&quot;bed_label&quot;:&quot;Triple beds&quot;,&quot;bed_detail&quot;:&quot;Triple&quot;,&quot;beds&quot;:&quot;3&quot;,&quot;max_guests&quot;:&quot;2&quot;,&quot;capacity&quot;:&quot;2&quot;,&quot;can_sleep&quot;:&quot;2&quot;,&quot;size&quot;:&quot;320&quot;,&quot;smoking&quot;:&quot;Non-smoking&quot;,&quot;rate&quot;:&quot;4,500&quot;,&quot;description&quot;:&quot;Quiet room with city view.&quot;,&quot;occupied&quot;:false,&quot;status_val&quot;:1,&quot;state&quot;:&quot;available&quot;,&quot;state_label&quot;:&quot;Available&quot;}" data-rate="4500" data-state="available"
+        aria-label="Room 401, Triple beds, Available. Open details.">
+        <span class="mmb-card-top">
+            <span class="mmb-number">401</span>
+            <span class="mmb-tick" aria-hidden="true"><i class="fa fa-check"></i></span>
+        </span>
+        <span class="mmb-bed" title="Triple beds"><svg class="mmb-bed-icon" viewBox="0 0 90 20" width="90" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><g><rect x="4" y="10" width="21.5" height="4" rx="1"/><rect x="6" y="6.6" width="9" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h23v3.5"/></g><g transform="translate(31 0)"><rect x="4" y="10" width="21.5" height="4" rx="1"/><rect x="6" y="6.6" width="9" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h23v3.5"/></g><g transform="translate(62 0)"><rect x="4" y="10" width="21.5" height="4" rx="1"/><rect x="6" y="6.6" width="9" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h23v3.5"/></g></svg>
+</span>
+        <span class="mmb-bed-label">Triple beds</span>
+        <span class="mmb-chip" data-state="available"><span class="mmb-chip-dot" aria-hidden="true"></span><span class="mmb-chip-text">Available</span></span>
+                    <span class="mmb-rate">4,500</span>
+            </button>
+</div>
+                                                                                <div class="mmb-tile room-status-ui" data-state="available">
+            
+        <span class="room-heading-right mmb-proxy-trigger" hidden onclick="updateStatus(`42`,`1`, this)"></span>
+        <span class="room-info mmb-proxy " hidden aria-hidden="true"></span>
+        <button type="button" class="mmb-card" data-room="{&quot;room_id&quot;:42,&quot;category_id&quot;:4,&quot;number&quot;:&quot;402&quot;,&quot;category&quot;:&quot;Family Suite&quot;,&quot;bed_label&quot;:&quot;Triple beds&quot;,&quot;bed_detail&quot;:&quot;Triple&quot;,&quot;beds&quot;:&quot;4&quot;,&quot;max_guests&quot;:&quot;2&quot;,&quot;capacity&quot;:&quot;2&quot;,&quot;can_sleep&quot;:&quot;2&quot;,&quot;size&quot;:&quot;320&quot;,&quot;smoking&quot;:&quot;Non-smoking&quot;,&quot;rate&quot;:&quot;4,500&quot;,&quot;description&quot;:&quot;Quiet room with city view.&quot;,&quot;occupied&quot;:false,&quot;status_val&quot;:1,&quot;state&quot;:&quot;available&quot;,&quot;state_label&quot;:&quot;Available&quot;}" data-rate="4500" data-state="available"
+        aria-label="Room 402, Triple beds, Available. Open details.">
+        <span class="mmb-card-top">
+            <span class="mmb-number">402</span>
+            <span class="mmb-tick" aria-hidden="true"><i class="fa fa-check"></i></span>
+        </span>
+        <span class="mmb-bed" title="Triple beds"><svg class="mmb-bed-icon" viewBox="0 0 90 20" width="90" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><g><rect x="4" y="10" width="21.5" height="4" rx="1"/><rect x="6" y="6.6" width="9" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h23v3.5"/></g><g transform="translate(31 0)"><rect x="4" y="10" width="21.5" height="4" rx="1"/><rect x="6" y="6.6" width="9" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h23v3.5"/></g><g transform="translate(62 0)"><rect x="4" y="10" width="21.5" height="4" rx="1"/><rect x="6" y="6.6" width="9" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h23v3.5"/></g></svg>
+</span>
+        <span class="mmb-bed-label">Triple beds</span>
+        <span class="mmb-chip" data-state="available"><span class="mmb-chip-dot" aria-hidden="true"></span><span class="mmb-chip-text">Available</span></span>
+                    <span class="mmb-rate">4,500</span>
+            </button>
+</div>
+                                            </div>
+                </div>
+            </section>
+                                <section class="mmb-group" data-category="5">
+                <h3 class="mmb-group-heading">
+                    <button type="button" class="mmb-group-toggle" id="mmb-toggle-5" aria-expanded="true" aria-controls="mmb-body-5">
+                        <i class="fa fa-chevron-down mmb-chevron" aria-hidden="true"></i>
+                        <span class="mmb-group-name">Double Room</span>
+                                                <span class="mmb-group-counts">
+                            <span class="mmb-count mmb-count-free">1 free</span>
+                            <span class="mmb-count">1 rooms</span>
+                            <span class="mmb-count mmb-count-occ" title="0 of 1 occupied">0% occupied</span>
+                        </span>
+                    </button>
+                </h3>
+                <div class="mmb-group-body" id="mmb-body-5" role="region" aria-labelledby="mmb-toggle-5">
+                    <div class="mmb-grid">
+                                                                                <div class="mmb-tile room-status-ui" data-state="available">
+            
+        <span class="room-heading-right mmb-proxy-trigger" hidden onclick="updateStatus(`51`,`1`, this)"></span>
+        <span class="room-info mmb-proxy " hidden aria-hidden="true"></span>
+        <button type="button" class="mmb-card" data-room="{&quot;room_id&quot;:51,&quot;category_id&quot;:5,&quot;number&quot;:&quot;501&quot;,&quot;category&quot;:&quot;Double Room&quot;,&quot;bed_label&quot;:&quot;Double bed&quot;,&quot;bed_detail&quot;:&quot;Double Bed&quot;,&quot;beds&quot;:&quot;1&quot;,&quot;max_guests&quot;:&quot;2&quot;,&quot;capacity&quot;:&quot;2&quot;,&quot;can_sleep&quot;:&quot;2&quot;,&quot;size&quot;:&quot;320&quot;,&quot;smoking&quot;:&quot;Non-smoking&quot;,&quot;rate&quot;:&quot;4,500&quot;,&quot;description&quot;:&quot;Quiet room with city view.&quot;,&quot;occupied&quot;:false,&quot;status_val&quot;:1,&quot;state&quot;:&quot;available&quot;,&quot;state_label&quot;:&quot;Available&quot;}" data-rate="4500" data-state="available"
+        aria-label="Room 501, Double bed, Available. Open details.">
+        <span class="mmb-card-top">
+            <span class="mmb-number">501</span>
+            <span class="mmb-tick" aria-hidden="true"><i class="fa fa-check"></i></span>
+        </span>
+        <span class="mmb-bed" title="Double bed"><svg class="mmb-bed-icon" viewBox="0 0 40 20" width="40" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="10" width="33" height="4" rx="1"/><rect x="6" y="6.6" width="13" height="3.4" rx="1.6"/><rect x="22" y="6.6" width="13" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h35v3.5"/></svg>
+</span>
+        <span class="mmb-bed-label">Double bed</span>
+        <span class="mmb-chip" data-state="available"><span class="mmb-chip-dot" aria-hidden="true"></span><span class="mmb-chip-text">Available</span></span>
+                    <span class="mmb-rate">4,500</span>
+            </button>
+</div>
+                                            </div>
+                </div>
+            </section>
+                                <section class="mmb-group" data-category="6">
+                <h3 class="mmb-group-heading">
+                    <button type="button" class="mmb-group-toggle" id="mmb-toggle-6" aria-expanded="true" aria-controls="mmb-body-6">
+                        <i class="fa fa-chevron-down mmb-chevron" aria-hidden="true"></i>
+                        <span class="mmb-group-name">Large Suite</span>
+                                                <span class="mmb-group-counts">
+                            <span class="mmb-count mmb-count-free">1 free</span>
+                            <span class="mmb-count">1 rooms</span>
+                            <span class="mmb-count mmb-count-occ" title="0 of 1 occupied">0% occupied</span>
+                        </span>
+                    </button>
+                </h3>
+                <div class="mmb-group-body" id="mmb-body-6" role="region" aria-labelledby="mmb-toggle-6">
+                    <div class="mmb-grid">
+                                                                                <div class="mmb-tile room-status-ui" data-state="available">
+            
+        <span class="room-heading-right mmb-proxy-trigger" hidden onclick="updateStatus(`61`,`1`, this)"></span>
+        <span class="room-info mmb-proxy " hidden aria-hidden="true"></span>
+        <button type="button" class="mmb-card" data-room="{&quot;room_id&quot;:61,&quot;category_id&quot;:6,&quot;number&quot;:&quot;601&quot;,&quot;category&quot;:&quot;Large Suite&quot;,&quot;bed_label&quot;:&quot;5 beds&quot;,&quot;bed_detail&quot;:&quot;&quot;,&quot;beds&quot;:&quot;5&quot;,&quot;max_guests&quot;:&quot;2&quot;,&quot;capacity&quot;:&quot;2&quot;,&quot;can_sleep&quot;:&quot;2&quot;,&quot;size&quot;:&quot;320&quot;,&quot;smoking&quot;:&quot;Non-smoking&quot;,&quot;rate&quot;:&quot;4,500&quot;,&quot;description&quot;:&quot;Quiet room with city view.&quot;,&quot;occupied&quot;:false,&quot;status_val&quot;:1,&quot;state&quot;:&quot;available&quot;,&quot;state_label&quot;:&quot;Available&quot;}" data-rate="4500" data-state="available"
+        aria-label="Room 601, 5 beds, Available. Open details.">
+        <span class="mmb-card-top">
+            <span class="mmb-number">601</span>
+            <span class="mmb-tick" aria-hidden="true"><i class="fa fa-check"></i></span>
+        </span>
+        <span class="mmb-bed" title="5 beds"><svg class="mmb-bed-icon" viewBox="0 0 28 20" width="28" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="10" width="21.5" height="4" rx="1"/><rect x="6" y="6.6" width="9" height="3.4" rx="1.6"/><path d="M2.5 3v14.5M2.5 14h23v3.5"/></svg><span class="mmb-bed-count">&times;5</span>
+</span>
+        <span class="mmb-bed-label">5 beds</span>
+        <span class="mmb-chip" data-state="available"><span class="mmb-chip-dot" aria-hidden="true"></span><span class="mmb-chip-text">Available</span></span>
+                    <span class="mmb-rate">4,500</span>
+            </button>
+</div>
+                                            </div>
+                </div>
+            </section>
+            </form>
+
+    
+    <div class="mmb-footer">
+        <span class="mmb-hint hidden-xs"><i class="fa fa-hand-o-up" aria-hidden="true"></i> Select a room to see details and book.</span>
+        <span class="mmb-selection" hidden aria-live="polite">
+            <i class="fa fa-check-square-o" aria-hidden="true"></i>
+            <strong><span class="mmb-sel-count">0</span> room(s)</strong> selected <span class="mmb-sel-total-wrap">&middot; est. <span class="mmb-sel-total">0</span></span>
+        </span>
+        <span class="mmb-footer-buttons">
+            <button type="submit" form="booking-form" name="submit" value="reserve" class="btn btn-sm btn-white next-step-btn"><i class="fa fa-bookmark"></i> Reserve</button>
+            <button type="submit" form="booking-form" name="submit" value="book" class="btn btn-sm btn-primary next-step-btn"><i class="fa fa-send"></i> Book Now</button>
+        </span>
+    </div>
+
+    <div class="mmb-backdrop" hidden></div>
+    <aside class="mmb-drawer" id="mmb-drawer" role="dialog" aria-modal="true" aria-labelledby="mmb-drawer-title" tabindex="-1" aria-hidden="true">
+        <header class="mmb-drawer-head">
+            <div>
+                <p class="mmb-drawer-eyebrow" id="mmb-drawer-category"></p>
+                <h3 class="mmb-drawer-title" id="mmb-drawer-title">Room</h3>
+            </div>
+            <button type="button" class="mmb-drawer-close" data-mmb-close aria-label="Close room details"><i class="fa fa-times" aria-hidden="true"></i></button>
+        </header>
+        <div class="mmb-drawer-body">
+            <p class="mmb-drawer-state"><span class="mmb-chip" id="mmb-drawer-chip"><span class="mmb-chip-dot"></span><span class="mmb-chip-text"></span></span> <span class="mmb-drawer-hk" id="mmb-drawer-hk" hidden></span></p>
+            <div class="mmb-drawer-bed"><span id="mmb-drawer-bed-icon"></span><strong id="mmb-drawer-bed-label"></strong></div>
+            <dl class="mmb-drawer-list" id="mmb-drawer-list"></dl>
+            <p class="mmb-drawer-description" id="mmb-drawer-description" hidden></p>
+            <section class="mmb-drawer-guest" id="mmb-drawer-guest" hidden aria-labelledby="mmb-guest-title">
+                <h4 id="mmb-guest-title">Guest &amp; stay</h4>
+                <dl class="mmb-drawer-list" id="mmb-drawer-guest-list"></dl>
+            </section>
+            <p class="mmb-drawer-stay" id="mmb-drawer-stay"></p>
+        </div>
+        <footer class="mmb-drawer-actions" id="mmb-drawer-actions"></footer>
+    </aside>
+</div>
+
+
+</div></div></section></div></section>
+</div></div></div><footer class="mm-shell-footer hidden-print" role="contentinfo">
+    <nav class="mm-crumbs" aria-label="Breadcrumb">
+        <ol>
+            <li><a href="../../home/"><i class="fa fa-home" aria-hidden="true"></i><span>Home</span></a></li>
+                            <li><span aria-current="page">Dashboard</span></li>
+        </ol>
+    </nav>
+    <div class="mm-footer-main">
+        <span>&copy; 2026 <strong></strong> <span class="mm-footer-version">v2026.10.1</span></span>
+        <span class="mm-footer-links">
+            <a href="https://www.banglafire.com/" target="_blank" rel="noopener">Developed by Banglafire Software Ltd</a>
+            <button type="button" class="mm-footer-link" data-mm-shortcuts-open hidden>Keyboard shortcuts</button>
+            <button type="button" id="mm-density-toggle" class="mm-footer-density" aria-pressed="false">Compact spacing</button>
+                            <a href="https://example.test/help?a=1&amp;b=&lt;2&gt;" target="_blank" rel="noopener">Help &amp; support</a>
+                    </span>
+    </div>
+    <ul class="mm-footer-status" aria-label="System status">
+        <li class="mm-status-extra"><span class="mm-status-label">Business date</span> <time datetime="2026-10-01">01 Oct 2026</time></li>
+        <li class="mm-status-extra"><span class="mm-status-label">Server time</span> <time id="mm-clock" data-server-time="2026-10-01T03:30:00+00:00" data-timezone="Asia/Dhaka">09:30:00</time> <span class="mm-status-zone">Asia/Dhaka</span></li>
+        <li class="mm-status-extra"><span class="mm-status-label">Last sync</span> <time id="mm-sync" datetime="2026-10-01T03:30:00+00:00">just now</time></li>
+        <li><span class="mm-online" id="mm-online" data-online="true" role="status"><span class="mm-online-dot" aria-hidden="true"></span><span id="mm-online-text">Online</span></span></li>
+        <li><span class="mm-env mm-env-staging" title="Application environment">staging</span></li>
+    </ul>
+</footer>
+<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse" aria-label="Back to top">
+    <i class="ace-icon fa fa-angle-double-up icon-only bigger-110" aria-hidden="true"></i>
+</a>
+</div>
+<script src="../../public/assets/js/jquery-2.1.4.min.js"></script><script src="../../public/assets/js/bootstrap.min.js"></script><script src="../../public/assets/js/ace-elements.min.js"></script><script src="../../public/assets/js/ace.min.js"></script><dialog class="mm-dialog mm-palette" id="mm-palette" aria-label="Command palette">
+    <div class="mm-palette-box">
+        <div class="mm-palette-field">
+            <i class="fa fa-search" aria-hidden="true"></i>
+            <input type="text" id="mm-palette-input" class="mm-palette-input" role="combobox" aria-expanded="true" aria-controls="mm-palette-list" aria-autocomplete="list" aria-label="Search screens and actions" placeholder="Search screens and actions…" autocomplete="off" spellcheck="false">
+            <button type="button" class="mm-kbd mm-palette-close" data-mm-dialog-close aria-label="Close search">Esc</button>
+        </div>
+        <ul class="mm-palette-list" id="mm-palette-list" role="listbox" aria-label="Results"></ul>
+        <p class="mm-palette-empty" id="mm-palette-empty" hidden>No matching screens or actions.</p>
+        <p class="mm-palette-foot"><span><kbd class="mm-kbd">↑</kbd> <kbd class="mm-kbd">↓</kbd> move</span><span><kbd class="mm-kbd">Enter</kbd> open</span><span><kbd class="mm-kbd">Esc</kbd> close</span></p>
+        <p class="mm-sr" id="mm-palette-status" role="status" aria-live="polite"></p>
+    </div>
+</dialog>
+
+<dialog class="mm-dialog mm-help" id="mm-shortcuts" aria-labelledby="mm-shortcuts-title">
+    <div class="mm-help-box">
+        <div class="mm-help-head">
+            <h2 id="mm-shortcuts-title">Keyboard shortcuts</h2>
+            <button type="button" class="mm-hdr-btn" data-mm-dialog-close aria-label="Close keyboard shortcuts"><i class="fa fa-times" aria-hidden="true"></i></button>
+        </div>
+        <dl class="mm-help-list">
+            <div><dt><kbd class="mm-kbd" data-mm-mod-key>Ctrl K</kbd> or <kbd class="mm-kbd">/</kbd></dt><dd>Search screens and actions</dd></div>
+            <div><dt><kbd class="mm-kbd">[</kbd></dt><dd>Show or hide the sidebar</dd></div>
+            <div><dt><kbd class="mm-kbd">?</kbd></dt><dd>Show this list</dd></div>
+            <div><dt><kbd class="mm-kbd">Esc</kbd></dt><dd>Close a dialog or the mobile menu</dd></div>
+        </dl>
+        <p class="mm-help-note">Single-key shortcuts are ignored while typing in a field. Search only lists screens already in your sidebar, so it follows your permissions.</p>
+    </div>
+</dialog>
+<script src="../../public/assets/custom_js/shell.js"></script><script src="../../public/assets/custom_js/shell-tools.js"></script><script src="../../public/assets/custom_js/mm-ui.js"></script><script src="../../public/assets/js/moment.min.js"></script><script src="../../public/assets/js/daterangepicker.min.js"></script><script src="../../public/assets/custom_js/stay-range.js"></script><script>$(function(){ $('input[name="booking_date"]').each(function(){ MMStayRange.init(this); }); });</script><script src="../../public/assets/custom_js/room-board.js"></script>
+<a id="mm-static-preview-badge" href="../../preview/" style="position:fixed;left:14px;bottom:14px;z-index:2147483647;display:flex;align-items:center;gap:8px;padding:7px 12px;border-radius:999px;background:rgba(17,24,39,.92);color:#fff;font:600 12px/1.2 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;text-decoration:none;box-shadow:0 6px 20px rgba(0,0,0,.25)"><span style="width:7px;height:7px;border-radius:50%;background:#34d399;box-shadow:0 0 0 3px rgba(52,211,153,.25)"></span>Static preview &middot; sample data &middot; nothing is saved</a><script>(function(){document.addEventListener("submit",function(e){e.preventDefault();e.stopPropagation();alert("Static preview: nothing is saved here.");},true);})();</script></body></html>

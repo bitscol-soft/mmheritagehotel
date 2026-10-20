@@ -64,7 +64,7 @@ real method (`0 broken`, verified by `zz-controllers` probe in the sandbox).
 | 42 | 🟠 | `/hotel-website/settings`, `about-us/create`, `privacy-policy/create`, feature screens | 500 `Attempt to read property … on null` whenever the settings tables are empty (fresh installs), and `feature-lists.store` was missing entirely | `Model::first()` fed straight into property access; `HotelFeatureController::store()` never existed | `firstOrNew()` flows in `WebsiteSetting/About/PrivacyPolicy` controllers + implemented `store()`; the `privacy_poilicy` name-typo kept intentionally (views use it) |
 | 43 | 🟡 | `/sync-attendance-fallback`, `/sync-monthly-summery`, `/setting/modules/{id}/edit`, `/reports/expense-analysis` | HRM-class fatal (same family as #21); `View [setting.module] not found`; `Undefined variable $transactions` | unguarded `new AttendanceService`; `edit()` pointed at a nonexistent view (the grid view *is* the isset($module) form, cf. #3/#4); controller variable renamed | `class_exists(AttendanceService)` → `abort(404,'HRM module is not installed.')` guards; `edit()` renders `module` view; expense-analysis now passes `transactions` = the paginated set the view groups/paginates on. All 200/404-verified |
 | 44 | 🟡 | `/remove-to-cart`, `/check/available/room`, `/hotel/check-avaiable`, `/pages/{slug}` | 500 on deep-link/empty-state: `array_column()` on null cart, null dates, `explode` offset on missing range, `$page->title` on null | no guards on cookie/session-backed AJAX endpoints | `?: []` cart default, `?? now()/+1 day` date defaults, `$booking_date` fallback for `<x-room-manage>`, `firstOrFail()` for unknown slug (404 not 500) |
-| 45 | 🟠 | `/voucher/journals/{id}/edit` | 500 `Method JournalVoucherController::edit does not exist` — grid row still links it | edit flow for journal vouchers was never ported | `edit()` redirects to the journals grid with a flash (full edit = feature work, see B-49); `->except(['update'])` dropped the dead PUT route |
+| 45 | 🟠 | `/voucher/journals/{id}/edit` | 500 `Method JournalVoucherController::edit does not exist` — grid row still links it | edit flow for journal vouchers was never ported | interim: `edit()` redirected to the grid with a flash and `->except(['update'])` dropped the dead PUT route. **Superseded by #49**, which implemented the real edit/update for all four voucher types. |
 | 46 | 🔴 | `POST /api/dashboard`, `POST /api/all-users` | 500 `Target class Api\ApiDashboardController does not exist` — controllers exist but were unreachable | `Route::post('dashboard', 'Api\ApiDashboardController@index')` string syntax relies on the removed `namespace` route-group property (Laravel 8 defaults it to null) | Converted to `[ApiDashboardController::class, 'index']` (+ import); `ApiDashboardController` now returns a JSON 400 instead of fataling when the HRM employee is missing. Closes the repo-side half of B-23 |
 | 47 | 🟠 | module-wide **route hygiene** (Account, Bar, GeneralStore, Hotel, HotelWebsite, Permission, Restaurant, core) | 118 routes whose verb the controller never implements: every one was a 500 on click (e.g. `products/{id}/edit`, `hotel/guests/{guest}`, `system-setting/edit`, night-audit `edit`) | blanket `Route::resource(...)`/`Route::resources([...])` over half-implemented controllers | Narrowed 60 declarations with `->except([…])` (array entries split out to standalone resources), removed 3 dead custom routes (`hotel/remove_booking` → flow uses `remove_booking_next`; restaurant `get-item-details/approve` → generalstore AJAX; `kitchen/orders/details`); **policy**: only verbs with zero references in views/controllers/JS (comments excluded) were dropped — `acc-sales.destroy`, `guests.destroy/update`, `sales.destroy` grid buttons etc. were verified *referenced* and had their controllers checked instead; final assertion: 0 referenced route names lost, all 876 routes bind to existing methods |
 
@@ -80,21 +80,199 @@ real method (`0 broken`, verified by `zz-controllers` probe in the sandbox).
 | 55 | 🟡 | `/permission-access/edit/{id}`, `PUT /permission-access/{id}`, `/change-password-by-admin/{id}` | 500 if user ID does not exist; 5 redundant `User::find($id)` queries on `UserPermissionController::edit()`; stray `return $ex->getMessage();` in `UserController::AdminUpdatePassword()` | Unguarded `User::find($id)` calls and leftover debug return | Consolidated to a single `User::findOrFail($id)` in `UserPermissionController::edit()`/`update()` and `UserController`, and removed the stray debug `return` |
 | 56 | 🟡 | `PasswordResetMailable` & voucher approval flashes | `PasswordResetMailable::build()` fatals if `$user->company` is `null` (`$user->company->group->name ?? ...` does not guard intermediate `null`); typo `'This Vocuher Already Approved'` in 4 voucher controllers | Unguarded intermediate property chain in `PasswordResetMailable`; typo in `Receive/Payment/Journal/ContraVoucherController` | Wrapped in `optional(optional(optional($this->data['user'])->company)->group)->name ?? config('app.name', 'MM Heritage Hotel')` and fixed `'This Voucher Already Approved'` |
 
+## A5. Closed by the authorization-audit round (2026-10-16)
+
+| # | Sev | Route / Screen | Symptom | Root cause | Fix |
+|---|-----|----------------|---------|------------|-----|
+| 57 | 🟠 | `.gitmodules` / `module/CRM` gitlink (was B #28) | a fresh `git submodule update --init` could clobber the committed CRM module files | repo history once carried a submodule gitlink for `module/CRM` alongside real files | Verified already resolved on this branch and `main`: no `.gitmodules` exists in either tree or in reachable history, and `module/CRM` is a regular tree (6 tracked files), not a gitlink (mode 160000) — nothing left to remove at merge time |
+| 58 | 🟡 | `/reports/expense-analysis` (was B #29) | users without the `account.expense.analysis.reports` row were denied; super admin unaffected | the gate used a slug that never existed in the shipped permissions table | remapped to the route-name slug `report.expense-analysis` (the 12 working report gates in the same controller all use slug == route name) and the row + grants are seeded in `database/mmheritagehotel_db.sql` (ids 200040+, modeled on `report.ledger-journal` holders) |
+
+## A6. Closed by the pre-merge hygiene round (2026-10-16)
+
+| # | Sev | Route / Screen | Symptom | Root cause | Fix |
+|---|-----|----------------|---------|------------|-----|
+| 59 | 🟠 | HRM surfaces (was B #26) | menus, alert counts, an artisan command and employee-permission tabs assume the missing `module/HRM` | HRM module ships as code references only | Surfaces hidden: the four HRM menu blocks in `_header.blade.php` are now wrapped in `Route::has(...)` (previously hidden only by count-guard side effects, one of them an undefined property); the five HRM-dependent commands (`HRMEvaluationSeed`, `HRMModuleDataSeed`, `HRMModuleDataDrop`, `HrSystemSettingCommand`, `SyncAttendance`) early-return with a warning when `module/HRM` is absent. `UpdateEmployeeIdFromSmartSoft` no longer exists; `AppNotificationService` was already double-guarded by module checks; `App\Models\Employee` is restored so the permission tabs run on empty data (see also #6's `class_exists` guards). |
+| 60 | 🟡 | `night-audits/{create,create-v3,create-v4,index-details}` + `NightAuditSummaryControllerOLD` | dead legacy views/controller shipped in the deploy | kept from the pre-migration era; only `create-v2`/`index`/`invoice`/`show`/`list` are reachable | deleted in the pre-merge dead-code sweep; the unreachable `return view('night-audits/show')` tail in `show()` (after the `invoice` return) removed. `show` itself kept — `tools/ui-blade-check.php` renders it as a contract screen (`hotel-night-audit-show` fixture). |
+
+## A7. Closed by the view-side permission drift round (2026-10-16)
+
+| # | Sev | Route / Screen | Symptom | Root cause | Fix |
+|---|-----|----------------|---------|------------|-----|
+| 61 | 🟠 | 53 `hasPermission()` gate strings across both view trees | buttons/menus permanently hidden for every non-admin (admins bypass `hasPermission()` via `isSystemAdmin()`, which masked it) | view gates drift from the families their controllers check (`rst.purchases.*` vs `resturant.purchases.*`, `bar.products.*` vs `bar.inventories.*`, `service.*` vs `hotel.services.*`/`sales.*`, `acc_purchases.*` vs `account-purchases.*`, `accounts.create` vs `account.create`, typo `rst.productiont.*`, copy-paste `change.employees.password`, voucher `*.approve` rows that never existed, ...) | 104 call sites remapped to the destination controller's `hasAccess()` slug (owner approved bending the `hasPermission()` byte-identical rule; gate arguments only — route names, ids, JS hooks and markup untouched). Approve/cancel actions with no family row map to the family's `.edit` (Group-3 `storeOrUpdate`->`.edit` precedent). Module-scoped families left alone (their rows ship with the absent HRM/EM/Commercial/news modules); `database.backup` documented as family-less. `tools/ui-blade-check.php` invoice gate substitution updated to the new string. |
+
+## A8. Closed by the payments/collections + server-side cart round (2026-10-16)
+
+| # | Sev | Route / Screen | Symptom | Root cause | Fix |
+|---|-----|----------------|---------|------------|-----|
+| 25 | 🟠 | `sale/collections`, `purchase/payments` | `CollectionController::store()` and `PaymentController::store()` only redirected — no `acc_collections`/`acc_payments` write; both index pages were placeholders ("No Records Founds Yet" / commented-out table); edit/update/destroy never existed | the entry screens were stubs from the first account build | full CRUD modeled on the voucher services: `AccCollectionService`/`AccPaymentService` post the double-entry ledger via `AccountTransactionService` (collection = debit cash / credit the customer's account; payment = debit the supplier's account / credit cash — the morph types 'Collection'/'Payment' already existed in the Transaction map); `InvoiceNumberService` gains `Collection-INV-YYYY-NNNNNN`/`Payment-INV-YYYY-NNNNNN` generators; `Collection::customer()`/`Payment::supplier()` relations; `update()` re-posts the ledger, `destroy()` deletes the doc's transactions first (was a ledger leak); real create/edit forms + listing tables behind the seeded `acc_collections.*`/`acc_payments.*` gates (routes kept, none added/removed) |
+| 30 | 🟡 | booking flow (`booking-next`, room-board) | multi-room selection cart lived in the `booking_info` cookie (1000-min TTL, client-mutable JSON with prices) copied through four controllers | cookie cart from the first box-style booking build; `booking_carts` table + `BookingCartService` existed but were half-wired (no user scoping, mismatched response shapes, night-closing check return ignored) | finished the server-side reservation cart on `booking_carts` behind the SAME frozen endpoints: `BookingCartService` add/remove/clear/all() are user-scoped and keep the exact JSON field contract (`status/data/message` + `booking_count`/`cart_count`) and the exact `booking_next` item shape (`category_price` array with `price`, `check_in`/`check_out`, `nights`, `room_number`); `BookingController`/`BanquetBookingController` delegate `addBooking`/`removeNextBk`/`nextStep` to it; stale `removeAllCookieItems()` copies (GuestController, DashboardService) clear cart rows; no JS/route/view changes. **Follow-up (out of scope):** the public-site `booking_cart` cookie (`Front/BookingController` add-to-cart/remove-to-cart) is the same class of bug for site visitors — migrate to session/server cart separately |
+
+## A9. Found by the phpunit suite bootstrap (2026-10-16)
+
+| # | Sev | Route / Screen | Symptom | Root cause | Fix |
+|---|-----|----------------|---------|------------|-----|
+| 62 | 🔴 | `purchase/payments` store/update | saving a supplier payment 500s (`no such table: payments`) — the acc_payments entry screens from the #25 fix could never persist | `Module\Account\Models\Payment` had no `protected $table`, so Eloquent resolved `payments` instead of `acc_payments` (the Collection model has the mapping; Payment was missed) | `protected $table = 'acc_payments';` added; covered by `tests/Feature/AccPaymentServiceTest.php`  **Re-pinned over HTTP:** the controller binds `Payment $payment` while the resource generated `{acc_payment}`, so implicit binding never fired and `update()` ran on an empty model (`refresh()` returns null). The resource now declares `->parameters(['acc-payments' => 'payment'])` (and `acc_collections` likewise), and `PurchasePaymentScreensTest` drives store + update through the real routes, asserting the row and the two ledger rows. |
+| 64 | 🔴 | `database/mmheritagehotel_db.sql` import | the committed dump does NOT load: `ERROR 1136 Column count doesn't match value count` at the seeded `permission_user` block — every fresh environment (staging, new dev box, the public-site fixture workflow) fails to import it | the Group-3 seed patch wrote the 79 grant rows with a 4-column list (`permission_id`, `user_id`, `created_at`, `updated_at`) but 5 values (`id`, `permission_id`, `user_id`, dates) | column list corrected to the 5-column original format; verified by a full-dump INSERT column/value validator (0 mismatches) and by the live CI import in the public-site fixture workflow |
+| 63 | 🟠 | front `add-to-cart` night-audit gate | the night-audit block queried `NightAuditRoomDetail::where('date', ...)`, a column that exists on `night_audit_summaries` but NOT on `night_audit_room_details` — the query errored and the controller's silent `catch` swallowed it, so add-to-cart returned an empty response whenever the check ran | wrong model for the closed-night lookup | query `NightAuditSummary::where('date', ...)` (the same lookup `BookingCartService::checkNightClosing()` uses); covered by `tests/Feature/FrontBookingCartControllerTest.php` |
+
+## A10. Closed by the CRM revival round (2026-10-16)
+
+The CRM module row is active (rank 11) and its data exists (`c_r_m_customers`, `mail_templates`, modules/submodules 170000-170003) - the `c_r_m_customers` master backs the company picker on every booking/banquet/POS screen - but the module **code** was lost with its submodule gitlink, so those rows could not be managed at all and the screens 500'd. The permission side survived intact: `parent_permissions` 170000-170006, `permissions` 170000-170036 (`crm.customers.*`, `crm.leads.*`, `crm.workouts.*`, `crm.projects.*`, `crm.project-billings.*`, `crm.project-types.*`, `crm.templates.*`) and all 37 grants each for Super admin/admin (users 2/3) are already in the shipped dump, so the revival reuses them as-is - no seed, no new ids, and the route/URL/permission family for the template master is `crm.templates.*` (not an invented `mail-templates`). PLAN-FEATURES F11 and PLAN-MODERNIZATION item 8 call for the revival, so this ships the first slice instead of deactivating the module.
+
+| # | Sev | Route / Screen | Symptom | Root cause | Fix |
+|---|-----|----------------|---------|------------|-----|
+| 27 | 🟠 | `/crm/customers`, `/crm/templates` (+ sidebar section) | CRM active with DB menus, permissions and data but no screens at all - the customer master behind every booking/banquet/POS company picker was unmanageable | module code lost with its submodule gitlink; only the models had been restored (BUGS #1) | Minimal revival: `module/CRM/Controllers/{Customer,MailTemplate}Controller` + `module/CRM/views/**` (x-mm idiom, `mm-*` markers), routes `crm.customers.*` / `crm.templates.*` through the existing `RouteServiceProvider` CRM hook (`mail-templates` resource dropped in favour of the shipped `crm.templates.*` slug family), `__sidebar_crm.blade.php` section gated on module + `crm.customers.index` / `crm.templates.index`, 6 harness screens + fixtures + preview routes, 7 phpunit tests. Lead/Project stay deferred (their rows/tables untouched; documented in PLAN-FEATURES F11). An initial dump seed adding duplicate `crm.*` permission rows was dropped - the tree already exists; CI's MariaDB dump load caught it as `Duplicate entry 'crm.customers.create'`. Supersedes PR #16, which only touched the model layer |
+| 65 | 🔴 | autoload of `Module\CRM\Models\CrmCustomer` | fatal "Cannot declare class CRMCustomer" whenever both spellings autoload in one request (`CrmCustomer.php` declared `class CRMCustomer` - it only worked because PHP resolves class names case-insensitively) | duplicate file left by the model restore (BUGS #1), same area as the PR #16 self-extend fatal | `module/CRM/Models/CrmCustomer.php` deleted; `app/Console/Commands/CrmSendMail.php` import corrected to the canonical `CRMCustomer` |
+| 66 | 🔴 | `php artisan bar-data:drop` | the command deleted module **170000**'s permission tree - that id is **CRM** in the shipped schema (Bar is 270000), so running it would have destroyed the live CRM permission rows while leaving Bar untouched | hard-coded module id from the original project's numbering | module resolved by name (`Module::where('name','Bar')`), null-guarded |
+| 67 | 🟠 | `php artisan crm:send-invoice` | crashes (`no such table: c_r_m_bill_generates`) on the billing day check - the table is absent from the shipped schema (the original CRM migrations are lost) | query against a table this deployment never had | `Schema::hasTable()` guard: warns and no-ops instead of crashing |
+
+## A11. Closed by the page audit round (2026-10-16)
+
+The full page audit (`tests/Feature/PageCrawlAuditTest.php`: builds the shipped dump's schema + rows into sqlite, loads every module route file, GETs every parameterless GET route as the system admin, twice - once on an empty database and once on the production-shaped one) found two live 500s that the Blade harness could not see, because it renders each screen in isolation rather than through a request.
+
+| # | Sev | Route / Screen | Symptom | Root cause | Fix |
+|---|-----|----------------|---------|------------|-----|
+| 68 | 🔴 | `/hotel/booking/create` ("New Booking"), `/hotel/booking-ui`, `/hotel/booking/next-step`, `/hotel/check-avaiable`, `/hotel/night-audits/create`, bar + restaurant night audits and today's reports, `dashboard`, `home` | HTTP 500 whenever `system_settings` lacks a row the page reads - on a fresh or partially seeded deployment that is every booking screen | `today_from_system()` did `explode('-', setting('date_start_end'))` then read `$date[1]` (AppHelper.php:229), and the dashboards dereferenced `SystemSetting::...->first()->value` directly; a missing/blank row has no key 1 and no object | `today_from_system()` falls back to the calendar date when the `date_start_end` range is absent or malformed (the business-day roll-over only applies to a real range, and the 02:00-AM-rolls-back case is covered by tests); `HomeController` uses `SystemSetting::withDashboardDefaults()`, which fills the keys the dashboard blades dereference **in memory** so the frozen view expressions stay byte-identical (ui-check); `SystemDayHelperTest` (7 cases) locks the behaviour in |
+| 69 | 🟠 | `/setting/permissions` | HTTP 500 on every page of the permissions list | the Group-3 permission seed (ids 200001+) parented 55 rows to synthetic tags `110060`-`110070` that were never inserted into `parent_permissions`, and the view dereferences `$permission->parent_permission->submodule->module` per row | 30 rows repointed at the existing parents (Item/Purchase/Requisition/GS Report/Payment Voucher/Receive Voucher), the 5 remaining families got real `parent_permissions` rows (Supplier Type, Purchase Receive, Fund Transfer, Account Report, Pharmacy) plus the Pharmacy submodule for its inactive module. `PageCrawlAuditTest::test_shipped_dump_permission_tree_has_no_orphans` now fails the suite if a permission or parent ever loses its target again |
+| 70 | 🔴 | POS/AJAX endpoints + the two missing supplier create screens - `bar|restaurant/get-saleable-products`, `restaurant/inventory/get-matrial-details`, `get-item-details`, `generalstore/ajax/item/get-item-details` (+ `/approve`, `/purchase`), `hotel/get-available-room` (x2), `bar|restaurant/inventory/get-product-batches`, `bar/inventory/inventory-report`, `bar/reports/inventory`, `bar|restaurant/inventory/suppliers/create` | 8 groups of 500s, each one a **null dereference or a missing view** rather than a logic error: the POS AJAX answer for an unknown id, a detail panel for an item with no stock row, an availability query fed a null check-out date, a table that is not in the shipped schema, a filter partial that never receives `$categorys`, and two "Add supplier" pages whose `create()` methods pointed at views that were never written | each endpoint now answers with the neutral payload its JS consumer expects instead of raising: `getSaleableProduct()` returns an empty body when the sale is missing (the JS injects the response straight into `#product-details`, so HTML/empty - not JSON - is the contract), `RstProductionController`/`ItemController` null-guard the item *and* its relations (`$item ? (optional($item->item_unit)->name ?? '') : ''` - the outer `optional()` alone still warns on a null base, which is exactly what the crawl caught on the second pass), `RoomService::getAvailableRoom()` falls back to today's date when `check_out_date` is absent, `getProductBatch()` returns `[]` while `rst_product_batches` is not part of the shipped schema (the batch CRUD skeleton is unshipped - see section B), the Bar inventory report controllers pass the `$categorys` collection the frozen `inventory/includes/filter` partial loops over (Restaurant already did), and both supplier screens got the missing `create.blade.php`. `PageCrawlAuditTest` guards the sweep: **with-data failures 30 -> 15**, all 13 target routes cleared  **Re-pinned:** every one of these is a parameterised or query-string route, which is why neither guard ever noticed a regression - the crawl only GETs parameterless routes and the blade check never runs a controller. `PosAjaxGuardTest` now drives all 14 endpoints with an unknown id / missing row and asserts the neutral payload (empty body for the sale lookup, zeroed numbers for the material popover, 200 for the two supplier create screens). |
+
+### Still open - found by the same audit
+
+Only environment artifacts and the modules that are switched off in the shipped data are
+left. The three waves that followed this audit closed the real findings: BUGS #70 (POS/AJAX
+nulls + the two missing supplier views), #71 (the unshipped ProductBatch feature), #72 (the
+inactive BanquetHall module) and #73 (the 28 routes that assumed at least one row of
+business data). The crawl reports its counts into the job log (`crawl | ...`), so the next
+run re-measures rather than quoting a stale number.
+
+| Route / Screen | Symptom | Notes |
+|----------------|---------|-------|
+| `hotel/reports/monthlyVat` | `no such function: MONTHNAME` | **audit-environment artifact**, not a bug: sqlite has no `MONTHNAME`, MySQL/MariaDB does. The report is exercised on a real database. |
+| `db-backup` | the `Process` cannot be spawned | **audit-environment artifact**: `mysqldump` is not installed in the crawl sandbox. |
+| `_debugbar/*`, `_ignition/health-check`, `view.category`, HRM-guarded `sync-*` | 404 | intended: debug/dev routes are registered but block in this environment, and `sync-*` sits behind an inactive module. |
+| `submit-guest-registration` | `ValidationException` | POST-only endpoint reached with a bare GET by the crawler; the front-desk form posts real data. |
+| `add-user` | `Class Module\HRM\Models\Employee\Employee not found` | HRM module is inactive (status 0) in the shipped data - same class of dead module as BanquetHall (#72), left alone because nothing links to it. |
+
+## A12. Closed by the empty-state, dead-module and ProductBatch round (2026-10-16)
+
+Three follow-ups the earlier audit had parked as "needs a decision" were decided and built.
+
+| # | Sev | Item | Root cause | Fix |
+|---|-----|------|------------|-----|
+| 71 | 🟡 | Bar/Restaurant **ProductBatch CRUD** was a skeleton: model + controller + the bulk-upload writer existed, but no table, no routes, no views and no `rst_products.batch_id` | the feature was started and never migrated - so the AJAX lookup 500'd (`no such table`) and the controller's `view('inventory.batches.index')` pointed at a view that did not exist | **built**: `rst_product_batches` table + indexes + AUTO_INCREMENT in the shipped dump, `rst_products.batch_id`, `products()` relation on both models, `bar.product-batches` resource routes (index/store/update/destroy) reusing the existing controller, the list screen with create/edit modals + empty state (`bar/inventory/batches/*`, fixture-guarded and previewable), a permission-gated sidebar entry, and `findOrFail` on delete. The Bar product-edit batch picker pointed at a hard-coded `/pharmacy/inventory/get-product-batches` URL that this app never had - it now resolves the real route |
+| 72 | 🔵 | **BanquetHall module** | the module is `status = 0` in the shipped data and its four tables are not in the schema, yet `RouteServiceProvider` registered its routes whenever the `modules` row merely *existed* - so all 8 URLs 500'd (one of them, `booking-purpose`, from a model referenced in the controller namespace: `BanquetBookingPurposeController` used `BookingPurpose::` with no import) | routes now register only while the module is **active** (`status = 1`), so the screens are unreachable instead of failing; the missing import is added so the module works the moment it is switched on. Nothing was deleted - flipping the status revives it |
+| 73 | 🔴 | **28 routes assumed at least one row of business data** (booking create/board/next-step/referred/search, both POS `sales/create` + `sales-v2/create`, company setup, the five financial statements, GS requisitions/purchases/GIN/weekly-movement, Account purchase+sale vouchers, `product/damages/create`, `hotel/room-management/vat`, hotel-website `about-us/create`) | a fresh or partially seeded deployment has empty master tables, and the screens read the first row unconditionally: `Vat::first()->...`, `Account::where('name','Cash')->first()`, `AccountGroup::where('id', $fixed)->first()`, `AboutSection::first()`, `SystemSetting::where('key', ...)->first()`, `$company->group->name` | fixed in the **model/service layer** wherever the screen reads a helper or a service, so the Blade expressions stay byte-identical: `vatSetting()` returns a zeroed `Vat` model (it feeds every booking/POS/invoice screen), `BookingController`/`vatController` pass `?? new Vat()`, the five Account create screens pass `?? new Account()`, both POS `create()` methods pass `?? 0` for the VAT percent they inject into the calculator JS, `AccountGroup` summaries return an empty group with an empty `accountControls` relation, `SystemSetting::row($key)` supplies an empty row to the 10 GeneralStore reads (their own `!= null` guards then show "Reference"), `AboutSection::first() ?? new AboutSection()`, and the company list reads `optional($company->group)->name`. `reports/financial-statements/income-expense-statement` additionally pointed at a view directory that was never created - the income-statement views already branch on that route, so they now serve both |
+
+**Follow-up: what the guard found on its first runs.** Writing findings to files nobody reads
+was hiding regressions, so `PageCrawlAuditTest` now *asserts* both passes against a short,
+explicit allowlist of harness artifacts (sqlite has no `MONTHNAME`, the debugbar/ignition panels
+are dev-only, the guest-registration endpoint is POST-only, the HRM/`db-backup` routes need an
+inactive module or a missing binary), the workflow keeps the phpunit log and turns the failing
+assertion into a check annotation, and the crawl registers a module's routes only while its
+`modules` row exists (BanquetHall: only while active) - which is why a dormant module had been
+showing up as 8 phantom 500s in CI only. That turned 18 "empty business data" failures into 2
+fixes and then 0, and pinned down the residual real null reads:
+
+- `TransactionLedgerReportService::accountGroupSummary` kept its `return` in front of the #73
+  fallback, so the fallback was dead code and all five financial statements still died on
+  `->accountControls` of null.
+- `getCurrentCurrencyRate()`/`calculateCurrencyAmount()` read `->rate` off a `currency_conversions`
+  row a fresh deployment does not have, and every booking screen's JS includes those helpers.
+- the VAT screen read `$systemSetting->value` off a row that only exists after the first save, and
+  its form posted to `/vat/0` (the update created nothing and the catch block swallowed it).
+- `report.cashFlow` reads `->accountControls` off the fixed account groups 1/2, `group()` and both
+  supplier-create paths called `Group::first()->…`, the hotel-service sale ledger wrote
+  `AccountType::first()->id`, the three POS sale writes and the printable sale screen read
+  `Vat::first()->vat_number`, and three booking partials read `vatSetting()` fields - all with no
+  first row to read.
+
+Verified in this round: PHP grammar lint on every changed file, the Blade harness (both new
+screens render with rows and with an empty table), `tools/ui-guard.sh`, and CI (`phpunit` incl.
+the crawl on **both** passes - 15 with production-shaped data, 0 unexpected on empty business
+data - `tools/ui-blade-check.php`, the browser specs and the fixture regeneration).
+
+## A13. Closed by the parameterised-route sweep (2026-10-20)
+
+The sweep (see C0) found the screens the old crawl could not reach. Two of the three
+findings were mine, not the app's; this one was real.
+
+| # | Sev | Route / Screen | Symptom | Root cause | Fix |
+|---|-----|----------------|---------|------------|-----|
+| 74 | 🟠 | `POST /setting/permission-access-employee` (Employee-profile permissions) | the screen renders and the Save button appears to work, but nothing is ever stored and the user is flashed the raw string `no such table: employee_permissions` | the **GET** guarded the table with `Schema::hasTable()`; the **store** did not, and its `catch (Exception)` turned the `QueryException` into a flash message, so a broken write looked like an explanation. Separately, "uncheck everything" posts no field at all and `array_filter(null)` is a **TypeError** on PHP 8 - an `Error`, not an `Exception`, so it bypassed that catch and 500'd | the store now mirrors the GET's guard and says plainly that the table is not installed; the submitted ids are normalised with `(array)` before use, so unchecking every box clears the assignments instead of throwing. `EmployeePermissionStoreTest` pins all three paths (not installed, uncheck-all, normal save without duplicates) |
+
+## A14. Closed by opening the show/edit screens (2026-10-20)
+
+Seeding one coherent business row per master lifted the parameterised sweep from 24 to 58
+exercised routes, and it immediately paid for itself: three real defects, all on screens that
+were previously unreachable by any test.
+
+| # | Sev | Route / Screen | Symptom | Root cause | Fix |
+|---|-----|----------------|---------|------------|-----|
+| 75 | 🟠 | `restaurant/inventory/purchase/{purchase}/edit` and `PUT` the same | 500 `Target class [Module\Restaurant\Controllers\Inventory\Purchase] does not exist` | `RstPurchaseController::edit()`/`update()` type-hinted `Purchase`, a class that was never imported; PHP resolves `::class`/an unknown type name against the **current namespace**, so it asked the container for `...\Inventory\Purchase`. The method bodies used the same name | type-hints and the `where()` call now use `RstPurchase`, the model the rest of the controller already uses |
+| 76 | 🟠 | `gs/gin-list/{goodsRequisition}` | 500 `Undefined variable $systemSetting` | two methods render `goods_requisitions/gin_list`; `GINList()` passed `$systemSetting`, `GINListShow()` did not, so the single-requisition view died on a variable its sibling always supplies | `GINListShow()` now supplies it too |
+| 77 | 🟠 | `restaurant/sales/{sale}` | 500 `Attempt to read property "is_stuff" on null` | `guestInfo()` is `hasOne(Guest, 'id', 'hotel_guest_id')` and `hotel_guest_id` is nullable - a walk-in sale has no guest, so the VAT line dereferenced nothing. Every other nullable relation in these views is already `optional()`-guarded | VAT line now reads `optional($sale->guestInfo)->is_stuff` |
+
+Two apparent failures were the fixture, not the app, and are recorded here so they are not
+re-diagnosed: `$row->created_user->name` and `$purchase->company->name` were null only because
+seeded rows carried `created_by = 0` and the Restaurant purchase was resolving against the
+General Store's `purchases` table. The seeder now stamps a real user, and the sweep prefers a
+module-prefixed table (`restaurant` -> `rst_`) over a same-named one from another module.
+
+### A14 continued - the same defect class, found by static scan
+
+#75 and #76 were not one-offs. A scan for class names used but not imported (comments stripped,
+fully-qualified references excluded) turned up the same mistake in four more files. PHP resolves an
+unknown name against the *current* namespace, so these are silent until the line runs:
+
+| Where | Reference | Effect |
+|-------|-----------|--------|
+| `Restaurant/Controllers/Inventory/RstProductionController` | `Purchase`, `Item`, `PurchaseDetails` | `edit`, `update` and the detail lines of `store` all fatal - the same three names as #75 |
+| `Restaurant/Controllers/Inventory/RstPurchaseController` | `PurchaseDetails::create` (twice) | adding a received line to an existing restaurant purchase fataled |
+| `Account/Models/Transaction` | `User`, `Company` | `$transaction->created_user` / `->company` asked for `Module\Account\Models\User`, which does not exist |
+| `HotelService/Models/Service/HotelServiceSale` | `HotelTransactionLedger` | the sale's ledger relation |
+| `Restaurant/Models/RstPurchase` | `PurchaseReceive` | received-quantity relations |
+
+All five now import the class they meant. Two more of this shape are left alone because the feature
+itself was never shipped: `StockAdjustmentController` references `Warehouse` and
+`StockAdjustment` references `HospitalTransaction`; neither class exists anywhere in the repo, so
+those paths fail the same way ProductBatch did (#71) and should be guarded when the warehouse/hospital
+screens are next touched.
+
+| 78 | 🟠 | `restaurant/inventory/production/{id}/show|edit|update` | the three actions resolved a **purchase** and rendered the **purchases** views - with a production id, so `edit` dereferenced null and the other two showed the wrong record entirely | `RstProductionController` was copied from `RstPurchaseController` for `show`/`edit`/`update`, and no production show/edit view was ever written. `index`/`create`/`store` are genuinely production screens | those three routes are pruned from the resource (round-3 convention); nothing referenced them by name |
+
 ## B. Open — needs deploy / decision / feature work
 
 | # | Sev | Item | Notes & recommendation |
 |---|-----|------|------------------------|
 | 23 | 🔴 | **Live deploy is behind the repo** | Several live 500s (`/api/dashboard`, `/reports/expense-analysis`, permitted-users grid) come from files present in repo but absent in the live build. The repo side is now fixed too (#46/#43) — **Action: deploy this branch (after review) to staging and re-verify.** |
-| 48 | 🟠 | Sale-exchange is a redirect stub (#41) | Stub keeps Bar/Restaurant grids crash-free, but real exchange create/edit flow needs the module's JS + stock-move logic. Feature work — track in PLAN-FEATURES. |
-| 49 | 🟠 | Voucher edit/update gaps | `receives/payments/contras` edit+update routes pruned; `journal` edit redirects (#45). The screens need the ledger re-entry UX from PLAN-MODERNIZATION before un-pruning. |
+| 48 | 🟢 | Sale-exchange is a redirect stub (#41) | **Built.** `rst_sale_exchanges` + `rst_sale_exchange_details` (shared by both modules via `is_bar`, like `rst_sales`), `SaleExchange`/`SaleExchangeDetail` models, `SaleExchangeService` (stock in for returned goods, stock out for replacements, settlement only on the difference), full controllers for Bar and Restaurant, sidebar entries, and `SaleExchangeServiceTest` pinning the three settlement cases plus stock direction. Exchanges are **created and voided, never edited** - `edit`/`update` redirect to `show` with the reason, because the stock and ledger movement is already posted. Also fixed on the way: 10 view files still called the pharmacy-era `/pharmacy/...` AJAX endpoints this app never had (`get-drugs`, `get-product-by-sale-invoice`, `get-saleable-products`, `inventory/get-products`, `inventory/get-product-batches`), the exchange list linked its row actions at `sales.show/destroy` with an exchange id, and both exchange lists gated the Add New button on `pharmacy.view`. |
+| 49 | 🟢 | Voucher edit/update gaps | **Built.** All four voucher types (receives/payments/contras/journals) now have working `edit` + `update`. `VoucherLedgerUpdateService` does the re-entry in one place: it rewrites the header, deletes the old lines *with their ledger rows*, and re-posts through the same `AccountTransactionService` the store path uses - so a re-post **updates** the existing transaction row instead of adding a second one (the service keys on invoice_no + balance_type + item_type + account). Safe because balances are derived: no `balance` column exists and every report sums `transactions`. Only **unapproved** vouchers are editable; an approved one is locked with a message to delete (which reverses) and re-post. Created the two missing views (`receives`/`payments` edit, derived from create and prefilled from the voucher), fixed the two existing ones (they posted to a `vouchers.update` route that never existed and linked `contra.index`), and switched on the edit buttons the grids already gated on `voucher-*.edit`. `VoucherLedgerUpdateServiceTest` pins: header/lines rewrite, balance-type reversal, **no duplicate ledger rows on re-post**, deleting a line removes its row, drafts post nothing, blank lines dropped. |
 | 24 | 🔵 | **Secrets committed** | `.env` (APP_KEY + DB credentials) and a full production SQL dump (`database/mmheritagehotel_db.sql`, 172 tables incl. user hashes) are tracked in git. Files are now covered by `.gitignore` but history still exposes them. **Action: rotate DB/APP_KEY/Google-drive creds, purge history (`git filter-repo`) or treat repo as internal-only.** |
-| 25 | 🟠 | Collections/Payments are stubs | `CollectionController::store()` only redirects (no `acc_collections` write). Full receipt flow = planned feature (see PLAN-FEATURES.md §Payments). |
-| 26 | 🟠 | HRM module missing but referenced | menus, `smart-soft-alerts`, `UpdateEmployeeIdFromSmartSoft` artisan command, employee-permission tabs all assume it. Either vendor the module in or hide its surfaces (menus/commands). |
-| 27 | 🟠 | CRM module UI absent | We restored the **models** to stop the 500 cascade; the CRM is active in `modules` table (rank 11) but has no sidebar/routes in this repo. Rebuild minimal CRM UI or deactivate the module (DB flag). |
-| 28 | 🟠 | `.gitmodules` still points `module/CRM` at a submodule | We committed real files; a fresh `git submodule update --init` could clobber them. **Action: remove the gitlink/.gitmodules entry at merge time** (kept here to avoid rewriting gitlinks in this PR). |
-| 29 | 🟡 | `/reports/expense-analysis` relies on permission slug `account.expense.analysis.reports` | Users without that row get a denial; super admin unaffected. Seed the slug for role 2 alongside the new reports if the menus are opened up. |
-| 30 | 🟡 | Booking flow still trusts the `booking_info` cookie cart (1000-min, client-mutable) | Addressed in PLAN-MODERNIZATION (server-side cart) — not fixed here. |
-| 31 | 🟡 | Laravel 8 + PHP 8.1 are EOL, `vendor/` committed | Upgrade path in PLAN-MODERNIZATION §1. |
+| 31 | 🟡 | Laravel 8 + PHP 8.1 are EOL, `vendor/` committed | **Prep landed** (L9-removed helpers migrated to `Str::`, full 8→9→10→11 runbook in `docs/LARAVEL-11-UPGRADE.md`). The steps are now mechanical: `tools/laravel11-bump.cjs --step 1|2|3 [--apply]` rewrites composer.json + the version-coupled code (Kernel alias rename, CORS middleware swap, PHPUnit 10 schema) with a reviewable diff, and `tools/laravel11-check.sh` is version-aware - it fails when the tree is half-upgraded in *either* direction. Audit found the classic 8→9 blockers absent (no `$dates`, Swift, `dispatchNow`, Faker properties, `Input` facade), so step 1 is small. Remaining manual work: the `composer update` + lock/vendor refresh on a Packagist-connected machine, and the 16 Carbon 3 `diffIn*` sites at step 3 (listed in the runbook). |
+
+## C0. The parameterised-route gate
+
+`PageCrawlAuditTest` walks every GET route **without** a placeholder, so until now no `/{id}` screen had
+ever been exercised: not one show page, not one edit page. That gap is how the #49 voucher edit screen
+shipped a controller passing `company` to a view reading `$companies` - it took a hand comparison of
+view variables to catch, because no test could reach the route.
+
+`ParameterisedRouteCrawlTest` closes it. For each single-placeholder GET route it resolves the table the
+route actually binds (the controller method's model type-hint first, then the parameter/URI name, then the
+module-prefixed spelling), takes the smallest id that **exists**, and 500s fail the build. 404/302 are
+accepted: a route that wants another kind of id simply does not resolve.
+
+Two findings while building it, both worth keeping:
+
+- **The shipped dump carries no business rows.** There is no `INSERT` for `sales`, `items`, `products`,
+  `bookings` and most transactional tables - only master data. A fixed `id = 1` therefore measures
+  null-dereferences in views handed a row that never existed (49 of them on the first run, every one a
+  fixture artifact, not a defect). The sweep skips those routes rather than "fixing" them: **24
+  master-data screens are exercised, ~129 are skipped for lack of data.** That ceiling is the dump's, not
+  the test's - restoring real rows to the fixture would raise it.
+- `ui-check.yml` pipes phpunit into `/tmp/phpunit.log` before printing it, so workflow commands written
+  to stdout never reach the runner. The step now lifts the sweep's `PARAMCRAWL` lines into the check
+  annotation, which is how a failure is diagnosed without the (unreachable) job log.
 
 ## C. Verification
 

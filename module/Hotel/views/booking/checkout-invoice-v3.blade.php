@@ -455,6 +455,398 @@
         }
     </style>
 
+    <style>
+        :root {
+            --invoice-ink: #172b4d;
+            --invoice-muted: #66758a;
+            --invoice-line: #e4eaf1;
+            --invoice-soft: #f5f8fc;
+            --invoice-accent: #2463a6;
+        }
+
+        body {
+            color: var(--invoice-ink);
+            font-family: Arial, Helvetica, sans-serif !important;
+            background: #eef2f7;
+        }
+
+        .invoice {
+            width: 816px;
+            height: auto;
+            min-height: 0;
+            margin: 24px auto;
+            padding: 32px;
+            border-top: 4px solid var(--invoice-accent);
+            border-radius: 14px;
+            box-shadow: 0 12px 36px rgba(23, 43, 77, .10);
+        }
+
+        .container {
+            width: 100%;
+            height: auto;
+            padding: 0;
+        }
+
+        .invoice-info {
+            margin-bottom: 22px;
+        }
+
+        .invoice-header {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+            align-items: center;
+            gap: 18px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--invoice-line);
+        }
+
+        .company-logo {
+            display: flex;
+            align-items: center;
+            width: 112px;
+            height: 58px;
+        }
+
+        .invoice .logo {
+            display: block;
+            width: auto;
+            height: auto;
+            max-width: 112px;
+            max-height: 58px;
+            object-fit: contain;
+        }
+
+        .company-info-invoice {
+            margin: 0;
+            color: var(--invoice-muted);
+            font-size: 11px;
+            line-height: 1.55;
+            text-align: right;
+            overflow-wrap: anywhere;
+        }
+
+        .company-info-invoice p:first-child {
+            margin-bottom: 4px;
+            color: var(--invoice-ink);
+            font-size: 15px !important;
+            line-height: 1.3;
+        }
+
+        .booking-invoice {
+            min-width: 220px;
+            text-align: center;
+        }
+
+        .invoice-title {
+            color: var(--invoice-ink);
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: .02em;
+        }
+
+        .invoice-reference {
+            margin: 3px 0 7px;
+            color: var(--invoice-muted);
+            font-size: 11px;
+        }
+
+        .booking-invoice .mm-print-codes-top {
+            justify-content: center;
+            gap: 8px !important;
+        }
+
+        .booking-invoice .mm-print-codes-top img {
+            width: 120px !important;
+            max-width: 120px !important;
+        }
+
+        .invoice-detail-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+            margin-top: 18px;
+        }
+
+        .invoice-detail-card {
+            min-width: 0;
+            padding: 16px;
+            border: 1px solid var(--invoice-line);
+            border-radius: 10px;
+            background: #fff;
+        }
+
+        .invoice-card-title {
+            margin-bottom: 12px;
+            color: var(--invoice-accent);
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: .09em;
+            text-transform: uppercase;
+        }
+
+        .invoice-fields {
+            display: grid;
+            gap: 8px;
+            margin: 0;
+        }
+
+        .invoice-field {
+            display: grid;
+            grid-template-columns: minmax(80px, 34%) minmax(0, 1fr);
+            gap: 10px;
+            align-items: start;
+            font-size: 11px;
+            line-height: 1.45;
+        }
+
+        .invoice-field dt {
+            color: var(--invoice-muted);
+            font-weight: 400;
+        }
+
+        .invoice-field dd {
+            min-width: 0;
+            margin: 0;
+            color: var(--invoice-ink);
+            font-weight: 600;
+            overflow-wrap: anywhere;
+            word-break: normal;
+        }
+
+        .product-info {
+            width: 100%;
+            margin: 20px 0 0;
+            overflow-x: auto;
+        }
+
+        .product-info table {
+            border: 1px solid var(--invoice-line);
+            border-radius: 8px;
+            border-spacing: 0;
+            overflow: hidden;
+        }
+
+        .product-info th {
+            padding: 10px 7px;
+            border: 0;
+            background: #edf3f9;
+            color: var(--invoice-ink);
+            font-size: 10px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .product-info td {
+            padding: 9px 7px;
+            border-bottom: 1px solid var(--invoice-line);
+            color: #34445b;
+            font-size: 10px;
+            vertical-align: top;
+        }
+
+        .product-info tbody tr:nth-child(even) {
+            background: var(--invoice-soft);
+        }
+
+        .product-info tbody tr:last-child td {
+            border-bottom: 0;
+        }
+
+        .product-info .badge {
+            background: #e5f1ff;
+            color: #1d4f85;
+            font-weight: 700;
+        }
+
+        #bottomPart > .row {
+            display: grid !important;
+            grid-template-columns: minmax(0, 1fr) minmax(260px, 42%);
+            gap: 18px;
+            align-items: start;
+            margin: 18px 0 0;
+        }
+
+        #bottomPart > .row > .amount-paid {
+            width: auto !important;
+            padding: 14px 0;
+            color: var(--invoice-muted);
+            font-size: 11px;
+            line-height: 1.6;
+        }
+
+        .invoice-price {
+            width: 100% !important;
+            margin: 0;
+            padding: 14px !important;
+            border: 1px solid var(--invoice-line);
+            border-radius: 10px;
+            background: var(--invoice-soft);
+            color: var(--invoice-ink);
+            font-size: 11px;
+            line-height: 1.7;
+        }
+
+        .invoice-price .row {
+            display: grid !important;
+            grid-template-columns: 1fr auto;
+            gap: 12px;
+        }
+
+        .invoice-price .right-side {
+            text-align: right;
+        }
+
+        .invoice-price .totals-divider {
+            height: 1px;
+            margin: 9px 0;
+            border: 0;
+            background: var(--invoice-line);
+        }
+
+        #block_container {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            margin-top: 20px;
+            padding-top: 14px;
+            border-top: 1px solid var(--invoice-line);
+        }
+
+        #block_container .block-item {
+            flex: 1;
+            color: var(--invoice-muted);
+            font-size: 10px;
+            line-height: 1.5;
+        }
+
+        #block_container .block-item p:first-child {
+            color: #8795a8;
+            letter-spacing: .04em;
+        }
+
+        .footer-message {
+            display: none;
+        }
+
+        @media screen and (max-width: 840px) {
+            body {
+                width: 100%;
+                min-height: 100vh;
+                background: #eef2f7;
+            }
+
+            .invoice {
+                width: calc(100% - 20px);
+                margin: 10px auto;
+                padding: 20px;
+                border-radius: 12px;
+            }
+
+            .invoice-header {
+                grid-template-columns: minmax(0, 1fr);
+                justify-items: center;
+                gap: 12px;
+            }
+
+            .company-logo {
+                justify-content: center;
+            }
+
+            .company-info-invoice {
+                text-align: center;
+            }
+
+            .invoice-detail-grid {
+                grid-template-columns: minmax(0, 1fr);
+            }
+
+            .product-info {
+                clear: both;
+                max-width: 100%;
+            }
+
+            .product-info table {
+                min-width: 620px;
+            }
+
+            #bottomPart > .row {
+                grid-template-columns: minmax(0, 1fr);
+            }
+
+            #bottomPart > .row > .amount-paid {
+                padding-bottom: 0;
+            }
+
+            .invoice-price {
+                max-width: none;
+            }
+
+            #block_container {
+                flex-wrap: wrap;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .invoice {
+                width: calc(100% - 12px);
+                padding: 14px;
+            }
+
+            .invoice-field {
+                grid-template-columns: minmax(72px, 30%) minmax(0, 1fr);
+                gap: 7px;
+            }
+
+            .invoice-detail-card {
+                padding: 12px;
+            }
+
+            .booking-invoice {
+                min-width: 0;
+                width: 100%;
+            }
+        }
+
+        @media print {
+            body {
+                width: 816px;
+                min-height: 0;
+                margin: 0 !important;
+                background: #fff;
+            }
+
+            .invoice {
+                width: 816px;
+                margin: 0;
+                padding: 28px;
+                border: 0;
+                border-radius: 0;
+                box-shadow: none;
+                page-break-after: always;
+            }
+
+            .invoice-detail-card {
+                break-inside: avoid;
+            }
+
+            .product-info {
+                overflow: visible;
+            }
+
+            .product-info table {
+                min-width: 0;
+            }
+
+            #bottomPart > .row {
+                grid-template-columns: minmax(0, 1fr) minmax(260px, 42%);
+            }
+
+            .footer-message {
+                display: none !important;
+            }
+        }
+    </style>
+
 </head>
 
 <body>
@@ -482,151 +874,123 @@
                     <div id="topPart">
 
                         <!------- INVOICE INFO ------->
-                        <div class="invoice-info" style="margin-top:0 !important">
-                            <div class="row">
+                        <div class="invoice-info">
+                            <div class="invoice-header">
+                                <div class="company-logo">
+                                    @if (optional($company)->logo && file_exists('uploads/company/' . $company->logo))
+                                        <img src="{{ asset('uploads/company/' . $company->logo) }}" class="logo"
+                                            alt="Company Logo">
+                                    @endif
+                                </div>
 
-                                <div class="col-6">
+                                <div class="booking-invoice">
+                                    <p class="invoice-title">Booking Invoice</p>
+                                    <p class="invoice-reference">{{ $booking->booking_number }}</p>
+                                    @include('partials.print-codes', ['code' => $booking->booking_number, 'label' => 'Booking Invoice', 'compact' => true, 'codes' => 'both'])
+                                </div>
 
-                                    <div class="company-logo">
-                                        @if (file_exists('uploads/company/' . $company->logo))
-                                            <img src="{{ asset('uploads/company/' . $company->logo) }}" class="logo"
-                                                alt="Company Logo" width="150" height="80">
+                                <div class="company-info-invoice">
+                                    <p class="font-bold">{{ optional($company)->name }}</p>
+                                    <p>{{ optional($company)->head_office }}</p>
+                                    <p>{{ optional($company)->phone_number }}</p>
+                                    <p>{{ optional($company)->email }}</p>
+                                </div>
+                            </div>
+
+                            <div class="invoice-detail-grid">
+                                <section class="invoice-detail-card">
+                                    <h2 class="invoice-card-title">Guest details</h2>
+                                    <dl class="invoice-fields">
+                                        <div class="invoice-field">
+                                            <dt>Name</dt>
+                                            <dd>{{ optional($booking->guestInfo)->name ?: 'N/A' }}</dd>
+                                        </div>
+                                        <div class="invoice-field">
+                                            <dt>Room</dt>
+                                            <dd>{{ optional(optional($booking->bookingDetail)->roomNumber)->room_number ?: 'N/A' }}</dd>
+                                        </div>
+                                        <div class="invoice-field">
+                                            <dt>Nationality</dt>
+                                            <dd>{{ optional(optional($booking->guestInfo)->country)->name ?: 'N/A' }}</dd>
+                                        </div>
+                                        <div class="invoice-field">
+                                            <dt>Mobile</dt>
+                                            <dd>{{ optional($booking->guestInfo)->phone_no ?: 'N/A' }}</dd>
+                                        </div>
+                                        @if (optional($booking->guestInfo)->company_id != null)
+                                            <div class="invoice-field">
+                                                <dt>Company</dt>
+                                                <dd>{{ getCrmCompany(optional($booking->guestInfo)->company_id) }}</dd>
+                                            </div>
                                         @endif
-                                    </div>
-
-                                </div>
-
-                                <div class="col-6 date">
-
-                                    <div class="company-info-invoice">
-                                        <p style="font-size: 18px" class="font-bold">{{ optional($company)->name }}</p>
-                                        <p>{{ optional($company)->head_office }}</p>
-                                        <p>{{ optional($company)->phone_number }}</p>
-                                        <p>{{ optional($company)->email }}</p>
-                                    </div>
-
-
-                                </div>
-
-
-                                <div class="col-12">
-                                    <div class="booking-invoice" style="display:flex; justify-content:center; width: 100%">
-                                        <!------- BARCODE INFO ------->
-                                        <div class="text-center">
-                                            <p style="font-size: 16px;">Booking Invoice </p>
-                                            @php
-                                                $explode = explode('-', $booking->booking_number);
-                                                $barcode = $explode[0] . $explode[1] . $explode[2];
-                                            @endphp
-                                            <img class="barcode-img pt-1"
-                                                src="data:image/png;base64,{{ DNS1D::getBarcodePNG($barcode, 'C128') }}"
-                                                alt="barcode" />
-                                            <p style="font-size: 14px;">{{ $booking->booking_number }}</p>
-                                            @include('partials.print-codes', ['code' => $booking->booking_number, 'label' => 'Booking Invoice', 'compact' => true, 'codes' => 'qr'])
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="guest-info">
-                                        <div class="guest-left-side">
-                                            <div class="left-item">Name</div>
-                                            <div class="left-item">Room</div>
-                                            <div class="left-item">Nationality</div>
-                                            <div class="left-item">Mobile</div>
-                                            @if (optional($booking->guestInfo)->company_id != null)
-                                                <div class="left-item">Company</div>
-                                            @endif
-                                            <div class="left-item">Address</div>
-                                        </div>
-                                        <div class="guest-right-side">
-                                            <div class="right-item">: {{ optional($booking->guestInfo)->name }}</div>
-                                            <div class="right-item">:
-                                                {{ optional(optional($booking->bookingDetail)->roomNumber)->room_number }}
-                                            </div>
-                                            <div class="right-item">:
-                                                {{ optional(optional($booking->guestInfo)->country)->name }}</div>
-                                            <div class="right-item">: {{ optional($booking->guestInfo)->phone_no }}
-                                            </div>
-                                            @if (optional($booking->guestInfo)->company_id != null)
-                                                <div class="right-item">:
-                                                    {{ getCrmCompany(optional($booking->guestInfo)->company_id) }}
-                                                </div>
-                                            @endif
-                                            @if (optional($booking->guestInfo)->company_id != null &&
-                                                    getCrmCompanyAddress(optional($booking->guestInfo)->company_id) != null)
-                                                <div class="right-item">:
+                                        <div class="invoice-field">
+                                            <dt>Address</dt>
+                                            <dd>
+                                                @if (optional($booking->guestInfo)->company_id != null && getCrmCompanyAddress(optional($booking->guestInfo)->company_id) != null)
                                                     {{ getCrmCompanyAddress(optional($booking->guestInfo)->company_id) }}
-                                                </div>
-                                            @else
-                                                <div class="right-item">:
-                                                    {{ optional($booking->guestInfo)->address != null ? optional($booking->guestInfo)->address : 'N\A' }}
-                                                </div>
-                                            @endif
-
+                                                @else
+                                                    {{ optional($booking->guestInfo)->address ?: 'N/A' }}
+                                                @endif
+                                            </dd>
                                         </div>
-                                    </div>
+                                    </dl>
+                                </section>
 
-                                </div>
-
-                                <div class="col-6 date">
-                                    <div class="booking-info">
-                                        <div class="info-body">
-                                            <div class="booking-left-side">
-                                                <div class="left-item">Booking No</div>
-                                                <div class="left-item">Booking Date</div>
-                                                <div class="left-item">Check In Date</div>
-                                                <div class="left-item">Check Out Date</div>
-                                                <div class="left-item">Payment Type</div>
-                                                <div class="left-item">Pay By</div>
-                                                @if (vatSetting()->vat_number != 0 && vatSetting()->vat_number != null)
-                                                    <div class="left-item">Vat Number</div>
-                                                @endif
-                                                @if ($booking->reference != null)
-                                                    <div class="left-item">Reference By</div>
-                                                @endif
-                                                @if ($booking->type != null)
-                                                    <div class="left-item">Booking Type</div>
-                                                @endif
-                                            </div>
-                                            <div class="booking-right-side">
-                                                <div class="right-item">: {{ $booking->booking_number }}</div>
-                                                <div class="right-item">: {{ $booking->booking_date }}</div>
-                                                <div class="right-item">: {{ $booking->check_in_date }}</div>
-                                                <div class="right-item">: {{ $booking->check_out_date }}</div>
-                                                <div class="right-item">:
-                                                    @foreach ($transaction->transaction_ledgers->unique('payment_type') ?? [] as $ledger)
-                                                        {{ optional($ledger->account)->name }} @if (!$loop->last)
-                                                            ,
-                                                        @endif
-                                                    @endforeach
-                                                    {{-- {{ optional($booking->paymentType)->name }} --}}
-
-                                                </div>
-                                                {{-- @dd($booking); --}}
-                                                <div class="right-item">: {{ optional($booking->payBy)->name }}</div>
-                                                @if (vatSetting()->vat_number != 0 && vatSetting()->vat_number != null)
-                                                    <div class="right-item">: {{ vatSetting()->vat_number }}</div>
-                                                @endif
-                                                @if ($booking->reference != null)
-                                                    <div class="right-item">: {{ $booking->reference }}</div>
-                                                @endif
-                                                @if ($booking->type != null)
-                                                    <div class="right-item">:
-                                                        @if ($booking->type == 1)
-                                                            FIT
-                                                        @elseif ($booking->type == 2)
-                                                            Corporate
-                                                        @else
-                                                            Orders
-                                                        @endif
-                                                    </div>
-                                                @endif
-                                            </div>
+                                <section class="invoice-detail-card">
+                                    <h2 class="invoice-card-title">Stay &amp; payment</h2>
+                                    <dl class="invoice-fields">
+                                        <div class="invoice-field">
+                                            <dt>Booking date</dt>
+                                            <dd>{{ $booking->booking_date }}</dd>
                                         </div>
-                                    </div>
-
-                                </div>
-
+                                        <div class="invoice-field">
+                                            <dt>Check in</dt>
+                                            <dd>{{ $booking->check_in_date }}</dd>
+                                        </div>
+                                        <div class="invoice-field">
+                                            <dt>Check out</dt>
+                                            <dd>{{ $booking->check_out_date }}</dd>
+                                        </div>
+                                        <div class="invoice-field">
+                                            <dt>Payment type</dt>
+                                            <dd>
+                                                @foreach ($transaction->transaction_ledgers->unique('payment_type') ?? [] as $ledger)
+                                                    {{ optional($ledger->account)->name }}@if (!$loop->last), @endif
+                                                @endforeach
+                                            </dd>
+                                        </div>
+                                        <div class="invoice-field">
+                                            <dt>Pay by</dt>
+                                            <dd>{{ optional($booking->payBy)->name ?: 'N/A' }}</dd>
+                                        </div>
+                                        @if (vatSetting()->vat_number != 0 && vatSetting()->vat_number != null)
+                                            <div class="invoice-field">
+                                                <dt>VAT number</dt>
+                                                <dd>{{ vatSetting()->vat_number }}</dd>
+                                            </div>
+                                        @endif
+                                        @if ($booking->reference != null)
+                                            <div class="invoice-field">
+                                                <dt>Reference</dt>
+                                                <dd>{{ $booking->reference }}</dd>
+                                            </div>
+                                        @endif
+                                        @if ($booking->type != null)
+                                            <div class="invoice-field">
+                                                <dt>Booking type</dt>
+                                                <dd>
+                                                    @if ($booking->type == 1)
+                                                        FIT
+                                                    @elseif ($booking->type == 2)
+                                                        Corporate
+                                                    @else
+                                                        Orders
+                                                    @endif
+                                                </dd>
+                                            </div>
+                                        @endif
+                                    </dl>
+                                </section>
                             </div>
                         </div>
 
@@ -787,7 +1151,7 @@
                                             </p>
                                         </div>
                                     </div>
-                                    ------------
+                                    <hr class="totals-divider">
                                     <div class="row" style="display: flex; justify-content: space-between;">
                                         <div class="left-side">
                                             <p>Total Payable: </p>
@@ -843,135 +1207,116 @@
                     <div id="topPart">
 
                         <!------- INVOICE INFO ------->
-                        <div class="invoice-info" style="margin-top:0 !important">
-                            <div class="row">
-
-                                <div class="col-6">
-
-                                    <div class="company-logo">
-                                        @if (file_exists('uploads/company/' . $company->logo))
-                                            <img src="{{ asset('uploads/company/' . $company->logo) }}"
-                                                class="logo" alt="Company Logo" width="150" height="80">
-                                        @endif
-                                    </div>
-
-                                    <div class="guest-info">
-                                        <div class="guest-left-side">
-                                            <div class="left-item">Name</div>
-                                            <div class="left-item">Room</div>
-                                            <div class="left-item">Address</div>
-                                            <div class="left-item">Nationality</div>
-                                            <div class="left-item">Mobile</div>
-                                            @if (optional($booking->guestInfo)->company_id != null)
-                                                <div class="left-item">Company</div>
-                                            @endif
-                                            <div class="left-item">Address</div>
-                                        </div>
-                                        <div class="guest-right-side">
-                                            <div class="right-item">: {{ optional($booking->guestInfo)->name }}</div>
-                                            <div class="right-item">:
-                                                {{ optional(optional($booking->bookingDetail)->roomNumber)->room_number }}
-                                            </div>
-                                            <div class="right-item">: {{ optional($booking->guestInfo)->address }}
-                                            </div>
-                                            <div class="right-item">:
-                                                {{ optional(optional($booking->guestInfo)->country)->name }}</div>
-                                            <div class="right-item">: {{ optional($booking->guestInfo)->phone_no }}
-                                            </div>
-                                            @if (optional($booking->guestInfo)->company_id != null)
-                                                <div class="right-item">:
-                                                    {{ getCrmCompany(optional($booking->guestInfo)->company_id) }}
-                                                </div>
-                                            @endif
-                                            @if (optional($booking->guestInfo)->company_id != null &&
-                                                    getCrmCompanyAddress(optional($booking->guestInfo)->company_id) != null)
-                                                <div class="right-item">:
-                                                    {{ getCrmCompanyAddress(optional($booking->guestInfo)->company_id) }}
-                                                </div>
-                                            @else
-                                                <div class="right-item">:
-                                                    {{ optional($booking->guestInfo)->address != null ? optional($booking->guestInfo)->address : 'N\A' }}
-                                                </div>
-                                            @endif
-                                        </div>
-                                    </div>
-
+                        <div class="invoice-info">
+                            <div class="invoice-header">
+                                <div class="company-logo">
+                                    @if (optional($company)->logo && file_exists('uploads/company/' . $company->logo))
+                                        <img src="{{ asset('uploads/company/' . $company->logo) }}" class="logo"
+                                            alt="Company Logo">
+                                    @endif
                                 </div>
 
-                                <div class="col-6 date">
-
-                                    <div class="company-info-invoice">
-                                        <p style="font-size: 18px" class="font-bold">{{ optional($company)->name }}
-                                        </p>
-                                        <p>{{ optional($company)->head_office }}</p>
-                                        <p>{{ optional($company)->phone_number }}</p>
-                                        <p>{{ optional($company)->email }}</p>
-                                    </div>
-
-                                    <div class="booking-info">
-                                        <div class="info-body">
-                                            <div class="booking-left-side">
-                                                <div class="left-item">Booking No</div>
-                                                <div class="left-item">Booking Date</div>
-                                                <div class="left-item">Check In Date</div>
-                                                <div class="left-item">Check Out Date</div>
-                                                <div class="left-item">Payment Type</div>
-                                                @if (vatSetting()->vat_number != 0 && vatSetting()->vat_number != null)
-                                                    <div class="left-item">Vat Number</div>
-                                                @endif
-                                                @if ($booking->reference != null)
-                                                    <div class="left-item">Reference By</div>
-                                                @endif
-                                                @if ($booking->type != null)
-                                                    <div class="left-item">Booking Type</div>
-                                                @endif
-                                            </div>
-
-                                            <div class="booking-right-side">
-                                                <div class="right-item">: {{ $booking->booking_number }}</div>
-                                                <div class="right-item">: {{ $booking->booking_date }}</div>
-                                                <div class="right-item">: {{ $booking->check_in_date }}</div>
-                                                <div class="right-item">: {{ $booking->check_out_date }}</div>
-                                                <div class="right-item">: {{ optional($booking->paymentType)->name }}
-                                                </div>
-                                                @if (vatSetting()->vat_number != 0 && vatSetting()->vat_number != null)
-                                                    <div class="right-item">: {{ vatSetting()->vat_number }}</div>
-                                                @endif
-                                                @if ($booking->reference != null)
-                                                    <div class="right-item">: {{ $booking->reference }}</div>
-                                                @endif
-                                                @if ($booking->type != null)
-                                                    <div class="right-item">:
-                                                        @if ($booking->type == 1)
-                                                            FIT
-                                                        @elseif ($booking->type == 2)
-                                                            Corporate
-                                                        @else
-                                                            Orders
-                                                        @endif
-                                                    </div>
-                                                @endif
-                                            </div>
-                                        </div>
-                                    </div>
-
+                                <div class="booking-invoice">
+                                    <p class="invoice-title">Booking Invoice</p>
+                                    <p class="invoice-reference">{{ $booking->booking_number }}</p>
+                                    @include('partials.print-codes', ['code' => $booking->booking_number, 'label' => 'Booking Invoice', 'compact' => true, 'codes' => 'both'])
                                 </div>
 
+                                <div class="company-info-invoice">
+                                    <p class="font-bold">{{ optional($company)->name }}</p>
+                                    <p>{{ optional($company)->head_office }}</p>
+                                    <p>{{ optional($company)->phone_number }}</p>
+                                    <p>{{ optional($company)->email }}</p>
+                                </div>
                             </div>
-                        </div>
 
-                        <!------- BARCODE INFO ------->
-                        <div class="text-center">
-                            <p style="font-size: 20px;"> Booking Invoice </p>
-                            <p> Invoice No : {{ $booking->booking_number }}</p>
-                            @php
-                                $explode = explode('-', $booking->booking_number);
-                                $barcode = $explode[0] . $explode[1] . $explode[2];
-                            @endphp
-                            <img class="barcode-img pt-1"
-                                src="data:image/png;base64,{{ DNS1D::getBarcodePNG($barcode, 'C128') }}"
-                                alt="barcode" />
-                            @include('partials.print-codes', ['code' => $booking->booking_number, 'label' => 'Booking Invoice', 'compact' => true, 'codes' => 'qr'])
+                            <div class="invoice-detail-grid">
+                                <section class="invoice-detail-card">
+                                    <h2 class="invoice-card-title">Guest details</h2>
+                                    <dl class="invoice-fields">
+                                        <div class="invoice-field">
+                                            <dt>Name</dt>
+                                            <dd>{{ optional($booking->guestInfo)->name ?: 'N/A' }}</dd>
+                                        </div>
+                                        <div class="invoice-field">
+                                            <dt>Room</dt>
+                                            <dd>{{ optional(optional($booking->bookingDetail)->roomNumber)->room_number ?: 'N/A' }}</dd>
+                                        </div>
+                                        <div class="invoice-field">
+                                            <dt>Nationality</dt>
+                                            <dd>{{ optional(optional($booking->guestInfo)->country)->name ?: 'N/A' }}</dd>
+                                        </div>
+                                        <div class="invoice-field">
+                                            <dt>Mobile</dt>
+                                            <dd>{{ optional($booking->guestInfo)->phone_no ?: 'N/A' }}</dd>
+                                        </div>
+                                        @if (optional($booking->guestInfo)->company_id != null)
+                                            <div class="invoice-field">
+                                                <dt>Company</dt>
+                                                <dd>{{ getCrmCompany(optional($booking->guestInfo)->company_id) }}</dd>
+                                            </div>
+                                        @endif
+                                        <div class="invoice-field">
+                                            <dt>Address</dt>
+                                            <dd>
+                                                @if (optional($booking->guestInfo)->company_id != null && getCrmCompanyAddress(optional($booking->guestInfo)->company_id) != null)
+                                                    {{ getCrmCompanyAddress(optional($booking->guestInfo)->company_id) }}
+                                                @else
+                                                    {{ optional($booking->guestInfo)->address ?: 'N/A' }}
+                                                @endif
+                                            </dd>
+                                        </div>
+                                    </dl>
+                                </section>
+
+                                <section class="invoice-detail-card">
+                                    <h2 class="invoice-card-title">Stay &amp; payment</h2>
+                                    <dl class="invoice-fields">
+                                        <div class="invoice-field">
+                                            <dt>Booking date</dt>
+                                            <dd>{{ $booking->booking_date }}</dd>
+                                        </div>
+                                        <div class="invoice-field">
+                                            <dt>Check in</dt>
+                                            <dd>{{ $booking->check_in_date }}</dd>
+                                        </div>
+                                        <div class="invoice-field">
+                                            <dt>Check out</dt>
+                                            <dd>{{ $booking->check_out_date }}</dd>
+                                        </div>
+                                        <div class="invoice-field">
+                                            <dt>Payment type</dt>
+                                            <dd>{{ optional($booking->paymentType)->name ?: 'N/A' }}</dd>
+                                        </div>
+                                        @if (vatSetting()->vat_number != 0 && vatSetting()->vat_number != null)
+                                            <div class="invoice-field">
+                                                <dt>VAT number</dt>
+                                                <dd>{{ vatSetting()->vat_number }}</dd>
+                                            </div>
+                                        @endif
+                                        @if ($booking->reference != null)
+                                            <div class="invoice-field">
+                                                <dt>Reference</dt>
+                                                <dd>{{ $booking->reference }}</dd>
+                                            </div>
+                                        @endif
+                                        @if ($booking->type != null)
+                                            <div class="invoice-field">
+                                                <dt>Booking type</dt>
+                                                <dd>
+                                                    @if ($booking->type == 1)
+                                                        FIT
+                                                    @elseif ($booking->type == 2)
+                                                        Corporate
+                                                    @else
+                                                        Orders
+                                                    @endif
+                                                </dd>
+                                            </div>
+                                        @endif
+                                    </dl>
+                                </section>
+                            </div>
                         </div>
 
                         <!------- BOOKING INFO ------->
@@ -1005,7 +1350,7 @@
                                             <p>{{ calculateCurrencyAmount($transactions->sum('discount')) }}</p>
                                         </div>
                                     </div>
-                                    ------------
+                                    <hr class="totals-divider">
                                     <div class="row" style="display: flex; justify-content: space-between;">
                                         <div class="left-side">
                                             <p>Total Payable: </p>

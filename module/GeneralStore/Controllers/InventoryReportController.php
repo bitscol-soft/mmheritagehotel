@@ -193,7 +193,7 @@ class InventoryReportController extends Controller
                 }
             }
         }
-        $data['systemSetting'] = SystemSetting::where('key', 'general_store_reference_no_change')->first();
+        $data['systemSetting'] = SystemSetting::row('general_store_reference_no_change');
 
 //        return $data;
         return view('reports.weakly_movement_issue', $data);

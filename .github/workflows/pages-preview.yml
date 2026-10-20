@@ -1,0 +1,100 @@
+name: Pages preview
+
+# Publishes the visual preview (tools/preview-server.cjs) as a static site.
+#
+# The preview normally runs from a sandbox on port 3000. This workflow exports
+# the same 450+ screens to plain HTML and deploys them with GitHub Pages, so the
+# screens are reachable without the sandbox:
+#   https://bitscol-soft.github.io/mmheritagehotel/
+#
+# The repository currently publishes with Source = "Deploy from a branch": the
+# exported site is committed at the branch root and Pages rebuilds it on push
+# (see docs/PAGES-DEPLOY.md). This workflow is therefore the guard, not the
+# publisher - it exports a fresh copy, checks every internal link, and keeps the
+# artifact. Its deploy job reports that and stops.
+#
+# To publish from Actions instead, switch Source to "GitHub Actions", delete the
+# committed site + _config.yml, and make sure the github-pages environment lists
+# the branch being built.
+#
+# Until both are true the build still runs and its 100k-link check still guards
+# every push; only the deploy job is skipped, so the workflow stays green.
+
+on:
+  push:
+    branches:
+      - main
+      - arena/7ee36555-mmheritagehotel
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages-preview
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Export the static preview
+        run: node tools/export-static-preview.cjs --out dist-preview
+
+      # The site is published from the branch root, so _config.yml is the only
+      # thing keeping .env and the SQL dump off the public site.
+      - name: Check the Pages safety net
+        run: |
+          for entry in '".env"' '"database"' '"public/index.php"'; do
+            grep -q "$entry" _config.yml || { echo "::error::_config.yml no longer excludes $entry"; exit 1; }
+          done
+
+      - name: Verify every link and asset resolves
+        run: node tools/check-static-preview.cjs dist-preview
+
+      - name: Report the export size
+        run: |
+          echo "pages: $(find dist-preview -name '*.html' | wc -l)"
+          du -sh dist-preview
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist-preview
+
+  deploy:
+    needs: build
+    # Both branches this workflow runs on (main and the preview branch) are listed
+    # in the github-pages environment policy, so the job is always eligible. When
+    # the Pages source is still "Deploy from a branch", the step below reports that
+    # instead of failing, and the deploy step is skipped.
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      # deploy-pages only works when the repository publishes from Actions.
+      # Say exactly what to change instead of failing with a stack trace.
+      - name: Check the Pages source
+        id: source
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          build_type=$(gh api "repos/${{ github.repository }}/pages" --jq .build_type 2>/dev/null || echo unknown)
+          echo "build_type=$build_type"
+          if [ "$build_type" != "workflow" ]; then
+            echo "::notice title=Pages source::Settings -> Pages -> Build and deployment -> Source must be 'GitHub Actions' (currently '$build_type'). The export built fine and its artifacts are attached to this run; re-run this job once the source is switched."
+          fi
+          echo "enabled=$([ "$build_type" = "workflow" ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+
+      - name: Deploy to GitHub Pages
+        if: steps.source.outputs.enabled == 'true'
+        id: deployment
+        uses: actions/deploy-pages@v4

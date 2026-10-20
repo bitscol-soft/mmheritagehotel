@@ -43,7 +43,7 @@ class VoucherController extends Controller
     // Journal Vouchers
     public function journalIndex(Request $request)
     {
-        $this->hasAccess("vouchers.journal.index");
+        $this->hasAccess("voucher-journals.index");
 
         if ($request->invoice_no != null) {
             $data['vouchers'] = Voucher::where('invoice_no', $request->invoice_no)->get();
@@ -63,7 +63,7 @@ class VoucherController extends Controller
 
     public function journalCreate()
     {
-        $this->hasAccess("vouchers.journal.create");
+        $this->hasAccess("voucher-journals.create");
 
         $data = $this->dataService->getAccountData(['accounts']);
         $company = Company::pluck('name', 'id');
@@ -75,7 +75,7 @@ class VoucherController extends Controller
 
     public function journalStore(Request $request): RedirectResponse
     {
-        $this->hasAccess("vouchers.journal.create");
+        $this->hasAccess("voucher-journals.create");
 
         $this->validateData($request);
 
@@ -142,7 +142,7 @@ class VoucherController extends Controller
     {
         $voucher = Voucher::find($id);
 
-        $this->hasAccess("vouchers.journal.edit");
+        $this->hasAccess("voucher-journals.edit");
         $data = $this->dataService->getAccountData(['accounts']);
 
         return view('vouchers.journal.edit', compact('voucher'), $data);
@@ -153,7 +153,7 @@ class VoucherController extends Controller
 
     public function journalShow($id)
     {
-        $this->hasAccess("vouchers.journal.show");
+        $this->hasAccess("voucher-journals.view");
         $voucher = Voucher::find($id);
 
         return view('vouchers.journal.show', compact('voucher'));
@@ -164,7 +164,7 @@ class VoucherController extends Controller
 
     public function showjournalApprove(Voucher $voucher)
     {
-        $this->hasAccess("vouchers.journal.approve");
+        $this->hasAccess("voucher-journals.edit");
 
         return view('vouchers.journal.show', compact('voucher'));
     }
@@ -174,7 +174,7 @@ class VoucherController extends Controller
     
     public function approvejournalVoucher(Voucher $voucher)
     {
-        $this->hasAccess("vouchers.journal.approve");
+        $this->hasAccess("voucher-journals.edit");
 
         $voucher->update([
             'is_approved' => 1

@@ -178,9 +178,10 @@ class MmRenderPublicFixtures extends Command
         \Carbon\Carbon::setTestNow(\Carbon\Carbon::parse(self::FROZEN_NOW, self::FROZEN_TZ));
         date_default_timezone_set(self::FROZEN_TZ);
 
-        // The cookie contract on /booking-cart is `Cookie::get('booking_cart')` -> JSON decode.
-        // A fresh Request::create() has no cookies, so the cart view renders its "empty cart" branch
-        // without us having to do anything; that matches the legacy UX for a first-time visitor.
+        // The cart on /booking-cart is the server-side session store (`front_cart_items()`;
+        // it replaced the client-mutable booking_cart cookie). A fresh Request::create() has
+        // an empty session, so the cart view renders its "empty cart" branch without us having
+        // to do anything; that matches the legacy UX for a first-time visitor.
 
         $root = base_path();
         $fixtureDir = $root . '/tools/fixtures/frontend';

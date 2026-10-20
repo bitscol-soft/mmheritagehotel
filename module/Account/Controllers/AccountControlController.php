@@ -56,6 +56,7 @@ class AccountControlController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
+        $this->hasAccess("account-controls.index");
 
         $data = AccountControl::query()->create([
             'account_group_id' => $request->account_group_id,
@@ -93,6 +94,7 @@ class AccountControlController extends Controller
 
     public function update(Request $request, $id)
     {
+        $this->hasAccess("account-controls.index");
 
         AccountControl::query()->where('id', $id)->update([
             'account_group_id' => $request->account_group_id,

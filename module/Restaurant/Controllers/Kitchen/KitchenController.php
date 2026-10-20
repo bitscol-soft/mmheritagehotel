@@ -33,6 +33,7 @@ class KitchenController extends Controller
 
     public function store(Request $request)
     {
+        $this->hasAccess("kit.kitchen.create");
 
          //
     }

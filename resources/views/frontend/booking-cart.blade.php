@@ -24,12 +24,7 @@
 
 
     @php
-        if (Cookie::get('booking_cart')) {
-            $get_cookie = \stripslashes(Cookie::get('booking_cart'));
-            $cart_data = \json_decode($get_cookie, true);
-        } else {
-            $cart_data = [];
-        }
+        $cart_data = front_cart_items();
 
         $subtotal = 0;
     @endphp

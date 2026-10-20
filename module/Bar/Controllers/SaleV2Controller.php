@@ -89,7 +89,7 @@ class SaleV2Controller extends Controller
 
         $invoice                = (new BarTransectionService())->getInvoiceNo('Bar Sale');
         $data['invoice_id']     = $invoice;
-        $data['vat_percent']    = Vat::first()->bar_vat;
+        $data['vat_percent']    = optional(Vat::first())->bar_vat ?? 0;   // docs/BUGS.md #73
         $data['account_types']  = AccountType::pluck('name', 'id');
         $data['guests']         = Guest::paginate(2);
         $data['tables']         = RstTableManage::query()->get();
@@ -129,6 +129,7 @@ class SaleV2Controller extends Controller
     */
     public function store(SaleRequest $request)
     {
+        $this->hasAccess("bar.sales.create");
         try {
 
             $sale =  $request->store();
@@ -180,7 +181,7 @@ class SaleV2Controller extends Controller
         }
         return view($view, [
             'sale'              => Sale::with('items')->find($id),
-            'vat_number'        => Vat::first()->vat_number,
+            'vat_number'        => optional(Vat::first())->vat_number,   // docs/BUGS.md #73
             'account_types'     => AccountType::whereHas('hotelTransactions')->pluck('name', 'id'),
         ]);
     }
@@ -212,7 +213,7 @@ class SaleV2Controller extends Controller
                                 }])
                                 ->find($id);
         $data['account_types']  = AccountType::pluck('name', 'id');
-        $data['vat_percent']    = Vat::first()->bar_vat;
+        $data['vat_percent']    = optional(Vat::first())->bar_vat ?? 0;   // docs/BUGS.md #73
         $data['guests']         = Guest::query()->where('id', $data['sale']->guest_name)->get();
         $data['tables']         = RstTableManage::query()->get();
 

@@ -117,7 +117,7 @@
 
         var subtotal                = 0;
         var vat                     = Number($('#vat'+id).val());
-        let service_percent         = Number(`{{ vatSetting()->room_service_charge }}`)
+        let service_percent         = Number(`{{ vatSetting()->room_service_charge ?? 0 }}`)
         let roomWiseServiceCharge   = 0
 
         // $('.room-details'+id).each(function() {

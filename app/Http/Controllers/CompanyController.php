@@ -65,6 +65,7 @@ class CompanyController extends Controller
      */
     public function store(Request $request)
     {
+        $this->hasAccess("company.infos.create");
         $company = new Company();
         $company->validate($request);
         try {
@@ -131,6 +132,7 @@ class CompanyController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->hasAccess("company.infos.edit");
 
         $company = Company::find($id);
         $company->updateValidate($request);

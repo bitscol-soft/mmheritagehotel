@@ -22,9 +22,9 @@ $files=array_merge([$root . '/module/Hotel/views/rooms/create.blade.php', $root 
 $files=array_merge($files, [$root . '/module/Hotel/views/category/create.blade.php', $root . '/module/Hotel/views/category/edit.blade.php', $root . '/resources/views/layouts/master.blade.php', $root . '/resources/views/layouts/includes/head.blade.php', $root . '/resources/views/partials/_header.blade.php', $root . '/resources/views/partials/_sidebar.blade.php'], glob($root . '/resources/views/layouts/shell/*.blade.php'));
 $files=array_merge($files, [$root . '/resources/views/home/hotel-dashboard.blade.php', $root . '/resources/views/home/_inc/dashboard-summary.blade.php', $root . '/resources/views/home/_inc/room-board.blade.php', $root . '/resources/views/home/_inc/room-card.blade.php', $root . '/resources/views/home/_inc/bed-icon.blade.php', $root . '/resources/views/home/_inc/booking_ui.blade.php']);
 $files=array_merge($files, [$root . '/module/Hotel/views/house-keeping/index.blade.php'], glob($root . '/resources/views/layouts/shell/*.blade.php'), [$root . '/resources/views/partials/_header.blade.php']);
-$files=array_merge($files, array_map(function ($v) use ($root) { return $root . '/module/Hotel/views/' . $v . '.blade.php'; }, ['aminities/index', 'aminities/create', 'aminities/edit', 'account_type/index', 'account_type/edit', 'vat/index', 'currency-conversions/index', 'currency-conversions/create', 'currency-conversions/edit', 'guest-registration-terms/index', 'guest-registration-terms/include/filter', 'guest-registration-terms/edit']));
+$files=array_merge($files, array_map(function ($v) use ($root) { return $root . '/module/Hotel/views/' . $v . '.blade.php'; }, ['aminities/index', 'aminities/create', 'aminities/edit', 'account_type/index', 'account_type/edit', 'vat/index', 'currency-conversions/index', 'currency-conversions/create', 'currency-conversions/edit', 'guest-registration-terms/create', 'guest-registration-terms/index', 'guest-registration-terms/include/filter', 'guest-registration-terms/edit']));
 $files=array_merge($files, glob($root . '/module/Hotel/views/booking-purpose/*.blade.php'), [$root . '/module/Hotel/views/booking-purpose/include/filter.blade.php']);
-$files=array_merge($files, [$root . '/module/Hotel/views/booking-note/index.blade.php', $root . '/module/Hotel/views/booking-note/edit.blade.php', $root . '/module/Hotel/views/booking-note/include/filter.blade.php']);
+$files=array_merge($files, [$root . '/module/Hotel/views/booking-note/create.blade.php', $root . '/module/Hotel/views/booking-note/index.blade.php', $root . '/module/Hotel/views/booking-note/edit.blade.php', $root . '/module/Hotel/views/booking-note/include/filter.blade.php']);
 $files=array_merge($files, [$root . '/module/Hotel/views/booking/booking_next.blade.php', $root . '/module/Hotel/views/booking/_inc/_booking-next-steps.blade.php', $root . '/module/Hotel/views/booking/view.blade.php', $root . '/module/Hotel/views/night-audits/index.blade.php', $root . '/module/Hotel/views/night-audits/invoice.blade.php', $root . '/module/Hotel/views/night-audits/create-v2.blade.php', $root . '/module/Hotel/views/payment-collection/index.blade.php', $root . '/module/Hotel/views/booking/checkout_invoice.blade.php', $root . '/module/Hotel/views/booking/reservation-invoice.blade.php', $root . '/module/Hotel/views/booking/checkout-invoice-v3.blade.php', $root . '/module/Hotel/views/booking/create.blade.php', $root . '/module/Hotel/views/booking/edit.blade.php', $root . '/module/Hotel/views/booking/_inc/_add-guest-input-info.blade.php', $root . '/module/Hotel/views/booking/_inc/_edit-guest-input-info.blade.php']);
 $files=array_merge($files, array_map(function ($v) use ($root) { return $root . '/module/Hotel/views/hotel/reports/' . $v . '.blade.php'; }, ['all-reports/index', 'cash-flow/index', 'expected-arrival/index', 'expected-departure/index', 'in-house-guest/index', 'room-logs/index', 'services/index', 'today-activities/index', 'today-check-in/index', 'today-check-out/index', 'today-in-house/index', 'vat-report-day/index', 'vat-report-monthly/index', 'night-closing/indexV2']));
 foreach($files as $f){ $compiled=$compiler->compileString(file_get_contents($f)); token_get_all($compiled,TOKEN_PARSE); echo "PASS compile ".basename($f)."\n"; }
@@ -352,7 +352,7 @@ echo "PASS preview page render: room category create\n";
 // Render the real booking invoice (checkout_invoice) with sample data. Layout, permission, VAT and auth helpers are substituted.
 @mkdir($coViews . '/booking', 0777, true);
 $invSource = file_get_contents($root . '/module/Hotel/views/booking/checkout_invoice.blade.php');
-$invSource = str_replace(["@extends('layouts.master')", "hasPermission('service.view', \$slugs)", 'vatSetting()->vat_number', 'vatSetting()->hotel_vat', 'optional(auth()->user())->name'], ["@extends('mm-checkout-layout')", 'true', "'VAT-0042'", "'10'", "'Front Desk'"], $invSource);
+$invSource = str_replace(["@extends('layouts.master')", "hasPermission('bookings.view', \$slugs)", 'vatSetting()->vat_number', 'vatSetting()->hotel_vat', 'optional(auth()->user())->name'], ["@extends('mm-checkout-layout')", 'true', "'VAT-0042'", "'10'", "'Front Desk'"], $invSource);
 if (preg_match('/vatSetting\(|auth\(\)|hasPermission\(/', $invSource)) throw new RuntimeException('Unsubstituted helper in invoice view');
 file_put_contents($coViews . '/booking/checkout_invoice.blade.php', $invSource);
 $invRoutes = new Illuminate\Routing\RouteCollection();
@@ -439,7 +439,7 @@ $naHtml = $app->make('view')->make('night-audits.create-v2', ['errors' => new Il
     ])])->render();
 $naHtml = preg_replace('/(name="_token" value=")[A-Za-z0-9]+"/', '$1fixture-csrf-token"', str_replace('http://localhost/assets', '/assets', $naHtml));
 foreach (['name="from_date"', 'name="to_date"', 'name="date"', 'name="total_reservation"', 'name="total_booked_room"', 'name="total_check_in"', 'name="total_check_out"', 'name="total_room"', 'name="total_cancelled"', 'name="total_dirty_room"', 'name="total_room_maintenance"',
-    'name="transaction_ledger_ids[11]"', 'name="transaction_ids[11]"', 'name="total_amounts[11]"', 'name="previous_paid"', 'name="collections[11]"', 'name="due_amounts[11]"', 'name="total_amount"', 'name="collection"', 'name="due_amount"',
+    'name="transaction_ledger_ids[11]"', 'name="transaction_ids[11]"', 'name="total_amounts[11]"', 'name="previous_paid[11]"', 'name="previous_paid[12]"', 'name="previous_paid[21]"', 'name="collections[11]"', 'name="due_amounts[11]"', 'name="total_amount"', 'name="collection"', 'name="due_amount"',
     'id="formSubmit"', 'action="http://localhost/hotel/night-audits"', 'save-btn', 'mm-night-audit'] as $marker) {
     if (strpos($naHtml, $marker) === false) throw new RuntimeException('Night audit view missing ' . $marker);
 }
@@ -504,7 +504,7 @@ foreach (['aminities/index', 'aminities/create', 'aminities/edit', 'account_type
     file_put_contents($hsViews . '/' . $hsView . '.blade.php', $hsSource);
 }
 $hsRoutes = new Illuminate\Routing\RouteCollection();
-foreach (['aminities' => ['index', 'create', 'store', 'edit', 'update', 'destroy'], 'account-type' => ['index', 'store', 'edit', 'update', 'destroy'], 'vat' => ['update'], 'currency-conversions' => ['index', 'create', 'store', 'edit', 'update', 'destroy'], 'guest-registration-terms' => ['index', 'edit', 'update']] as $hsBase => $hsActions) {
+foreach (['aminities' => ['index', 'create', 'store', 'edit', 'update', 'destroy'], 'account-type' => ['index', 'store', 'edit', 'update', 'destroy'], 'vat' => ['update'], 'currency-conversions' => ['index', 'create', 'store', 'edit', 'update', 'destroy'], 'guest-registration-terms' => ['index', 'create', 'store', 'edit', 'update', 'destroy']] as $hsBase => $hsActions) {
     foreach ($hsActions as $hsAction) {
         $hsMethod = in_array($hsAction, ['store']) ? 'POST' : (in_array($hsAction, ['update']) ? 'PUT' : ($hsAction === 'destroy' ? 'DELETE' : 'GET'));
         $hsUri = 'hotel/' . $hsBase . (in_array($hsAction, ['edit', 'update', 'destroy']) ? '/{id}' . ($hsAction === 'edit' ? '/edit' : '') : ($hsAction === 'create' ? '/create' : ''));
@@ -1067,7 +1067,7 @@ if (!function_exists('mm_auth_user')) { function mm_auth_user() { return new cla
 $riRow = function (array $f) { return new MmRiRow($f); };
 $riList = function (array $rows) { return new MmRiList($rows); };
 $riViews = ['categories/index', 'categories/create-modal', 'categories/edit-modal', 'units/index', 'units/create-modal', 'units/edit-modal', 'manufacturers/index', 'manufacturers/create-modal', 'manufacturers/edit-modal', 'supplier/index', 'supplier/create-modal', 'supplier/edit-modal',
-    'product/index', 'product/_inc/filter', 'mat_product/index', 'mat_product/_inc/filter', 'inventory-report', 'includes/filter', 'product/uploads/index', 'product/uploads/edit',
+    'product/index', 'product/_inc/filter', 'mat_product/index', 'mat_product/_inc/filter', 'inventory-report', 'includes/filter', 'product/uploads/index', 'product/uploads/edit', 'supplier/create',
     'product/create', 'product/create/create', 'product/create/upload', 'product/edit', 'mat_product/create', 'mat_product/create/create', 'mat_product/create/upload', 'mat_product/edit', 'categories/inc/_create-options',
     'production/items/index', 'production/items/create', 'production/items/edit', 'production/item-units/index', 'production/item-units/create', 'production/item-units/edit',
     'production/goods_requisitions/index', 'production/goods_requisitions/create', 'production/purchases/index', 'production/purchases/show', 'production/purchases/approve', 'production/purchases/edit',
@@ -1102,6 +1102,7 @@ $riCases = [
         ['mm-hotel-setup', 'id="data-table"', 'data-toggle="modal"', 'Kg &lt;b&gt;x&lt;/b&gt;'], ['Kg <b>x</b>']],
     'manufacturers' => ['ri.inventory.manufacturers.index', '/rst/manufacturers', ['manufacturers' => $riList([$riRow(['id' => 1, 'name' => 'Fresh <b>Co</b>', 'status' => 1])])],
         ['mm-hotel-setup', 'id="data-table"', 'data-toggle="modal"', 'Fresh &lt;b&gt;Co&lt;/b&gt;'], ['Fresh <b>Co</b>']],
+    'form-supplier-create' => ['ri.inventory.supplier.create', '/rst/suppliers/create', [], ['mm-hotel-setup', 'mm-rst-inv', 'id="supplier-form"', 'name="name"', 'name="phone"', 'name="email"', 'name="address"', 'type="submit"'], []],
     'suppliers' => ['ri.inventory.supplier.index', '/rst/suppliers', ['suppliers' => $riList([$riRow(['id' => 1, 'name' => 'Sarker <b>Traders</b>', 'phone' => '017', 'status' => 1])])],
         ['mm-hotel-setup', 'id="data-table"', 'data-toggle="modal"', 'Sarker &lt;b&gt;Traders&lt;/b&gt;'], ['Sarker <b>Traders</b>']],
     'products' => ['ri.inventory.product.index', '/rst/products?name=1', ['products' => $riList([$riProduct(1, 'Chicken <b>Biryani</b>'), $riProduct(2, 'Lassi')]), 'categories' => collect([$riRow(['id' => 1, 'name' => 'Rice dishes']), $riRow(['id' => 2, 'name' => 'Drinks'])])],
@@ -1259,7 +1260,7 @@ foreach ($gsCases as $gsName => [$gsViewName, $gsUrl, $gsData, $gsMarkers, $gsAb
 echo "PASS general store screens render: items, item units, suppliers, supplier types, purchases, receives, GRN list, requisitions, GIN and reports\n";
 
 // ---- Bar B1: inventory, tables, purchases, sales, returns, reports and night audit lists (module/Bar/views, same helper substitutions as the Restaurant views) ----
-$brMigrated = ['bar/inventory/categories/index', 'bar/inventory/units/index', 'bar/inventory/manufacturers/index', 'bar/inventory/supplier/index', 'bar/inventory/product/create', 'bar/inventory/product/edit', 'bar/inventory/product/index', 'bar/inventory/inventory-report', 'bar/inventory/product/uploads/edit', 'bar/inventory/product/package/index', 'bar/inventory/product/package/create', 'bar/tables/index', 'bar/purchase/index', 'bar/sales/index', 'bar/sales/return/index', 'bar/sales-v2/index', 'bar/sales-v2/create', 'bar/reports/sales/index', 'bar/reports/cash-flow/index', 'bar/reports/inventory/index', 'bar/reports/today-activities/index', 'bar-night-audits/index', 'bar-night-audits/create-v2', 'bar/sales/create', 'bar/sales/return/create', 'bar/purchase/show', 'bar/sales/show', 'bar/sales/return/show', 'bar/purchase-v2/create', 'bar/inventory/product/uploads/index'];
+$brMigrated = ['bar/inventory/categories/index', 'bar/inventory/units/index', 'bar/inventory/manufacturers/index', 'bar/inventory/supplier/index', 'bar/inventory/product/create', 'bar/inventory/product/edit', 'bar/inventory/product/index', 'bar/inventory/inventory-report', 'bar/inventory/product/uploads/edit', 'bar/inventory/product/package/index', 'bar/inventory/product/package/create', 'bar/tables/index', 'bar/purchase/index', 'bar/sales/index', 'bar/sales/return/index', 'bar/sales-v2/index', 'bar/sales-v2/create', 'bar/reports/sales/index', 'bar/reports/cash-flow/index', 'bar/reports/inventory/index', 'bar/reports/today-activities/index', 'bar-night-audits/index', 'bar-night-audits/create-v2', 'bar/sales/create', 'bar/sales/return/create', 'bar/purchase/show', 'bar/sales/show', 'bar/sales/return/show', 'bar/purchase-v2/create', 'bar/inventory/product/uploads/index', 'bar/inventory/supplier/create', 'bar/inventory/batches/index', 'bar/inventory/batches/create-modal', 'bar/inventory/batches/edit-modal'];
 foreach ($brMigrated as $brFile) { $compiler->compileString(file_get_contents($root . '/module/Bar/views/' . $brFile . '.blade.php')); token_get_all($compiler->compileString(file_get_contents($root . '/module/Bar/views/' . $brFile . '.blade.php')), TOKEN_PARSE); }
 echo "PASS compile bar views\n";
 $brViews = array_merge($brMigrated, ['bar/inventory/categories/create-modal', 'bar/inventory/categories/edit-modal', 'bar/inventory/units/create-modal', 'bar/inventory/units/edit-modal', 'bar/inventory/manufacturers/create-modal', 'bar/inventory/manufacturers/edit-modal', 'bar/inventory/manufacturers/create-supplier-modal', 'bar/inventory/supplier/create-modal', 'bar/inventory/supplier/edit-modal', 'bar/tables/create-modal', 'bar/tables/edit-modal', 'bar/inventory/product/_inc/filter', 'bar/inventory/product/_inc/script', 'bar/inventory/product/create/create', 'bar/inventory/product/create/upload', 'bar/sales-v2/_inc/style', 'bar/sales-v2/_inc/date-time', 'bar/sales-v2/_inc/left-side', 'bar/sales-v2/_inc/right-side', 'bar/sales/_inc/create-script', 'bar/sales/_inc/booking-filter-script']);
@@ -1292,6 +1293,11 @@ $brCases = [
         ['mm-hotel-setup', 'mm-bar', 'id="data-table"', 'Distillers &lt;b&gt;Co&lt;/b&gt;'], ['Distillers <b>Co</b>']],
     'bar-suppliers' => ['bar.inventory.supplier.index', '/bar/inventory/suppliers', ['suppliers' => $riList([$riRow(['id' => 1, 'name' => 'Sarker <b>Traders</b>', 'phone' => '017', 'status' => 1])])],
         ['mm-hotel-setup', 'mm-bar', 'id="data-table"', 'Sarker &lt;b&gt;Traders&lt;/b&gt;'], ['Sarker <b>Traders</b>']],
+    'bar-batches' => ['bar.inventory.batches.index', '/bar/inventory/product-batches', ['batches' => $riList([$riRow(['id' => 1, 'batch_number' => 'B-2026-01', 'products_count' => 3, 'created_at' => '2026-10-01 10:00:00'])])],
+        ['mm-hotel-setup', 'mm-bar', 'id="data-table"', 'href="#modal-dialog"', 'B-2026-01', 'delete_item(', 'modal-dialog1'], []],
+    'bar-batches-empty' => ['bar.inventory.batches.index', '/bar/inventory/product-batches', ['batches' => $riList([])],
+        ['mm-hotel-setup', 'mm-bar', 'id="data-table"', 'No records found!'], []],
+    'bar-supplier-create' => ['bar.inventory.supplier.create', '/bar/inventory/suppliers/create', [], ['mm-hotel-setup', 'mm-bar', 'id="supplier-form"', 'name="name"', 'name="phone"', 'name="email"', 'name="address"', 'type="submit"'], []],
     'bar-products' => ['bar.inventory.product.index', '/bar/inventory/products?name=1', ['products' => $riList([$riProduct(1, 'Black <b>Label</b>'), $riProduct(2, 'Lager')]), 'categories' => collect([$riRow(['id' => 1, 'name' => 'Spirits']), $riRow(['id' => 2, 'name' => 'Beer'])])],
         ['mm-report', 'mm-bar', 'mm-rst-inventory', 'mm-report-filter', 'id="datatable"', 'Black &lt;b&gt;Label&lt;/b&gt;', 'class="pagination"'], ['Black <b>Label</b>', 'col-sm-offset']],
     'bar-tables' => ['bar.tables.index', '/bar/table-manages', ['table_manages' => $riList([$riRow(['id' => 1, 'name' => 'Bar <b>1</b>', 'table_no' => 'T1', 'status' => 1])])],
@@ -1498,7 +1504,7 @@ foreach ($a2Cases as $a2Name => [$a2ViewName, $a2Url, $a2Data, $a2Markers, $a2Ab
 echo "PASS account voucher screens render\n";
 
 // ---- Account A3: purchases, sales, returns, collections and damages ----
-$a3Migrated = ['purchase/purchases/index', 'purchase/purchases/create', 'purchase/purchases/edit', 'purchase/purchase-returns/index', 'purchase/purchase-returns/create', 'purchase/payments/index', 'sale/sales/index', 'sale/sales/create', 'sale/sales/edit', 'sale/sale-returns/index', 'sale/sale-returns/create', 'sale/collections/index', 'product/damages/index', 'product/damages/create'];
+$a3Migrated = ['purchase/purchases/index', 'purchase/purchases/create', 'purchase/purchases/edit', 'purchase/purchase-returns/index', 'purchase/purchase-returns/create', 'purchase/payments/index', 'sale/sales/index', 'sale/sales/create', 'sale/sales/edit', 'sale/sale-returns/index', 'sale/sale-returns/create', 'sale/collections/index', 'sale/collections/create', 'sale/collections/edit', 'purchase/payments/create', 'purchase/payments/edit', 'product/damages/index', 'product/damages/create'];
 foreach ($a3Migrated as $a3File) { token_get_all($compiler->compileString(file_get_contents($root . '/module/Account/views/' . $a3File . '.blade.php')), TOKEN_PARSE); }
 echo "PASS compile account trading views\n";
 foreach ($a3Migrated as $a3View) {
@@ -1530,13 +1536,17 @@ $a3Cases = [
     'form-purchases-edit' => ['acc.purchase.purchases.edit', '/acc/acc-purchases/4/edit', $a3Base + ['purchase' => $a3Trade()], ['mm-rst-form', 'name="_method"', 'name="detail_ids[]"', 'name="purchase_price[]"', 'name="quantity[]"'], []],
     'purchase-returns' => ['acc.purchase.purchase-returns.index', '/acc/acc-purchase-returns', ['purchaseReturns' => $riList([$a3Ret()])], ['mm-acc', 'mm-report', 'RET-6', 'Karim &lt;i&gt;Traders&lt;/i&gt;'], ['Karim <i>Traders</i>']],
     'form-purchase-returns-create' => ['acc.purchase.purchase-returns.create', '/acc/acc-purchase-returns/create', $a3Base, ['mm-rst-form', 'name="supplier_id"', 'name="company_id"'], []],
-    'purchase-payments' => ['acc.purchase.payments.index', '/acc/acc-purchase-payments', [], ['mm-acc', 'mm-report-filter', 'name="invoice_no"', 'name="reference"', 'id="data-table"'], []],
+    'purchase-payments' => ['acc.purchase.payments.index', '/acc/acc-purchase-payments', ['payments' => $riList([$riRow(['id' => 2, 'invoice_no' => 'Payment-INV-2026-000001', 'transaction_no' => 'CHQ-9', 'date' => '2026-10-05', 'remarks' => 'Cash', 'amount' => 250, 'supplier' => $riRow(['name' => 'Karim <i>Traders</i>'])])])], ['mm-acc', 'mm-report', 'Payment Lists', 'Payment-INV-2026-000001', 'CHQ-9', 'Karim &lt;i&gt;Traders&lt;/i&gt;'], []],
     'sales' => ['acc.sale.sales.index', '/acc/acc-sales', ['sales' => $riList([$a3Trade(), $a3Trade(['id' => 5, 'invoice_no' => 'INV-8'])])], ['mm-acc', 'mm-report', 'INV-7', 'INV-8', 'Rahim &lt;i&gt;Stores&lt;/i&gt;'], ['Rahim <i>Stores</i>']],
     'form-sales-create' => ['acc.sale.sales.create', '/acc/acc-sales/create', $a3Base, ['mm-rst-form', 'name="customer_id"', 'name="company_id"', 'name="product_id[]"', 'name="sale_price[]"', 'name="qty_amount"', 'name="due_amount"', 'id="addrow"'], ['Rice <b>50kg</b>']],
     'form-sales-edit' => ['acc.sale.sales.edit', '/acc/acc-sales/4/edit', $a3Base + ['sale' => $a3Trade()], ['mm-rst-form', 'name="_method"', 'name="detail_ids[]"', 'name="sale_price[]"', 'name="quantity[]"'], []],
     'sale-returns' => ['acc.sale.sale-returns.index', '/acc/acc-sale-returns', ['saleReturns' => $riList([$a3Ret()])], ['mm-acc', 'mm-report', 'RET-6', 'Rahim &lt;i&gt;Stores&lt;/i&gt;'], ['Rahim <i>Stores</i>']],
     'form-sale-returns-create' => ['acc.sale.sale-returns.create', '/acc/acc-sale-returns/create', $a3Base, ['mm-rst-form', 'name="customer_id"', 'name="company_id"'], []],
-    'collections' => ['acc.sale.collections.index', '/acc/acc-collections', [], ['mm-acc', 'No Records Founds Yet'], []],
+    'collections' => ['acc.sale.collections.index', '/acc/acc-collections', ['collections' => $riList([])], ['mm-acc', 'mm-report', 'Collection Lists', 'No Records Founds Yet!'], []],
+    'form-collections-create' => ['acc.sale.collections.create', '/acc/acc-collections/create', ['customers' => [1 => 'Rahim <i>Stores</i>', 2 => 'Karim']], ['mm-rst-form', 'name="customer_id"', 'name="date"', 'name="amount"', 'name="transaction_no"'], []],
+    'form-collections-edit' => ['acc.sale.collections.edit', '/acc/acc-collections/1/edit', ['customers' => [1 => 'Rahim <i>Stores</i>', 2 => 'Karim'], 'collection' => $riRow(['id' => 1, 'invoice_no' => 'Collection-INV-2026-000001', 'transaction_no' => 'RCPT-4', 'date' => '2026-10-05', 'remarks' => 'Cash', 'amount' => 500, 'customer_id' => 1])], ['mm-rst-form', 'name="_method"', 'name="customer_id"', 'Collection-INV-2026-000001'], []],
+    'form-purchase-payments-create' => ['acc.purchase.payments.create', '/acc/acc-payments/create', ['suppliers' => [1 => 'Karim <i>Traders</i>', 2 => 'Rahim']], ['mm-rst-form', 'name="supplier_id"', 'name="date"', 'name="amount"', 'name="transaction_no"'], []],
+    'form-purchase-payments-edit' => ['acc.purchase.payments.edit', '/acc/acc-payments/2/edit', ['suppliers' => [1 => 'Karim <i>Traders</i>', 2 => 'Rahim'], 'payment' => $riRow(['id' => 2, 'invoice_no' => 'Payment-INV-2026-000001', 'transaction_no' => 'CHQ-9', 'date' => '2026-10-05', 'remarks' => 'Cash', 'amount' => 250, 'supplier_id' => 1])], ['mm-rst-form', 'name="_method"', 'name="supplier_id"', 'Payment-INV-2026-000001'], []],
     'damages' => ['acc.product.damages.index', '/acc/damages', ['damages' => $riList([$riRow(['id' => 3, 'invoice_no' => 'DMG-3', 'date' => '2026-10-01', 'total_amount' => 45])])], ['mm-acc', 'mm-report', 'DMG-3'], []],
     'form-damages-create' => ['acc.product.damages.create', '/acc/damages/create', $a3Base, ['mm-rst-form', 'name="company_id"', 'name="date"', 'name="total_amount"'], ['Rice <b>50kg</b>']],
 ];
@@ -1867,6 +1877,57 @@ foreach ($ffCases as $ffName => [$ffViewName, $ffUrl, $ffData]) {
     }
 }
 echo "PASS public mm-web screens render\n";
+
+// ---- CRM (revival, BUGS #27): customer master + mail templates ----
+// URL/route/permission family for the template master is crm.templates.* (the slugs shipped in the dump).
+$crmMigrated = ['customers/index', 'customers/create', 'customers/edit', 'templates/index', 'templates/create', 'templates/edit'];
+foreach ($crmMigrated as $crmFile) { token_get_all($compiler->compileString(file_get_contents($root . '/module/CRM/views/' . $crmFile . '.blade.php')), TOKEN_PARSE); }
+echo "PASS compile crm views\n";
+foreach ($crmMigrated as $crmView) {
+    $crmSource = $rsSubst($crmView, 'CRM');
+    @mkdir(dirname($coViews . '/crm/' . $crmView), 0777, true);
+    file_put_contents($coViews . '/crm/' . $crmView . '.blade.php', $crmSource);
+}
+$crmSeen = [];
+foreach ($crmMigrated as $crmView) {
+    preg_match_all("/route\\('([\\w.-]+)'/", file_get_contents($coViews . '/crm/' . $crmView . '.blade.php'), $crmMatch);
+    foreach ($crmMatch[1] as $crmRoute) {
+        if (isset($crmSeen[$crmRoute]) || $rsRoutes->getByName($crmRoute)) continue;
+        $crmSeen[$crmRoute] = true;
+        $rsRoutes->add((new Illuminate\Routing\Route(['GET', 'POST'], 'crm/' . str_replace('.', '/', $crmRoute) . '/{id?}', function () {}))->name($crmRoute));
+    }
+}
+$crmCustomer = $riRow(['id' => 1, 'org_name' => 'Acme <i>Traders</i>', 'org_phone' => '+880 1700', 'org_email' => 'ops@acme.test', 'c_name' => 'Karim', 'c_phone' => '+880 1800', 'c_email' => 'karim@acme.test', 'tax_id' => 1234, 'street' => '12 Gulshan', 'city' => 'Dhaka', 'address' => 'Dhaka 1212', 'zip_code' => 1212, 'country_id' => 1, 'currency' => 'BDT', 'leads' => 1, 'lead_status' => 'New', 'lead_source' => 'Web', 'assigned' => 'Super admin', 'contact_date' => '2026-10-01']);
+$crmBase = ['countries' => [1 => 'Bangladesh'], 'currencies' => [1 => 'BDT'], 'users' => [2 => 'Super admin']];
+$crmTemplate = $riRow(['id' => 1, 'subject' => 'Invoice <b>due</b>', 'body' => 'Dear customer, your invoice is due.', 'status' => 1]);
+$crmCases = [
+    'customers' => ['crm.customers.index', '/crm/customers', ['customers' => $riList([$crmCustomer])], ['mm-report', 'Customer Lists', 'Acme &lt;i&gt;Traders&lt;/i&gt;', 'Dhaka', 'Karim'], ['Acme <i>Traders</i>']],
+    'form-customer-create' => ['crm.customers.create', '/crm/customers/create', $crmBase, ['mm-rst-form', 'name="org_name"', 'name="c_name"', 'name="country_id"', 'name="currency"', 'name="assigned"', 'name="leads"', 'name="contact_date"'], []],
+    'form-customer-edit' => ['crm.customers.edit', '/crm/customers/1/edit', $crmBase + ['customer' => $crmCustomer], ['mm-rst-form', 'name="_method"', 'Acme &lt;i&gt;Traders&lt;/i&gt;', 'Dhaka'], ['Acme <i>Traders</i>']],
+    'templates' => ['crm.templates.index', '/crm/templates', ['templates' => $riList([$crmTemplate])], ['mm-report', 'Mail Template Lists', 'Invoice &lt;b&gt;due&lt;/b&gt;', 'Active'], []],
+    'form-template-create' => ['crm.templates.create', '/crm/templates/create', [], ['mm-rst-form', 'name="subject"', 'name="body"', 'name="status"'], []],
+    'form-template-edit' => ['crm.templates.edit', '/crm/templates/1/edit', ['template' => $crmTemplate], ['mm-rst-form', 'name="_method"', 'Invoice &lt;b&gt;due&lt;/b&gt;'], []],
+];
+foreach ($crmCases as $crmName => [$crmViewName, $crmUrl, $crmData, $crmMarkers, $crmAbsent]) {
+    $crmRequest = Illuminate\Http\Request::create($crmUrl);
+    $crmRequest->setLaravelSession(new Illuminate\Session\Store('mm', new Illuminate\Session\ArraySessionHandler(10)));
+    $app->instance('request', $crmRequest);
+    $app->instance('url', new Illuminate\Routing\UrlGenerator($rsRoutes, $crmRequest));
+    try { $crmHtml = $app->make('view')->make($crmViewName, array_merge(['errors' => new Illuminate\Support\ViewErrorBag(), 'slugs' => []], $crmData))->render(); }
+    catch (Throwable $e) { throw new RuntimeException('CRM screen ' . $crmName . ' failed to render: ' . $e->getMessage(), 0, $e); }
+    $crmHtml = preg_replace('/(name="_token" value=")[A-Za-z0-9]+"/', '$1fixture-csrf-token"', str_replace('http://localhost/assets', '/assets', $crmHtml));
+    $crmMissing = [];
+    foreach (array_merge(['mm-panel', 'mm-page-title'], $crmMarkers) as $crmMarker) { if (strpos($crmHtml, $crmMarker) === false) $crmMissing[] = $crmMarker; }
+    if ($crmMissing) throw new RuntimeException('CRM screen ' . $crmName . ' missing ' . implode(' | ', $crmMissing));
+    if (preg_match('/class="[^"]*\\b(?:widget-box|widget-main|widget-header|page-header)\\b/', $crmHtml)) throw new RuntimeException('CRM screen ' . $crmName . ' still contains the legacy frame');
+    foreach ($crmAbsent as $crmMarker) { if (strpos($crmHtml, $crmMarker) !== false) throw new RuntimeException('CRM screen ' . $crmName . ' still contains ' . $crmMarker); }
+    if (strpos($crmHtml, '<b>Warning</b>') !== false || strpos($crmHtml, '<b>Notice</b>') !== false) throw new RuntimeException('CRM screen ' . $crmName . ' sample data is incomplete (PHP warning in output)');
+    $crmFile = __DIR__ . '/fixtures/crm/' . $crmName . '.html';
+    if (!is_dir(dirname($crmFile))) { mkdir(dirname($crmFile), 0777, true); }
+    if (getenv('MM_WRITE_FIXTURE')) { file_put_contents($crmFile, $crmHtml); file_put_contents($previewDir . '/crm-' . $crmName . '.html', $crmHtml); }
+    if (!is_file($crmFile) || (getenv('MM_STRICT_FIXTURES') && file_get_contents($crmFile) !== $crmHtml)) throw new RuntimeException($crmFile . ' is stale; regenerate it with MM_WRITE_FIXTURE=1');
+}
+echo "PASS crm screens render\n";
 
 // ---- Auth cluster (resources/views/auth/*) ----
 // The auth views reference App\Models\SystemSetting / App\Models\Group, so the views are

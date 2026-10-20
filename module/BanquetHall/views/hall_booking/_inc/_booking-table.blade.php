@@ -114,7 +114,7 @@
                                     <i class="fa fa-pencil-square-o"></i>
                                 </a>
 
-                                @if (hasPermission('banquet.booking.cancel', $slugs))
+                                @if (hasPermission('bookings.cancel', $slugs))
                                     <button type="button"
                                         onclick="cancelBooking(`{{ route('cancel-booking', $data->id) }}`)"
                                         class="btn btn-xs btn-warning" title="Cancel Reservation">

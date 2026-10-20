@@ -36,26 +36,31 @@ preservation guards in `tools/ui-check.cjs` before any markup moves. Financial s
 3. Invoices and print styles.
 4. Payment collection, then night audit.
 
-## Findings on night audit (backend, not changed)
+## Findings on night audit — resolved (03ba56fd)
 
-- `create()` has `->take(5)` on the transactions query, so the generate form lists and closes only five transactions
-  (looks like a leftover debugging limit).
-- The Close button has no `type`, so it submits the store form at once and skips the ten-second delay.
-- Generate shows an overlay and submits after a fixed `setTimeout` of 10 s; a double click schedules two submits.
-- `previous_paid` is posted as one non-indexed hidden input per row, so only the last value reaches the server.
-- Unreferenced views (`index-details`, `create`, `create-v3/v4`, `show`) were not migrated.
+- ~~`create()` has `->take(5)` on the transactions query~~ — debug limit removed.
+- ~~The Close button has no `type`~~ — now `type="button"`, returns to the audit list.
+- ~~Generate submits after a fixed 10 s `setTimeout`; double click schedules two submits~~ — one-shot
+  immediate submit with the overlay kept up during the request.
+- ~~`previous_paid` is one non-indexed hidden input per row~~ — now `previous_paid[{id}]` per row.
+- Unreferenced views (`index-details`, `create`, `create-v3/v4`) were deleted in the 2026-10-16 dead-code sweep; `show` is kept (the tool suite renders it as a contract screen) and `list` is live (included by `index`).
 
-## Findings on room assignment (not migrated)
+## Findings on room assignment — resolved (removed)
 
-- `booking/assaign.blade.php` is dead: `BookingController::edit()` and `BanquetBookingController` return `booking/edit`, and the
-  `return view('booking/assaign', ...)` line is commented out. The assign form action is commented out in `booking/edit`.
-- The `booking.assign` route and `BookingController::assign()` still exist, but no live Hotel view posts to them. The Banquet
-  module has its own `hall_booking/assaign` and `hall_booking/edit` forms that do.
-- Decision pending: remove the dead view and the route/controller method, or restore the assign step. No UI work was done for it.
+- `booking/assaign.blade.php`, `hall_booking/assaign.blade.php` and `hall_booking/edit.blade.php` were all unreachable:
+  `BookingController::edit()` and `BanquetBookingController::edit()` return `booking/edit`, and the assign returns are
+  commented out. (The Banquet `hall_booking/*` assign/edit forms did post to `booking.assign`, but nothing rendered them.)
+- The `booking.assign` route and `BookingController::assign()`/`BookingService::assign()` were therefore dormant — a
+  registered mutating endpoint (it re-runs `makePayment`) with no live UI, and `assign()` read `check_in`/`check_out`
+  field names the forms never posted.
+- **Decision (2026-10-16, owner-approved): remove the dead code.** Deleted the three views, the route, and the
+  assign/assignBookingDetails methods in both `BookingService`s, plus the commented leftovers in the controllers and
+  `booking/edit`. Restoring the assign step later is a git revert away if the workflow is wanted.
 
-## Findings on edit (backend, not changed)
+## Findings on edit — resolved (03ba56fd)
 
-- The edit form posts `check_in_date` and `check_out`, but `BookingService::update()` reads `$request->check_in` and
-  `$request->check_out`. `check_in` is not a field on that form (only the extend-date modal and `booking_next` have it), so the
-  stored check-in may be overwritten with an empty value. Confirm on staging before relying on edit for date changes.
-- The Reset buttons on create and edit sit outside the `<form>`, so they never reset it.
+- ~~The edit form posts `check_in_date`/`check_out` but `BookingService::update()` read `check_in`/`check_out`~~ —
+  `update()` now accepts both field-name pairs and falls back to the stored dates (the extend-date modal and
+  `booking_next` keep posting `check_in`/`check_out`). Confirm on staging before relying on edit for date changes.
+- ~~The Reset buttons on create and edit sit outside the `<form>`~~ — now `type="reset"` with the form attribute
+  (also fixed on the three live Banquet `hall_booking` forms).

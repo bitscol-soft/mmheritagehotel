@@ -39,7 +39,7 @@
                                     <a href="{{route('acc-customers.edit', $item->id)}}" class="btn btn-primary btn-xs"><i class="fa fa-pencil-square"></i></a>
                                 @endif
 
-                                @if ((hasPermission("acc-customers.delete", $slugs)))
+                                @if ((hasPermission("account-customers.delete", $slugs)))
                                     <a href="#" onclick="delete_item('{{ route('acc-customers.destroy', $item->id) }}')" class="btn btn-danger btn-xs"><i class="fa fa-trash-o"></i></a>
                                 @endif
                             </div>

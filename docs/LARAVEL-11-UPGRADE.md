@@ -1,162 +1,169 @@
-# Laravel 11 Upgrade Runbook
+# Laravel 8 → 11 upgrade runbook (BUGS #31)
 
-Prepared 2026-10-15 · Branch `arena/35ad811a-mmheritagehotel` · Companion to
-`docs/PLAN-MODERNIZATION.md` Phase 1 (which is still **plan-only** — `main` runs
-Laravel 8.75 / PHP 7.3–8.0 / Laravel Mix).
+**Status:** step 0 (repo prep) landed on this branch; steps 1–5 need a machine with
+PHP 8.2+, Composer and Packagist access (this sandbox has neither — `vendor/` is a
+**tracked** tree and CI installs from `composer.lock`).
 
----
+Current state: `laravel/framework ^8.75`, `php ^7.3|^8.0`, runtime PHP 8.1.
+Laravel 8 and PHP 8.1 are both EOL. The goal is Laravel 11 on PHP 8.2/8.3.
 
-## 0. Status summary
+## Why this is a runbook and not a blind bump
 
-| Item | State |
+- `composer.lock` + the committed `vendor/` tree are the deploy artifact
+  (`composer install` runs in `.github/workflows/frontend-fixtures.yml`; the deploy
+  workflows ship the working tree). A `composer.json` change **without** a matching
+  lock + vendor refresh changes nothing at runtime and would desync the three.
+- Laravel majors are sequential: 8 → 9 → 10 → 11. Each step has its own deprecation
+  surface; jumping straight to 11 hides which step broke what.
+
+## Blocker / package inventory
+
+| Package (current) | Problem | Target |
+|---|---|---|
+| `laravel/framework ^8.75` | EOL | `^11.0` (via `^9.0` → `^10.0`) |
+| `php ^7.3\|^8.0` | EOL floor | `^8.2` (L11 floor) |
+| `laravel/sanctum ^2.11` | L11 needs v3 | `^3.3` |
+| `laravel/tinker ^2.5` | old minor | `^2.9` |
+| `laravel/ui ^3.4` | L11 needs v4 | `^4.5` |
+| `fruitcake/laravel-cors ^2.0` | **abandoned**; CORS is in the framework since L9 | **drop** (config `cors.php` moves to framework middleware) |
+| `facade/ignition` (dev) | abandoned for L9+ | **`spatie/laravel-ignition ^2.0`** |
+| `nunomaduro/collision` (dev) | L11 needs v8 | `^8.1` (via `^6` → `^7` → `^8`) |
+| `phpunit/phpunit` (dev) | L11 needs 10/11 | `^10.5` (via `^9.5` → `^10.5`) |
+| `beyondcode/laravel-dump-server` (dev) | stale | keep at first, drop if it blocks |
+| `barryvdh/laravel-debugbar` (dev) | old majors block L11 | latest `^3.10` |
+| `carlos-meneses/laravel-mpdf ^2.1` | check L11 support | latest; swap wrapper only if abandoned |
+| `rajibbinalam/laravel-slug-generator ^0.2` | unknown L11 support | audit at step 2; replace with `Str::`-based slug if dead |
+| `skycoder/laravel-filesaver 2.x-dev` | dev-pinned | audit at step 2; vendored fallback is already in-tree |
+| `laravel/sail`, `fakerphp/faker`, `mockery/mockery` (dev) | minor | bump with the step |
+
+## Step 0 — repo prep (DONE on this branch)
+
+- [x] **Removed Laravel-9-removed global helpers** (they fatal on L9+):
+  `str_plural` → `Str::plural`, `snake_case` → `Str::snake`, `str_limit` → `Str::limit`
+  (`app/Console/Commands/ModelWithCompanyTrait.php`, `app/Exports/HrmExportData.php`).
+- [x] **`TrustProxies` already extends `Illuminate\Http\Middleware\TrustProxies`**
+  (no `fideloper/proxy` dependency — one of the classic 8→9 blockers is absent).
+- [x] **`$dates` model properties:** none in the tree (nothing to migrate to `$casts`).
+- [x] **`tools/laravel11-check.sh`** — CI guard, now **version-aware**: it reads the
+  framework/phpunit majors out of `composer.json` and hard-fails when the tree is
+  half-upgraded (e.g. `$routeMiddleware` still present on ^9, or renamed to
+  `$middlewareAliases` while still on ^8 — both make every route 404), when
+  fruitcake/ignition survives past ^8, or when `phpunit.xml` keeps the PHPUnit 9
+  schema on ^10. It also lists the Carbon `diffIn*` sites. Runs on every push/PR.
+- [x] **`tools/laravel11-bump.cjs`** — runs one upgrade step mechanically:
+  `node tools/laravel11-bump.cjs --step 1|2|3` prints the exact diff,
+  `--apply` writes it (composer versions, the Kernel rename, the CORS swap, the
+  PHPUnit 10 schema). It refuses a dirty tree, is idempotent, and never runs
+  composer - the lock/vendor refresh stays a deliberate networked step.
+- [x] **Audit of the classic 8→9 blockers** (all absent, so step 1 is small):
+  no `$dates` model properties, no Swift Mailer usage, no `dispatchNow`, no
+  `assertDeleted`, no Faker property access, no `Input` facade, no
+  `Route::controller`, no `@dataProvider`/`@test` annotations, and `setUp()`/
+  `tearDown()` already declare `: void`.
+
+Still fine as-is (checked): `Str::`/`Arr::` usage is already facade-based in the
+touched surfaces; `optional()`, `tap()`, `retry()`, `rescue()` helpers survive to L11.
+
+## Step 1 — Laravel 8 → 9 (PHP ≥ 8.0)
+
+1. `composer.json`:
+   - `"php": "^8.0.2"`
+   - `"laravel/framework": "^9.0"`, `"laravel/ui": "^4.0"`, `"laravel/sanctum": "^2.14"` (stays v2 on L9)
+   - dev: `"facade/ignition"` → `"spatie/laravel-ignition": "^1.0"`, `"nunomaduro/collision": "^6.1"`, `"phpunit/phpunit": "^9.5"`
+   - **remove** `fruitcake/laravel-cors` (framework CORS middleware takes over; keep
+     `config/cors.php`, it is read by the framework in L9+).
+2. App-code work at this step:
+   - `app/Http/Kernel.php`: `protected $routeMiddleware` → `protected $middlewareAliases`
+     (L8 reads `$routeMiddleware` only — do **not** rename before this bump).
+   - `app/Exceptions/Handler.php`: `$dontReport`/`$dontFlash` property shapes still work;
+     verify the `register()` closure style compiles on 9.
+   - `str_*`/`array_*` helpers: none left after step 0.
+3. `composer update` (full, this is a major), run the suite set in step 5.
+
+## Step 2 — Laravel 9 → 10 (PHP ≥ 8.1)
+
+1. `"laravel/framework": "^10.0"`, `"laravel/sanctum": "^3.2"`, `"laravel/ui": "^4.2"`,
+   dev: `"nunomaduro/collision": "^7.0"`, `"phpunit/phpunit": "^10.0"`,
+   `"spatie/laravel-ignition": "^2.0"`.
+2. App-code work:
+   - `Route::controller(...)` / missing closure return types: deprecations only.
+   - `database/migrations` `Schema::` legacy signatures still fine.
+   - Audit `rajibbinalam/laravel-slug-generator` + `skycoder/laravel-filesaver` for
+     L10 support; replace if dead (the filesaver vendored copy covers the emergency).
+   - `phpunit.xml`: PHPUnit 10 rejects `<coverage processUncoveredFiles="...">`; it
+     becomes `<source><include>`. `--apply` does this.
+3. `composer update`, step 5.
+
+## Step 3 — Laravel 10 → 11 (PHP ≥ 8.2)
+
+1. `"laravel/framework": "^11.0"`, `"php": "^8.2"`, `"laravel/sanctum": "^3.3"`,
+   `"laravel/tinker": "^2.9"`, `"laravel/ui": "^4.5"`, `"laravel/sail": "^1.26"`,
+   dev: `"nunomaduro/collision": "^8.1"`, `"phpunit/phpunit": "^10.5|^11.0"`,
+   `"barryvdh/laravel-debugbar": "^3.10"`.
+2. App-code work:
+   - Slim-skeleton shape is optional (the L8-era `Kernel`/`Handler`/`RouteServiceProvider`
+     still boot on L11 with deprecation notices); migrate when touched:
+     middleware registration → `bootstrap/app.php` ApplicationBuilder style.
+   - `Carbon 3` comes with L11: audit `diffIn*()` signedness + `->format()` locale
+     strings (the accounting service date math must be re-checked here).
+   - `Model::unguarded()`/mass-assignment defaults unchanged; verify `Auth::routes()`
+     (from `laravel/ui`) still registers — keep `laravel/ui` v4 for that.
+3. `composer update`, step 5.
+
+## Carbon 3 `diffIn*()` — 16 call sites to review at step 3
+
+Carbon 2 returns an **absolute integer** from `diffInDays()`; Carbon 3 returns a **signed
+float**. Every `->diffIn*()` call therefore has to be re-read at the L11 step, not just
+compiled. `tools/laravel11-check.sh` lists the current sites (file:line) while the
+framework is below ^11.
+
+The night/day arithmetic that must stay positive:
+
+| Site | Expression |
 |---|---|
-| UI redesign (PR #15: `x-mm` components, Tailwind layer, 360+ screens) | ✅ merged to `main` |
-| L11-prep cleanup (this branch) | ✅ done — see §1 |
-| Framework upgrade 8 → 9 → 10 → 11 | ⬜ **not started** — follow §2–§5 below |
-| Vite migration (replace Laravel Mix) | ⬜ optional, §7 |
-| PR #16 (CRM model refactor) | ⚠️ open, unrelated — review separately |
+| `module/Hotel/Services/BookingAdjustServiceV2.php:131,168` | `$check_out_date->diffInDays($check_in_date)` — **feeds the price adjustment** |
+| `module/Hotel/Services/{BookingService,BookingServiceNew,BookingServiceOld,FrontendBookingService}.php` | `total_night` for every booking line |
+| `module/Hotel/Controllers/BookingController.php:321`, `module/BanquetHall/Controllers/BanquetBookingController.php:268`, `module/BanquetHall/Services/BookingService.php:926` | `total_night` |
+| `resources/views/booking/_inc/_booking-context.blade.php:8` | `max((int) $bc_in->diffInDays($bc_out), 1)` |
+| `app/Helpers/HelperMethods.php:975` | `$toDate->diffInDays($fromDate) + 1` |
+| `app/Exports/HrmExportData.php:1120,1190,1258,1344`, `app/Models/Employee.php:350` | `$totalDay` |
 
-## 1. L11-prep cleanup already applied (this branch)
+Rule for the step-3 commit: wrap each of those in `abs(...)` (a no-op under Carbon 2,
+correct under Carbon 3) — **except** `app/Http/Controllers/SmartSoftPaymentScheduleController.php:59`,
+which already passes `false` because it genuinely wants the signed value.
 
-All changes are syntax-verified (`php -l` pass) and keep behavior identical on
-Laravel 8, so they are safe to merge before the framework bumps:
+This is deliberately not applied yet: it touches the booking price path, and
+`tools/ui-guard.sh` treats money lines as frozen. It belongs in the step-3 commit, where
+it can be verified against the booking tests.
 
-1. **Removed laravelcollective/html usages** — 12 Blade views (`Form::select` /
-   `Form::number`) rewritten to plain HTML with the same names, ids, classes,
-   old-input handling and placeholder options Collective produced.
-2. **Removed `unique_with` validation** (6 rules in 5 controllers) → native
-   `Rule::unique()->where()->ignore()`. `felixkiss/uniquewith-validator` dropped.
-3. **String route actions converted** to `[Controller::class, 'method']` and
-   `Route::resource('x', 'XController')` → `XController::class` in
-   `module/GeneralStore/routes/web_generalstore.php` and
-   `module/Permission/routes/web_permission.php` (55 declarations), with proper
-   `use` imports (namespace-group resolution no longer needed).
-4. **`$dates` → `$casts`** in both `HotelServiceSaleItem` models (removed in L11).
-5. **Deleted unused Livewire 2 leftovers** (`App\Http\Livewire\SalesRightSide`,
-   `resources/views/livewire/`) — the component was never mounted.
-6. **composer.json/lock** — dropped `doctrine/dbal` (no `->change()` migrations
-   exist), `felixkiss/uniquewith-validator`, `laravelcollective/html`,
-   `livewire/livewire`. `composer.lock` entries removed and `content-hash`
-   recomputed (verified against Composer's algorithm before rewriting).
+## Step 4 — lock + vendor refresh (mandatory commit)
 
-Re-run the transformation logic (for reference): `python3 tools/l11-prep-cleanup.py`
-(one-shot; it will refuse patterns it no longer finds).
+On the networked machine, after the chosen step's `composer update`:
 
-### Known pre-existing bugs (NOT touched — out of scope)
-
-8 Blade templates call `action('…Controller@method')` for controllers that
-**do not exist and have no routes** (`ServiceSalesDueReceiveController`,
-`InventoryPurchasePaymentController`, `InventorySalePaymentController` in
-BanquetHall / HotelService / Bar / Restaurant). Those pages already throw
-`Action … not defined` today (see `docs/BUGS.md`). Implement or remove them in a
-separate bugfix; when implemented, register routes with `::class` syntax.
-
-## 2. Prerequisites
-
-- **PHP 8.2+** (recommend 8.3) on dev machines and the build box
-- **Composer 2.7+**, Node 18+ (only needed for the Tailwind `ui:build` layer)
-- A green smoke baseline **before** touching framework constraints:
-  `php artisan route:list` works, login + guest list + booking create + one
-  report render pass manually or via Playwright (`npm run ui:browser`).
-- Work on a dedicated branch per major bump (§2.1) so each step is bisectable.
-
-> **Important:** `composer update` must run on a machine with Packagist access.
-> Each step below ends with: `composer install` sanity, `php artisan config:clear
-> route:clear view:clear`, full smoke, then commit **both** `composer.json` and
-> `composer.lock`.
-
-## 3. Step A — Laravel 8 → 9 (PHP 8.1+)
-
-```sh
-composer require laravel/framework:^9.52 laravel/ui:^4.5 laravel/sanctum:^3.3 \
-  laravel/tinker:^2.8 nunomaduro/collision:^6.4 --with-all-dependencies
-composer require facade/ignition spatie/laravel-ignition:^2.0 --dev --with-all-dependencies
+```
+composer install --no-dev --optimize-autoloader   # sanity from the fresh lock
 ```
 
-Framework-side changes to apply:
+Commit **`composer.json` + `composer.lock` + `vendor/`** together (this repo deploys
+the tracked vendor tree; the CI `frontend-fixtures` workflow also runs
+`composer install` and will fail if the lock is stale).
 
-- **CORS** — `fruitcake/laravel-cors` is merged into L9. In `app/Http/Kernel.php`
-  replace `\Fruitcake\Cors\HandleCors::class` with
-  `\Illuminate\Http\Middleware\HandleCors::class`, then
-  `composer remove fruitcake/laravel-cors` (keep `config/cors.php` — compatible).
-- **Swift Mailer → Symfony Mailer**: re-test every mail flow (password reset
-  `PasswordResetMailable`, `mail_templates`, `CrmSendMail`). Update
-  `config/mail.php` if custom transports are used.
-- **Flysystem 3**: custom disks (`nao-pon/flysystem-google-drive` — verify a
-  Flysystem-3-compatible release or replace with a maintained Google Drive
-  adapter) and `Storage::` calls using legacy APIs (`putFileAs` fine;
-  `put($path, $resource)` stream handling changed).
-- Move `app/Http/Middleware` untouched (fine), but re-test `TrustProxies`
-  (Symfony HttpFoundation 6 signatures).
-- Validation: re-test all `unique:` rules with the new `DatabaseRule::where()`.
+## Step 5 — verification checklist (every step)
 
-## 4. Step B — Laravel 9 → 10 (PHP 8.1+)
+1. `php artisan route:list` boots and the route-count is stable (route names frozen).
+2. `php artisan config:cache && php artisan route:cache && php artisan view:cache`.
+3. `vendor/bin/phpunit` (the `tests/` suite: ledger posting, invoice numbers,
+   cart semantics, route-name contracts).
+4. `bash tools/laravel11-check.sh` (guard green).
+5. `node tools/ui-check.cjs && bash tools/ui-guard.sh && php tools/ui-blade-check.php`
+   (the preservation suites must stay green — no view/JS/route churn may appear in
+   an upgrade step).
+6. Deploy to staging and walk the smoke list from `docs/PLAN-TESTING.md` appendix B.
 
-```sh
-composer require laravel/framework:^10.48 laravel/ui:^4.5 laravel/sanctum:^3.3 \
-  nunomaduro/collision:^7.0 phpunit/phpunit:^10.5 --with-all-dependencies --dev
-```
+## Guard
 
-- Update `phpunit.xml` to the PHPUnit 10 schema (`<coverage/>` element changed).
-- `laravel-mpdf` / `maatwebsite/excel` / `intervention/image` (^2.7 is fine) —
-  bump to latest minors with L10 support (all three have them).
-- Re-verify the whole `module/Account` report/PDF suite (mPDF) and Excel
-  import/export (Bar/Restaurant/Hotel `Imports`/`Exports`).
-
-## 5. Step C — Laravel 10 → 11 (PHP 8.2+)
-
-```sh
-composer require php:^8.2 laravel/framework:^11.0 laravel/ui:^4.6 laravel/sanctum:^4.0 \
-  laravel/tinker:^2.9 nunomaduro/collision:^8.1 --with-all-dependencies
-composer require phpunit/phpunit:^11.0 --dev --with-all-dependencies
-```
-
-- **Keep the existing `app/Http/Kernel.php` / `app/Console/Kernel.php` /
-  `app/Exceptions/Handler.php`** — the slim L11 skeleton is optional for
-  upgraded apps. Adopting `bootstrap/app.php` style can be a later refactor.
-- `$routeMiddleware` in `Kernel` still works; optionally rename to
-  `$middlewareAliases`.
-- Carbon: L11 allows Carbon 2 **or** 3 — stay on Carbon 2 (`nesbot/carbon`
-  current constraint) for now; Carbon 3 has minor diff/edge changes.
-- `skycoder/invoice-number-generator`, `skycoder/laravel-filesaver`,
-  `skycoder/query-shorter` (`*-dev`, used in 5 controllers: BookingNote,
-  Guest, GuestRegistrationTerms, HotelGallery, OurService): verify they install
-  on L11; if not, pin a fork or inline them (each is small).
-- `rajibbinalam/laravel-slug-generator` — verify L11 support; else swap to
-  `spatie/laravel-sluggable` (`config/SlugGenerator.php` + `app/Traits`).
-- `milon/barcode`, `simple-qrcode`, `staudenmeir/belongs-to-through`,
-  `spatie/db-dumper`, `doctrine` leftovers — bump to latest (all L11-ready).
-- Re-run the full smoke list (§6) and the UI gates (§7).
-
-## 6. Verification checklist (every step)
-
-```sh
-php artisan route:list | wc -l          # ~same count as before the bump
-php artisan config:clear && php artisan route:clear && php artisan view:clear
-./vendor/bin/phpunit                    # add smoke feature tests first if missing!
-php tools/ui-blade-check.php
-npm ci && npm run ui:build && npm run ui:check
-npm run ui:browser                      # Playwright e2e
-php artisan mm:render-public-fixtures --check
-```
-
-Manual smoke (staging data): login · front-desk dashboard · guest list filters ·
-create booking (3-step wizard) · assign room · folio payment · checkout ·
-night audit preview · restaurant POS sale · one Account ledger + PDF ·
-one Excel export · website homepage + booking cart.
-
-## 7. After Laravel 11 (parallel track)
-
-- **Mix → Vite**: the Tailwind layer already builds through its own CLI
-  (`ui:build`), so Laravel Mix can be replaced lazily via `laravel-vite-plugin`.
-- Move the remaining `public/assets` jQuery plugins into npm or freeze as-is.
-- Optional: slim skeleton migration (`bootstrap/app.php`), Pest, PHPStan/Larastan.
-- Replace mPDF with Browsershot/Chrome print when the A4 layout suite is
-  regenerated (per PLAN-MODERNIZATION 1.1).
-
-## 8. Rollback
-
-Each step is its own commit/PR containing `composer.json` + `composer.lock` +
-code diffs. Rollback = `git revert` of that PR and `composer install`. Do not
-run `php artisan migrate` during 8→11 (no schema changes); a DB snapshot is
-still recommended before smoke testing step A.
+`tools/laravel11-check.sh` fails when a Laravel-9-removed global helper is
+reintroduced (step 0's class of bug) and prints the remaining step-gated items
+(`Kernel::$routeMiddleware`, `fruitcake/laravel-cors`, `facade/ignition`) so the
+bump steps have a mechanical checklist. It is a step of the `Tailwind UI checks`
+workflow.

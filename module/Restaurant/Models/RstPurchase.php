@@ -9,6 +9,7 @@ use App\Traits\AutoCreatedUpdated;
 use Illuminate\Support\Facades\Auth;
 use Module\Restaurant\Models\Supplier;
 use App\Traits\AutoCreatedUpdatedWithCompany;
+use Module\GeneralStore\Models\PurchaseReceive;
 
 class RstPurchase extends Model
 {

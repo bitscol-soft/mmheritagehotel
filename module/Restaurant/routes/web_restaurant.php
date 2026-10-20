@@ -53,8 +53,13 @@ Route::group(['prefix'  => 'restaurant', 'as' => 'rst.'], function () {
             'material'              => RestMaterialController::class,
             'mat-products'          => MatrialProductController::class,
             'purchase'              => RstPurchaseController::class,
-            'production'            => RstProductionController::class,
         ]);
+        // docs/BUGS.md #78: RstProductionController::show/edit/update are copies
+        // of the PURCHASE screens (they resolve RstPurchase and render the
+        // purchases views) - there is no production show/edit view at all, so
+        // these three answered with a purchase or with null. index/create/store
+        // are the production screens and stay.
+        Route::resource('production', RstProductionController::class)->except(['show', 'edit', 'update']);
                 // round 3 (docs/BUGS.md): ProductCategoryController does not implement create/edit/show; the routes would 500
                 Route::resource('product-categories', ProductCategoryController::class)->except(['create', 'edit', 'show']);
                 // round 3 (docs/BUGS.md): ProductUnitController does not implement create/edit/show; the routes would 500

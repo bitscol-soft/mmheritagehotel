@@ -33,7 +33,7 @@
 @section('content')
     <x-mm.styles />
     <x-mm.page class="mm-room-form mm-category-form" title="Edit room category" description="Update room type details, rates, amenities and photos.">
-        @if (hasPermission('hotel-categories.view', $slugs))
+        @if (hasPermission('categories.index', $slugs))
             <x-slot name="actions">
                 <a href="{{ route('hotel-categories.index') }}" class="mm-button mm-button-secondary">
                     <i class="fa fa-arrow-left" aria-hidden="true"></i> Room categories
@@ -155,7 +155,9 @@
                                                                         <img class="img-responsive"
                                                                             src="{{ asset('/') }}{{ $item->relative_path ?? '' }}{{ $item->name ?? 'no-image.jpg' }}"
                                                                             alt="">
-                                                                        <div class="cat-img-delete"><i
+                                                                        <div class="cat-img-delete" title="Remove photo"
+                                                                            style="cursor: pointer"
+                                                                            onclick="delete_item('{{ route('hotel-categories.photo.destroy', $item->id) }}')"><i
                                                                                 class="ace-icon glyphicon glyphicon-remove"></i>
                                                                         </div>
                                                                     </div>

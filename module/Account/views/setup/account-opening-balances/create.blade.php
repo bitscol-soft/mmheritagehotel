@@ -13,7 +13,7 @@
 <x-mm.page class="mm-report mm-acc mm-rst mm-rst-inv mm-rst-form" title="Account Opening Balance" description="Enter opening balances for the ledger accounts.">
     <x-slot name="actions">
         <a class="mm-button mm-button-secondary" href="{{ request()->url() }}"><i class="fa fa-refresh"></i> Refresh</a>
-        @if(hasPermission('accounts.create', $slugs))
+        @if(hasPermission('account.create', $slugs))
             <a class="mm-button" href="{{ route('accounts.create') }}"><i class="fa fa-plus"></i> Add New</a>
         @endif
     </x-slot>

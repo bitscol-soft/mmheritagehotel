@@ -16,7 +16,7 @@
 @section('content')
 <x-mm.styles />
 <x-mm.page class="mm-hotel-service" title="New hotel service sale" description="Pick the guest, add the services sold and confirm the invoice.">
-    @if (hasPermission('service.view', $slugs))
+    @if (hasPermission('sales.index', $slugs))
         <x-slot name="actions">
             <a href="{{ route('hotelservice.service-sales.index') }}" class="mm-button mm-button-secondary">
                 <i class="fa fa-list-alt" aria-hidden="true"></i> Hotel Service Sale

@@ -11,12 +11,12 @@
 <x-mm.styles />
 <x-mm.page class="mm-acc mm-rst mm-rst-inv mm-rst-form" title="Edit Journal Voucher" description="Update the journal voucher.">
     <x-slot name="actions">
-        <a class="mm-button" href="{{ route('contra.index') }}"><i class="fa fa-list"></i> List</a>
+        <a class="mm-button" href="{{ route('voucher-journals.index') }}"><i class="fa fa-list"></i> List</a>
     </x-slot>
     <x-mm.panel class="tw-p-4">
         @include('partials._alert_message')
         <!-- INPUTS -->
-        <form action="{{route('vouchers.update', $voucher->id)}}" method="post" enctype="multipart/form-data">
+        <form action="{{ route('voucher-journals.update', $voucher->id) }}" method="post" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <input type="hidden" name="voucher_type" value="Journal">

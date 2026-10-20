@@ -99,6 +99,7 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     {
+        $this->hasAccess("items.create");
         $this->validate($request, [
             'company_id'   => 'required|not_in:0',
             'item_unit_id' => 'required',
@@ -146,6 +147,7 @@ class ItemController extends Controller
      */
     public function update(Request $request, Item $item)
     {
+        $this->hasAccess("items.edit");
         $this->validate($request, [
             'item_unit_id' => 'required',
             'name'         => 'required',
@@ -213,8 +215,11 @@ class ItemController extends Controller
     public function getItemDetailsForPurchase(Request $request)
     {
         $item = Item::where('id', $request->id)->with('item_unit')->first();
-        $data['current_stock'] = $item->current_stock;
-        $data['item_unit']     = $item->item_unit->name;
+
+        // docs/BUGS.md #70: unknown id (the picker fires before a value is
+        // chosen) must not 500 - answer with the neutral payload the JS expects
+        $data['current_stock'] = $item ? ($item->current_stock ?? 0) : 0;
+        $data['item_unit']     = $item ? (optional($item->item_unit)->name ?? '') : '';
 
 //        return $data;
         $item_id = $request->id;
@@ -231,8 +236,10 @@ class ItemController extends Controller
     public function getItemDetails(Request $request)
     {
         $item = Item::where('id', $request->id)->with('item_unit')->first();
-        $data['current_stock'] = $item->current_stock;
-        $data['item_unit']     = $item->item_unit->name;
+
+        // docs/BUGS.md #70: unknown id must not 500 (see getItemDetailsForPurchase)
+        $data['current_stock'] = $item ? ($item->current_stock ?? 0) : 0;
+        $data['item_unit']     = $item ? (optional($item->item_unit)->name ?? '') : '';
 
 
         $data['receive_items']         = [];
@@ -299,8 +306,10 @@ class ItemController extends Controller
     public function getItemDetailsForApprove (Request $request)
     {
         $item = Item::where('id', $request->id)->with('item_unit')->first();
-        $data['current_stock'] = $item->current_stock;
-        $data['item_unit']     = $item->item_unit->name;
+
+        // docs/BUGS.md #70: unknown id must not 500 (see getItemDetailsForPurchase)
+        $data['current_stock'] = $item ? ($item->current_stock ?? 0) : 0;
+        $data['item_unit']     = $item ? (optional($item->item_unit)->name ?? '') : '';
 
             $item_id = $request->id;
             $last_purchase = Purchase::whereIsApproved(1)->orderByDesc('purchase_date')->whereHas('purchase_details', function($q) use ($item_id) {

@@ -95,7 +95,7 @@ class SaleReturnController extends Controller
         $data['products']   = Product::with('unit')->get();
         $data['companies']  = Company::userCompanies();
         $data['customers']  = Customer::pluck('name', 'id');
-        $data['account']    = Account::where('name', 'Cash')->first();
+        $data['account']    = Account::where('name', 'Cash')->first() ?? new Account();   // docs/BUGS.md #73
 
         return view('sale.sale-returns.create', $data);
     }
@@ -173,7 +173,7 @@ class SaleReturnController extends Controller
     */
     public function show($id)
     {
-        $this->hasAccess("account-sales.show");
+        $this->hasAccess("account-sales.view");
 
         $saleReturn = SaleReturn::with('return_details', 'exchange_details', 'customer', 'company')->findOrFail($id);
 

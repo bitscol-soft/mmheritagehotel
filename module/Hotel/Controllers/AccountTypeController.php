@@ -130,6 +130,7 @@ class AccountTypeController extends Controller
     //--------------------------------------------------------------------------//
     public function update(Request $request,$id)
     {
+        $this->hasAccess("account.types.edit");
 
         $request->validate([
             'name' => 'required',

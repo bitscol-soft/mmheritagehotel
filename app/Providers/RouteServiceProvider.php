@@ -99,7 +99,7 @@ class RouteServiceProvider extends ServiceProvider
 
             // PERMISSION
             Route::group(['middleware' => ['web', 'auth']], function () {
-                Route::namespace($this->permission)->group(base_path('module/Permission/routes/web_permission.php'));
+                Route::namespace('\\')->group(base_path('module/Permission/routes/web_permission.php'));
             });
 
 
@@ -109,18 +109,18 @@ class RouteServiceProvider extends ServiceProvider
 
                 if (file_exists(base_path() . '/module/HRM/routes/web_employees.php')) {
                     Route::group(['middleware' => ['web', 'auth']], function () {
-                        Route::namespace($this->hrm)->group(base_path('module/HRM/routes/web_employees.php'));
+                        Route::namespace('\\')->group(base_path('module/HRM/routes/web_employees.php'));
                     });
                 }
 
                 if (file_exists(base_path() . '/module/HRM/routes/web_hrm-2.php')) {
                     Route::group(['middleware' => ['web', 'auth']], function () {
-                        Route::namespace($this->hrm)->prefix('hrm')->group(base_path('module/HRM/routes/web_hrm-2.php'));
+                        Route::namespace('\\')->prefix('hrm')->group(base_path('module/HRM/routes/web_hrm-2.php'));
                     });
                 }
                 if (file_exists(base_path() . '/module/HRM/routes/web.php')) {
                     Route::group(['middleware' => ['web', 'auth']], function () {
-                        Route::namespace($this->hrm)->prefix('hrm')->group(base_path('module/HRM/routes/web.php'));
+                        Route::namespace('\\')->prefix('hrm')->group(base_path('module/HRM/routes/web.php'));
                     });
                 }
             }
@@ -131,7 +131,7 @@ class RouteServiceProvider extends ServiceProvider
             if ($modules->where('name', 'General Store')->first() && file_exists(base_path() . '/module/GeneralStore/routes/web_generalstore.php')) {
 
                 Route::group(['middleware' => ['web', 'auth']], function () {
-                    Route::namespace($this->generalStore)->group(base_path('module/GeneralStore/routes/web_generalstore.php'));
+                    Route::namespace('\\')->group(base_path('module/GeneralStore/routes/web_generalstore.php'));
                 });
             }
 
@@ -143,7 +143,7 @@ class RouteServiceProvider extends ServiceProvider
             if ($modules->where('name', 'CRM')->first()) {
                 if (file_exists(base_path() . '/module/CRM/routes/web_crm.php')) {
                 Route::group(['middleware' => ['web', 'auth']], function () {
-                    Route::namespace($this->crm)->group(base_path('module/CRM/routes/web_crm.php'));
+                    Route::namespace('\\')->group(base_path('module/CRM/routes/web_crm.php'));
                 });
             }
             }
@@ -157,7 +157,7 @@ class RouteServiceProvider extends ServiceProvider
                 Route::group(['middleware' => ['web', 'auth']], function () {
 
 
-                    Route::namespace($this->account)->group(base_path('module/Account/routes/web_account.php'));
+                    Route::namespace('\\')->group(base_path('module/Account/routes/web_account.php'));
                 });
             }
 
@@ -170,7 +170,7 @@ class RouteServiceProvider extends ServiceProvider
                 Route::group(['middleware' => ['web', 'auth']], function () {
 
 
-                    Route::namespace($this->pos)->group(base_path('module/PosErp/routes/web_pos_erp.php'));
+                    Route::namespace('\\')->group(base_path('module/PosErp/routes/web_pos_erp.php'));
                 });
             }
 
@@ -183,7 +183,7 @@ class RouteServiceProvider extends ServiceProvider
                 Route::group(['middleware' => ['web', 'auth']], function () {
 
 
-                    Route::namespace($this->production)->group(base_path('module/Production/routes/web_production.php'));
+                    Route::namespace('\\')->group(base_path('module/Production/routes/web_production.php'));
                 });
             }
 
@@ -198,7 +198,12 @@ class RouteServiceProvider extends ServiceProvider
                 });
             }
             // Banquet Hall Route
-            if ($modules->where('name', 'BanquetHall')->first() && file_exists(base_path() . '/module/BanquetHall/routes/web_banquet_hall.php')) {
+            // The module is inactive (modules.status = 0) and its tables are not part of the
+            // shipped schema, so registering its routes only produced 500s when a URL was typed
+            // or bookmarked (docs/BUGS.md #72). Register them only while the module is active:
+            // the screens cannot be reached until it is switched on, and setting status = 1 in
+            // `modules` (after migrating its tables) revives the module as before.
+            if ($modules->where('name', 'BanquetHall')->where('status', 1)->first() && file_exists(base_path() . '/module/BanquetHall/routes/web_banquet_hall.php')) {
 
                 Route::group(['middleware' => ['web', 'auth']], function () {
 

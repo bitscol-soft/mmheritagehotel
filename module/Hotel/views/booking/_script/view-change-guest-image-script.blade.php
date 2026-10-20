@@ -5,7 +5,7 @@
     //                        VIEW MODAL METHOD                //
     //---------------------------------------------------------//
     function showImagesModal(booking_id){
-        $('#guest_image_change').toggle("modal");
+        $('#guest_image_change').modal('show');
 
         let id      = booking_id;
         const route = "{{ route('get-booking-details') }}";
@@ -30,7 +30,7 @@
                 $('#old_image').html('');
 
                     html += `<div class="modal-header">
-                                <button onclick="closesImagesModal()" type="button" class="close" data-dismiss="modal">&times;</button>
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
                                 <h4 class="blue bigger"><i class="fa fa-eye"></i> Update image of ${data?.guest_info?.name}</h4>
                             </div>
 
@@ -109,7 +109,7 @@
                             </div>
 
                             <div class="modal-footer">
-                                <button onclick="closesImagesModal()" class="btn btn-sm btn-outline-danger" data-dismiss="modal"><i
+                                <button type="button" class="btn btn-sm btn-outline-danger" data-dismiss="modal"><i
                                         class="ace-icon fa fa-times"></i>Cancel</button>
                                 <button class="btn btn-sm btn-outline-success" form="updateGuestImage${data.id}" type="submit">
                                     <i class="ace-icon fa fa-pencil-square"></i>Save
@@ -142,7 +142,7 @@
     //                        CLOSE MODAL METHOD                //
     //---------------------------------------------------------//
     function closesImagesModal(){
-        $('#guest_image_change').toggle("modal");
+        $('#guest_image_change').modal('hide');
     }
 
     //---------------------------------------------------------//
@@ -156,4 +156,3 @@
 
 
 </script>
-

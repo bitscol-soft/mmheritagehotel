@@ -49,13 +49,15 @@ class SupplierController extends Controller
      */
     public function store(Request $request)
     {
+        $this->hasAccess("suppliers.create");
         $this->validate($request, [
             'name'              => [Rule::unique('suppliers', 'name')->where('supplier_type_id', $request->supplier_type_id)],
             'country_id'        => 'required',
             'supplier_type_id'  => 'required'
         ]);
 
-        $data = array_merge($request->all(), ['group_id' => Group::first()->id]);
+        // docs/BUGS.md #73: optional() so a deployment with no `groups` row can still save
+        $data = array_merge($request->all(), ['group_id' => optional(Group::first())->id]);
         unset($data['attention']);
 
         $created = Supplier::create($data);
@@ -90,6 +92,7 @@ class SupplierController extends Controller
      */
     public function update(Request $request, Supplier $Supplier)
     {
+        $this->hasAccess("suppliers.edit");
         $suppliers = $this->validate($request, [
             'name'              => [Rule::unique('suppliers', 'name')->where('supplier_type_id', $request->supplier_type_id)->ignore($Supplier->id)],
             'country_id'        => 'required',

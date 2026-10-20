@@ -1,0 +1,1165 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="../../../public/assets/css/bootstrap.min.css"><link rel="stylesheet" href="../../../public/assets/css/ace.min.css"><link rel="stylesheet" href="../../../public/assets/font-awesome/4.5.0/css/font-awesome.min.css"><link rel="stylesheet" href="../../../public/assets/css/ace-skins.min.css"><link rel="stylesheet" href="../../../public/assets/custom_css/color-size.css"><link rel="stylesheet" href="../../../public/assets/custom_css/bootstrap4.css"><link rel="stylesheet" href="../../../public/assets/css/chosen.min.css"><link rel="stylesheet" href="../../../public/assets/css/bootstrap-datepicker3.min.css"><link rel="stylesheet" href="../../../public/assets/custom_css/floating-input.css"><link rel="stylesheet" href="../../../public/assets/custom_css/style.css"><link rel="stylesheet" href="../../../public/assets/css/daterangepicker.min.css"><link rel="stylesheet" href="../../../public/assets/custom_css/tokens.css"><link rel="stylesheet" href="../../../public/assets/custom_css/ui.css"><link rel="stylesheet" href="../../../public/assets/custom_css/shell.css"><style>body { font-family: Arial, sans-serif; } .mm-shell #navbar .hotel-title-name { color: #275188; }</style></head>
+<body class="no-skin mm-shell">
+<a href="#mm-main-content" class="mm-shell-skip">Skip to content</a>
+<button class="mm-shell-backdrop" data-mm-close aria-label="Close navigation" hidden></button>
+<div id="navbar" class="navbar navbar-default navbar-fixed-top"><div id="navbar-container" class="navbar-container">
+<button class="navbar-toggle menu-toggler pull-left" id="menu-toggler" data-target="#sidebar" aria-controls="sidebar" aria-expanded="false"><span class="sr-only">Toggle sidebar</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
+<div class="navbar-header pull-left"><a href="../../../home/" class="navbar-brand"><span class="hotel-title-name">MM Heritage Hotel</span></a></div>
+<div class="navbar-buttons navbar-header pull-right"><ul class="nav ace-nav"><li class="mm-hdr-item mm-hdr-search-item">
+    <button type="button" class="mm-hdr-search" data-mm-palette-open aria-label="Search screens and actions" aria-haspopup="dialog" aria-keyshortcuts="Control+K Meta+K" hidden>
+        <i class="fa fa-search" aria-hidden="true"></i>
+        <span class="mm-hdr-search-text">Search screens &amp; actions</span>
+        <kbd class="mm-kbd" data-mm-mod-key>Ctrl K</kbd>
+    </button>
+</li>
+    <li class="mm-hdr-item">
+        <a class="mm-hdr-cta" href="../../../hotel/booking/create/" data-mm-action="#" aria-label="New booking" title="New booking">
+            <i class="fa fa-plus" aria-hidden="true"></i><span class="mm-hdr-label">New booking</span>
+        </a>
+    </li>
+<li class="mm-hdr-item mm-hdr-tools">
+    <button type="button" class="mm-hdr-btn mm-hdr-optional" data-mm-nav-toggle aria-pressed="false" aria-label="Toggle sidebar layout" title="Toggle sidebar layout">
+        <i class="fa fa-bars" aria-hidden="true"></i>
+    </button>
+    <button type="button" class="mm-hdr-btn" data-mm-theme-toggle aria-pressed="false" aria-label="Dark theme" title="Dark theme" hidden>
+        <i class="fa fa-moon-o" aria-hidden="true"></i>
+    </button>
+    <button type="button" class="mm-hdr-btn mm-hdr-optional" data-mm-fullscreen aria-pressed="false" aria-label="Full screen" title="Full screen" hidden>
+        <i class="fa fa-expand" aria-hidden="true"></i>
+    </button>
+    <button type="button" class="mm-hdr-btn mm-hdr-optional" data-mm-shortcuts-open aria-haspopup="dialog" aria-keyshortcuts="?" aria-label="Keyboard shortcuts" title="Keyboard shortcuts" hidden>
+        <i class="fa fa-keyboard-o" aria-hidden="true"></i>
+    </button>
+</li>
+
+<li><a href="../../../restaurant/">RST</a></li><li><a href="../../../bar/">BAR</a></li><li><a href="#" aria-label="Clear application cache">↻</a></li>
+<li><a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-label="Notifications">♧</a><ul class="dropdown-menu dropdown-menu-right"><li><a href="../../../notifications/">All notifications</a></li></ul></li>
+<li><a href="#" data-toggle="dropdown" class="dropdown-toggle" aria-label="Account menu"><span class="user-info">Hotel administrator</span>⌄</a><ul class="dropdown-menu dropdown-menu-right"><li><a href="../../../password/">Change password</a></li><li><a href="../../../logout/">Logout</a></li></ul></li>
+</ul></div></div></div>
+<div id="main-container" class="main-container ace-save-state">
+<div id="sidebar" class="sidebar main-sidebar" data-sidebar="true" data-sidebar-scroll="false" data-sidebar-hover="false">
+<div class="mm-ui mm-shell-nav-tools">
+    <div class="tw-flex tw-items-center tw-justify-between tw-mb-4">
+        <span class="tw-text-xs tw-font-semibold tw-uppercase tw-tracking-wide tw-text-muted">Workspace</span>
+        <button type="button" class="mm-shell-icon mm-shell-close" data-mm-close aria-label="Close navigation">
+            <i class="fa fa-times" aria-hidden="true"></i>
+        </button>
+    </div>
+    <div class="mm-shell-nav-mode tw-mb-4" role="group" aria-label="Sidebar layout">
+        <span class="tw-block tw-text-sm tw-font-semibold tw-mb-2">Sidebar layout</span>
+        <div class="tw-flex tw-gap-1" role="group">
+            <button type="button" class="mm-button mm-button-secondary" data-mm-nav-toggle data-mm-nav-mode="mm-nav-full" aria-label="Full sidebar with text labels">
+                <i class="fa fa-list" aria-hidden="true"></i> Full
+            </button>
+            <button type="button" class="mm-button mm-button-secondary" data-mm-nav-toggle data-mm-nav-mode="mm-nav-rail" aria-label="Icon-only rail (68px)">
+                <i class="fa fa-bars" aria-hidden="true"></i> Rail
+            </button>
+            <button type="button" class="mm-button mm-button-secondary" data-mm-nav-toggle data-mm-nav-mode="mm-nav-collapsed" aria-label="Hide the sidebar">
+                <i class="fa fa-times-circle" aria-hidden="true"></i> Hidden
+            </button>
+        </div>
+    </div>
+    <label for="mm-menu-filter" class="tw-block tw-text-sm tw-font-semibold tw-mb-2">Find a menu</label>
+    <div class="mm-shell-search-row">
+    <input id="mm-menu-filter" class="mm-input" type="search" placeholder="Type a screen name…" autocomplete="off" aria-controls="mm-primary-menu" aria-describedby="mm-menu-help">
+    <button type="button" class="mm-shell-icon" id="mm-menu-clear" aria-label="Clear menu search" hidden><i class="fa fa-times" aria-hidden="true"></i></button>
+    </div>
+    <p id="mm-menu-help" class="tw-mt-2 tw-mb-0 tw-text-xs tw-text-muted">Search the menus available to you.</p>
+    <p id="mm-menu-empty" class="tw-mt-3 tw-mb-0 tw-text-sm" role="status" hidden>No matching menus.</p>
+</div>
+<div class="mm-role-switcher mm-no-print" id="mm-role-switcher" role="group" aria-label="Department role view switcher"><div class="mm-role-switcher-label"><span><i class="fa fa-user-secret"></i> Role View</span><span id="mm-role-active-label">All 14 Modules</span></div><div class="mm-role-pills"><button type="button" class="mm-role-pill is-active" data-role-filter="all" title="Show all 14 ERP modules">All (14)</button><button type="button" class="mm-role-pill" data-role-filter="frontdesk" title="Front-Desk &amp; Hospitality modules">Front Desk (8)</button><button type="button" class="mm-role-pill" data-role-filter="pos" title="Restaurant, Bar, Banquet &amp; Inventory modules">F&amp;B &amp; Store (5)</button><button type="button" class="mm-role-pill" data-role-filter="finance" title="Accounts, BI, CMS &amp; System Admin modules">Finance &amp; Admin (7)</button></div></div><ul class="nav nav-list" id="mm-primary-menu" aria-label="Main navigation"><li class="mm-nav-section" data-mod-roles="all,frontdesk,pos,finance" role="presentation">Overview & Hubs</li><li data-mod-roles="all,frontdesk,pos,finance"><a href="#" class="dropdown-toggle" aria-expanded="false" title="Dashboard & Board (6 primary tabs · 6 module screens)"><i class="menu-icon fa fa-tachometer"></i><span class="menu-text">Dashboard & Board</span><span class="mm-nav-count">6</span><b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b><ul class="submenu"><li><a href="../../../dashboard/">Front-Desk Command Board</a><b class="arrow"></b></li><li><a href="../../../preview/daily-flash-report/">Daily Manager Flash & Roster</a><b class="arrow"></b></li><li><a href="../../../preview/payment-gateway/">Payment Gateway & Deposits (F1)</a><b class="arrow"></b></li><li><a href="../../../preview/late-checkout/">Late Checkout & Fees (F10)</a><b class="arrow"></b></li><li><a href="../../../preview/enterprise-suite/">Enterprise Suite Overview</a><b class="arrow"></b></li><li><a href="../../../preview/attendance-biometric/">Staff Biometric Attendance</a><b class="arrow"></b></li></ul></li><li data-mod-roles="all,frontdesk,pos,finance"><a href="#" class="dropdown-toggle" aria-expanded="false" title="Command Hubs (4 primary tabs · 376 module screens)"><i class="menu-icon fa fa-sitemap"></i><span class="menu-text">Command Hubs</span><span class="mm-nav-count">4</span><b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b><ul class="submenu"><li><a href="../../../preview/plan-a/">Plan A (9 Core Workflows)</a><b class="arrow"></b></li><li><a href="../../../preview/plan-b/">Plan B (All 34 Features)</a><b class="arrow"></b></li><li><a href="../../../preview/">All 360 Screens Explorer</a><b class="arrow"></b></li><li><a href="../../../preview/ui-kit/">UI Component Kit</a><b class="arrow"></b></li></ul></li><li class="mm-nav-section" data-mod-roles="all,frontdesk" role="presentation">Hospitality & Front Desk</li><li data-mod-roles="all,frontdesk"><a href="#" class="dropdown-toggle" aria-expanded="false" title="Bookings & Tape Chart (6 primary tabs · 18 module screens)"><i class="menu-icon fa fa-calendar-plus-o"></i><span class="menu-text">Bookings & Tape Chart</span><span class="mm-nav-count">6</span><b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b><ul class="submenu"><li><a href="../../../preview/booking-next/">3-Step Booking Wizard</a><b class="arrow"></b></li><li><a href="../../../preview/tape-chart/">7-Day Tape Chart</a><b class="arrow"></b></li><li><a href="../../../preview/bookings/">Active Bookings (20)</a><b class="arrow"></b></li><li><a href="../../../preview/draft-booking-pdf/">Draft Summary A4 PDF</a><b class="arrow"></b></li><li><a href="../../../preview/group-contracts/">Group & Event Blocks</a><b class="arrow"></b></li><li><a href="../../../preview/hotel-booking-adjust/">Booking Migration</a><b class="arrow"></b></li></ul></li><li data-mod-roles="all,frontdesk,finance"><a href="#" class="dropdown-toggle" aria-expanded="false" title="In-House, Folio & Audit (8 primary tabs · 22 module screens)"><i class="menu-icon fa fa-columns"></i><span class="menu-text">In-House, Folio & Audit</span><span class="mm-nav-count">8</span><b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b><ul class="submenu"><li><a href="../../../preview/folio-settlement/">Split-Folio Settlement</a><b class="arrow"></b></li><li><a href="../../../preview/checkout/">Checkout & Folio</a><b class="arrow"></b></li><li><a href="../../../preview/payment-collection/">Payment Collection</a><b class="arrow"></b></li><li><a href="../../../preview/room-move/">Room Move & Upgrade</a><b class="arrow"></b></li><li><a href="../../../preview/kiosk-checkin/">Self-Service Kiosk</a><b class="arrow"></b></li><li><a href="../../../preview/invoice/">Booking Tax Invoice</a><b class="arrow"></b></li><li><a href="../../../preview/night-audit-hardening/">Night-Audit Day Lock</a><b class="arrow"></b></li><li><a href="../../../preview/night-audit/">Night Audit Register</a><b class="arrow"></b></li></ul></li><li data-mod-roles="all,frontdesk"><a href="#" class="dropdown-toggle" aria-expanded="false" title="Guests & CRM 360° (6 primary tabs · 16 module screens)"><i class="menu-icon fa fa-address-book-o"></i><span class="menu-text">Guests & CRM 360°</span><span class="mm-nav-count">6</span><b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b><ul class="submenu"><li><a href="../../../preview/guest-crm/">Guest & Corporate CRM 360°</a><b class="arrow"></b></li><li><a href="../../../preview/guests/">Guests Directory (20 VIPs)</a><b class="arrow"></b></li><li><a href="../../../preview/city-ledger/">Corporate City Ledger AR</a><b class="arrow"></b></li><li><a href="../../../preview/loyalty-coupons/">Loyalty & Coupons</a><b class="arrow"></b></li><li><a href="../../../preview/guest-portal/">Guest Self-Portal</a><b class="arrow"></b></li><li><a href="../../../preview/hotel-sms/">Guest SMS Dispatch</a><b class="arrow"></b></li></ul></li><li data-mod-roles="all,frontdesk"><a href="#" class="dropdown-toggle" aria-expanded="false" title="Rooms & Housekeeping (6 primary tabs · 16 module screens)"><i class="menu-icon fa fa-bed"></i><span class="menu-text">Rooms & Housekeeping</span><span class="mm-nav-count">6</span><b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b><ul class="submenu"><li><a href="../../../preview/rooms/">Rooms Directory (20 Suites)</a><b class="arrow"></b></li><li><a href="../../../preview/housekeeping-board/">Housekeeping SLA Board</a><b class="arrow"></b></li><li><a href="../../../preview/concierge-requests/">Concierge & Lost/Found</a><b class="arrow"></b></li><li><a href="../../../preview/minibar-folio/">Minibar Auto-Post</a><b class="arrow"></b></li><li><a href="../../../preview/maintenance-tickets/">Maintenance Tickets</a><b class="arrow"></b></li><li><a href="../../../preview/shift-roster/">Staff Shift Roster</a><b class="arrow"></b></li></ul></li><li data-mod-roles="all,frontdesk"><a href="#" class="dropdown-toggle" aria-expanded="false" title="Rates, Channels & Setup (9 primary tabs · 15 module screens)"><i class="menu-icon fa fa-sliders"></i><span class="menu-text">Rates, Channels & Setup</span><span class="mm-nav-count">9</span><b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b><ul class="submenu"><li><a href="../../../preview/room-settings/">Room Settings & Pricing</a><b class="arrow"></b></li><li><a href="../../../preview/rate-plans/">Seasonal Rate Plans</a><b class="arrow"></b></li><li><a href="../../../preview/dynamic-pricing/">Dynamic Yield Pricing</a><b class="arrow"></b></li><li><a href="../../../preview/channel-manager/">OTA Channel Manager</a><b class="arrow"></b></li><li><a href="../../../preview/inventory-guards/">OOO & Inventory Guards</a><b class="arrow"></b></li><li><a href="../../../preview/category-create/">Add Room Category</a><b class="arrow"></b></li><li><a href="../../../preview/setup-amenities/">Amenities Setup</a><b class="arrow"></b></li><li><a href="../../../preview/setup-vat/">VAT & Service Charge</a><b class="arrow"></b></li><li><a href="../../../preview/setup-registration-terms/">Registration Terms</a><b class="arrow"></b></li></ul></li><li data-mod-roles="all,frontdesk,pos"><a href="#" class="dropdown-toggle" aria-expanded="false" title="Banquet & Services (9 primary tabs · 21 module screens)"><i class="menu-icon fa fa-glass"></i><span class="menu-text">Banquet & Services</span><span class="mm-nav-count">9</span><b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b><ul class="submenu"><li><a href="../../../preview/bq-booking-index/">Banquet Bookings</a><b class="arrow"></b></li><li><a href="../../../preview/bq-booking-create/">New Banquet Booking</a><b class="arrow"></b></li><li><a href="../../../preview/bq-rooms-index/">Banquet Halls</a><b class="arrow"></b></li><li><a href="../../../preview/bq-category-index/">Hall Categories</a><b class="arrow"></b></li><li><a href="../../../preview/bq-aminities-index/">Hall Amenities</a><b class="arrow"></b></li><li><a href="../../../preview/hservice-sales/">Hotel Service Sales</a><b class="arrow"></b></li><li><a href="../../../preview/hservice-sale-create/">New Service Sale</a><b class="arrow"></b></li><li><a href="../../../preview/hservice-services/">Services Catalog</a><b class="arrow"></b></li><li><a href="../../../preview/upsell-marketplace/">Spa & Upsell Add-Ons</a><b class="arrow"></b></li></ul></li><li class="mm-nav-section" data-mod-roles="all,pos" role="presentation">F&B POS & Inventory</li><li data-mod-roles="all,pos" class="mm-mod-current open"><a href="#" class="dropdown-toggle" aria-expanded="true" title="Restaurant & Bar POS (11 primary tabs · 54 module screens)"><i class="menu-icon fa fa-cutlery"></i><span class="menu-text">Restaurant & Bar POS</span><span class="mm-nav-count">11</span><b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b><ul class="submenu"><li><a href="../../../preview/pos-unified/">Unified Split-Bill POS</a><b class="arrow"></b></li><li><a href="../../../preview/pos-kot-print/">80mm Thermal KOT Studio</a><b class="arrow"></b></li><li class="active"><a href="../../../preview/rst-pos/" aria-current="page">Restaurant POS</a><b class="arrow"></b></li><li><a href="../../../preview/bar-pos/">Skyline Bar POS</a><b class="arrow"></b></li><li><a href="../../../preview/rst-tables/">Restaurant Tables</a><b class="arrow"></b></li><li><a href="../../../preview/bar-tables/">Bar & Lounge Tables</a><b class="arrow"></b></li><li><a href="../../../preview/rst-kitchen-board/">Kitchen Board (KDS)</a><b class="arrow"></b></li><li><a href="../../../preview/rst-kitchen-list/">Kitchen Order Queue</a><b class="arrow"></b></li><li><a href="../../../preview/rst-sales-list/">Restaurant Sales</a><b class="arrow"></b></li><li><a href="../../../preview/rst-report-sales/">F&B Sales Report</a><b class="arrow"></b></li><li><a href="../../../preview/rst-audit-list/">F&B Night Audit</a><b class="arrow"></b></li></ul></li><li data-mod-roles="all,pos"><a href="#" class="dropdown-toggle" aria-expanded="false" title="Kitchen & Store Stock (10 primary tabs · 59 module screens)"><i class="menu-icon fa fa-cubes"></i><span class="menu-text">Kitchen & Store Stock</span><span class="mm-nav-count">10</span><b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b><ul class="submenu"><li><a href="../../../preview/rsi-inventory-report/">Kitchen Stock Report</a><b class="arrow"></b></li><li><a href="../../../preview/rsi-products/">Kitchen Products</a><b class="arrow"></b></li><li><a href="../../../preview/rsi-categories/">Kitchen Categories</a><b class="arrow"></b></li><li><a href="../../../preview/rsi-suppliers/">F&B Suppliers</a><b class="arrow"></b></li><li><a href="../../../preview/rsi-adjustments/">Stock Adjustments</a><b class="arrow"></b></li><li><a href="../../../preview/gs-stock-in-hand/">Store Stock in Hand</a><b class="arrow"></b></li><li><a href="../../../preview/gs-items/">Store Items Master</a><b class="arrow"></b></li><li><a href="../../../preview/gs-purchases/">Store Purchase POs</a><b class="arrow"></b></li><li><a href="../../../preview/gs-grn-list/">Goods Received (GRN)</a><b class="arrow"></b></li><li><a href="../../../preview/gs-gr-list/">Department Requisitions</a><b class="arrow"></b></li></ul></li><li class="mm-nav-section" data-mod-roles="all,finance" role="presentation">Finance, BI & Admin</li><li data-mod-roles="all,finance"><a href="#" class="dropdown-toggle" aria-expanded="false" title="Accounts & Finance (12 primary tabs · 85 module screens)"><i class="menu-icon fa fa-money"></i><span class="menu-text">Accounts & Finance</span><span class="mm-nav-count">12</span><b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b><ul class="submenu"><li><a href="../../../preview/acc-balance-sheet/">Balance Sheet & Builder</a><b class="arrow"></b></li><li><a href="../../../preview/acc-income-statement/">Income Statement (P&L)</a><b class="arrow"></b></li><li><a href="../../../preview/acc-trial-balance/">Trial Balance</a><b class="arrow"></b></li><li><a href="../../../preview/acc-cash-flow/">Cash Flow Statement</a><b class="arrow"></b></li><li><a href="../../../preview/acc-ratio-analysis/">Ratio Analysis</a><b class="arrow"></b></li><li><a href="../../../preview/acc-chart-of-account/">Chart of Accounts</a><b class="arrow"></b></li><li><a href="../../../preview/acc-account-ledger/">Account Ledger</a><b class="arrow"></b></li><li><a href="../../../preview/acc-payments/">Payment Vouchers</a><b class="arrow"></b></li><li><a href="../../../preview/acc-receives/">Receive Vouchers</a><b class="arrow"></b></li><li><a href="../../../preview/acc-journals/">Journal Vouchers</a><b class="arrow"></b></li><li><a href="../../../preview/acc-fund-transfers/">Fund Transfers</a><b class="arrow"></b></li><li><a href="../../../preview/gateway-reconciliation/">Gateway Reconciliation</a><b class="arrow"></b></li></ul></li><li data-mod-roles="all,finance"><a href="#" class="dropdown-toggle" aria-expanded="false" title="Manager BI & Reports (8 primary tabs · 19 module screens)"><i class="menu-icon fa fa-bar-chart"></i><span class="menu-text">Manager BI & Reports</span><span class="mm-nav-count">8</span><b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b><ul class="submenu"><li><a href="../../../preview/manager-bi/">Manager BI: ADR & RevPAR</a><b class="arrow"></b></li><li><a href="../../../preview/report-expected-arrival/">Expected Arrivals</a><b class="arrow"></b></li><li><a href="../../../preview/report-expected-departure/">Expected Departures</a><b class="arrow"></b></li><li><a href="../../../preview/report-in-house-guest/">In-House Guests</a><b class="arrow"></b></li><li><a href="../../../preview/report-today-check-in/">Today Check-In</a><b class="arrow"></b></li><li><a href="../../../preview/report-vat-report-day/">Daily & Monthly VAT</a><b class="arrow"></b></li><li><a href="../../../preview/report-night-closing/">Night Closing Report</a><b class="arrow"></b></li><li><a href="../../../preview/report-all-reports/">All Hotel Reports</a><b class="arrow"></b></li></ul></li><li data-mod-roles="all,finance"><a href="#" class="dropdown-toggle" aria-expanded="false" title="Website & Storefront (8 primary tabs · 34 module screens)"><i class="menu-icon fa fa-globe"></i><span class="menu-text">Website & Storefront</span><span class="mm-nav-count">8</span><b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b><ul class="submenu"><li><a href="../../../preview/web-banner-index/">CMS Homepage Banners</a><b class="arrow"></b></li><li><a href="../../../preview/web-gallery-index/">CMS Suite Gallery</a><b class="arrow"></b></li><li><a href="../../../preview/web-pages-index/">CMS Content Pages</a><b class="arrow"></b></li><li><a href="../../../preview/web-settings/">Website Brand Settings</a><b class="arrow"></b></li><li><a href="../../../preview/public-home/">Public Storefront</a><b class="arrow"></b></li><li><a href="../../../preview/public-search-all-room/">Public Suite Search</a><b class="arrow"></b></li><li><a href="../../../preview/public-booking-cart/">Public Booking Cart</a><b class="arrow"></b></li><li><a href="../../../preview/public-food-menu/">Public Dining Menu</a><b class="arrow"></b></li></ul></li><li data-mod-roles="all,finance"><a href="#" class="dropdown-toggle" aria-expanded="false" title="System, RBAC & Docs (11 primary tabs · 30 module screens)"><i class="menu-icon fa fa-cogs"></i><span class="menu-text">System, RBAC & Docs</span><span class="mm-nav-count">11</span><b class="arrow fa fa-angle-down"></b></a><b class="arrow"></b><ul class="submenu"><li><a href="../../../preview/system-settings/">System Settings</a><b class="arrow"></b></li><li><a href="../../../preview/perm-access-create/">Role & Permission Matrix</a><b class="arrow"></b></li><li><a href="../../../preview/perm-users-index/">Permitted Staff Users</a><b class="arrow"></b></li><li><a href="../../../preview/audit-compliance/">2FA, Audit & Compliance</a><b class="arrow"></b></li><li><a href="../../../preview/admin-i18n/">Bilingual i18n Manager</a><b class="arrow"></b></li><li><a href="../../../preview/import-export-hub/">Import / Export Hub</a><b class="arrow"></b></li><li><a href="../../../preview/wiki/">User Wiki & Help (EN/বাংলা)</a><b class="arrow"></b></li><li><a href="../../../preview/sop-print/">Printable A4 SOP Sheet</a><b class="arrow"></b></li><li><a href="../../../preview/onboarding/">Staff Onboarding Hub</a><b class="arrow"></b></li><li><a href="../../../preview/booking-drawers/">Slide-Over App Drawers</a><b class="arrow"></b></li><li><a href="../../../preview/login/">Staff Login (Auth)</a><b class="arrow"></b></li></ul></li></ul></div>
+<div id="mm-main-content" class="main-content" tabindex="-1"><div class="main-content-inner"><div class="page-content">
+
+<nav class="mm-top-subnav is-sticky is-slid-up mm-no-print" id="mm-top-subnav" data-cur-href="../../../preview/rst-pos/" data-cur-title="Restaurant POS" data-mod-label="Restaurant & Bar POS" data-tabs-count="11" aria-label="Restaurant & Bar POS sub-menu tabs"><div class="mm-top-subnav-curtain" id="mm-top-subnav-curtain"><div class="mm-top-subnav-head"><div class="mm-top-subnav-title"><span class="mm-top-subnav-icon"><i class="fa fa-cutlery"></i></span><span>Restaurant & Bar POS</span><span class="mm-badge mm-badge-paid" style="font-size:11px">3 / 11 Tabs</span></div><div style="display:flex;flex-wrap:wrap;align-items:center;gap:6px"><input type="search" id="mm-top-tab-filter" class="mm-top-tab-filter" placeholder="Filter 54 module screens..." aria-label="Filter sub-menu tabs and module screens"><button type="button" id="mm-express-create-btn" data-toggle="modal" data-target="#mm-express-drawer" class="mm-button" style="min-height:28px;padding:2px 10px;font-size:11.5px" title="Express Walk-In Room Hold, 80mm KOT Order &amp; GL Voucher Quick-Create (Alt+Q)"><i class="fa fa-plus-circle"></i> + Quick Create</button><button type="button" id="mm-top-more-btn" aria-expanded="false" aria-controls="mm-top-more-panel" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11.5px"><i class="fa fa-th-list"></i> All 54 Module Screens <i class="fa fa-caret-down"></i></button><button type="button" id="mm-top-pin-btn" aria-pressed="true" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11.5px" title="Pin or unpin top sub-menu bar to sticky top while scrolling"><i class="fa fa-thumb-tack"></i> Pinned</button><button type="button" id="mm-top-slideup-btn" class="mm-button mm-button-secondary" style="min-height:28px;padding:2px 10px;font-size:11.5px" title="Slide sub-menu bar up under top navigation"><i class="fa fa-chevron-up"></i> Slide Up</button></div></div><div class="mm-top-subnav-tabs" role="navigation" aria-label="Module sub-pages"><a href="../../../preview/pos-unified/" data-top-tab-search="unified split-bill pos /preview/pos-unified" class="mm-top-tab"><i class="fa fa-cutlery"></i><span>Unified Split-Bill POS</span><span class="mm-top-tab-badge">4 Outlets</span></a><a href="../../../preview/pos-kot-print/" data-top-tab-search="80mm thermal kot studio /preview/pos-kot-print" class="mm-top-tab"><i class="fa fa-print"></i><span>80mm Thermal KOT Studio</span><span class="mm-top-tab-badge">80mm KOT</span></a><a href="../../../preview/rst-pos/" data-top-tab-search="restaurant pos /preview/rst-pos" class="mm-top-tab is-active" aria-current="page"><i class="fa fa-desktop"></i><span>Restaurant POS</span></a><a href="../../../preview/bar-pos/" data-top-tab-search="skyline bar pos /preview/bar-pos" class="mm-top-tab"><i class="fa fa-glass"></i><span>Skyline Bar POS</span></a><a href="../../../preview/rst-tables/" data-top-tab-search="restaurant tables /preview/rst-tables" class="mm-top-tab"><i class="fa fa-th-large"></i><span>Restaurant Tables</span></a><a href="../../../preview/bar-tables/" data-top-tab-search="bar & lounge tables /preview/bar-tables" class="mm-top-tab"><i class="fa fa-th"></i><span>Bar & Lounge Tables</span></a><a href="../../../preview/rst-kitchen-board/" data-top-tab-search="kitchen board (kds) /preview/rst-kitchen-board" class="mm-top-tab"><i class="fa fa-fire"></i><span>Kitchen Board (KDS)</span><span class="mm-top-tab-badge">3 KOT</span></a><a href="../../../preview/rst-kitchen-list/" data-top-tab-search="kitchen order queue /preview/rst-kitchen-list" class="mm-top-tab"><i class="fa fa-list"></i><span>Kitchen Order Queue</span></a><a href="../../../preview/rst-sales-list/" data-top-tab-search="restaurant sales /preview/rst-sales-list" class="mm-top-tab"><i class="fa fa-file-text-o"></i><span>Restaurant Sales</span></a><a href="../../../preview/rst-report-sales/" data-top-tab-search="f&b sales report /preview/rst-report-sales" class="mm-top-tab"><i class="fa fa-bar-chart"></i><span>F&B Sales Report</span></a><a href="../../../preview/rst-audit-list/" data-top-tab-search="f&b night audit /preview/rst-audit-list" class="mm-top-tab"><i class="fa fa-moon-o"></i><span>F&B Night Audit</span></a></div><div class="mm-top-more-panel" id="mm-top-more-panel" hidden><div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;padding-bottom:8px;border-bottom:1px solid rgba(148,163,184,0.2)"><div style="font-size:12px;font-weight:700"><i class="fa fa-cutlery"></i> Restaurant & Bar POS — Complete Screen Directory (<span id="mm-top-more-count">54</span> screens)</div><div style="display:flex;flex-wrap:wrap;gap:6px"><button type="button" class="mm-button mm-button-secondary mm-top-scope-btn is-active" data-top-scope="all" style="min-height:25px;padding:1px 9px;font-size:11px">All (54)</button><button type="button" class="mm-button mm-button-secondary mm-top-scope-btn" data-top-scope="primary" style="min-height:25px;padding:1px 9px;font-size:11px">Primary Tabs (11)</button><a href="../../../preview/" class="mm-button mm-button-secondary" style="min-height:25px;padding:1px 9px;font-size:11px"><i class="fa fa-th-large"></i> All 362 ERP Screens →</a></div></div><div class="mm-top-more-grid" id="mm-top-more-grid"><a href="../../../preview/pos-unified/" data-top-more-search="unified split-bill pos /preview/pos-unified" data-top-more-primary="1" class="mm-top-more-card"><span><i class="fa fa-bookmark" style="opacity:.75;margin-right:6px"></i>Unified Split-Bill POS</span><span class="mm-badge mm-badge-partial" style="font-size:10px">Tab</span></a><a href="../../../preview/pos-kot-print/" data-top-more-search="80mm thermal kot studio /preview/pos-kot-print" data-top-more-primary="1" class="mm-top-more-card"><span><i class="fa fa-bookmark" style="opacity:.75;margin-right:6px"></i>80mm Thermal KOT Studio</span><span class="mm-badge mm-badge-partial" style="font-size:10px">Tab</span></a><a href="../../../preview/rst-pos/" data-top-more-search="restaurant pos /preview/rst-pos" data-top-more-primary="1" class="mm-top-more-card is-active"><span><i class="fa fa-bookmark" style="opacity:.75;margin-right:6px"></i>Restaurant POS</span><span class="mm-badge mm-badge-paid" style="font-size:10px">Current</span></a><a href="../../../preview/bar-pos/" data-top-more-search="skyline bar pos /preview/bar-pos" data-top-more-primary="1" class="mm-top-more-card"><span><i class="fa fa-bookmark" style="opacity:.75;margin-right:6px"></i>Skyline Bar POS</span><span class="mm-badge mm-badge-partial" style="font-size:10px">Tab</span></a><a href="../../../preview/rst-tables/" data-top-more-search="restaurant tables /preview/rst-tables" data-top-more-primary="1" class="mm-top-more-card"><span><i class="fa fa-bookmark" style="opacity:.75;margin-right:6px"></i>Restaurant Tables</span><span class="mm-badge mm-badge-partial" style="font-size:10px">Tab</span></a><a href="../../../preview/bar-tables/" data-top-more-search="bar & lounge tables /preview/bar-tables" data-top-more-primary="1" class="mm-top-more-card"><span><i class="fa fa-bookmark" style="opacity:.75;margin-right:6px"></i>Bar & Lounge Tables</span><span class="mm-badge mm-badge-partial" style="font-size:10px">Tab</span></a><a href="../../../preview/rst-kitchen-board/" data-top-more-search="kitchen board (kds) /preview/rst-kitchen-board" data-top-more-primary="1" class="mm-top-more-card"><span><i class="fa fa-bookmark" style="opacity:.75;margin-right:6px"></i>Kitchen Board (KDS)</span><span class="mm-badge mm-badge-partial" style="font-size:10px">Tab</span></a><a href="../../../preview/rst-kitchen-list/" data-top-more-search="kitchen order queue /preview/rst-kitchen-list" data-top-more-primary="1" class="mm-top-more-card"><span><i class="fa fa-bookmark" style="opacity:.75;margin-right:6px"></i>Kitchen Order Queue</span><span class="mm-badge mm-badge-partial" style="font-size:10px">Tab</span></a><a href="../../../preview/rst-sales-list/" data-top-more-search="restaurant sales /preview/rst-sales-list" data-top-more-primary="1" class="mm-top-more-card"><span><i class="fa fa-bookmark" style="opacity:.75;margin-right:6px"></i>Restaurant Sales</span><span class="mm-badge mm-badge-partial" style="font-size:10px">Tab</span></a><a href="../../../preview/rst-report-sales/" data-top-more-search="f&b sales report /preview/rst-report-sales" data-top-more-primary="1" class="mm-top-more-card"><span><i class="fa fa-bookmark" style="opacity:.75;margin-right:6px"></i>F&B Sales Report</span><span class="mm-badge mm-badge-partial" style="font-size:10px">Tab</span></a><a href="../../../preview/rst-audit-list/" data-top-more-search="f&b night audit /preview/rst-audit-list" data-top-more-primary="1" class="mm-top-more-card"><span><i class="fa fa-bookmark" style="opacity:.75;margin-right:6px"></i>F&B Night Audit</span><span class="mm-badge mm-badge-partial" style="font-size:10px">Tab</span></a><a href="../../../preview/rst-kitchen-show/" data-top-more-search="order details /preview/rst-kitchen-show" data-top-more-primary="0" class="mm-top-more-card"><span><i class="fa fa-file-text-o" style="opacity:.75;margin-right:6px"></i>Order details</span><span class="mm-badge " style="font-size:10px">rst-kitchen-show</span></a><a href="../../../preview/rst-audit-generate/" data-top-more-search="generate restaurant night audit /preview/rst-audit-generate" data-top-more-primary="0" class="mm-top-more-card"><span><i class="fa fa-file-text-o" style="opacity:.75;margin-right:6px"></i>Generate restaurant night audit</span><span class="mm-badge " style="font-size:10px">rst-audit-generate</span></a><a href="../../../preview/rst-payment-collection/" data-top-more-search="restaurant payment collection /preview/rst-payment-collection" data-top-more-primary="0" class="mm-top-more-card"><span><i class="fa fa-file-text-o" style="opacity:.75;margin-right:6px"></i>Restaurant payment collection</span><span class="mm-badge " style="font-size:10px">rst-payment-collection</span></a><a href="../../../preview/rst-report-cash-flow/" data-top-more-search="cash flow /preview/rst-report-cash-flow" data-top-more-primary="0" class="mm-top-more-card"><span><i class="fa fa-file-text-o" style="opacity:.75;margin-right:6px"></i>Cash flow</span><span class="mm-badge " style="font-size:10px">rst-report-cash-flow</span></a><a href="../../../preview/rst-report-today/" data-top-more-search="today's activities /preview/rst-report-today" data-top-more-primary="0" class="mm-top-more-card"><span><i class="fa fa-file-text-o" style="opacity:.75;margin-right:6px"></i>Today's activities</span><span class="mm-badge " style="font-size:10px">rst-report-today</span></a><a href="../../../preview/rst-report-inventory/" data-top-more-search="product inventory /preview/rst-report-inventory" data-top-more-primary="0" class="mm-top-more-card"><span><i class="fa fa-file-text-o" style="opacity:.75;margin-right:6px"></i>Product inventory</span><span class="mm-badge " style="font-size:10px">rst-report-inventory</span></a><a href="../../../preview/rst-report-ledger/" data-top-more-search="stock ledger /preview/rst-report-ledger" data-top-more-primary="0" class="mm-top-more-card"><span><i class="fa fa-file-text-o" style="opacity:.75;margin-right:6px"></i>Stock ledger</span><span class="mm-badge " style="font-size:10px">rst-report-ledger</span></a><a href="../../../preview/rst-sales-show/" data-top-more-search="sale invoice /preview/rst-sales-show" data-top-more-primary="0" class="mm-top-more-card"><span><i class="fa fa-file-text-o" style="opacity:.75;margin-right:6px"></i>Sale invoice</span><span class="mm-badge " style="font-size:10px">rst-sales-show</span></a><a href="../../../preview/rst-sales-create/" data-top-more-search="new sale /preview/rst-sales-create" data-top-more-primary="0" class="mm-top-more-card"><span><i class="fa fa-file-text-o" style="opacity:.75;margin-right:6px"></i>New sale</span><span class="mm-badge " style="font-size:10px">rst-sales-create</span></a><a href="../../../preview/rst-pos-create/" data-top-more-search="restaurant pos (sales-v2) /preview/rst-pos-create" data-top-more-primary="0" class="mm-top-more-card"><span><i class="fa fa-file-text-o" style="opacity:.75;margin-right:6px"></i>Restaurant POS (sales-v2)</span><span class="mm-badge " style="font-size:10px">rst-pos-create</span></a><a href="../../../preview/rst-return-list/" data-top-more-search="sale return list /preview/rst-return-list" data-top-more-primary="0" class="mm-top-more-card"><span><i class="fa fa-file-text-o" style="opacity:.75;margin-right:6px"></i>Sale return list</span><span class="mm-badge " style="font-size:10px">rst-return-list</span></a><a href="../../../preview/rst-return-show/" data-top-more-search="sale return details /preview/rst-return-show" data-top-more-primary="0" class="mm-top-more-card"><span><i class="fa fa-file-text-o" style="opacity:.75;margin-right:6px"></i>Sale return details</span><span class="mm-badge " style="font-size:10px">rst-return-show</span></a><a href="../../../preview/rst-return-create/" data-top-more-search="new sale return /preview/rst-return-create" data-top-more-primary="0" class="mm-top-more-card"><span><i class="fa fa-file-text-o" style="opacity:.75;margin-right:6px"></i>New sale return</span><span class="mm-badge " style="font-size:10px">rst-return-create</span></a><a href="../../../preview/rst-purchase-list/" data-top-more-search="purchase list /preview/rst-purchase-list" data-top-more-primary="0" class="mm-top-more-card"><span><i class="fa fa-file-text-o" style="opacity:.75;margin-right:6px"></i>Purchase list</span><span class="mm-badge " style="font-size:10px">rst-purchase-list</span></a><a href="../../../preview/rst-purchase-show/" data-top-more-search="purchase requisition /preview/rst-purchase-show" data-top-more-primary="0" class="mm-top-more-card"><span><i class="fa fa-file-text-o" style="opacity:.75;margin-right:6px"></i>Purchase requisition</span><span class="mm-badge " style="font-size:10px">rst-purchase-show</span></a><a href="../../../preview/rst-purchase-approve/" data-top-more-search="purchase approve /preview/rst-purchase-approve" data-top-more-primary="0" class="mm-top-more-card"><span><i class="fa fa-file-text-o" style="opacity:.75;margin-right:6px"></i>Purchase approve</span><span class="mm-badge " style="font-size:10px">rst-purchase-approve</span></a><a href="../../../preview/rst-purchase-create/" data-top-more-search="purchase create /preview/rst-purchase-create" data-top-more-primary="0" class="mm-top-more-card"><span><i class="fa fa-file-text-o" style="opacity:.75;margin-right:6px"></i>Purchase create</span><span class="mm-badge " style="font-size:10px">rst-purchase-create</span></a><a href="../../../preview/bar-audit-generate/" data-top-more-search="generate bar night audit /preview/bar-audit-generate" data-top-more-primary="0" class="mm-top-more-card"><span><i class="fa fa-file-text-o" style="opacity:.75;margin-right:6px"></i>Generate bar night audit</span><span class="mm-badge " style="font-size:10px">bar-audit-generate</span></a><a href="../../../preview/bar-audit-list/" data-top-more-search="bar night audit /preview/bar-audit-list" data-top-more-primary="0" class="mm-top-more-card"><span><i class="fa fa-file-text-o" style="opacity:.75;margin-right:6px"></i>Bar night audit</span><span class="mm-badge " style="font-size:10px">bar-audit-list</span></a><a href="../../../preview/bar-batches/" data-top-more-search="product batches /preview/bar-batches" data-top-more-primary="0" class="mm-top-more-card"><span><i class="fa fa-file-text-o" style="opacity:.75;margin-right:6px"></i>Product batches</span><span class="mm-badge " style="font-size:10px">bar-batches</span></a><a href="../../../preview/bar-batches-empty/" data-top-more-search="product batches (empty) /preview/bar-batches-empty" data-top-more-primary="0" class="mm-top-more-card"><span><i class="fa fa-file-text-o" style="opacity:.75;margin-right:6px"></i>Product batches (empty)</span><span class="mm-badge " style="font-size:10px">bar-batches-empty</span></a><a href="../../../preview/bar-categories/" data-top-more-search="product categories /preview/bar-categories" data-top-more-primary="0" class="mm-top-more-card"><span><i class="fa fa-file-text-o" style="opacity:.75;margin-right:6px"></i>Product categories</span><span class="mm-badge " style="font-size:10px">bar-categories</span></a><a href="../../../preview/bar-inventory-report/" data-top-more-search="product inventory /preview/bar-inventory-report" data-top-more-primary="0" class="mm-top-more-card"><span><i class="fa fa-file-text-o" style="opacity:.75;margin-right:6px"></i>Product inventory</span><span class="mm-badge " style="font-size:10px">bar-inventory-report</span></a><a href="../../../preview/bar-manufacturers/" data-top-more-search="manufacturers /preview/bar-manufacturers" data-top-more-primary="0" class="mm-top-more-card"><span><i class="fa fa-file-text-o" style="opacity:.75;margin-right:6px"></i>Manufacturers</span><span class="mm-badge " style="font-size:10px">bar-manufacturers</span></a><a href="../../../preview/bar-product-create/" data-top-more-search="add product /preview/bar-product-create" data-top-more-primary="0" class="mm-top-more-card"><span><i class="fa fa-file-text-o" style="opacity:.75;margin-right:6px"></i>Add product</span><span class="mm-badge " style="font-size:10px">bar-product-create</span></a><a href="../../../preview/bar-product-edit/" data-top-more-search="edit product /preview/bar-product-edit" data-top-more-primary="0" class="mm-top-more-card"><span><i class="fa fa-file-text-o" style="opacity:.75;margin-right:6px"></i>Edit product</span><span class="mm-badge " style="font-size:10px">bar-product-edit</span></a><a href="../../../preview/bar-products/" data-top-more-search="products /preview/bar-products" data-top-more-primary="0" class="mm-top-more-card"><span><i class="fa fa-file-text-o" style="opacity:.75;margin-right:6px"></i>Products</span><span class="mm-badge " style="font-size:10px">bar-products</span></a><a href="../../../preview/bar-purchase-list/" data-top-more-search="purchase list /preview/bar-purchase-list" data-top-more-primary="0" class="mm-top-more-card"><span><i class="fa fa-file-text-o" style="opacity:.75;margin-right:6px"></i>Purchase list</span><span class="mm-badge " style="font-size:10px">bar-purchase-list</span></a><a href="../../../preview/bar-purchase-show/" data-top-more-search="purchase details /preview/bar-purchase-show" data-top-more-primary="0" class="mm-top-more-card"><span><i class="fa fa-file-text-o" style="opacity:.75;margin-right:6px"></i>Purchase details</span><span class="mm-badge " style="font-size:10px">bar-purchase-show</span></a><a href="../../../preview/bar-report-cash-flow/" data-top-more-search="cash flow /preview/bar-report-cash-flow" data-top-more-primary="0" class="mm-top-more-card"><span><i class="fa fa-file-text-o" style="opacity:.75;margin-right:6px"></i>Cash flow</span><span class="mm-badge " style="font-size:10px">bar-report-cash-flow</span></a><a href="../../../preview/bar-report-inventory/" data-top-more-search="product inventory /preview/bar-report-inventory" data-top-more-primary="0" class="mm-top-more-card"><span><i class="fa fa-file-text-o" style="opacity:.75;margin-right:6px"></i>Product inventory</span><span class="mm-badge " style="font-size:10px">bar-report-inventory</span></a><a href="../../../preview/bar-report-sales/" data-top-more-search="sales report /preview/bar-report-sales" data-top-more-primary="0" class="mm-top-more-card"><span><i class="fa fa-file-text-o" style="opacity:.75;margin-right:6px"></i>Sales report</span><span class="mm-badge " style="font-size:10px">bar-report-sales</span></a><a href="../../../preview/bar-report-today/" data-top-more-search="today activities /preview/bar-report-today" data-top-more-primary="0" class="mm-top-more-card"><span><i class="fa fa-file-text-o" style="opacity:.75;margin-right:6px"></i>Today activities</span><span class="mm-badge " style="font-size:10px">bar-report-today</span></a><a href="../../../preview/bar-return-create/" data-top-more-search="new sale return /preview/bar-return-create" data-top-more-primary="0" class="mm-top-more-card"><span><i class="fa fa-file-text-o" style="opacity:.75;margin-right:6px"></i>New sale return</span><span class="mm-badge " style="font-size:10px">bar-return-create</span></a><a href="../../../preview/bar-return-list/" data-top-more-search="sale return list /preview/bar-return-list" data-top-more-primary="0" class="mm-top-more-card"><span><i class="fa fa-file-text-o" style="opacity:.75;margin-right:6px"></i>Sale return list</span><span class="mm-badge " style="font-size:10px">bar-return-list</span></a><a href="../../../preview/bar-return-show/" data-top-more-search="sale return details /preview/bar-return-show" data-top-more-primary="0" class="mm-top-more-card"><span><i class="fa fa-file-text-o" style="opacity:.75;margin-right:6px"></i>Sale return details</span><span class="mm-badge " style="font-size:10px">bar-return-show</span></a><a href="../../../preview/bar-sales-create/" data-top-more-search="new sale /preview/bar-sales-create" data-top-more-primary="0" class="mm-top-more-card"><span><i class="fa fa-file-text-o" style="opacity:.75;margin-right:6px"></i>New sale</span><span class="mm-badge " style="font-size:10px">bar-sales-create</span></a><a href="../../../preview/bar-pos-create/" data-top-more-search="bar pos (sales-v2) /preview/bar-pos-create" data-top-more-primary="0" class="mm-top-more-card"><span><i class="fa fa-file-text-o" style="opacity:.75;margin-right:6px"></i>Bar POS (sales-v2)</span><span class="mm-badge " style="font-size:10px">bar-pos-create</span></a><a href="../../../preview/bar-sales-list/" data-top-more-search="sale list /preview/bar-sales-list" data-top-more-primary="0" class="mm-top-more-card"><span><i class="fa fa-file-text-o" style="opacity:.75;margin-right:6px"></i>Sale list</span><span class="mm-badge " style="font-size:10px">bar-sales-list</span></a><a href="../../../preview/bar-sales-show/" data-top-more-search="sale invoice /preview/bar-sales-show" data-top-more-primary="0" class="mm-top-more-card"><span><i class="fa fa-file-text-o" style="opacity:.75;margin-right:6px"></i>Sale invoice</span><span class="mm-badge " style="font-size:10px">bar-sales-show</span></a><a href="../../../preview/bar-suppliers/" data-top-more-search="suppliers /preview/bar-suppliers" data-top-more-primary="0" class="mm-top-more-card"><span><i class="fa fa-file-text-o" style="opacity:.75;margin-right:6px"></i>Suppliers</span><span class="mm-badge " style="font-size:10px">bar-suppliers</span></a><a href="../../../preview/bar-supplier-create/" data-top-more-search="add supplier /preview/bar-supplier-create" data-top-more-primary="0" class="mm-top-more-card"><span><i class="fa fa-file-text-o" style="opacity:.75;margin-right:6px"></i>Add supplier</span><span class="mm-badge " style="font-size:10px">bar-supplier-create</span></a><a href="../../../preview/bar-units/" data-top-more-search="units /preview/bar-units" data-top-more-primary="0" class="mm-top-more-card"><span><i class="fa fa-file-text-o" style="opacity:.75;margin-right:6px"></i>Units</span><span class="mm-badge " style="font-size:10px">bar-units</span></a></div></div></div><div class="mm-top-curtain-rail"><button type="button" id="mm-top-curtain-btn" class="mm-top-curtain-btn" aria-expanded="false" aria-controls="mm-top-subnav-curtain" title="Pull down or slide up sub-menu curtain under top navbar"><i class="fa fa-chevron-down mm-top-curtain-arrow" id="mm-top-curtain-icon"></i><span id="mm-top-curtain-label">Restaurant & Bar POS (11 Tabs)</span></button></div></nav><div class="modal fade mm-app-drawer" id="mm-express-drawer" tabindex="-1" role="dialog" aria-labelledby="mm-express-drawer-title"><div class="modal-dialog modal-lg" role="document"><div class="modal-content"><div class="modal-header"><h4 class="modal-title" id="mm-express-drawer-title"><i class="fa fa-plus-circle"></i> Express Walk-In Hold, 80mm KOT &amp; GL Voucher Quick-Create (Alt+Q)</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button></div><div class="modal-body"><section class="mm-ui"><div class="tw-space-y-4"><div class="mm-drawer-kpi-grid" aria-label="Express command drawer KPIs"><div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-bed"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Vacant Ready Suites</span><div class="mm-table-kpi-value"><span id="exp-kpi-suites">6 Ready</span> <span class="mm-table-kpi-sub">#104 · #202 · #304 · #403</span></div></div></div><div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-fire"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">80mm KDS &amp; BOT Pass</span><div class="mm-table-kpi-value">3 Stations <span class="mm-table-kpi-sub">Kitchen · Bar · Room Svc</span></div></div></div><div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-calculator"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Auto-GL &amp; Treasury</span><div class="mm-table-kpi-value">৳ 214,200 <span class="mm-table-kpi-sub">Dr = Cr Real-Time Sync</span></div></div></div><div class="mm-table-kpi-card"><span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-bolt"></i></span><div class="mm-table-kpi-meta"><span class="mm-table-kpi-label">Session Express Log</span><div class="mm-table-kpi-value"><span id="mm-express-log-count">3</span> Posted <span class="mm-table-kpi-sub">Instant Folio Linked</span></div></div></div></div><div style="display:flex;flex-wrap:wrap;gap:6px" id="mm-express-tab-group"><button type="button" class="mm-role-pill is-active" data-express-tab="walkin"><i class="fa fa-bed"></i> 1. Express Walk-In Room Hold</button><button type="button" class="mm-role-pill" data-express-tab="pos"><i class="fa fa-cutlery"></i> 2. Express 80mm KOT / BOT Order</button><button type="button" class="mm-role-pill" data-express-tab="voucher"><i class="fa fa-calculator"></i> 3. Instant GL / Petty Cash Voucher</button><button type="button" class="mm-role-pill" data-express-tab="banquet"><i class="fa fa-glass"></i> 4. Express Banquet Hall Hold</button></div><div id="mm-express-confirm-banner" class="alert alert-success" style="display:none;margin:0;border-radius:10px;font-size:12.5px"></div><div class="mm-drawer-card tw-p-4" data-express-pane="walkin"><div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px"><strong><i class="fa fa-key"></i> 1. Instant Walk-In Suite Hold, Tariff Preview &amp; RFID Keycard Issue</strong><div style="display:flex;flex-wrap:wrap;gap:5px" id="exp-suite-pills"><button type="button" class="mm-role-pill is-active exp-suite-pill" data-suite-val="Suite #104 (Deluxe Double · ৳ 4,200)" data-suite-rate="4200">#104 Deluxe (৳ 4,200)</button><button type="button" class="mm-role-pill exp-suite-pill" data-suite-val="Suite #202 (Heritage Suite · ৳ 6,800)" data-suite-rate="6800">#202 Heritage (৳ 6,800)</button><button type="button" class="mm-role-pill exp-suite-pill" data-suite-val="Suite #304 (Diplomatic Suite · ৳ 8,900)" data-suite-rate="8900">#304 Diplomatic (৳ 8,900)</button><button type="button" class="mm-role-pill exp-suite-pill" data-suite-val="Suite #403 (Royal Penthouse · ৳ 13,200)" data-suite-rate="13200">#403 Penthouse (৳ 13,200)</button></div></div><form id="mm-express-walkin-form" onsubmit="return false;" class="tw-space-y-3"><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:10px"><div><label class="mm-label">Available Clean Suite</label><select id="exp-walkin-room" class="form-control"><option value="Suite #104 (Deluxe Double · ৳ 4,200)" data-rate="4200">Suite #104 — Deluxe Double (৳ 4,200/N)</option><option value="Suite #202 (Heritage Suite · ৳ 6,800)" data-rate="6800">Suite #202 — Heritage Suite (৳ 6,800/N)</option><option value="Suite #304 (Diplomatic Suite · ৳ 8,900)" data-rate="8900">Suite #304 — Diplomatic Suite (৳ 8,900/N)</option><option value="Suite #403 (Royal Penthouse · ৳ 13,200)" data-rate="13200">Suite #403 — Royal Penthouse (৳ 13,200/N)</option></select></div><div><label class="mm-label">Guest Full Name</label><input type="text" id="exp-walkin-guest" class="form-control" value="Dr. Arman Hossain" required></div><div><label class="mm-label">Mobile &amp; Passport / NID</label><input type="text" id="exp-walkin-phone" class="form-control" value="+880 1711-445566 · NID Verified"></div><div><label class="mm-label">Stay Nights &amp; Advance (৳)</label><div style="display:grid;grid-template-columns:75px 1fr;gap:6px"><input type="number" id="exp-walkin-nights" class="form-control text-center" value="2" min="1" max="30"><input type="number" id="exp-walkin-adv" class="form-control text-right" value="5000"></div></div></div><div class="mm-shift-note-card" id="exp-walkin-calc-strip" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;font-size:12px"><span><i class="fa fa-calculator"></i> <strong>Live Folio Estimate:</strong> <span id="exp-walkin-est-text">2 Nights × ৳ 4,200 + 10% VAT = <strong>৳ 9,240</strong> · Advance: <strong>৳ 5,000</strong> · Net Due: <strong>৳ 4,240</strong></span></span><span class="mm-badge mm-badge-paid"><i class="fa fa-key"></i> 2 Mifare RFID Keys Staged</span></div><div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px"><a href="../../../preview/booking-next/" class="mm-button mm-button-secondary"><i class="fa fa-magic"></i> Open Full 3-Step Booking Wizard →</a><button type="submit" id="exp-walkin-submit" class="mm-button"><i class="fa fa-check"></i> Create Walk-In Room Hold &amp; Encode Key</button></div></form></div><div class="mm-drawer-card tw-p-4" data-express-pane="pos" style="display:none"><div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px"><strong><i class="fa fa-fire"></i> 2. Instant 80mm Thermal KOT / BOT Kitchen &amp; Bar Order Dispatch</strong><div style="display:flex;flex-wrap:wrap;gap:5px" id="exp-kot-chips"><button type="button" class="mm-role-pill is-active exp-kot-chip" data-kot-item="Royal Heritage Mezze Platter (৳ 1,850)">Royal Mezze (৳ 1,850)</button><button type="button" class="mm-role-pill exp-kot-chip" data-kot-item="Grilled Norwegian Salmon (৳ 2,400)">Grilled Salmon (৳ 2,400)</button><button type="button" class="mm-role-pill exp-kot-chip" data-kot-item="Kacchi Biriyani Royal Platter (৳ 1,650)">Royal Kacchi (৳ 1,650)</button><button type="button" class="mm-role-pill exp-kot-chip" data-kot-item="Artisan Espresso &amp; Pastry Duo (৳ 680)">Espresso Duo (৳ 680)</button></div></div><form id="mm-express-pos-form" onsubmit="return false;" class="tw-space-y-3"><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:10px"><div><label class="mm-label">F&amp;B Outlet &amp; KDS Pass</label><select id="exp-pos-outlet" class="form-control"><option value="Heritage Dining Restaurant">Heritage Dining Restaurant (Hot Pass)</option><option value="Skyline Lounge Bar">Skyline Lounge Bar (BOT Pass)</option><option value="In-Room Dining (Room Charge)">In-Room Dining (24/7 Butler Pass)</option></select></div><div><label class="mm-label">Target Suite / Dining Table</label><select id="exp-pos-target" class="form-control"><option value="Suite #204 (Tanvir Ahmed)">Suite #204 — Tanvir Ahmed (Window A)</option><option value="Suite #301 (Brig. Gen. Mahmudul)">Suite #301 — Brig. Gen. Mahmudul</option><option value="Suite #401 (Ambassador Kenji Sato)">Suite #401 — Ambassador Kenji Sato</option><option value="Table T-04 (Main Dining)">Table T-04 — Main Dining (6 Covers)</option></select></div><div><label class="mm-label">Menu Platter / Beverage</label><select id="exp-pos-item" class="form-control"><option value="Royal Heritage Mezze Platter (৳ 1,850)">Royal Heritage Mezze Platter (৳ 1,850)</option><option value="Grilled Norwegian Salmon (৳ 2,400)">Grilled Norwegian Salmon (৳ 2,400)</option><option value="Kacchi Biriyani Royal Platter (৳ 1,650)">Kacchi Biriyani Royal Platter (৳ 1,650)</option><option value="Artisan Espresso &amp; Pastry Duo (৳ 680)">Artisan Espresso &amp; Pastry Duo (৳ 680)</option></select></div><div><label class="mm-label">Qty &amp; Firing Priority</label><div style="display:grid;grid-template-columns:70px 1fr;gap:6px"><input type="number" id="exp-pos-qty" class="form-control text-center" value="1" min="1" max="20"><select id="exp-pos-priority" class="form-control"><option value="Fire Now (Course 1)">Fire Now (Course 1)</option><option value="VIP Priority Rush">VIP Priority Rush</option><option value="Hold for Main">Hold for Main</option></select></div></div></div><div class="mm-shift-note-card" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;font-size:12px"><span><i class="fa fa-print"></i> <strong>80mm Thermal KOT Slip Preview:</strong> <code id="exp-kot-preview-text">KOT #1055 · Heritage Dining → Suite #204 · 1× Royal Heritage Mezze Platter (৳ 1,850)</code></span><span class="mm-badge mm-badge-paid">Auto-Posts to Guest Folio</span></div><div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px"><div style="display:flex;gap:6px"><a href="../../../preview/pos-kot-print/" class="mm-button mm-button-secondary"><i class="fa fa-print"></i> 80mm KOT Ticket →</a><a href="../../../preview/pos-unified/" class="mm-button mm-button-secondary"><i class="fa fa-cutlery"></i> Unified POS →</a></div><button type="submit" id="exp-pos-submit" class="mm-button"><i class="fa fa-fire"></i> Fire Instant 80mm KOT to Kitchen</button></div></form></div><div class="mm-drawer-card tw-p-4" data-express-pane="voucher" style="display:none"><div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px"><strong><i class="fa fa-book"></i> 3. Instant Double-Entry GL, Guest Advance &amp; Petty Cash Voucher</strong><span class="mm-badge mm-badge-paid" id="exp-vch-balance-badge">Double-Entry Balanced: Dr ৳ 8,500 = Cr ৳ 8,500 ✓</span></div><form id="mm-express-vch-form" onsubmit="return false;" class="tw-space-y-3"><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:10px"><div><label class="mm-label">Voucher Type</label><select id="exp-vch-type" class="form-control"><option value="Receive Voucher (Guest Advance)">Receive Voucher (Guest Advance)</option><option value="Payment Voucher (Petty Cash)">Payment Voucher (Petty Cash)</option><option value="Contra Voucher (Cash to Bank)">Contra Voucher (Cash to Bank)</option><option value="Journal Adjustment (Folio/AR)">Journal Adjustment (Folio/AR)</option></select></div><div><label class="mm-label">Debit (Dr) Ledger Head</label><select id="exp-vch-dr" class="form-control"><option value="1010 · Cash in Hand — Front Desk">1010 · Cash in Hand — Front Desk</option><option value="1020 · City Bank Corporate A/C">1020 · City Bank Corporate A/C</option><option value="5040 · Housekeeping &amp; F&amp;B Supplies">5040 · Housekeeping &amp; F&amp;B Supplies</option></select></div><div><label class="mm-label">Credit (Cr) Ledger Head</label><select id="exp-vch-head" class="form-control"><option value="Cash in Hand — Front Desk">2010 · Guest Advance Liability</option><option value="City Bank Corporate A/C">1040 · Corporate City Ledger AR</option><option value="bKash Merchant Settlement">1015 · bKash Merchant Clearing</option></select></div><div><label class="mm-label">Amount (৳) &amp; Cost Center</label><div style="display:grid;grid-template-columns:110px 1fr;gap:6px"><input type="number" id="exp-vch-amt" class="form-control text-right" value="8500" required><input type="text" id="exp-vch-narration" class="form-control" value="Suite #204 Advance"></div></div></div><div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px"><div style="display:flex;gap:6px"><a href="../../../preview/acc-receives/" class="mm-button mm-button-secondary"><i class="fa fa-book"></i> Receive Vouchers →</a><a href="../../../preview/acc-journals/" class="mm-button mm-button-secondary"><i class="fa fa-balance-scale"></i> Journal Register →</a></div><button type="submit" id="exp-vch-submit" class="mm-button"><i class="fa fa-check"></i> Post Instant Balanced GL Voucher</button></div></form></div><div class="mm-drawer-card tw-p-4" data-express-pane="banquet" style="display:none"><div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px"><strong><i class="fa fa-glass"></i> 4. Express Banquet &amp; Conference Hall Tentative Hold</strong><span class="mm-badge mm-badge-paid">Instant BEO Queue</span></div><form id="mm-express-bq-form" onsubmit="return false;" class="tw-space-y-3"><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(185px,1fr));gap:10px"><div><label class="mm-label">Venue Hall</label><select id="exp-bq-hall" class="form-control"><option value="Grand Ballroom (#BH-101 · 400 Pax)">Grand Ballroom (#BH-101 · 400 Pax)</option><option value="Heritage Banquet Hall (#BH-102 · 220 Pax)">Heritage Banquet Hall (#BH-102 · 220 Pax)</option><option value="Executive Boardroom (#BH-201 · 60 Pax)">Executive Boardroom (#BH-201 · 60 Pax)</option></select></div><div><label class="mm-label">Organizer / Corporate Sponsor</label><input type="text" id="exp-bq-host" class="form-control" value="UNICEF Annual Summit · Tanvir Ahmed"></div><div><label class="mm-label">Event Date &amp; Expected Pax</label><div style="display:grid;grid-template-columns:1fr 85px;gap:6px"><input type="text" id="exp-bq-date" class="form-control" value="2026-10-18 · Evening"><input type="number" id="exp-bq-pax" class="form-control text-center" value="180"></div></div></div><div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px"><a href="../../../preview/bq-booking-create/" class="mm-button mm-button-secondary"><i class="fa fa-glass"></i> Open Full Banquet Event Configurator →</a><button type="submit" id="exp-bq-submit" class="mm-button"><i class="fa fa-check"></i> Hold Banquet Hall &amp; Draft BEO</button></div></form></div><div class="mm-drawer-card tw-p-4"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px"><strong><i class="fa fa-history"></i> Recent Express Transactions (Session Synced)</strong><span class="mm-badge mm-badge-paid">Live Audit Trail</span></div><div id="mm-express-log-list" style="display:flex;flex-direction:column;gap:6px"></div></div></div></section></div><div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal">Close</button><a href="../../../preview/booking-next/" class="mm-button mm-button-secondary"><i class="fa fa-bed"></i> 3-Step Room Wizard</a><a href="../../../preview/bq-booking-create/" class="mm-button"><i class="fa fa-glass"></i> Banquet Event Configurator</a></div></div></div></div><script>(function(){var nav=document.getElementById("mm-top-subnav"),pinBtn=document.getElementById("mm-top-pin-btn"),slideUpBtn=document.getElementById("mm-top-slideup-btn"),curtainBtn=document.getElementById("mm-top-curtain-btn"),curtainLbl=document.getElementById("mm-top-curtain-label"),moreBtn=document.getElementById("mm-top-more-btn"),morePanel=document.getElementById("mm-top-more-panel"),flt=document.getElementById("mm-top-tab-filter"),cnt=document.getElementById("mm-top-more-count");var roleSw=document.getElementById("mm-role-switcher"),roleLbl=document.getElementById("mm-role-active-label"),menuEl=document.getElementById("mm-primary-menu");var roleOrder=["all","frontdesk","pos","finance"];var curRole="all";try{curRole=localStorage.getItem("mm-sidebar-role")||"all";}catch(e){}function applyRole(r){if(!roleSw||!menuEl)return;var roleNames={all:"All 14 Modules",frontdesk:"Front Desk (8)",pos:"F&B & Store (5)",finance:"Finance & Admin (7)"};curRole=r;try{localStorage.setItem("mm-sidebar-role",r);}catch(e){}if(roleLbl)roleLbl.textContent=roleNames[r]||"All 14 Modules";var rBtns=roleSw.querySelectorAll("[data-role-filter]");for(var i=0;i<rBtns.length;i++)rBtns[i].classList.toggle("is-active",rBtns[i].getAttribute("data-role-filter")===r);var lis=menuEl.children;for(var j=0;j<lis.length;j++){var li=lis[j],roles=(li.getAttribute("data-mod-roles")||"all").split(",");li.style.display=(r==="all"||roles.indexOf(r)>=0)?"":"none";}}if(roleSw&&menuEl){applyRole(curRole);var rBtns=roleSw.querySelectorAll("[data-role-filter]");for(var rIdx=0;rIdx<rBtns.length;rIdx++){rBtns[rIdx].addEventListener("click",function(){applyRole(this.getAttribute("data-role-filter")||"all");});}}if(!nav)return;var modLbl=nav.getAttribute("data-mod-label")||"Module",tabsCnt=nav.getAttribute("data-tabs-count")||"";var pinned=true;try{pinned=localStorage.getItem("mm-top-subnav-pinned")!=="0";}catch(e){}function syncPin(){nav.classList.toggle("is-sticky",pinned);if(pinBtn){pinBtn.setAttribute("aria-pressed",String(pinned));pinBtn.innerHTML="<i class=\"fa fa-thumb-tack\"></i> "+(pinned?"Pinned":"Pin to Top");}}syncPin();if(pinBtn)pinBtn.addEventListener("click",function(){pinned=!pinned;try{localStorage.setItem("mm-top-subnav-pinned",pinned?"1":"0");}catch(e){}syncPin();});var isOpen=false;try{isOpen=localStorage.getItem("mm-top-subnav-open")==="1";}catch(e){}function syncCurtain(){nav.classList.toggle("is-slid-up",!isOpen);if(curtainBtn)curtainBtn.setAttribute("aria-expanded",String(isOpen));if(curtainLbl)curtainLbl.textContent=isOpen?("Slide Up · "+modLbl):(modLbl+(tabsCnt?" ("+tabsCnt+" Tabs)":""));}syncCurtain();function toggleCurtain(force){isOpen=typeof force==="boolean"?force:!isOpen;try{localStorage.setItem("mm-top-subnav-open",isOpen?"1":"0");}catch(e){}syncCurtain();}if(curtainBtn)curtainBtn.addEventListener("click",function(){toggleCurtain();});if(slideUpBtn)slideUpBtn.addEventListener("click",function(){toggleCurtain(false);});var expTabs=document.querySelectorAll("[data-express-tab]"),expPanes=document.querySelectorAll("[data-express-pane]"),expBanner=document.getElementById("mm-express-confirm-banner"),expLogList=document.getElementById("mm-express-log-list"),expLogCnt=document.getElementById("mm-express-log-count");for(var et=0;et<expTabs.length;et++){expTabs[et].addEventListener("click",function(){var tgt=this.getAttribute("data-express-tab");for(var a=0;a<expTabs.length;a++)expTabs[a].classList.toggle("is-active",expTabs[a]===this);for(var b=0;b<expPanes.length;b++)expPanes[b].style.display=expPanes[b].getAttribute("data-express-pane")===tgt?"":"none";});}var defExp=[["Walk-In Hold","#BK-2026-120 · Suite #204 · Tanvir Ahmed (2 Nights · ৳ 5,000 Adv)","../../../preview/booking-next"],["80mm KOT","#KOT-1052 · Heritage Dining → Suite #301 · Royal Mezze Platter","../../../preview/pos-kot-print"],["GL Voucher","#VCH-2026-890 · Receive Voucher · Cash in Hand (৳ 12,600)","../../../preview/acc-receives"]];var expLogs=defExp;try{var rawE=localStorage.getItem("mm-express-log");if(rawE){var pE=JSON.parse(rawE);if(Array.isArray(pE)&&pE.length)expLogs=pE;}}catch(e){}function renderExpLogs(){if(expLogCnt)expLogCnt.textContent=String(expLogs.length);if(expLogList)expLogList.innerHTML=expLogs.map(function(x){return "<div class=\"mm-shift-note-card\" style=\"display:flex;align-items:center;justify-content:space-between;gap:8px\"><div><span class=\"mm-badge mm-badge-paid\" style=\"margin-right:6px\">"+x[0]+"</span><strong>"+x[1]+"</strong></div><a href=\""+x[2]+"\" class=\"mm-button mm-button-secondary\" style=\"min-height:24px;padding:1px 8px;font-size:11px\">Open →</a></div>";}).join("");}renderExpLogs();function pushExp(kind,summary,link){expLogs.unshift([kind,summary,link]);try{localStorage.setItem("mm-express-log",JSON.stringify(expLogs));}catch(e){}renderExpLogs();if(expBanner){expBanner.style.display="block";expBanner.innerHTML="<i class=\"fa fa-check-circle\"></i> <strong>"+kind+" Created:</strong> "+summary+" — <a href=\""+link+"\"><strong>Inspect Now →</strong></a>";}}var wf=document.getElementById("mm-express-walkin-form"),pf=document.getElementById("mm-express-pos-form"),vf=document.getElementById("mm-express-vch-form"),bf=document.getElementById("mm-express-bq-form");function syncExpWalkinEst(){var rmSel=document.getElementById("exp-walkin-room"),nEl=document.getElementById("exp-walkin-nights"),advEl=document.getElementById("exp-walkin-adv"),estEl=document.getElementById("exp-walkin-est-text");if(!rmSel||!estEl)return;var opt=rmSel.options[rmSel.selectedIndex];var rate=Number((opt&&opt.getAttribute("data-rate"))||4200);var n=Number((nEl&&nEl.value)||2);var adv=Number((advEl&&advEl.value)||0);var gross=Math.round(rate*n*1.10);var due=Math.max(0,gross-adv);estEl.innerHTML=n+" Nights × ৳ "+rate.toLocaleString("en-US")+" + 10% VAT = <strong>৳ "+gross.toLocaleString("en-US")+"</strong> · Advance: <strong>৳ "+adv.toLocaleString("en-US")+"</strong> · Net Due: <strong>৳ "+due.toLocaleString("en-US")+"</strong>";}var sPills=document.querySelectorAll(".exp-suite-pill"),rmSelEl=document.getElementById("exp-walkin-room"),nElW=document.getElementById("exp-walkin-nights"),advElW=document.getElementById("exp-walkin-adv");for(var sp=0;sp<sPills.length;sp++){sPills[sp].addEventListener("click",function(){for(var x=0;x<sPills.length;x++)sPills[x].classList.toggle("is-active",sPills[x]===this);if(rmSelEl){rmSelEl.value=this.getAttribute("data-suite-val")||rmSelEl.value;syncExpWalkinEst();}});}if(rmSelEl)rmSelEl.addEventListener("change",syncExpWalkinEst);if(nElW)nElW.addEventListener("input",syncExpWalkinEst);if(advElW)advElW.addEventListener("input",syncExpWalkinEst);function syncExpKotPreview(){var out=(document.getElementById("exp-pos-outlet")||{}).value||"Heritage Dining",tg=(document.getElementById("exp-pos-target")||{}).value||"Suite #204",it=(document.getElementById("exp-pos-item")||{}).value||"Royal Mezze",qt=(document.getElementById("exp-pos-qty")||{}).value||"1",pr=document.getElementById("exp-kot-preview-text");if(pr)pr.textContent="KOT #1055 · "+out+" → "+tg+" · "+qt+"× "+it;}var kChips=document.querySelectorAll(".exp-kot-chip"),itSelEl=document.getElementById("exp-pos-item"),outSelEl=document.getElementById("exp-pos-outlet"),tgSelEl=document.getElementById("exp-pos-target"),qtElP=document.getElementById("exp-pos-qty");for(var kc=0;kc<kChips.length;kc++){kChips[kc].addEventListener("click",function(){for(var x=0;x<kChips.length;x++)kChips[x].classList.toggle("is-active",kChips[x]===this);if(itSelEl){itSelEl.value=this.getAttribute("data-kot-item")||itSelEl.value;syncExpKotPreview();}});}if(itSelEl)itSelEl.addEventListener("change",syncExpKotPreview);if(outSelEl)outSelEl.addEventListener("change",syncExpKotPreview);if(tgSelEl)tgSelEl.addEventListener("change",syncExpKotPreview);if(qtElP)qtElP.addEventListener("input",syncExpKotPreview);var vAmtEl=document.getElementById("exp-vch-amt"),vBadgeEl=document.getElementById("exp-vch-balance-badge");if(vAmtEl&&vBadgeEl)vAmtEl.addEventListener("input",function(){var v=Number(this.value||0).toLocaleString("en-US");vBadgeEl.textContent="Double-Entry Balanced: Dr ৳ "+v+" = Cr ৳ "+v+" ✓";});if(wf)wf.addEventListener("submit",function(){var rm=document.getElementById("exp-walkin-room").value,g=document.getElementById("exp-walkin-guest").value,n=document.getElementById("exp-walkin-nights").value,ad=document.getElementById("exp-walkin-adv").value;pushExp("Walk-In Hold","#BK-2026-121 · "+rm+" · "+g+" ("+n+" Nights · ৳ "+ad+" Adv)","../../../preview/booking-next");});if(pf)pf.addEventListener("submit",function(){var out=document.getElementById("exp-pos-outlet").value,tg=document.getElementById("exp-pos-target").value,it=document.getElementById("exp-pos-item").value,qt=(document.getElementById("exp-pos-qty")||{}).value||"1";pushExp("80mm KOT","#KOT-1054 · "+out+" → "+tg+" · "+qt+"× "+it,"../../../preview/pos-kot-print");});if(vf)vf.addEventListener("submit",function(){var vt=document.getElementById("exp-vch-type").value,vh=document.getElementById("exp-vch-head").value,va=document.getElementById("exp-vch-amt").value;pushExp("GL Voucher","#VCH-2026-892 · "+vt+" · "+vh+" (৳ "+va+")","../../../preview/acc-receives");});if(bf)bf.addEventListener("submit",function(){var bh=document.getElementById("exp-bq-hall").value,bhost=document.getElementById("exp-bq-host").value,bpax=document.getElementById("exp-bq-pax").value;pushExp("Banquet Hold","#BEO-2026-409 · "+bh+" · "+bhost+" ("+bpax+" Pax)","../../../preview/bq-booking-create");});function setMore(open){if(!morePanel||!moreBtn)return;morePanel.hidden=!open;moreBtn.setAttribute("aria-expanded",String(open));}if(moreBtn)moreBtn.addEventListener("click",function(){setMore(morePanel.hidden);});var scope="all",scopeBtns=nav.querySelectorAll("[data-top-scope]");function runFilter(){var q=(flt&&flt.value||"").toLowerCase().trim();var tabs=nav.querySelectorAll(".mm-top-tab");for(var i=0;i<tabs.length;i++){var t=tabs[i],m=!q||(t.getAttribute("data-top-tab-search")||"").indexOf(q)>=0;t.style.display=m?"":"none";}var cards=nav.querySelectorAll(".mm-top-more-card"),n=0;for(var j=0;j<cards.length;j++){var c=cards[j],okScope=scope==="all"||c.getAttribute("data-top-more-primary")==="1",okQ=!q||(c.getAttribute("data-top-more-search")||"").indexOf(q)>=0;var show=okScope&&okQ;c.style.display=show?"":"none";if(show)n++;}if(cnt)cnt.textContent=String(n);if(q&&morePanel&&morePanel.hidden)setMore(true);}if(flt)flt.addEventListener("input",runFilter);for(var k=0;k<scopeBtns.length;k++){scopeBtns[k].addEventListener("click",function(){scope=this.getAttribute("data-top-scope")||"all";runFilter();});}var altJump={"1":"/dashboard","2":"../../../preview/plan-a","3":"../../../preview/booking-next","4":"../../../preview/folio-settlement","5":"../../../preview/guest-crm","6":"../../../preview/rooms","7":"../../../preview/room-settings","8":"../../../preview/bq-booking-index","9":"../../../preview/pos-unified","0":"../../../preview/acc-balance-sheet"};if(!window.__mmFullscreenBound){window.__mmFullscreenBound=true;function setFocusedFs(force){var next=typeof force==="boolean"?force:!document.body.classList.contains("mm-focused-fullscreen");document.body.classList.toggle("mm-focused-fullscreen",next);var btns=document.querySelectorAll("[data-mm-fullscreen-toggle], #mm-focused-fullscreen-btn");for(var bi=0;bi<btns.length;bi++){btns[bi].classList.toggle("is-active",next);btns[bi].setAttribute("aria-pressed",String(next));btns[bi].innerHTML=next?'<i class="fa fa-compress" aria-hidden="true"></i> Exit Fullscreen':'<i class="fa fa-arrows-alt" aria-hidden="true"></i> Focused Fullscreen';}}window.__mmSetFocusedFullscreen=setFocusedFs;document.addEventListener("click",function(ev){var tBtn=ev.target&&ev.target.closest&&ev.target.closest("[data-mm-fullscreen-toggle], #mm-focused-fullscreen-btn");if(tBtn){ev.preventDefault();setFocusedFs();return;}var xBtn=ev.target&&ev.target.closest&&ev.target.closest("[data-mm-fullscreen-exit], #mm-fullscreen-exit-btn");if(xBtn){ev.preventDefault();setFocusedFs(false);}});}document.addEventListener("keydown",function(e){if(e.key==="Escape"&&document.body.classList.contains("mm-focused-fullscreen")&&window.__mmSetFocusedFullscreen){window.__mmSetFocusedFullscreen(false);return;}var tag=(e.target&&e.target.tagName||"").toLowerCase();var typing=tag==="input"||tag==="textarea"||tag==="select"||(e.target&&e.target.isContentEditable);if(typing)return;if(e.altKey&&!e.ctrlKey&&!e.metaKey){if(altJump[e.key]){e.preventDefault();window.location.href=altJump[e.key];return;}var kLower=(e.key||"").toLowerCase();if(kLower==="z"&&window.__mmSetFocusedFullscreen){e.preventDefault();window.__mmSetFocusedFullscreen();return;}if(kLower==="r"){e.preventDefault();var nextR=roleOrder[(roleOrder.indexOf(curRole)+1)%roleOrder.length];applyRole(nextR);return;}if(kLower==="c"){e.preventDefault();toggleCurtain();return;}if(kLower==="q"){e.preventDefault();var qb=document.getElementById("mm-express-create-btn");if(qb)qb.click();return;}if(kLower==="f"&&flt){e.preventDefault();toggleCurtain(true);flt.focus();return;}}});})();</script>
+<section class="mm-ui mm-rst mm-rst-pos mm-rst-sale">
+    <div class="tw-space-y-4 tw-py-2 mm-pos-print-hide">
+        <div id="mm-fullscreen-hud" class="mm-no-print" role="region" aria-label="Focused fullscreen controls">
+            <div class="mm-fullscreen-hud-left">
+                <span class="mm-fullscreen-hud-badge"><i class="fa fa-arrows-alt" aria-hidden="true"></i> Focused Fullscreen Mode</span>
+                <span><strong>Heritage Dining Restaurant POS</strong> · Distraction-Free Terminal (Press <code>Esc</code> or <code>Alt+Z</code> to exit)</span>
+            </div>
+            <button type="button" id="mm-fullscreen-exit-btn" data-mm-fullscreen-exit class="mm-fullscreen-exit-btn">
+                <i class="fa fa-compress" aria-hidden="true"></i> Exit Fullscreen
+            </button>
+        </div>
+
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Restaurant POS</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Select guest, room or table, add dishes, configure course pacing &amp; modifiers, fire 80mm KOT or collect payment.</p>
+            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print">
+                <button type="button" id="mm-focused-fullscreen-btn" data-mm-fullscreen-toggle aria-pressed="false" class="mm-button mm-button-secondary mm-focused-fs-btn" title="Toggle distraction-free Focused Fullscreen Mode (Alt+Z)">
+                    <i class="fa fa-arrows-alt" aria-hidden="true"></i> Focused Fullscreen
+                </button>
+                <a href="../../../preview/rst-tables/" class="mm-button mm-button-secondary">
+                    <i class="ace-icon fa fa-th-large" aria-hidden="true"></i> Tables
+                </a>
+                <a href="../../../preview/rst-kitchen-board/" class="mm-button mm-button-secondary">
+                    <i class="ace-icon fa fa-fire" aria-hidden="true"></i> Kitchen Board
+                </a>
+                <a href="../../../preview/rst-sales-list/" class="mm-button mm-button-secondary">
+                    <i class="ace-icon fa fa-list-alt" aria-hidden="true"></i> Sale List
+                </a>
+            </div>
+        </header>
+
+        <div id="rpos-confirm-banner" class="alert alert-success mm-no-print" style="display:none;margin:0;border-radius:10px;">
+            <i class="fa fa-check-circle"></i> <strong id="rpos-confirm-msg">80mm Thermal KOT #KOT-2026-109 dispatched to Kitchen Display Board (Table #1 · Room 101 · Course 1 · Starters First · ৳ 1,197.00)!</strong>
+        </div>
+
+        <div class="mm-table-kpi-grid mm-no-print" aria-label="Restaurant POS live summary">
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-cutlery"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Active Table &amp; Suite</span>
+                    <div class="mm-table-kpi-value" id="rpos-kpi-table">Table #1 <span class="mm-table-kpi-sub">Room 101 · Rahim</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-shopping-basket"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Order Basket</span>
+                    <div class="mm-table-kpi-value" id="rpos-kpi-items">2 Items <span class="mm-table-kpi-sub">4 Qty · Bill R-0109</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-fire"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Course &amp; Prep Modifiers</span>
+                    <div class="mm-table-kpi-value" id="rpos-kpi-course">Course 1 <span class="mm-table-kpi-sub" id="pos-active-modifiers">Standard Kitchen Prep</span></div>
+                </div>
+            </div>
+            <div class="mm-table-kpi-card">
+                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-money"></i></span>
+                <div class="mm-table-kpi-meta">
+                    <span class="mm-table-kpi-label">Net Payable &amp; Per-Seat</span>
+                    <div class="mm-table-kpi-value" id="rpos-kpi-total">৳ 1,197.00 <span class="mm-table-kpi-sub" id="pos-split-per-seat">৳ 1,197.00 / seat (1 Guest)</span></div>
+                </div>
+            </div>
+        </div>
+
+        <nav class="mm-steps" aria-label="Progress">
+            <ol class="mm-stepper" role="tablist">
+                <li class="mm-step is-current mm-step-is-current" role="presentation" aria-current="step">
+                    <a href="#courses" data-step="courses" data-mm-step="courses" class="mm-step-link" role="tab" aria-selected="true">
+                        <span class="mm-step-mark" aria-hidden="true">1</span>
+                        <span class="mm-step-label">1. Guest, Room &amp; Table</span>
+                    </a>
+                </li>
+                <li class="mm-step is-upcoming mm-step-is-upcoming" role="presentation">
+                    <a href="#fire" data-step="fire" data-mm-step="fire" class="mm-step-link" role="tab" aria-selected="false">
+                        <span class="mm-step-mark" aria-hidden="true">2</span>
+                        <span class="mm-step-label">2. Dishes &amp; Courses</span>
+                    </a>
+                </li>
+                <li class="mm-step is-upcoming mm-step-is-upcoming" role="presentation">
+                    <a href="#pay" data-step="pay" data-mm-step="pay" class="mm-step-link" role="tab" aria-selected="false">
+                        <span class="mm-step-mark" aria-hidden="true">3</span>
+                        <span class="mm-step-label">3. Bill &amp; Payment</span>
+                    </a>
+                </li>
+            </ol>
+        </nav>
+
+        <div class="mm-panel tw-p-4 sm:tw-p-6 mm-pos-workspace tw-p-4">
+            <div class="row mm-pos-layout">
+                <input type="hidden" value="/rst/sales-v2" id="storeSaleUrl">
+
+                <div class="col-sm-3 mm-pos-sidebar">
+                    <div class="card mm-pos-clock-card">
+                        <div class="card-body text-center">
+                            <p class="mm-pos-clock-date">Sunday, 11 October, 2026</p>
+                            <p id="current-time" class="mm-pos-clock-time">09:30:00am</p>
+                        </div>
+                    </div>
+
+                    <div class="card mm-pos-card">
+                        <div class="card-header mm-pos-card-head">
+                            <h3 class="invoice-list-title">Invoice List</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="row d-m-flex">
+                                <div class="col-m-30 col-sm-6">
+                                    <div class="radio">
+                                        <label>
+                                            <input name="payment_status" value="due" type="radio" class="ace payment_status duePaymentStatus" checked>
+                                            <span class="lbl"> Due List</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-m-30 col-sm-6 padding-m-left-none">
+                                    <div class="radio">
+                                        <label>
+                                            <input name="payment_status" value="paid" type="radio" class="ace payment_status paidPaymentStatus">
+                                            <span class="lbl"> Paid List</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-1 mt-1 d-m-flex m-b-none">
+                                <div class="col-sm-6 sale-list-date">
+                                    <div class="form-group has-float-label">
+                                        <input type="text" value="2026-10-01" name="date" id="pos-filter-date" class="form-control date-picker invoice-date">
+                                        <label for="pos-filter-date">Date</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group has-float-label">
+                                        <label for="pos-filter-invoice">Invoice</label>
+                                        <input type="text" name="invoice_no" id="pos-filter-invoice" class="form-control invoice_no" placeholder="Search...">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card mm-pos-card">
+                        <div class="card-body">
+                            <div class="invoiceTableContainer">
+                                <table class="table table-bordered table-hover invoice-table">
+                                    <thead>
+                                        <tr>
+                                            <th>SL</th>
+                                            <th>Guest</th>
+                                            <th>Table</th>
+                                            <th>Invoice No</th>
+                                            <th>Bill</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="invoice-list" class="due-tbody">
+                                        <tr class="pointer" data-pos-invoice="R-0107" data-pos-guest="Aisha Rahman" data-pos-table="1" data-pos-room="101">
+                                            <td>1</td>
+                                            <td>Aisha Rahman</td>
+                                            <td>T1</td>
+                                            <td>R-0107</td>
+                                            <td class="itemAmount">1250</td>
+                                        </tr>
+                                        <tr class="pointer" data-pos-invoice="R-0108" data-pos-guest="Karim Uddin" data-pos-table="2" data-pos-room="102">
+                                            <td>2</td>
+                                            <td>Karim Uddin</td>
+                                            <td>T2</td>
+                                            <td>R-0108</td>
+                                            <td class="itemAmount">840</td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="5" class="footer-td">
+                                                <div class="col-sm-12 d-m-flex padding-m-left-none">
+                                                    <div class="col-sm-6 padding-m-left-none">
+                                                        <button type="button" class="btn btn-whites btn-danger btn-xs btn-block print-action-btn" id="rpos-print-btn">
+                                                            <i class="fa fa-print"></i> Print Receipt
+                                                        </button>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <a class="btn btn-whites btn-info btn-xs btn-block print-action-btn" href="../../../preview/rst-pos/">
+                                                            <i class="fa fa-refresh"></i> Refresh
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card text-center total-due-amount calc-total-amount text-danger">
+                        <span>Total Due: </span>
+                        <span class="total-due-sum">2090</span>
+                    </div>
+
+                    <div class="card text-center total-paid-amount calc-total-amount text-danger" style="display: none">
+                        <span>Total Paid: </span>
+                        <span class="total-paid-sum">4320</span>
+                    </div>
+                </div>
+
+                <div class="col-sm-9" id="sale-form-data">
+                    <form action="#" method="POST" id="sale-form">
+                        <input type="hidden" name="_token" value="fixture-csrf-token">
+                        <div id="account-type-modal" class="modal fade mm-drawer mm-drawer" data-mm-drawer="true" tabindex="-1" role="dialog">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                                        <h4 class="modal-title"><i class="fa fa-credit-card"></i> Payment Settlement</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <input type="hidden" name="is_multiple_way" value="1">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered" id="accountTypeTable">
+                                                <thead>
+                                                    <tr>
+                                                        <th width="45%">Payment Method</th>
+                                                        <th>Tendered Amount (৳)</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>
+                                                            <select name="modal_account_types[]" class="form-control select-account-type">
+                                                                <option value="1" selected>Cash Counter</option>
+                                                                <option value="2">VISA / MasterCard POS</option>
+                                                                <option value="3">bKash / Nagad Merchant</option>
+                                                                <option value="4">Post to Room Folio</option>
+                                                            </select>
+                                                        </td>
+                                                        <td>
+                                                            <input name="modal_account_paid_amounts[]" id="modal-tendered-input" value="1197.00" type="number" step="0.01" class="form-control account-way-paid-amount">
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div style="display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:12px;background:var(--mm-bg);border:1px solid var(--mm-line);border-radius:6px;margin-top:10px">
+                                            <div><span style="font-size:12px;color:var(--mm-muted);display:block">Payable Amount</span><strong id="modal-payable-display" style="font-size:18px;color:var(--mm-ink)">৳ 1,197.00</strong></div>
+                                            <div><span style="font-size:12px;color:var(--mm-muted);display:block">Change / Due</span><strong id="modal-change-display" style="font-size:18px;color:#166534">৳ 0.00</strong></div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer" style="display:flex;justify-content:flex-end;gap:8px">
+                                        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal"><i class="fa fa-times"></i> Cancel</button>
+                                        <button type="button" class="btn btn-success btn-sm" data-dismiss="modal" id="modal-confirm-pay"><i class="fa fa-check-circle"></i> Confirm Payment</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" name="is_soft_save" id="is_soft_save" value="0">
+
+                        <div class="mm-pos-advanced-bar mm-no-print" aria-label="Advanced POS controls">
+                            <div class="mm-pos-adv-group">
+                                <span class="mm-pos-adv-label"><span><i class="fa fa-cutlery"></i> Course Pacing</span><span class="mm-badge mm-badge-paid">KDS Sync</span></span>
+                                <select id="pos-course-pacing" class="form-control input-sm">
+                                    <option value="Course 1 · Starters First" selected>Course 1 · Starters First</option>
+                                    <option value="Course 2 · Main Course Together">Course 2 · Main Course Together</option>
+                                    <option value="Course 3 · Dessert &amp; Coffee Hold">Course 3 · Dessert &amp; Coffee Hold</option>
+                                    <option value="VIP Rush · Fire All Together">VIP Rush · Fire All Together</option>
+                                </select>
+                            </div>
+                            <div class="mm-pos-adv-group">
+                                <span class="mm-pos-adv-label"><span><i class="fa fa-sliders"></i> Kitchen &amp; Allergy Modifiers</span></span>
+                                <div class="mm-pos-mod-chips">
+                                    <button type="button" class="mm-pos-mod-chip" data-pos-modifier="No Nuts / Allergy"><i class="fa fa-shield"></i> No Nuts</button>
+                                    <button type="button" class="mm-pos-mod-chip" data-pos-modifier="Less Spicy"><i class="fa fa-leaf"></i> Less Spicy</button>
+                                    <button type="button" class="mm-pos-mod-chip" data-pos-modifier="Extra Hot"><i class="fa fa-fire"></i> Extra Hot</button>
+                                    <button type="button" class="mm-pos-mod-chip" data-pos-modifier="VIP Gold Plating"><i class="fa fa-star"></i> VIP Plating</button>
+                                </div>
+                            </div>
+                            <div class="mm-pos-adv-group">
+                                <span class="mm-pos-adv-label"><span><i class="fa fa-users"></i> Split-Bill By Seat</span><span class="mm-pos-split-readout" id="pos-split-badge">1 Seat</span></span>
+                                <select id="pos-split-seats" class="form-control input-sm">
+                                    <option value="1" selected>1 Guest (Full Bill)</option>
+                                    <option value="2">Split 2 Ways (Equal)</option>
+                                    <option value="3">Split 3 Ways (Equal)</option>
+                                    <option value="4">Split 4 Ways (Equal)</option>
+                                </select>
+                            </div>
+                            <div class="mm-pos-adv-group">
+                                <span class="mm-pos-adv-label"><span><i class="fa fa-bolt"></i> Express Actions</span></span>
+                                <div style="display:flex;flex-wrap:wrap;gap:6px">
+                                    <button type="button" id="rpos-happy-hour-btn" class="mm-button mm-button-secondary" style="min-height:30px;padding:3px 9px;font-size:11.5px"><i class="fa fa-percent"></i> VIP -15%</button>
+                                    <button type="button" id="rpos-fire-kot-btn" class="mm-button" style="min-height:30px;padding:3px 10px;font-size:11.5px"><i class="fa fa-fire"></i> Fire 80mm KOT</button>
+                                    <button type="button" id="pos-post-folio-btn" class="mm-button mm-button-secondary" style="min-height:30px;padding:3px 9px;font-size:11.5px"><i class="fa fa-bed"></i> Post to Room</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mm-pos-table-view" aria-label="Floor Table View">
+                            <div class="mm-pos-table-view-head">
+                                <span class="mm-pos-table-view-title"><i class="fa fa-th-large"></i> Floor Table View <span style="font-size:11px;font-weight:600;color:var(--mm-muted)">(Click any table to switch active order)</span></span>
+                                <div class="mm-pos-table-filters">
+                                    <button type="button" class="mm-pos-filter-pill is-active" data-pos-table-filter="all">All (6)</button>
+                                    <button type="button" class="mm-pos-filter-pill" data-pos-table-filter="available">Available (3)</button>
+                                    <button type="button" class="mm-pos-filter-pill" data-pos-table-filter="occupied">Occupied (2)</button>
+                                    <button type="button" class="mm-pos-filter-pill" data-pos-table-filter="reserved">Reserved (1)</button>
+                                    <a href="../../../preview/rst-tables/" class="mm-pos-filter-pill" title="Open full Floor Map"><i class="fa fa-external-link"></i> Floor Map</a>
+                                </div>
+                            </div>
+                            <div class="mm-pos-table-grid" id="mm-pos-table-grid">
+                                <button type="button" class="mm-pos-table-card is-selected" data-pos-table-card="1" data-pos-state="occupied" data-pos-guest="1" data-pos-room="101" data-pos-waiter="Rahim" data-pos-bill="R-0109">
+                                    <div class="mm-pos-table-card-top">
+                                        <span class="mm-pos-table-no">#T1</span>
+                                        <span class="mm-pos-table-badge mm-pos-table-badge-occupied">Occupied</span>
+                                    </div>
+                                    <div class="mm-pos-table-name">Terrace 1</div>
+                                    <div class="mm-pos-table-sub"><span><i class="fa fa-users"></i> 4 Seats</span><span>৳ 1,197</span></div>
+                                </button>
+                                <button type="button" class="mm-pos-table-card" data-pos-table-card="2" data-pos-state="occupied" data-pos-guest="2" data-pos-room="102" data-pos-waiter="Nadim" data-pos-bill="R-0108">
+                                    <div class="mm-pos-table-card-top">
+                                        <span class="mm-pos-table-no">#T2</span>
+                                        <span class="mm-pos-table-badge mm-pos-table-badge-occupied">Occupied</span>
+                                    </div>
+                                    <div class="mm-pos-table-name">Main Hall</div>
+                                    <div class="mm-pos-table-sub"><span><i class="fa fa-users"></i> 6 Seats</span><span>৳ 840</span></div>
+                                </button>
+                                <button type="button" class="mm-pos-table-card" data-pos-table-card="3" data-pos-state="available" data-pos-guest="3" data-pos-room="" data-pos-waiter="Karim" data-pos-bill="R-0110">
+                                    <div class="mm-pos-table-card-top">
+                                        <span class="mm-pos-table-no">#T3</span>
+                                        <span class="mm-pos-table-badge mm-pos-table-badge-available">Available</span>
+                                    </div>
+                                    <div class="mm-pos-table-name">VIP Dining</div>
+                                    <div class="mm-pos-table-sub"><span><i class="fa fa-users"></i> 6 Seats</span><span>Ready</span></div>
+                                </button>
+                                <button type="button" class="mm-pos-table-card" data-pos-table-card="4" data-pos-state="available" data-pos-guest="" data-pos-room="" data-pos-waiter="Rahim" data-pos-bill="R-0111">
+                                    <div class="mm-pos-table-card-top">
+                                        <span class="mm-pos-table-no">#T4</span>
+                                        <span class="mm-pos-table-badge mm-pos-table-badge-available">Available</span>
+                                    </div>
+                                    <div class="mm-pos-table-name">Garden Patio</div>
+                                    <div class="mm-pos-table-sub"><span><i class="fa fa-users"></i> 4 Seats</span><span>Ready</span></div>
+                                </button>
+                                <button type="button" class="mm-pos-table-card" data-pos-table-card="5" data-pos-state="reserved" data-pos-guest="1" data-pos-room="204" data-pos-waiter="Nadim" data-pos-bill="R-0112">
+                                    <div class="mm-pos-table-card-top">
+                                        <span class="mm-pos-table-no">#T5</span>
+                                        <span class="mm-pos-table-badge mm-pos-table-badge-reserved">Reserved</span>
+                                    </div>
+                                    <div class="mm-pos-table-name">Poolside Deck</div>
+                                    <div class="mm-pos-table-sub"><span><i class="fa fa-users"></i> 4 Seats</span><span>7:30 PM</span></div>
+                                </button>
+                                <button type="button" class="mm-pos-table-card" data-pos-table-card="6" data-pos-state="available" data-pos-guest="" data-pos-room="" data-pos-waiter="Karim" data-pos-bill="R-0113">
+                                    <div class="mm-pos-table-card-top">
+                                        <span class="mm-pos-table-no">#T6</span>
+                                        <span class="mm-pos-table-badge mm-pos-table-badge-available">Available</span>
+                                    </div>
+                                    <div class="mm-pos-table-name">Family Booth</div>
+                                    <div class="mm-pos-table-sub"><span><i class="fa fa-users"></i> 8 Seats</span><span>Ready</span></div>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="row tab-d-flex mm-pos-step-row" id="courses" style="margin-top: 5px">
+                            <div class="col-md-3 col-sm-6 mb-2 margin-bottom-10 width-50-per">
+                                <div class="form-group">
+                                    <div class="input-group">
+                                        <input type="hidden" name="is_stuff" id="is_stuff" value="">
+                                        <select name="hotel_guest_id" id="guest_name" class="form-control select2 guest-search" data-placeholder="--Choose Guest--">
+                                            <option value="">Walk-in / Select Guest</option>
+                                            <option value="1" selected>Aisha Rahman (Room 101)</option>
+                                            <option value="2">Karim Uddin (Room 102)</option>
+                                            <option value="3">Tanvir Ahmed (Walk-in)</option>
+                                        </select>
+                                        <span class="input-group-addon pointer" title="Guest">
+                                            <i class="fa fa-users"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2 col-sm-6 mb-2 margin-bottom-10 width-50-per">
+                                <select name="room_id" id="room_no" class="select2 form-control" data-placeholder="--Select--">
+                                    <option value="">--Room--</option>
+                                    <option value="101" selected>Room 101</option>
+                                    <option value="102">Room 102</option>
+                                    <option value="204">Room 204</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-2 col-sm-6 mb-2 margin-bottom-10 width-50-per">
+                                <select name="hotel_table_id" id="hotel_table_id" class="form-control select2 input-search" data-selected="1" style="width: 100%" data-placeholder="--Select Table--">
+                                    <option value="1" selected>Terrace 1 -&gt; T1</option>
+                                    <option value="2">Main Hall -&gt; T2</option>
+                                    <option value="3">VIP Dining -&gt; T3</option>
+                                    <option value="4">Garden Patio -&gt; T4</option>
+                                    <option value="5">Poolside Deck -&gt; T5</option>
+                                    <option value="6">Family Booth -&gt; T6</option>
+                                    <option value="99" hidden>Terrace 1 -&gt; T1</option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-2 col-sm-6 mb-2 margin-bottom-10 width-50-per">
+                                <div class="form-group margin-bottom-0">
+                                    <div class="input-group">
+                                        <span class="input-group-addon">Waiter</span>
+                                        <input type="text" name="waiter_no" id="waiter_no" placeholder="Waiter No" class="form-control" value="Rahim">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3 col-sm-6 mb-2 margin-bottom-10 width-50-per">
+                                <div class="form-group margin-bottom-0">
+                                    <div class="input-group">
+                                        <span class="input-group-addon padding-right-41px">Bill</span>
+                                        <input type="text" tabindex="-1" class="form-control" id="invoice_id" placeholder="Invoice ID" name="invoice_no" value="R-0109" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mm-pos-step-row" id="fire">
+                            <div class="col-md-6 col-sm-12 mb-2 margin-bottom-10 width-50-per">
+                                <div class="input-group">
+                                    <span class="input-group-addon">Product</span>
+                                    <select name="product_search" id="product-search" class="form-control select2" data-placeholder="--Choose Product to Add--">
+                                        <option value="">-- Click to add dish to order --</option>
+                                        <option value="101" data-name="Shahi Kacchi Biryani (Full)" data-code="FD-101" data-unit="Plate" data-price="480" data-vat="24">Shahi Kacchi Biryani (Full) — 480 ৳</option>
+                                        <option value="102" data-name="Chicken Tikka Masala" data-code="FD-102" data-unit="Bowl" data-price="360" data-vat="18">Chicken Tikka Masala — 360 ৳</option>
+                                        <option value="103" data-name="Grilled King Prawn Platter" data-code="FD-103" data-unit="Plate" data-price="650" data-vat="32.5">Grilled King Prawn Platter — 650 ৳</option>
+                                        <option value="104" data-name="Garlic Butter Naan" data-code="FD-104" data-unit="Pcs" data-price="65" data-vat="3.25">Garlic Butter Naan — 65 ৳</option>
+                                        <option value="105" data-name="Special Zafrani Borhani" data-code="FD-105" data-unit="Glass" data-price="90" data-vat="4.5">Special Zafrani Borhani — 90 ৳</option>
+                                        <option value="106" data-name="Artisanal Mango Lassi" data-code="FD-106" data-unit="Glass" data-price="140" data-vat="7">Artisanal Mango Lassi — 140 ৳</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-6 mb-2 margin-bottom-10 margin-top-40 width-50-per tab-inline-block tab-product-units">
+                                <div class="input-group margin-bottom-0" id="input-quantity-group">
+                                    <input type="text" class="form-control only-number" id="input-big-unit-id" value="1">
+                                    <span class="input-group-addon" id="input-unit-id">Plate</span>
+                                    <input type="text" class="form-control only-number" id="input-small-qty" value="0">
+                                    <span class="input-group-addon" id="input-pack-unit-id">Pcs</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-3 mb-2 margin-bottom-10">
+                                <input type="text" name="date" class="form-control date-picker pointer sale-date" value="2026-10-01" readonly>
+                            </div>
+                        </div>
+
+                        <div class="mm-pos-quick-menu">
+                            <div class="mm-pos-quick-chips">
+                                <span class="mm-pos-quick-label"><i class="fa fa-bolt"></i> Quick Add:</span>
+                                <button type="button" class="mm-pos-chip rpos-quick-item" data-quick-id="102" data-quick-name="Chicken Tikka Masala" data-quick-code="FD-102" data-quick-unit="Bowl" data-quick-price="360" data-quick-vat="18">+ Chicken Tikka <b>৳360</b></button>
+                                <button type="button" class="mm-pos-chip rpos-quick-item" data-quick-id="101" data-quick-name="Shahi Kacchi Biryani (Full)" data-quick-code="FD-101" data-quick-unit="Plate" data-quick-price="480" data-quick-vat="24">+ Kacchi Biryani <b>৳480</b></button>
+                                <button type="button" class="mm-pos-chip rpos-quick-item" data-quick-id="103" data-quick-name="Grilled King Prawn Platter" data-quick-code="FD-103" data-quick-unit="Plate" data-quick-price="650" data-quick-vat="32.5">+ King Prawn <b>৳650</b></button>
+                                <button type="button" class="mm-pos-chip rpos-quick-item" data-quick-id="104" data-quick-name="Garlic Butter Naan" data-quick-code="FD-104" data-quick-unit="Pcs" data-quick-price="65" data-quick-vat="3.25">+ Butter Naan <b>৳65</b></button>
+                                <button type="button" class="mm-pos-chip rpos-quick-item" data-quick-id="105" data-quick-name="Special Zafrani Borhani" data-quick-code="FD-105" data-quick-unit="Glass" data-quick-price="90" data-quick-vat="4.5">+ Borhani <b>৳90</b></button>
+                                <button type="button" class="mm-pos-chip rpos-quick-item" data-quick-id="106" data-quick-name="Artisanal Mango Lassi" data-quick-code="FD-106" data-quick-unit="Glass" data-quick-price="140" data-quick-vat="7">+ Mango Lassi <b>৳140</b></button>
+                            </div>
+                            <span class="mm-pos-order-summary-pill" id="mm-pos-item-count-pill"><i class="fa fa-shopping-basket"></i> 2 Dishes · 4 Qty</span>
+                        </div>
+
+                        <div class="row" style="margin-top: 10px">
+                            <div class="col-sm-12 tableContainer">
+                                <table class="table table-bordered table-hover table-responsive">
+                                    <thead>
+                                        <tr>
+                                            <th>Product</th>
+                                            <th>Code</th>
+                                            <th width="24%" class="sales-quantity-th">Quantity</th>
+                                            <th width="10%">Item Discount</th>
+                                            <th width="10%" class="sales-price-th">Sales Price</th>
+                                            <th width="10%">Vat</th>
+                                            <th width="10%">Total</th>
+                                            <th width="1%"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="product-details">
+                                        <tr class="product-row row-0 tr-product-101">
+                                            <td>
+                                                <span class="product_name">Shahi Kacchi Biryani (Full)</span>
+                                                <input type="hidden" value="101" name="product_ids[]" class="productId">
+                                            </td>
+                                            <td><span class="product_barcode">FD-101</span></td>
+                                            <td>
+                                                <div class="input-group">
+                                                    <div class="spinbox-buttons input-group-btn">
+                                                        <button type="button" class="btn table-qty-decrease-btn spinbox-down btn-xs btn-danger qty-decrease" data-pos-qty="-1">
+                                                            <i class="fa fa-minus"></i>
+                                                        </button>
+                                                    </div>
+                                                    <input type="number" value="2" name="sales_qty[]" class="form-control big-unit-qty input-sm" readonly>
+                                                    <span class="input-group-addon custom-addon-width">Plate</span>
+                                                    <div class="spinbox-buttons input-group-btn">
+                                                        <button type="button" class="btn table-qty-decrease-btn spinbox-down btn-xs btn-success qty-increase" data-pos-qty="1">
+                                                            <i class="fa fa-plus"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td><input tabindex="-1" type="text" value="0" name="item_discount[]" class="form-control item_discount input-sm width-80px"></td>
+                                            <td><input tabindex="-1" type="text" value="480.00" name="sales_price[]" class="form-control sales-price input-sm width-80px" readonly></td>
+                                            <td><input tabindex="-1" type="text" value="24.00" name="item_vat_amounts[]" class="form-control item-vat-amount input-sm width-60px" readonly></td>
+                                            <td><input tabindex="-1" type="number" min="0" value="960.00" name="item_price[]" class="form-control total-line-price input-sm width-70px" readonly></td>
+                                            <td><button class="delete btn btn-xs btn-danger" tabindex="-1" type="button" data-pos-remove><i class="fa fa-times"></i></button></td>
+                                        </tr>
+                                        <tr class="product-row row-1 tr-product-105">
+                                            <td>
+                                                <span class="product_name">Special Zafrani Borhani</span>
+                                                <input type="hidden" value="105" name="product_ids[]" class="productId">
+                                            </td>
+                                            <td><span class="product_barcode">FD-105</span></td>
+                                            <td>
+                                                <div class="input-group">
+                                                    <div class="spinbox-buttons input-group-btn">
+                                                        <button type="button" class="btn table-qty-decrease-btn spinbox-down btn-xs btn-danger qty-decrease" data-pos-qty="-1">
+                                                            <i class="fa fa-minus"></i>
+                                                        </button>
+                                                    </div>
+                                                    <input type="number" value="2" name="sales_qty[]" class="form-control big-unit-qty input-sm" readonly>
+                                                    <span class="input-group-addon custom-addon-width">Glass</span>
+                                                    <div class="spinbox-buttons input-group-btn">
+                                                        <button type="button" class="btn table-qty-decrease-btn spinbox-down btn-xs btn-success qty-increase" data-pos-qty="1">
+                                                            <i class="fa fa-plus"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td><input tabindex="-1" type="text" value="0" name="item_discount[]" class="form-control item_discount input-sm width-80px"></td>
+                                            <td><input tabindex="-1" type="text" value="90.00" name="sales_price[]" class="form-control sales-price input-sm width-80px" readonly></td>
+                                            <td><input tabindex="-1" type="text" value="4.50" name="item_vat_amounts[]" class="form-control item-vat-amount input-sm width-60px" readonly></td>
+                                            <td><input tabindex="-1" type="number" min="0" value="180.00" name="item_price[]" class="form-control total-line-price input-sm width-70px" readonly></td>
+                                            <td><button class="delete btn btn-xs btn-danger" tabindex="-1" type="button" data-pos-remove><i class="fa fa-times"></i></button></td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="6" class="text-right">
+                                                <strong>Grand Total: </strong>
+                                            </td>
+                                            <td class="text-left"><span id="grand-total">1197.00</span></td>
+                                            <td></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12 mm-pos-totals-box" id="pay">
+                            <div class="row mt-1 mb-1">
+                                <div class="col-sm-6" hidden>
+                                    <div class="form-group">
+                                        <label class="col-md-6 control-label"><b>Payment Status</b>:</label>
+                                        <div class="col-md-6">
+                                            <label>
+                                                <input name="payment_status" value="Due" type="radio" class="ace sale-payment-status due-sale-payment-status" checked>
+                                                <span class="lbl"> Due</span>
+                                            </label>
+                                            <label>
+                                                <input name="payment_status" value="Paid" type="radio" class="ace sale-payment-status paid-sale-payment-status">
+                                                <span class="lbl"> Paid</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label"><b>Service Charge</b>:</label>
+                                        <div class="input-group col-md-8">
+                                            <div class="input-group-addon currency">৳</div>
+                                            <input value="0" type="number" class="form-control service_charge" name="service_charge" id="service_charge" placeholder="Service Charge">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label"><b>Sub Total</b>:</label>
+                                        <div class="input-group col-md-8">
+                                            <div class="input-group-addon currency">৳</div>
+                                            <input value="1140.00" type="number" name="subtotal" class="form-control" id="subTotal" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label"><b>Discount</b>:</label>
+                                        <div class="input-group col-md-8">
+                                            <div class="input-group-addon currency">%</div>
+                                            <input value="0" type="number" min="0" step="any" class="form-control changesNo discount" name="discount" id="discount" placeholder="Discount" tabindex="-1">
+                                            <input value="0" type="hidden" min="0" step="any" class="form-control total_discount" name="total_discount" id="total_discount">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label"><b>Payable Amount</b>:</label>
+                                        <div class="input-group col-md-8">
+                                            <div class="input-group-addon currency">৳</div>
+                                            <input value="1197.00" type="number" name="payable_amount" class="form-control" id="grandTotal" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label"><b>Vat</b>:</label>
+                                        <div class="input-group col-md-8">
+                                            <span class="input-group-addon currency">৳</span>
+                                            <input value="57.00" type="number" class="form-control vat" name="vat" id="vat">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label"><b>Paid Amount</b>:</label>
+                                        <div class="input-group col-md-8">
+                                            <div class="input-group-addon currency">৳</div>
+                                            <input value="1197.00" type="number" name="paid_amount" class="form-control" id="paid_amount" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label class="col-md-4 control-label"><b>Print MODE</b>:</label>
+                                        <div class="input-group col-md-8">
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <label>
+                                                        <input name="print_mode" value="pos" type="radio" class="ace invoice-type" checked>
+                                                        <span class="lbl"> POS</span>
+                                                    </label>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <label>
+                                                        <input name="print_mode" value="normal" type="radio" class="ace invoice-type">
+                                                        <span class="lbl"> NORMAL</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="col-sm-4"></div>
+                                    <div class="col-sm-8">
+                                        <div class="btn-group">
+                                            <button class="btn btn-primary btn-sm save-only" type="button" name="submit" value="save">
+                                                <i class="fa fa-check-circle"></i> Save
+                                            </button>
+                                            <button class="btn btn-purple btn-sm save-sale" type="button" name="submit">
+                                                <i class="fa fa-file-pdf-o"></i> Save &amp; Print
+                                            </button>
+                                            <button class="btn btn-success btn-sm" type="button" name="button" data-toggle="modal" data-target="#account-type-modal">
+                                                <i class="fa fa-dollar"></i> Payment
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mm-pos-print-receipt" id="rpos-print-receipt" aria-hidden="true">
+        <h3>M&amp;M HERITAGE HOTEL &amp; SUITES</h3>
+        <div style="text-align:center">Heritage Dining Restaurant · Customer Receipt</div>
+        <div style="border-top:1px dashed #111827;margin:6px 0"></div>
+        <div>Invoice: <strong id="rpos-receipt-no">R-0109</strong></div>
+        <div>Date: <span id="rpos-receipt-date">14 Oct 2026</span> · Table: <span id="rpos-receipt-table">T1</span> · Room: <span id="rpos-receipt-room">101</span></div>
+        <table>
+            <thead><tr><th>Item</th><th class="text-right">Qty</th><th class="text-right">Total (৳)</th></tr></thead>
+            <tbody id="rpos-receipt-items"></tbody>
+        </table>
+        <div style="display:flex;justify-content:space-between;font-weight:700;margin-top:4px"><span>Grand Total</span><span id="rpos-receipt-total">৳ 0.00</span></div>
+        <div class="mm-print-codes">
+            <span class="mm-print-qr"><svg data-mm-qr="pos-rst" xmlns="http://www.w3.org/2000/svg" width="84" height="84" viewBox="0 0 41 41" shape-rendering="crispEdges"><path fill="#ffffff" d="M0 0h41v41H0z"/><path stroke="#000000" d="M0 0.5h7m1 0h2m1 0h1m1 0h1m1 0h2m1 0h2m3 0h2m5 0h2m2 0h7M0 1.5h1m5 0h1m1 0h1m3 0h2m3 0h1m3 0h3m2 0h5m1 0h1m1 0h1m5 0h1M0 2.5h1m1 0h3m1 0h1m2 0h1m2 0h1m1 0h1m1 0h1m1 0h8m6 0h1m1 0h1m1 0h3m1 0h1M0 3.5h1m1 0h3m1 0h1m1 0h2m1 0h2m1 0h1m3 0h2m1 0h2m1 0h1m5 0h1m3 0h1m1 0h3m1 0h1M0 4.5h1m1 0h3m1 0h1m3 0h1m1 0h2m1 0h1m2 0h4m1 0h2m1 0h1m1 0h1m3 0h1m1 0h1m1 0h3m1 0h1M0 5.5h1m5 0h1m4 0h1m3 0h5m4 0h2m1 0h2m1 0h2m2 0h1m5 0h1M0 6.5h7m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h1m1 0h7M8 7.5h6m1 0h1m3 0h1m4 0h1m2 0h3m1 0h1M0 8.5h1m1 0h2m1 0h3m1 0h1m1 0h1m2 0h2m3 0h1m1 0h2m2 0h4m1 0h1m3 0h1m2 0h1m1 0h2M0 9.5h4m3 0h1m1 0h4m1 0h1m1 0h1m1 0h1m1 0h2m2 0h2m1 0h1m1 0h1m2 0h3m2 0h4M0 10.5h1m1 0h1m1 0h4m2 0h1m1 0h1m2 0h2m1 0h2m2 0h1m7 0h1m2 0h3m1 0h1M0 11.5h2m1 0h3m5 0h1m1 0h2m4 0h2m1 0h3m1 0h4m5 0h2m3 0h1M1 12.5h4m1 0h1m2 0h3m4 0h1m1 0h2m1 0h1m1 0h1m1 0h2m3 0h1m9 0h1M0 13.5h1m1 0h4m1 0h3m1 0h6m6 0h1m2 0h4m2 0h1m2 0h2M0 14.5h1m1 0h1m1 0h3m4 0h1m1 0h1m2 0h1m1 0h1m3 0h1m1 0h1m1 0h1m3 0h1m6 0h2M2 15.5h2m5 0h2m3 0h2m1 0h6m1 0h1m1 0h3m1 0h6m1 0h1m1 0h2M0 16.5h1m2 0h1m2 0h1m3 0h1m2 0h1m1 0h1m1 0h4m1 0h2m3 0h1m1 0h1m1 0h2m7 0h1M1 17.5h2m7 0h1m3 0h2m1 0h1m1 0h2m1 0h1m4 0h1m1 0h1m1 0h1m1 0h1m1 0h1m2 0h1M0 18.5h1m1 0h1m3 0h4m1 0h7m3 0h1m2 0h3m1 0h1m2 0h1m2 0h1m1 0h1m3 0h1M1 19.5h2m1 0h2m1 0h2m2 0h2m1 0h1m4 0h1m2 0h1m1 0h3m1 0h1m2 0h2m5 0h2M0 20.5h2m2 0h3m3 0h3m5 0h1m3 0h1m2 0h4m4 0h2m2 0h2M0 21.5h1m2 0h3m3 0h2m5 0h1m1 0h1m3 0h4m1 0h2m1 0h2m1 0h3m1 0h2m1 0h1M0 22.5h1m1 0h3m1 0h2m5 0h1m3 0h2m1 0h3m2 0h4m1 0h1m2 0h1m1 0h1m4 0h1M0 23.5h1m8 0h3m1 0h1m1 0h2m3 0h3m1 0h2m3 0h1m1 0h3m1 0h4m1 0h1M0 24.5h5m1 0h5m7 0h1m4 0h2m1 0h1m3 0h3m3 0h1m2 0h2M4 25.5h1m3 0h3m1 0h1m1 0h4m1 0h3m2 0h3m2 0h2m4 0h3M2 26.5h1m3 0h1m2 0h1m1 0h1m2 0h1m1 0h4m1 0h2m2 0h4m2 0h1m1 0h1m1 0h1m1 0h1m2 0h1M2 27.5h2m1 0h1m1 0h1m1 0h2m4 0h1m1 0h2m1 0h2m1 0h1m2 0h1m4 0h1m3 0h1m1 0h3M3 28.5h1m1 0h2m2 0h1m1 0h2m3 0h1m1 0h2m2 0h1m2 0h3m1 0h2m1 0h4m2 0h2M3 29.5h1m6 0h1m2 0h1m1 0h1m1 0h1m1 0h1m1 0h2m1 0h2m1 0h1m1 0h1m1 0h2m2 0h1m4 0h1M0 30.5h1m2 0h2m1 0h3m1 0h2m2 0h1m1 0h2m2 0h1m2 0h2m1 0h2m1 0h6M2 31.5h2m4 0h1m3 0h1m2 0h1m1 0h2m1 0h2m2 0h1m1 0h4m3 0h1m1 0h2m1 0h2M1 32.5h2m1 0h1m1 0h1m1 0h7m1 0h2m1 0h1m3 0h1m1 0h1m1 0h2m1 0h1m1 0h6m2 0h1M8 33.5h1m1 0h1m1 0h1m5 0h2m3 0h2m3 0h3m1 0h1m3 0h4M0 34.5h7m1 0h1m1 0h1m1 0h1m1 0h1m2 0h1m1 0h5m2 0h5m1 0h1m1 0h1m1 0h1m1 0h1M0 35.5h1m5 0h1m1 0h2m1 0h1m1 0h1m1 0h2m1 0h9m2 0h1m1 0h2m3 0h1M0 36.5h1m1 0h3m1 0h1m2 0h2m1 0h1m2 0h2m1 0h2m1 0h2m1 0h1m4 0h2m1 0h5m2 0h2M0 37.5h1m1 0h3m1 0h1m1 0h1m1 0h1m1 0h2m2 0h1m1 0h4m2 0h2m1 0h1m1 0h1m2 0h7M0 38.5h1m1 0h3m1 0h1m1 0h2m3 0h6m1 0h2m3 0h2m2 0h1m3 0h2m1 0h2m2 0h1M0 39.5h1m5 0h1m2 0h1m1 0h1m1 0h2m1 0h1m1 0h1m1 0h2m3 0h1m1 0h1m1 0h1m2 0h1m1 0h1m4 0h2M0 40.5h7m1 0h3m1 0h4m1 0h1m2 0h1m1 0h1m2 0h3m7 0h2m1 0h1"/></svg></span>
+            <span class="mm-print-barcode"><svg viewBox="0 0 127 42" xmlns="http://www.w3.org/2000/svg">
+<path stroke="#000000" stroke-width="3" d="M1.50 42L1.50 0M18.50 42L18.50 0M53.50 42L53.50 0M60.50 42L60.50 0M65.50 42L65.50 0M76.50 42L76.50 0M97.50 42L97.50 0M106.50 42L106.50 0M124.50 42L124.50 0" />
+<path stroke="#000000" stroke-width="2" d="M6 42L6 0M10 42L10 0M26 42L26 0M36 42L36 0M71 42L71 0M84 42L84 0M89 42L89 0M103 42L103 0M121 42L121 0" />
+<path stroke="#000000" stroke-width="5" d="M30.50 42L30.50 0M40.50 42L40.50 0M115.50 42L115.50 0" />
+<path stroke="#000000" stroke-width="7" d="M47.50 42L47.50 0" />
+</svg></span>
+            <div class="mm-print-codes-caption" id="rpos-receipt-code">R-0109</div>
+            <div style="font-size:9px">Scan the QR or barcode to verify this receipt.</div>
+        </div>
+        <div style="text-align:center;margin-top:6px">Thank you for dining with us!</div>
+    </div>
+</section>
+<div class="modal fade mm-app-drawer" id="mm-quick-drawer" tabindex="-1" role="dialog" aria-labelledby="mm-quick-drawer-title"><div class="modal-dialog modal-lg" role="document"><div class="modal-content"><div class="modal-header"><h4 class="modal-title" id="mm-quick-drawer-title"><i class="fa fa-columns"></i> Quick Action &amp; Inspector Drawer — Restaurant POS (sales-v2)</h4><button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button></div><div class="modal-body"><section class="mm-ui"><div class="tw-space-y-4"><div class="mm-panel tw-p-4"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:12px"><strong><i class="fa fa-bolt"></i> Quick Entry Form (Frosted Glass Fields &amp; Dropdowns)</strong><span class="mm-badge mm-badge-paid">Slide-Over Drawer</span></div><form onsubmit="return false;" class="tw-space-y-3"><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px"><div><label class="mm-label">Guest / Party Name <span class="text-danger">*</span></label><div class="input-group"><span class="input-group-addon"><i class="fa fa-user"></i></span><input type="text" class="form-control" value="Tanvir Ahmed Chowdhury" placeholder="Enter full name"></div></div><div><label class="mm-label">Department / Outlet</label><select class="form-control"><option>Front Desk &amp; Room Reservations</option><option>Heritage Dining Restaurant</option><option>Skyline Lounge Bar</option><option>General Store &amp; Inventory</option><option>Accounts &amp; Finance</option></select></div><div><label class="mm-label">Transaction Category</label><select class="form-control"><option>Room Advance / Folio Settlement</option><option>Supplier Purchase Requisition</option><option>Account Payment / Journal Voucher</option><option>VIP Guest Profile Registration</option></select></div><div><label class="mm-label">Amount (BDT)</label><div class="input-group"><span class="input-group-addon">৳</span><input type="number" class="form-control" value="12500"><span class="input-group-addon">.00</span></div></div></div><div><label class="mm-label">Reference / Front-Desk Notes</label><textarea class="form-control" rows="2" placeholder="Add remarks or instructions...">Verified corporate booking &amp; instant settlement via Slide-Over App Drawer.</textarea></div></form></div><div class="mm-panel tw-p-4"><div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px"><strong><i class="fa fa-table"></i> Live Breakdown Table (Glass Table Surface)</strong><span class="mm-badge mm-badge-partial">3 Active Lines</span></div><div class="mm-table-scroll"><table class="table table-bordered table-striped"><thead><tr><th>Code</th><th>Description</th><th>Payment / Status</th><th class="text-right">Amount (৳)</th></tr></thead><tbody><tr><td><code>#RM-101</code></td><td>Deluxe Double · 2 Nights</td><td><span class="mm-badge mm-badge-paid">Confirmed</span></td><td class="text-right">8,400.00</td></tr><tr><td><code>#RST-204</code></td><td>Restaurant Room Service KOT</td><td><span class="mm-badge mm-badge-partial">Posted to Folio</span></td><td class="text-right">2,600.00</td></tr><tr><td><code>#SRV-019</code></td><td>Airport Chauffeur Pickup</td><td><span class="mm-badge mm-badge-paid">Settled</span></td><td class="text-right">1,500.00</td></tr></tbody></table></div></div></div></section></div><div class="modal-footer"><button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Cancel</button><button type="button" class="mm-button" data-dismiss="modal"><i class="fa fa-check"></i> Save &amp; Apply Changes</button></div></div></div></div></div></div></div><footer class="mm-shell-footer hidden-print" role="contentinfo">
+    <nav class="mm-crumbs" aria-label="Breadcrumb">
+        <ol>
+            <li><a href="../../../home/"><i class="fa fa-home" aria-hidden="true"></i><span>Home</span></a></li>
+                            <li><span>Restaurant</span></li><li><span aria-current="page">POS</span></li>
+        </ol>
+    </nav>
+    <div class="mm-footer-main">
+        <span>&copy; 2026 <strong></strong> <span class="mm-footer-version">v2026.10.1</span></span>
+        <span class="mm-footer-links">
+            <a href="https://www.banglafire.com/" target="_blank" rel="noopener">Developed by Banglafire Software Ltd</a>
+            <button type="button" class="mm-footer-link" data-mm-shortcuts-open hidden>Keyboard shortcuts</button>
+            <button type="button" id="mm-density-toggle" class="mm-footer-density" aria-pressed="false">Compact spacing</button>
+                            <a href="https://example.test/help?a=1&amp;b=&lt;2&gt;" target="_blank" rel="noopener">Help &amp; support</a>
+                    </span>
+    </div>
+    <ul class="mm-footer-status" aria-label="System status">
+        <li class="mm-status-extra"><span class="mm-status-label">Business date</span> <time datetime="2026-10-01">01 Oct 2026</time></li>
+        <li class="mm-status-extra"><span class="mm-status-label">Server time</span> <time id="mm-clock" data-server-time="2026-10-01T03:30:00+00:00" data-timezone="Asia/Dhaka">09:30:00</time> <span class="mm-status-zone">Asia/Dhaka</span></li>
+        <li class="mm-status-extra"><span class="mm-status-label">Last sync</span> <time id="mm-sync" datetime="2026-10-01T03:30:00+00:00">just now</time></li>
+        <li><span class="mm-online" id="mm-online" data-online="true" role="status"><span class="mm-online-dot" aria-hidden="true"></span><span id="mm-online-text">Online</span></span></li>
+        <li><span class="mm-env mm-env-staging" title="Application environment">staging</span></li>
+    </ul>
+</footer>
+<a href="#" id="btn-scroll-up" class="btn-scroll-up btn btn-sm btn-inverse" aria-label="Back to top">
+    <i class="ace-icon fa fa-angle-double-up icon-only bigger-110" aria-hidden="true"></i>
+</a>
+</div>
+<script src="../../../public/assets/js/jquery-2.1.4.min.js"></script><script src="../../../public/assets/js/bootstrap.min.js"></script><script src="../../../public/assets/js/ace-elements.min.js"></script><script src="../../../public/assets/js/ace.min.js"></script><dialog class="mm-dialog mm-palette" id="mm-palette" aria-label="Command palette">
+    <div class="mm-palette-box">
+        <div class="mm-palette-field">
+            <i class="fa fa-search" aria-hidden="true"></i>
+            <input type="text" id="mm-palette-input" class="mm-palette-input" role="combobox" aria-expanded="true" aria-controls="mm-palette-list" aria-autocomplete="list" aria-label="Search screens and actions" placeholder="Search screens and actions…" autocomplete="off" spellcheck="false">
+            <button type="button" class="mm-kbd mm-palette-close" data-mm-dialog-close aria-label="Close search">Esc</button>
+        </div>
+        <ul class="mm-palette-list" id="mm-palette-list" role="listbox" aria-label="Results"></ul>
+        <p class="mm-palette-empty" id="mm-palette-empty" hidden>No matching screens or actions.</p>
+        <p class="mm-palette-foot"><span><kbd class="mm-kbd">↑</kbd> <kbd class="mm-kbd">↓</kbd> move</span><span><kbd class="mm-kbd">Enter</kbd> open</span><span><kbd class="mm-kbd">Esc</kbd> close</span></p>
+        <p class="mm-sr" id="mm-palette-status" role="status" aria-live="polite"></p>
+    </div>
+</dialog>
+
+<dialog class="mm-dialog mm-help" id="mm-shortcuts" aria-labelledby="mm-shortcuts-title">
+    <div class="mm-help-box">
+        <div class="mm-help-head">
+            <h2 id="mm-shortcuts-title">Keyboard shortcuts</h2>
+            <button type="button" class="mm-hdr-btn" data-mm-dialog-close aria-label="Close keyboard shortcuts"><i class="fa fa-times" aria-hidden="true"></i></button>
+        </div>
+        <dl class="mm-help-list">
+            <div><dt><kbd class="mm-kbd" data-mm-mod-key>Ctrl K</kbd> or <kbd class="mm-kbd">/</kbd></dt><dd>Search screens and actions</dd></div>
+            <div><dt><kbd class="mm-kbd">[</kbd></dt><dd>Show or hide the sidebar</dd></div>
+            <div><dt><kbd class="mm-kbd">?</kbd></dt><dd>Show this list</dd></div>
+            <div><dt><kbd class="mm-kbd">Esc</kbd></dt><dd>Close a dialog or the mobile menu</dd></div>
+        </dl>
+        <p class="mm-help-note">Single-key shortcuts are ignored while typing in a field. Search only lists screens already in your sidebar, so it follows your permissions.</p>
+    </div>
+</dialog>
+<script src="../../../public/assets/custom_js/shell.js"></script><script src="../../../public/assets/custom_js/shell-tools.js"></script><script src="../../../public/assets/custom_js/mm-ui.js"></script><script src="../../../public/assets/js/moment.min.js"></script><script src="../../../public/assets/js/daterangepicker.min.js"></script><script src="../../../public/assets/custom_js/stay-range.js"></script><script>$(function(){ $('input[name="booking_date"]').each(function(){ MMStayRange.init(this); }); });</script><script src="../../../public/assets/custom_js/room-board.js"></script>
+
+<script>
+(function(){
+    function recalcPos() {
+        var rows = document.querySelectorAll('#product-details tr.product-row');
+        var sub = 0, vatSum = 0;
+        rows.forEach(function(r){
+            var qtyEl = r.querySelector('.big-unit-qty');
+            var priceEl = r.querySelector('.sales-price');
+            var discEl = r.querySelector('.item_discount');
+            var vatEl = r.querySelector('.item-vat-amount');
+            var totalEl = r.querySelector('.total-line-price');
+            if (!qtyEl || !priceEl || !totalEl) return;
+            var qty = Math.max(1, parseFloat(qtyEl.value || 1));
+            var price = parseFloat(priceEl.value || 0);
+            var disc = parseFloat(discEl && discEl.value || 0);
+            var unitVat = parseFloat(vatEl && vatEl.value || 0);
+            var lineTotal = Math.max(0, (qty * price) - disc);
+            totalEl.value = lineTotal.toFixed(2);
+            sub += lineTotal;
+            vatSum += qty * unitVat;
+        });
+        var srv = parseFloat((document.getElementById('service_charge') || {}).value || 0);
+        var pctDisc = parseFloat((document.getElementById('discount') || {}).value || 0);
+        var discAmt = sub * (pctDisc / 100);
+        var grand = Math.max(0, sub - discAmt + vatSum + srv);
+        if (document.getElementById('subTotal')) document.getElementById('subTotal').value = sub.toFixed(2);
+        if (document.getElementById('vat')) document.getElementById('vat').value = vatSum.toFixed(2);
+        if (document.getElementById('grandTotal')) document.getElementById('grandTotal').value = grand.toFixed(2);
+        if (document.getElementById('paid_amount')) document.getElementById('paid_amount').value = grand.toFixed(2);
+        if (document.getElementById('grand-total')) document.getElementById('grand-total').textContent = grand.toFixed(2);
+        if (document.getElementById('modal-payable-display')) document.getElementById('modal-payable-display').textContent = '৳ ' + grand.toFixed(2);
+        if (document.getElementById('modal-tendered-input')) document.getElementById('modal-tendered-input').value = grand.toFixed(2);
+        var countPill = document.getElementById('mm-pos-item-count-pill');
+        var totalQty = 0;
+        rows.forEach(function(r){ var qEl = r.querySelector('.big-unit-qty'); totalQty += Math.max(1, parseInt(qEl && qEl.value || 1, 10)); });
+        if (countPill) {
+            countPill.innerHTML = '<i class="fa fa-shopping-basket"></i> ' + rows.length + ' Dishes · ' + totalQty + ' Qty';
+        }
+        var kpiItems = document.getElementById('rpos-kpi-items');
+        var billVal = (document.getElementById('invoice_id') || {}).value || 'R-0109';
+        if (kpiItems) {
+            kpiItems.innerHTML = rows.length + ' Items <span class="mm-table-kpi-sub">' + totalQty + ' Qty · Bill ' + billVal + '</span>';
+        }
+        var splitSel = document.getElementById('pos-split-seats');
+        var seats = Math.max(1, parseInt(splitSel && splitSel.value || 1, 10));
+        var perSeat = (grand / seats).toFixed(2);
+        var splitBadge = document.getElementById('pos-split-badge');
+        if (splitBadge) splitBadge.textContent = seats === 1 ? '1 Seat' : (seats + ' Seats · ৳ ' + perSeat);
+        var kpiTotal = document.getElementById('rpos-kpi-total');
+        if (kpiTotal) {
+            kpiTotal.innerHTML = '৳ ' + grand.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}) + ' <span class="mm-table-kpi-sub" id="pos-split-per-seat">৳ ' + perSeat + ' / seat (' + seats + (seats === 1 ? ' Guest' : ' Guests') + ')</span>';
+        }
+    }
+    function syncCourseAndModifiers() {
+        var courseSel = document.getElementById('pos-course-pacing');
+        var courseVal = courseSel ? courseSel.value : 'Course 1 · Starters First';
+        var shortCourse = courseVal.split('·')[0].trim();
+        var activeMods = [];
+        document.querySelectorAll('[data-pos-modifier].is-active').forEach(function(m){
+            activeMods.push(m.getAttribute('data-pos-modifier'));
+        });
+        var modText = activeMods.length ? activeMods.join(', ') : (courseVal.split('·')[1] || 'Standard Kitchen Prep').trim();
+        var kpiCourse = document.getElementById('rpos-kpi-course');
+        if (kpiCourse) {
+            kpiCourse.innerHTML = shortCourse + ' <span class="mm-table-kpi-sub" id="pos-active-modifiers">' + modText + '</span>';
+        }
+    }
+    function showPosBanner(msg) {
+        var ban = document.getElementById('rpos-confirm-banner');
+        var msgEl = document.getElementById('rpos-confirm-msg');
+        if (ban) {
+            if (msgEl && msg) msgEl.textContent = msg;
+            ban.style.display = 'block';
+        }
+    }
+    function addDishToOrder(id, name, code, unit, price, vat, qtyToAdd) {
+        var tbody = document.getElementById('product-details');
+        if (!tbody) return;
+        var existing = tbody.querySelector('.tr-product-' + id);
+        if (existing) {
+            var qEl = existing.querySelector('.big-unit-qty');
+            if (qEl) qEl.value = Math.max(1, parseInt(qEl.value || 1, 10) + (qtyToAdd || 1));
+            recalcPos();
+            return;
+        }
+        var qty = Math.max(1, qtyToAdd || 1);
+        var tr = document.createElement('tr');
+        tr.className = 'product-row tr-product-' + id;
+        tr.innerHTML = '<td><span class="product_name">' + name + '</span><input type="hidden" value="' + id + '" name="product_ids[]" class="productId"></td>' +
+            '<td><span class="product_barcode">' + code + '</span></td>' +
+            '<td><div class="input-group"><div class="spinbox-buttons input-group-btn"><button type="button" class="btn table-qty-decrease-btn spinbox-down btn-xs btn-danger qty-decrease" data-pos-qty="-1"><i class="fa fa-minus"></i></button></div>' +
+            '<input type="number" value="' + qty + '" name="sales_qty[]" class="form-control big-unit-qty input-sm" readonly>' +
+            '<span class="input-group-addon custom-addon-width">' + unit + '</span>' +
+            '<div class="spinbox-buttons input-group-btn"><button type="button" class="btn table-qty-decrease-btn spinbox-down btn-xs btn-success qty-increase" data-pos-qty="1"><i class="fa fa-plus"></i></button></div></div></td>' +
+            '<td><input tabindex="-1" type="text" value="0" name="item_discount[]" class="form-control item_discount input-sm width-80px"></td>' +
+            '<td><input tabindex="-1" type="text" value="' + price.toFixed(2) + '" name="sales_price[]" class="form-control sales-price input-sm width-80px" readonly></td>' +
+            '<td><input tabindex="-1" type="text" value="' + vat.toFixed(2) + '" name="item_vat_amounts[]" class="form-control item-vat-amount input-sm width-60px" readonly></td>' +
+            '<td><input tabindex="-1" type="number" min="0" value="' + (price * qty).toFixed(2) + '" name="item_price[]" class="form-control total-line-price input-sm width-70px" readonly></td>' +
+            '<td><button class="delete btn btn-xs btn-danger" tabindex="-1" type="button" data-pos-remove><i class="fa fa-times"></i></button></td>';
+        tbody.appendChild(tr);
+        recalcPos();
+    }
+    function selectPosTableCard(card) {
+        if (!card) return;
+        document.querySelectorAll('[data-pos-table-card]').forEach(function(c){ c.classList.remove('is-selected'); });
+        card.classList.add('is-selected');
+        var tblId = card.getAttribute('data-pos-table-card');
+        var guestId = card.getAttribute('data-pos-guest') || '';
+        var roomId = card.getAttribute('data-pos-room') || '';
+        var waiter = card.getAttribute('data-pos-waiter') || 'Rahim';
+        var bill = card.getAttribute('data-pos-bill') || 'R-0109';
+        if (document.getElementById('hotel_table_id') && tblId) document.getElementById('hotel_table_id').value = tblId;
+        if (document.getElementById('guest_name')) document.getElementById('guest_name').value = guestId;
+        if (document.getElementById('room_no')) document.getElementById('room_no').value = roomId;
+        if (document.getElementById('waiter_no')) document.getElementById('waiter_no').value = waiter;
+        if (document.getElementById('invoice_id')) document.getElementById('invoice_id').value = bill;
+        var kpiTbl = document.getElementById('rpos-kpi-table');
+        if (kpiTbl) {
+            kpiTbl.innerHTML = 'Table #' + (tblId || '1') + ' <span class="mm-table-kpi-sub">' + (roomId ? ('Room ' + roomId) : 'Walk-In') + ' · ' + waiter + '</span>';
+        }
+        recalcPos();
+    }
+    document.addEventListener('input', function(e){
+        if (e.target.matches('.item_discount, #service_charge, #discount, #vat')) recalcPos();
+        if (e.target.id === 'pos-filter-invoice') {
+            var q = (e.target.value || '').toLowerCase();
+            document.querySelectorAll('#invoice-list tr').forEach(function(tr){
+                tr.style.display = tr.textContent.toLowerCase().indexOf(q) !== -1 ? '' : 'none';
+            });
+        }
+        if (e.target.id === 'modal-tendered-input') {
+            var pay = parseFloat((document.getElementById('grandTotal') || {}).value || 0);
+            var tend = parseFloat(e.target.value || 0);
+            var diff = tend - pay;
+            var disp = document.getElementById('modal-change-display');
+            if (disp) {
+                disp.textContent = (diff >= 0 ? 'Change: ৳ ' : 'Due: ৳ ') + Math.abs(diff).toFixed(2);
+                disp.style.color = diff >= 0 ? '#166534' : '#b42318';
+            }
+        }
+    });
+    document.addEventListener('change', function(e){
+        if (e.target.matches('input[name="payment_status"]')) {
+            var isPaid = e.target.value === 'paid';
+            var dueBox = document.querySelector('.total-due-amount');
+            var paidBox = document.querySelector('.total-paid-amount');
+            if (dueBox) dueBox.style.display = isPaid ? 'none' : '';
+            if (paidBox) paidBox.style.display = isPaid ? '' : 'none';
+        }
+        if (e.target.id === 'pos-course-pacing') syncCourseAndModifiers();
+        if (e.target.id === 'pos-split-seats') recalcPos();
+    });
+    document.addEventListener('click', function(e){
+        var modChip = e.target.closest('[data-pos-modifier]');
+        if (modChip) {
+            modChip.classList.toggle('is-active');
+            syncCourseAndModifiers();
+        }
+        var hhBtn = e.target.closest('#rpos-happy-hour-btn');
+        if (hhBtn) {
+            var dEl = document.getElementById('discount');
+            if (dEl) {
+                var active = dEl.value === '15';
+                dEl.value = active ? '0' : '15';
+                hhBtn.classList.toggle('is-active', !active);
+                recalcPos();
+                showPosBanner(active ? 'VIP 15% discount removed; standard Restaurant POS tariff restored.' : 'VIP 15% Dining Privilege applied to Bill ' + ((document.getElementById('invoice_id') || {}).value || 'R-0109') + '!');
+            }
+        }
+        var kotBtn = e.target.closest('#rpos-fire-kot-btn');
+        if (kotBtn) {
+            var billNo = (document.getElementById('invoice_id') || {}).value || 'R-0109';
+            var tblNo = (document.getElementById('hotel_table_id') || {}).value || '1';
+            var rmNo = (document.getElementById('room_no') || {}).value || '101';
+            var crs = (document.getElementById('pos-course-pacing') || {}).value || 'Course 1 · Starters First';
+            var gTot = (document.getElementById('grandTotal') || {}).value || '1197.00';
+            showPosBanner('80mm Thermal KOT #KOT-' + billNo + ' dispatched to Kitchen Display Board (Table #' + tblNo + ' · Room ' + rmNo + ' · ' + crs + ' · ৳ ' + gTot + ')!');
+        }
+        var folioBtn = e.target.closest('#pos-post-folio-btn');
+        if (folioBtn) {
+            var rm = (document.getElementById('room_no') || {}).value || '101';
+            var tot = (document.getElementById('grandTotal') || {}).value || '1197.00';
+            showPosBanner('Restaurant Bill ' + ((document.getElementById('invoice_id') || {}).value || 'R-0109') + ' (৳ ' + tot + ') posted to In-House Suite #' + rm + ' Master Folio!');
+        }
+        var qtyBtn = e.target.closest('[data-pos-qty]');
+        if (qtyBtn) {
+            var delta = parseInt(qtyBtn.getAttribute('data-pos-qty'), 10);
+            var tr = qtyBtn.closest('tr');
+            var input = tr && tr.querySelector('.big-unit-qty');
+            if (input) {
+                input.value = Math.max(1, parseInt(input.value || 1, 10) + delta);
+                recalcPos();
+            }
+        }
+        var rmBtn = e.target.closest('[data-pos-remove]');
+        if (rmBtn) {
+            var row = rmBtn.closest('tr');
+            if (row) { row.remove(); recalcPos(); }
+        }
+        var invRow = e.target.closest('[data-pos-invoice]');
+        if (invRow) {
+            var invId = invRow.getAttribute('data-pos-invoice');
+            var tbl = invRow.getAttribute('data-pos-table');
+            var rm = invRow.getAttribute('data-pos-room');
+            if (document.getElementById('invoice_id')) document.getElementById('invoice_id').value = invId;
+            if (document.getElementById('hotel_table_id') && tbl) document.getElementById('hotel_table_id').value = tbl;
+            if (document.getElementById('room_no') && rm) document.getElementById('room_no').value = rm;
+            var matchingCard = document.querySelector('[data-pos-table-card="' + tbl + '"]');
+            if (matchingCard) {
+                document.querySelectorAll('[data-pos-table-card]').forEach(function(c){ c.classList.remove('is-selected'); });
+                matchingCard.classList.add('is-selected');
+            }
+        }
+        var tableCard = e.target.closest('[data-pos-table-card]');
+        if (tableCard) {
+            selectPosTableCard(tableCard);
+        }
+        var filterPill = e.target.closest('[data-pos-table-filter]');
+        if (filterPill) {
+            var flt = filterPill.getAttribute('data-pos-table-filter') || 'all';
+            document.querySelectorAll('[data-pos-table-filter]').forEach(function(p){ p.classList.remove('is-active'); });
+            filterPill.classList.add('is-active');
+            document.querySelectorAll('[data-pos-table-card]').forEach(function(c){
+                var st = c.getAttribute('data-pos-state') || 'available';
+                c.style.display = (flt === 'all' || st === flt) ? '' : 'none';
+            });
+        }
+        var quickChip = e.target.closest('[data-quick-id]');
+        if (quickChip) {
+            addDishToOrder(
+                quickChip.getAttribute('data-quick-id'),
+                quickChip.getAttribute('data-quick-name'),
+                quickChip.getAttribute('data-quick-code'),
+                quickChip.getAttribute('data-quick-unit') || 'Plate',
+                parseFloat(quickChip.getAttribute('data-quick-price') || 0),
+                parseFloat(quickChip.getAttribute('data-quick-vat') || 0),
+                1
+            );
+        }
+    });
+    var tblSelect = document.getElementById('hotel_table_id');
+    if (tblSelect) {
+        tblSelect.addEventListener('change', function(){
+            var card = document.querySelector('[data-pos-table-card="' + tblSelect.value + '"]');
+            if (card) selectPosTableCard(card);
+        });
+    }
+    try {
+        var params = new URLSearchParams(window.location.search || '');
+        var urlTbl = params.get('table_id');
+        if (urlTbl && urlTbl !== '1') {
+            var urlCard = document.querySelector('[data-pos-table-card="' + urlTbl + '"]');
+            if (urlCard) selectPosTableCard(urlCard);
+        }
+    } catch (_) {}
+    var prodSel = document.getElementById('product-search');
+    if (prodSel) {
+        prodSel.addEventListener('change', function(){
+            var opt = prodSel.options[prodSel.selectedIndex];
+            if (!opt || !opt.value) return;
+            var id = opt.value;
+            var name = opt.getAttribute('data-name');
+            var code = opt.getAttribute('data-code');
+            var unit = opt.getAttribute('data-unit') || 'Plate';
+            var price = parseFloat(opt.getAttribute('data-price') || 0);
+            var vat = parseFloat(opt.getAttribute('data-vat') || 0);
+            var qty = Math.max(1, parseInt((document.getElementById('input-big-unit-id') || {}).value || 1, 10));
+            var tbody = document.getElementById('product-details');
+            var tr = document.createElement('tr');
+            tr.className = 'product-row tr-product-' + id;
+            tr.innerHTML = '<td><span class="product_name">' + name + '</span><input type="hidden" value="' + id + '" name="product_ids[]" class="productId"></td>' +
+                '<td><span class="product_barcode">' + code + '</span></td>' +
+                '<td><div class="input-group"><div class="spinbox-buttons input-group-btn"><button type="button" class="btn table-qty-decrease-btn spinbox-down btn-xs btn-danger qty-decrease" data-pos-qty="-1"><i class="fa fa-minus"></i></button></div>' +
+                '<input type="number" value="' + qty + '" name="sales_qty[]" class="form-control big-unit-qty input-sm" readonly>' +
+                '<span class="input-group-addon custom-addon-width">' + unit + '</span>' +
+                '<div class="spinbox-buttons input-group-btn"><button type="button" class="btn table-qty-decrease-btn spinbox-down btn-xs btn-success qty-increase" data-pos-qty="1"><i class="fa fa-plus"></i></button></div></div></td>' +
+                '<td><input tabindex="-1" type="text" value="0" name="item_discount[]" class="form-control item_discount input-sm width-80px"></td>' +
+                '<td><input tabindex="-1" type="text" value="' + price.toFixed(2) + '" name="sales_price[]" class="form-control sales-price input-sm width-80px" readonly></td>' +
+                '<td><input tabindex="-1" type="text" value="' + vat.toFixed(2) + '" name="item_vat_amounts[]" class="form-control item-vat-amount input-sm width-60px" readonly></td>' +
+                '<td><input tabindex="-1" type="number" min="0" value="' + (price * qty).toFixed(2) + '" name="item_price[]" class="form-control total-line-price input-sm width-70px" readonly></td>' +
+                '<td><button class="delete btn btn-xs btn-danger" tabindex="-1" type="button" data-pos-remove><i class="fa fa-times"></i></button></td>';
+            tbody.appendChild(tr);
+            prodSel.value = '';
+            recalcPos();
+        });
+    }
+    ['service_charge', 'discount', 'vat'].forEach(function(id){
+        var el = document.getElementById(id);
+        if (el) el.addEventListener('input', recalcPos);
+    });
+    var printBtn = document.getElementById('rpos-print-btn');
+    if (printBtn) {
+        printBtn.addEventListener('click', function () {
+            var invNo = (document.getElementById('invoice_id') || {}).value || 'R-0109';
+            var noEl = document.getElementById('rpos-receipt-no');
+            if (noEl) noEl.textContent = invNo;
+            var codeEl = document.getElementById('rpos-receipt-code');
+            if (codeEl) codeEl.textContent = invNo;
+            var dateEl = document.getElementById('rpos-receipt-date');
+            if (dateEl) dateEl.textContent = new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' });
+            var tblSel = document.getElementById('hotel_table_id');
+            var tableEl = document.getElementById('rpos-receipt-table');
+            if (tableEl && tblSel) tableEl.textContent = 'T' + (tblSel.value || '1');
+            var roomSel = document.getElementById('room_no');
+            var roomEl = document.getElementById('rpos-receipt-room');
+            if (roomEl && roomSel && roomSel.selectedIndex >= 0) roomEl.textContent = roomSel.options[roomSel.selectedIndex].text || '—';
+            var itemsBody = document.getElementById('rpos-receipt-items');
+            if (itemsBody) {
+                itemsBody.innerHTML = '';
+                document.querySelectorAll('#product-details tr.product-row').forEach(function (row) {
+                    var name = (row.querySelector('.product_name') || {}).textContent || 'Item';
+                    var qty = (row.querySelector('.big-unit-qty') || {}).value || '1';
+                    var line = parseFloat((row.querySelector('.total-line-price') || {}).value || 0);
+                    var tr = document.createElement('tr');
+                    tr.innerHTML = '<td></td><td class="text-right"></td><td class="text-right"></td>';
+                    tr.children[0].textContent = name;
+                    tr.children[1].textContent = qty;
+                    tr.children[2].textContent = line.toFixed(2);
+                    itemsBody.appendChild(tr);
+                });
+            }
+            var totalEl = document.getElementById('rpos-receipt-total');
+            var grand = parseFloat((document.getElementById('grandTotal') || {}).value || 0);
+            if (totalEl) totalEl.textContent = '৳ ' + grand.toFixed(2);
+            var receipt = document.getElementById('rpos-print-receipt');
+            if (receipt) receipt.setAttribute('aria-hidden', 'false');
+            document.body.classList.add('mm-printing-pos-receipt');
+            window.addEventListener('afterprint', function cleanup() {
+                document.body.classList.remove('mm-printing-pos-receipt');
+                window.removeEventListener('afterprint', cleanup);
+            });
+            setTimeout(function () { document.body.classList.remove('mm-printing-pos-receipt'); }, 4000);
+            window.print();
+        });
+    }
+})();
+</script>
+<a id="mm-static-preview-badge" href="../../../preview/" style="position:fixed;left:14px;bottom:14px;z-index:2147483647;display:flex;align-items:center;gap:8px;padding:7px 12px;border-radius:999px;background:rgba(17,24,39,.92);color:#fff;font:600 12px/1.2 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;text-decoration:none;box-shadow:0 6px 20px rgba(0,0,0,.25)"><span style="width:7px;height:7px;border-radius:50%;background:#34d399;box-shadow:0 0 0 3px rgba(52,211,153,.25)"></span>Static preview &middot; sample data &middot; nothing is saved</a><script>(function(){document.addEventListener("submit",function(e){e.preventDefault();e.stopPropagation();alert("Static preview: nothing is saved here.");},true);})();</script></body></html>

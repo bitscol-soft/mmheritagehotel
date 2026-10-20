@@ -16,7 +16,7 @@
 <x-mm.styles />
 <x-mm.page class="mm-rst mm-rst-inv mm-rst-form" title="Add item" description="Create a raw material item.">
     <x-slot name="actions">
-        @if (hasPermission('rst.material.view', $slugs))
+        @if (hasPermission('items.view', $slugs))
                 <a href="{{ route('rst.material.index') }}" class="mm-button"><i class="ace-icon fa fa-list-alt"></i> Material
                     List</a>
         @endif
