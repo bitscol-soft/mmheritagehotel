@@ -57,6 +57,10 @@ class ParameterisedRouteCrawlTest extends TestCase
         }
         $this->loadShippedDumpData();
 
+        // masters only in the dump -> most show/edit screens would be skipped.
+        // One coherent business row per module opens them.
+        $this->seedBusinessData();
+
         if (!User::find(1)) {
             $this->insertRow('users', ['id' => 1, 'name' => 'System Admin', 'email' => 'sys@mm.test',
                 'password' => bcrypt('x'), 'company_id' => 1, 'status' => 1, 'created_at' => now(), 'updated_at' => now()]);

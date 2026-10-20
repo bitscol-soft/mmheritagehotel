@@ -110,6 +110,80 @@ trait BuildsShippedSchema
     }
 
     /** Rows the app needs before any request: admin user, active modules, config singletons. */
+    /**
+     * One coherent business row per module master, so the parameterised sweep can
+     * open show/edit screens instead of skipping them for want of data.
+     *
+     * The shipped dump deliberately carries masters only (no sales, items or
+     * bookings), so a sweep over production data exercises 24 screens out of 150.
+     * These rows are NOT added to the dump - they exist only in the test, and they
+     * are the minimum a screen needs to resolve: the row itself, and the parents
+     * it joins to (unit -> item -> product -> sale).
+     *
+     * Kept deliberately small. If a screen needs more than this to render, that is
+     * a finding in its own right.
+     */
+    protected function seedBusinessData(): void
+    {
+        $now = ['created_at' => now(), 'updated_at' => now()];
+
+        // --- masters -------------------------------------------------------
+        $this->insertRow('units', ['id' => 1, 'name' => 'Pcs', 'company_id' => 1] + $now);
+        $this->insertRow('acc_categories', ['id' => 1, 'name' => 'Beverage', 'company_id' => 1] + $now);
+        $this->insertRow('item_units', [
+            'id' => 1, 'group_id' => 1, 'name' => 'Pcs', 'conversion' => 1, 'status' => 1,
+        ] + $now);
+        $this->insertRow('items', [
+            'id' => 1, 'company_id' => 1, 'item_unit_id' => 1, 'name' => 'Tissue Box',
+            'opening_balance' => 10, 'rate' => 100, 'remaining_quantity' => 10,
+            'current_stock' => 10, 'average_rate' => 100,
+        ] + $now);
+        $this->insertRow('rst_products', [
+            'id' => 1, 'company_id' => 1, 'name' => 'Mineral Water', 'status' => 1,
+            'stock_limit' => 5, 'category_id' => 1, 'unit_id' => 1, 'unit_cost' => 20,
+            'sale_price' => 30, 'opening_quantity' => 10, 'available_quantity' => 10, 'is_bar' => 0,
+        ] + $now);
+
+        // --- vouchers / transfers ------------------------------------------
+        $this->insertRow('fund_transfers', [
+            'id' => 1, 'invoice_no' => 'FT-2026-000001', 'from_account_id' => 55,
+            'to_account_id' => 26, 'amount' => 100, 'date' => '2026-10-01',
+            'description' => 'Cash to bank', 'is_approved' => 0, 'company_id' => 1,
+        ] + $now);
+
+        // --- purchasing -----------------------------------------------------
+        $this->insertRow('purchases', [
+            'id' => 1, 'company_id' => 1, 'purchase_date' => '2026-10-01',
+            'purchase_reference' => 'PR-1', 'is_approved' => 0, 'total' => 1000,
+        ] + $now);
+        $this->insertRow('goods_requisitions', [
+            'id' => 1, 'goods_requisition_date' => '2026-10-01', 'goods_requisition_reference' => 'GR-1',
+            'total_quantity' => 2, 'is_approved' => 0, 'company_id' => 1,
+        ] + $now);
+
+        // --- money (adapters already have services from #25/#62) ------------
+        $this->insertRow('acc_payments', [
+            'id' => 1, 'supplier_id' => 1, 'date' => '2026-10-01', 'invoice_no' => 'PV-2026-000001',
+            'amount' => 250, 'company_id' => 1,
+        ] + $now);
+        $this->insertRow('acc_collections', [
+            'id' => 1, 'customer_id' => 1, 'date' => '2026-10-01', 'invoice_no' => 'CV-2026-000001',
+            'amount' => 250, 'company_id' => 1,
+        ] + $now);
+
+        // --- trading --------------------------------------------------------
+        $this->insertRow('rst_sales', [
+            'id' => 1, 'company_id' => 1, 'invoice_no' => 'RS-2026-000001', 'date' => '2026-10-01',
+            'guest_name' => 'Walk in', 'subtotal' => 30, 'payable_amount' => 30,
+            'paid_amount' => 30, 'due_amount' => 0, 'is_bar' => 0, 'payment_status' => 1,
+        ] + $now);
+        $this->insertRow('hotel_service_sales', [
+            'id' => 1, 'company_id' => 1, 'guest_name' => 'Walk in', 'invoice_no' => 'HSS-2026-000001',
+            'invoice_date' => '2026-10-01', 'subtotal' => 100, 'payable_amount' => 100,
+            'discount' => 0, 'paid_amount' => 100,
+        ] + $now);
+    }
+
     protected function seedRuntimeConfig(): void
     {
         $this->insertRow('users', ['id' => 1, 'name' => 'System Admin', 'email' => 'sys@mm.test',
