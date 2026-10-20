@@ -217,7 +217,7 @@
                                     <td colspan="4" style="text-align: right; border: none !important;">
                                         <strong>Vat Amount</strong><span class="currency-sign"></span> : </td>
                                     <th style="text-align: right; border: none !important;">
-                                        {{ $sale->guestInfo->is_stuff == 1 ? 0 : $sale->vat_amount }}
+                                        {{ optional($sale->guestInfo)->is_stuff == 1 ? 0 : $sale->vat_amount }}
                                     </th>
                                 </tr>
                                 <tr>

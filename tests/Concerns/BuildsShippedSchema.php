@@ -125,7 +125,11 @@ trait BuildsShippedSchema
      */
     protected function seedBusinessData(): void
     {
-        $now = ['created_at' => now(), 'updated_at' => now()];
+        // created_by/updated_by point at the admin: several show screens render
+        // `$row->created_user->name` unguarded, and a real row always has one.
+        // Leaving them at the 0 that insertRow() substitutes makes the fixture
+        // produce failures that say nothing about the app.
+        $now = ['created_at' => now(), 'updated_at' => now(), 'created_by' => 1, 'updated_by' => 1];
 
         // --- masters -------------------------------------------------------
         $this->insertRow('units', ['id' => 1, 'name' => 'Pcs', 'company_id' => 1] + $now);
@@ -155,6 +159,11 @@ trait BuildsShippedSchema
         $this->insertRow('purchases', [
             'id' => 1, 'company_id' => 1, 'purchase_date' => '2026-10-01',
             'purchase_reference' => 'PR-1', 'is_approved' => 0, 'total' => 1000,
+        ] + $now);
+        $this->insertRow('rst_purchases', [
+            'id' => 1, 'company_id' => 1, 'date' => '2026-10-01', 'challan_no' => 'CH-1',
+            'subtotal' => 1000, 'payable_amount' => 1000, 'discount' => 0,
+            'paid_amount' => 1000, 'due_amount' => 0, 'change_amount' => 0, 'is_bar' => 0,
         ] + $now);
         $this->insertRow('goods_requisitions', [
             'id' => 1, 'goods_requisition_date' => '2026-10-01', 'goods_requisition_reference' => 'GR-1',

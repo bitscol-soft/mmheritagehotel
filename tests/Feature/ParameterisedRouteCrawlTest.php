@@ -195,7 +195,27 @@ class ParameterisedRouteCrawlTest extends TestCase
             }
         }
 
-        // 4. module-prefixed spellings (rooms -> rst_rooms, hotel_rooms)
+        // 4. module-prefixed spellings (rooms -> rst_rooms, hotel_rooms). The
+        //    prefix the URI's module implies goes FIRST: `restaurant/.../purchase`
+        //    means rst_purchases, and a plain `purchases` table also exists (the
+        //    General Store one), so an unprefixed guess opens the wrong row and
+        //    the screen dereferences a null company - a fixture artifact dressed
+        //    up as a bug.
+        $prefixes = [
+            'restaurant' => ['rst_'],
+            'bar'        => ['rst_', 'bar_'],
+            'hotel'      => ['hotel_', 'rst_'],
+            'hotelservice' => ['hotel_service_', 'hotel_'],
+            'account'    => ['acc_'],
+            'generalstore' => ['gs_', ''],
+        ][explode('/', $uri)[0]] ?? [];
+
+        $preferred = [];
+        foreach ($prefixes as $prefix) {
+            foreach ($tables as $table) {
+                $preferred[] = $prefix . $table;
+            }
+        }
         $extra = [];
         foreach ($tables as $table) {
             $extra[] = 'rst_' . $table;
@@ -203,7 +223,7 @@ class ParameterisedRouteCrawlTest extends TestCase
             $extra[] = 'acc_' . $table;
         }
 
-        return array_values(array_unique(array_merge($tables, $extra)));
+        return array_values(array_unique(array_merge($preferred, $tables, $extra)));
     }
 
     private function isBenign(\Throwable $e): bool

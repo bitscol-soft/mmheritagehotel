@@ -200,6 +200,24 @@ findings were mine, not the app's; this one was real.
 |---|-----|----------------|---------|------------|-----|
 | 74 | 🟠 | `POST /setting/permission-access-employee` (Employee-profile permissions) | the screen renders and the Save button appears to work, but nothing is ever stored and the user is flashed the raw string `no such table: employee_permissions` | the **GET** guarded the table with `Schema::hasTable()`; the **store** did not, and its `catch (Exception)` turned the `QueryException` into a flash message, so a broken write looked like an explanation. Separately, "uncheck everything" posts no field at all and `array_filter(null)` is a **TypeError** on PHP 8 - an `Error`, not an `Exception`, so it bypassed that catch and 500'd | the store now mirrors the GET's guard and says plainly that the table is not installed; the submitted ids are normalised with `(array)` before use, so unchecking every box clears the assignments instead of throwing. `EmployeePermissionStoreTest` pins all three paths (not installed, uncheck-all, normal save without duplicates) |
 
+## A14. Closed by opening the show/edit screens (2026-10-20)
+
+Seeding one coherent business row per master lifted the parameterised sweep from 24 to 58
+exercised routes, and it immediately paid for itself: three real defects, all on screens that
+were previously unreachable by any test.
+
+| # | Sev | Route / Screen | Symptom | Root cause | Fix |
+|---|-----|----------------|---------|------------|-----|
+| 75 | 🟠 | `restaurant/inventory/purchase/{purchase}/edit` and `PUT` the same | 500 `Target class [Module\Restaurant\Controllers\Inventory\Purchase] does not exist` | `RstPurchaseController::edit()`/`update()` type-hinted `Purchase`, a class that was never imported; PHP resolves `::class`/an unknown type name against the **current namespace**, so it asked the container for `...\Inventory\Purchase`. The method bodies used the same name | type-hints and the `where()` call now use `RstPurchase`, the model the rest of the controller already uses |
+| 76 | 🟠 | `gs/gin-list/{goodsRequisition}` | 500 `Undefined variable $systemSetting` | two methods render `goods_requisitions/gin_list`; `GINList()` passed `$systemSetting`, `GINListShow()` did not, so the single-requisition view died on a variable its sibling always supplies | `GINListShow()` now supplies it too |
+| 77 | 🟠 | `restaurant/sales/{sale}` | 500 `Attempt to read property "is_stuff" on null` | `guestInfo()` is `hasOne(Guest, 'id', 'hotel_guest_id')` and `hotel_guest_id` is nullable - a walk-in sale has no guest, so the VAT line dereferenced nothing. Every other nullable relation in these views is already `optional()`-guarded | VAT line now reads `optional($sale->guestInfo)->is_stuff` |
+
+Two apparent failures were the fixture, not the app, and are recorded here so they are not
+re-diagnosed: `$row->created_user->name` and `$purchase->company->name` were null only because
+seeded rows carried `created_by = 0` and the Restaurant purchase was resolving against the
+General Store's `purchases` table. The seeder now stamps a real user, and the sweep prefers a
+module-prefixed table (`restaurant` -> `rst_`) over a same-named one from another module.
+
 ## B. Open — needs deploy / decision / feature work
 
 | # | Sev | Item | Notes & recommendation |

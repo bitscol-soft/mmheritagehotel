@@ -338,8 +338,11 @@ class GoodsRequisitionController extends Controller
             ->orderByDesc('id')->where('id', $goodsRequisition->id);
 
         $goods_requisitions = $goods_requisitions->where('is_approved', 1)->orderByDesc('id')->paginate(30);
+        // docs/BUGS.md #75: the same view is rendered by GINList() above, which
+        // passes this; without it the single-requisition screen 500s.
+        $systemSetting = SystemSetting::row('general_store_reference_no_change');
 
-        return view('goods_requisitions.gin_list', compact('goods_requisitions', 'companies'));
+        return view('goods_requisitions.gin_list', compact('goods_requisitions', 'companies', 'systemSetting'));
     }
 
 
