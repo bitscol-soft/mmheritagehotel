@@ -238,6 +238,8 @@ itself was never shipped: `StockAdjustmentController` references `Warehouse` and
 those paths fail the same way ProductBatch did (#71) and should be guarded when the warehouse/hospital
 screens are next touched.
 
+| 78 | 🟠 | `restaurant/inventory/production/{id}/show|edit|update` | the three actions resolved a **purchase** and rendered the **purchases** views - with a production id, so `edit` dereferenced null and the other two showed the wrong record entirely | `RstProductionController` was copied from `RstPurchaseController` for `show`/`edit`/`update`, and no production show/edit view was ever written. `index`/`create`/`store` are genuinely production screens | those three routes are pruned from the resource (round-3 convention); nothing referenced them by name |
+
 ## B. Open — needs deploy / decision / feature work
 
 | # | Sev | Item | Notes & recommendation |
