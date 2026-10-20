@@ -40,7 +40,7 @@ jobs:
           grep -E '^crawl \|' /tmp/phpunit.log || true
           # one compact summary line per crawl pass (both fit in an annotation; the
           # detailed report does not - the channel truncates it mid-list)
-          echo "::notice::$(grep -E '^crawl \| pass=|^PARAMCRAWL routes=' /tmp/phpunit.log | cut -c 1-300 | tr '\n' ' ')"
+          echo "::notice::$(grep -oE 'crawl \| pass=[^ ]*[^:]*|PARAMCRAWL routes=[0-9]+ skipped_no_data=[0-9]+ failures=[0-9]+' /tmp/phpunit.log | cut -c 1-300 | tr '\n' ' ')"
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
