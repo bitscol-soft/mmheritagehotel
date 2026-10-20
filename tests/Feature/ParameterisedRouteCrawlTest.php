@@ -6,6 +6,7 @@ use Tests\TestCase;
 use App\Models\User;
 use Tests\Concerns\BuildsShippedSchema;
 use Tests\Concerns\CreatesAccSchema;
+use Illuminate\Support\Facades\DB;
 
 /**
  * The crawl's blind spot, closed.
@@ -44,7 +45,16 @@ class ParameterisedRouteCrawlTest extends TestCase
         $this->seedRuntimeConfig();
         $this->loadAllModuleRoutes();
 
+        // The runtime seed and the dump both claim the same ids (users 1-2,
+        // modules ...), so a plain load would reject the dump's rows as duplicate
+        // keys and leave half the fixture behind - which is how the first green
+        // run produced a submodule whose `module` relation was null. Drop the
+        // seeded rows first, exactly as the page crawl does before its
+        // production-data pass.
         \Illuminate\Support\Facades\Cache::flush();
+        foreach (['users', 'groups', 'companies', 'company_user', 'modules', 'system_settings', 'invoice_generate'] as $table) {
+            DB::table($table)->delete();
+        }
         $this->loadShippedDumpData();
 
         if (!User::find(1)) {
