@@ -191,6 +191,15 @@ screens render with rows and with an empty table), `tools/ui-guard.sh`, and CI (
 the crawl on **both** passes - 15 with production-shaped data, 0 unexpected on empty business
 data - `tools/ui-blade-check.php`, the browser specs and the fixture regeneration).
 
+## A13. Closed by the parameterised-route sweep (2026-10-20)
+
+The sweep (see C0) found the screens the old crawl could not reach. Two of the three
+findings were mine, not the app's; this one was real.
+
+| # | Sev | Route / Screen | Symptom | Root cause | Fix |
+|---|-----|----------------|---------|------------|-----|
+| 74 | 🟠 | `POST /setting/permission-access-employee` (Employee-profile permissions) | the screen renders and the Save button appears to work, but nothing is ever stored and the user is flashed the raw string `no such table: employee_permissions` | the **GET** guarded the table with `Schema::hasTable()`; the **store** did not, and its `catch (Exception)` turned the `QueryException` into a flash message, so a broken write looked like an explanation. Separately, "uncheck everything" posts no field at all and `array_filter(null)` is a **TypeError** on PHP 8 - an `Error`, not an `Exception`, so it bypassed that catch and 500'd | the store now mirrors the GET's guard and says plainly that the table is not installed; the submitted ids are normalised with `(array)` before use, so unchecking every box clears the assignments instead of throwing. `EmployeePermissionStoreTest` pins all three paths (not installed, uncheck-all, normal save without duplicates) |
+
 ## B. Open — needs deploy / decision / feature work
 
 | # | Sev | Item | Notes & recommendation |

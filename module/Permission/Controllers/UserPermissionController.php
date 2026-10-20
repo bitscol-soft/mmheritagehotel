@@ -676,13 +676,26 @@ class UserPermissionController extends Controller
     {
         $this->hasAccess("permission.accesses.create");     // check permission
 
+        // docs/BUGS.md #74: the GET above guards this table with hasTable(), the
+        // store did not - so on an installation without it every save failed, and
+        // the catch below turned the raw SQL error ("no such table:
+        // employee_permissions") into a flash message that reads like advice.
+        if (!Schema::hasTable('employee_permissions')) {
+            return back()->with('error', 'Employee profile permissions cannot be saved: this installation does not have the employee_permissions table.');
+        }
+
         try {
 
-            EmployeePermission::whereNotIn('permission_id', $request->employee_permissions ?? [])->delete();
+            // Unchecking every box sends no field at all, and array_filter(null)
+            // is a TypeError on PHP 8 - which is an Error, not an Exception, so it
+            // escaped the catch below as a 500 instead of clearing the assignments.
+            $submitted = array_filter((array) $request->employee_permissions);
 
-            $old_employee_permissions = EmployeePermission::pluck('permission_id')->toArray() ?? [];
+            EmployeePermission::whereNotIn('permission_id', $submitted)->delete();
 
-            $new_items = array_diff(array_filter($request->employee_permissions), $old_employee_permissions);
+            $old_employee_permissions = EmployeePermission::pluck('permission_id')->toArray();
+
+            $new_items = array_diff($submitted, $old_employee_permissions);
             $employee_permissions = [];
 
             foreach ($new_items as $key => $new_item) {
