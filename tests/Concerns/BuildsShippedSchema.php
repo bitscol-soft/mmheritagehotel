@@ -160,6 +160,14 @@ trait BuildsShippedSchema
             'id' => 1, 'company_id' => 1, 'purchase_date' => '2026-10-01',
             'purchase_reference' => 'PR-1', 'is_approved' => 0, 'total' => 1000,
         ] + $now);
+        // RstPurchase::$table is 'rst_material_purchase' (not rst_purchases, which
+        // also exists but is not what this model reads)
+        $this->insertRow('rst_material_purchase', [
+            'id' => 1, 'company_id' => 1, 'date' => '2026-10-01', 'challan_no' => 'CH-1',
+            'subtotal' => 1000, 'payable_amount' => 1000, 'discount' => 0,
+            'paid_amount' => 1000, 'due_amount' => 0, 'change_amount' => 0,
+            'is_bar' => 0, 'is_approved' => 0,
+        ] + $now);
         $this->insertRow('rst_purchases', [
             'id' => 1, 'company_id' => 1, 'date' => '2026-10-01', 'challan_no' => 'CH-1',
             'subtotal' => 1000, 'payable_amount' => 1000, 'discount' => 0,

@@ -170,20 +170,37 @@ class ParameterisedRouteCrawlTest extends TestCase
     {
         $tables = [];
 
-        // 1. a model the controller type-hints (implicit binding)
+        // 1. a model the controller type-hints (implicit binding). The action's own
+        //    signature comes first, but `show($id)` often carries no type-hint while
+        //    `edit(RstPurchase $purchase)` next door does - and both read the same
+        //    table. Without this, the heuristic below guessed `rst_purchases` for a
+        //    model whose $table is `rst_material_purchase` and handed the screen a
+        //    row from a table nothing reads.
         $controller = $route->getAction('controller');
         if (is_string($controller) && str_contains($controller, '@')) {
             [$class, $method] = explode('@', $controller);
+            $methods = [$method];
             try {
-                foreach ((new \ReflectionMethod($class, $method))->getParameters() as $param) {
-                    $type = $param->getType();
-                    $name = $type && !$type->isBuiltin() ? $type->getName() : null;
-                    if ($name && is_subclass_of($name, \Illuminate\Database\Eloquent\Model::class)) {
-                        $tables[] = (new $name)->getTable();
+                foreach ((new \ReflectionClass($class))->getMethods() as $candidate) {
+                    if ($candidate->class === $class) {
+                        $methods[] = $candidate->getName();
                     }
                 }
             } catch (\Throwable $e) {
-                // unmountable controller/method: fall through to the heuristics
+                // unmountable controller: keep just the action
+            }
+            foreach (array_unique($methods) as $candidate) {
+                try {
+                    foreach ((new \ReflectionMethod($class, $candidate))->getParameters() as $param) {
+                        $type = $param->getType();
+                        $name = $type && !$type->isBuiltin() ? $type->getName() : null;
+                        if ($name && is_subclass_of($name, \Illuminate\Database\Eloquent\Model::class)) {
+                            $tables[] = (new $name)->getTable();
+                        }
+                    }
+                } catch (\Throwable $e) {
+                    // unmountable method: fall through to the heuristics
+                }
             }
         }
 
