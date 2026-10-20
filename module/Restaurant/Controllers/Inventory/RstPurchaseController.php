@@ -144,7 +144,7 @@ class RstPurchaseController extends Controller
     {
         $this->hasAccess("rst.purchase.edit");
 
-        $items     = Item::items()->select('name', 'id', 'company_id')->get();
+        $items     = RestMaterial::items()->select('name', 'id', 'company_id')->get();
         $companies = Company::userCompanies();
         $purchase  = RstPurchase::where('id', $purchase->id)->with('purchase_details')->first();
         $systemSetting = SystemSetting::where('key', 'general_store_reference_no_change')->first();
@@ -295,7 +295,7 @@ class RstPurchaseController extends Controller
 
             // create new added
             for ($i = count($purchase->purchase_details); $i < count($request->item_id); $i++) {
-                PurchaseDetails::create([
+                RstPurchaseDetails::create([
                     'purchase_id' => $purchase->id,
                     'company_id'  => $request->company_id,
                     'item_id'     => $request->item_id[$i],

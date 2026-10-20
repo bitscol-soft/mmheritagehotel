@@ -218,6 +218,26 @@ seeded rows carried `created_by = 0` and the Restaurant purchase was resolving a
 General Store's `purchases` table. The seeder now stamps a real user, and the sweep prefers a
 module-prefixed table (`restaurant` -> `rst_`) over a same-named one from another module.
 
+### A14 continued - the same defect class, found by static scan
+
+#75 and #76 were not one-offs. A scan for class names used but not imported (comments stripped,
+fully-qualified references excluded) turned up the same mistake in four more files. PHP resolves an
+unknown name against the *current* namespace, so these are silent until the line runs:
+
+| Where | Reference | Effect |
+|-------|-----------|--------|
+| `Restaurant/Controllers/Inventory/RstProductionController` | `Purchase`, `Item`, `PurchaseDetails` | `edit`, `update` and the detail lines of `store` all fatal - the same three names as #75 |
+| `Restaurant/Controllers/Inventory/RstPurchaseController` | `PurchaseDetails::create` (twice) | adding a received line to an existing restaurant purchase fataled |
+| `Account/Models/Transaction` | `User`, `Company` | `$transaction->created_user` / `->company` asked for `Module\Account\Models\User`, which does not exist |
+| `HotelService/Models/Service/HotelServiceSale` | `HotelTransactionLedger` | the sale's ledger relation |
+| `Restaurant/Models/RstPurchase` | `PurchaseReceive` | received-quantity relations |
+
+All five now import the class they meant. Two more of this shape are left alone because the feature
+itself was never shipped: `StockAdjustmentController` references `Warehouse` and
+`StockAdjustment` references `HospitalTransaction`; neither class exists anywhere in the repo, so
+those paths fail the same way ProductBatch did (#71) and should be guarded when the warehouse/hospital
+screens are next touched.
+
 ## B. Open — needs deploy / decision / feature work
 
 | # | Sev | Item | Notes & recommendation |

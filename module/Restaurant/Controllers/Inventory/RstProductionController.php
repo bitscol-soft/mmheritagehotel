@@ -131,13 +131,13 @@ class RstProductionController extends Controller
      | EDIT METHOD
      |--------------------------------------------------------------------------
     */
-    public function edit(Purchase $purchase)
+    public function edit(RstPurchase $purchase)
     {
         $this->hasAccess("rst.purchase.edit");
 
-        $items     = Item::items()->select('name', 'id', 'company_id')->get();
+        $items     = RestMaterial::items()->select('name', 'id', 'company_id')->get();
         $companies = Company::userCompanies();
-        $purchase  = Purchase::where('id', $purchase->id)->with('purchase_details')->first();
+        $purchase  = RstPurchase::where('id', $purchase->id)->with('purchase_details')->first();
         $systemSetting = SystemSetting::where('key', 'general_store_reference_no_change')->first();
 
         return view('inventory.production.purchases.edit', compact('purchase', 'companies', 'items', 'systemSetting'));
@@ -150,7 +150,7 @@ class RstProductionController extends Controller
      | UPDATE METHOD
      |--------------------------------------------------------------------------
     */
-    public function update(Request $request, Purchase $purchase)
+    public function update(Request $request, RstPurchase $purchase)
     {
         $this->hasAccess("rst.purchase.edit");
         // check validation
@@ -297,7 +297,7 @@ class RstProductionController extends Controller
 
             // create new added
             for ($i = count($purchase->purchase_details); $i < count($request->item_id); $i++) {
-                PurchaseDetails::create([
+                RstPurchaseDetails::create([
                     'purchase_id' => $purchase->id,
                     'company_id'  => $request->company_id,
                     'item_id'     => $request->item_id[$i],
