@@ -118,7 +118,7 @@
                                 <tr>
                                     <td style="border: none !important;"> Address : </td>
                                     <td style="border: none !important;">
-                                        {{ $sale->guestInfo->address ?? "N/A" }}
+                                        {{ optional($sale->guestInfo)->address ?? "N/A" }}
                                     </td>
                                 </tr>
                             </table>
@@ -224,7 +224,7 @@
                                     <td colspan="4" style="text-align: right; border: none !important;">
                                         <strong>Service Charge</strong><span class="currency-sign"></span> : </td>
                                     <th style="text-align: right; border: none !important;">
-                                        {{ $sale->guestInfo->is_stuff == 1 ? 0 : $sale->service_amount }}
+                                        {{ optional($sale->guestInfo)->is_stuff == 1 ? 0 : $sale->service_amount }}
                                     </th>
                                 </tr>
                                 <tr>

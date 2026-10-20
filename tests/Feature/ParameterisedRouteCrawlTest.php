@@ -109,6 +109,7 @@ class ParameterisedRouteCrawlTest extends TestCase
 
             $tested++;
             $concrete = preg_replace('/\{[^}]+\}/', (string) $id, $uri);
+            $resolved = $this->lastResolvedTable . '#' . $id;
 
             try {
                 $response = $this->withoutExceptionHandling()->get('/' . ltrim($concrete, '/'));
@@ -117,12 +118,12 @@ class ParameterisedRouteCrawlTest extends TestCase
                 if ($this->isBenign($e)) {
                     continue;
                 }
-                $failures[$uri] = $this->shortException($e);
+                $failures[$uri] = $this->shortException($e) . ' [' . $resolved . ']';
                 continue;
             }
 
             if ($status >= 500) {
-                $failures[$uri] = 'HTTP' . $status;
+                $failures[$uri] = 'HTTP' . $status . ' [' . $resolved . ']';
             }
         }
 
@@ -152,12 +153,17 @@ class ParameterisedRouteCrawlTest extends TestCase
             }
             $id = \Illuminate\Support\Facades\DB::table($table)->min('id');
             if ($id !== null) {
+                $this->lastResolvedTable = $table;
+
                 return (int) $id;
             }
         }
 
         return null;
     }
+
+    /** which table existingIdFor() chose, for the failure report */
+    private $lastResolvedTable = '-';
 
     /** @return string[] most specific first */
     private function candidateTables($route, string $parameter, string $uri): array
