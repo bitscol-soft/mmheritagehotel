@@ -66,6 +66,49 @@ if [ "$PHPUNIT_MAJOR" -ge 10 ]; then
     fi
 fi
 
+# ---------------------------------------------------------- CI PHP version pin
+#
+# Both workflows install with `--ignore-platform-reqs`, so composer will NOT
+# refuse a framework that needs a newer PHP than the runner has: the install
+# succeeds and the failure surfaces later as a runtime parse error. The pin has
+# to be checked here because nothing else looks at it.
+#
+# Floor per major (from each release's composer.json):
+#   8 -> 7.3   9 -> 8.0.2   10 -> 8.1   11 -> 8.2
+FW_PHP_FLOOR=$(case "$FRAMEWORK_MAJOR" in
+    8)  echo 7.3 ;;
+    9)  echo 8.0 ;;
+    10) echo 8.1 ;;
+    11) echo 8.2 ;;
+    *)  echo "" ;;
+esac)
+
+# The lowest version the composer constraint admits (^7.3|^8.0 -> 7.3, ^8.2 -> 8.2).
+COMPOSER_PHP_FLOOR=$(node -e "try{const c=require('./composer.json');const v=String(c.require&&c.require.php||'');const n=(v.match(/\\d+\\.\\d+/g)||[]).map(Number);if(!n.length){console.log('');}else{const m=Math.min.apply(null,n);console.log(m.toFixed(1));}}catch(e){console.log('')}" 2>/dev/null || echo "")
+
+PHP_FLOOR="$FW_PHP_FLOOR"
+if [ -n "$COMPOSER_PHP_FLOOR" ]; then
+    if [ -z "$PHP_FLOOR" ] || [ "$(printf '%s\n%s\n' "$COMPOSER_PHP_FLOOR" "$PHP_FLOOR" | sort -V | tail -n1)" = "$COMPOSER_PHP_FLOOR" ]; then
+        PHP_FLOOR="$COMPOSER_PHP_FLOOR"
+    fi
+fi
+
+if [ -n "$PHP_FLOOR" ]; then
+    CI_PINS=$(grep -rhoE "php-version:[[:space:]]*'?[0-9]+\.[0-9]+'?" .github/workflows/*.yml 2>/dev/null | grep -oE "[0-9]+\.[0-9]+" | sort -u)
+    if [ -z "$CI_PINS" ]; then
+        note "- no php-version pin found in .github/workflows (checked nothing)"
+    else
+        for pin in $CI_PINS; do
+            if [ "$pin" != "$PHP_FLOOR" ] && [ "$(printf '%s\n%s\n' "$pin" "$PHP_FLOOR" | sort -V | head -n1)" = "$pin" ]; then
+                bad "CI pins PHP ${pin}, but this tree needs >= ${PHP_FLOOR} (framework ^${FRAMEWORK_MAJOR}, composer \"php\"). The workflows install with --ignore-platform-reqs, so composer will not stop you - the runner will fail at runtime instead. Raise php-version in .github/workflows/*.yml (tools/laravel11-bump.cjs does this per step)."
+            fi
+        done
+    fi
+    if grep -rq 'ignore-platform-reqs' .github/workflows 2>/dev/null; then
+        note "- note: the workflows install with --ignore-platform-reqs, which also ignores the php requirement (the pin above is the only guard)"
+    fi
+fi
+
 # The 7.3 floor is correct for Laravel 8 and wrong from the L9 step on.
 if [ "$FRAMEWORK_MAJOR" -ge 9 ] && grep -q '"php": "\^7\.3' composer.json; then
     bad "composer.json declares the PHP 7.3 floor while the framework is on ^${FRAMEWORK_MAJOR} (raise it with tools/laravel11-bump.cjs)"

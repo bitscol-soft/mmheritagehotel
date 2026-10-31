@@ -44,6 +44,19 @@ Laravel 8 and PHP 8.1 are both EOL. The goal is Laravel 11 on PHP 8.2/8.3.
 - [x] **`TrustProxies` already extends `Illuminate\Http\Middleware\TrustProxies`**
   (no `fideloper/proxy` dependency — one of the classic 8→9 blockers is absent).
 - [x] **`$dates` model properties:** none in the tree (nothing to migrate to `$casts`).
+- [x] **`tools/laravel11-check-test.sh`** — self-test for that guard: it builds a
+  throwaway tree for each half-applied shape (^9 with `$routeMiddleware`, ^8 with
+  `$middlewareAliases`, fruitcake still required, PHPUnit 9 schema on ^10, an L11
+  tree on a PHP 8.1 runner, a reintroduced `str_plural`) and asserts the guard
+  fails **and says why**. A guard whose patterns quietly stop matching passes
+  everything, so this is the check on the check. Runs in `Tailwind UI checks`.
+- [x] **CI runner PHP pin** is part of the upgrade, not an afterthought:
+  `tools/laravel11-check.sh` fails when `.github/workflows/*.yml` pins a PHP
+  below what the declared framework needs (8→7.3, 9→8.0.2, 10→8.1, 11→8.2), and
+  `tools/laravel11-bump.cjs` raises the pin at the step that needs it. Both
+  workflows install with `--ignore-platform-reqs`, which ignores the PHP
+  requirement too - so composer will happily install an L11 framework on a PHP
+  8.1 runner and the failure only appears at runtime, looking like broken code.
 - [x] **`tools/laravel11-check.sh`** — CI guard, now **version-aware**: it reads the
   framework/phpunit majors out of `composer.json` and hard-fails when the tree is
   half-upgraded (e.g. `$routeMiddleware` still present on ^9, or renamed to
@@ -110,6 +123,10 @@ touched surfaces; `optional()`, `tap()`, `retry()`, `rescue()` helpers survive t
      (from `laravel/ui`) still registers — keep `laravel/ui` v4 for that.
 3. `composer update`, step 5.
 
+This is the step that needs a newer runner: L11 requires PHP 8.2, and both
+workflows still pin 8.1. `tools/laravel11-bump.cjs --step 3 --apply` raises the
+pin; `tools/laravel11-check.sh` fails until it has been raised.
+
 ## Carbon 3 `diffIn*()` — 16 call sites to review at step 3
 
 Carbon 2 returns an **absolute integer** from `diffInDays()`; Carbon 3 returns a **signed
@@ -163,7 +180,8 @@ the tracked vendor tree; the CI `frontend-fixtures` workflow also runs
 ## Guard
 
 `tools/laravel11-check.sh` fails when a Laravel-9-removed global helper is
-reintroduced (step 0's class of bug) and prints the remaining step-gated items
+reintroduced (step 0's class of bug), when the CI runner PHP is below the floor
+of the declared framework, and prints the remaining step-gated items
 (`Kernel::$routeMiddleware`, `fruitcake/laravel-cors`, `facade/ignition`) so the
 bump steps have a mechanical checklist. It is a step of the `Tailwind UI checks`
 workflow.

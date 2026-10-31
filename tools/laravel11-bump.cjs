@@ -50,6 +50,10 @@ if (![1, 2, 3].includes(STEP)) {
 const STEPS = {
     1: {
         label: 'Laravel 8 -> 9 (PHP >= 8.0.2)',
+        // The runner PHP the CI should use after this step. Only ever raised:
+        // a step whose framework floor is below the current pin leaves it alone,
+        // because lowering it could drop below something else the code needs.
+        phpCi: '8.1',
         require: {
             php: '^8.0.2',
             'laravel/framework': '^9.0',
@@ -73,6 +77,7 @@ const STEPS = {
     },
     2: {
         label: 'Laravel 9 -> 10 (PHP >= 8.1)',
+        phpCi: '8.1',
         require: {
             'laravel/framework': '^10.0',
             'laravel/sanctum': '^3.2',
@@ -89,6 +94,7 @@ const STEPS = {
     },
     3: {
         label: 'Laravel 10 -> 11 (PHP >= 8.2)',
+        phpCi: '8.2',
         require: {
             php: '^8.2',
             'laravel/framework': '^11.0',
@@ -304,6 +310,56 @@ if (composerAfter !== composerRaw) {
         after: composerAfter,
         note: 'composer.json versions',
     });
+}
+
+// ------------------------------------------------- CI runner PHP version
+//
+// Both workflows pin php-version and install with --ignore-platform-reqs, so a
+// framework that needs a newer PHP than the runner has installs happily and
+// then dies at runtime. Nothing else raises the pin, and forgetting it is the
+// least obvious way to break the upgrade - the failure looks like broken code,
+// not a missing version bump.
+function versionAtLeast(a, b) {
+    const pa = String(a).split('.').map(Number);
+    const pb = String(b).split('.').map(Number);
+    for (let i = 0; i < Math.max(pa.length, pb.length); i++) {
+        const x = pa[i] || 0;
+        const y = pb[i] || 0;
+        if (x !== y) return x > y;
+    }
+    return true;
+}
+
+if (plan.phpCi) {
+    const wfDir = path.join(ROOT, '.github', 'workflows');
+    let files = [];
+    try {
+        files = fs.readdirSync(wfDir).filter((f) => /\.ya?ml$/.test(f));
+    } catch (e) {
+        files = [];
+    }
+
+    for (const name of files) {
+        const file = path.join('.github', 'workflows', name);
+        const src = ctx.read(file);
+        const pinRe = /php-version:[ \t]*'?([0-9]+\.[0-9]+)'?/g;
+        let raised = false;
+        const after = src.replace(pinRe, (whole, version) => {
+            if (versionAtLeast(version, plan.phpCi)) return whole;
+            raised = true;
+            return whole.replace(version, plan.phpCi);
+        });
+        if (!raised) continue;
+
+        if (!originals.has(file)) originals.set(file, src);
+        pendingFiles.set(file, after);
+        edits.push({
+            file,
+            before: src,
+            after,
+            note: 'runner php-version raised to ' + plan.phpCi + ' (the framework floor for this step)',
+        });
+    }
 }
 
 // --------------------------------------------------------------- reporting

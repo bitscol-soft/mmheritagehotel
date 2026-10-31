@@ -27,6 +27,11 @@ jobs:
         run: composer install --no-interaction --prefer-dist --no-progress --ignore-platform-reqs
       - name: Laravel 11 readiness guard
         run: bash tools/laravel11-check.sh
+      # The guard is what stops a half-applied upgrade from merging; if one of its
+      # patterns stops matching it would silently pass everything. This re-runs it
+      # against synthetic half-upgraded trees and asserts it still says no.
+      - name: Laravel 11 guard self-test
+        run: bash tools/laravel11-check-test.sh
       - name: PHP test suite (phpunit)
         run: |
           if ! vendor/bin/phpunit > /tmp/phpunit.log 2>&1; then
