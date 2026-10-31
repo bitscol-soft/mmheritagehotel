@@ -88,12 +88,12 @@
 
                                     @if(!$item->is_approved)
 
-                                        @if(hasPermission("voucher-payments.approve", $slugs))
+                                        @if(hasPermission("voucher-payments.edit", $slugs))
                                             <a href="{{ route('voucher-payments.show', $item->id) }}?type=approve" target="_blank" class="btn btn-purple btn-xs" title="Approve Voucher"><i class="fa fa-check"></i></a>
                                         @endif
 
-                                        @if(hasPermission("vouchers.edit", $slugs))
-                                        {{-- <a href="{{route('payment.edit', $item->id)}}" class="btn btn-primary btn-xs" title="Edit"><i class="fa fa-pencil"></i></a> --}}
+                                        @if(hasPermission("voucher-payments.edit", $slugs))
+                                        <a href="{{ route('voucher-payments.edit', $item->id) }}" class="btn btn-primary btn-xs" title="Edit"><i class="fa fa-pencil"></i></a>
                                         @endif
                                     @endif
 

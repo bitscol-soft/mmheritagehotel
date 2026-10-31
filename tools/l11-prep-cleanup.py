@@ -198,10 +198,7 @@ for nm in ['discount[]', 'rest_item_discount[]', 'input_item_discount[]']:
 
 NUMBER_FILES = [
     'module/Hotel/views/booking/edit.blade.php',
-    'module/Hotel/views/booking/assaign.blade.php',
     'module/Hotel/views/booking/_script/script.blade.php',
-    'module/BanquetHall/views/hall_booking/edit.blade.php',
-    'module/BanquetHall/views/hall_booking/assaign.blade.php',
     'module/BanquetHall/views/hall_booking/_script/script.blade.php',
 ]
 

@@ -86,6 +86,7 @@ class BanquetRoomController extends Controller
      */
     public function store(Request $request)
     {
+        $this->hasAccess("rooms.index");
 
         $request->validate([
             'name'          => 'required',
@@ -132,6 +133,7 @@ class BanquetRoomController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->hasAccess("rooms.edit");
 
         $request->validate([
             'name'          => 'required',

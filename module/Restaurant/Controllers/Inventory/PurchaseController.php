@@ -90,6 +90,7 @@ class PurchaseController extends Controller
      */
     public function store(Request $request)
     {
+        $this->hasAccess("purchases.create");
         // check validation
         $this->validate($request, [
             'company_id'    => 'required',
@@ -167,6 +168,7 @@ class PurchaseController extends Controller
      */
     public function update(Request $request, Purchase $purchase)
     {
+        $this->hasAccess("purchases.edit");
         // check validation
         $this->validate($request, [
             'company_id'    => 'required',

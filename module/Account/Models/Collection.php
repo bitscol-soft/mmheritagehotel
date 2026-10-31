@@ -18,4 +18,9 @@ class Collection extends Model
     {
         return $this->morphMany(Transaction::class, 'transactionable');
     }
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class, 'customer_id');
+    }
 }

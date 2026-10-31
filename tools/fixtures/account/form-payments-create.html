@@ -9,50 +9,16 @@
         <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
             <div class="mm-page-title">
                 <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Payment Voucher</h1>
-                <p class="tw-m-0 tw-text-sm tw-text-muted">Record a cash or bank disbursement voucher with double-entry account lines and attachments.</p>            </div>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Record a payment voucher.</p>            </div>
             <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button" href="http://localhost/acc/voucher-payments/index"><i class="fa fa-list-alt"></i> List</a></div>        </header>
-
-        <div class="mm-table-kpi-grid" aria-label="Payment voucher create summary">
-            <div class="mm-table-kpi-card">
-                <span class="mm-table-kpi-icon mm-table-kpi-icon-all"><i class="fa fa-credit-card"></i></span>
-                <div class="mm-table-kpi-meta">
-                    <span class="mm-table-kpi-label">Voucher Type</span>
-                    <div class="mm-table-kpi-value">Payment <span class="mm-table-kpi-sub">Cash / Bank Outflow</span></div>
-                </div>
-            </div>
-            <div class="mm-table-kpi-card">
-                <span class="mm-table-kpi-icon mm-table-kpi-icon-occ"><i class="fa fa-balance-scale"></i></span>
-                <div class="mm-table-kpi-meta">
-                    <span class="mm-table-kpi-label">Parity Guard</span>
-                    <div class="mm-table-kpi-value">Debit = Credit <span class="mm-table-kpi-sub">Enforced on Submit</span></div>
-                </div>
-            </div>
-            <div class="mm-table-kpi-card">
-                <span class="mm-table-kpi-icon mm-table-kpi-icon-avail"><i class="fa fa-paperclip"></i></span>
-                <div class="mm-table-kpi-meta">
-                    <span class="mm-table-kpi-label">Supporting Docs</span>
-                    <div class="mm-table-kpi-value">File Upload <span class="mm-table-kpi-sub">Bill / Receipt Scan</span></div>
-                </div>
-            </div>
-            <div class="mm-table-kpi-card">
-                <span class="mm-table-kpi-icon mm-table-kpi-icon-rev"><i class="fa fa-check-circle"></i></span>
-                <div class="mm-table-kpi-meta">
-                    <span class="mm-table-kpi-label">Workflow</span>
-                    <div class="mm-table-kpi-value">Draft → Approve <span class="mm-table-kpi-sub">GL Posting</span></div>
-                </div>
-            </div>
-        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><!-- Form  -->
         <form id="form" action="http://localhost/acc/voucher-payments/store" method="post" enctype="multipart/form-data">
             <input type="hidden" name="_token" value="fixture-csrf-token">
-
             <input type="hidden" name="voucher_type" value="Payment">
-
 
             <div class="row mt-1">
 
                 <div class="col-sm-12 px-3">
-
 
                     <!-- Filter -->
                     <div class="row mm-voucher-meta">
@@ -75,9 +41,6 @@
                                                             </div>
                         </div>
 
-
-
-
                         <!-- Reference -->
                         <div class="col-sm-5 my-1">
                             <div class="input-group">
@@ -88,8 +51,6 @@
                                     type="text">
                             </div>
                         </div>
-
-
 
                         <!-- Date -->
                         <div class="col-sm-2 my-1">
@@ -103,13 +64,6 @@
                                                             </div>
                         </div>
                     </div>
-
-
-
-
-
-
-
 
                     <!-- Item Detail -->
                     <div class="row mt-2">
@@ -127,10 +81,6 @@
                                         </tr>
                                     </thead>
 
-
-
-
-
                                     <!-- Item Detail Table Body -->
                                     <tbody>
                                                                                     <tr>
@@ -147,7 +97,6 @@
                                                                                                                             <option value="2">
                                                                     Bank</option>
                                                                                                                     </select>
-
 
                                                                                                             </div>
                                                 </td>
@@ -179,7 +128,6 @@
                                                                     Bank</option>
                                                                                                                     </select>
 
-
                                                                                                             </div>
                                                 </td>
                                                 <td>
@@ -196,8 +144,6 @@
                                                         disabled="disabled"><i class="fa fa-trash-o"></i></a></td>
                                             </tr>
                                                                             </tbody>
-
-
 
                                     <!-- Table Footer -->
                                     <tfoot>
@@ -225,16 +171,6 @@
                         </div>
                     </div>
                 </div>
-
-
-
-
-
-
-
-
-
-
 
                 <div class="col-sm-12 px-4 mt-2 mb-2">
 
@@ -276,18 +212,10 @@
 <!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
 <script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
 
-
     <script src="/assets/js/chosen.jquery.min.js"></script>
     <script src="/assets/js/bootstrap-datepicker.min.js"></script>
     <script src="/assets/custom_js/chosen-box.js"></script>
     <script src="/assets/custom_js/date-picker.js"></script>
-
-
-
-
-
-
-
 
     <script>
         const saveButton = $('.save-btn')
@@ -314,18 +242,9 @@
                             <td><a class="ibtnDel btn btn-sm btn-danger"><i class="fa fa-trash-o"></i></a></td>
                         </tr>`
 
-
-
-
         $('select').chosen({
             allow_single_deselect: true
         });
-
-
-
-
-
-
 
         $("#draft").click(function() {
 
@@ -334,16 +253,9 @@
             $('#form').submit();
         })
 
-
-
-
         $(document).on("keyup", ".calculate-total", function() {
             calculateAmount()
         });
-
-
-
-
 
         function calculateAmount() {
 
@@ -368,30 +280,14 @@
             }
         }
 
-
-
-
-
-
         function disabledReverse($class_name, object) {
             let disableItem = $(object).closest('tr').find('.' + $class_name)
             disableItem.attr('readonly', true).val('0')
         }
 
-
-
-
-
-
-
         function enableMe(object) {
             $(object).attr('readonly', false)
         }
-
-
-
-
-
 
         $(document).ready(function() {
             var i = 0;

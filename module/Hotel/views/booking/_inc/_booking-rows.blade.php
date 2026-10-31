@@ -52,10 +52,14 @@
             @else
                 @foreach ($data->bookingDetails->sortByDesc('id')->take(1) as $bookingDetail)
                     @if ($bookingDetail->roomNumber == null)
-                        <a href="{{ route('booking.edit', $data->id) }}" class="btn btn-xs btn-success"
-                            title="Assign">
-                            Assign Room
-                        </a>
+                        @if (hasPermission('bookings.edit', $slugs))
+                            <a href="{{ route('booking.edit', $data->id) }}" class="btn btn-xs btn-success"
+                                title="Assign">
+                                Assign Room
+                            </a>
+                        @else
+                            <span class="label label-warning">Unassigned</span>
+                        @endif
                     @else
                         @php
                             $details = optional(optional($data->transection)->source)->details;
@@ -148,7 +152,7 @@
                 <!------- CHECK IN + BOOKING CANCEL ------->
                 @if ($data->status == 0 || $data->status == 1 || $data->status == 2)
                     @if ($data->status == 0 || $data->status == 2)
-                        <a onclick="showCheckInModal({{ $data->id }})" role="button" data-toggle="modal"
+                        <a onclick="showCheckInModal({{ $data->id }})" role="button"
                             class="btn btn-xs btn-pink" title="Check IN">
                             <i class="fa fa-check-square"></i>
                         </a>
@@ -181,10 +185,12 @@
                         </a>
                     @endif
                     <!------- EDIT ROUTE ------->
-                    <a href="{{ route('booking.edit', $data->id) }}" class="btn btn-xs btn-success"
-                        title="Edit">
-                        <i class="fa fa-pencil-square-o"></i>
-                    </a>
+                    @if (hasPermission('bookings.edit', $slugs))
+                        <a href="{{ route('booking.edit', $data->id) }}" class="btn btn-xs btn-success"
+                            title="Edit" aria-label="Edit booking {{ $data->booking_number }}">
+                            <i class="fa fa-pencil-square-o"></i>
+                        </a>
+                    @endif
                     <!------- showExtendDate ------->
                     @if ($data->booking_type != 'Bulk')
                         <button type="button" onclick="showExtendDateModal({{ $data->id }})"
@@ -196,21 +202,22 @@
 
 
                 <!------- PROJECT DETAILS ------->
-                <a onclick="showDetailsModal({{ $data->id }})" role="button" data-toggle="modal"
+                <a onclick="showDetailsModal({{ $data->id }})" role="button"
                     class="btn btn-xs btn-purple" title="View Details">
                     <i class="fa fa-eye"></i>
                 </a>
 
                 <!------- GUEST IMAGE CHANGE ------->
-                <a onclick="showImagesModal({{ $data->id }})" role="button" data-toggle="modal"
+                <a onclick="showImagesModal({{ $data->id }})" role="button"
                     class="btn btn-xs btn-blue" title="Change Guest Image">
                     <i class="fa fa-camera"></i>
                 </a>
 
 
                 <!------- BOOKING INVOICE ------->
-                <a href="{{ route('generate.invoice-v2', $data->id) }}" target="_blank"
-                    class="btn btn-xs btn-success" title="Invoice">
+                <a href="{{ route('generate.invoice-v2', $data->id) }}" target="_blank" rel="noopener"
+                    class="btn btn-xs btn-success" title="Print Invoice"
+                    aria-label="Print invoice {{ $data->booking_number }}">
                     <i class="fa fa-print"></i>
                 </a>
 

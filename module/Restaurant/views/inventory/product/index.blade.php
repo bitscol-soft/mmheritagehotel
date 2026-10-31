@@ -18,7 +18,7 @@
 <x-mm.styles />
 <x-mm.page class="mm-report mm-rst mm-rst-inventory mm-rst-inv" title="Products" description="Restaurant products with stock type, price and status.">
     <x-slot name="actions">
-        @if (hasPermission('rst.products.create', $slugs))
+        @if (hasPermission('resturant.inventories.create', $slugs))
                 <a href="{{ route('rst.products.create', ['type' => 'upload']) }}" class="mm-button">
                     <i class="fa fa-upload"></i> Upload Product
                 </a>

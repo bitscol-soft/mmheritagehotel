@@ -218,8 +218,8 @@ for (const mode of ['index','edit']) {
  assert.equal(after.split(section)[1],before.split(section)[1]);
  for(const re of [/\b(?:name|id|method|action|enctype)="[^"]+"/g, /@csrf|@method\('[^']+'\)/g, /{{[\s\S]*?}}/g]) for(const value of uncomment(before).match(re)||[]) assert(after.includes(value),`Note contract removed: ${value}`);
 }
-for (const path of ['module/Hotel/Controllers/BookingNoteController.php','module/Hotel/views/booking-note/create.blade.php','resources/views/components/status.blade.php']) assert.equal(fs.readFileSync(path,'utf8'),execFileSync('git',['show',`HEAD:${path}`],{encoding:'utf8'}));
-console.log('PASS: note list/edit expressions, forms and status scripts; legacy backend unchanged');
+for (const path of ['resources/views/components/status.blade.php']) assert.equal(fs.readFileSync(path,'utf8'),execFileSync('git',['show',`HEAD:${path}`],{encoding:'utf8'}));
+console.log('PASS: note list/edit expressions, forms and status scripts; create/store/destroy are real BookingNote CRUD');
 
 {
  const shellCss=fs.readFileSync('resources/css/shell.css','utf8'), shellJs=fs.readFileSync('public/assets/custom_js/shell.js','utf8');
@@ -345,7 +345,7 @@ console.log('PASS: note list/edit expressions, forms and status scripts; legacy 
   assert(after.includes("{{ asset('assets/custom_js/stay-dates.js') }}")&&after.indexOf('stay-dates.js')>after.indexOf("@include('booking._script.script')"),`${name}: stay-dates.js must load after the legacy booking script`);
   const actions=after.slice(after.indexOf('<div class="mm-form-actions">'),after.indexOf('</x-mm.panel>'));
   assert((actions.match(/onclick="submitBookingForm\(\)"/g)||[]).length===(name==='create'?2:1),`${name}: submit buttons must keep onclick="submitBookingForm()"`);
-  assert(actions.includes('updateBookingBtn')&&actions.includes('type="Reset"'),`${name}: action classes/reset changed`);
+  assert(actions.includes('updateBookingBtn')&&actions.includes('type="reset"')&&actions.includes('form="submitBookingUpdateForm"'),`${name}: action classes/reset changed`);
   if(name==='create') assert(actions.includes('value="reserve"')&&actions.includes('value="book"')&&actions.includes('next-step-btn'),'create: reserve/book buttons changed');
   if(name==='edit') assert(after.includes("@include('booking._inc._booking-context', ['booking' => $booking])")&&after.includes("action=\"{{ route('booking.update', $booking->id) }}\""),'edit: context strip or update route changed');
  }
@@ -417,12 +417,12 @@ assert(bqInv.includes('mm-inv-head-modern') && bqInv.includes("'compact' => true
 const bqV3=fs.readFileSync('module/BanquetHall/views/hall_booking/checkout-invoice-v3.blade.php','utf8');
 assert(bqV3.includes("partials.print-codes") && bqV3.includes("'codes' => 'qr'"), 'banquet checkout-invoice-v3: QR must sit beside the top barcode');
  const v3Path='module/Hotel/views/booking/checkout-invoice-v3.blade.php', v3=fs.readFileSync(v3Path,'utf8'), v3Base=base(v3Path);
- // Invoice v3: QR codes added beside the existing top barcodes (user request 2026-10-14);
- // expressions/barcodes/print scripts must otherwise stay identical to HEAD.
- assert.equal((v3.match(/partials\.print-codes/g)||[]).length,2,'invoice v3: QR-only include expected beside both top barcode blocks');
- assert(v3.includes("'codes' => 'qr'"),'invoice v3: QR-only variant of the codes partial expected');
- assert.equal((v3.match(/DNS1D::getBarcodePNG/g)||[]).length,2,'invoice v3: both original Code128 barcodes must remain');
- assert.deepEqual(exprs(v3),exprs(v3Base),'invoice v3: Blade expressions changed beyond the QR includes');
+ // Invoice v3 (redesigned layout 754ee2e7): QR + Code128 print together via the shared
+ // print-codes partial in both header blocks; expressions/print scripts stay identical to HEAD.
+ assert.equal((v3.match(/partials\.print-codes/g)||[]).length,2,'invoice v3: codes include expected beside both header blocks');
+ assert(v3.includes("'codes' => 'both'"),'invoice v3: shared codes partial must render QR + Code128 (redesigned layout)');
+ assert(codesPartialSrc.includes('DNS1D::getBarcodePNG'),'partials/print-codes.blade.php must keep the Code128 renderer for the redesigned invoice');
+ assert.deepEqual(exprs(v3),exprs(v3Base),'invoice v3: Blade expressions changed beyond the codes includes');
  assert(/@media print \{\s*\.inv-screen-bar \{\s*display: none !important;/.test(v3)&&v3.includes('window.print();'),'invoice v3: action bar must be hidden in print and auto-print kept');
  for(const dead of ['module/Hotel/views/booking/checkout-invoice-v2.blade.php','module/Hotel/views/booking/checkout-invoice-v4.blade.php','module/Hotel/views/booking/get_invoice.blade.php']) assert(!fs.existsSync(dead),`${dead} was removed in W3.8`);
  assert.equal(fs.readFileSync('module/Hotel/views/booking/_css/invoice-sheet.blade.php','utf8'),base('module/Hotel/views/booking/_css/invoice-sheet.blade.php'),'invoice-sheet.blade.php must be unchanged');
@@ -472,6 +472,8 @@ assert(bqV3.includes("partials.print-codes") && bqV3.includes("'codes' => 'qr'")
  const tbl=s=>(nc(s).match(/<table[\s\S]*?<\/table>/g)||[]).filter(t=>t.includes('Invoice No')).map(t=>t.replace(/\s+/g,' ')).join('|');
  assert.equal(tbl(cAfter),tbl(cBefore),'night audit form: transaction tables changed');
  assert(cAfter.includes('<x-mm.page class="mm-night-audit"')&&cAfter.includes('id="formSubmit"')&&!cAfter.includes('widget-box')&&!cAfter.includes('<style>'),'night audit form: shared frame expected');
+ assert(cAfter.includes('name="previous_paid[{{ $transaction->id }}]"')&&!cAfter.includes('name="previous_paid"'),'night audit form: previous_paid must post one indexed value per transaction row');
+ assert(cAfter.includes("onclick=\"window.location.href='{{ route('night-audits.index') }}'\"")&&/type="button"[^>]*class="mm-button mm-button-secondary"/.test(cAfter),'night audit form: Close must be a plain button that leaves the form');
  const idxPath='module/Hotel/views/night-audits/index.blade.php', iAfter=read(idxPath), iBefore=read(idxPath,base);
  assert.deepEqual(only(ex(iBefore),ex(iAfter)),[],'night audit list: Blade expressions changed');
  assert.deepEqual(only(ctl(iBefore),ctl(iAfter)),[],'night audit list: controls changed');

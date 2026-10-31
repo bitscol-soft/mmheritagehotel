@@ -67,7 +67,7 @@
 
 <x-mm.styles />
 <x-mm.page class="mm-invoice-page mm-rst" title="Sale invoice" description="Restaurant invoice. Printing outputs the document only.">
-    @if (hasPermission('service.view', $slugs))
+    @if (hasPermission('resturant.sales.view', $slugs))
         <x-slot name="actions">
             <a href="#" class="mm-button" onclick="printPage('print_body'); return false;">
                 <i class="fa fa-print" aria-hidden="true"></i> Print
@@ -118,7 +118,7 @@
                                 <tr>
                                     <td style="border: none !important;"> Address : </td>
                                     <td style="border: none !important;">
-                                        {{ $sale->guestInfo->address ?? "N/A" }}
+                                        {{ optional($sale->guestInfo)->address ?? "N/A" }}
                                     </td>
                                 </tr>
                             </table>
@@ -217,14 +217,14 @@
                                     <td colspan="4" style="text-align: right; border: none !important;">
                                         <strong>Vat Amount</strong><span class="currency-sign"></span> : </td>
                                     <th style="text-align: right; border: none !important;">
-                                        {{ $sale->guestInfo->is_stuff == 1 ? 0 : $sale->vat_amount }}
+                                        {{ optional($sale->guestInfo)->is_stuff == 1 ? 0 : $sale->vat_amount }}
                                     </th>
                                 </tr>
                                 <tr>
                                     <td colspan="4" style="text-align: right; border: none !important;">
                                         <strong>Service Charge</strong><span class="currency-sign"></span> : </td>
                                     <th style="text-align: right; border: none !important;">
-                                        {{ $sale->guestInfo->is_stuff == 1 ? 0 : $sale->service_amount }}
+                                        {{ optional($sale->guestInfo)->is_stuff == 1 ? 0 : $sale->service_amount }}
                                     </th>
                                 </tr>
                                 <tr>

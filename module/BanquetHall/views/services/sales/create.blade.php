@@ -18,7 +18,7 @@
     <x-mm.styles />
     <x-mm.page class="mm-sale-form" title="New Hotel Service Sale">
         <x-slot name="actions">
-            @if (hasPermission('service.view', $slugs))
+            @if (hasPermission('sales.index', $slugs))
                 <a href="{{ route('hotelservice.service-sales.index') }}" class="btn btn-sm btn-default">
                     <i class="fa fa-list-alt"></i> Hotel Service Sale
                 </a>

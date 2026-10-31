@@ -67,7 +67,7 @@
 <x-mm.styles />
 <x-mm.page class="mm-invoice-page mm-hotel-service" title="Hotel service invoice" description="Review the service invoice and print it. Printing outputs the document only.">
     <x-slot name="actions">
-        @if (hasPermission('service.view', $slugs))
+        @if (hasPermission('sales.create', $slugs))
             <a class="mm-button mm-button-secondary" href="{{ route('hotelservice.service-sales.create') }}">
                 <i class="fa fa-plus" aria-hidden="true"></i> Create New
             </a>

@@ -9,6 +9,7 @@ use Module\Account\Models\Transaction;
 use Module\Hotel\Models\Guest;
 use Module\Hotel\Models\HotelTransection;
 use Module\HotelService\Models\Service\HotelServiceSaleItem;
+use Module\Hotel\Models\HotelTransactionLedger;
 
 class HotelServiceSale extends Model
 {

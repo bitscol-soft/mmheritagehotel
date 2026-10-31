@@ -23,7 +23,7 @@
 @section('content')
     <x-mm.styles />
     <x-mm.page class="mm-rst mm-rst-purchase mm-rst-purchase-create" title="Purchase create" description="Choose the supplier and account, add products and submit the purchase.">
-        @if (hasPermission('rst.purchases.index', $slugs))
+        @if (hasPermission('resturant.purchases.index', $slugs))
             <x-slot name="actions">
                 <a href="{{ route('rst.purchases.index') }}" class="mm-button mm-button-secondary">
                     <i class="ace-icon fa fa-list-alt" aria-hidden="true"></i> List

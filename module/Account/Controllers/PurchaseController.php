@@ -75,7 +75,7 @@ class PurchaseController extends Controller
                             ->get();
         $data['companies']  = Company::userCompanies();
         $data['suppliers']  = Supplier::select('id', 'name')->get();
-        $data['account']    = Account::where('name', 'Cash')->first();
+        $data['account']    = Account::where('name', 'Cash')->first() ?? new Account();   // docs/BUGS.md #73
 
 
         return view('purchase.purchases.create', $data);
@@ -130,7 +130,7 @@ class PurchaseController extends Controller
     */
     public function show($purchase)
     {
-        $this->hasAccess("account-purchases.show");
+        $this->hasAccess("account-purchases.view");
 
         $purchase = Purchase::with('details', 'company')->findOrFail($purchase);
 

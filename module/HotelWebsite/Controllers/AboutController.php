@@ -17,7 +17,7 @@ class AboutController extends Controller
     {
         $this->hasAccess("aboutsections.index");
 
-        $about = AboutSection::first();
+        $about = AboutSection::first() ?? new AboutSection();   // docs/BUGS.md #73
 
         return view('about.create',compact('about'));
     }
@@ -61,6 +61,7 @@ class AboutController extends Controller
 
     public function store(Request $request)
     {
+        $this->hasAccess("aboutsections.index");
         $request->validate([
             'heading_title'        => 'required',
             'heading_description'  => 'required',

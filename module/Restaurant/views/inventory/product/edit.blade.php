@@ -201,7 +201,7 @@
             loadDetails({
                 type: 'batchNumber',
                 selector: '#batch-number',
-                url: "/pharmacy/inventory/get-product-batches",
+                url: "{{ route('rst.get.batch') }}",
                 select: function(event, ui) {
                     $('.add-product-id').val(ui.item.data.id);
                     $('.drug-name').val(ui.item.data.batch_number);

@@ -19,6 +19,7 @@ class OurServiceController extends Controller
 
     public function store(Request $request)
     {
+        $this->hasAccess("ourservices.create");
         $request->validate([
             'heading_title'       => 'required',
             'section_background'  => 'required',

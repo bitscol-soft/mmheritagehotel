@@ -1,4 +1,4 @@
-{{-- Round-5 UI pass: shared "at a glance" strip for booking flow pages (assaign/edit/view).
+{{-- Round-5 UI pass: shared "at a glance" strip for booking flow pages (edit/view).
      Usage: @include('booking._inc._booking-context', ['booking' => $booking]) — display-only. --}}
 @php
     $bc = $booking ?? null;

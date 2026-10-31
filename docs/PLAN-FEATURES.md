@@ -33,7 +33,7 @@ Legend: 🟢 quick win (days) · 🟡 medium (1–3 wks) · 🔴 major (module-l
 | F8 | **Group & function contracts** (corporate/tour), rooming lists, allotment/cutoff dates, master-bill split | `booking_member_details` exists but no group/cutoff model; Banquet module is disabled | 🔴 |
 | F9 | **Walk-in & in-stay changes**: extend-stay already exists but no rate-change audit, no room-move history view, no folio transfer (room A→B) | Extend-checkout route exists; add move-room with folio merge + log | 🟡 |
 | F10 | **Self-service / kiosk check-in-out + digital registration card** (zesan branch only added terms page) | ID scan (MyKad/passport OCR), signature capture, key-encoder hook (later) | 🟡 |
-| F11 | **Guest CRM revival** — profiles, preferences, stay history, corporate accounts with contracts, blacklists, birthday/marketing lists | CRM was **deleted from code but DB tables + permissions remain** (`c_r_m_customers`, modules row id 170000). Restore + extend: leads, cases, communication log | 🟡 MVP |
+| F11 | **Guest CRM revival** — profiles, preferences, stay history, corporate accounts with contracts, blacklists, birthday/marketing lists | CRM was **deleted from code but DB tables + permissions remain** (`c_r_m_customers`, modules row id 170000). Restore + extend: leads, cases, communication log. **Shipped (BUGS #27/A10):** Customer master CRUD + Mail Template CRUD (`crm.customers.*` / `crm.templates.*`), sidebar section; reuses the existing `crm.*` permission rows + grants. **Still open:** Lead/Project screens, corporate contracts, stay history, blacklists, communication log | 🟡 MVP (slice 1 done) |
 | F12 | **Lost & found / guest requests / concierge tasks** — small ticket type with SLA | none exists | 🟢 |
 
 ## 3. Housekeeping, maintenance & operations

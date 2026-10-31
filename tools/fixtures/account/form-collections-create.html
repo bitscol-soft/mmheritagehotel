@@ -1,0 +1,86 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Checkout fixture</title>
+<link rel="stylesheet" href="/assets/css/bootstrap.min.css"><link rel="stylesheet" href="/assets/css/ace.min.css"><link rel="stylesheet" href="/assets/font-awesome/4.5.0/css/font-awesome.min.css">
+<!--MM-HEAD--><link rel="stylesheet" href="/assets/css/chosen.min.css"><link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css"><link rel="stylesheet" href="/assets/css/chosen.min.css" />
+<link rel="stylesheet" href="/assets/css/bootstrap-datepicker3.min.css" />
+<!--/MM-HEAD--><link rel="stylesheet" href="/assets/custom_css/style.css"><link rel="stylesheet" href="/assets/custom_css/ui.css"><link rel="stylesheet" href="/assets/custom_css/shell.css"></head><body class="no-skin mm-shell"><div class="mm-shell-main" style="padding:16px"><!--MM-BODY-->
+<section class="mm-ui mm-report mm-acc mm-rst mm-rst-inv mm-rst-form">
+    <div class="tw-space-y-4 tw-py-2">
+        <header class="mm-page-head tw-flex tw-flex-wrap tw-items-center tw-justify-between tw-gap-x-4 tw-gap-y-2">
+            <div class="mm-page-title">
+                <h1 class="tw-m-0 tw-font-semibold tw-text-ink">Collection</h1>
+                <p class="tw-m-0 tw-text-sm tw-text-muted">Record a customer collection.</p>            </div>
+            <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button" href="http://localhost/acc/acc_collections/index"><i class="fa fa-list"></i> List</a></div>        </header>
+        <div class="mm-panel tw-p-4 sm:tw-p-6 tw-p-4"><!-- INPUTS -->
+        <form action="http://localhost/acc/acc_collections/store" method="post">
+            <input type="hidden" name="_token" value="fixture-csrf-token">            <div class="row" style="width: 100%; margin: 0 0 20px !important;">
+                <div class="col-sm-12 px-4">
+
+                    <!-- Customer -->
+                    <div class="form-group row">
+                        <label class="col-sm-3 control-label" for="customer_id"> <b>Customer <sup class="text-danger">*</sup></b> </label>
+
+                        <div class="col-sm-9">
+                            <select required id="customer_id" name="customer_id" class="chosen-select-100-percent" data-placeholder="- Select Customer -">
+                                <option></option>
+                                                                <option value="1" >Rahim &lt;i&gt;Stores&lt;/i&gt;</option>
+                                                                <option value="2" >Karim</option>
+                                                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Date -->
+                    <div class="form-group row">
+                        <label class="col-sm-3 control-label" for="date"> <b>Date <sup class="text-danger">*</sup></b> </label>
+
+                        <div class="col-sm-9">
+                            <input required id="date" name="date" type="date" class="form-control input-sm" value="2026-10-01">
+                        </div>
+                    </div>
+
+                    <!-- Amount -->
+                    <div class="form-group row">
+                        <label class="col-sm-3 control-label" for="amount"> <b>Amount <sup class="text-danger">*</sup></b> </label>
+
+                        <div class="col-sm-9">
+                            <input required id="amount" name="amount" type="number" step="0.01" min="0.01" class="form-control input-sm" placeholder="0.00" value="">
+                        </div>
+                    </div>
+
+                    <!-- Reference -->
+                    <div class="form-group row">
+                        <label class="col-sm-3 control-label" for="transaction_no"> <b>Reference</b> </label>
+
+                        <div class="col-sm-9">
+                            <input id="transaction_no" name="transaction_no" type="text" class="form-control input-sm" placeholder="Cheque / receipt no" value="">
+                        </div>
+                    </div>
+
+                    <!-- Remarks -->
+                    <div class="form-group row">
+                        <label class="col-sm-3 control-label" for="remarks"> <b>Remarks</b> </label>
+
+                        <div class="col-sm-9">
+                            <textarea id="remarks" name="remarks" class="form-control input-sm" rows="3" placeholder="Remarks"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col-sm-9 offset-sm-3">
+                            <button type="submit" class="btn btn-success btn-sm"><i class="fa fa-save"></i> Save</button>
+                            <button type="Reset" class="btn btn-gray btn-sm"><i class="fa fa-refresh"></i> Reset</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </form></div>
+    </div>
+</section>
+
+<!--/MM-BODY--></div>
+<script src="/assets/js/jquery-2.1.4.min.js"></script><script src="/assets/js/bootstrap.min.js"></script><script src="/assets/js/ace-elements.min.js"></script><script src="/assets/js/ace.min.js"></script>
+<!--MM-JS--><script src="/assets/js/chosen.jquery.min.js"></script><script src="/assets/js/bootstrap-datepicker.min.js"></script><script src="/assets/js/bootstrap-timepicker.min.js"></script><script src="/assets/custom_js/date-picker.js"></script>
+<script>window.warnings = []; function warning(kind, message) { window.warnings.push(message); } jQuery.LoadingOverlay = function (action) { window.overlay = (window.overlay || []).concat(action); };</script>
+    <script src="/assets/js/chosen.jquery.min.js"></script>
+    <script src="/assets/custom_js/chosen-box.js"></script>
+<!--/MM-JS--></body></html>

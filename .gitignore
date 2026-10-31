@@ -17,3 +17,6 @@ yarn-error.log
 /test-results
 /playwright-report
 tools/.mig/
+
+# static preview build (tools/export-static-preview.cjs)
+/dist-preview

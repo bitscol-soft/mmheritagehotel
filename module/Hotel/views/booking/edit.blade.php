@@ -78,7 +78,6 @@
 
                         @include('booking._inc._booking-context', ['booking' => $booking])
 
-                        {{-- action="{{ route('booking.assign', $booking->id) }}" --}}
                         <!-- FORM -->
                         <form class="form-horizontal" id="submitBookingUpdateForm"
                             action="{{ route('booking.update', $booking->id) }}" method="post"
@@ -99,11 +98,12 @@
                             </div>
 
                             <!-- Room Booking Configuration -->
-                            <div class="row">
+                            <div class="row mm-room-table-row">
 
                                 <div class="col-sm-12 col-sm-offset-0">
                                     <h3 class="header smaller lighter blue">Room Information</h3>
 
+                                    <x-mm.table-scroll label="Booking room details">
                                     <table id="myTable" class="table table-bordered order-list room-config-table">
                                         <thead>
                                             <tr>
@@ -238,6 +238,7 @@
                                         ])
 
                                     </table>
+                                    </x-mm.table-scroll>
                             @include('booking/_modal/member-detail-modal')
 
                                 </div>
@@ -252,7 +253,7 @@
                                 <i class="fa fa-save" aria-hidden="true"></i>
                                 Save
                             </button>
-                            <button class="mm-button mm-button-secondary" type="Reset">
+                            <button class="mm-button mm-button-secondary" type="reset" form="submitBookingUpdateForm">
                                 <i class="fa fa-refresh" aria-hidden="true"></i>
                                 Reset
                             </button>

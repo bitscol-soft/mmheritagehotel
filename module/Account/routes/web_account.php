@@ -150,7 +150,13 @@ Route::group(['prefix' => 'party'], function () {
 // Purchase
 Route::group(['prefix' => 'purchase'], function () {
 
-    Route::resource('acc-payments', PaymentController::class)->except(['show']); // round 3: show not implemented (docs/BUGS.md)
+    // BUGS #62: the controller takes `Payment $payment`, but a resource called
+    // `acc-payments` generates `{acc_payment}`, so implicit binding never fired
+    // and update() ran on an empty model. Naming the parameter keeps the two in
+    // step without changing any URL or route name.
+    Route::resource('acc-payments', PaymentController::class)
+        ->parameters(['acc-payments' => 'payment'])
+        ->except(['show']); // round 3: show not implemented (docs/BUGS.md)
     Route::resource('acc-purchases',                PurchaseController::class);
     Route::resource('acc-purchase-returns', PurchaseReturnController::class)->except(['edit', 'update']); // round 3: edit/update not implemented (docs/BUGS.md)
 
@@ -165,7 +171,10 @@ Route::group(['prefix' => 'purchase'], function () {
 // Sale
 Route::group(['prefix' => 'sale'], function () {
 
-    Route::resource('acc_collections', CollectionController::class)->except(['show']); // round 3: show not implemented (docs/BUGS.md)
+    // BUGS #62: same `{acc_collection}` vs `Collection $collection` mismatch as acc-payments
+    Route::resource('acc_collections', CollectionController::class)
+        ->parameters(['acc_collections' => 'collection'])
+        ->except(['show']); // round 3: show not implemented (docs/BUGS.md)
     Route::resource('acc-sales',                SaleController::class);
     Route::resource('acc-sale-returns', SaleReturnController::class)->except(['edit', 'update']); // round 3: edit/update not implemented (docs/BUGS.md)
 
@@ -184,22 +193,22 @@ Route::group(['prefix' => 'voucher', 'as' => 'voucher-'], function () {
 
     // Receive
     Route::post('receives/{receive}/approve',   [ReceiveVoucherController::class, 'approveReceiveVoucher'])->name('receives.approve');
-    Route::resource('receives', ReceiveVoucherController::class)->except(['edit', 'update']); // round 3: edit/update not implemented (docs/BUGS.md)
+    Route::resource('receives', ReceiveVoucherController::class); // BUGS #49: edit/update restored
 
 
     // Payment
     Route::post('payments/{payment}/approve',   [PaymentVoucherController::class, 'approvePaymentVoucher'])->name('payments.approve');
-    Route::resource('payments', PaymentVoucherController::class)->except(['edit', 'update']); // round 3: edit/update not implemented (docs/BUGS.md)
+    Route::resource('payments', PaymentVoucherController::class); // BUGS #49: edit/update restored
 
 
     // Contra
     Route::post('contras/{contra}/approve',     [ContraVoucherController::class, 'approveContraVoucher'])->name('contras.approve');
-    Route::resource('contras', ContraVoucherController::class)->except(['edit', 'update']); // round 3: edit/update not implemented (docs/BUGS.md)
+    Route::resource('contras', ContraVoucherController::class); // BUGS #49: edit/update restored
 
 
     // Journal
     Route::post('journals/{journal}/approve',   [JournalVoucherController::class, 'approveJournalVoucher'])->name('journals.approve');
-    Route::resource('journals', JournalVoucherController::class)->except(['update']); // round 3: update not implemented (docs/BUGS.md)
+    Route::resource('journals', JournalVoucherController::class); // BUGS #49: edit/update restored
 });
 
 

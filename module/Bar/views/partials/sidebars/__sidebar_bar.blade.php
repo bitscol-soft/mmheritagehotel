@@ -77,6 +77,16 @@
                             <b class="arrow"></b>
                         </li>
 
+                        @if (hasPermission('bar.sales.index', $slugs))
+                            <li>
+                                <a href="{{ route('bar.sale-exchanges.index') }}">
+                                    <i class="menu-icon fa fa-caret-right"></i>
+                                    Sale Exchange List
+                                </a>
+                                <b class="arrow"></b>
+                            </li>
+                        @endif
+
 
                     </ul>
 

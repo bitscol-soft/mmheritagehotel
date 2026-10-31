@@ -33,7 +33,7 @@
 @section('content')
     <x-mm.styles />
     <x-mm.page class="mm-banquet mm-room-form mm-category-form" title="Edit hall category" description="Update hall type details, rates, amenities and photos.">
-        @if (hasPermission('banquet.hall-categories.view', $slugs))
+        @if (hasPermission('hall-categories.index', $slugs))
             <x-slot name="actions">
                 <a href="{{ route('banquet.hall-categories.index') }}" class="mm-button mm-button-secondary">
                     <i class="fa fa-list-alt" aria-hidden="true"></i> List

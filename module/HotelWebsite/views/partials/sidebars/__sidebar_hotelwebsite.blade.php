@@ -186,7 +186,7 @@
                     </a>
                 </li>
             @endif
-            {{-- @if (hasPermission('privacypoilicies.page', $slugs)) --}}
+            {{-- @if (hasPermission('privacypoilicies.create', $slugs)) --}}
                 <li>
                     <a href="{{ route('website-core.pages.index') }}">
                         <i class="menu-icon fa fa-caret-right"></i>

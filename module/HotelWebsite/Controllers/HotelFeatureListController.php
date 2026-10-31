@@ -92,6 +92,7 @@ class HotelFeatureListController extends Controller
     */
     public function store(Request $request)
     {
+        $this->hasAccess("featurelists.create");
         $request->validate([
             'feature_list_title'     => 'required',
             'feature_list_subtitle'  => 'required',
@@ -138,6 +139,7 @@ class HotelFeatureListController extends Controller
 
     public function update(Request $request,$id)
     {
+        $this->hasAccess("featurelists.edit");
         $request->validate([
             'feature_list_title'     => 'required',
             'feature_list_subtitle'  => 'required',

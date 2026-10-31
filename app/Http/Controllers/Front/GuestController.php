@@ -110,8 +110,8 @@ class GuestController extends Controller
                 $roomCategory       = RoomCategory::find($request->room_category);
                 $roomPrice          = $roomCategory->price * $nighCount;
 
-                $vat                = vatSetting()->hotel_vat;
-                $service_percent    = vatSetting()->room_service_charge;
+                $vat                = vatSetting()->hotel_vat ?? 0;          // docs/BUGS.md #73
+                $service_percent    = vatSetting()->room_service_charge ?? 0;
 
                 $service_amount     = ($roomPrice / 100) * $service_percent;
                 $vat_amount         = (($roomPrice + $service_amount) / 100) * $vat;
@@ -170,10 +170,7 @@ class GuestController extends Controller
     
     private function removeAllCookieItems()
     {
-        if (isset($_COOKIE['booking_info'])) {
-            unset($_COOKIE['booking_info']);
-            setcookie('booking_info', '', time() - 3600, '/'); // empty value and old timestamp
-        }
+        (new \Module\Hotel\Services\BookingCartService())->clear();
     }
 
 

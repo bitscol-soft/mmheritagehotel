@@ -129,9 +129,9 @@ $mmShell = config('ui.admin_shell', true) && $isAdminHeader && $isAdminSidebar;
     <!-- master file script -->
     @include('layouts.includes.master-file-script')
     @if ($mmShell)
-        <script src="{{ asset('assets/custom_js/shell.js') }}?v={{ filemtime(public_path('assets/custom_js/shell.js')) }}"></script>
+        <script src="{{ asset('assets/custom_js/shell.js') }}?v={{ asset_v('assets/custom_js/shell.js') }}"></script>
         @include('layouts.shell.overlays')
-        <script src="{{ asset('assets/custom_js/shell-tools.js') }}?v={{ filemtime(public_path('assets/custom_js/shell-tools.js')) }}"></script>
+        <script src="{{ asset('assets/custom_js/shell-tools.js') }}?v={{ asset_v('assets/custom_js/shell-tools.js') }}"></script>
     @endif
 
 

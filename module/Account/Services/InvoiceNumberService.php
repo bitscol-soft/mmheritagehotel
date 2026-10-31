@@ -363,6 +363,68 @@ class InvoiceNumberService
      | SALE INVOICE NUMBER
      |--------------------------------------------------------------------------
     */
+    /*
+     |--------------------------------------------------------------------------
+     | COLLECTION INVOICE NUMBER
+     |--------------------------------------------------------------------------
+     */
+
+    public function getCollectionInvoiceNo($company_id)
+    {
+
+        $nextId = optional(InvoiceNo::query()
+            ->where('type', 'Collection')
+            ->where('year', date('Y'))
+            ->first())
+            ->next_id;
+
+        if ($nextId == null)
+
+            $nextId = InvoiceNo::Create([
+                'type'          => 'Collection',
+                'year'          => date('Y'),
+                'next_id'       => 1
+            ])
+                ->next_id;
+
+        return 'Collection-INV-'
+            . date('Y')
+            . '-'
+            . str_pad($nextId, 6, "0", STR_PAD_LEFT);
+    }
+
+
+    /*
+     |--------------------------------------------------------------------------
+     | PAYMENT INVOICE NUMBER
+     |--------------------------------------------------------------------------
+     */
+
+    public function getPaymentInvoiceNo($company_id)
+    {
+
+        $nextId = optional(InvoiceNo::query()
+            ->where('type', 'Payment')
+            ->where('year', date('Y'))
+            ->first())
+            ->next_id;
+
+        if ($nextId == null)
+
+            $nextId = InvoiceNo::Create([
+                'type'          => 'Payment',
+                'year'          => date('Y'),
+                'next_id'       => 1
+            ])
+                ->next_id;
+
+        return 'Payment-INV-'
+            . date('Y')
+            . '-'
+            . str_pad($nextId, 6, "0", STR_PAD_LEFT);
+    }
+
+
     public function getSaleInvoiceNo($company_id)
     {
 

@@ -73,6 +73,7 @@ class BanquetCategoryController extends Controller
 
     public function store(Request $request)
     {
+        $this->hasAccess("hall-categories.create");
         $request->validate([
             'cat_name'          => 'required',
             'aminities.*'       => 'required',
@@ -157,6 +158,7 @@ class BanquetCategoryController extends Controller
 
     public function update(Request $request, $id)
     {
+        $this->hasAccess("hall-categories.edit");
 
         try {
             $aminities  = $request->aminities;

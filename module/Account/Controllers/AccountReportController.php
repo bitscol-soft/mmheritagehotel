@@ -276,7 +276,11 @@ class AccountReportController extends Controller
 
             }
 
-            $view = 'reports.income-expense-statement.' . ($request->print ? 'print' : 'index');
+            // docs/BUGS.md #73: reports.income-expense-statement.* was never created.
+            // The income-statement views already branch on the income-expense route
+            // (headings, the details checkbox, column labels), so they serve both.
+
+            $view = 'reports.income-statement.' . ($request->print ? 'print' : 'index');
 
         }
 
@@ -309,6 +313,15 @@ class AccountReportController extends Controller
      | EQUITY STATEMENT
      |--------------------------------------------------------------------------
     */
+    /** An account group with no controls, for the fixed ids a fresh deployment lacks. */
+    private function emptyAccountGroup(): AccountGroup
+    {
+        $group = new AccountGroup();
+        $group->setRelation('accountControls', collect());
+
+        return $group;
+    }
+
     public function equityStatement(Request $request)
     {
         $this->hasAccess("report.equity-statement");
@@ -658,7 +671,7 @@ class AccountReportController extends Controller
     */
     public function transactionLedgerReport(Request $request)
     {
-        $this->hasAccess("account.transaction.ledger.reports");
+        $this->hasAccess("report.transaction-ledger");
 
         $accountGroups = $this->transactionLedger->getTrialBalanceReportData($request);
 
@@ -669,7 +682,7 @@ class AccountReportController extends Controller
 
     public function ledgerJournalReport(Request $request)
     {
-        $this->hasAccess("	report.ledger-journal");
+        $this->hasAccess("report.ledger-journal");
 
         $data = $this->dataService->getAccountData(['accounts']);
         $data2 = $this->journalLedger->getLedger($request);
@@ -702,7 +715,7 @@ class AccountReportController extends Controller
 
     public function expenseAnalysisReport(Request $request)
     {
-        $this->hasAccess("account.expense.analysis.reports");
+        $this->hasAccess("report.expense-analysis");
 
         $data = $this->dataService->getAccountData(['accountControls', 'accountSubsidiaries']);
 
@@ -895,8 +908,10 @@ class AccountReportController extends Controller
             }]);
         }])->get();
 
-        $asset = $data['accountGroups']->where('id', 1)->first();
-        $liabilities = $data['accountGroups']->where('id', 2)->first();
+        // docs/BUGS.md #73: a deployment with no fixed chart-of-account groups yet must
+        // render the cash-flow sheet as zero instead of walking accountControls off null
+        $asset = $data['accountGroups']->where('id', 1)->first() ?? $this->emptyAccountGroup();
+        $liabilities = $data['accountGroups']->where('id', 2)->first() ?? $this->emptyAccountGroup();
 
         $data['asset'][0] = 0;
         $data['asset'][1] = 0;
@@ -936,7 +951,7 @@ class AccountReportController extends Controller
     */
     public function revenueAnalysisReport(Request $request)
     {
-        $this->hasAccess("account.revenue.analysis.reports");
+        $this->hasAccess("report.revenue-analysis");
 
         $from = $request->from ?? date('Y-01-01');
         $to   = $request->to ?? date('Y-m-d');
@@ -969,7 +984,7 @@ class AccountReportController extends Controller
     */
     public function nominalAccountLedgerReport(Request $request)
     {
-        $this->hasAccess("account.nominal.account.ledger.reports");
+        $this->hasAccess("report.nominal-account-ledger");
 
         $from = $request->from ?? date('Y-01-01');
         $to   = $request->to ?? date('Y-m-d');
@@ -1002,7 +1017,7 @@ class AccountReportController extends Controller
     */
     public function ratioAnalysisReport(Request $request)
     {
-        $this->hasAccess("account.ratio.analysis.reports");
+        $this->hasAccess("report.ratio-analysis");
 
         $from = $request->from ?? date('Y-01-01');
         $to   = $request->to ?? date('Y-m-d');
@@ -1054,7 +1069,7 @@ class AccountReportController extends Controller
     */
     public function receivedPaymentStatementReport(Request $request)
     {
-        $this->hasAccess("account.received.payment.statement.reports");
+        $this->hasAccess("report.received-payment-statement");
 
         $from = $request->from ?? date('Y-01-01');
         $to   = $request->to ?? date('Y-m-d');

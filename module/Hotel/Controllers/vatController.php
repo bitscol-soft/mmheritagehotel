@@ -24,8 +24,8 @@ class vatController extends Controller
     {
 
         $this->hasAccess("vats.index");
-        $data['systemSetting'] = SystemSetting::where('key', 'use_vat_included')->first();
-        $data['vat'] = Vat::first();
+        $data['systemSetting'] = SystemSetting::row('use_vat_included');   // docs/BUGS.md #73: creates the row if the deployment does not have it yet
+        $data['vat'] = Vat::first() ?? new Vat();   // docs/BUGS.md #73
         // dd($data['systemSetting']);
         return view('vat.index', $data);
     }
@@ -46,8 +46,12 @@ class vatController extends Controller
 
         try {
 
-            $vat = Vat::find($id);
-            $vat->update([
+            // docs/BUGS.md #73: a deployment with no `vats` row posts to /vat/0 - create the
+            // row instead of updating a null (the catch block used to swallow this and the
+            // screen silently kept the old values).
+            $vat = Vat::find($id) ?? new Vat();
+
+            $vat->fill([
 
                 'hotel_vat'             => $request->hotel_vat,
                 'resturent_vat'         => $request->resturent_vat,
@@ -57,17 +61,11 @@ class vatController extends Controller
                 'room_rate'             => $request->room_rate,
                 'rst_service_charge'    => $request->rst_service_charge,
 
-            ]);
-
-            $systemSetting = SystemSetting::where('key', 'use_vat_included')->first();
+            ])->save();
 
             $setting = $request->key['use_vat_included'];
 
-            $systemSetting->update([
-
-                'value' => $setting,
-
-            ]);
+            SystemSetting::row('use_vat_included')->fill(['value' => $setting])->save();
 
             cache()->forget('vatSetting');
 

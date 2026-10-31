@@ -227,9 +227,22 @@
 .mm-ui.mm-bookings .mm-booking-filter .chosen-drop { border-color: var(--mm-line); }
 /* Override former compact action rules only in the results region, not modals. */
 .mm-ui.mm-bookings .mm-table-scroll thead th { background: var(--mm-bg); color: var(--mm-muted); }
-.mm-ui.mm-bookings .mm-table-scroll .action-button { width: 132px; }
+.mm-ui.mm-bookings .mm-table-scroll .action-button { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; width: 156px; }
 .mm-ui.mm-bookings .mm-table-scroll .action-button a,
-.mm-ui.mm-bookings .mm-table-scroll .action-button button { width: 30px; height: 30px; line-height: 26px; }
+.mm-ui.mm-bookings .mm-table-scroll .action-button button { width: 34px; height: 34px; line-height: 30px; }
+.mm-ui.mm-bookings .mm-table-scroll .action-button-td {
+    position: sticky;
+    right: 0;
+    z-index: 2;
+    background: var(--mm-surface);
+    box-shadow: -6px 0 10px rgba(15, 23, 42, .08);
+}
+.mm-ui.mm-bookings .mm-table-scroll thead th:last-child {
+    position: sticky;
+    right: 0;
+    z-index: 3;
+    background: var(--mm-bg);
+}
 
 /* Guest form adapter. The original Bootstrap/plugin nodes and hooks remain. */
 .mm-ui.mm-guest-form .form-horizontal > .row { margin: 0; }
@@ -555,6 +568,7 @@
 .mm-ui.mm-booking-next .mm-form-actions { position: sticky; bottom: var(--mm-footer-h, 0px); z-index: 5; display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px; margin-top: 16px; padding: 12px 16px; border: 1px solid var(--mm-line); border-radius: 10px; background: var(--mm-surface); box-shadow: 0 -4px 12px rgba(31, 42, 51, .08); }
 .mm-ui.mm-booking-next .col-lg-5 { margin-left: 0 !important; }
 .mm-ui.mm-booking-next h3.header { margin: 24px 0 12px; padding-bottom: 8px; border-bottom: 1px solid var(--mm-line); color: var(--mm-ink); font-size: 18px; font-weight: 600; }
+.mm-ui.mm-booking-next .mm-room-table-row { overflow-x: clip; }
 .mm-ui .mm-date-error { display: block; margin: 4px 0 0; font-size: 13px; font-weight: 600; }
 
 /* Booking lifecycle: checkout and payment */
@@ -4781,5 +4795,3 @@
     color: #ffffff !important;
     border-color: #1d4ed8 !important;
 }
-
-

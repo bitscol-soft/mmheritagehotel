@@ -57,7 +57,7 @@
 <x-mm.styles />
 <x-mm.page class="mm-invoice-page mm-bar mm-rst" title="Sale invoice" description="Bar invoice. Printing outputs the document only.">
     <x-slot name="actions">
-        @if (hasPermission('service.view', $slugs))
+        @if (hasPermission('bar.sales.view', $slugs))
                 <a class="mm-button" href="#" onclick="printPage('print_body')">
                     <i class="fa fa-print"></i>
                     Print

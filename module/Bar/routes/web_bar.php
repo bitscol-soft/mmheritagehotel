@@ -14,6 +14,7 @@ use Module\Bar\Controllers\Inventory\{
     ProductController,                      InventoryController,                    ProductUnitController,
     ProductUploadController,                ProductCategoryController,              ProductPackageController,
 };
+use Module\Bar\Controllers\ProductBatchController;
 
 
 /**
@@ -42,6 +43,10 @@ Route::group(['prefix'  => 'bar', 'as' => 'bar.'], function () {
                 Route::resource('suppliers', SupplierController::class)->except(['edit', 'show', 'update']);
                 // round 3 (docs/BUGS.md): ProductPackageController does not implement edit/show/update; the routes would 500
                 Route::resource('packages', ProductPackageController::class)->except(['edit', 'show', 'update']);
+                // docs/BUGS.md #71: the ProductBatch model, controller and the bulk-upload
+                // writer existed, but no route/table/view - so the master was unreachable
+                // and the AJAX lookup 500'd. The list screen carries the create/edit modals.
+                Route::resource('product-batches', ProductBatchController::class)->except(['create', 'edit', 'show']);
 
 
         /**

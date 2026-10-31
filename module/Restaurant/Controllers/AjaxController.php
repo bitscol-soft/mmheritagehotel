@@ -128,6 +128,12 @@ class AjaxController extends Controller
             }])
             ->first();
 
+        // docs/BUGS.md #70: "no invoice matched" is a normal outcome for this
+        // lookup; it used to dereference a null sale inside the partial and 500
+        if (!$sale) {
+            return response('');
+        }
+
             return view('sales/return/saleable-product-render', compact('sale'))->render();
     }
 

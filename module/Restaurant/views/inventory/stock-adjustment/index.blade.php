@@ -6,7 +6,7 @@
     <x-mm.styles />
     <x-mm.page class="mm-crud-index mm-rst" title="Stock Adjustment">
         <x-slot name="actions">
-            @if (hasPermission("inv.stock-adjustments.create", $slugs))
+            @if (hasPermission("rst.stock-adjustment.create", $slugs))
                 <a class="btn btn-sm btn-primary" href="{{ route('inv.stock-adjustments.create') }}">
                     <i class="fa fa-plus-circle"></i>
                     Add New
@@ -113,18 +113,18 @@
                                             <i class="fa fa-info-circle"></i>
                                         </span>
 
-                                        @if (hasPermission("inv.stock-adjustments.view", $slugs))
+                                        @if (hasPermission("rst.stock-adjustment.show", $slugs))
                                             <a href="{{ route('inv.stock-adjustments.show', $stockAdjustment->id) }}" class="btn btn-xs btn-primary" title="View">
                                                 <i class="fa fa-eye"></i>
                                             </a>
                                         @endif
                                         @if($stockAdjustment->current_status == 'Pending')
-                                            {{-- @if (hasPermission("inv.stock-transfer.edit", $slugs))
+                                            {{-- @if (hasPermission("rst.stock-adjustment.edit", $slugs))
                                                 <a href="{{ route('inv.stock-transfer.edit', $stockAdjustment->id) }}" class="btn btn-xs btn-primary" title="Edit">
                                                     <i class="fa fa-edit"></i>
                                                 </a>
                                             @endif --}}
-                                            @if (hasPermission("inv.stock-adjustments.approve", $slugs))
+                                            @if (hasPermission("rst.stock-adjustment.edit", $slugs))
                                                 <a href="{{ route('inv.stock-adjustments-approve', $stockAdjustment->id) }}" class="btn btn-xs btn-warning" title="Approve Now!">
                                                     <i class="fa fa-thumbs-up"></i>
                                                 </a>
@@ -140,14 +140,14 @@
                                         @endif
 
                                         @if($stockAdjustment->current_status == 'Pending')
-                                            @if (hasPermission("inv.stock-adjustments.cancel", $slugs))
+                                            @if (hasPermission("rst.stock-adjustment.edit", $slugs))
                                                 @if($stockAdjustment->current_status != 'Cancelled')
                                                     <a href="{{ route('inv.stock-adjustments-cancel', $stockAdjustment->id)}}" class="btn btn-xs btn-warning" title="Cancel">
                                                         <i class="fa fa-undo"></i>
                                                     </a>
                                                 @endif
                                             @endif
-                                            @if (hasPermission("inv.stock-adjustments.delete", $slugs))
+                                            @if (hasPermission("rst.stock-adjustment.delete", $slugs))
                                                 <button type="button" class="btn btn-xs btn-danger" title="Delete" onclick="delete_item('{{ route('inv.stock-adjustments.destroy', $stockAdjustment->id) }}')">
                                                     <i class="fa fa-trash-o"></i>
                                                 </button>

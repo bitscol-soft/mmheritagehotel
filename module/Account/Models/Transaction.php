@@ -11,6 +11,8 @@ use Module\Restaurant\Models\Sale;
 use Module\Bar\Models\Sale as BarSale;
 use Module\Hotel\Models\Booking;
 use Module\HotelService\Models\Service\HotelServiceSale;
+use App\Models\User;
+use App\Models\Company;
 
 Relation::morphMap([
 

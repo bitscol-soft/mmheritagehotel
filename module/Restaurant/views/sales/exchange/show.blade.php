@@ -1,5 +1,5 @@
 @extends('layouts.master')
-@section('title', 'Sale Return Details')
+@section('title', 'Sale Exchange Details')
 
 @section('css')
     <style>
@@ -28,9 +28,9 @@
 
 @section('content')
     <x-mm.styles />
-    <x-mm.page class="mm-invoice-page mm-rst" title="Sale Return Details">
+    <x-mm.page class="mm-invoice-page mm-rst" title="Sale Exchange Details">
         <x-slot name="actions">
-            @if (hasPermission('pharmacy.view', $slugs))
+            @if (hasPermission('resturant.sales.view', $slugs))
                 <a href="{{ route('rst.sales.create') }}" class="btn btn-sm btn-primary hidden-print">
                     <i class="fa fa-plus-circle"></i> Create
                 </a>
@@ -70,7 +70,7 @@
                                         <h6 style="width: 100%;text-align: center;margin-top: 15px;">
                                             <b
                                                 style="padding: 10px 20px; border-radius: 10px; color: #000; border:1px solid #ddd;">
-                                                Sale Return Invoice
+                                                Sale Exchange Invoice
                                             </b>
                                         </h6>
 
@@ -87,10 +87,10 @@
                                             </p>
 
                                             <p class="patient"><b>Name : </b>
-                                                {{ optional($sale->patient)->name ?? $sale->patient_name }}
+                                                {{ optional($sale->guest)->name ?? 'Walking customer' }}
                                             </p>
                                             <p class="patient"><b>Mobile : </b>
-                                                {{ optional($sale->patient)->mobile_number }}
+                                                {{ optional($sale->guest)->phone_no }}
                                             </p>
 
 
@@ -138,31 +138,26 @@
                                                         <td>{{ ++$key }}</td>
                                                         <td>{{ optional($item->product)->name }}</td>
                                                         <td class="text-center">
-                                                            {{ number_format($item->sales_price, 2) }}
+                                                            {{ number_format($item->item_price, 2) }}
                                                         </td>
                                                         <td class="text-center">{{ $item->quantity }}</td>
                                                         <td class="text-right">
-                                                            {{ number_format($item->item_price, 2) }} &#x09F3;
+                                                            {{ number_format($item->total_amount, 2) }} &#x09F3;
                                                         </td>
                                                     </tr>
                                                 @endforeach
 
                                                 <tr>
                                                     <td colspan="4" class="no-border">
-                                                        Discount :</td>
-                                                    <td style="text-align: right">{{ $sale->discount }} &#x09F3;</td>
-                                                </tr>
-                                                <tr>
-                                                    <td colspan="4" class="no-border">
-                                                        Total : </td>
+                                                        Difference (new - returned) : </td>
                                                     <td style="text-align: right">
-                                                        {{ number_format($sale->discount, 2) }}
+                                                        {{ number_format($sale->payable_amount, 2) }}
                                                         &#x09F3;
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td colspan="4" class="no-border">
-                                                        Return :
+                                                        Returned goods :
                                                     </td>
                                                     <td style="text-align: right">
                                                         {{ number_format($sale->return_amount, 2) }}

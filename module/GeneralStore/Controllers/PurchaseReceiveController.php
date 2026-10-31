@@ -116,7 +116,7 @@ class PurchaseReceiveController extends Controller
         $data['purchase'] = Purchase::with(['last_receive' => function ($q) {
             $q->orderByDesc('id')->with('purchase_receive_details')->first();
         }])->with('purchase_details')->find($purchase->id);
-        $data['systemSetting'] = SystemSetting::where('key', 'general_store_reference_no_change')->first();
+        $data['systemSetting'] = SystemSetting::row('general_store_reference_no_change');
 
         //        $data['purchase'] = Purchase::with('last_receive.purchase_receive_details', 'purchase_details')->find($purchase->id);
         return view('purchase_receives.create', $data);

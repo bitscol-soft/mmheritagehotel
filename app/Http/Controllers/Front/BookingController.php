@@ -7,8 +7,7 @@ use Illuminate\Http\Request;
 use Module\Hotel\Models\RoomPhotos;
 use App\Http\Controllers\Controller;
 use Module\Hotel\Models\RoomCategory;
-use Illuminate\Support\Facades\Cookie;
-use Module\Hotel\Models\NightAuditRoomDetail;
+use Module\Hotel\Models\NightAuditSummary;
 
 class BookingController extends Controller
 {
@@ -29,7 +28,7 @@ class BookingController extends Controller
 
             $category_id  = $request->category_id;
 
-            if (NightAuditRoomDetail::query()->where('date', $request->check_in_date)->count() > 0) {
+            if (NightAuditSummary::query()->where('date', $request->check_in_date)->count() > 0) {
                 return response()->json([
                     'return'        => 0, 
                     'booking_item'  => [],
@@ -38,15 +37,7 @@ class BookingController extends Controller
                 ]);
 
             }
-            if (Cookie::get('booking_cart')) {
-
-                $cookie_data = \stripslashes(Cookie::get('booking_cart'));
-                $cart_data   = \json_decode($cookie_data, true);
-
-            }else{
-
-                $cart_data = array();
-            }
+            $cart_data = front_cart_items();
 
             $item_id_list = \array_column($cart_data,'item_id');
             $if_prod_id   = $category_id;
@@ -56,11 +47,6 @@ class BookingController extends Controller
                 foreach ($cart_data as $keys => $value) {
 
                     if ($cart_data[$keys]["item_id"] == $category_id) {
-
-                        $item_data = json_encode($cart_data);
-                        $item_dats =json_decode($item_data);
-                        $minutes = 1440;
-                        Cookie::queue(Cookie::make('booking_cart', $item_data, $minutes));
 
                         return response()->json(['status' => $cart_data[$keys]["item_name"] ." Already Added to Cart!",'return'=>0]);
 
@@ -103,21 +89,8 @@ class BookingController extends Controller
                     $cart_data[] = $item_array;
 
                     $added_item  = $item_array;
-                    $item_data   = \json_encode($cart_data);
-                    $minutes     = 1440;
-                    Cookie::queue(Cookie::make('booking_cart', $item_data, $minutes));
-
-
-                    if (Cookie::get('booking_cart')) {
-
-                        $cookie_data = \stripslashes(Cookie::get('booking_cart'));
-                        $cart_data   = \json_decode($cookie_data, true);
-                        $cart_count  = count($cart_data);
-                        $cart_count++;
-
-                    }else{
-                        $cart_count = 0;
-                    }
+                    session()->put('booking_cart', $cart_data);
+                    $cart_count  = count($cart_data);
 
                     return response()->json(['return'=>1,'booking_item'=>$added_item,'status'=>'Add to cart Successfully','cart_count'=>$cart_count]);
                 }
@@ -136,33 +109,20 @@ class BookingController extends Controller
     public function removeToCart(Request $request)
     {
         $prod_id            = $request->booking_id;
-        $cookie_data        = Cookie::get('booking_cart') ? stripslashes(Cookie::get('booking_cart')) : null;
-        $cart_data          = json_decode((string) $cookie_data, true) ?: []; // round 3 (docs/BUGS.md #44): empty cart
+        $cart_data          = front_cart_items(); // round 3 (docs/BUGS.md #44): empty cart is safe
         $item_id_list       = array_column($cart_data, 'item_id');
-        $prod_id_is_there   = $prod_id;
 
 
-        if(in_array($prod_id_is_there, $item_id_list))
+        if(in_array($prod_id, $item_id_list))
         {
             foreach($cart_data as $keys => $values)
             {
                 if($cart_data[$keys]["item_id"] == $prod_id)
                 {
                     unset($cart_data[$keys]);
-                    $item_data = json_encode($cart_data);
-                    $minutes = 1440;
+                    session()->put('booking_cart', $cart_data);
 
-                    Cookie::queue(Cookie::make('booking_cart', $item_data, $minutes));
-
-                    if (Cookie::get('booking_cart')) {
-                        $cookie_data = \stripslashes(Cookie::get('booking_cart'));
-                        $cart_data = \json_decode($cookie_data, true);
-                        $cart_count = count($cart_data);
-                        $cart_count--;
-                    }else{
-
-                    }
-                    return response()->json(['status'=>'Item Removed from Cart','cart_count'=>$cart_count]);
+                    return response()->json(['status'=>'Item Removed from Cart','cart_count'=>count($cart_data)]);
                 }
             }
         }

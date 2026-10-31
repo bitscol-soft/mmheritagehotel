@@ -37,6 +37,7 @@ class OurServiceListController extends Controller
 
     public function store(Request $request)
     {
+        $this->hasAccess("ourservicelists.create");
         $request->validate([
             'service_title'        => 'required',
             'service_short_desc'   => 'required',
@@ -68,6 +69,7 @@ class OurServiceListController extends Controller
 
     public function update(Request $request,$id)
     {
+        $this->hasAccess("ourservicelists.edit");
         $request->validate([
             'service_title'        => 'required',
             'service_short_desc'   => 'required',

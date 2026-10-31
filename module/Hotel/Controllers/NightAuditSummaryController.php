@@ -130,7 +130,7 @@ class NightAuditSummaryController extends Controller
                                         ->withSum(['transaction_ledgers as previous_paid' => function($q) use($request, $from_date, $to_date){
                                             $q->whereHas('nightClosingLedger');
                                         }], 'in')
-                                        ->with('transaction_ledgers.nightClosingLedger', 'source', 'account')->orderBy('source_type')->take(5)->get()->groupBy('source_type');
+                                        ->with('transaction_ledgers.nightClosingLedger', 'source', 'account')->orderBy('source_type')->get()->groupBy('source_type');
 
 
 
@@ -361,12 +361,6 @@ class NightAuditSummaryController extends Controller
 
 
         return view('night-audits/invoice', $data);
-        // return view('night-audits/index-details', $data);
-
-
-        $audit = NightAuditSummary::with('details.transaction.transaction', 'details.transaction.account', 'details.transaction.source.bookingDetails.roomNumber')->find($id);
-
-        return view('night-audits/show', compact('audit'));
     }
 
 

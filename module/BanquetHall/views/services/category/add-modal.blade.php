@@ -7,7 +7,7 @@
                 @csrf
 
                 <div class="modal-header">
-                    @if (hasPermission('service.view', $slugs))
+                    @if (hasPermission('hotel.services.create', $slugs))
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                         <h4 class="modal-title">Add New Service</h4>
                     @endif
@@ -32,7 +32,7 @@
                 </div>
 
                 <div class="modal-footer">
-                    @if (hasPermission('service.create', $slugs))
+                    @if (hasPermission('hotel.services.create', $slugs))
                         <button type="submit" class="btn btn-sm btn-success">
                             <i class="fa fa-plus"></i>
                             Confirm

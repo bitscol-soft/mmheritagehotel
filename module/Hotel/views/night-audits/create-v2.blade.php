@@ -223,7 +223,7 @@
                                                             </td>
                                                             <td style="text-align: right;">
                                                                 <input type="hidden"
-                                                                    name="previous_paid"
+                                                                    name="previous_paid[{{ $transaction->id }}]"
                                                                     value="{{ calculateCurrencyAmount($transaction->previous_paid, 1) }}">
                                                                 {{ calculateCurrencyAmount($transaction->previous_paid) }}
                                                             </td>
@@ -297,7 +297,8 @@
                                                     value="{{ $grand_total_due }}">
                     </label>
                     <div class="mm-form-actions">
-                        <button class="mm-button mm-button-secondary">
+                        <button type="button" class="mm-button mm-button-secondary"
+                                                onclick="window.location.href='{{ route('night-audits.index') }}'">
                                                 <i class="fa fa-refresh"></i> Close
                                             </button>
                         <button type="button" class="mm-button save-btn">
@@ -316,42 +317,45 @@
     <script src="{{ asset('assets/js/moment.min.js') }}"></script>
     <script src="{{ asset('assets/js/bootstrap-datetimepicker.min.js') }}"></script>
     <script>
-        $('.save-btn').on('click', () => {
-            $.LoadingOverlay("show", {
-                image: '<svg></svg>',
-                imageClass: 'loader',
-                imageAnimation: false,
-                progress: false,
-                rogressAutoResize: true,
-                progressResizeFactor: 0.25,
-                progressColor: "#8a256c",
-                progressClass: "",
-                progressOrder: 2,
-                progressFixedPosition: "center",
-                progressSpeed: 200,
-                progressMin: 20,
-                progressMax: 100,
-                size: 50,
-                maxSize: 120,
-                minSize: 20,
-                direction: "column",
-                fade: [400, 200],
-                resizeInterval: 50,
-                zIndex: 2147483647
+        $(document).ready(function () {
+            // One-shot guard: a second click must not schedule a second submit.
+            let nightAuditGenerateStarted = false;
 
-            })
+            $('.save-btn').on('click', function () {
+                if (nightAuditGenerateStarted) {
+                    return;
+                }
+                nightAuditGenerateStarted = true;
+                $(this).prop('disabled', true);
 
-            // setInterval(() => {
-            //     $.LoadingOverlay("hide")
-            //     $('#formSubmit').submit();
-            // }, 1000);
+                $.LoadingOverlay("show", {
+                    image: '<svg></svg>',
+                    imageClass: 'loader',
+                    imageAnimation: false,
+                    progress: false,
+                    rogressAutoResize: true,
+                    progressResizeFactor: 0.25,
+                    progressColor: "#8a256c",
+                    progressClass: "",
+                    progressOrder: 2,
+                    progressFixedPosition: "center",
+                    progressSpeed: 200,
+                    progressMin: 20,
+                    progressMax: 100,
+                    size: 50,
+                    maxSize: 120,
+                    minSize: 20,
+                    direction: "column",
+                    fade: [400, 200],
+                    resizeInterval: 50,
+                    zIndex: 2147483647
+                });
 
-            setTimeout(() => {
-                $.LoadingOverlay("hide")
+                // Submit once, right away; the overlay stays up while the
+                // request is in flight (it clears when the page navigates).
                 $('#formSubmit').submit();
-            }, 10000);
-
-        })
+            });
+        });
 
         $('.date-picker-v2').datetimepicker({
             //  format: 'YYYY-MM-DD H:mm:ss',//use this option to display seconds

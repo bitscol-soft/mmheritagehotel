@@ -19,7 +19,7 @@
                             <i class="fa fa-refresh bigger-110"></i>
                         </span>
                     </a>
-                    @if ((hasPermission("account.controls.delete", $slugs)))
+                    @if ((hasPermission("account-controls.index", $slugs)))
                         <a href="{{route('account-controls.create')}}" class="dt-button btn btn-white btn-info btn-bold" title="Create New" data-toggle="tooltip" tabindex="0" aria-controls="dynamic-table">
                             <span>
                                 <i class="fa fa-plus bigger-110"></i>

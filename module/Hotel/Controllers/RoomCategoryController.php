@@ -78,6 +78,7 @@ class RoomCategoryController extends Controller
 
     public function store(Request $request)
     {
+        $this->hasAccess("categories.create");
         $request->validate([
             'cat_name'          => 'required',
             'aminities.*'       => 'required',
@@ -162,6 +163,7 @@ class RoomCategoryController extends Controller
 
     public function update(Request $request, $id)
     {
+        $this->hasAccess("categories.edit");
 
         try {
             $aminities  = $request->aminities;
@@ -243,6 +245,30 @@ class RoomCategoryController extends Controller
 
 
 
+
+    public function removePhoto($photoId)
+    {
+        $this->hasAccess("categories.edit");
+
+        try {
+            $photo = RoomPhotos::find($photoId);
+
+            if ($photo) {
+                $image = public_path(($photo->relative_path ?? 'assets/uploads/hotel/room/') . $photo->name);
+
+                if (file_exists($image)) {
+                    unlink($image);
+                }
+
+                $photo->delete();
+            }
+
+            return redirect()->back()->with('message', 'Photo removed successfully');
+        } catch (Exception $ex) {
+
+            return redirect()->back()->with('error', 'Some error, please check');
+        }
+    }
 
     public function destroy($id)
     {

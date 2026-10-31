@@ -131,13 +131,13 @@ class RstProductionController extends Controller
      | EDIT METHOD
      |--------------------------------------------------------------------------
     */
-    public function edit(Purchase $purchase)
+    public function edit(RstPurchase $purchase)
     {
         $this->hasAccess("rst.purchase.edit");
 
-        $items     = Item::items()->select('name', 'id', 'company_id')->get();
+        $items     = RestMaterial::items()->select('name', 'id', 'company_id')->get();
         $companies = Company::userCompanies();
-        $purchase  = Purchase::where('id', $purchase->id)->with('purchase_details')->first();
+        $purchase  = RstPurchase::where('id', $purchase->id)->with('purchase_details')->first();
         $systemSetting = SystemSetting::where('key', 'general_store_reference_no_change')->first();
 
         return view('inventory.production.purchases.edit', compact('purchase', 'companies', 'items', 'systemSetting'));
@@ -150,8 +150,9 @@ class RstProductionController extends Controller
      | UPDATE METHOD
      |--------------------------------------------------------------------------
     */
-    public function update(Request $request, Purchase $purchase)
+    public function update(Request $request, RstPurchase $purchase)
     {
+        $this->hasAccess("rst.purchase.edit");
         // check validation
         $this->validate($request, [
             'company_id'    => 'required',
@@ -296,7 +297,7 @@ class RstProductionController extends Controller
 
             // create new added
             for ($i = count($purchase->purchase_details); $i < count($request->item_id); $i++) {
-                PurchaseDetails::create([
+                RstPurchaseDetails::create([
                     'purchase_id' => $purchase->id,
                     'company_id'  => $request->company_id,
                     'item_id'     => $request->item_id[$i],
@@ -373,12 +374,15 @@ class RstProductionController extends Controller
     public function getMetrialDetails (Request $request)
         {
             $item = Product::where('id', $request->id)->with('unit','stocks')->Material()->first();
-            $data['mat_current_stock'] = $item->stocks[0]->available_quantity;
-            $data['mat_item_unit']     = $item->unit->name;
-            $data['mat_unit_id']       = $item->unit->id;
-            $data['mat_name']          = $item->name;
-            $data['mat_price']         = $item->sale_price;
-            $data['mat_category_id']   = $item->category_id;
+
+            // docs/BUGS.md #70: the detail popover must answer for an unknown id
+            // (or an item that has no stock row yet) instead of 500ing
+            $data['mat_current_stock'] = optional($item ? $item->stocks->first() : null)->available_quantity ?? 0;
+            $data['mat_item_unit']     = optional($item ? $item->unit : null)->name ?? '';
+            $data['mat_unit_id']       = optional($item ? $item->unit : null)->id;
+            $data['mat_name']          = $item->name ?? '';
+            $data['mat_price']         = $item->sale_price ?? 0;
+            $data['mat_category_id']   = $item->category_id ?? null;
 
             return response()->json($data);
         }
@@ -387,11 +391,13 @@ class RstProductionController extends Controller
     public function getItemDetails (Request $request)
         {
             $item = Product::where('id', $request->id)->with('unit','stocks')->NotBar()->first();
-            $data['current_stock']      = $item->stocks[0]->available_quantity;
-            $data['item_name']          = $item->name;
-            $data['item_unit']          = $item->unit->name;
-            $data['item_price']         = $item->sale_price;
-            $data['item_category_id']   = $item->category_id;
+
+            // docs/BUGS.md #70: same guard as getMetrialDetails()
+            $data['current_stock']      = optional($item ? $item->stocks->first() : null)->available_quantity ?? 0;
+            $data['item_name']          = $item->name ?? '';
+            $data['item_unit']          = optional($item ? $item->unit : null)->name ?? '';
+            $data['item_price']         = $item->sale_price ?? 0;
+            $data['item_category_id']   = $item->category_id ?? null;
 
             return response()->json($data);
         }

@@ -53,8 +53,13 @@ class RoomService
 
 
         $check_in   = $request->check_in_date;
-        $check_out  = $request->check_out_date;
         $room_id    = $request->room_id;
+
+        // docs/BUGS.md #70: a missing check-out date was passed straight into
+        // `->where('date', '>=', null)`, which the query builder rejects
+        // ("Illegal operator and value combination"). Fall back to today so the
+        // adjust popover still lists the rooms available from now.
+        $check_out  = $request->check_out_date ?: date('Y-m-d');
 
 
         $room = Rooms::find($room_id);

@@ -5,7 +5,7 @@
     //                        VIEW MODAL METHOD                //
     //---------------------------------------------------------//
     function showDetailsModal(booking_id){
-        $('#booking-details').toggle("modal");
+        $('#booking-details').modal('show');
 
         let id      = booking_id;
         const route = "{{ route('get-booking-details') }}";
@@ -75,7 +75,7 @@
                                 </td>
                             </tr>
                             <tr class="detail-row guest-details-tr">
-                                <td colspan="8">
+                                <td colspan="9">
                                     <table id="guest-details" class="table table-bordered">
                                         <thead>
                                             <tr>
@@ -118,8 +118,8 @@
                                 </td>
                             </tr>`;
                     });
-                $('#booking-details-table').append(html);
-                $('#booking-details-table').append(footer);
+                $('#booking-details-table tbody').append(html);
+                $('#booking-details-table tfoot').append(footer);
                 $('#guest-details tbody').append(guest);
 
                 $('.show-details-btn').on('click', function(e) {
@@ -144,7 +144,7 @@
     //                        CLOSE MODAL METHOD                //
     //---------------------------------------------------------//
     function closeDetailsModal(){
-        $('#booking-details').toggle("modal");
+        $('#booking-details').modal('hide');
 
     }
 
@@ -158,4 +158,3 @@
 
 
 </script>
-

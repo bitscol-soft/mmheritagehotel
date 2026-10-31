@@ -6,7 +6,7 @@
                 @csrf
                 @method('PUT')
                 <div class="modal-header">
-                    @if (hasPermission('service.view', $slugs))
+                    @if (hasPermission('hotel.services.edit', $slugs))
 
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                         <h4 class="modal-title">Edit Service</h4>

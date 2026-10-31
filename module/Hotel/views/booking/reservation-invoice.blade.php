@@ -29,7 +29,7 @@
                  surrounding admin chrome. --}}
         </x-slot>
         <x-mm.panel class="tw-p-4">
-            @if (hasPermission('service.view', $slugs))
+            @if (hasPermission('bookings.view', $slugs))
             <x-mm.print-sheet>
             <div class="invoice-doc">
 

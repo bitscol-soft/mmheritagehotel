@@ -11,24 +11,6 @@
             <div class="tw-flex tw-flex-wrap tw-gap-2 mm-no-print"><a class="mm-button mm-button-secondary" href="http://localhost/hotel/night-audits">
                 <i class="fa fa-list-alt" aria-hidden="true"></i> Audit List
             </a></div>        </header>
-        <div class="mm-table-kpi-grid mm-no-print" style="margin-bottom: 14px;">
-            <div class="mm-table-kpi-card">
-                <span class="mm-table-kpi-label">Audit Business Date</span>
-                <div class="mm-table-kpi-value">2026-10-01 <span class="mm-table-kpi-badge">Night Closing</span></div>
-            </div>
-            <div class="mm-table-kpi-card">
-                <span class="mm-table-kpi-label">Total Rooms</span>
-                <div class="mm-table-kpi-value">32 Rooms <span class="mm-table-kpi-badge">Inventory</span></div>
-            </div>
-            <div class="mm-table-kpi-card">
-                <span class="mm-table-kpi-label">Day Collection</span>
-                <div class="mm-table-kpi-value">&#2547; 5,300.00 <span class="mm-table-kpi-badge is-emerald">2 Ledger Groups</span></div>
-            </div>
-            <div class="mm-table-kpi-card">
-                <span class="mm-table-kpi-label">Outstanding Due</span>
-                <div class="mm-table-kpi-value">&#2547; 2,000.00 <span class="mm-table-kpi-badge is-amber">Carry Forward</span></div>
-            </div>
-        </div>
         <div class="mm-panel tw-p-4 sm:tw-p-6 mm-co-card hidden-print"><h2 class="mm-co-title">Audit period</h2>
             <form action="" method="GET">
                 <div class="mm-pc-search">
@@ -182,7 +164,7 @@
                                                             </td>
                                                             <td style="text-align: right;">
                                                                 <input type="hidden"
-                                                                    name="previous_paid"
+                                                                    name="previous_paid[11]"
                                                                     value="500">
                                                                 500.00
                                                             </td>
@@ -237,7 +219,7 @@
                                                             </td>
                                                             <td style="text-align: right;">
                                                                 <input type="hidden"
-                                                                    name="previous_paid"
+                                                                    name="previous_paid[12]"
                                                                     value="500">
                                                                 500.00
                                                             </td>
@@ -256,7 +238,6 @@
                                                             </td>
                                                         </tr>
                                                                                                     </tbody>
-
 
                                                 <tfoot>
                                                     <tr>
@@ -278,7 +259,6 @@
                                                                 style="font-size: 18px">2000</strong>
                                                         </th>
                                                     </tr>
-
 
                                                 </tfoot>
                                             </table></div>
@@ -338,7 +318,7 @@
                                                             </td>
                                                             <td style="text-align: right;">
                                                                 <input type="hidden"
-                                                                    name="previous_paid"
+                                                                    name="previous_paid[21]"
                                                                     value="500">
                                                                 500.00
                                                             </td>
@@ -357,7 +337,6 @@
                                                             </td>
                                                         </tr>
                                                                                                     </tbody>
-
 
                                                 <tfoot>
                                                     <tr>
@@ -379,7 +358,6 @@
                                                                 style="font-size: 18px">0</strong>
                                                         </th>
                                                     </tr>
-
 
                                                 </tfoot>
                                             </table></div>
@@ -403,7 +381,8 @@
                                                     value="2000">
                     </label>
                     <div class="mm-form-actions">
-                        <button class="mm-button mm-button-secondary">
+                        <button type="button" class="mm-button mm-button-secondary"
+                                                onclick="window.location.href='http://localhost/hotel/night-audits'">
                                                 <i class="fa fa-refresh"></i> Close
                                             </button>
                         <button type="button" class="mm-button save-btn">
@@ -423,43 +402,45 @@
     <script src="/assets/js/moment.min.js"></script>
     <script src="/assets/js/bootstrap-datetimepicker.min.js"></script>
     <script>
-        $('.save-btn').on('click', () => {
-            $.LoadingOverlay("show", {
-                image: '<svg></svg>',
-                imageClass: 'loader',
-                imageAnimation: false,
-                progress: false,
-                rogressAutoResize: true,
-                progressResizeFactor: 0.25,
-                progressColor: "#8a256c",
-                progressClass: "",
-                progressOrder: 2,
-                progressFixedPosition: "center",
-                progressSpeed: 200,
-                progressMin: 20,
-                progressMax: 100,
-                size: 50,
-                maxSize: 120,
-                minSize: 20,
-                direction: "column",
-                fade: [400, 200],
-                resizeInterval: 50,
-                zIndex: 2147483647
+        $(document).ready(function () {
+            // One-shot guard: a second click must not schedule a second submit.
+            let nightAuditGenerateStarted = false;
 
-            })
+            $('.save-btn').on('click', function () {
+                if (nightAuditGenerateStarted) {
+                    return;
+                }
+                nightAuditGenerateStarted = true;
+                $(this).prop('disabled', true);
 
-            // setInterval(() => {
-            //     $.LoadingOverlay("hide")
-            //     $('#formSubmit').submit();
-            // }, 1000);
+                $.LoadingOverlay("show", {
+                    image: '<svg></svg>',
+                    imageClass: 'loader',
+                    imageAnimation: false,
+                    progress: false,
+                    rogressAutoResize: true,
+                    progressResizeFactor: 0.25,
+                    progressColor: "#8a256c",
+                    progressClass: "",
+                    progressOrder: 2,
+                    progressFixedPosition: "center",
+                    progressSpeed: 200,
+                    progressMin: 20,
+                    progressMax: 100,
+                    size: 50,
+                    maxSize: 120,
+                    minSize: 20,
+                    direction: "column",
+                    fade: [400, 200],
+                    resizeInterval: 50,
+                    zIndex: 2147483647
+                });
 
-            setTimeout(() => {
-                $.LoadingOverlay("hide")
+                // Submit once, right away; the overlay stays up while the
+                // request is in flight (it clears when the page navigates).
                 $('#formSubmit').submit();
-            }, 10000);
-
-        })
-
+            });
+        });
 
         $('.date-picker-v2').datetimepicker({
             //  format: 'YYYY-MM-DD H:mm:ss',//use this option to display seconds

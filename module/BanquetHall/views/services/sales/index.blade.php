@@ -19,7 +19,7 @@
     <x-mm.styles />
     <x-mm.page class="mm-crud-index" title="Hotel Service Sales List">
         <x-slot name="actions">
-            @if (hasPermission('service.view', $slugs))
+            @if (hasPermission('sales.create', $slugs))
                 <a class="btn btn-sm btn-primary" href=" {{ route('hotelservice.service-sales.create') }}">
                     <i class="fa fa-plus"></i> New Hotel Service
                 </a>
@@ -47,7 +47,7 @@
                                         </td>
                                         <td>
                                             <div class="btn-group btn-corner">
-                                                @if (hasPermission('service.view', $slugs))
+                                                @if (hasPermission('sales.index', $slugs))
                                                     <button type="submit" class="btn btn-success btn-sm">
                                                         <i class="fa fa-search"></i>
                                                     </button>
@@ -127,7 +127,7 @@
                                     <td class="text-center">
 
                                         @if ($due_amount != 0.0)
-                                            @if (hasPermission('service.edit', $slugs))
+                                            @if (hasPermission('sales.edit', $slugs))
                                                 <a class="btn btn-minier btn-warning"
                                                     onclick="payment(`{{ route('hotelservice.service-due-receive', $service->id) }}`, {{ $due_amount }})">
                                                     <i class="fa fa-money"></i> Payment
@@ -140,13 +140,13 @@
 
                                     <td class="text-center">
                                         <div class="btn-corner btn-group">
-                                            @if (hasPermission('service.view', $slugs))
+                                            @if (hasPermission('sales.view', $slugs))
                                                 <a class="btn btn-xs btn-success" target="__blank"
                                                     href="{{ route('hotelservice.service-sales.show', $service) }}">
                                                     <i class="fa fa-eye"></i>
                                                 </a>
                                             @endif
-                                            @if (hasPermission('service.delete', $slugs))
+                                            @if (hasPermission('sales.delete', $slugs))
                                                 <button type="button"
                                                     onclick="delete_item(`{{ route('hotelservice.service-sales.destroy', $service) }}`)"
                                                     class="btn btn-xs btn-danger" title="Delete">

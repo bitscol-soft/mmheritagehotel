@@ -4,6 +4,7 @@
 @section('content')
     <x-mm.styles />
     <x-mm.page title="Booking notes" description="Review existing note titles and their active status." class="mm-booking-setup mm-booking-notes">
+    <x-slot name="actions"><a class="mm-button" href="{{ route('booking-note.create') }}"><i class="fa fa-plus"></i> Add New Booking Note</a></x-slot>
     @include('partials._alert_message')
 
     <div class="row">
@@ -37,6 +38,13 @@
                                     <a aria-label="Edit booking note" class="btn btn-sm btn-success" href="{{ route('booking-note.edit', $item->id) }}">
                                         <i class="fa fa-edit"></i>
                                     </a>
+                                    <form action="{{ route('booking-note.destroy', $item->id) }}" method="POST" style="display:inline" onsubmit="return confirm('You want to delete permanently !')">
+                                        @csrf
+                                        @method("DELETE")
+                                        <button type="submit" class="btn btn-xs btn-sm btn-danger" title="Delete" aria-label="Delete booking note">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </form>
                                 </div>
                             </td>
                         </tr>

@@ -91,6 +91,7 @@ class RestMaterialController extends Controller
      */
     public function store(Request $request)
     {
+        $this->hasAccess("items.create");
         $this->validate($request, [
             'company_id'   => 'required|not_in:0',
             'item_unit_id' => 'required',
@@ -139,6 +140,7 @@ class RestMaterialController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->hasAccess("items.edit");
         $this->validate($request, [
             'item_unit_id' => 'required',
             'name'         => 'required',

@@ -152,7 +152,7 @@ class GuestUploadController extends Controller
     */
     public function edit($id)
     {
-        $this->hasAccess("pharmacy.edit");
+        $this->hasAccess("guests.edit");
 
         $data = [
             'product'           => ProductUpload::find($id),
@@ -180,6 +180,7 @@ class GuestUploadController extends Controller
     */
     public function update($id, Request $request)
     {
+        $this->hasAccess("guests.edit");
         try {
             ProductUpload::find($id)->update($request->all());
         } catch (\Throwable $th) {

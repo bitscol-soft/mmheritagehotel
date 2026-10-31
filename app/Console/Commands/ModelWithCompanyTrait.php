@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Str;
 
 class ModelWithCompanyTrait extends Command
 {
@@ -70,9 +71,9 @@ class ModelWithCompanyTrait extends Command
 
             $migrationStub = file_get_contents(base_path('app/Console/stubs/migration.stub'));
 
-            $modelPulural = str_plural($name);
+            $modelPulural = Str::plural($name);
 
-            $tableName = snake_case($modelPulural);
+            $tableName = Str::snake($modelPulural);
 
             $time = Carbon::parse(now())->format('Y_m_d_u');
 
@@ -80,7 +81,7 @@ class ModelWithCompanyTrait extends Command
             $migrationStub = str_replace('TableName', $tableName, $migrationStub);
             $migrationStub = str_replace('ClassName', "Create" . $modelPulural . "Table", $migrationStub);
 
-            $filename = $time . '_create_' . snake_case($tableName) . '_table.php';
+            $filename = $time . '_create_' . Str::snake($tableName) . '_table.php';
 
             $this->info("Creating Migration $filename");
 

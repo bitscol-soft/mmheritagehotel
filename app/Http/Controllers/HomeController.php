@@ -51,7 +51,9 @@ class HomeController extends Controller
 
         $data = $dashboardService->getBookingData();
 
-        $dashboard  = SystemSetting::where('key', 'dashboard')->first()->value;
+        // docs/BUGS.md #68: same missing-setting crash as today_from_system() - the
+        // dashboard/home screens must still render on a partially seeded database
+        $dashboard  = optional(SystemSetting::where('key', 'dashboard')->first())->value ?? '0';
 
         if ($dashboard == '1') {
             if ($modules->where('name', 'HRM')->count() > 0) {
@@ -64,7 +66,7 @@ class HomeController extends Controller
         }
 
 
-        $data['settings']          = SystemSetting::get();
+        $data['settings']          = SystemSetting::withDashboardDefaults();
         $data['logged_in_users']   = UserLoginStatus::whereIn('company_id', $permitted_company_ids)->has('user')->with('user')->get();
 
         if (setting('visible_booking_ui_dashboard') == 1) {
@@ -170,7 +172,7 @@ class HomeController extends Controller
                                                         ->where('publish_at', '<=', fdate(now(), 'Y-m-d H:i:s'))
                                                         ->take(10)
                                                         ->pluck('title', 'id');
-        $data['settings']                           = SystemSetting::get();
+        $data['settings']                           = SystemSetting::withDashboardDefaults();
         $data['holidays']                           = Holiday::where('company_id', auth()->user()->company_id)->latest('id')->get();
 
         return view('home.hrm-dashboard-new', $data);

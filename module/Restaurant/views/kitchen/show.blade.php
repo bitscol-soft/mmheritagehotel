@@ -66,7 +66,7 @@
 
 <x-mm.styles />
 <x-mm.page class="mm-invoice-page mm-rst" title="Order details" description="Kitchen copy of the order. Printing outputs the document only.">
-    @if (hasPermission('service.view', $slugs))
+    @if (hasPermission('kit.kitchen.all', $slugs))
         <x-slot name="actions">
             {{-- W5.1: the print button is now provided by <x-mm.print-sheet>'s footer
                  (the data-mm-print hook calls window.print()). The old jQuery

@@ -1,0 +1,75 @@
+name: Publish preview site
+
+# Keeps https://bitscol-soft.github.io/mmheritagehotel/ in step with the branch.
+#
+# Pages publishes this branch with Source = "Deploy from a branch", so the site
+# lives at the branch root and this job refreshes it: export -> link check ->
+# write the root -> commit. See docs/PAGES-DEPLOY.md.
+#
+# Two guards keep it from looping or churning:
+#   * the job skips a commit authored by github-actions[bot] whose subject is
+#     "chore(site):" (checking the marker text alone is not enough: a human
+#     commit that merely *mentions* the marker would skip the publish), and
+#   * pushes made with GITHUB_TOKEN do not start workflow runs at all.
+# The export is deterministic, so a push that does not change any screen
+# produces no commit ("site already current").
+
+on:
+  push:
+    branches:
+      - main
+      - arena/7ee36555-mmheritagehotel
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-site-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: >-
+      !(github.event.head_commit.author.name == 'github-actions[bot]'
+        && startsWith(github.event.head_commit.message, 'chore(site):'))
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Export the preview
+        run: node tools/export-static-preview.cjs --out dist-preview
+
+      # Same gate as the Pages preview workflow: a broken link stops the publish.
+      - name: Verify every link and asset resolves
+        run: node tools/check-static-preview.cjs dist-preview
+
+      - name: Write the site to the branch root
+        run: node tools/publish-branch-site.cjs
+
+      # _config.yml is the only thing keeping .env and the SQL dump off the
+      # public site, so refuse to commit a copy that lost the excludes.
+      - name: Check the Pages safety net
+        run: |
+          for entry in '".env"' '"database"' '"public/index.php"'; do
+            grep -q "$entry" _config.yml || { echo "::error::_config.yml no longer excludes $entry"; exit 1; }
+          done
+
+      - name: Commit and push when the site changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "site already current - nothing to publish"
+            exit 0
+          fi
+
+          git add -A
+          git commit -m "chore(site): refresh the published preview"
+          git push
+          echo "published $(git show --stat --oneline HEAD | tail -1)"

@@ -12,7 +12,7 @@ class AccountSetupController extends Controller
 
     public function index()
     {
-        $this->hasAccess("account.setups.index");
+        $this->hasAccess("account-setups.index");
 
         $data['data'] = AccountSetup::query()->orderBy('name')->get();
 

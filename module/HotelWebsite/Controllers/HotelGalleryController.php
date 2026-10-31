@@ -63,6 +63,7 @@ class HotelGalleryController extends Controller
 
     public function store(Request $request)
     {
+        $this->hasAccess("galleries.create");
 
         $request->validate([
             'gallery_images' => 'required',
@@ -96,6 +97,7 @@ class HotelGalleryController extends Controller
 
     public function update(Request $request,$id)
     {
+        $this->hasAccess("galleries.edit");
 
         $uploader = new Filesaver;
 

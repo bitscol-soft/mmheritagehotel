@@ -36,10 +36,20 @@ class AppServiceProvider extends ServiceProvider
                 $modules = Module::active()->orderBy('rank')->get();
 
                 session()->put('menu_modules', $modules);
-                // session()->forget('slugs');
-                if (!session()->has('slugs')) {
-                    session()->put('slugs', auth()->user()->permissions()->pluck('slug')->toArray());
+
+                if (!request()->attributes->has('permission_slugs')) {
+                    request()->attributes->set(
+                        'permission_slugs',
+                        auth()->user()->permissions()->pluck('slug')->toArray()
+                    );
+                }
+                $slugs = request()->attributes->get('permission_slugs');
+                session()->put('slugs', $slugs);
+
+                if (!session()->has('active_modules')) {
                     session()->put('active_modules', $modules->pluck('name')->toArray());
+                }
+                if (!session()->has('em_slugs')) {
                     $em_slugs = Schema::hasTable('employee_permissions') ? (EmployeePermission::with('permission')->get()->pluck('permission.slug')->toArray() ?? []) : [];
                     session()->put('em_slugs', $em_slugs);
                 }
@@ -47,7 +57,7 @@ class AppServiceProvider extends ServiceProvider
 
                 // share data
                 view()->share([
-                    'slugs'             => session()->get('slugs') ?? [],
+                    'slugs'             => $slugs,
                     'active_modules'    => $modules->pluck('name')->toArray() ?? [],
                     'em_slugs'          => session()->get('em_slugs') ?? []
                 ]);

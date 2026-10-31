@@ -8,6 +8,7 @@ use App\Traits\FileSaver;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
+use Module\BanquetHall\Models\BanquetBookingPurpose as BookingPurpose; // resolved in the controller namespace before (docs/BUGS.md #72)
 
 class BanquetBookingPurposeController extends Controller
 {

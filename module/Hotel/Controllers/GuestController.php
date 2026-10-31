@@ -63,6 +63,7 @@ class GuestController extends Controller
 
     public function store(Request $request)
     {
+        $this->hasAccess("guests.create");
         $request->validate([
             'guest_name' => 'required',
             // 'nid_no'     => 'nullable',
@@ -203,6 +204,7 @@ class GuestController extends Controller
 
     public function update(Request $request, $id)
     {
+        $this->hasAccess("guests.edit");
         // return $request->all();
         $uploader = new Filesaver;
 

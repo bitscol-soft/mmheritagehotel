@@ -151,7 +151,7 @@
                                                 </a>
                                             @endif
 
-                                             @if (hasPermission('purchase.receives.edit', $slugs))
+                                             @if (hasPermission('purchases.grn.list', $slugs))
                                                 @if (count($purchase->purchase_receives) > 0)
                                                     <a href="{{ route('purchase.receive.list', $purchase->id) }}"  class="btn btn-xs btn-primary" title="Show Purchase Receive">
                                                         <i class="fa fa-eye"></i>

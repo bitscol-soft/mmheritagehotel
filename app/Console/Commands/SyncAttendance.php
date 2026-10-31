@@ -40,6 +40,10 @@ class SyncAttendance extends Command
      */
     public function handle()
     {
+        if (!file_exists(base_path('module/HRM'))) {
+            $this->warn('HRM module is not installed; nothing to do.');
+            return 0;
+        }
         $request = new Request();
         $attendance = new AttendanceMachineController();
         $attendance->store($request);

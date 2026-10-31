@@ -86,7 +86,7 @@ class HotelServiceSaleService
             $this->sale,
             $this->sale->id,
             'Hotel Service Sale',
-            AccountType::first()->id,
+            optional(AccountType::first())->id,   // docs/BUGS.md #73: none configured yet
             $this->request->payable_amount,
             $this->request->discount,
             $this->request->paid_amount,
